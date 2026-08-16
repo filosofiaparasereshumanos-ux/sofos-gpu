@@ -39,7 +39,17 @@ RUN ln -sf /opt/models/latentsync_unet.pt /opt/LatentSync/checkpoints/latentsync
  && ln -sf /opt/models/tiny.pt /opt/LatentSync/checkpoints/whisper/tiny.pt
 
 # --- Voz XTTS-v2 precargada (evita ~2 GB de descarga en cada arranque) ---
-RUN python -c "from TTS.utils.manage import ModelManager; ModelManager().download_model('tts_models/multilingual/multi-dataset/xtts_v2')"
+RUN python - <<'PY' || echo "XTTS no precargado; se descargara en el primer arranque"
+import os
+os.environ["COQUI_TOS_AGREED"] = "1"
+from TTS.utils.manage import ModelManager
+from TTS.utils.generic_utils import get_user_data_dir
+import TTS
+path = os.path.join(os.path.dirname(TTS.__file__), ".models.json")
+ModelManager(path, progress_bar=False).download_model("tts_models/multilingual/multi-dataset/xtts_v2")
+print("XTTS-v2 precargado en", get_user_data_dir("tts"))
+PY
+
 
 # --- Comprobacion en tiempo de build: si algo falta, la imagen no se publica ---
 RUN python -c "import torch, torchaudio, torchvision, diffusers, kornia, insightface; from TTS.api import TTS; print('OK', torch.__version__, torchaudio.__version__, torchvision.__version__)"
