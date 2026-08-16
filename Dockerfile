@@ -15,7 +15,7 @@ RUN apt-get update -y \
  && rm -rf /var/lib/apt/lists/*
 
 # --- Dependencias de Python (en tandas para que la build sea legible) ---
-RUN pip install requests "coqui-tts==0.27.5"
+RUN pip install requests "coqui-tts==0.26.2"
 RUN pip install "huggingface_hub==0.30.2" "omegaconf==2.3.0" "einops==0.7.0" python-dotenv
 RUN pip install "diffusers==0.32.2" "transformers==4.48.0" "accelerate==0.26.1"
 RUN pip install "numpy==1.26.4" "librosa==0.10.1" "opencv-python-headless==4.9.0.80" \
