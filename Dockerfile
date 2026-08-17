@@ -1,3 +1,4 @@
+
 # Imagen lista para Estudio Sofos: voz (Coqui XTTS) + lip-sync (LatentSync).
 # Todo queda preinstalado y los modelos ya vienen dentro, asi que al alquilar
 # una GPU no hay instalaciones: el worker arranca en 1-2 minutos.
@@ -39,6 +40,8 @@ RUN ln -sf /opt/models/latentsync_unet.pt /opt/LatentSync/checkpoints/latentsync
  && ln -sf /opt/models/tiny.pt /opt/LatentSync/checkpoints/whisper/tiny.pt
 
 # --- Voz XTTS-v2 precargada (evita ~2 GB de descarga en cada arranque) ---
+# Si la descarga falla durante el build (red/licencia), no rompemos la imagen:
+# el modelo se descargara la primera vez que arranque el worker.
 RUN python - <<'PY' || echo "XTTS no precargado; se descargara en el primer arranque"
 import os
 os.environ["COQUI_TOS_AGREED"] = "1"
@@ -57,3 +60,6 @@ RUN python -c "import torch, torchaudio, torchvision, diffusers, kornia, insight
 COPY start.sh /opt/start.sh
 RUN chmod +x /opt/start.sh
 CMD ["/opt/start.sh"]
+
+
+Copia eso, pégalo en GitHub (`gpu-image/Dockerfile`) y haz Commit changes.
