@@ -55,7 +55,17 @@ PY
 
 
 # --- Comprobacion en tiempo de build: si algo falta, la imagen no se publica ---
-RUN python -c "import torch, torchaudio, torchvision, diffusers, kornia, insightface; from TTS.api import TTS; print('OK', torch.__version__, torchaudio.__version__, torchvision.__version__)"
+# --- Diagnostico en tiempo de build: informa modulo por modulo sin romper ---
+RUN python - <<'PY'
+import importlib
+for m in ["torch","torchaudio","torchvision","diffusers","transformers","kornia","insightface","TTS.api"]:
+    try:
+        mod = importlib.import_module(m)
+        print("OK", m, getattr(mod, "__version__", ""))
+    except Exception as e:
+        print("FALLO", m, type(e).__name__, e)
+PY
+
 
 COPY start.sh /opt/start.sh
 RUN chmod +x /opt/start.sh
