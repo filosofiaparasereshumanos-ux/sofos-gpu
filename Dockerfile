@@ -61,5 +61,3 @@ COPY start.sh /opt/start.sh
 RUN chmod +x /opt/start.sh
 CMD ["/opt/start.sh"]
 
-
-Copia eso, pégalo en GitHub (`gpu-image/Dockerfile`) y haz Commit changes.
