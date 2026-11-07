@@ -1,0 +1,460 @@
+<title>Odisea de la Razón</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Marcellus+SC&display=swap">
+<style>
+/* Juego a pantalla completa. Un solo mundo visual (oscuro), elegido a propósito:
+   luz de lámpara de aceite sobre piedra, oro de manuscrito y pergamino. */
+:root {
+  --ink: #0d0c12;            /* noche del ágora */
+  --ink-2: #17151e;          /* piedra en sombra */
+  --ink-3: #221f2b;
+  --parchment: #efe3c6;      /* pergamino */
+  --parchment-dim: #b8ac90;
+  --gold: #d6a84a;           /* oro de códice */
+  --gold-bright: #ffd36a;
+  --right: #5cc49a;          /* verdín */
+  --wrong: #d0505c;          /* pórfido */
+  --line: rgba(214, 168, 74, 0.35);
+  --display: "Marcellus SC", "Marcellus", "Trajan Pro", Georgia, serif;
+  --body: "EB Garamond", "Garamond", "Iowan Old Style", Georgia, serif;
+  --sat: env(safe-area-inset-top, 0px); --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px); --sar: env(safe-area-inset-right, 0px);
+  color-scheme: dark;
+}
+html, body { height: 100%; margin: 0; overflow: hidden; background: var(--ink); color: var(--parchment); }
+body { font-family: var(--body); font-size: 17px; -webkit-font-smoothing: antialiased; user-select: none; -webkit-user-select: none; }
+#app canvas, #touch, #hud { touch-action: none; }
+.screen, #duel { touch-action: pan-y; -webkit-overflow-scrolling: touch; }
+#app { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--ink); }
+#app canvas { display: block; position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
+button { font: inherit; color: inherit; }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 3px; }
+[hidden] { display: none !important; }
+
+/* ---------- pantallas superpuestas ---------- */
+.screen { position: absolute; inset: 0; display: grid; place-items: center; z-index: 20;
+  padding: max(20px, var(--sat)) max(16px, var(--sar)) max(20px, var(--sab)) max(16px, var(--sal)); overflow-y: auto; }
+.screen.dim { background: radial-gradient(ellipse at center, rgba(13,12,18,0.72), rgba(13,12,18,0.94)); backdrop-filter: blur(3px); }
+.panel { width: min(680px, 100%); text-align: center; }
+.eyebrow { font-family: var(--display); letter-spacing: 0.32em; font-size: 0.78rem; color: var(--gold); text-transform: uppercase; }
+.rule { height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 18px auto; width: 70%; border: 0; }
+.btns { display: flex; flex-direction: column; gap: 10px; align-items: center; margin-top: 26px; }
+.btn { font-family: var(--display); font-size: 1.05rem; letter-spacing: 0.18em; text-transform: uppercase; min-width: min(300px, 100%);
+  padding: 13px 26px; background: linear-gradient(180deg, rgba(214,168,74,0.14), rgba(214,168,74,0.04)); border: 1px solid var(--line);
+  color: var(--parchment); cursor: pointer; transition: background .2s, border-color .2s, transform .1s; position: relative; }
+.btn:hover { background: linear-gradient(180deg, rgba(214,168,74,0.3), rgba(214,168,74,0.08)); border-color: var(--gold); }
+.btn:active { transform: translateY(1px); }
+.btn.primary { border-color: var(--gold); color: var(--gold-bright); box-shadow: 0 0 24px rgba(214,168,74,0.18), inset 0 0 18px rgba(214,168,74,0.08); }
+.btn small { display: block; font-family: var(--body); font-size: 0.85rem; letter-spacing: 0.02em; text-transform: none; color: var(--parchment-dim); margin-top: 2px; }
+.btn.ghost { border-color: transparent; background: none; color: var(--parchment-dim); min-width: 0; font-size: 0.9rem; }
+.btn.ghost:hover { color: var(--parchment); }
+
+/* ---------- título ---------- */
+#title { background: linear-gradient(180deg, rgba(13,12,18,0.15) 0%, rgba(13,12,18,0.25) 45%, rgba(13,12,18,0.9) 100%); }
+.logo { font-family: var(--display); font-size: clamp(3.4rem, 13vw, 8.5rem); line-height: 0.9; letter-spacing: 0.06em; margin: 10px 0 0;
+  color: var(--parchment); text-shadow: 0 0 40px rgba(255, 196, 110, 0.35), 0 4px 0 rgba(0,0,0,0.35); }
+.logo .alpha { color: var(--gold-bright); }
+.subtitle { font-style: italic; font-size: clamp(1.1rem, 3.4vw, 1.5rem); color: var(--parchment); margin: 8px 0 0; opacity: 0.92; }
+.timeline { display: flex; justify-content: center; gap: 0; margin: 22px auto 0; font-family: var(--display); font-size: 0.72rem; letter-spacing: 0.14em; color: var(--parchment-dim); flex-wrap: wrap; max-width: 560px; }
+.timeline span { padding: 4px 10px; border-left: 1px solid var(--line); }
+.timeline span:first-child { border-left: 0; }
+.timeline span.done { color: var(--gold-bright); }
+.credit { margin-top: 26px; font-size: 0.9rem; color: var(--parchment-dim); font-style: italic; }
+
+/* ---------- intro de etapa ---------- */
+.numeral { font-family: var(--display); font-size: clamp(4rem, 16vw, 7.5rem); line-height: 1; color: var(--gold-bright); text-shadow: 0 0 50px rgba(255,211,106,0.35); margin: 6px 0; }
+.era-name { font-family: var(--display); font-size: clamp(1.6rem, 6vw, 2.8rem); letter-spacing: 0.08em; margin: 0; text-wrap: balance; }
+.era-meta { color: var(--parchment-dim); margin: 6px 0 0; font-size: 1.05rem; }
+.story { max-width: 56ch; margin: 18px auto 0; line-height: 1.55; font-size: 1.12rem; }
+blockquote.q { margin: 22px auto 0; max-width: 46ch; font-style: italic; font-size: clamp(1.15rem, 3.6vw, 1.45rem); line-height: 1.4; }
+blockquote.q cite { display: block; font-style: normal; font-family: var(--display); letter-spacing: 0.2em; font-size: 0.75rem; color: var(--gold); margin-top: 10px; }
+.roster { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 18px; margin: 20px auto 0; max-width: 560px; }
+.roster span { font-family: var(--display); letter-spacing: 0.12em; font-size: 0.85rem; color: var(--parchment); }
+.roster span.boss { color: var(--gold-bright); }
+.tips { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 22px auto 0; max-width: 620px; text-align: left; }
+.tip { border-top: 1px solid var(--line); padding-top: 8px; font-size: 0.98rem; line-height: 1.35; color: var(--parchment-dim); }
+.tip b { display: block; font-family: var(--display); font-weight: 400; letter-spacing: 0.14em; color: var(--parchment); font-size: 0.8rem; margin-bottom: 3px; }
+kbd { font-family: var(--display); font-size: 0.78em; border: 1px solid var(--line); padding: 1px 6px; border-radius: 3px; color: var(--gold-bright); background: rgba(214,168,74,0.08); }
+
+/* ---------- HUD ---------- */
+#hud { position: absolute; inset: 0; pointer-events: none; z-index: 10; }
+#hud::before, #hud::after { content: ""; position: absolute; left: 0; right: 0; pointer-events: none; }
+#hud::before { top: 0; height: calc(120px + var(--sat)); background: linear-gradient(180deg, rgba(8,7,12,0.55), transparent); }
+#hud::after { bottom: 0; height: calc(110px + var(--sab)); background: linear-gradient(0deg, rgba(8,7,12,0.5), transparent); }
+.hud-tl { position: absolute; top: calc(14px + var(--sat)); left: calc(16px + var(--sal)); max-width: 46vw; }
+.hud-era { font-family: var(--display); letter-spacing: 0.18em; font-size: 0.85rem; color: var(--gold); text-shadow: 0 1px 6px #000; }
+.hud-obj { font-size: 1.02rem; margin-top: 4px; text-shadow: 0 1px 6px #000, 0 0 2px #000; line-height: 1.3; }
+.hud-tr { position: absolute; top: calc(14px + var(--sat)); right: calc(16px + var(--sar)); display: flex; gap: 18px; text-align: right; }
+.stat .k { display: block; font-family: var(--display); font-size: 0.66rem; letter-spacing: 0.22em; color: var(--parchment-dim); text-shadow: 0 1px 4px #000; }
+.stat .v { font-family: var(--display); font-size: 1.5rem; font-variant-numeric: tabular-nums; text-shadow: 0 1px 8px #000; }
+.stat .v.frag { color: #8fe9ff; }
+.hud-bl { position: absolute; left: calc(16px + var(--sal)); bottom: calc(16px + var(--sab)); width: min(300px, 42vw); }
+.bar-l { display: flex; justify-content: space-between; font-family: var(--display); font-size: 0.7rem; letter-spacing: 0.22em; color: var(--parchment-dim); text-shadow: 0 1px 4px #000; }
+.bar { height: 10px; margin-top: 5px; background: rgba(0,0,0,0.55); border: 1px solid var(--line); position: relative; overflow: hidden; }
+.bar > i { position: absolute; inset: 0; transform-origin: left; background: linear-gradient(90deg, #b8862e, var(--gold-bright)); transition: transform .25s; }
+.bar > i.low { background: linear-gradient(90deg, #8a2a32, var(--wrong)); }
+.hud-br { position: absolute; right: calc(16px + var(--sar)); bottom: calc(16px + var(--sab)); display: flex; align-items: center; gap: 10px; }
+.epoje { width: 54px; height: 54px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; position: relative; background: rgba(0,0,0,0.45); }
+.epoje svg { position: absolute; inset: -1px; transform: rotate(-90deg); }
+.epoje span { font-family: var(--display); font-size: 0.62rem; letter-spacing: 0.1em; }
+.epoje.ready { border-color: var(--gold); box-shadow: 0 0 16px rgba(214,168,74,0.4); }
+.epoje-l { font-size: 0.85rem; color: var(--parchment-dim); text-shadow: 0 1px 4px #000; text-align: right; }
+#guardians { position: absolute; left: 50%; transform: translateX(-50%); bottom: calc(16px + var(--sab)); display: flex; gap: 8px; }
+.gm { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: rgba(0,0,0,0.5); display: grid; place-items: center; font-family: var(--display); font-size: 0.95rem; color: var(--parchment-dim); }
+.gm.boss { width: 40px; height: 40px; border-color: var(--gold); }
+.gm.done { background: radial-gradient(circle, rgba(255,211,106,0.45), rgba(214,168,74,0.15)); color: #1a1408; border-color: var(--gold-bright); }
+.gm.sealed { opacity: 0.45; }
+#crosshair { position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border: 1.5px solid rgba(239,227,198,0.7); border-radius: 50%; box-shadow: 0 0 4px #000; transition: transform .1s, border-color .1s; }
+#crosshair::after { content: ""; position: absolute; left: 50%; top: 50%; width: 3px; height: 3px; margin: -1.5px; background: var(--parchment); border-radius: 50%; }
+#crosshair.hit { border-color: var(--gold-bright); transform: scale(1.35); }
+#crosshair.talk { border-color: var(--gold-bright); transform: scale(1.6); }
+#prompt { position: absolute; left: 50%; top: calc(50% + 46px); transform: translateX(-50%); font-family: var(--display); letter-spacing: 0.12em; font-size: 0.95rem; padding: 8px 16px; background: rgba(13,12,18,0.72); border: 1px solid var(--line); white-space: nowrap; max-width: 92vw; overflow: hidden; text-overflow: ellipsis; }
+#prompt b { color: var(--gold-bright); font-weight: 400; }
+#toasts { position: absolute; top: calc(70px + var(--sat)); left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; width: min(560px, 92vw); }
+.toast { background: rgba(13,12,18,0.82); border-left: 2px solid var(--gold); padding: 8px 14px; font-size: 1.02rem; text-align: center; animation: toastIn .35s ease-out; text-shadow: 0 1px 3px #000; }
+.toast.fade { opacity: 0; transition: opacity .6s; }
+@keyframes toastIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+#vignette { position: absolute; inset: 0; pointer-events: none; z-index: 9; background: radial-gradient(ellipse at center, transparent 45%, rgba(190, 30, 40, 0.75) 100%); opacity: 0; transition: opacity .12s; }
+#lowhp { position: absolute; inset: 0; pointer-events: none; z-index: 8; background: radial-gradient(ellipse at center, transparent 55%, rgba(120, 10, 20, 0.6) 100%); opacity: 0; }
+
+/* ---------- duelo ---------- */
+#duel { position: absolute; inset: 0; z-index: 25; display: flex; align-items: flex-end; justify-content: center;
+  padding: max(12px, var(--sat)) max(12px, var(--sar)) max(12px, var(--sab)) max(12px, var(--sal));
+  background: linear-gradient(180deg, transparent 20%, rgba(13,12,18,0.55) 55%, rgba(13,12,18,0.9) 100%); }
+.duel-card { width: min(920px, 100%); max-height: 100%; overflow-y: auto; background: linear-gradient(180deg, rgba(23,21,30,0.94), rgba(13,12,18,0.97));
+  border: 1px solid var(--line); box-shadow: 0 20px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,211,106,0.12); padding: 18px 22px 16px; animation: rise .35s ease-out; }
+@keyframes rise { from { transform: translateY(30px); opacity: 0; } to { transform: none; opacity: 1; } }
+.duel-head { display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; }
+.medal { width: 58px; height: 58px; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-size: 1.7rem; color: #1a1408;
+  background: radial-gradient(circle at 35% 30%, #fff1c4, var(--gold) 55%, #8a6320); box-shadow: 0 0 0 2px rgba(0,0,0,0.5), 0 0 0 3px var(--gold), 0 0 24px rgba(214,168,74,0.35); }
+.who { min-width: 0; }
+.who h2 { font-family: var(--display); font-weight: 400; letter-spacing: 0.06em; font-size: clamp(1.15rem, 3.4vw, 1.6rem); margin: 0; line-height: 1.1; }
+.who p { margin: 3px 0 0; color: var(--parchment-dim); font-style: italic; font-size: 0.98rem; }
+.conv { text-align: right; }
+.conv .lbl, .qmeta span { font-family: var(--display); font-size: 0.66rem; letter-spacing: 0.22em; color: var(--parchment-dim); }
+.pips { display: flex; gap: 5px; margin-top: 6px; justify-content: flex-end; }
+.pip { width: 14px; height: 14px; transform: rotate(45deg); border: 1px solid var(--gold); background: var(--gold); box-shadow: 0 0 8px rgba(214,168,74,0.5); transition: all .3s; }
+.pip.off { background: transparent; box-shadow: none; opacity: 0.4; }
+.say { margin: 12px 0 0; font-style: italic; font-size: 1.12rem; line-height: 1.4; color: var(--parchment); border-left: 2px solid var(--gold); padding-left: 12px; min-height: 1.4em; }
+.qbox { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 12px; }
+.qmeta { display: flex; align-items: center; gap: 12px; }
+.timer { flex: 1; height: 4px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.timer > i { display: block; height: 100%; background: var(--gold-bright); transform-origin: left; }
+.timer > i.urgent { background: var(--wrong); }
+#d-time { font-family: var(--display); font-variant-numeric: tabular-nums; font-size: 0.95rem; min-width: 2.2em; text-align: right; color: var(--parchment); }
+.qtext { font-family: var(--body); font-weight: 500; font-size: clamp(1.15rem, 3.2vw, 1.42rem); line-height: 1.3; margin: 10px 0 12px; text-wrap: balance; }
+.answers { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ans { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center; text-align: left; padding: 11px 14px; cursor: pointer;
+  background: rgba(239,227,198,0.04); border: 1px solid rgba(239,227,198,0.16); font-size: 1.06rem; line-height: 1.25; transition: background .15s, border-color .15s, opacity .3s; min-width: 0; }
+.ans:hover:not(:disabled) { background: rgba(214,168,74,0.14); border-color: var(--gold); }
+.ans .k { font-family: var(--display); font-size: 0.8rem; width: 24px; height: 24px; display: grid; place-items: center; border: 1px solid var(--line); color: var(--gold); }
+.ans:disabled { cursor: default; }
+.ans.right { background: rgba(92,196,154,0.2); border-color: var(--right); }
+.ans.right .k { background: var(--right); color: #08140f; border-color: var(--right); }
+.ans.wrong { background: rgba(208,80,92,0.2); border-color: var(--wrong); }
+.ans.wrong .k { background: var(--wrong); color: #1a0508; border-color: var(--wrong); }
+.ans.gone { opacity: 0.18; }
+.ans.dimmed { opacity: 0.45; }
+.explain { margin: 12px 0 0; font-size: 1.04rem; line-height: 1.45; color: var(--parchment); padding: 10px 12px; background: rgba(214,168,74,0.07); border-left: 2px solid var(--gold); }
+.explain b { font-family: var(--display); font-weight: 400; letter-spacing: 0.14em; font-size: 0.78rem; color: var(--gold-bright); margin-right: 6px; }
+.duel-foot { display: flex; align-items: center; gap: 14px; margin-top: 14px; flex-wrap: wrap; }
+.duel-foot .mini { width: 170px; }
+.aids { display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap; }
+.aid { font-family: var(--display); letter-spacing: 0.1em; font-size: 0.78rem; padding: 7px 11px; background: rgba(143,233,255,0.06); border: 1px solid rgba(143,233,255,0.3); cursor: pointer; color: #cdf4ff; }
+.aid:hover:not(:disabled) { background: rgba(143,233,255,0.16); }
+.aid:disabled { opacity: 0.35; cursor: default; }
+.aid em { font-style: normal; color: #8fe9ff; }
+#d-next { min-width: 0; padding: 9px 18px; font-size: 0.9rem; }
+
+/* ---------- concepto ---------- */
+.concept-card { width: min(560px, 100%); padding: 30px 26px; border: 1px solid var(--gold); background: radial-gradient(ellipse at top, rgba(214,168,74,0.16), rgba(13,12,18,0.96) 70%); box-shadow: 0 0 80px rgba(214,168,74,0.18); text-align: center; animation: rise .5s ease-out; }
+.concept-card h2 { font-family: var(--display); font-weight: 400; font-size: clamp(2rem, 8vw, 3.2rem); margin: 8px 0 4px; color: var(--gold-bright); text-wrap: balance; letter-spacing: 0.04em; }
+.concept-card .by { font-style: italic; color: var(--parchment-dim); margin: 0; }
+.concept-card .txt { font-size: 1.15rem; line-height: 1.5; margin: 16px auto 0; max-width: 46ch; }
+.concept-card .last { margin: 16px auto 0; font-style: italic; color: var(--parchment); max-width: 44ch; }
+.rewards { display: flex; justify-content: center; gap: 18px; margin-top: 18px; font-family: var(--display); letter-spacing: 0.1em; font-size: 0.85rem; flex-wrap: wrap; }
+.rewards span { color: var(--gold-bright); }
+.rewards span.f { color: #8fe9ff; }
+.rewards span.h { color: var(--right); }
+
+/* ---------- códice ---------- */
+.codex-wrap { width: min(980px, 100%); }
+.codex-wrap h2 { font-family: var(--display); font-weight: 400; font-size: 2rem; letter-spacing: 0.08em; margin: 4px 0 0; text-align: center; }
+.codex-era { margin-top: 22px; }
+.codex-era h3 { font-family: var(--display); font-weight: 400; font-size: 0.85rem; letter-spacing: 0.22em; color: var(--gold); margin: 0 0 8px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+.codex-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+.cc { padding: 12px 14px; border: 1px solid rgba(239,227,198,0.14); background: rgba(239,227,198,0.03); min-width: 0; }
+.cc h4 { font-family: var(--display); font-weight: 400; margin: 0; font-size: 1.08rem; color: var(--gold-bright); letter-spacing: 0.04em; }
+.cc .by { font-size: 0.9rem; font-style: italic; color: var(--parchment-dim); margin-top: 2px; }
+.cc p { margin: 6px 0 0; font-size: 0.98rem; line-height: 1.4; }
+.cc.locked h4 { color: var(--parchment-dim); }
+.cc.locked p { color: rgba(184,172,144,0.6); font-style: italic; }
+.codex-count { text-align: center; color: var(--parchment-dim); font-style: italic; margin-top: 4px; }
+
+/* ---------- ajustes ---------- */
+.settings { width: min(460px, 100%); text-align: left; }
+.settings h2 { font-family: var(--display); font-weight: 400; text-align: center; font-size: 1.8rem; letter-spacing: 0.08em; margin: 0 0 14px; }
+.row { display: grid; grid-template-columns: 1fr 1.3fr; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(214,168,74,0.15); }
+.row label { font-family: var(--display); letter-spacing: 0.12em; font-size: 0.85rem; }
+input[type=range] { width: 100%; accent-color: var(--gold); }
+.seg { display: flex; border: 1px solid var(--line); }
+.seg button { flex: 1; padding: 7px; background: none; border: 0; cursor: pointer; font-family: var(--display); font-size: 0.8rem; letter-spacing: 0.1em; color: var(--parchment-dim); }
+.seg button.on { background: rgba(214,168,74,0.22); color: var(--gold-bright); }
+
+/* ---------- final ---------- */
+.final-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 22px auto 0; max-width: 560px; }
+.final-stats div { border-top: 1px solid var(--line); padding-top: 8px; }
+.final-stats b { display: block; font-family: var(--display); font-size: 1.6rem; font-weight: 400; color: var(--gold-bright); font-variant-numeric: tabular-nums; }
+.final-stats span { font-family: var(--display); font-size: 0.62rem; letter-spacing: 0.2em; color: var(--parchment-dim); }
+.rank { font-family: var(--display); font-size: clamp(1.8rem, 7vw, 2.8rem); color: var(--gold-bright); margin: 22px 0 0; letter-spacing: 0.06em; }
+
+/* ---------- controles táctiles ---------- */
+#touch { position: absolute; inset: 0; z-index: 12; pointer-events: none; }
+#joy { position: absolute; left: calc(26px + var(--sal)); bottom: calc(70px + var(--sab)); width: 130px; height: 130px; border-radius: 50%; border: 1px solid var(--line); background: rgba(13,12,18,0.3); pointer-events: auto; touch-action: none; }
+#joy i { position: absolute; left: 50%; top: 50%; width: 54px; height: 54px; margin: -27px; border-radius: 50%; background: rgba(214,168,74,0.35); border: 1px solid var(--gold); }
+.tbtns { position: absolute; right: calc(18px + var(--sar)); bottom: calc(80px + var(--sab)); display: grid; grid-template-columns: repeat(2, 66px); gap: 12px; pointer-events: auto; }
+.tb { width: 66px; height: 66px; border-radius: 50%; border: 1px solid var(--line); background: rgba(13,12,18,0.45); font-family: var(--display); font-size: 0.66rem; letter-spacing: 0.08em; touch-action: none; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0; }
+.tb.fire { width: 84px; height: 84px; grid-row: span 2; align-self: center; border-color: var(--gold); background: rgba(214,168,74,0.18); }
+.tb.act { color: var(--gold-bright); border-color: var(--gold); }
+#tpause { position: absolute; top: calc(64px + var(--sat)); right: calc(16px + var(--sar)); width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: rgba(13,12,18,0.45); pointer-events: auto; font-family: var(--display); }
+body.touch .hud-bl { bottom: calc(14px + var(--sab)); width: min(220px, 40vw); }
+body.touch .hud-br { display: none; }
+body.touch #toasts { top: calc(112px + var(--sat)); width: min(520px, 84vw); }
+body.touch #guardians { bottom: calc(14px + var(--sab)); left: auto; right: calc(16px + var(--sar)); transform: none; }
+body.touch .gm { width: 26px; height: 26px; font-size: 0.75rem; }
+body.touch .gm.boss { width: 30px; height: 30px; }
+
+#fade { position: absolute; inset: 0; background: #000; z-index: 50; pointer-events: none; opacity: 0; transition: opacity .8s; }
+#fade.on { opacity: 1; pointer-events: auto; }
+#loading { position: absolute; inset: 0; z-index: 60; display: grid; place-items: center; background: var(--ink); font-family: var(--display); letter-spacing: 0.3em; color: var(--gold); font-size: 0.9rem; text-align: center; padding: 20px; }
+#loading .err { font-family: var(--body); letter-spacing: 0; color: var(--parchment); font-size: 1rem; max-width: 40ch; margin-top: 12px; }
+#lockhint { position: absolute; left: 50%; bottom: 22%; transform: translateX(-50%); z-index: 15; font-family: var(--display); letter-spacing: 0.16em; font-size: 0.85rem; background: rgba(13,12,18,0.75); padding: 10px 16px; border: 1px solid var(--line); pointer-events: none; text-align: center; }
+
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  .answers { grid-template-columns: 1fr; gap: 6px; }
+  .ans { padding: 9px 12px; font-size: 1rem; }
+  .duel-card { padding: 14px 14px 12px; }
+  .medal { width: 44px; height: 44px; font-size: 1.3rem; }
+  .say { font-size: 1rem; margin-top: 8px; }
+  .duel-foot .mini { width: 120px; }
+  .final-stats { grid-template-columns: repeat(2, 1fr); }
+  .hud-tr { gap: 12px; }
+  .stat .v { font-size: 1.2rem; }
+  .hud-obj { font-size: 0.92rem; }
+}
+@media (max-height: 520px) {
+  .duel-card { padding: 10px 14px; }
+  .say { display: none; }
+  .qtext { margin: 6px 0 8px; font-size: 1.05rem; }
+  .ans { padding: 6px 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+</style>
+
+<div id="app">
+  <div id="hud" hidden>
+    <div class="hud-tl"><div class="hud-era" id="h-era"></div><div class="hud-obj" id="h-obj"></div></div>
+    <div class="hud-tr">
+      <div class="stat"><span class="k">Sabiduría</span><span class="v" id="h-score">0</span></div>
+      <div class="stat"><span class="k">Fragmentos</span><span class="v frag" id="h-frags">0</span></div>
+    </div>
+    <div id="crosshair"></div>
+    <div id="prompt" hidden></div>
+    <div id="toasts"></div>
+    <div class="hud-bl">
+      <div class="bar-l"><span>Razón</span><span id="h-hpn">100</span></div>
+      <div class="bar"><i id="h-hp"></i></div>
+    </div>
+    <div class="hud-br">
+      <div class="epoje-l"><kbd>Q</kbd> o clic derecho<br>Epojé</div>
+      <div class="epoje" id="h-epoje"><svg width="56" height="56" viewBox="0 0 56 56"><circle id="h-epoje-c" cx="28" cy="28" r="26" fill="none" stroke="#ffd36a" stroke-width="2" stroke-dasharray="163.4" stroke-dashoffset="0"></circle></svg><span>ἐποχή</span></div>
+    </div>
+    <div id="guardians"></div>
+  </div>
+  <div id="vignette"></div>
+  <div id="lowhp"></div>
+  <div id="lockhint" hidden>Haz clic para controlar la vista</div>
+
+  <div id="touch" hidden>
+    <div id="joy"><i></i></div>
+    <div class="tbtns">
+      <button class="tb act" id="t-act">Desafiar</button>
+      <button class="tb fire" id="t-fire">Lámpara</button>
+      <button class="tb" id="t-epoje">Epojé</button>
+      <button class="tb" id="t-jump" hidden>Saltar</button>
+    </div>
+    <button id="tpause" aria-label="Pausa">II</button>
+  </div>
+
+  <section id="title" class="screen" hidden>
+    <div class="panel">
+      <div class="eyebrow">Un viaje de veinticinco siglos</div>
+      <h1 class="logo"><span class="alpha">O</span>DISEA</h1>
+      <p class="subtitle">de la Razón · de Tales a Kant</p>
+      <div class="timeline" id="t-timeline"></div>
+      <div class="btns">
+        <button class="btn primary" id="b-new">Nueva partida</button>
+        <button class="btn" id="b-continue" hidden>Continuar<small id="b-continue-s"></small></button>
+        <button class="btn" id="b-howto">Cómo jugar</button>
+        <button class="btn" id="b-codex">Códice de conceptos</button>
+        <button class="btn ghost" id="b-settings">Ajustes</button>
+      </div>
+      <p class="credit">Recorre seis etapas del pensamiento, enfréntate a 25 filósofos en duelos dialécticos y vence a las sombras del error con la lámpara de Diógenes.</p>
+    </div>
+  </section>
+
+  <section id="howto" class="screen dim" hidden>
+    <div class="panel">
+      <div class="eyebrow">Instrucciones</div>
+      <h2 class="era-name">Cómo jugar</h2>
+      <hr class="rule">
+      <div class="tips">
+        <div class="tip"><b>Moverse</b><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> para caminar, ratón para mirar, <kbd>Mayús</kbd> para correr y <kbd>Espacio</kbd> para saltar.</div>
+        <div class="tip"><b>Lámpara de Diógenes</b>Clic izquierdo dispara luz contra las sombras del error. Cada sombra vencida suelta un fragmento de sabiduría.</div>
+        <div class="tip"><b>Epojé</b><kbd>Q</kbd> o clic derecho: suspendes el juicio y liberas una onda que daña a todo lo cercano y disuelve proyectiles.</div>
+        <div class="tip"><b>Duelos</b>Acércate a un filósofo y pulsa <kbd>E</kbd>. Responde con clic o con <kbd>1</kbd>–<kbd>4</kbd>. Acertar quiebra su convicción; fallar daña tu razón.</div>
+        <div class="tip"><b>Comodines</b>Gasta fragmentos: <em>Mayéutica</em> elimina dos respuestas falsas; <em>Clepsidra</em> añade diez segundos.</div>
+        <div class="tip"><b>Avanzar</b>Vence a los pensadores de cada etapa para romper el sello del maestro final. Al derrotarlo se abre el portal a la siguiente época.</div>
+      </div>
+      <p class="story" style="font-size:1rem">En móvil: joystick a la izquierda, arrastra a la derecha para mirar y usa los botones para disparar, desafiar y la epojé.</p>
+      <div class="btns"><button class="btn" data-back>Volver</button></div>
+    </div>
+  </section>
+
+  <section id="intro" class="screen dim" hidden>
+    <div class="panel">
+      <div class="eyebrow" id="i-eyebrow">Etapa</div>
+      <div class="numeral" id="i-num">I</div>
+      <h2 class="era-name" id="i-name"></h2>
+      <p class="era-meta" id="i-meta"></p>
+      <hr class="rule">
+      <p class="story" id="i-story"></p>
+      <blockquote class="q" id="i-quote"></blockquote>
+      <div class="roster" id="i-roster"></div>
+      <div class="btns"><button class="btn primary" id="b-enter">Entrar</button></div>
+    </div>
+  </section>
+
+  <section id="duel" hidden>
+    <div class="duel-card" role="dialog" aria-label="Duelo dialéctico">
+      <header class="duel-head">
+        <div class="medal" id="d-medal">Σ</div>
+        <div class="who"><h2 id="d-name"></h2><p id="d-meta"></p></div>
+        <div class="conv"><span class="lbl">Convicción</span><div class="pips" id="d-conv"></div></div>
+      </header>
+      <p class="say" id="d-say"></p>
+      <div class="qbox">
+        <div class="qmeta"><span id="d-qnum">Argumento I</span><div class="timer"><i id="d-timer"></i></div><span id="d-time">20</span></div>
+        <h3 class="qtext" id="d-q"></h3>
+        <div class="answers" id="d-answers"></div>
+        <p class="explain" id="d-explain" hidden></p>
+      </div>
+      <footer class="duel-foot">
+        <div class="mini"><div class="bar-l"><span>Razón</span><span id="d-hpn">100</span></div><div class="bar"><i id="d-hp"></i></div></div>
+        <div class="aids">
+          <button class="aid" id="aid-5050">Mayéutica <em>2◆</em></button>
+          <button class="aid" id="aid-time">Clepsidra <em>1◆</em></button>
+        </div>
+        <button class="btn primary" id="d-next" hidden>Continuar</button>
+      </footer>
+    </div>
+  </section>
+
+  <section id="concept" class="screen dim" hidden>
+    <div class="concept-card">
+      <div class="eyebrow">Concepto adquirido</div>
+      <h2 id="c-name"></h2>
+      <p class="by" id="c-by"></p>
+      <hr class="rule">
+      <p class="txt" id="c-text"></p>
+      <p class="last" id="c-last"></p>
+      <div class="rewards" id="c-rew"></div>
+      <div class="btns"><button class="btn primary" id="b-concept">Continuar</button></div>
+    </div>
+  </section>
+
+  <section id="pause" class="screen dim" hidden>
+    <div class="panel">
+      <div class="eyebrow" id="p-era"></div>
+      <h2 class="era-name">Pausa</h2>
+      <blockquote class="q" style="font-size:1.1rem">«La filosofía comienza con el asombro.»<cite>Platón, Teeteto</cite></blockquote>
+      <div class="btns">
+        <button class="btn primary" id="b-resume">Reanudar</button>
+        <button class="btn" id="b-pcodex">Códice</button>
+        <button class="btn" id="b-psettings">Ajustes</button>
+        <button class="btn ghost" id="b-quit">Salir al menú</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="codex" class="screen dim" hidden>
+    <div class="codex-wrap">
+      <div class="eyebrow" style="text-align:center">Lo que has comprendido</div>
+      <h2>Códice de conceptos</h2>
+      <p class="codex-count" id="cx-count"></p>
+      <div id="cx-body"></div>
+      <div class="btns"><button class="btn" data-back>Volver</button></div>
+    </div>
+  </section>
+
+  <section id="settings" class="screen dim" hidden>
+    <div class="settings">
+      <h2>Ajustes</h2>
+      <div class="row"><label for="s-sens">Sensibilidad</label><input type="range" id="s-sens" min="0.3" max="2.5" step="0.05"></div>
+      <div class="row"><label for="s-music">Música</label><input type="range" id="s-music" min="0" max="1" step="0.05"></div>
+      <div class="row"><label for="s-sfx">Efectos</label><input type="range" id="s-sfx" min="0" max="1" step="0.05"></div>
+      <div class="row"><label>Calidad</label><div class="seg" id="s-quality"><button data-v="low">Baja</button><button data-v="high">Alta</button></div></div>
+      <div class="row"><label>Invertir eje Y</label><div class="seg" id="s-invert"><button data-v="0">No</button><button data-v="1">Sí</button></div></div>
+      <div class="btns"><button class="btn" data-back>Volver</button></div>
+    </div>
+  </section>
+
+  <section id="gameover" class="screen dim" hidden>
+    <div class="panel">
+      <div class="eyebrow">Tu razón se ha apagado</div>
+      <h2 class="era-name" style="font-size:clamp(2rem,7vw,3.4rem)">La caverna te reclama</h2>
+      <hr class="rule">
+      <blockquote class="q">«Si los prisioneros pudieran liberarse, ¿no matarían a quien intentara sacarlos de allí?»<cite>Platón, República VII</cite></blockquote>
+      <div class="btns">
+        <button class="btn primary" id="b-retry">Reintentar la etapa</button>
+        <button class="btn ghost" id="b-gomenu">Volver al menú</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="ending" class="screen dim" hidden>
+    <div class="panel">
+      <div class="eyebrow">Has completado la odisea</div>
+      <h2 class="logo" style="font-size:clamp(2.6rem,11vw,5.5rem)">Sapere aude</h2>
+      <p class="subtitle">Has salido de tu minoría de edad: ahora piensas por ti mismo.</p>
+      <p class="rank" id="e-rank"></p>
+      <p class="story" id="e-rtext"></p>
+      <div class="final-stats" id="e-stats"></div>
+      <p class="story" style="font-size:1rem">El viaje no termina en Kant: después vendrán Hegel, Marx, Nietzsche y muchos más. La pregunta sigue abierta.</p>
+      <div class="btns">
+        <button class="btn primary" id="b-again">Jugar de nuevo</button>
+        <button class="btn" id="b-ecodex">Ver el códice</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="fade"></div>
+  <div id="loading"><div>PREPARANDO EL ÁGORA…<div class="err" id="load-err"></div></div></div>
+</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script>
+  window.addEventListener('error', function (e) { var el = document.getElementById('load-err'); if (el && document.getElementById('loading').style.display !== 'none') el.textContent = 'No se pudo iniciar el juego: ' + (e.message || 'error desconocido') + '. Comprueba tu conexión y que tu navegador tenga WebGL activado.'; });
+</script>
+<script type="module">
+/*__GAME__*/
+</script>

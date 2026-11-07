@@ -1,0 +1,65 @@
+# Odisea de la Razón
+
+Juego de filosofía en primera persona (3D, navegador). Recorres veinticinco siglos de pensamiento,
+de Tales de Mileto a Immanuel Kant, venciendo a las sombras del error con la lámpara de Diógenes
+y derrotando a cada filósofo en un **duelo dialéctico** de preguntas.
+
+## Cómo jugarlo
+
+Abre `index.html` en un navegador moderno (Chrome, Edge, Firefox o Safari). Es un único archivo:
+no necesita instalación. Three.js se carga desde jsDelivr, así que hace falta conexión a internet.
+
+Para publicarlo gratis: activa **GitHub Pages** en el repositorio (Settings → Pages → rama
+`main`, carpeta raíz) y entra a `https://<usuario>.github.io/<repo>/juego-filosofia/`.
+
+## Las seis etapas
+
+| Etapa | Escenario | Pensadores | Maestro final | Enemigos |
+|---|---|---|---|---|
+| I · Los Presocráticos | Ruinas jonias al atardecer | Tales, Pitágoras, Heráclito | Parménides | Quimeras del Mito |
+| II · La Atenas Clásica | El ágora y el Partenón a mediodía | Protágoras, Sócrates, Platón | Aristóteles | Sofismas |
+| III · Helenismo y Roma | Arcadas romanas al crepúsculo | Diógenes, Epicuro, Pirrón | Marco Aurelio | Pasiones |
+| IV · La Edad Media | Catedral gótica con vidrieras | Agustín, Averroes, Ockham | Tomás de Aquino | Dogmas |
+| V · Renacimiento | Plaza florentina con cúpula | Pico della Mirandola, Maquiavelo, Montaigne | Francis Bacon | Ídolos |
+| VI · La Modernidad | Biblioteca-observatorio bajo las estrellas | Descartes, Spinoza, Locke, Hume | Kant | Genios Malignos |
+
+Cada filósofo tiene su propio escenario simbólico: el estanque de Tales, el fuego de Heráclito,
+la esfera de Parménides, la caverna de Platón, la tinaja de Diógenes, la navaja de Ockham, los
+ejes cartesianos de Descartes, las bolas de billar de Hume, el cielo estrellado de Kant…
+
+## Mecánicas
+
+- **Exploración y combate (FPS):** `WASD` para moverte, ratón para mirar, clic para disparar la
+  lámpara, `Mayús` para correr, `Espacio` para saltar.
+- **Epojé** (`Q` o clic derecho): una onda de "suspensión del juicio" que daña a las sombras
+  cercanas y disuelve sus proyectiles.
+- **Duelos dialécticos** (`E` junto a un filósofo): preguntas de opción múltiple con tiempo.
+  Cada acierto quiebra su *convicción*; cada fallo daña tu *razón* (tu vida). Después de cada
+  respuesta se explica la respuesta correcta.
+- **Comodines:** con los fragmentos de sabiduría que sueltan las sombras puedes usar
+  *Mayéutica* (elimina dos respuestas falsas) o *Clepsidra* (+10 segundos).
+- **Maestros finales:** a mitad del duelo se protegen con un escudo e invocan sombras; hay que
+  destruirlas para seguir. Kant lo hace dos veces.
+- **Códice:** cada filósofo vencido te entrega su concepto central (Arjé, Logos, Mayéutica,
+  Ataraxia, Navaja de Ockham, Cogito, Giro copernicano…), que puedes repasar en el menú.
+- Progreso guardado automáticamente al empezar cada etapa. En móvil hay controles táctiles.
+
+En total: 25 filósofos y unas 200 preguntas con explicación.
+
+## Código
+
+El juego se escribe en `src/` y se empaqueta en un solo `index.html`:
+
+```bash
+node build.mjs
+```
+
+- `src/00-core.js`: utilidades, texturas procedurales (mármol, teselas, vidrieras…) y audio generativo.
+- `src/01-data.js`: etapas, filósofos, preguntas y conceptos (para añadir preguntas, edita aquí).
+- `src/02-world.js`: cielos, arquitectura de cada época y escenarios de los filósofos.
+- `src/03-entities.js`: figuras de los filósofos, enemigos, proyectiles y partículas.
+- `src/04-game.js`: jugador, duelos, pantallas y bucle principal.
+- `src/template.html`: interfaz y estilos.
+
+Todo (modelos, texturas, música y efectos) se genera por código: no hay archivos externos aparte
+de Three.js y dos fuentes de Google Fonts.

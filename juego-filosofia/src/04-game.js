@@ -1,0 +1,830 @@
+// ============================================================================
+//  ESTADO GLOBAL
+// ============================================================================
+const SAVE_KEY = 'odisea-razon.save', SET_KEY = 'odisea-razon.settings', CODEX_KEY = 'odisea-razon.codex';
+const G = {
+  state: 'loading', prevScreen: null, eraIdx: 0, score: 0, frags: 0, hp: 100, maxHp: 100,
+  stats: { correct: 0, wrong: 0, kills: 0, time: 0 }, eraStart: null,
+  codex: new Set(store.get(CODEX_KEY, [])),
+  settings: Object.assign({ sens: 1, music: 0.7, sfx: 0.85, quality: IS_TOUCH ? 'low' : 'high', invertY: false }, store.get(SET_KEY, {})),
+  noLock: false, intentionalUnlock: false,
+};
+
+// ============================================================================
+//  RENDER
+// ============================================================================
+const app = $('#app');
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ antialias: !IS_TOUCH, powerPreference: 'high-performance' });
+} catch (e) {
+  $('#load-err').textContent = 'Tu navegador no tiene WebGL disponible. Prueba con Chrome, Firefox o Safari actualizados.';
+  throw e;
+}
+renderer.setSize(app.clientWidth, app.clientHeight);
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.1;
+app.prepend(renderer.domElement);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(72, app.clientWidth / app.clientHeight, 0.05, 1000);
+scene.add(camera);
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(new THREE.Vector2(app.clientWidth, app.clientHeight), 0.45, 0.5, 0.95);
+composer.addPass(bloom);
+composer.addPass(new OutputPass());
+const particles = new Particles(3000); scene.add(particles.points);
+
+function applyQuality() {
+  const hi = G.settings.quality === 'high';
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, hi ? 1.75 : 1.25));
+  renderer.shadowMap.enabled = hi;
+  onResize();
+  if (world) world.group.traverse((o) => { if (o.isDirectionalLight) o.castShadow = hi; });
+  scene.traverse((o) => { if (o.material) { const ms = Array.isArray(o.material) ? o.material : [o.material]; ms.forEach((m) => (m.needsUpdate = true)); } });
+}
+function onResize() {
+  const w = app.clientWidth, h = app.clientHeight;
+  renderer.setSize(w, h); composer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix();
+  particles.mat.uniforms.scale.value = h * renderer.getPixelRatio() * 0.9;
+}
+window.addEventListener('resize', onResize);
+
+// ---------- lámpara de Diógenes (arma en primera persona)
+const lamp = new THREE.Group();
+{
+  const brass = new THREE.MeshStandardMaterial({ color: 0xc8a050, metalness: 0.9, roughness: 0.3 });
+  const dark = new THREE.MeshStandardMaterial({ color: 0x2a2018, metalness: 0.6, roughness: 0.5 });
+  lamp.add(mesh(new THREE.CylinderGeometry(0.075, 0.09, 0.03, 16), brass, 0, -0.1, 0, false, false));
+  lamp.add(mesh(new THREE.CylinderGeometry(0.06, 0.075, 0.03, 16), brass, 0, 0.1, 0, false, false));
+  lamp.add(mesh(new THREE.ConeGeometry(0.065, 0.06, 16), dark, 0, 0.14, 0, false, false));
+  for (let i = 0; i < 4; i++) { const k = (i / 4) * TAU + Math.PI / 4; lamp.add(mesh(new THREE.CylinderGeometry(0.006, 0.006, 0.2, 5), dark, Math.cos(k) * 0.07, 0, Math.sin(k) * 0.07, false, false)); }
+  lamp.add(mesh(new THREE.CylinderGeometry(0.062, 0.062, 0.18, 16, 1, true), new THREE.MeshStandardMaterial({ color: 0xfff0d0, transparent: true, opacity: 0.08, roughness: 0.05, depthWrite: false }), 0, 0, 0, false, false));
+  const handle = mesh(new THREE.TorusGeometry(0.05, 0.008, 6, 16, Math.PI), brass, 0, 0.17, 0, false, false); lamp.add(handle);
+  lamp.userData.flame = mesh(new THREE.SphereGeometry(0.022, 10, 8), glow(0xffc070, 4), 0, -0.02, 0, false, false);
+  lamp.userData.flame.scale.y = 1.6; lamp.add(lamp.userData.flame);
+  lamp.userData.halo = mesh(new THREE.SphereGeometry(0.05, 10, 8), glow(0xffa040, 1.2, { transparent: true, opacity: 0.18, additive: true }), 0, -0.02, 0, false, false); lamp.add(lamp.userData.halo);
+  const ll = new THREE.PointLight(0xffb060, 3.5, 12, 2); ll.position.set(0.25, 0.1, -1.4); camera.add(ll); lamp.userData.light = ll;
+  lamp.scale.setScalar(0.72);
+  lamp.position.set(0.3, -0.3, -0.55);
+  lamp.traverse((o) => { if (o.isMesh) o.renderOrder = 5; });
+}
+camera.add(lamp);
+
+// ============================================================================
+//  JUGADOR Y CONTROLES
+// ============================================================================
+const player = { pos: new THREE.Vector3(), vel: new THREE.Vector3(), yaw: 0, pitch: 0, onGround: true, fireCd: 0, epojeCd: 0, bob: 0, stepT: 0, recoil: 0, shake: 0 };
+const input = { keys: {}, mdx: 0, mdy: 0, fire: false, locked: false, joy: { x: 0, y: 0 }, lookDX: 0, lookDY: 0, drag: false };
+const EPOJE_CD = 7;
+
+function lockPointer() {
+  if (IS_TOUCH || G.noLock) return;
+  const el = renderer.domElement;
+  try {
+    const p = el.requestPointerLock({ unadjustedMovement: true });
+    if (p && p.catch) p.catch(() => { try { const p2 = el.requestPointerLock(); if (p2 && p2.catch) p2.catch(() => { G.noLock = true; showLockHint(); }); } catch (e) { G.noLock = true; showLockHint(); } });
+  } catch (e) { G.noLock = true; showLockHint(); }
+}
+function unlockPointer() { if (document.pointerLockElement) { G.intentionalUnlock = true; document.exitPointerLock(); } }
+function showLockHint() { const h = $('#lockhint'); h.textContent = 'Arrastra con el ratón para mirar · clic para disparar'; h.hidden = G.state !== 'play'; setTimeout(() => (h.hidden = true), 4000); }
+document.addEventListener('pointerlockchange', () => {
+  input.locked = document.pointerLockElement === renderer.domElement;
+  if (input.locked) $('#lockhint').hidden = true;
+  if (!input.locked && G.state === 'play' && !G.intentionalUnlock) pauseGame();
+  G.intentionalUnlock = false;
+});
+document.addEventListener('pointerlockerror', () => { G.noLock = true; if (G.state === 'play') showLockHint(); });
+
+window.addEventListener('keydown', (e) => {
+  if (e.repeat && !['KeyW', 'KeyA', 'KeyS', 'KeyD'].includes(e.code)) return;
+  input.keys[e.code] = true;
+  if (G.state === 'play') {
+    if (e.code === 'KeyE' || e.code === 'KeyF') tryInteract();
+    if (e.code === 'KeyQ') epoje();
+    if (e.code === 'KeyP' || (e.code === 'Escape' && !input.locked)) pauseGame();
+    if (e.code === 'Space') e.preventDefault();
+  } else if (G.state === 'duel') {
+    if (e.repeat) return;
+    const n = { Digit1: 0, Digit2: 1, Digit3: 2, Digit4: 3, Numpad1: 0, Numpad2: 1, Numpad3: 2, Numpad4: 3, KeyA: 0, KeyB: 1, KeyC: 2, KeyD: 3 }[e.code];
+    if (n !== undefined && performance.now() - Duel.askedAt > 500) Duel.answer(n);
+    if ((e.code === 'Enter' || e.code === 'Space' || e.code === 'NumpadEnter') && Duel.answered) { e.preventDefault(); Duel.next(); }
+  } else if (G.state === 'concept' && (e.code === 'Enter' || e.code === 'Space')) { e.preventDefault(); closeConcept(); }
+  else if (G.state === 'intro' && (e.code === 'Enter' || e.code === 'Space')) { e.preventDefault(); enterEra(); }
+  else if (G.state === 'paused' && (e.code === 'Escape' || e.code === 'KeyP') && !$('#pause').hidden) resumeGame();
+});
+window.addEventListener('keyup', (e) => { input.keys[e.code] = false; });
+window.addEventListener('blur', () => { input.keys = {}; input.fire = false; });
+renderer.domElement.addEventListener('mousedown', (e) => {
+  if (G.state !== 'play' || IS_TOUCH) return;
+  if (!input.locked && !G.noLock) { lockPointer(); return; }
+  if (e.button === 0) { input.fire = true; input.drag = true; }
+  if (e.button === 2) epoje();
+});
+window.addEventListener('mouseup', (e) => { if (e.button === 0) { input.fire = false; input.drag = false; } });
+window.addEventListener('mousemove', (e) => {
+  if (G.state !== 'play') return;
+  if (input.locked || (G.noLock && input.drag)) { input.mdx += e.movementX || 0; input.mdy += e.movementY || 0; }
+});
+window.addEventListener('contextmenu', (e) => e.preventDefault());
+
+// ---------- táctil
+function setupTouch() {
+  document.body.classList.add('touch');
+  const joy = $('#joy'), knob = joy.querySelector('i'); let joyId = null, cx = 0, cy = 0;
+  joy.addEventListener('touchstart', (e) => { const t = e.changedTouches[0]; joyId = t.identifier; const r = joy.getBoundingClientRect(); cx = r.left + r.width / 2; cy = r.top + r.height / 2; e.preventDefault(); }, { passive: false });
+  const lookTouches = new Map();
+  window.addEventListener('touchmove', (e) => {
+    for (const t of e.changedTouches) {
+      if (t.identifier === joyId) {
+        let dx = t.clientX - cx, dy = t.clientY - cy; const l = Math.hypot(dx, dy), m = 52; if (l > m) { dx *= m / l; dy *= m / l; }
+        knob.style.transform = `translate(${dx}px, ${dy}px)`; input.joy.x = dx / m; input.joy.y = dy / m;
+      } else if (lookTouches.has(t.identifier)) {
+        const p = lookTouches.get(t.identifier); input.lookDX += (t.clientX - p.x); input.lookDY += (t.clientY - p.y); p.x = t.clientX; p.y = t.clientY;
+      }
+    }
+    if (G.state === 'play') e.preventDefault();
+  }, { passive: false });
+  const end = (e) => { for (const t of e.changedTouches) { if (t.identifier === joyId) { joyId = null; input.joy.x = input.joy.y = 0; knob.style.transform = ''; } lookTouches.delete(t.identifier); } };
+  window.addEventListener('touchend', end); window.addEventListener('touchcancel', end);
+  renderer.domElement.addEventListener('touchstart', (e) => { if (G.state !== 'play') return; for (const t of e.changedTouches) if (t.clientX > window.innerWidth * 0.35) lookTouches.set(t.identifier, { x: t.clientX, y: t.clientY }); }, { passive: true });
+  const hold = (id, on, off) => { const b = $(id); b.addEventListener('touchstart', (e) => { e.preventDefault(); e.stopPropagation(); on(); }, { passive: false }); b.addEventListener('touchend', (e) => { e.preventDefault(); off && off(); }, { passive: false }); };
+  hold('#t-fire', () => (input.fire = true), () => (input.fire = false));
+  hold('#t-act', () => tryInteract());
+  hold('#t-epoje', () => epoje());
+  hold('#t-jump', () => (input.keys.Space = true), () => (input.keys.Space = false));
+  $('#tpause').addEventListener('click', () => pauseGame());
+}
+
+function forwardVec(out = new THREE.Vector3()) { return out.set(-Math.sin(player.yaw) * Math.cos(player.pitch), Math.sin(player.pitch), -Math.cos(player.yaw) * Math.cos(player.pitch)); }
+const _v1 = new THREE.Vector3(), _v2 = new THREE.Vector3(), _v3 = new THREE.Vector3();
+
+function collide(p, r) {
+  const cs = world.colliders;
+  for (let i = 0; i < cs.length; i++) {
+    const c = cs[i];
+    if (c.t === 0) {
+      const cx = clamp(p.x, c.x0, c.x1), cz = clamp(p.z, c.z0, c.z1); const dx = p.x - cx, dz = p.z - cz; const d2 = dx * dx + dz * dz;
+      if (d2 < r * r) {
+        if (d2 > 1e-8) { const d = Math.sqrt(d2); p.x += (dx / d) * (r - d); p.z += (dz / d) * (r - d); }
+        else { const pen = [p.x - c.x0, c.x1 - p.x, p.z - c.z0, c.z1 - p.z]; const m = Math.min(...pen); if (m === pen[0]) p.x = c.x0 - r; else if (m === pen[1]) p.x = c.x1 + r; else if (m === pen[2]) p.z = c.z0 - r; else p.z = c.z1 + r; }
+      }
+    } else {
+      const dx = p.x - c.x, dz = p.z - c.z; const rr = r + c.r; const d2 = dx * dx + dz * dz;
+      if (d2 < rr * rr && d2 > 1e-8) { const d = Math.sqrt(d2); p.x += (dx / d) * (rr - d); p.z += (dz / d) * (rr - d); }
+    }
+  }
+  for (const s of sages) { const dx = p.x - s.pos.x, dz = p.z - s.pos.z; const rr = r + s.radius; const d2 = dx * dx + dz * dz; if (d2 < rr * rr && d2 > 1e-8) { const d = Math.sqrt(d2); p.x += (dx / d) * (rr - d); p.z += (dz / d) * (rr - d); } }
+}
+function pointBlocked(p) {
+  if (p.y < 0) return true;
+  const cs = world.colliders;
+  for (let i = 0; i < cs.length; i++) {
+    const c = cs[i]; if (p.y > c.h) continue;
+    if (c.t === 0) { if (p.x > c.x0 && p.x < c.x1 && p.z > c.z0 && p.z < c.z1) return true; }
+    else { const dx = p.x - c.x, dz = p.z - c.z; if (dx * dx + dz * dz < c.r * c.r) return true; }
+  }
+  return false;
+}
+
+function updatePlayer(dt) {
+  const s = G.settings.sens;
+  const lx = input.mdx * 0.0022 * s + input.lookDX * 0.006 * s; const ly = (input.mdy * 0.0022 * s + input.lookDY * 0.006 * s) * (G.settings.invertY ? -1 : 1);
+  input.mdx = input.mdy = input.lookDX = input.lookDY = 0;
+  const k = input.keys;
+  if (k.ArrowLeft) player.yaw += dt * 2.2; if (k.ArrowRight) player.yaw -= dt * 2.2;
+  player.yaw -= lx; player.pitch = clamp(player.pitch - ly, -1.45, 1.45);
+  let mx = 0, mz = 0;
+  if (k.KeyW || k.ArrowUp) mz -= 1; if (k.KeyS || k.ArrowDown) mz += 1; if (k.KeyA) mx -= 1; if (k.KeyD) mx += 1;
+  mx += input.joy.x; mz += input.joy.y;
+  const ml = Math.hypot(mx, mz); if (ml > 1) { mx /= ml; mz /= ml; }
+  const sprint = k.ShiftLeft || k.ShiftRight || (IS_TOUCH && ml > 0.95);
+  const speed = sprint ? 8.8 : 5.4;
+  const sy = Math.sin(player.yaw), cy = Math.cos(player.yaw);
+  const wx = (mx * cy + mz * sy) * speed, wz = (-mx * sy + mz * cy) * speed;
+  const accel = player.onGround ? 14 : 4;
+  player.vel.x = damp(player.vel.x, wx, accel, dt); player.vel.z = damp(player.vel.z, wz, accel, dt);
+  if (k.Space && player.onGround) { player.vel.y = 7.2; player.onGround = false; }
+  player.vel.y -= 22 * dt;
+  player.pos.addScaledVector(player.vel, dt);
+  if (player.pos.y <= 0) { player.pos.y = 0; player.vel.y = 0; player.onGround = true; }
+  collide(player.pos, 0.45);
+  // balanceo
+  const hs = Math.hypot(player.vel.x, player.vel.z);
+  if (player.onGround && hs > 0.5) {
+    player.bob += dt * hs * 1.6; player.stepT -= dt * hs;
+    if (player.stepT <= 0) { player.stepT = 2.6; Audio.step(); }
+  }
+  const bobY = Math.sin(player.bob * 2) * 0.045 * Math.min(1, hs / 5), bobX = Math.cos(player.bob) * 0.03 * Math.min(1, hs / 5);
+  player.shake = Math.max(0, player.shake - dt * 3);
+  const sh = player.shake * player.shake;
+  camera.position.set(player.pos.x, player.pos.y + 1.68 + bobY, player.pos.z);
+  camera.rotation.set(player.pitch + (Math.random() - 0.5) * sh * 0.05, player.yaw + (Math.random() - 0.5) * sh * 0.05, 0, 'YXZ');
+  // lámpara
+  player.recoil = Math.max(0, player.recoil - dt * 6);
+  lamp.position.set(0.27 + bobX, -0.25 + bobY * 0.6 - player.recoil * 0.025, -0.5 + player.recoil * 0.06);
+  lamp.rotation.set(player.recoil * 0.3, 0, 0);
+  // disparo
+  player.fireCd -= dt; player.epojeCd -= dt;
+  if (input.fire && player.fireCd <= 0) fireLamp();
+}
+function fireLamp() {
+  player.fireCd = 0.2; player.recoil = 1;
+  const fwd = forwardVec(_v1);
+  const from = _v2.set(0.3, -0.24, -0.7).applyQuaternion(camera.quaternion).add(camera.position);
+  const target = _v3.copy(camera.position).addScaledVector(fwd, 30);
+  const dir = target.sub(from).normalize();
+  spawnBolt(from.clone(), dir.clone(), 'player', 1, 38, world.theme.lampCol);
+  particles.emit(from, 5, { color: world.theme.lampCol, speed: 2, life: 0.25, size: 0.25, dir, spread: 0.6 });
+  Audio.shoot();
+}
+function epoje() {
+  if (G.state !== 'play' || player.epojeCd > 0) return;
+  player.epojeCd = EPOJE_CD; Audio.epoje(); player.shake = 0.6;
+  const c = _v1.copy(player.pos); c.y += 1;
+  for (let i = 0; i < 90; i++) { const a = (i / 90) * TAU; particles.emit(c, 1, { color: 0xffe0a0, speed: 14, life: 0.7, size: 0.5, dir: new THREE.Vector3(Math.cos(a), 0.05, Math.sin(a)), spread: 0.05, intensity: 3 }); }
+  particles.emit(c, 40, { color: 0xffffff, speed: 4, life: 0.9, size: 0.6, intensity: 2 });
+  for (const e of enemies) { const d = e.pos.distanceTo(c); if (d < 8) { const dir = _v2.copy(e.pos).sub(c).setY(0).normalize(); if (e.damage(3, dir)) killEnemy(e); else e.recoil.addScaledVector(dir, 10); } }
+  for (const b of bolts) if (b.owner === 'enemy' && b.pos.distanceTo(c) < 8) { particles.emit(b.pos, 8, { color: b.color, speed: 3, life: 0.4 }); b.kill(); }
+}
+
+// ============================================================================
+//  MUNDO, ENTIDADES Y DIRECTOR
+// ============================================================================
+let world = null; let sages = []; let enemies = []; let bolts = []; let pickups = []; let tAcc = 0;
+const director = { budget: 0, timer: 0, queue: [] };
+const game = { player, particles, get eraIdx() { return G.eraIdx; }, spawnBolt, hurtPlayer };
+
+function disposeWorld() {
+  if (!world) return;
+  scene.remove(world.group);
+  world.group.traverse((o) => { if (o.geometry && !Object.values(SHELL_GEO).includes(o.geometry) && o.geometry !== BOLT_GEO) o.geometry.dispose(); });
+  for (const b of bolts) b.kill(); for (const p of pickups) p.kill();
+  world = null; sages = []; enemies = []; bolts = []; pickups = []; particles.clear();
+}
+function loadWorld(idx) {
+  disposeWorld();
+  world = buildWorld(idx); scene.add(world.group);
+  const th = world.theme;
+  scene.fog = new THREE.FogExp2(th.fog[0], th.fog[1]);
+  scene.background = new THREE.Color(th.sky[1]);
+  renderer.toneMappingExposure = th.exposure;
+  lamp.userData.light.color.set(th.lampCol); lamp.userData.flame.material = glow(th.lampCol, 4);
+  lamp.userData.light.intensity = th.indoor || th.stars ? 5 : 2.5;
+  sages = world.stations.map((st, i) => new Sage(world, st, i));
+  director.budget = 9 + idx * 2; director.timer = 5; director.queue = [];
+  player.pos.copy(world.start); player.vel.set(0, 0, 0); player.yaw = 0; player.pitch = 0;
+}
+function spawnBolt(pos, dir, owner, dmg, speed, color) { bolts.push(new Bolt(world.group, pos, dir, owner, dmg, speed, color)); }
+function spawnEnemy(pos, summoned = false) {
+  const kind = Math.random() < (G.eraIdx === 0 ? 0.25 : 0.38) ? 'charger' : 'wisp';
+  const e = new Shade(world, pos, kind, G.eraIdx, summoned); enemies.push(e);
+  particles.emit(_v1.copy(pos).setY(2), 30, { color: world.theme.enemy.col, speed: 5, life: 0.8, size: 0.5, intensity: 2 });
+  return e;
+}
+function spawnFromPoints(n) {
+  const cands = world.spawns.filter((s) => s.distanceTo(player.pos) > 13 && s.distanceTo(player.pos) < 38);
+  shuffle(cands); for (let i = 0; i < n && i < cands.length; i++) director.queue.push({ pos: cands[i].clone(), t: i * 0.35 });
+}
+function updateDirector(dt) {
+  for (let i = director.queue.length - 1; i >= 0; i--) { const q = director.queue[i]; q.t -= dt; if (q.t <= 0) { spawnEnemy(q.pos, q.summoned); director.queue.splice(i, 1); } }
+  const alive = enemies.filter((e) => !e.summoned).length;
+  director.timer -= dt;
+  if (director.timer <= 0) {
+    director.timer = 7 - Math.min(3, G.eraIdx * 0.5) + Math.random() * 4;
+    if (director.budget > 0 && alive < 3 + Math.min(3, G.eraIdx)) { director.budget--; spawnFromPoints(1); }
+  }
+}
+function killEnemy(e) {
+  if (e.dead) return; e.dead = true;
+  Audio.kill(); G.stats.kills++; addScore(25);
+  particles.emit(e.pos, 50, { color: e.color, speed: 7, life: 0.9, size: 0.45, intensity: 2.5, gravity: 4 });
+  particles.emit(e.pos, 20, { color: 0xffffff, speed: 3, life: 0.5, size: 0.3 });
+  pickups.push(new Pickup(world.group, e.pos.clone(), 'frag'));
+  if (Math.random() < 0.24) pickups.push(new Pickup(world.group, e.pos.clone().add(new THREE.Vector3(0.6, 0, 0.4)), 'heal'));
+  e.dispose();
+  enemies = enemies.filter((x) => x !== e);
+  // ¿se rompe el escudo de un maestro?
+  const shielded = sages.find((s) => s.state === 'shielded');
+  if (shielded && !enemies.some((x) => x.summoned) && !director.queue.some((q) => q.summoned)) {
+    shielded.setShield(false); Audio.shield();
+    particles.emit(_v1.copy(shielded.pos).setY(2), 80, { color: world.theme.enemy.col, speed: 9, life: 1, size: 0.5, intensity: 2 });
+    toast(`El escudo de ${shielded.data.short} se disipa. Vuelve a desafiarlo.`);
+    Audio.mode = 'calm';
+  }
+}
+function hurtPlayer(dmg, from) {
+  if (G.state !== 'play') return;
+  G.hp = Math.max(0, G.hp - dmg); Audio.hurt(); player.shake = 0.8;
+  const v = $('#vignette'); v.style.opacity = 1; setTimeout(() => (v.style.opacity = 0), 140);
+  updateHud();
+  if (G.hp <= 0) gameOver();
+}
+function updateBolts(dt) {
+  for (const b of bolts) {
+    if (b.dead) continue;
+    b.life -= dt; if (b.life <= 0) { b.kill(); continue; }
+    const steps = 2; let hit = false;
+    for (let s = 0; s < steps && !hit; s++) {
+      b.pos.addScaledVector(b.vel, dt / steps);
+      if (b.owner === 'player') {
+        for (const e of enemies) {
+          if (e.spawnT > 0) continue;
+          if (b.pos.distanceTo(e.pos) < e.radius + 0.15) {
+            const dir = b.vel.clone().setY(0).normalize();
+            if (e.damage(b.dmg, dir)) killEnemy(e); else Audio.hit();
+            particles.emit(b.pos, 14, { color: b.color, speed: 4, life: 0.4, size: 0.3 }); flashCross(); hit = true; break;
+          }
+        }
+        if (!hit) for (const sg of sages) {
+          const c = _v1.copy(sg.pos); c.y += 1.1 * sg.scale;
+          const r = sg.shield ? 1.9 * sg.scale : 0.6 * sg.scale;
+          if (b.pos.distanceTo(c) < r || (Math.hypot(b.pos.x - sg.pos.x, b.pos.z - sg.pos.z) < 0.55 * sg.scale && b.pos.y < 2.3 * sg.scale)) {
+            particles.emit(b.pos, 12, { color: sg.shield ? world.theme.enemy.col : 0xffffff, speed: 3, life: 0.5, size: 0.3 });
+            if (!sg.shield && (!sg._quip || tAcc - sg._quip > 6)) { sg._quip = tAcc; toast(`${sg.data.short}: «Los argumentos no se refutan a golpes.»`); sg.gesture = 1; }
+            hit = true; break;
+          }
+        }
+      } else {
+        const pc = _v1.copy(player.pos); pc.y += 1.1;
+        if (Math.abs(b.pos.x - pc.x) < 0.5 && Math.abs(b.pos.z - pc.z) < 0.5 && Math.abs(b.pos.y - pc.y) < 0.95) { hurtPlayer(b.dmg, b.pos); particles.emit(b.pos, 16, { color: b.color, speed: 4, life: 0.4 }); hit = true; }
+      }
+      if (!hit && pointBlocked(b.pos)) { particles.emit(b.pos, 8, { color: b.color, speed: 2.5, life: 0.35, size: 0.25 }); hit = true; }
+    }
+    if (hit) b.kill();
+  }
+  bolts = bolts.filter((b) => !b.dead);
+}
+function updatePickups(dt) {
+  for (const p of pickups) {
+    p.update(dt);
+    const d = Math.hypot(p.pos.x - player.pos.x, p.pos.z - player.pos.z);
+    if (d < 3.2) { p.pos.x = damp(p.pos.x, player.pos.x, 6, dt); p.pos.z = damp(p.pos.z, player.pos.z, 6, dt); }
+    if (d < 1) {
+      if (p.kind === 'frag') { G.frags++; Audio.pickup(); }
+      else { if (G.hp >= G.maxHp) continue; G.hp = Math.min(G.maxHp, G.hp + 22); Audio.heal(); toast('Ánfora de ambrosía: +22 razón'); }
+      particles.emit(p.pos, 18, { color: p.kind === 'frag' ? 0x7fe6ff : 0xffd36a, speed: 3, life: 0.5 }); p.kill(); updateHud();
+    } else if (p.life <= 0) p.kill();
+  }
+  pickups = pickups.filter((p) => !p.dead);
+}
+function updateEmitters(dt) {
+  for (const em of world.emitters) {
+    em.acc += dt * em.rate;
+    while (em.acc >= 1) {
+      em.acc--;
+      const p = _v1.set(em.x, em.y, em.z); if (em.g) em.g.localToWorld(p);
+      if (em.kind === 'flame') particles.emit(p, 1, { color: em.col, speed: em.big ? 1.2 : 0.6, up: em.big ? 2.6 : 1.6, life: em.big ? 0.9 : 0.7, size: em.big ? 0.7 : 0.4, jitter: em.big ? 0.8 : 0.3, drag: 1, intensity: 2.5 });
+      else if (em.kind === 'water') particles.emit(p, 1, { color: em.col, speed: 1.5, up: 3.5, life: 1.1, size: 0.18, gravity: 7, drag: 0.3, intensity: 1.3 });
+      else particles.emit(p, 1, { color: em.col, speed: 0.4, up: 0.6, life: 1.6, size: 0.5, jitter: 2, drag: 0.5, intensity: 0.8 });
+    }
+  }
+}
+function updateSages(dt, inDuel) {
+  for (const s of sages) {
+    s.update(dt, tAcc, player, inDuel && Duel.sage === s);
+    if (s.state === 'shielded' && G.state === 'play') {
+      s.shootCd -= dt;
+      const d = s.pos.distanceTo(player.pos);
+      if (s.shootCd <= 0 && d < 30) {
+        s.shootCd = 2.4 - G.eraIdx * 0.12; s.gesture = 1;
+        const from = _v1.copy(s.pos); from.y += 2.6 * s.scale;
+        const to = _v2.copy(player.pos); to.y += 1.3;
+        for (const off of [-0.18, 0, 0.18]) { const dir = to.clone().sub(from).normalize().applyAxisAngle(new THREE.Vector3(0, 1, 0), off); spawnBolt(from.clone(), dir, 'enemy', 9 + G.eraIdx, 10, world.theme.enemy.col); }
+        Audio.enemyShot();
+      }
+    }
+  }
+}
+function nearestSage() {
+  let best = null, bd = 1e9; const fwd = forwardVec(_v1).setY(0).normalize();
+  for (const s of sages) {
+    const dx = s.pos.x - player.pos.x, dz = s.pos.z - player.pos.z; const d = Math.hypot(dx, dz);
+    const reach = 3.6 + s.radius; if (d > reach) continue;
+    const dot = (dx * fwd.x + dz * fwd.z) / (d || 1);
+    if (dot < 0.2 && d > 1.8 + s.radius) continue;
+    if (d < bd) { bd = d; best = s; }
+  }
+  return best;
+}
+function regularsLeft() { return sages.filter((s) => !s.boss && s.state !== 'defeated').length; }
+function updatePrompt() {
+  const s = nearestSage(); const el = $('#prompt'); const ch = $('#crosshair');
+  const tact = $('#t-act');
+  let txt = '', can = false;
+  if (s) {
+    if (s.state === 'idle') { txt = IS_TOUCH ? `Desafiar a <b>${s.data.short}</b>` : `<b>E</b> · Desafiar a ${s.data.short}`; can = true; }
+    else if (s.state === 'sealed') { const n = regularsLeft(); txt = `Vence antes a ${n === 1 ? 'otro pensador' : n + ' pensadores'}`; }
+    else if (s.state === 'shielded') txt = `Destruye a ${s.boss ? 'los ' + ERAS[G.eraIdx].enemy.many : 'sus defensores'}`;
+    else if (s.state === 'defeated') txt = `${s.data.short} · <b>${s.data.concept.name}</b>`;
+  }
+  el.hidden = !txt; if (txt && el.innerHTML !== txt) el.innerHTML = txt;
+  ch.classList.toggle('talk', can);
+  if (tact) { tact.style.opacity = can ? 1 : 0.35; }
+}
+function tryInteract() {
+  const s = nearestSage(); if (!s) return;
+  if (s.state === 'idle') Duel.start(s);
+  else if (s.state === 'sealed') toast(`${s.data.short}: «Primero demuestra tu valía ante los demás.»`);
+}
+function updatePortal(dt) {
+  const P = world.portal; if (!P) return;
+  P.disc.material.uniforms.t.value = tAcc;
+  if (P.open) {
+    P.k = Math.min(1, P.k + dt * 0.6); P.disc.material.uniforms.open.value = P.k; P.light.intensity = 25 * P.k;
+    P.ring.material.emissiveIntensity = 0.05 + P.k * 2.2; P.ring.rotation.z += dt * 0.3;
+    if (Math.random() < dt * 30) particles.emit(_v1.set(P.group.position.x + (Math.random() - 0.5) * 4, 2.9 + (Math.random() - 0.5) * 4, P.group.position.z), 1, { color: world.theme.accent, speed: 0.6, life: 1.2, size: 0.3, intensity: 2 });
+    if (G.state === 'play' && Math.hypot(player.pos.x - P.group.position.x, player.pos.z - P.group.position.z) < 1.8) enterPortal();
+  }
+}
+let fireHeldFrames = 0;
+function updatePlay(dt) {
+  G.stats.time += dt;
+  updatePlayer(dt);
+  updateSages(dt, false);
+  for (const e of enemies) e.update(dt, game);
+  updateBolts(dt); updatePickups(dt); updateDirector(dt); updatePrompt(); updatePortal(dt);
+  updateEpojeHud();
+  Audio.mode = sages.some((s) => s.state === 'shielded') ? 'boss' : enemies.length > 2 ? 'duel' : 'calm';
+  $('#lowhp').style.opacity = G.hp < 30 ? 0.6 + Math.sin(tAcc * 5) * 0.25 : 0;
+}
+
+// ============================================================================
+//  DUELO DIALÉCTICO
+// ============================================================================
+const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX'];
+const Duel = {
+  sage: null, q: null, opts: [], answered: false, time: 0, maxTime: 20, round: 0, used: { fifty: false, time: false }, lastTick: 0, resumed: false,
+  start(s) {
+    this.sage = s; G.state = 'duel'; unlockPointer(); input.fire = false;
+    Audio.gong(); Audio.mode = s.boss ? 'boss' : 'duel';
+    $('#hud').hidden = true; $('#touch').hidden = true; $('#duel').hidden = false;
+    const d = s.data;
+    $('#d-medal').textContent = d.short[0];
+    $('#d-name').textContent = d.name;
+    $('#d-meta').textContent = `${d.epithet} · ${d.dates}`;
+    this.round = s._round || 0;
+    this.say(this.resumed = s._met ? (s.boss ? 'Tu fuerza no basta. Volvamos a la palabra.' : 'Continuemos donde lo dejamos.') : d.intro);
+    s._met = true;
+    this.renderPips(); this.ask();
+    s.gesture = 1;
+  },
+  say(t) { $('#d-say').textContent = '«' + t + '»'; },
+  renderPips() {
+    const s = this.sage; $('#d-conv').innerHTML = Array.from({ length: s.maxConv }, (_, i) => `<i class="pip${i < s.conv ? '' : ' off'}"></i>`).join('');
+    const hp = G.hp / G.maxHp; $('#d-hp').style.transform = `scaleX(${hp})`; $('#d-hp').classList.toggle('low', hp < 0.3); $('#d-hpn').textContent = Math.ceil(G.hp);
+  },
+  ask() {
+    const s = this.sage; this.q = s.nextQuestion(); this.answered = false; this.used = { fifty: false, time: false }; this.askedAt = performance.now();
+    this.round++; s._round = this.round;
+    this.maxTime = (s.boss ? 22 : 26) - G.eraIdx * 0.5; this.time = this.maxTime; this.lastTick = Math.ceil(this.time);
+    const opts = this.q.a.map((t, i) => ({ t, ok: i === 0 })); shuffle(opts); this.opts = opts;
+    $('#d-qnum').textContent = 'Argumento ' + (ROMAN[this.round - 1] || this.round);
+    $('#d-q').textContent = this.q.q;
+    const box = $('#d-answers'); box.innerHTML = '';
+    opts.forEach((o, i) => {
+      const b = document.createElement('button'); b.className = 'ans'; b.innerHTML = `<span class="k">${'ABCD'[i]}</span><span></span>`; b.lastChild.textContent = o.t;
+      b.addEventListener('click', () => this.answer(i)); box.appendChild(b);
+    });
+    $('#d-explain').hidden = true; $('#d-next').hidden = true;
+    this.updateAids();
+  },
+  updateAids() {
+    $('#aid-5050').disabled = this.answered || this.used.fifty || G.frags < 2;
+    $('#aid-time').disabled = this.answered || this.used.time || G.frags < 1;
+  },
+  fifty() {
+    if (this.answered || this.used.fifty || G.frags < 2) return;
+    G.frags -= 2; this.used.fifty = true; Audio.pickup();
+    const wrong = this.opts.map((o, i) => (o.ok ? -1 : i)).filter((i) => i >= 0); shuffle(wrong);
+    const btns = $('#d-answers').children; wrong.slice(0, 2).forEach((i) => { btns[i].classList.add('gone'); btns[i].disabled = true; });
+    this.say('Pregúntate bien, y lo verás tú mismo...'); this.updateAids(); updateHud();
+  },
+  moreTime() {
+    if (this.answered || this.used.time || G.frags < 1) return;
+    G.frags -= 1; this.used.time = true; this.time = Math.min(this.time + 10, this.maxTime + 10); Audio.pickup(); this.updateAids(); updateHud();
+  },
+  answer(i) {
+    if (this.answered || G.state !== 'duel') return;
+    const btns = $('#d-answers').children; if (i >= 0 && btns[i] && btns[i].disabled) return;
+    this.answered = true; const s = this.sage; const ok = i >= 0 && this.opts[i].ok;
+    [...btns].forEach((b, k) => { b.disabled = true; if (this.opts[k].ok) b.classList.add('right'); else if (k === i) b.classList.add('wrong'); else b.classList.add('dimmed'); });
+    const head = _v1.copy(s.pos); head.y += 2 * s.scale;
+    if (ok) {
+      const fast = this.time > this.maxTime * 0.6;
+      s.conv--; G.stats.correct++; addScore(100 + Math.ceil(this.time * 8) + (fast ? 50 : 0));
+      Audio.correct(); s.gesture = 1;
+      this.say(pick(fast ? LINES.fast : LINES.right));
+      particles.emit(head, 50, { color: 0xffd36a, speed: 5, life: 0.9, size: 0.4, intensity: 2.5 });
+    } else {
+      const dmg = Math.round((s.boss ? 17 : 13) + G.eraIdx * 1.5);
+      G.hp = Math.max(0, G.hp - dmg); G.stats.wrong++; Audio.wrong(); player.shake = 0.5;
+      const v = $('#vignette'); v.style.opacity = 0.8; setTimeout(() => (v.style.opacity = 0), 200);
+      this.say(pick(i < 0 ? LINES.timeout : LINES.wrong));
+      particles.emit(head, 30, { color: world.theme.enemy.col, speed: 4, life: 0.8, size: 0.4, intensity: 2 });
+    }
+    const ex = $('#d-explain');
+    const right = this.opts.find((o) => o.ok).t;
+    ex.innerHTML = `<b>${ok ? 'Correcto' : i < 0 ? 'Se acabó el tiempo' : 'Respuesta correcta'}</b>`;
+    if (!ok) ex.append(document.createTextNode(right + '. '));
+    if (this.q.e) ex.append(document.createTextNode(this.q.e));
+    ex.hidden = false;
+    this.renderPips(); this.updateAids(); updateHud();
+    const nb = $('#d-next'); nb.hidden = false;
+    nb.textContent = G.hp <= 0 ? 'Aceptar la derrota' : s.conv <= 0 ? 'Rematar el argumento' : 'Siguiente argumento';
+    if (!IS_TOUCH) nb.focus({ preventScroll: true });
+  },
+  next() {
+    if (!this.answered) return;
+    const s = this.sage;
+    if (G.hp <= 0) { this.close(); gameOver(); return; }
+    if (s.conv <= 0) { this.win(); return; }
+    if (s.breaks.includes(s.conv) && !(s._broken || []).includes(s.conv)) { (s._broken = s._broken || []).push(s.conv); this.breakPhase(); return; }
+    this.ask();
+  },
+  update(dt) {
+    // cámara hacia el filósofo
+    const s = this.sage; const head = _v1.copy(s.pos); head.y += 1.95 * s.scale + (s.boss ? 0.25 : 0);
+    const eye = _v2.set(player.pos.x, player.pos.y + 1.68, player.pos.z);
+    const dir = head.sub(eye);
+    const wantYaw = Math.atan2(-dir.x, -dir.z); const wantPitch = Math.atan2(dir.y, Math.hypot(dir.x, dir.z)) - 0.12;
+    let dy = wantYaw - player.yaw; while (dy > Math.PI) dy -= TAU; while (dy < -Math.PI) dy += TAU;
+    player.yaw += dy * Math.min(1, dt * 4); player.pitch = damp(player.pitch, wantPitch, 4, dt);
+    camera.position.copy(eye); camera.rotation.set(player.pitch, player.yaw, 0, 'YXZ');
+    camera.fov = damp(camera.fov, 52, 3, dt); camera.updateProjectionMatrix();
+    lamp.position.y = damp(lamp.position.y, -0.55, 4, dt);
+    if (!this.answered) {
+      this.time -= dt;
+      const k = Math.max(0, this.time / this.maxTime);
+      const tb = $('#d-timer'); tb.style.transform = `scaleX(${k})`; tb.classList.toggle('urgent', this.time < 5);
+      $('#d-time').textContent = Math.max(0, Math.ceil(this.time));
+      if (this.time < 5 && Math.ceil(this.time) !== this.lastTick) { this.lastTick = Math.ceil(this.time); Audio.tick(); }
+      if (this.time <= 0) this.answer(-1);
+    }
+  },
+  close() { $('#duel').hidden = true; camera.fov = 72; camera.updateProjectionMatrix(); },
+  resumePlay() {
+    this.close(); G.state = 'play'; $('#hud').hidden = false; if (IS_TOUCH) $('#touch').hidden = false;
+    input.keys = {}; input.fire = false; lockPointer(); updateHud(); this.sage = null;
+  },
+  breakPhase() {
+    const s = this.sage;
+    s.setShield(true); Audio.shield();
+    const n = 3 + Math.floor(G.eraIdx / 2) + (s.data.final ? 1 : 0);
+    for (let i = 0; i < n; i++) { const a = (i / n) * TAU; director.queue.push({ pos: new THREE.Vector3(s.pos.x + Math.cos(a) * 8, 0, clamp(s.pos.z + Math.sin(a) * 8 + 6, ARENA.z0 + 2, ARENA.z1 - 2)), t: 0.3 + i * 0.3, summoned: true }); }
+    this.resumePlay();
+    toast(`¡${s.data.short} se protege tras un escudo e invoca a los ${ERAS[G.eraIdx].enemy.many}!`);
+    toast('Destrúyelos para romper el escudo.');
+    s.shootCd = 3;
+  },
+  win() {
+    const s = this.sage; s.defeat(); Audio.victory();
+    const bonus = s.boss ? 500 : 250; addScore(bonus); G.frags += 2; const heal = Math.min(25, G.maxHp - G.hp); G.hp += heal;
+    G.codex.add(s.data.id); store.set(CODEX_KEY, [...G.codex]);
+    particles.emit(_v1.copy(s.pos).setY(2.5), 120, { color: 0xffd36a, speed: 8, life: 1.4, size: 0.5, intensity: 3, gravity: 2 });
+    this.close();
+    // tarjeta de concepto
+    G.state = 'concept';
+    $('#c-name').textContent = s.data.concept.name;
+    $('#c-by').textContent = s.data.name + ' · ' + s.data.dates;
+    $('#c-text').textContent = s.data.concept.text;
+    $('#c-last').textContent = '«' + s.data.defeat + '»';
+    $('#c-rew').innerHTML = `<span>+${bonus} sabiduría</span><span class="f">+2 fragmentos</span>${heal > 0 ? `<span class="h">+${heal} razón</span>` : ''}`;
+    $('#concept').hidden = false;
+    setTimeout(() => $('#b-concept').focus({ preventScroll: true }), 50);
+    this._won = s;
+  },
+};
+$('#aid-5050').addEventListener('click', () => Duel.fifty());
+$('#aid-time').addEventListener('click', () => Duel.moreTime());
+$('#d-next').addEventListener('click', () => Duel.next());
+
+function closeConcept() {
+  if (G.state !== 'concept') return;
+  $('#concept').hidden = true; const s = Duel._won; Duel.sage = s; Duel.resumePlay();
+  if (s.boss) {
+    world.portal.open = true; Audio.portal();
+    toast(s.data.final ? 'Se abre el último portal: la salida de la caverna.' : 'Se abre el portal hacia la siguiente época.');
+  } else {
+    const left = regularsLeft();
+    if (left === 0) { const b = sages.find((x) => x.boss); b.state = 'idle'; Audio.shield(); toast(`El sello se rompe: ${b.data.short} te espera.`); }
+    else toast(`Quedan ${left} ${left === 1 ? 'pensador' : 'pensadores'} antes del maestro.`);
+    spawnFromPoints(2 + Math.floor(G.eraIdx / 2));
+  }
+  updateHud();
+}
+$('#b-concept').addEventListener('click', closeConcept);
+
+// ============================================================================
+//  HUD Y AVISOS
+// ============================================================================
+function addScore(n) { G.score += n; }
+function toast(msg) {
+  const box = $('#toasts'); const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg; box.appendChild(el);
+  while (box.children.length > 3) box.firstChild.remove();
+  setTimeout(() => el.classList.add('fade'), 3800); setTimeout(() => el.remove(), 4500);
+}
+let crossT = 0;
+function flashCross() { const c = $('#crosshair'); c.classList.add('hit'); clearTimeout(crossT); crossT = setTimeout(() => c.classList.remove('hit'), 90); }
+function updateHud() {
+  $('#h-score').textContent = G.score.toLocaleString('es-ES');
+  $('#h-frags').textContent = '◆ ' + G.frags;
+  const hp = G.hp / G.maxHp; const bar = $('#h-hp'); bar.style.transform = `scaleX(${hp})`; bar.classList.toggle('low', hp < 0.3);
+  $('#h-hpn').textContent = Math.ceil(G.hp);
+  if (!world) return;
+  const era = ERAS[G.eraIdx];
+  $('#h-era').textContent = `${era.num} · ${era.name}`;
+  const left = regularsLeft(); const boss = sages.find((s) => s.boss);
+  let obj;
+  if (world.portal.open) obj = 'Cruza el portal del fondo.';
+  else if (boss.state === 'shielded') obj = `Destruye a los ${era.enemy.many} que protegen a ${boss.data.short}.`;
+  else if (left > 0) obj = `Desafía a los pensadores: quedan ${left}.`;
+  else obj = `Desafía a ${boss.data.short}, el maestro de esta época.`;
+  $('#h-obj').textContent = obj;
+  $('#guardians').innerHTML = sages.map((s) => `<div class="gm${s.boss ? ' boss' : ''}${s.state === 'defeated' ? ' done' : ''}${s.state === 'sealed' ? ' sealed' : ''}" title="${s.data.name}">${s.data.short[0]}</div>`).join('');
+}
+let lastEp = -1;
+function updateEpojeHud() {
+  const k = clamp(1 - player.epojeCd / EPOJE_CD, 0, 1); if (Math.abs(k - lastEp) < 0.01) return; lastEp = k;
+  $('#h-epoje-c').setAttribute('stroke-dashoffset', String(163.4 * (1 - k)));
+  $('#h-epoje').classList.toggle('ready', k >= 1);
+  const t = $('#t-epoje'); if (t) t.style.opacity = k >= 1 ? 1 : 0.4;
+}
+
+// ============================================================================
+//  FLUJO DE PANTALLAS
+// ============================================================================
+const SCREENS = ['title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept'];
+function show(id) { SCREENS.forEach((s) => ($('#' + s).hidden = s !== id)); if (id) { const b = $('#' + id).querySelector('.btn.primary, .btn'); if (b && !IS_TOUCH) setTimeout(() => b.focus({ preventScroll: true }), 30); } }
+function hideAll() { SCREENS.forEach((s) => ($('#' + s).hidden = true)); }
+
+function saveProgress() { store.set(SAVE_KEY, { eraIdx: G.eraIdx, score: G.score, frags: G.frags, stats: G.stats }); }
+function titleScreen() {
+  G.state = 'title'; unlockPointer(); Duel.close();
+  $('#hud').hidden = true; $('#touch').hidden = true; $('#duel').hidden = true;
+  const sv = store.get(SAVE_KEY, null);
+  const bc = $('#b-continue');
+  if (sv && sv.eraIdx > 0) { bc.hidden = false; $('#b-continue-s').textContent = `Etapa ${ERAS[sv.eraIdx].num} · ${ERAS[sv.eraIdx].name}`; } else bc.hidden = true;
+  const reached = sv ? sv.eraIdx : -1;
+  $('#t-timeline').innerHTML = ERAS.map((e, i) => `<span class="${i < reached || G.codex.has(e.sages.find((s) => s.boss).id) ? 'done' : ''}">${e.num}</span>`).join('');
+  const bg = clamp(reached, 0, 5);
+  if (!world || world.idx !== bg) loadWorld(bg);
+  Audio.startMusic(bg);
+  show('title');
+}
+function startEra(idx, fresh) {
+  G.eraIdx = idx;
+  if (fresh) { G.score = 0; G.frags = 0; G.stats = { correct: 0, wrong: 0, kills: 0, time: 0 }; }
+  G.hp = G.maxHp;
+  G.eraStart = { score: G.score, frags: G.frags, stats: { ...G.stats } };
+  saveProgress();
+  loadWorld(idx); Audio.startMusic(idx);
+  const e = ERAS[idx];
+  $('#i-eyebrow').textContent = `Etapa ${idx + 1} de ${ERAS.length} · ${e.years}`;
+  $('#i-num').textContent = e.num; $('#i-name').textContent = e.name; $('#i-meta').textContent = e.place;
+  $('#i-story').textContent = e.story;
+  $('#i-quote').innerHTML = ''; $('#i-quote').append(document.createTextNode('«' + e.quote.t + '»')); const c = document.createElement('cite'); c.textContent = e.quote.a; $('#i-quote').append(c);
+  $('#i-roster').innerHTML = e.sages.map((s) => `<span class="${s.boss ? 'boss' : ''}">${s.short}</span>`).join('<span aria-hidden="true">·</span>');
+  G.state = 'intro'; $('#hud').hidden = true; $('#touch').hidden = true;
+  show('intro');
+}
+function enterEra() {
+  if (G.state !== 'intro') return;
+  hideAll(); G.state = 'play'; $('#hud').hidden = false; if (IS_TOUCH) $('#touch').hidden = false;
+  input.keys = {}; lockPointer(); updateHud();
+  if (G.eraIdx === 0) {
+    toast(IS_TOUCH ? 'Acércate a un filósofo y toca «Desafiar».' : 'Acércate a un filósofo y pulsa E para desafiarlo.');
+    toast(IS_TOUCH ? 'Mantén «Lámpara» para disparar a las Quimeras del Mito.' : 'Dispara la lámpara con clic contra las Quimeras del Mito.');
+  } else toast(`Llegas a ${ERAS[G.eraIdx].place}.`);
+}
+function pauseGame() {
+  if (G.state !== 'play') return;
+  G.state = 'paused'; input.fire = false; input.keys = {};
+  $('#p-era').textContent = `${ERAS[G.eraIdx].num} · ${ERAS[G.eraIdx].name}`;
+  show('pause');
+}
+function resumeGame() { hideAll(); G.state = 'play'; lockPointer(); }
+function gameOver() {
+  G.state = 'gameover'; unlockPointer(); input.fire = false;
+  $('#hud').hidden = true; $('#touch').hidden = true; Audio.mode = 'calm';
+  Audio.tone(220, 1.5, { type: 'sawtooth', vol: 0.12, slide: 0.3, filter: 800 });
+  show('gameover');
+}
+function retryEra() { G.score = G.eraStart.score; G.frags = G.eraStart.frags; G.stats = { ...G.eraStart.stats }; startEra(G.eraIdx, false); }
+function enterPortal() {
+  G.state = 'transition'; Audio.portal(); unlockPointer();
+  const f = $('#fade'); f.classList.add('on');
+  setTimeout(() => {
+    if (G.eraIdx >= ERAS.length - 1) { showEnding(); f.classList.remove('on'); return; }
+    startEra(G.eraIdx + 1, false); f.classList.remove('on');
+  }, 900);
+}
+function showEnding() {
+  G.state = 'ending'; $('#hud').hidden = true; $('#touch').hidden = true;
+  store.set(SAVE_KEY, null);
+  const tot = G.stats.correct + G.stats.wrong; const acc = tot ? G.stats.correct / tot : 0;
+  const r = RANKS.find((x) => acc >= x.min);
+  $('#e-rank').textContent = r.name; $('#e-rtext').textContent = r.text;
+  const mins = Math.floor(G.stats.time / 60);
+  $('#e-stats').innerHTML = `<div><b>${G.score.toLocaleString('es-ES')}</b><span>Sabiduría</span></div><div><b>${Math.round(acc * 100)}%</b><span>Aciertos</span></div><div><b>${G.stats.kills}</b><span>Sombras</span></div><div><b>${mins} min</b><span>Tiempo</span></div>`;
+  Audio.victory(); show('ending');
+}
+function renderCodex() {
+  const body = $('#cx-body'); body.innerHTML = '';
+  let have = 0, total = 0;
+  ERAS.forEach((e) => {
+    const sec = document.createElement('div'); sec.className = 'codex-era';
+    const h = document.createElement('h3'); h.textContent = `${e.num} · ${e.name} · ${e.years}`; sec.appendChild(h);
+    const grid = document.createElement('div'); grid.className = 'codex-grid';
+    e.sages.forEach((s) => {
+      total++; const ok = G.codex.has(s.id); if (ok) have++;
+      const c = document.createElement('div'); c.className = 'cc' + (ok ? '' : ' locked');
+      const h4 = document.createElement('h4'); h4.textContent = ok ? s.concept.name : '· · ·';
+      const by = document.createElement('div'); by.className = 'by'; by.textContent = s.name;
+      const p = document.createElement('p'); p.textContent = ok ? s.concept.text : 'Vence a este pensador en un duelo para comprender su idea central.';
+      c.append(h4, by, p); grid.appendChild(c);
+    });
+    sec.appendChild(grid); body.appendChild(sec);
+  });
+  $('#cx-count').textContent = `${have} de ${total} conceptos comprendidos`;
+}
+function openSub(id) { G.prevScreen = SCREENS.find((s) => !$('#' + s).hidden) || 'title'; if (id === 'codex') renderCodex(); if (id === 'settings') syncSettings(); show(id); }
+document.querySelectorAll('[data-back]').forEach((b) => b.addEventListener('click', () => { Audio.click(); show(G.prevScreen || 'title'); }));
+
+function syncSettings() {
+  $('#s-sens').value = G.settings.sens; $('#s-music').value = G.settings.music; $('#s-sfx').value = G.settings.sfx;
+  document.querySelectorAll('#s-quality button').forEach((b) => b.classList.toggle('on', b.dataset.v === G.settings.quality));
+  document.querySelectorAll('#s-invert button').forEach((b) => b.classList.toggle('on', (b.dataset.v === '1') === !!G.settings.invertY));
+}
+function saveSettings() { store.set(SET_KEY, G.settings); Audio.applyVolumes(); }
+$('#s-sens').addEventListener('input', (e) => { G.settings.sens = +e.target.value; saveSettings(); });
+$('#s-music').addEventListener('input', (e) => { G.settings.music = +e.target.value; saveSettings(); });
+$('#s-sfx').addEventListener('input', (e) => { G.settings.sfx = +e.target.value; saveSettings(); Audio.click(); });
+document.querySelectorAll('#s-quality button').forEach((b) => b.addEventListener('click', () => { G.settings.quality = b.dataset.v; saveSettings(); syncSettings(); applyQuality(); }));
+document.querySelectorAll('#s-invert button').forEach((b) => b.addEventListener('click', () => { G.settings.invertY = b.dataset.v === '1'; saveSettings(); syncSettings(); }));
+
+const on = (id, fn) => $(id).addEventListener('click', () => { Audio.init(); Audio.click(); fn(); });
+on('#b-new', () => { G.codexRun = new Set(); startEra(0, true); });
+on('#b-continue', () => { const sv = store.get(SAVE_KEY, null); if (!sv) return startEra(0, true); G.score = sv.score || 0; G.frags = sv.frags || 0; G.stats = sv.stats || { correct: 0, wrong: 0, kills: 0, time: 0 }; startEra(sv.eraIdx, false); });
+on('#b-howto', () => openSub('howto'));
+on('#b-codex', () => openSub('codex'));
+on('#b-settings', () => openSub('settings'));
+on('#b-enter', () => enterEra());
+on('#b-resume', () => resumeGame());
+on('#b-pcodex', () => openSub('codex'));
+on('#b-psettings', () => openSub('settings'));
+on('#b-quit', () => { saveProgress(); titleScreen(); });
+on('#b-retry', () => retryEra());
+on('#b-gomenu', () => titleScreen());
+on('#b-again', () => startEra(0, true));
+on('#b-ecodex', () => openSub('codex'));
+
+// ============================================================================
+//  BUCLE PRINCIPAL
+// ============================================================================
+const clock = new THREE.Clock();
+let fpsAcc = 0, fpsN = 0, autoChecked = false;
+function frame() {
+  requestAnimationFrame(frame);
+  const dt = Math.min(clock.getDelta(), 0.05); tAcc += dt;
+  if (world) {
+    for (const a of world.anim) a(tAcc, dt);
+    updateEmitters(dt);
+    world.sky.position.copy(camera.position); if (world.stars) world.stars.position.copy(camera.position);
+  }
+  if (G.state === 'play') updatePlay(dt);
+  else if (G.state === 'duel') { Duel.update(dt); updateSages(dt, true); }
+  else if (world && (G.state === 'title' || G.state === 'intro' || G.state === 'ending')) {
+    const a = tAcc * 0.05; camera.position.set(Math.sin(a) * 26, 7 + Math.sin(tAcc * 0.2) * 1.5, -6 + Math.cos(a) * 26);
+    camera.lookAt(0, 3, -10); updateSages(dt, false); camera.fov = 72; camera.updateProjectionMatrix();
+    lamp.visible = false;
+  }
+  if (G.state === 'play' || G.state === 'duel') lamp.visible = true;
+  // llama de la lámpara
+  const fl = lamp.userData.flame; fl.scale.set(1 + Math.sin(tAcc * 23) * 0.08, 1.6 + Math.sin(tAcc * 17) * 0.2, 1);
+  lamp.userData.light.intensity = (world && (world.theme.indoor || world.theme.stars) ? 5 : 2.5) * (0.9 + Math.sin(tAcc * 19) * 0.1);
+  particles.update(dt);
+  Audio.updateMusic();
+  if (G.settings.quality === 'high') composer.render(); else renderer.render(scene, camera);
+  // calidad automática: si va muy lento al principio, bajar
+  if (!autoChecked && G.state === 'play') { fpsAcc += dt; fpsN++; if (fpsAcc > 4) { autoChecked = true; if (fpsN / fpsAcc < 28 && G.settings.quality === 'high') { G.settings.quality = 'low'; saveSettings(); applyQuality(); toast('Calidad gráfica reducida para que el juego vaya más fluido.'); } } }
+}
+
+// ============================================================================
+//  ARRANQUE
+// ============================================================================
+async function boot() {
+  if (IS_TOUCH) setupTouch();
+  try { await Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 2500))]); } catch (e) { /* sin fuentes */ }
+  applyQuality();
+  titleScreen();
+  $('#loading').style.display = 'none';
+  frame();
+  // el audio necesita un gesto del usuario
+  const unlock = () => { Audio.init(); Audio.startMusic(world ? world.idx : 0); window.removeEventListener('pointerdown', unlock); window.removeEventListener('keydown', unlock); };
+  window.addEventListener('pointerdown', unlock); window.addEventListener('keydown', unlock);
+}
+boot();
+
+// Gancho de pruebas automáticas (solo con #debug en la URL)
+if (location.hash === '#debug') window.__dbg = { G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy };
