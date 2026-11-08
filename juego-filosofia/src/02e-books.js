@@ -5,7 +5,7 @@
 // ============================================================================
 const BOOKS = [
   [ // I · Presocráticos
-    { id: 'fragmentos', author: 'heraclito', by: 'Heráclito de Éfeso', title: 'Fragmentos', year: 'hacia el 500 a.C.', kind: 'aforismos', at: [12, -17],
+    { id: 'fragmentos', author: 'heraclito', by: 'Heráclito de Éfeso', title: 'Fragmentos', year: 'hacia el 500 a.C.', kind: 'aforismos', at: [-15, 6],
       parts: [
         { t: 'Un libro perdido', x: 'Heráclito escribió un solo libro, Sobre la naturaleza, que se perdió. Solo conservamos unos ciento treinta fragmentos: frases breves y enigmáticas citadas por otros autores. Por su estilo oscuro lo llamaron el Oscuro. Cada fragmento es como un oráculo: hay que pensarlo despacio.' },
         { t: 'Todo fluye', x: 'En el mismo río entramos y no entramos, somos y no somos. Las aguas que te bañan ya son otras, y tú también has cambiado. Para Heráclito, nada permanece quieto: la realidad es un proceso de cambio continuo, como una llama que siempre arde y nunca es la misma.' },
@@ -72,7 +72,7 @@ const BOOKS = [
       q: { q: 'Según la Ética a Nicómaco, ¿qué es la virtud del valor?', a: ['El término medio entre la cobardía y la temeridad', 'No tener nunca miedo', 'Obedecer siempre al general', 'Un don con el que se nace'], e: 'La virtud es un término medio que se adquiere con el hábito.' } },
   ],
   [ // III · Helenismo y Roma
-    { id: 'meneceo', author: 'epicuro', by: 'Epicuro', title: 'Carta a Meneceo', year: 'hacia el 300 a.C.', kind: 'carta', at: [15, 11],
+    { id: 'meneceo', author: 'epicuro', by: 'Epicuro', title: 'Carta a Meneceo', year: 'hacia el 300 a.C.', kind: 'carta', at: [16, 16],
       parts: [
         { t: 'Nunca es pronto para filosofar', x: 'Epicuro escribe a su amigo Meneceo: que nadie, siendo joven, tarde en filosofar, ni siendo viejo se canse de hacerlo. Nunca es demasiado pronto ni demasiado tarde para cuidar la salud del alma. La filosofía es la medicina que nos hace felices.' },
         { t: 'No temer a los dioses ni a la muerte', x: 'Los dioses existen, pero viven felices y no se ocupan de castigarnos. Y la muerte no es nada para nosotros: todo bien y todo mal está en la sensación, y la muerte es privación de sensación. Mientras existimos, la muerte no está; cuando llega, ya no existimos.' },
@@ -92,7 +92,7 @@ const BOOKS = [
       q: { q: 'Según las Meditaciones, ¿qué es lo único que depende de nosotros?', a: ['Nuestro propio juicio sobre las cosas', 'La fama y la salud', 'Lo que hacen los demás', 'El destino del Imperio'], e: 'No nos turban las cosas, sino nuestras opiniones sobre ellas.' } },
   ],
   [ // IV · Edad Media
-    { id: 'confesiones', author: 'agustin', by: 'Agustín de Hipona', title: 'Confesiones', year: 'hacia el 400', kind: 'autobiografía', at: [-13, 22],
+    { id: 'confesiones', author: 'agustin', by: 'Agustín de Hipona', title: 'Confesiones', year: 'hacia el 400', kind: 'autobiografía', at: [-7, 30],
       parts: [
         { t: 'Una vida contada a Dios', x: 'Agustín escribe su autobiografía como una larga conversación con Dios. Confiesa sus errores y alaba a Dios por haberle guiado. Es una de las primeras autobiografías de la historia, y muestra a alguien que se examina por dentro con una sinceridad nueva.' },
         { t: 'Las peras robadas', x: 'De adolescente, Agustín robó peras de un huerto con unos amigos. No tenía hambre: las tiraron a los cerdos. Lo hizo solo por el gusto de hacer lo prohibido. Al recordarlo se pregunta por qué amamos el mal, y descubre lo inquieto y dividido que está el corazón humano.' },
@@ -101,7 +101,7 @@ const BOOKS = [
       ],
       quote: 'Nos hiciste, Señor, para ti, y nuestro corazón está inquieto hasta que descanse en ti.',
       q: { q: 'En las Confesiones, ¿dónde está el tiempo, según Agustín?', a: ['En el alma: memoria, atención y espera', 'En los relojes de agua', 'En el movimiento de los astros únicamente', 'En ningún lugar: no existe'], e: 'El pasado es memoria, el presente atención y el futuro espera.' } },
-    { id: 'suma', author: 'tomas', by: 'Tomás de Aquino', title: 'Suma teológica', year: '1265 – 1274', kind: 'tratado', at: [14, -14],
+    { id: 'suma', author: 'tomas', by: 'Tomás de Aquino', title: 'Suma teológica', year: '1265 – 1274', kind: 'tratado', at: [16, -26],
       parts: [
         { t: 'Un libro para estudiantes', x: 'Tomás escribió la Suma teológica como un manual para principiantes, aunque tiene miles de páginas. Quería ordenar todo el saber sobre Dios, el ser humano y el mundo. Murió sin terminarla: tras una experiencia mística dijo que todo lo escrito le parecía paja.' },
         { t: 'El método de la cuestión', x: 'Cada artículo sigue el método de la universidad. Primero se plantea una pregunta, como si Dios existe. Luego se exponen las objeciones contrarias, después una autoridad a favor, la respuesta de Tomás y, al final, la contestación a cada objeción. Es una disputa ordenada.' },
@@ -121,7 +121,7 @@ const BOOKS = [
       ],
       quote: 'Los hombres olvidan antes la muerte de su padre que la pérdida de su patrimonio.',
       q: { q: 'Según El príncipe, ¿qué animales debe imitar el gobernante?', a: ['El zorro y el león', 'El águila y la serpiente', 'El lobo y el cordero', 'El perro y el caballo'], e: 'Astucia para ver las trampas y fuerza para espantar a los lobos.' } },
-    { id: 'ensayos', author: 'montaigne', by: 'Michel de Montaigne', title: 'Ensayos', year: '1580 – 1588', kind: 'ensayos', at: [-13, -6],
+    { id: 'ensayos', author: 'montaigne', by: 'Michel de Montaigne', title: 'Ensayos', year: '1580 – 1588', kind: 'ensayos', at: [-16, -14],
       parts: [
         { t: 'El tema soy yo mismo', x: 'A los treinta y ocho años, Montaigne se retiró a la torre de su castillo, rodeado de libros. Allí empezó a escribir sobre todo lo que se le ocurría: la amistad, el miedo, los caníbales, la educación. Advierte al lector: yo mismo soy la materia de mi libro.' },
         { t: 'Ensayar', x: 'Montaigne inventó un género nuevo: el ensayo. Ensayar significa probar, intentar. No pretende dar verdades definitivas, sino poner a prueba su juicio sobre cualquier tema, con libertad, cambiando de opinión si hace falta. Su lema era una pregunta: ¿qué sé yo?' },

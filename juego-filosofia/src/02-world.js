@@ -42,6 +42,11 @@ const THEMES = [
     hemi: [0x9ab4f0, 0x3a3048, 1.05], fog: [0x1c2850, 0.0062], exposure: 1.4, stars: true,
     accent: 0x6ae0ff, enemy: { col: 0x40e0ff, core: 0x020814, shell: 'icosa' }, lampCol: 0xd8ecff,
   },
+  { // IX · América Latina: mañana dorada entre portales, jacarandas y los Andes
+    sky: [0x2a6ad0, 0xffe2b8, 0x8a6a50], sunDir: [-0.45, 0.42, -0.6], sunCol: 0xfff0d0, sunInt: 2.5, sunDisk: 0xfff0c8,
+    hemi: [0xd8e8ff, 0xa07a50, 0.78], fog: [0xf0d8b8, 0.0072], exposure: 1.08, stars: false,
+    accent: 0xff5a8a, enemy: { col: 0xff4a8a, core: 0x200410, shell: 'octa' }, lampCol: 0xffd090,
+  },
 ];
 
 const ARENA = { x0: -24, x1: 24, z0: -47, z1: 37 };
@@ -288,7 +293,7 @@ function addGardens(W, r, opts = {}) {
   const bushes = [], flowers = [], m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), v = new THREE.Vector3(), sc = new THREE.Vector3();
   const beds = []; const blades = [];
   const lawnMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1, map: texTiles('lawn', 0x6f9e48, 0x5a8a3a, 6, 0.4) });
-  const free = (x, z, hw, hd) => !W._near(x, z, Math.max(hw, hd) - 0.5) && !beds.some((b) => Math.abs(b.x - x) < b.hw + hw + 1.6 && Math.abs(b.z - z) < b.hd + hd + 1.6) &&
+  const free = (x, z, hw, hd) => !W._near(x, z, Math.max(hw, hd) + 0.3) && !beds.some((b) => Math.abs(b.x - x) < b.hw + hw + 1.6 && Math.abs(b.z - z) < b.hd + hd + 1.6) &&
     !(opts.avoid || []).some(([ax, az, ar]) => Math.hypot(ax - x, az - z) < ar + Math.max(hw, hd));
   for (const side of [-1, 1]) for (let z = opts.z1 ?? 34; z >= (opts.z0 ?? -44); z -= 1.5) {
     const hw = 1.6 + r() * 1.2, hd = 1.4 + r() * 1.6; const x = side * (opts.x0 ?? 9.5) + side * (hw + r() * 2.5);
@@ -775,6 +780,85 @@ const ERA_BUILDERS = [
     for (const [x, z] of [[-5, -36], [5, -36]]) { W.group.add(mesh(new THREE.CylinderGeometry(0.06, 0.08, 4, 8), steel, x, 2, z)); W.group.add(mesh(new THREE.BoxGeometry(0.8, 0.1, 0.25), glow(0xe8f4ff, 3.5), x, 4, z, false, false)); W.colliders.push({ t: 1, x, z, r: 0.2, h: 4 }); }
     if (W.lightBudget > 0) { const pl = new THREE.PointLight(0xd8ecff, 18, 16, 2); pl.position.set(0, 4, -34); W.group.add(pl); W.lightBudget--; }
   },
+  // ------------------------------------------------------------------ IX
+  function (W) {
+    const fl = texTiles('ix', 0xc87a5a, 0x8a4a32, 6, 0.25); fl.repeat.set(14, 22);
+    ground(W, fl, [80, 120], 0.8);
+    const r = mulberry32(99);
+    const stucco = std(0xf4ece0, { roughness: 0.85 }); const trim = std(0xe8d8c0, { roughness: 0.7 });
+    const tile = std(0xb04a2a, { roughness: 0.8, flat: true });
+    const pastel = [0xf2a0b8, 0xf6d06a, 0x7ac0d8, 0xa8d878, 0xf09a6a, 0xc8a0e0];
+    // portales coloniales con arcos y casas de colores
+    for (const side of [-1, 1]) {
+      const a = arcade(80, 13, 4.2, stucco, trim, { attic: 0.6 }); a.rotation.y = Math.PI / 2; a.position.set(side * 20.5, 0, -4); W.group.add(a);
+      for (let i = 0; i <= 13; i++) { const z = -4 - 40 + i * (80 / 13); W.colliders.push({ t: 0, x0: side * 20.5 - 0.6, x1: side * 20.5 + 0.6, z0: z - 0.6, z1: z + 0.6, h: 9 }); }
+      const roof = mesh(new THREE.BoxGeometry(4.6, 0.25, 82), tile, side * 22.6, 7.4, -4); roof.rotation.z = side * 0.25; W.group.add(roof);
+      for (let z = -44, k = 0; z < 36; z += 8, k++) {
+        const c = pastel[(k * 2 + (side > 0 ? 1 : 0)) % pastel.length]; const h = 8 + r() * 4;
+        W.group.add(mesh(new THREE.BoxGeometry(2, h, 8), std(c, { roughness: 0.9 }), side * 25.6, h / 2, z + 4));
+        W.group.add(mesh(new THREE.BoxGeometry(2.4, 0.4, 8.2), trim, side * 25.6, h + 0.2, z + 4));
+        for (const dz of [-2, 2]) {
+          const win = mesh(new THREE.PlaneGeometry(1.2, 1.8), std(0x2a5a7a, { roughness: 0.4, emissive: 0xffc070, ei: 0.25 }), side * 24.58, 5.6, z + 4 + dz, false, false); win.rotation.y = -side * Math.PI / 2; W.group.add(win);
+          W.group.add(mesh(new THREE.BoxGeometry(0.6, 0.12, 1.6), std(0x2a2a2a, { metalness: 0.6 }), side * 24.3, 4.6, z + 4 + dz, false, false));
+          for (let f = 0; f < 4; f++) W.group.add(mesh(new THREE.SphereGeometry(0.13, 6, 4), std([0xff3a5a, 0xff8a2a, 0xffffff, 0xd84aff][f], { roughness: 0.7 }), side * 24.2, 4.8, z + 4 + dz - 0.6 + f * 0.4, false, false));
+        }
+      }
+    }
+    // jacarandas en flor, agaves y cactus
+    const lilac = [0x9a6ad8, 0xb088e8, 0x8a5ac8, 0xc0a0f0];
+    for (let i = 0; i < 24; i++) {
+      const x = (r() < 0.5 ? -1 : 1) * (8.5 + r() * 8.5), z = -42 + r() * 74; if (W._near(x, z, 2.2)) continue;
+      const k = r();
+      if (k < 0.65) {
+        const t = new THREE.Group(); t.position.set(x, 0, z); const s = 0.85 + r() * 0.45; t.scale.setScalar(s);
+        const tr = mesh(new THREE.CylinderGeometry(0.13, 0.24, 2.6, 7), std(0x4a3a30, { roughness: 1 }), 0, 1.3, 0); tr.rotation.z = (r() - 0.5) * 0.3; t.add(tr);
+        const lc = std(lilac[Math.floor(r() * lilac.length)], { roughness: 0.8, flat: true, emissive: 0x200a30, ei: 0.3 });
+        for (let q = 0; q < 6; q++) t.add(mesh(new THREE.IcosahedronGeometry(0.75 + r() * 0.45, 0), lc, (r() - 0.5) * 2.2, 2.7 + r() * 1.0, (r() - 0.5) * 2.2));
+        W.group.add(t); W.colliders.push({ t: 1, x, z, r: 0.4 * s + 0.1, h: 3 });
+        if (r() < 0.5) W.emitters.push({ x, y: 3 * s, z, col: 0xb898f0, rate: 0.8, acc: 0, kind: 'petal' });
+      } else if (k < 0.85) {
+        const g = new THREE.Group(); g.position.set(x, 0, z); const ag = std(0x5a8a6a, { roughness: 0.8, flat: true });
+        for (let q = 0; q < 9; q++) { const leaf = mesh(new THREE.ConeGeometry(0.16, 1.6, 4), ag, 0, 0.7, 0); leaf.rotation.set(0.5 + r() * 0.4, (q / 9) * TAU, 0); leaf.position.set(Math.sin((q / 9) * TAU) * 0.3, 0.6, Math.cos((q / 9) * TAU) * 0.3); g.add(leaf); }
+        W.group.add(g); W.colliders.push({ t: 1, x, z, r: 0.8, h: 1.2 });
+      } else {
+        const g = new THREE.Group(); g.position.set(x, 0, z); const cc = std(0x3a7a4a, { roughness: 0.8 });
+        g.add(mesh(new THREE.CapsuleGeometry(0.3, 2.4, 4, 10), cc, 0, 1.5, 0));
+        for (const s of [-1, 1]) { const arm = new THREE.Group(); arm.position.set(s * 0.3, 1.3 + r() * 0.6, 0); arm.add(mesh(new THREE.CapsuleGeometry(0.2, 0.5, 4, 8), cc, s * 0.3, 0, 0)); const up = mesh(new THREE.CapsuleGeometry(0.2, 0.8, 4, 8), cc, s * 0.55, 0.5, 0); arm.add(up); arm.children[0].rotation.z = Math.PI / 2; g.add(arm); }
+        W.group.add(g); W.colliders.push({ t: 1, x, z, r: 0.5, h: 3 });
+      }
+    }
+    // papel picado sobre el camino
+    const picado = [];
+    for (let z = 30; z > -30; z -= 9) {
+      for (const side of [-1, 1]) { W.group.add(mesh(new THREE.CylinderGeometry(0.05, 0.07, 5.2, 6), std(0x6a4a30), side * 6, 2.6, z)); W.colliders.push({ t: 1, x: side * 6, z, r: 0.2, h: 5 }); }
+      for (let k = 0; k < 14; k++) {
+        const u = (k + 0.5) / 14; const x = -6 + u * 12; const y = 5 - Math.sin(u * Math.PI) * 0.9;
+        const pp = mesh(new THREE.PlaneGeometry(0.62, 0.7), std(pastel[(k + Math.round(z)) % pastel.length], { roughness: 0.9, side: THREE.DoubleSide, emissive: pastel[(k + Math.round(z)) % pastel.length], ei: 0.25 }), x, y - 0.38, z, false, false);
+        W.group.add(pp); picado.push([pp, k + z]);
+      }
+    }
+    W.anim.push((t) => picado.forEach(([p, k]) => { p.rotation.x = Math.sin(t * 2.2 + k) * 0.25; }));
+    // fuente colonial
+    fountain(W, 0, 2, std(0xd8c8a8, { roughness: 0.7 }));
+    // pirámide escalonada al fondo, y los Andes en el horizonte
+    { const py = new THREE.Group(); py.position.set(0, 0, -78); const st = std(0xb8a488, { roughness: 1, flat: true });
+      for (let k = 0; k < 6; k++) { const w = 34 - k * 5; py.add(mesh(new THREE.BoxGeometry(w, 3.6, w), st, 0, 1.8 + k * 3.6, 0, false, false)); }
+      { const stair = mesh(new THREE.BoxGeometry(6, 1, 30), std(0xa89478, { roughness: 1 }), 0, 11, 16, false, false); stair.rotation.x = -0.72; py.add(stair); }
+      py.add(mesh(new THREE.BoxGeometry(6, 4.5, 6), std(0xc8b498), 0, 23.8, 0, false, false));
+      py.add(mesh(new THREE.BoxGeometry(6.6, 0.8, 6.6), std(0x8a3a2a), 0, 26.4, 0, false, false));
+      W.group.add(py); }
+    const mtn = std(0x4a6a5a, { roughness: 1, flat: true }); const snow = std(0xf4f0f8, { roughness: 0.8, flat: true });
+    for (let i = 0; i < 16; i++) {
+      const x = -170 + i * 23 + (r() - 0.5) * 12, z = -170 - r() * 70, h = 55 + r() * 55, w = 32 + r() * 25;
+      const m = new THREE.Group(); m.position.set(x, -4, z);
+      m.add(mesh(new THREE.ConeGeometry(w, h, 7), mtn, 0, h / 2, 0, false, false));
+      m.add(mesh(new THREE.ConeGeometry(w * 0.3, h * 0.3, 7), snow, 0, h - h * 0.15 + 0.2, 0, false, false));
+      W.group.add(m);
+    }
+    // faroles de hierro con luz cálida
+    for (const [x, z] of [[-5, -36], [5, -36], [-5, 20], [5, -8]]) { W.group.add(mesh(new THREE.CylinderGeometry(0.06, 0.1, 3.6, 8), std(0x2a2a2a, { metalness: 0.6 }), x, 1.8, z)); W.group.add(mesh(new THREE.SphereGeometry(0.22, 10, 8), glow(0xffd090, 4), x, 3.7, z, false, false)); W.colliders.push({ t: 1, x, z, r: 0.25, h: 4 }); }
+    brazier(W, -4, -33, 0xff8a40); brazier(W, 4, -33, 0xff8a40);
+  },
 ];
 
 function buildWorld(idx) {
@@ -924,6 +1008,63 @@ function buildProp(W, kind, st, off) {
       const ring = add(mesh(new THREE.TorusGeometry(1.05, 0.02, 6, 64), glow(acc, 2.5), 0, 2.3, 0, false, false)); ring.rotation.x = 1.2;
       W.anim.push((t, dt) => { earth.rotation.y += dt * 0.25; ring.rotation.z += dt * 0.4; });
       col(0.9); break;
+    }
+    case 'lyre': { // Teano: una lira de la armonía
+      add(mesh(new THREE.CylinderGeometry(0.45, 0.6, 1.1, 12), stone, 0, 0.55, 0));
+      const ly = add(new THREE.Group()); ly.position.y = 1.15;
+      for (const s of [-1, 1]) { const arm = mesh(new THREE.TorusGeometry(0.55, 0.06, 6, 16, Math.PI * 0.7), brass, s * 0.25, 0.75, 0); arm.rotation.z = s > 0 ? -0.2 : Math.PI + 0.2; ly.add(arm); }
+      ly.add(mesh(new THREE.BoxGeometry(1.3, 0.08, 0.08), brass, 0, 1.45, 0)); ly.add(mesh(new THREE.SphereGeometry(0.3, 12, 8), darkW, 0, 0.15, 0));
+      const strings = []; for (let k = 0; k < 7; k++) { const st = mesh(new THREE.BoxGeometry(0.015, 1.25, 0.015), glow(acc, 2.2), -0.36 + k * 0.12, 0.8, 0, false, false); ly.add(st); strings.push(st); }
+      W.anim.push((t) => strings.forEach((st, k) => { st.position.z = Math.sin(t * 9 + k) * 0.012; }));
+      col(0.7); break;
+    }
+    case 'mandala': { // Hildegarda: una visión de círculos de luz
+      add(mesh(new THREE.CylinderGeometry(0.5, 0.6, 0.3, 14), stone, 0, 0.15, 0));
+      const v = add(new THREE.Group()); v.position.y = 2.1;
+      const cols = [0xffd36a, 0x6ad0ff, 0xff7a9a, 0x9aff8a];
+      for (let k = 0; k < 4; k++) { const ring = mesh(new THREE.TorusGeometry(0.35 + k * 0.28, 0.035, 6, 48), glow(cols[k], 2.4), 0, 0, 0, false, false); v.add(ring); }
+      v.add(mesh(new THREE.SphereGeometry(0.2, 14, 10), glow(0xffffff, 4), 0, 0, 0, false, false));
+      W.anim.push((t) => { v.children.forEach((c, k) => { c.rotation.x = t * (0.3 + k * 0.15); c.rotation.y = t * (0.2 + k * 0.1); }); });
+      col(0.7); break;
+    }
+    case 'city': { // Christine: torres de la Ciudad de las Damas
+      const wall = std(0xe8dcc0, { roughness: 0.7 });
+      for (const [x, z, h] of [[-0.7, 0, 2.2], [0.1, -0.3, 2.9], [0.8, 0.1, 1.8]]) {
+        add(mesh(new THREE.CylinderGeometry(0.32, 0.36, h, 10), wall, x, h / 2, z));
+        add(mesh(new THREE.ConeGeometry(0.42, 0.7, 10), std(0x2a4a8a, { roughness: 0.6 }), x, h + 0.35, z));
+        add(mesh(new THREE.BoxGeometry(0.12, 0.2, 0.05), glow(0xffd080, 3), x, h * 0.7, z + 0.34, false, false));
+      }
+      const flag = add(mesh(new THREE.PlaneGeometry(0.4, 0.25), std(acc, { side: THREE.DoubleSide, emissive: acc, ei: 0.4 }), 0.3, 3.9, -0.3));
+      W.anim.push((t) => { flag.rotation.y = Math.sin(t * 3) * 0.4; });
+      col(1.1); break;
+    }
+    case 'flower': { // Nezahualcóyotl: flor y canto
+      add(mesh(new THREE.CylinderGeometry(0.55, 0.7, 0.6, 10), std(0x8a6a4a, { roughness: 0.9 }), 0, 0.3, 0));
+      const fl = add(new THREE.Group()); fl.position.y = 1.5;
+      fl.add(mesh(new THREE.CylinderGeometry(0.04, 0.05, 1.2, 6), std(0x3a7a3a), 0, -0.4, 0));
+      for (let k = 0; k < 8; k++) { const a = (k / 8) * TAU; const p = mesh(new THREE.SphereGeometry(0.28, 10, 8), std(k % 2 ? 0xff8a2a : 0xffc83a, { roughness: 0.6, emissive: 0x401800, ei: 0.4 }), Math.cos(a) * 0.32, 0.25, Math.sin(a) * 0.32); p.scale.set(1, 0.35, 0.6); p.rotation.y = -a; fl.add(p); }
+      fl.add(mesh(new THREE.SphereGeometry(0.16, 10, 8), glow(0xffe08a, 2.5), 0, 0.3, 0, false, false));
+      const notes = []; for (let k = 0; k < 3; k++) { const n = mesh(new THREE.OctahedronGeometry(0.08, 0), glow(acc, 3), 0, 0, 0, false, false); add(n); notes.push(n); }
+      W.anim.push((t) => { fl.rotation.y = t * 0.3; notes.forEach((n, k) => { const u = (t * 0.4 + k / 3) % 1; n.position.set(Math.sin(u * 6 + k) * 0.4, 1.9 + u * 1.5, Math.cos(u * 6 + k) * 0.4); n.scale.setScalar(1 - u); }); });
+      col(0.8); break;
+    }
+    case 'rose': { // Martí: la rosa blanca
+      add(mesh(new THREE.CylinderGeometry(0.4, 0.5, 1.1, 12), stone, 0, 0.55, 0));
+      add(mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.8, 6), std(0x2a6a2a), 0, 1.5, 0));
+      const rose = add(new THREE.Group()); rose.position.y = 2;
+      for (let k = 0; k < 10; k++) { const a = (k / 10) * TAU * 1.6; const r2 = 0.06 + k * 0.022; const p = mesh(new THREE.SphereGeometry(0.15, 10, 8), std(0xf8f6f0, { roughness: 0.5, emissive: 0xffffff, ei: 0.12 }), Math.cos(a) * r2, k * 0.012, Math.sin(a) * r2); p.scale.set(0.9, 0.55, 0.5); p.rotation.y = -a; rose.add(p); }
+      for (const s of [-1, 1]) { const lf = mesh(new THREE.SphereGeometry(0.12, 8, 6), std(0x2a6a2a), s * 0.15, -0.25, 0); lf.scale.set(1.4, 0.3, 0.7); rose.add(lf); }
+      W.anim.push((t) => { rose.rotation.y = Math.sin(t * 0.5) * 0.4; });
+      col(0.6); break;
+    }
+    case 'chalkboard': { // Freire: pizarra con «tierra» escrita
+      const board = new THREE.CanvasTexture((() => { const c = document.createElement('canvas'); c.width = 256; c.height = 160; const x = c.getContext('2d'); x.fillStyle = '#1f3a2a'; x.fillRect(0, 0, 256, 160); x.fillStyle = '#f2f2e8'; x.font = 'bold 44px serif'; x.textAlign = 'center'; x.fillText('TIERRA', 128, 70); x.font = '30px serif'; x.fillText('ti · e · rra', 128, 120); return c; })());
+      board.colorSpace = THREE.SRGBColorSpace;
+      add(mesh(new THREE.BoxGeometry(2.1, 1.35, 0.08), darkW, 0, 1.75, 0));
+      add(mesh(new THREE.PlaneGeometry(1.9, 1.18), std(0xffffff, { map: board, roughness: 0.9, emissive: 0xffffff, emissiveMap: board, ei: 0.25 }), 0, 1.75, 0.05, false));
+      for (const s of [-1, 1]) add(mesh(new THREE.BoxGeometry(0.08, 1.2, 0.08), darkW, s * 0.9, 0.6, 0));
+      add(mesh(new THREE.BoxGeometry(1.6, 0.06, 0.18), darkW, 0, 1.05, 0.1));
+      col(1.1); break;
     }
     case 'water': {
       add(mesh(new THREE.CylinderGeometry(1.5, 1.6, 0.6, 28, 1, true), stone, 0, 0.3, 0));

@@ -1015,7 +1015,7 @@ const Duel = {
     achieve('primer'); if (s.data.id === 'socrates') achieve('tabano'); if (s.data.id === 'platon') achieve('caverna');
     if (!s._wrongs) achieve('perfecto'); if (s.boss && !this.aidsUsed) achieve('sincomodin');
     const bonus = s.boss ? 500 : 250; addScore(bonus); G.frags += 2; const heal = Math.min(25, G.maxHp - G.hp); G.hp += heal;
-    G.codex.add(s.data.id); store.set(CODEX_KEY, [...G.codex]); if (G.codex.size >= ERAS.flatMap((e) => e.sages).length) achieve('erudito');
+    G.codex.add(s.data.id); store.set(CODEX_KEY, [...G.codex]); if (['teano', 'hipatia', 'hildegarda', 'pizan', 'sorjuana', 'castellanos', 'beauvoir', 'arendt'].filter((id) => G.codex.has(id)).length >= 4) achieve('pensadoras'); if (['nezahualcoyotl', 'sorjuana', 'marti', 'castellanos', 'freire'].every((id) => G.codex.has(id))) achieve('nuestra'); if (G.codex.size >= ERAS.flatMap((e) => e.sages).length) achieve('erudito');
     particles.emit(_v1.copy(s.pos).setY(2.5), 160, { color: 0xffd36a, speed: 9, life: 1.6, size: 0.55, intensity: 3, gravity: 2 });
     particles.emit(_v1.copy(s.pos).setY(1.2), 80, { color: 0xffffff, speed: 6, life: 1.2, size: 0.4, intensity: 2, flat: true });
     $('#duel').hidden = true; Voice.say(s.data.defeat, s);
@@ -1320,6 +1320,7 @@ const MOTES = [
   { c: 0xff8a40, up: 0.9, g: 0, i: 2.4, s: 0.13 }, { c: 0xc8d4ff, up: 0.02, g: 0, i: 1.3, s: 0.1 },
   { c: 0xffb6c8, up: 0, g: 0.25, i: 1.2, s: 0.16 }, { c: 0xb8ff9a, up: 0.1, g: 0, i: 3, s: 0.12 },
   { c: 0xffc488, up: 0.06, g: 0, i: 1.4, s: 0.11 }, { c: 0x9ae8ff, up: 0.12, g: 0, i: 2.8, s: 0.11 },
+  { c: 0xffd8a0, up: 0.08, g: 0, i: 1.5, s: 0.11 },
 ];
 let moteAcc = 0;
 function ambientMotes(dt) {
