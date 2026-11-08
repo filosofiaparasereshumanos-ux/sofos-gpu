@@ -1074,7 +1074,7 @@ function updateHud() {
   $('#h-hpn').textContent = Math.ceil(G.hp);
   if (!world) return;
   const era = ERAS[G.eraIdx];
-  $('#h-era').textContent = `${era.num} · ${era.name}`;
+  $('#h-era').textContent = `${era.num} · ${era.name}` + (G.explore ? ' · explorador' : '');
   const left = regularsLeft(); const boss = sages.find((s) => s.boss);
   let obj;
   if (world.portal.open) obj = 'Cruza el portal del fondo.';
@@ -1107,11 +1107,11 @@ function updateEpojeHud() {
 // ============================================================================
 //  FLUJO DE PANTALLAS
 // ============================================================================
-const SCREENS = ['title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept', 'oracle', 'oracle-end', 'fame', 'logros'];
+const SCREENS = ['travel', 'title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept', 'oracle', 'oracle-end', 'fame', 'logros'];
 function show(id) { SCREENS.forEach((s) => ($('#' + s).hidden = s !== id)); if (id) { const b = $('#' + id).querySelector('.btn.primary, .btn'); if (b && !IS_TOUCH) setTimeout(() => b.focus({ preventScroll: true }), 30); } }
 function hideAll() { SCREENS.forEach((s) => ($('#' + s).hidden = true)); }
 
-function saveProgress() { store.set(SAVE_KEY, { eraIdx: G.eraIdx, score: G.score, frags: G.frags, stats: G.stats }); }
+function saveProgress() { if (G.explore) return; store.set(SAVE_KEY, { eraIdx: G.eraIdx, score: G.score, frags: G.frags, stats: G.stats }); }
 function titleScreen() {
   G.state = 'title'; unlockPointer(); Duel.close(); Voice.stop();
   $('#b-fs').hidden = !(FS_OK && IS_TOUCH); if (typeof refreshTitleExtras === 'function') refreshTitleExtras();
@@ -1120,7 +1120,7 @@ function titleScreen() {
   const bc = $('#b-continue');
   if (sv && sv.eraIdx > 0) { bc.hidden = false; $('#b-continue-s').textContent = `Etapa ${ERAS[sv.eraIdx].num} · ${ERAS[sv.eraIdx].name}`; } else bc.hidden = true;
   const reached = sv ? sv.eraIdx : -1;
-  $('#t-timeline').innerHTML = ERAS.map((e, i) => `<span class="${i < reached || G.codex.has(e.sages.find((s) => s.boss).id) ? 'done' : ''}">${e.num}</span>`).join('');
+  $('#t-timeline').innerHTML = ERAS.map((e, i) => `<span data-i="${i}" title="Viajar a ${e.name}" class="${i < reached || G.codex.has(e.sages.find((s) => s.boss).id) ? 'done' : ''}">${e.num}</span>`).join('');
   const bg = clamp(reached, 0, 5);
   if (!world || world.idx !== bg) loadWorld(bg);
   Audio.startMusic(bg);
@@ -1134,7 +1134,7 @@ function startEra(idx, fresh) {
   saveProgress();
   loadWorld(idx); Audio.startMusic(idx);
   const e = ERAS[idx];
-  $('#i-eyebrow').textContent = `Etapa ${idx + 1} de ${ERAS.length} · ${e.years}`;
+  $('#i-eyebrow').textContent = G.explore ? `Modo explorador · ${e.years}` : `Etapa ${idx + 1} de ${ERAS.length} · ${e.years}`;
   $('#i-num').textContent = e.num; $('#i-name').textContent = e.name; $('#i-meta').textContent = e.place;
   $('#i-story').textContent = e.story;
   $('#i-quote').innerHTML = ''; $('#i-quote').append(document.createTextNode('«' + e.quote.t + '»')); const c = document.createElement('cite'); c.textContent = e.quote.a; $('#i-quote').append(c);
@@ -1170,7 +1170,7 @@ function enterPortal() {
   if (G.diedEra !== G.eraIdx) achieve('logos'); G.diedEra = -1;
   const f = $('#fade'); f.classList.add('on');
   setTimeout(() => {
-    if (G.eraIdx >= ERAS.length - 1) { showEnding(); f.classList.remove('on'); return; }
+    if (G.eraIdx >= ERAS.length - 1) { f.classList.remove('on'); if (G.explore) { $('#hud').hidden = true; $('#touch').hidden = true; G.state = 'title'; openTravel('title'); } else showEnding(); return; }
     startEra(G.eraIdx + 1, false); f.classList.remove('on');
   }, 900);
 }
@@ -1262,14 +1262,38 @@ document.querySelectorAll('#s-quality button').forEach((b) => b.addEventListener
 document.querySelectorAll('#s-invert button').forEach((b) => b.addEventListener('click', () => { G.settings.invertY = b.dataset.v === '1'; saveSettings(); syncSettings(); }));
 
 const on = (id, fn) => $(id).addEventListener('click', () => { Audio.init(); Audio.click(); fn(); });
-on('#b-new', () => { G.codexRun = new Set(); startEra(0, true); });
-on('#b-continue', () => { const sv = store.get(SAVE_KEY, null); if (!sv) return startEra(0, true); G.score = sv.score || 0; G.frags = sv.frags || 0; G.stats = sv.stats || { correct: 0, wrong: 0, kills: 0, time: 0 }; startEra(sv.eraIdx, false); });
+on('#b-new', () => { G.explore = false; G.codexRun = new Set(); startEra(0, true); });
+on('#b-continue', () => { G.explore = false; const sv = store.get(SAVE_KEY, null); if (!sv) return startEra(0, true); G.score = sv.score || 0; G.frags = sv.frags || 0; G.stats = sv.stats || { correct: 0, wrong: 0, kills: 0, time: 0 }; startEra(sv.eraIdx, false); });
 on('#b-howto', () => openSub('howto'));
 on('#b-fs', () => toggleFS());
 on('#b-codex', () => openSub('codex'));
 on('#b-settings', () => openSub('settings'));
 on('#b-enter', () => enterEra());
 on('#b-resume', () => resumeGame());
+// ---------- viajar libremente por las épocas
+function openTravel(from) { G.travelFrom = from; renderTravel(); show('travel'); }
+function renderTravel() {
+  const found = new Set(store.get('odisea-razon.lugares', [])), studied = new Set(store.get(BOOK_KEY, []));
+  const grid = $('#tv-grid'); grid.innerHTML = '';
+  ERAS.forEach((e, i) => {
+    const b = document.createElement('button'); b.className = 'cc tv-card' + (G.travelFrom === 'pause' && i === G.eraIdx ? ' here' : '');
+    const pf = POIS[i].filter((p) => found.has(p.id)).length, bs = BOOKS[i].filter((x) => studied.has(x.id)).length;
+    b.innerHTML = `<span class="tv-num">${e.num}</span><h4></h4><div class="by"></div><p></p><span class="tv-prog">Lugares ${pf}/${POIS[i].length} · Libros ${bs}/${BOOKS[i].length} · ${NPCS[i].length} ciudadanos</span>`;
+    b.querySelector('h4').textContent = e.name; b.querySelector('.by').textContent = `${e.years} · ${e.place}`;
+    b.querySelector('p').textContent = e.sages.map((s) => s.short).join(', ');
+    b.addEventListener('click', () => { Audio.init(); Audio.click(); travelTo(i); });
+    grid.appendChild(b);
+  });
+}
+function travelTo(idx) {
+  if (!G.explore) { if (G.travelFrom === 'pause') saveProgress(); G.explore = true; startEra(idx, true); return; }
+  const f = $('#fade'); f.classList.add('on'); hideAll();
+  setTimeout(() => { startEra(idx, false); f.classList.remove('on'); }, 400);
+}
+on('#b-travel', () => openTravel('title'));
+$('#t-timeline').addEventListener('click', (e) => { const sp = e.target.closest('span[data-i]'); if (!sp || G.state !== 'title') return; Audio.init(); Audio.click(); G.travelFrom = 'title'; travelTo(+sp.dataset.i); });
+on('#b-ptravel', () => openTravel('pause'));
+on('#tv-back', () => show(G.travelFrom === 'pause' ? 'pause' : 'title'));
 on('#b-pcodex', () => openSub('codex'));
 on('#b-psettings', () => openSub('settings'));
 on('#b-quit', () => { saveProgress(); titleScreen(); });

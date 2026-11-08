@@ -12,6 +12,10 @@ ratón y `E` para interactuar.
 
 ## Qué puedes hacer
 
+- **Viajar por las épocas** (modo explorador): desde el menú («Viajar por las épocas», o tocando
+  los números I–VI) o desde la pausa, entra en cualquier época sin superar las anteriores. La odisea
+  guardada no se toca.
+
 - **Conversar con 25 filósofos**: «¿Quién eres?», «¿Cuál es tu gran idea?», «Cuéntame más»,
   escuchar su **lección completa** narrada con su voz, o **preguntarles lo que quieras**: en la
   versión publicada en claude.ai responden en personaje con la IA de Claude (pide permiso la

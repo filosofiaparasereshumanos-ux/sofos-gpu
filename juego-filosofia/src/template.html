@@ -277,6 +277,14 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .cc h4 { font-family: var(--display); font-weight: 400; margin: 0; font-size: 1.08rem; color: var(--gold-bright); letter-spacing: 0.04em; }
 .cc .by { font-size: 0.9rem; font-style: italic; color: var(--parchment-dim); margin-top: 2px; }
 .cc p { margin: 6px 0 0; font-size: 0.98rem; line-height: 1.4; }
+#t-timeline span[data-i] { cursor: pointer; }
+#t-timeline span[data-i]:hover { color: var(--gold-bright); }
+.tv-card { cursor: pointer; text-align: left; font: inherit; color: inherit; display: flex; flex-direction: column; gap: 2px; transition: border-color .2s, background .2s; }
+.tv-card:hover, .tv-card:focus-visible { border-color: var(--gold); background: rgba(214,168,74,0.1); }
+.tv-card .tv-num { font-family: var(--display); color: var(--gold); font-size: 1.6rem; line-height: 1; }
+.tv-card .tv-prog { margin-top: 8px; font-size: 0.88rem; color: var(--parchment-dim); }
+.tv-card.here { border-color: var(--gold); }
+.tv-card.here .tv-num::after { content: ' · estás aquí'; font-size: 0.8rem; font-family: var(--body); letter-spacing: 0; }
 .cc.locked h4 { color: var(--parchment-dim); }
 .cc.locked p { color: rgba(184,172,144,0.6); font-style: italic; }
 .codex-count { text-align: center; color: var(--parchment-dim); font-style: italic; margin-top: 4px; }
@@ -500,6 +508,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="btn primary oracle-btn" id="b-oracle">Oráculo de hoy<small id="b-oracle-s">10 preguntas · las mismas para todos</small></button>
         <button class="btn" id="b-continue" hidden>Continuar la odisea<small id="b-continue-s"></small></button>
         <button class="btn" id="b-new">Nueva odisea<small>Seis épocas · 25 filósofos</small></button>
+        <button class="btn" id="b-travel">Viajar por las épocas<small>Visita cualquier época libremente</small></button>
       </div>
       <div class="minis">
         <button class="mini-b" id="b-fame">Salón de la Fama</button>
@@ -698,10 +707,21 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <blockquote class="q" style="font-size:1.1rem">«La filosofía comienza con el asombro.»<cite>Platón, Teeteto</cite></blockquote>
       <div class="btns">
         <button class="btn primary" id="b-resume">Reanudar</button>
+        <button class="btn" id="b-ptravel">Viajar a otra época</button>
         <button class="btn" id="b-pcodex">Códice</button>
         <button class="btn" id="b-psettings">Ajustes</button>
         <button class="btn ghost" id="b-quit">Salir al menú</button>
       </div>
+    </div>
+  </section>
+
+  <section id="travel" class="screen dim" hidden>
+    <div class="codex-wrap">
+      <div class="eyebrow" style="text-align:center">Modo explorador</div>
+      <h2>Viajar por las épocas</h2>
+      <p class="codex-count">Elige una época para pasear, conversar, leer y descubrir lugares sin tener que superar las anteriores. Tu odisea guardada no se pierde.</p>
+      <div class="codex-grid tv-grid" id="tv-grid"></div>
+      <div class="btns"><button class="btn" id="tv-back">Volver</button></div>
     </div>
   </section>
 
