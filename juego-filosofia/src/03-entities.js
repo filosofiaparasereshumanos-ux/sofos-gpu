@@ -138,7 +138,7 @@ class Sage {
     this.group = new THREE.Group(); this.group.add(this.fig.group); this.group.position.copy(station.pos); this.group.position.y = 0.14;
     // mirar hacia el centro
     this.baseYaw = Math.atan2(-station.pos.x, this.boss ? 1 : -station.pos.x * 0.0001 + 0.0001) || 0;
-    this.baseYaw = 0; // miran hacia quien llega por el camino
+    this.baseYaw = this.boss ? 0 : station.pos.x < 0 ? Math.PI / 2 : -Math.PI / 2; // miran hacia el centro de la plaza
     this.group.rotation.y = this.baseYaw; this.yaw = this.baseYaw;
     // etiqueta
     const tex = labelTexture(this.data.short, this.data.epithet);
@@ -146,7 +146,7 @@ class Sage {
     this.label.scale.set(2.4, 0.6, 1); this.label.position.y = 2.75 * this.scale + 0.3; this.group.add(this.label);
     world.group.add(this.group);
     this.maxConv = this.boss ? (this.data.final ? 7 : 5) : 3; this.conv = this.maxConv;
-    this.breaks = this.boss ? (this.data.final ? [5, 2] : [3]) : [];
+    this.breaks = []; // sin fases de combate: es un viaje de conocimiento
     this.state = this.boss ? 'sealed' : 'idle'; // sealed | idle | shielded | defeated
     this.order = shuffle([...this.data.q.keys()]); this.qptr = 0;
     this.t = Math.random() * 10; this.gesture = 0; this.shootCd = 2;

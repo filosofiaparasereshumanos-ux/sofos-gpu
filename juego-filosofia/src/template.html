@@ -209,6 +209,36 @@ kbd { font-family: var(--display); font-size: 0.78em; border: 1px solid var(--li
 .lesson-b { margin-top: 8px; font-size: 0.68rem; }
 .tb.lesson { color: #cdf4ff; border-color: rgba(143,233,255,0.5); background: rgba(40,80,110,0.4); font-size: 0.62rem; }
 
+/* ---------- conversación y lugares ---------- */
+#talk, #place { position: absolute; inset: 0; z-index: 26; display: flex; align-items: flex-end; justify-content: center; padding: max(12px, var(--sat)) max(12px, var(--sar)) max(12px, var(--sab)) max(12px, var(--sal)); background: linear-gradient(180deg, transparent 25%, rgba(13,12,18,0.55) 60%, rgba(13,12,18,0.92) 100%); }
+.talk-card .duel-head { grid-template-columns: auto 1fr auto; }
+.tk-you { margin: 10px 0 0; font-style: italic; color: var(--gold); font-size: 0.98rem; min-height: 0; }
+.tk-you:empty { display: none; }
+.tk-text { font-size: clamp(1.08rem, 3.2vw, 1.3rem); line-height: 1.5; margin: 10px 0 0; border-left: 2px solid var(--gold); padding-left: 12px; max-height: 38vh; overflow-y: auto; user-select: text; -webkit-user-select: text; }
+.tk-text.thinking { color: var(--parchment-dim); font-style: italic; }
+.tk-ops { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.tk-op { padding: 10px 14px; border: 1px solid var(--line); background: rgba(214,168,74,0.07); font-family: var(--body); font-size: 1.02rem; color: var(--parchment); cursor: pointer; border-radius: 20px; }
+.tk-op:hover { border-color: var(--gold); background: rgba(214,168,74,0.16); }
+.tk-op.ai { border-color: rgba(143,233,255,0.5); color: #cdf4ff; background: rgba(143,233,255,0.08); }
+.tk-op.duel { border-color: var(--gold); color: var(--gold-bright); background: rgba(214,168,74,0.18); font-family: var(--display); letter-spacing: 0.08em; font-size: 0.9rem; }
+.tk-op.bye { border-color: transparent; color: var(--parchment-dim); }
+.tk-ask { margin-top: 12px; }
+.tk-hint { margin: 0 0 6px; font-size: 0.9rem; color: var(--parchment-dim); }
+.tk-row { display: flex; gap: 8px; }
+.tk-row input { flex: 1; min-width: 0; background: rgba(0,0,0,0.4); border: 1px solid var(--line); color: var(--parchment); font: inherit; font-size: 1rem; padding: 10px 12px; user-select: text; -webkit-user-select: text; }
+.tk-row .btn { min-width: 0; padding: 10px 16px; font-size: 0.85rem; }
+.place-card { border-top-color: var(--gold-bright); }
+.pl-name { font-family: var(--display); font-weight: 400; font-size: clamp(1.5rem, 5vw, 2.1rem); margin: 4px 0 0; color: var(--gold-bright); }
+.pl-text { font-size: clamp(1.05rem, 3.2vw, 1.22rem); line-height: 1.55; margin: 10px 0 0; max-height: 34vh; overflow-y: auto; }
+.pl-fact { margin-top: 12px; padding: 10px 12px; background: rgba(214,168,74,0.08); border-left: 2px solid var(--gold); line-height: 1.45; }
+.pl-fact b { display: block; font-family: var(--display); font-weight: 400; letter-spacing: 0.16em; font-size: 0.72rem; color: var(--gold); margin-bottom: 3px; }
+.pl-rew { margin: 10px 0 0; font-family: var(--display); letter-spacing: 0.08em; font-size: 0.8rem; color: #8fe9ff; }
+/* viaje sin combate: solo joystick y un botón de acción */
+#t-fire, #t-epoje, #t-dash, #t-jump, #t-lesson, .hud-br { display: none !important; }
+body.touch .tbtns { grid-template-columns: 96px; grid-template-rows: 96px; }
+body.touch .tb.act { width: 96px; height: 96px; font-size: 0.8rem; opacity: 1; }
+body.touch .tb.act.go { font-size: 0.72rem; }
+
 /* ---------- concepto ---------- */
 .concept-card { width: min(560px, 100%); padding: 30px 26px; border: 1px solid var(--gold); background: radial-gradient(ellipse at top, rgba(214,168,74,0.16), rgba(13,12,18,0.96) 70%); box-shadow: 0 0 80px rgba(214,168,74,0.18); text-align: center; animation: rise .5s ease-out; }
 .concept-card h2 { font-family: var(--display); font-weight: 400; font-size: clamp(2rem, 8vw, 3.2rem); margin: 8px 0 4px; color: var(--gold-bright); text-wrap: balance; letter-spacing: 0.04em; }
@@ -474,14 +504,14 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <div class="tips">
         <div class="tip"><b>Moverse y saltar</b><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> para caminar, ratón para mirar, <kbd>Mayús</kbd> para correr y <kbd>Espacio</kbd> para saltar. Corriendo saltas más lejos.</div>
         <div class="tip"><b>Las pruebas</b>Antes de cada pensador hay una prueba de su filosofía: el río de Tales, el fuego de Heráclito, la escalera armónica de Pitágoras… Si caes, vuelves a la última tierra firme con algo menos de razón.</div>
-        <div class="tip"><b>Lámpara de Diógenes</b>Clic izquierdo dispara luz contra las sombras del error. Cada sombra vencida suelta un fragmento de sabiduría.</div>
+        <div class="tip"><b>Conversar</b>Acércate a un filósofo y pulsa <kbd>E</kbd> (o «Hablar»): pregúntale quién es, cuál es su gran idea, escucha su lección o hazle tus propias preguntas.</div>
         <div class="tip"><b>Impulso</b><kbd>C</kbd> o <kbd>Ctrl</kbd>: un salto rápido en la dirección en que te mueves. Durante un instante eres invulnerable: úsalo para esquivar embestidas y proyectiles.</div>
-        <div class="tip"><b>Epojé</b><kbd>Q</kbd> o clic derecho: suspendes el juicio y liberas una onda que daña a todo lo cercano y disuelve proyectiles.</div>
-        <div class="tip"><b>Duelos</b>Acércate a un filósofo y pulsa <kbd>E</kbd>. Responde con clic o con <kbd>1</kbd>–<kbd>4</kbd>. Acertar quiebra su convicción; fallar daña tu razón.</div>
-        <div class="tip"><b>Comodines</b>Gasta fragmentos: <em>Mayéutica</em> elimina dos respuestas falsas; <em>Clepsidra</em> añade diez segundos.</div>
+        <div class="tip"><b>Descubrir</b>Los rombos dorados marcan lugares: el Partenón, el ágora, la Biblioteca de Alejandría… Cada uno te cuenta su historia y te da un fragmento de sabiduría.</div>
+        <div class="tip"><b>Debates</b>Desafía a un filósofo desde la conversación. Responde con clic o con <kbd>1</kbd>–<kbd>4</kbd>. Acertar quiebra su convicción; fallar daña tu razón.</div>
+        <div class="tip"><b>Comodines</b>Los fragmentos que ganas descubriendo lugares sirven en los debates: <em>Mayéutica</em> elimina dos respuestas falsas; <em>Clepsidra</em> añade diez segundos.</div>
         <div class="tip"><b>El camino</b>Cada época es una vía recta: los pensadores te esperan uno tras otro, en orden. Al vencer a cada uno se abre la puerta de luz hacia el siguiente. El marcador dorado y la barra de arriba te guían; tócalo (o pulsa <kbd>E</kbd>) para caminar solo hasta él.</div>
       </div>
-      <div class="tips" style="margin-top:14px"><div class="tip"><b>En el móvil</b>Pon el pulgar en cualquier punto de la mitad izquierda para moverte y desliza por la derecha para mirar. La lámpara dispara sola cuando apuntas a una sombra; también puedes mantener «Lámpara». Se juega mejor en horizontal.</div><div class="tip"><b>Rachas</b>Cada tres aciertos seguidos sube el multiplicador de sabiduría: ×2, ×3 y hasta ×4. Un fallo lo reinicia.</div></div>
+      <div class="tips" style="margin-top:14px"><div class="tip"><b>En el móvil</b>Pon el pulgar en la mitad izquierda para moverte, desliza por la derecha para mirar o <b>toca el suelo</b> para caminar hasta ese punto. El botón grande sirve para hablar y descubrir.</div><div class="tip"><b>Rachas</b>Cada tres aciertos seguidos sube el multiplicador de sabiduría: ×2, ×3 y hasta ×4. Un fallo lo reinicia.</div></div>
       <div class="btns"><button class="btn" data-back>Volver</button></div>
     </div>
   </section>
@@ -522,6 +552,34 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         </div>
         <button class="btn primary" id="d-next" hidden>Continuar</button>
       </footer>
+    </div>
+  </section>
+
+  <section id="talk" hidden>
+    <div class="lesson-card talk-card" role="dialog" aria-label="Conversación">
+      <header class="duel-head">
+        <div class="medal" id="tk-medal">Σ</div>
+        <div class="who"><h2 id="tk-name"></h2><p id="tk-meta"></p></div>
+        <button class="ls-x" id="tk-x" aria-label="Terminar la conversación">✕</button>
+      </header>
+      <p class="tk-you" id="tk-you"></p>
+      <p class="tk-text" id="tk-text" aria-live="polite"></p>
+      <div class="tk-ask" id="tk-ask" hidden>
+        <p class="tk-hint" id="tk-hint"></p>
+        <div class="tk-row"><input id="tk-in" maxlength="300" placeholder="Por ejemplo: ¿qué es para ti la felicidad?" autocomplete="off" aria-label="Tu pregunta"><button class="btn primary" id="tk-send">Preguntar</button></div>
+      </div>
+      <div class="tk-ops" id="tk-ops"></div>
+    </div>
+  </section>
+
+  <section id="place" hidden>
+    <div class="lesson-card place-card" role="dialog" aria-label="Lugar">
+      <div class="eyebrow" id="pl-era"></div>
+      <h2 class="pl-name" id="pl-name"></h2>
+      <p class="pl-text" id="pl-text"></p>
+      <div class="pl-fact"><b>Dato curioso</b><span id="pl-fact"></span></div>
+      <p class="pl-rew" id="pl-rew"></p>
+      <div class="ls-foot"><button class="aid" id="pl-read">Leer en voz alta</button><button class="btn primary" id="pl-ok">Seguir explorando</button></div>
     </div>
   </section>
 

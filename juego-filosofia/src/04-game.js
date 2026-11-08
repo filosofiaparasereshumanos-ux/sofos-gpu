@@ -153,7 +153,6 @@ window.addEventListener('keydown', (e) => {
   if (G.state === 'oracle') { Oracle.key(e); return; }
   if (G.state === 'play') {
     if (e.code === 'KeyE' || e.code === 'KeyF') tryInteract();
-    if (e.code === 'KeyQ') epoje();
     if (e.code === 'KeyL') tryLesson();
     if (e.code === 'KeyC' || e.code === 'ControlLeft') input.dashReq = true;
     if (e.code === 'KeyP' || (e.code === 'Escape' && !input.locked)) pauseGame();
@@ -172,7 +171,7 @@ window.addEventListener('blur', () => { input.keys = {}; input.fire = false; });
 renderer.domElement.addEventListener('mousedown', (e) => {
   if (G.state !== 'play' || IS_TOUCH) return;
   if (!input.locked && !G.noLock) { lockPointer(); return; }
-  if (e.button === 0) { input.fire = true; input.drag = true; }
+  if (e.button === 0) { input.drag = true; }
   if (e.button === 2) epoje();
 });
 window.addEventListener('mouseup', (e) => { if (e.button === 0) { input.fire = false; input.drag = false; } });
@@ -212,7 +211,11 @@ function setupTouch() {
   }, { passive: false });
   const end = (e) => { for (const t of e.changedTouches) { if (t.identifier === joyId) { joyId = null; input.joy.x = input.joy.y = 0; home(); } lookTouches.delete(t.identifier); } };
   window.addEventListener('touchend', end); window.addEventListener('touchcancel', end);
-  renderer.domElement.addEventListener('touchstart', (e) => { if (G.state !== 'play') return; for (const t of e.changedTouches) lookTouches.set(t.identifier, { x: t.clientX, y: t.clientY }); }, { passive: true });
+  renderer.domElement.addEventListener('touchstart', (e) => { if (G.state !== 'play') return; for (const t of e.changedTouches) lookTouches.set(t.identifier, { x: t.clientX, y: t.clientY, x0: t.clientX, y0: t.clientY, t0: performance.now() }); }, { passive: true });
+  renderer.domElement.addEventListener('touchend', (e) => {
+    if (G.state !== 'play') return;
+    for (const t of e.changedTouches) { const p = lookTouches.get(t.identifier); if (p && performance.now() - p.t0 < 280 && Math.hypot(t.clientX - p.x0, t.clientY - p.y0) < 12) walkToScreen(t.clientX, t.clientY); }
+  }, { passive: true });
   const hold = (id, on, off) => {
     const b = $(id);
     b.addEventListener('touchstart', (e) => { e.preventDefault(); e.stopPropagation(); b.classList.add('down'); on(); }, { passive: false });
@@ -229,6 +232,17 @@ function setupTouch() {
   if (FS_OK) { $('#tfs').hidden = false; $('#tfs').addEventListener('click', toggleFS); }
 }
 
+// tocar el suelo: caminar hasta ese punto (o hablar si tocas a un pensador o un lugar)
+const _ray = new THREE.Raycaster(), _ndc = new THREE.Vector2(), _plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), _hit = new THREE.Vector3();
+function walkToScreen(cx, cy) {
+  const r = renderer.domElement.getBoundingClientRect(); _ndc.set(((cx - r.left) / r.width) * 2 - 1, -((cy - r.top) / r.height) * 2 + 1);
+  _ray.setFromCamera(_ndc, camera);
+  if (!_ray.ray.intersectPlane(_plane, _hit)) return;
+  const d = _hit.distanceTo(player.pos); if (d > 45) return;
+  input.walk = { x: clamp(_hit.x, ARENA.x0 + 1, ARENA.x1 - 1), z: clamp(_hit.z, ARENA.z0 + 1, ARENA.z1 - 1), t: 12 }; input.auto = false;
+  if (!world.walkMark) { world.walkMark = mesh(new THREE.RingGeometry(0.3, 0.45, 28), glow(0xffffff, 2, { transparent: true, opacity: 0.8, side: THREE.DoubleSide }), 0, 0.05, 0, false, false); world.walkMark.rotation.x = -Math.PI / 2; world.group.add(world.walkMark); }
+  world.walkMark.position.set(input.walk.x, 0.05, input.walk.z); world.walkMark.visible = true; Audio.click();
+}
 function forwardVec(out = new THREE.Vector3()) { return out.set(-Math.sin(player.yaw) * Math.cos(player.pitch), Math.sin(player.pitch), -Math.cos(player.yaw) * Math.cos(player.pitch)); }
 const _v1 = new THREE.Vector3(), _v2 = new THREE.Vector3(), _v3 = new THREE.Vector3();
 
@@ -279,7 +293,7 @@ function updatePlayer(dt) {
   let mx = 0, mz = 0;
   if (k.KeyW || k.ArrowUp) mz -= 1; if (k.KeyS || k.ArrowDown) mz += 1; if (k.KeyA) mx -= 1; if (k.KeyD) mx += 1;
   mx += input.joy.x; mz += input.joy.y;
-  if (Math.abs(mx) + Math.abs(mz) > 0.05 || Math.abs(lx) + Math.abs(ly) > 0.02) input.auto = false; // el control manual cancela el paseo
+  if (Math.abs(mx) + Math.abs(mz) > 0.05 || Math.abs(lx) + Math.abs(ly) > 0.02) { input.auto = false; if (Math.abs(mx) + Math.abs(mz) > 0.05) input.walk = null; } // el control manual cancela el paseo
   const aw = autoWalkDir(dt); if (aw) { mx = aw.mx; mz = aw.mz; }
   const ml = Math.hypot(mx, mz); if (ml > 1) { mx /= ml; mz /= ml; }
   const sprint = k.ShiftLeft || k.ShiftRight || (IS_TOUCH && ml > 0.95);
@@ -353,9 +367,9 @@ function updatePlayer(dt) {
   const portrait = camera.aspect < 1; lamp.scale.setScalar(portrait ? 0.5 : 0.72); if (portrait) lamp.position.x -= 0.05;
   // disparo
   player.fireCd -= dt; player.epojeCd -= dt;
-  const auto = IS_TOUCH && G.settings.autofire ? aimTarget(6) : null;
+  const auto = null;
   if (IS_TOUCH) { const fb = $('#t-fire'); if (!!auto !== fb._auto) { fb._auto = !!auto; fb.classList.toggle('auto', !!auto); } }
-  if ((input.fire || auto) && player.fireCd <= 0) fireLamp();
+  // viaje de conocimiento: la lámpara solo ilumina
 }
 const _a1 = new THREE.Vector3(), _a2 = new THREE.Vector3();
 function aimTarget(maxDeg) {
@@ -406,7 +420,8 @@ function disposeWorld() {
 }
 function loadWorld(idx) {
   disposeWorld();
-  world = buildWorld(idx); scene.add(world.group); player.safe.copy(world.start); $('#trialcard').hidden = true;
+  world = buildWorld(idx); scene.add(world.group); player.safe.copy(world.start); $('#trialcard').hidden = true; input.walk = null;
+  { const f = new Set(store.get('odisea-razon.lugares', [])); for (const p of world.pois || []) if (f.has(p.id)) markPoiFound(p); }
   const th = world.theme;
   scene.fog = new THREE.FogExp2(th.fog[0], th.fog[1]);
   scene.background = new THREE.Color(th.sky[1]);
@@ -435,6 +450,7 @@ function spawnFromPoints(n) {
   shuffle(cands); for (let i = 0; i < n && i < cands.length; i++) director.queue.push({ pos: cands[i].clone(), t: i * 0.35 });
 }
 function updateDirector(dt) {
+  return; // sin enemigos: este es un viaje de conocimiento
   for (let i = director.queue.length - 1; i >= 0; i--) { const q = director.queue[i]; q.t -= dt; if (q.t <= 0) { spawnEnemy(q.pos, q.summoned); director.queue.splice(i, 1); } }
   const alive = enemies.filter((e) => !e.summoned).length;
   director.timer -= dt;
@@ -569,6 +585,14 @@ function currentTarget() {
 }
 function autoWalkDir(dt) {
   // devuelve el movimiento (en ejes de cámara) para caminar hacia el objetivo, o null
+  if (input.walk) {
+    const dx = input.walk.x - player.pos.x, dz = input.walk.z - player.pos.z; const d = Math.hypot(dx, dz);
+    if (d < 0.6 || (input.walk.t -= dt) < 0) { input.walk = null; if (world.walkMark) world.walkMark.visible = false; return null; }
+    const want = Math.atan2(-dx, -dz); let dyw = want - player.yaw; while (dyw > Math.PI) dyw -= TAU; while (dyw < -Math.PI) dyw += TAU;
+    player.yaw += dyw * Math.min(1, dt * 4);
+    const sy = Math.sin(player.yaw), cy = Math.cos(player.yaw); const ux = dx / d, uz = dz / d;
+    return { mx: ux * cy - uz * sy, mz: ux * sy + uz * cy };
+  }
   if (!input.auto) return null;
   let tg = currentTarget(); if (!tg) { input.auto = false; return null; }
   const tr = world.trials.find((t) => !t.done && player.pos.z > t.zE);
@@ -708,15 +732,11 @@ function respawnPlayer(kind, tr) {
 }
 function regularsLeft() { return sages.filter((s) => !s.boss && s.state !== 'defeated').length; }
 function updatePrompt() {
-  const s = nearestSage(); const el = $('#prompt'); const ch = $('#crosshair');
+  const th = nearestThing(); const s = th && th.sage; const el = $('#prompt'); const ch = $('#crosshair');
   const tact = $('#t-act');
   let txt = '', can = false;
-  if (s) {
-    if (s.state === 'idle') { txt = IS_TOUCH ? `Desafiar a <b>${s.data.short}</b> o escuchar su lección` : `<b>E</b> · Desafiar a ${s.data.short} &nbsp;·&nbsp; <b>L</b> · Escuchar su lección`; can = true; }
-    else if (s.state === 'sealed') { const n = regularsLeft(); txt = `Vence antes a ${n === 1 ? 'otro pensador' : n + ' pensadores'}`; }
-    else if (s.state === 'shielded') txt = `Destruye a ${s.boss ? 'los ' + ERAS[G.eraIdx].enemy.many : 'sus defensores'}`;
-    else if (s.state === 'defeated') txt = `${s.data.short} · <b>${s.data.concept.name}</b>${IS_TOUCH ? '' : ' &nbsp;·&nbsp; <b>L</b> · Su lección'}`;
-  }
+  if (s) { txt = IS_TOUCH ? `Hablar con <b>${s.data.short}</b>` : `<b>E</b> · Hablar con ${s.data.short}`; can = true; }
+  else if (th && th.poi) { txt = IS_TOUCH ? `Descubrir: <b>${th.poi.name}</b>` : `<b>E</b> · Descubrir: ${th.poi.name}`; can = true; }
   const tg = currentTarget();
   if (!txt) {
     const gate = world.gates && world.gates.find((g) => !g.open && Math.abs(player.pos.z - g.z) < 3.5);
@@ -726,7 +746,7 @@ function updatePrompt() {
   ch.classList.toggle('talk', can);
   const tl = $('#t-lesson'); const showL = !!(s && (s.state === 'idle' || s.state === 'defeated')); if (tl && tl._on !== showL) { tl._on = showL; tl.hidden = !showL; }
   if (tact) {
-    const label = can ? 'Desafiar' : input.auto ? 'Caminando…' : tg ? 'Ir a ' + tg.name.split(' ')[0] : 'Desafiar';
+    const label = s ? 'Hablar' : can ? 'Descubrir' : input.auto ? 'Caminando…' : tg ? 'Ir a ' + tg.name.split(' ')[0] : 'Explorar';
     if (tact._label !== label) { tact._label = label; tact.textContent = label; }
     const st = can ? 'ready' : tg ? 'go' : '';
     if (tact._st !== st) { tact._st = st; tact.classList.toggle('ready', st === 'ready'); tact.classList.toggle('go', st === 'go'); }
@@ -750,11 +770,22 @@ function updateTargetMarker(tg, near) {
   const ang = Math.atan2(y - H / 2, x - W / 2); el.style.setProperty('--ang', ang + 'rad');
   const txt = `${tg.letter}|${tg.name}|${Math.round(d)}`; if (el._t !== txt) { el._t = txt; $('#tg-l').textContent = tg.letter; $('#tg-n').textContent = tg.name; $('#tg-d').textContent = Math.round(d) + ' m'; }
 }
+function nearestPoi() {
+  let best = null, bd = 3.2;
+  for (const p of world.pois || []) { const d = Math.hypot(p.at[0] - player.pos.x, p.at[1] - player.pos.z); if (d < bd) { bd = d; best = p; } }
+  return best;
+}
+// lo más cercano con lo que se puede interactuar: un pensador o un lugar
+function nearestThing() {
+  const s = nearestSage(); const p = nearestPoi();
+  if (s && p) return Math.hypot(s.pos.x - player.pos.x, s.pos.z - player.pos.z) - s.radius < Math.hypot(p.at[0] - player.pos.x, p.at[1] - player.pos.z) ? { sage: s } : { poi: p };
+  return s ? { sage: s } : p ? { poi: p } : null;
+}
 function tryInteract() {
-  const s = nearestSage();
-  if (!s || s.state === 'defeated') { if (currentTarget()) { input.auto = !input.auto; if (input.auto) Audio.click(); } return; }
-  if (s.state === 'idle') Duel.start(s);
-  else if (s.state === 'sealed') toast(`${s.data.short}: «Primero demuestra tu valía ante los demás.»`);
+  const t = nearestThing();
+  if (!t) { if (currentTarget()) { input.auto = !input.auto; input.walk = null; if (input.auto) Audio.click(); } return; }
+  if (t.poi) return Places.open(t.poi);
+  if (t.sage.state !== 'shielded') Talk.open(t.sage);
 }
 $('#target').addEventListener('click', (e) => { e.stopPropagation(); if (G.state !== 'play') return; input.auto = !input.auto; Audio.click(); buzz(10); });
 function updatePortal(dt) {
@@ -974,11 +1005,9 @@ function closeConcept() {
     toast(s.data.final ? 'Se abre el último portal: la salida de la caverna.' : 'Se abre el portal hacia la siguiente época.');
   } else {
     const left = regularsLeft();
-    openGate(world, s.idx); Audio.portal(); player.shake = 0.3;
-    const nx = sages[s.idx + 1];
-    if (left === 0) { const b = sages.find((x) => x.boss); b.state = 'idle'; toast(`Se abre el último paso: ${b.data.short}, el maestro, te espera.`); }
-    else toast(`Se abre el camino hacia ${nx.data.short}. Quedan ${left} antes del maestro.`);
-    spawnFromPoints(2 + Math.floor(G.eraIdx / 2));
+    const nx = sages.find((x) => !x.boss && x.state !== 'defeated');
+    if (left === 0) { const b = sages.find((x) => x.boss); b.state = 'idle'; Audio.portal(); toast(`${b.data.short}, el maestro de esta época, ya puede recibirte.`); }
+    else toast(`Bien hecho. Te esperan ${left === 1 ? 'otro pensador' : left + ' pensadores'} más: ${nx.data.short} es el siguiente.`);
   }
   updateHud();
 }
@@ -1008,8 +1037,10 @@ function updateHud() {
   let obj;
   if (world.portal.open) obj = 'Cruza el portal del fondo.';
   else if (boss.state === 'shielded') obj = `Destruye a los ${era.enemy.many} que protegen a ${boss.data.short}.`;
-  else if (left > 0) obj = `Desafía a los pensadores: quedan ${left}.`;
-  else obj = `Desafía a ${boss.data.short}, el maestro de esta época.`;
+  else {
+    const pf = world.pois ? world.pois.filter((p) => p.found).length : 0, pt = world.pois ? world.pois.length : 0;
+    obj = (left > 0 ? `Habla y debate con los pensadores: quedan ${left}.` : `Debate con ${boss.data.short}, el maestro de esta época.`) + ` Lugares: ${pf}/${pt}.`;
+  }
   $('#h-obj').textContent = obj;
   buildPathHud();
 }
@@ -1074,8 +1105,8 @@ function enterEra() {
   hideAll(); G.state = 'play'; $('#hud').hidden = false; if (IS_TOUCH) $('#touch').hidden = false;
   input.keys = {}; lockPointer(); updateHud(); keepAwake();
   if (G.eraIdx === 0) {
-    toast(IS_TOUCH ? 'Acércate a un filósofo y toca «Desafiar».' : 'Acércate a un filósofo y pulsa E para desafiarlo.');
-    toast(IS_TOUCH ? 'La lámpara dispara sola cuando apuntas a una Quimera del Mito.' : 'Dispara la lámpara con clic contra las Quimeras del Mito.');
+    toast(IS_TOUCH ? 'Mueve el joystick o toca el suelo para caminar.' : 'Camina con WASD y mira con el ratón.');
+    toast(IS_TOUCH ? 'Acércate a un filósofo y toca «Hablar». Los rombos dorados son lugares para descubrir.' : 'Acércate a un filósofo y pulsa E para hablar. Los rombos dorados son lugares para descubrir.');
   } else toast(`Llegas a ${ERAS[G.eraIdx].place}.`);
 }
 function pauseGame() {
@@ -1132,6 +1163,19 @@ function renderCodex() {
     });
     sec.appendChild(grid); body.appendChild(sec);
   });
+  // lugares descubiertos
+  const found = new Set(store.get('odisea-razon.lugares', []));
+  const sec = document.createElement('div'); sec.className = 'codex-era';
+  const h = document.createElement('h3'); h.textContent = `Lugares descubiertos · ${POIS.flat().filter((p) => found.has(p.id)).length} de ${POIS.flat().length}`; sec.appendChild(h);
+  const grid = document.createElement('div'); grid.className = 'codex-grid';
+  POIS.forEach((list, ei) => list.forEach((p) => {
+    const ok = found.has(p.id); const c = document.createElement('div'); c.className = 'cc' + (ok ? '' : ' locked');
+    const h4 = document.createElement('h4'); h4.textContent = ok ? p.name : '· · ·';
+    const by = document.createElement('div'); by.className = 'by'; by.textContent = `${ERAS[ei].num} · ${ERAS[ei].name}`;
+    const t = document.createElement('p'); t.textContent = ok ? p.fact : 'Busca el rombo dorado en esta época para descubrir este lugar.';
+    c.append(h4, by, t); grid.appendChild(c);
+  }));
+  sec.appendChild(grid); body.appendChild(sec);
   $('#cx-count').textContent = `${have} de ${total} conceptos comprendidos`;
 }
 function openSub(id) { G.prevScreen = SCREENS.find((s) => !$('#' + s).hidden) || 'title'; if (id === 'codex') renderCodex(); if (id === 'settings') syncSettings(); show(id); }
@@ -1212,11 +1256,13 @@ function frame() {
   else if (G.state === 'duel') { Duel.update(dt); updateSages(dt, true); }
   else if (G.state === 'oracle') { Oracle.update(raw); titleCam(); }
   else if (G.state === 'lesson') { Lesson.update(raw); updateSages(dt, true); }
+  else if (G.state === 'talk') { Talk.update(raw); updateSages(dt, true); }
+  else if (G.state === 'place') { updateSages(dt, false); }
   else if (G.state === 'victory') { updateSages(dt, true); camera.fov = damp(camera.fov, baseFov() * 0.62, 2, raw); camera.updateProjectionMatrix(); if (performance.now() >= Duel.vicEnd) Duel.showConcept(); }
   else if (world && (G.state === 'title' || G.state === 'intro' || G.state === 'ending')) { titleCam(); updateSages(dt, false); }
-  if (world && ['play', 'duel', 'title', 'intro', 'oracle', 'victory', 'ending'].includes(G.state)) ambientMotes(raw);
+  if (world && ['play', 'duel', 'title', 'intro', 'oracle', 'victory', 'ending', 'talk', 'place', 'lesson'].includes(G.state)) ambientMotes(raw);
   G.hurtFx = Math.max(0, (G.hurtFx || 0) - raw * 2.5); grade.uniforms.hurt.value = G.hurtFx; grade.uniforms.time.value = tAcc % 100;
-  if (G.state === 'play' || G.state === 'duel' || G.state === 'victory') lamp.visible = true;
+  if (['play', 'duel', 'victory', 'talk', 'place', 'lesson'].includes(G.state)) lamp.visible = true;
   // llama de la lámpara
   const fl = lamp.userData.flame; fl.scale.set(1 + Math.sin(tAcc * 23) * 0.08, 1.6 + Math.sin(tAcc * 17) * 0.2, 1);
   lamp.userData.light.intensity = (world && (world.theme.indoor || world.theme.stars) ? 5 : 2.5) * (0.9 + Math.sin(tAcc * 19) * 0.1);
