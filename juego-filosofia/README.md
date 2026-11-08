@@ -37,6 +37,14 @@ ejes cartesianos de Descartes, las bolas de billar de Hume, el cielo estrellado 
   claude.ai, con base de datos compartida). Cada jugador elige su nombre de filósofo.
 - **16 logros**: Mayéutica perfecta, Rayo de razón, Fuera de la caverna, Elegido de Apolo…
 
+## El camino
+
+Cada época es una **vía recta**: los pensadores esperan uno tras otro sobre el camino, en orden
+cronológico (Tales → Pitágoras → Heráclito → Parménides…). Entre uno y otro hay una **puerta de luz**
+que se abre al vencer al pensador que la custodia. Un marcador dorado con la distancia y una
+columna de luz señalan al siguiente; tócalo (o pulsa `E`) para caminar solo hasta él. Arriba,
+una barra muestra el recorrido de la época y tu posición.
+
 ## Mecánicas
 
 - **Exploración y combate (FPS):** `WASD` para moverte, ratón para mirar, clic para disparar la

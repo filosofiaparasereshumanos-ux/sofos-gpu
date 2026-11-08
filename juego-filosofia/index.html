@@ -106,7 +106,28 @@ kbd { font-family: var(--display); font-size: 0.78em; border: 1px solid var(--li
 .epoje span { font-family: var(--display); font-size: 0.62rem; letter-spacing: 0.1em; }
 .epoje.ready { border-color: var(--gold); box-shadow: 0 0 16px rgba(214,168,74,0.4); }
 .epoje-l { font-size: 0.85rem; color: var(--parchment-dim); text-shadow: 0 1px 4px #000; text-align: right; }
-#guardians { position: absolute; left: 50%; transform: translateX(-50%); bottom: calc(16px + var(--sab)); display: flex; gap: 8px; }
+/* ---------- el camino ---------- */
+#path { position: absolute; left: 50%; transform: translateX(-50%); top: calc(76px + var(--sat)); width: min(560px, calc(100% - 32px)); display: flex; align-items: center; gap: 12px; }
+.p-era { font-family: var(--display); color: var(--gold); font-size: 0.95rem; min-width: 1.6em; text-align: center; text-shadow: 0 1px 4px #000; }
+.track { position: relative; flex: 1; height: 3px; background: rgba(239,227,198,0.22); margin: 0 14px 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.6); }
+.track .fill { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, #b8862e, var(--gold-bright)); transition: width .8s; }
+.node { position: absolute; top: 50%; transform: translate(-50%, -50%); display: grid; justify-items: center; }
+.node b { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-weight: 400; font-size: 0.78rem; background: rgba(13,12,18,0.85); border: 1px solid rgba(239,227,198,0.4); color: var(--parchment-dim); }
+.node span { position: absolute; top: 28px; font-family: var(--display); font-size: 0.62rem; letter-spacing: 0.08em; white-space: nowrap; color: var(--parchment-dim); text-shadow: 0 1px 3px #000; }
+.node.boss b { width: 30px; height: 30px; border-color: var(--gold); }
+.node.done b { background: radial-gradient(circle, #ffe8a8, var(--gold)); color: #1a1408; border-color: var(--gold-bright); }
+.node.now b { border-color: var(--gold-bright); color: var(--gold-bright); box-shadow: 0 0 0 0 rgba(255,211,106,0.6); animation: pulse 1.3s infinite; }
+.node.now span { color: var(--gold-bright); }
+.track .me { position: absolute; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; background: #fff; transform: rotate(45deg); box-shadow: 0 0 10px rgba(255,255,255,0.9); transition: left .15s linear; z-index: 2; }
+/* marcador del siguiente pensador */
+#target { position: absolute; left: 0; top: 0; pointer-events: auto; display: flex; align-items: center; gap: 8px; margin: -22px 0 0 -22px; padding: 0 12px 0 0; background: rgba(13,12,18,0.7); border: 1px solid var(--gold); border-radius: 24px; color: var(--parchment); cursor: pointer; font: inherit; will-change: transform; }
+#target .tg-l { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-size: 1.1rem; color: #1a1408; background: radial-gradient(circle at 35% 30%, #fff1c4, var(--gold) 60%, #8a6320); box-shadow: 0 0 18px rgba(255,211,106,0.6); }
+#target .tg-t { display: grid; text-align: left; line-height: 1.1; }
+#target b { font-family: var(--display); font-weight: 400; font-size: 0.85rem; letter-spacing: 0.06em; }
+#target small { font-size: 0.85rem; color: var(--gold-bright); font-variant-numeric: tabular-nums; }
+#target .tg-arrow { display: none; position: absolute; left: 20px; top: 20px; width: 0; height: 0; border: 7px solid transparent; border-left: 11px solid var(--gold-bright); transform: rotate(var(--ang)) translateX(26px); transform-origin: 0 0; margin: -7px 0 0 0; }
+#target.edge .tg-arrow { display: block; }
+#target.edge { opacity: 0.9; }
 .gm { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: rgba(0,0,0,0.5); display: grid; place-items: center; font-family: var(--display); font-size: 0.95rem; color: var(--parchment-dim); }
 .gm.boss { width: 40px; height: 40px; border-color: var(--gold); }
 .gm.done { background: radial-gradient(circle, rgba(255,211,106,0.45), rgba(214,168,74,0.15)); color: #1a1408; border-color: var(--gold-bright); }
@@ -227,6 +248,7 @@ input[type=range] { width: 100%; accent-color: var(--gold); }
 .tb.fire { width: 100px; height: 100px; grid-column: 2; grid-row: 2 / span 2; border-color: var(--gold); background: radial-gradient(circle, rgba(255,211,106,0.32), rgba(214,168,74,0.12)); box-shadow: 0 0 22px rgba(214,168,74,0.3); font-size: 0.75rem; }
 .tb.fire.auto { box-shadow: 0 0 30px rgba(255,211,106,0.75); border-color: var(--gold-bright); }
 .tb.act { color: var(--gold-bright); border-color: var(--gold); opacity: 0.35; }
+.tb.act.go { opacity: 0.95; color: var(--parchment); font-size: 0.6rem; }
 .tb.act.ready { opacity: 1; animation: pulse 1.1s ease-in-out infinite; background: rgba(214,168,74,0.28); }
 @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(255,211,106,0.6); } 50% { box-shadow: 0 0 0 12px rgba(255,211,106,0); } }
 #tfs { position: absolute; top: calc(64px + var(--sat)); right: calc(64px + var(--sar)); width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: rgba(13,12,18,0.45); pointer-events: auto; font-size: 1.1rem; line-height: 1; color: var(--parchment); }
@@ -311,8 +333,12 @@ input[type=range] { width: 100%; accent-color: var(--gold); }
 @keyframes flash { 0% { opacity: 0.95; } 100% { opacity: 0; } }
 body.touch .hud-bl { bottom: calc(14px + var(--sab)); width: min(220px, 40vw); }
 body.touch .hud-br { display: none; }
-body.touch #toasts { top: calc(112px + var(--sat)); width: min(520px, 84vw); }
-body.touch #guardians { bottom: calc(14px + var(--sab)); left: auto; right: calc(16px + var(--sar)); transform: none; }
+body.touch #toasts { top: calc(140px + var(--sat)); width: min(520px, 84vw); }
+#toasts { top: calc(124px + var(--sat)) !important; }
+body.touch #tfs, body.touch #tpause { top: calc(12px + var(--sat)); }
+body.touch .hud-tr { right: calc(116px + var(--sar)); }
+body.touch .toast { font-size: 0.92rem; padding: 6px 12px; }
+@media (max-width: 760px) { .node span { display: none; } .node.now span { display: block; } }
 body.touch .gm { width: 26px; height: 26px; font-size: 0.75rem; }
 body.touch .gm.boss { width: 30px; height: 30px; }
 
@@ -366,7 +392,8 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <div class="epoje-l"><kbd>Q</kbd> o clic derecho<br>Epojé</div>
       <div class="epoje" id="h-epoje"><svg width="56" height="56" viewBox="0 0 56 56"><circle id="h-epoje-c" cx="28" cy="28" r="26" fill="none" stroke="#ffd36a" stroke-width="2" stroke-dasharray="163.4" stroke-dashoffset="0"></circle></svg><span>ἐποχή</span></div>
     </div>
-    <div id="guardians"></div>
+    <div id="path"><span class="p-era" id="p-era">I</span><div class="track"><i class="fill" id="p-fill"></i><div id="p-nodes"></div><i class="me" id="p-me"></i></div></div>
+    <button id="target" hidden><span class="tg-l" id="tg-l"></span><span class="tg-t"><b id="tg-n"></b><small id="tg-d"></small></span><i class="tg-arrow"></i></button>
   </div>
   <div id="vignette"></div>
   <div id="lowhp"></div>
@@ -423,7 +450,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <div class="tip"><b>Epojé</b><kbd>Q</kbd> o clic derecho: suspendes el juicio y liberas una onda que daña a todo lo cercano y disuelve proyectiles.</div>
         <div class="tip"><b>Duelos</b>Acércate a un filósofo y pulsa <kbd>E</kbd>. Responde con clic o con <kbd>1</kbd>–<kbd>4</kbd>. Acertar quiebra su convicción; fallar daña tu razón.</div>
         <div class="tip"><b>Comodines</b>Gasta fragmentos: <em>Mayéutica</em> elimina dos respuestas falsas; <em>Clepsidra</em> añade diez segundos.</div>
-        <div class="tip"><b>Avanzar</b>Vence a los pensadores de cada etapa para romper el sello del maestro final. Al derrotarlo se abre el portal a la siguiente época.</div>
+        <div class="tip"><b>El camino</b>Cada época es una vía recta: los pensadores te esperan uno tras otro, en orden. Al vencer a cada uno se abre la puerta de luz hacia el siguiente. El marcador dorado y la barra de arriba te guían; tócalo (o pulsa <kbd>E</kbd>) para caminar solo hasta él.</div>
       </div>
       <div class="tips" style="margin-top:14px"><div class="tip"><b>En el móvil</b>Pon el pulgar en cualquier punto de la mitad izquierda para moverte y desliza por la derecha para mirar. La lámpara dispara sola cuando apuntas a una sombra; también puedes mantener «Lámpara». Se juega mejor en horizontal.</div><div class="tip"><b>Rachas</b>Cada tres aciertos seguidos sube el multiplicador de sabiduría: ×2, ×3 y hasta ×4. Un fallo lo reinicia.</div></div>
       <div class="btns"><button class="btn" data-back>Volver</button></div>
@@ -1788,9 +1815,10 @@ function newWorld(idx) {
     spawns: [],
   };
 }
+// El camino: los pensadores esperan uno tras otro sobre la vía central, en orden cronológico
 function stationPositions(n) {
-  if (n === 3) return [[-13, 14], [13, 0], [-13, -14]];
-  return [[-13, 19], [13, 8], [-13, -4], [13, -15]];
+  if (n === 3) return [[0, 19], [0, 6], [0, -8]];
+  return [[0, 22], [0, 11], [0, 0], [0, -11]];
 }
 function addBounds(W) {
   const { x0, x1, z0, z1 } = ARENA, T = 4;
@@ -1877,8 +1905,8 @@ const ERA_BUILDERS = [
     const r = mulberry32(22);
     for (const side of [-1, 1]) for (const z of [24, 6, -12]) { const s = statue(marble, r); s.position.set(side * 7.5, 0, z); s.rotation.y = -side * Math.PI / 2; W.group.add(s); W.colliders.push({ t: 0, x0: side * 7.5 - 0.7, x1: side * 7.5 + 0.7, z0: z - 0.7, z1: z + 0.7, h: 4 }); }
     // altar central
-    addBox(W, 2.6, 1, 1.6, marble, 0, 0.5, 18);
-    W.emitters.push({ x: 0, y: 1.1, z: 18, col: 0xffa040, rate: 10, acc: 0, kind: 'flame' });
+    addBox(W, 2.6, 1, 1.6, marble, -15, 0.5, 16);
+    W.emitters.push({ x: -15, y: 1.1, z: 16, col: 0xffa040, rate: 10, acc: 0, kind: 'flame' });
     // Partenón
     const tmp = templeFacade(8, 'doric', marble, cap, 9.5); tmp.position.set(0, 0, -54); W.group.add(tmp);
     brazier(W, -5, -36, 0xff9a40); brazier(W, 5, -36, 0xff9a40);
@@ -1909,7 +1937,7 @@ const ERA_BUILDERS = [
     arch.position.set(0, 0, -51); W.group.add(arch);
     const r = mulberry32(33);
     for (let i = 0; i < 10; i++) { const x = (i % 2 ? -1 : 1) * (16.5 + r() * 1.5), z = -40 + i * 7.5; if (W._near(x, z, 4)) continue; const c = cypress(5 + r() * 3); c.position.set(x, 0, z); W.group.add(c); W.colliders.push({ t: 1, x, z, r: 0.7, h: 6 }); }
-    brazier(W, -4, -36, 0xff7040); brazier(W, 4, -36, 0xff7040); brazier(W, 0, 24, 0xff7040); brazier(W, -10, 5, 0xff7040, false); brazier(W, 10, -9, 0xff7040, false);
+    brazier(W, -4, -36, 0xff7040); brazier(W, 4, -36, 0xff7040); brazier(W, 4, 30, 0xff7040); brazier(W, -10, 5, 0xff7040, false); brazier(W, 10, -9, 0xff7040, false);
   },
   // ------------------------------------------------------------------ IV
   function (W) {
@@ -1988,13 +2016,13 @@ const ERA_BUILDERS = [
     duomo.add(mesh(new THREE.SphereGeometry(0.45, 12, 8), std(0xd6a84a, { metalness: 1, roughness: 0.3 }), 0, 29.7, 0));
     duomo.position.set(0, 0, -58); W.group.add(duomo);
     // fuente
-    const f = new THREE.Group(); f.position.set(0, 0, 9);
+    const f = new THREE.Group(); f.position.set(-15, 0, 26);
     f.add(mesh(new THREE.CylinderGeometry(3, 3.2, 0.8, 24), white, 0, 0.4, 0));
     f.add(mesh(new THREE.CylinderGeometry(2.7, 2.7, 0.1, 24), std(0x3a7aa8, { roughness: 0.05, metalness: 0.4 }), 0, 0.72, 0, false));
     f.add(mesh(new THREE.CylinderGeometry(0.3, 0.45, 2.5, 10), white, 0, 1.6, 0));
     f.add(mesh(new THREE.CylinderGeometry(1.1, 0.4, 0.4, 16), white, 0, 2.9, 0));
-    W.group.add(f); W.colliders.push({ t: 1, x: 0, z: 9, r: 3.3, h: 1 });
-    W.emitters.push({ x: 0, y: 3.1, z: 9, col: 0xbfe4ff, rate: 22, acc: 0, kind: 'water' });
+    W.group.add(f); W.colliders.push({ t: 1, x: -15, z: 26, r: 3.3, h: 1 });
+    W.emitters.push({ x: -15, y: 3.1, z: 26, col: 0xbfe4ff, rate: 22, acc: 0, kind: 'water' });
     const r = mulberry32(55);
     for (const [x, z] of [[-12, 30], [12, 30], [-12, -30], [12, -30]]) { const s = statue(std(0xf4f0e8, { roughness: 0.45 }), r); s.position.set(x, 0, z); W.group.add(s); W.colliders.push({ t: 0, x0: x - 0.7, x1: x + 0.7, z0: z - 0.7, z1: z + 0.7, h: 4 }); }
     brazier(W, -4, -36, 0xffb060, true); brazier(W, 4, -36, 0xffb060, true);
@@ -2024,7 +2052,7 @@ const ERA_BUILDERS = [
       W.group.add(mesh(new THREE.SphereGeometry(0.22, 12, 8), glow(0xffc070, 4), side * 7.5, 4.9, z, false, false));
     }
     // planetario mecánico central
-    const orr = new THREE.Group(); orr.position.set(0, 0, 8);
+    const orr = new THREE.Group(); orr.position.set(-15, 0, 4);
     const brass = std(0xc8a050, { metalness: 0.9, roughness: 0.3 });
     orr.add(mesh(new THREE.CylinderGeometry(1.4, 1.8, 1.2, 16), wood, 0, 0.6, 0));
     orr.add(mesh(new THREE.CylinderGeometry(0.1, 0.1, 2, 8), brass, 0, 2.2, 0));
@@ -2037,8 +2065,8 @@ const ERA_BUILDERS = [
       orr.add(arm); planets.push([arm, sp]);
     });
     W.anim.push((t, dt) => planets.forEach(([a, sp]) => (a.rotation.y += sp * dt * 0.5)));
-    W.group.add(orr); W.colliders.push({ t: 1, x: 0, z: 8, r: 2, h: 4 });
-    const l = new THREE.PointLight(0xffc070, 30, 18, 2); l.position.set(0, 3.4, 8); W.group.add(l); W.lightBudget--;
+    W.group.add(orr); W.colliders.push({ t: 1, x: -15, z: 4, r: 2, h: 4 });
+    const l = new THREE.PointLight(0xffc070, 30, 18, 2); l.position.set(-15, 3.4, 4); W.group.add(l); W.lightBudget--;
     // telescopio al norte
     const tel = new THREE.Group(); tel.position.set(0, 0, -45);
     tel.add(mesh(new THREE.CylinderGeometry(3.5, 4, 1.2, 24), wood, 0, 0.6, 0));
@@ -2080,9 +2108,11 @@ function buildWorld(idx) {
   if (!th.indoor && idx !== 5) addClouds(W, idx);
   if (idx === 0 || idx === 2) addGrass(W, idx, sp);
   // estaciones de los filósofos
-  regs.forEach((s, i) => W.stations.push({ data: s, pos: new THREE.Vector3(sp[i][0], 0, sp[i][1]) }));
-  const boss = era.sages.find((s) => s.boss); W.stations.push({ data: boss, pos: W.bossPos.clone(), boss: true });
+  regs.forEach((s, i) => W.stations.push({ data: s, pos: new THREE.Vector3(sp[i][0], 0, sp[i][1]), side: i % 2 ? 1 : -1 }));
+  const boss = era.sages.find((s) => s.boss); W.stations.push({ data: boss, pos: W.bossPos.clone(), boss: true, side: 1 });
   for (const st of W.stations) buildStation(W, st);
+  // puertas de luz: cada una se abre al vencer al pensador que la custodia
+  W.gates = regs.map((s, i) => buildGate(W, sp[i][1] - 6.5, i));
   buildPortal(W);
   // puntos de aparición de enemigos
   const r = mulberry32(idx * 101 + 3);
@@ -2101,8 +2131,8 @@ function buildStation(W, st) {
   const ring = mesh(new THREE.RingGeometry(R - 0.18, R - 0.06, 64), glow(th.accent, 2.2, { transparent: true, opacity: 0.85 }), 0, 0.15, 0, false, false);
   ring.rotation.x = -Math.PI / 2; g.add(ring); st.ring = ring;
   W.group.add(g); st.group = g;
-  const side = x === 0 ? 0 : Math.sign(x);
-  const off = st.boss ? new THREE.Vector3(0, 0, -2.6) : new THREE.Vector3(side * 3.6, 0, 0);
+  const side = st.side; // lado del camino donde se levanta su escenario
+  const off = st.boss ? new THREE.Vector3(0, 0, -2.6) : new THREE.Vector3(side * 4.2, 0, -0.6);
   const prop = buildProp(W, st.data.prop, st, off);
   g.add(prop);
   if (st.boss) {
@@ -2174,11 +2204,11 @@ function buildProp(W, kind, st, off) {
     }
     case 'cave': {
       const rock = std(0x4a4038, { roughness: 1, flat: true });
-      const arch = add(mesh(new THREE.SphereGeometry(2.6, 10, 8, 0, Math.PI, 0, Math.PI / 2), rock, 0, 0, 0)); arch.rotation.y = Math.PI / 2 * Math.sign(st.pos.x || 1); arch.material.side = THREE.DoubleSide;
+      const arch = add(mesh(new THREE.SphereGeometry(2.6, 10, 8, 0, Math.PI, 0, Math.PI / 2), rock, 0, 0, 0)); arch.rotation.y = Math.PI / 2 * st.side; arch.material.side = THREE.DoubleSide;
       const fire = add(mesh(new THREE.ConeGeometry(0.3, 0.7, 8), glow(0xff8a30, 5, { transparent: true, opacity: 0.85, additive: true }), 0, 0.35, 0, false, false));
       const shadows = add(new THREE.Group());
       for (let i = 0; i < 3; i++) { const s = mesh(new THREE.CircleGeometry(0.4, 12), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.75 }), 0, 1.3, 0, false, false); s.scale.set(0.7, 1.6, 1); shadows.add(s); }
-      shadows.position.x = Math.sign(st.pos.x || 1) * 2.3; shadows.rotation.y = -Math.PI / 2 * Math.sign(st.pos.x || 1);
+      shadows.position.x = st.side * 2.3; shadows.rotation.y = -Math.PI / 2 * st.side;
       W.emitters.push({ x: 0, y: 0.5, z: 0, col: 0xff8a30, rate: 14, acc: 0, kind: 'flame', g });
       W.anim.push((t) => { shadows.children.forEach((s, i) => { s.position.x = Math.sin(t * 0.7 + i * 2) * 1.2; s.position.y = 1.3 + Math.sin(t * 2 + i) * 0.1; }); fire.scale.y = 1 + Math.sin(t * 13) * 0.2; });
       col(1.8); break;
@@ -2193,13 +2223,13 @@ function buildProp(W, kind, st, off) {
     }
     case 'barrel': {
       const jar = add(mesh(new THREE.LatheGeometry([[0, 0], [0.6, 0.05], [1.3, 0.6], [1.45, 1.4], [1.2, 2.2], [0.75, 2.6], [0.8, 2.8]].map((p) => new THREE.Vector2(p[0], p[1])), 24), std(0xa0583a, { roughness: 0.9, side: THREE.DoubleSide }), 0, 1.3, 0));
-      const sg = Math.sign(st.pos.x || 1); jar.rotation.z = sg * Math.PI / 2; jar.position.set(sg * 2.0, 1.35, 0);
+      const sg = st.side; jar.rotation.z = sg * Math.PI / 2; jar.position.set(sg * 2.0, 1.35, 0);
       col(1.6); break;
     }
     case 'garden': {
-      for (const [dx, dz] of [[0, -2], [0.6, 2], [1.4, 0]]) { const c = cypress(3.2); c.position.set(dx * Math.sign(st.pos.x || 1), 0, dz); c.scale.setScalar(0.7); g.add(c); }
+      for (const [dx, dz] of [[0, -2], [0.6, 2], [1.4, 0]]) { const c = cypress(3.2); c.position.set(dx * st.side, 0, dz); c.scale.setScalar(0.7); g.add(c); }
       for (let i = 0; i < 12; i++) { const f = mesh(new THREE.SphereGeometry(0.08, 6, 4), glow(pick([0xff6a8a, 0xffe06a, 0xffffff]), 2), (Math.random() - 0.5) * 2.5, 0.12, (Math.random() - 0.5) * 3, false, false); g.add(f); }
-      add(mesh(new THREE.BoxGeometry(0.6, 0.45, 2), stone, -0.6 * Math.sign(st.pos.x || 1), 0.22, 0));
+      add(mesh(new THREE.BoxGeometry(0.6, 0.45, 2), stone, -0.6 * st.side, 0.22, 0));
       col(1.4); break;
     }
     case 'scales': {
@@ -2274,7 +2304,7 @@ function buildProp(W, kind, st, off) {
     case 'tower': {
       const tw = add(mesh(new THREE.CylinderGeometry(1.4, 1.6, 6, 16), std(0xffffff, { map: texStone('tw', 0xc8b490), roughness: 0.95 }), 0, 3, 0));
       add(mesh(new THREE.ConeGeometry(1.8, 2, 16), std(0x6a3a2a, { roughness: 0.8 }), 0, 7, 0));
-      add(mesh(new THREE.PlaneGeometry(0.6, 1), glow(0xffc070, 2.5), -Math.sign(st.pos.x || 1) * 1.41, 4.5, 0, false, false)).rotation.y = -Math.sign(st.pos.x || 1) * Math.PI / 2;
+      add(mesh(new THREE.PlaneGeometry(0.6, 1), glow(0xffc070, 2.5), -st.side * 1.41, 4.5, 0, false, false)).rotation.y = -st.side * Math.PI / 2;
       col(1.7); break;
     }
     case 'idols': {
@@ -2427,6 +2457,39 @@ function addGrass(W, idx, sp) {
   inst.count = k; inst.receiveShadow = true; W.group.add(inst);
 }
 
+// ============================================================================
+//  PUERTAS DE LUZ DEL CAMINO
+// ============================================================================
+function buildGate(W, z, i) {
+  const th = W.theme; const g = new THREE.Group(); g.position.set(0, 0, z);
+  const mat = new THREE.ShaderMaterial({
+    transparent: true, depthWrite: false, side: THREE.DoubleSide, blending: THREE.AdditiveBlending,
+    uniforms: { t: { value: 0 }, col: { value: new THREE.Color(th.accent).multiplyScalar(1.4) }, a: { value: 1 } },
+    vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+    fragmentShader: `uniform float t, a; uniform vec3 col; varying vec2 vUv;
+      void main(){ float x = vUv.x * 48.0; float strand = pow(abs(sin(x * 1.7 + sin(vUv.y * 3.0 + t) * 0.6)), 18.0);
+        float wave = 0.5 + 0.5 * sin(vUv.y * 14.0 - t * 3.0 + x * 0.3);
+        float base = smoothstep(0.0, 0.08, vUv.y) * (1.0 - vUv.y);
+        float k = (0.10 + strand * 0.55 + wave * 0.08) * base;
+        gl_FragColor = vec4(col * k * a, k * a); }`,
+  });
+  const curtain = new THREE.Mesh(new THREE.PlaneGeometry(48, 6.5), mat); curtain.position.y = 3.25; g.add(curtain);
+  const line = mesh(new THREE.BoxGeometry(48, 0.05, 0.25), glow(th.accent, 2.5), 0, 0.03, 0, false, false); g.add(line);
+  for (const x of [-4, 4]) { const p = mesh(new THREE.CylinderGeometry(0.22, 0.32, 3.4, 8), std(0x8a8070, { roughness: 0.7 }), x, 1.7, 0); g.add(p); g.add(mesh(new THREE.SphereGeometry(0.25, 12, 8), glow(th.accent, 4), x, 3.6, 0, false, false)); }
+  W.group.add(g);
+  const col = { t: 0, x0: -24, x1: 24, z0: z - 0.35, z1: z + 0.35, h: 99 }; W.colliders.push(col);
+  const gate = { z, i, group: g, mat, col, open: false };
+  W.anim.push((t, dt) => {
+    mat.uniforms.t.value = t;
+    if (gate.open) { mat.uniforms.a.value = Math.max(0, mat.uniforms.a.value - dt * 0.9); line.scale.x = Math.max(0.001, mat.uniforms.a.value); if (mat.uniforms.a.value <= 0) g.visible = false; }
+  });
+  return gate;
+}
+function openGate(W, i) {
+  const gate = W.gates && W.gates[i]; if (!gate || gate.open) return;
+  gate.open = true; const k = W.colliders.indexOf(gate.col); if (k >= 0) W.colliders.splice(k, 1);
+}
+
 // ---- 03-entities.js ----
 // ============================================================================
 //  PARTÍCULAS (pool de puntos aditivos)
@@ -2568,7 +2631,7 @@ class Sage {
     this.group = new THREE.Group(); this.group.add(this.fig.group); this.group.position.copy(station.pos); this.group.position.y = 0.14;
     // mirar hacia el centro
     this.baseYaw = Math.atan2(-station.pos.x, this.boss ? 1 : -station.pos.x * 0.0001 + 0.0001) || 0;
-    if (!this.boss) this.baseYaw = station.pos.x < 0 ? Math.PI / 2 : -Math.PI / 2; else this.baseYaw = 0;
+    this.baseYaw = 0; // miran hacia quien llega por el camino
     this.group.rotation.y = this.baseYaw; this.yaw = this.baseYaw;
     // etiqueta
     const tex = labelTexture(this.data.short, this.data.epithet);
@@ -3248,6 +3311,8 @@ function updatePlayer(dt) {
   let mx = 0, mz = 0;
   if (k.KeyW || k.ArrowUp) mz -= 1; if (k.KeyS || k.ArrowDown) mz += 1; if (k.KeyA) mx -= 1; if (k.KeyD) mx += 1;
   mx += input.joy.x; mz += input.joy.y;
+  if (Math.abs(mx) + Math.abs(mz) > 0.05 || Math.abs(lx) + Math.abs(ly) > 0.02) input.auto = false; // el control manual cancela el paseo
+  const aw = autoWalkDir(dt); if (aw) { mx = aw.mx; mz = aw.mz; }
   const ml = Math.hypot(mx, mz); if (ml > 1) { mx /= ml; mz /= ml; }
   const sprint = k.ShiftLeft || k.ShiftRight || (IS_TOUCH && ml > 0.95);
   const speed = sprint ? 8.8 : 5.4;
@@ -3359,6 +3424,8 @@ function loadWorld(idx) {
   lamp.userData.light.color.set(th.lampCol); lamp.userData.flame.material = glow(th.lampCol, 4);
   lamp.userData.light.intensity = th.indoor || th.stars ? 5 : 2.5;
   sages = world.stations.map((st, i) => new Sage(world, st, i));
+  world.beam = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.8, 40, 20, 1, true), new THREE.MeshBasicMaterial({ color: new THREE.Color(world.theme.accent).multiplyScalar(1.6), transparent: true, opacity: 0.2, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false, fog: false }));
+  world.beam.geometry.translate(0, 20, 0); world.beam.visible = false; world.group.add(world.beam); input.auto = false;
   director.budget = 9 + idx * 2; director.timer = 5; director.queue = [];
   player.pos.copy(world.start); player.vel.set(0, 0, 0); player.yaw = 0; player.pitch = 0;
 }
@@ -3370,7 +3437,9 @@ function spawnEnemy(pos, summoned = false) {
   return e;
 }
 function spawnFromPoints(n) {
-  const cands = world.spawns.filter((s) => s.distanceTo(player.pos) > 13 && s.distanceTo(player.pos) < 38);
+  const fz = frontierZ() + 2;
+  let cands = world.spawns.filter((s) => s.z > fz && s.distanceTo(player.pos) > 10 && s.distanceTo(player.pos) < 38);
+  if (!cands.length) cands = world.spawns.filter((s) => s.z > fz && s.distanceTo(player.pos) > 6);
   shuffle(cands); for (let i = 0; i < n && i < cands.length; i++) director.queue.push({ pos: cands[i].clone(), t: i * 0.35 });
 }
 function updateDirector(dt) {
@@ -3496,6 +3565,27 @@ function nearestSage() {
   }
   return best;
 }
+// la puerta cerrada más cercana marca hasta dónde llega el camino abierto
+function frontierZ() { const g = world.gates && world.gates.find((x) => !x.open); return g ? g.z : ARENA.z0; }
+// el siguiente pensador del camino (o el portal si ya no queda ninguno)
+function currentTarget() {
+  const s = sages.find((x) => x.state !== 'defeated');
+  if (s) return { sage: s, pos: s.pos, name: s.data.short, letter: s.data.short[0], reach: 2.9 + s.radius, h: 2.5 * s.scale + (s.boss ? 0.6 : 0) };
+  if (world.portal.open) return { sage: null, pos: world.portal.group.position, name: 'el portal', letter: 'Ω', reach: 1.2, h: 5.4 };
+  return null;
+}
+function autoWalkDir(dt) {
+  // devuelve el movimiento (en ejes de cámara) para caminar hacia el objetivo, o null
+  if (!input.auto) return null;
+  const tg = currentTarget(); if (!tg) { input.auto = false; return null; }
+  const dx = tg.pos.x - player.pos.x, dz = tg.pos.z - player.pos.z; const d = Math.hypot(dx, dz);
+  if (d < tg.reach) { input.auto = false; if (tg.sage && tg.sage.state === 'idle') { toast(IS_TOUCH ? `Toca «Desafiar» para hablar con ${tg.name}.` : `Pulsa E para desafiar a ${tg.name}.`); buzz(15); } return null; }
+  // girar la vista suavemente hacia el destino
+  const want = Math.atan2(-dx, -dz); let dy = want - player.yaw; while (dy > Math.PI) dy -= TAU; while (dy < -Math.PI) dy += TAU;
+  player.yaw += dy * Math.min(1, dt * 3.5); player.pitch = damp(player.pitch, 0, 3, dt);
+  const sy = Math.sin(player.yaw), cy = Math.cos(player.yaw); const ux = dx / d, uz = dz / d;
+  return { mx: ux * cy - uz * sy, mz: ux * sy + uz * cy };
+}
 function regularsLeft() { return sages.filter((s) => !s.boss && s.state !== 'defeated').length; }
 function updatePrompt() {
   const s = nearestSage(); const el = $('#prompt'); const ch = $('#crosshair');
@@ -3507,15 +3597,45 @@ function updatePrompt() {
     else if (s.state === 'shielded') txt = `Destruye a ${s.boss ? 'los ' + ERAS[G.eraIdx].enemy.many : 'sus defensores'}`;
     else if (s.state === 'defeated') txt = `${s.data.short} · <b>${s.data.concept.name}</b>`;
   }
+  const tg = currentTarget();
+  if (!txt) {
+    const gate = world.gates && world.gates.find((g) => !g.open && Math.abs(player.pos.z - g.z) < 3.5);
+    if (gate) txt = `El paso se abrirá al vencer a <b>${sages[gate.i].data.short}</b>`;
+  }
   el.hidden = !txt; if (txt && el.innerHTML !== txt) el.innerHTML = txt;
   ch.classList.toggle('talk', can);
-  if (tact && tact._ready !== can) { tact._ready = can; tact.classList.toggle('ready', can); }
+  if (tact) {
+    const label = can ? 'Desafiar' : input.auto ? 'Caminando…' : tg ? 'Ir a ' + tg.name.split(' ')[0] : 'Desafiar';
+    if (tact._label !== label) { tact._label = label; tact.textContent = label; }
+    const st = can ? 'ready' : tg ? 'go' : '';
+    if (tact._st !== st) { tact._st = st; tact.classList.toggle('ready', st === 'ready'); tact.classList.toggle('go', st === 'go'); }
+  }
+  updateTargetMarker(tg, can);
+}
+// marcador flotante sobre el siguiente pensador (con distancia); en los bordes si está fuera de la vista
+const _mk = new THREE.Vector3();
+function updateTargetMarker(tg, near) {
+  const el = $('#target');
+  if (!tg || near || G.state !== 'play') { if (!el.hidden) el.hidden = true; if (world.beam) world.beam.visible = false; return; }
+  const d = Math.hypot(tg.pos.x - player.pos.x, tg.pos.z - player.pos.z);
+  if (world.beam) { world.beam.visible = true; world.beam.position.set(tg.pos.x, 0, tg.pos.z); world.beam.material.opacity = (0.03 + 0.11 * clamp((d - 5) / 14, 0, 1)) * (1 + Math.sin(tAcc * 3) * 0.3); }
+  _mk.set(tg.pos.x, tg.h, tg.pos.z).project(camera);
+  const W = app.clientWidth, H = app.clientHeight; let x = (_mk.x * 0.5 + 0.5) * W, y = (-_mk.y * 0.5 + 0.5) * H;
+  const behind = _mk.z > 1; let edge = false;
+  if (behind) { x = W - x; y = H - 90; }
+  const m = 44; if (behind || x < m || x > W - m || y < m + 60 || y > H - m) edge = true;
+  x = clamp(x, m, W - m); y = clamp(y, m + 60, H - 120);
+  el.hidden = false; el.style.transform = `translate(${x}px, ${y}px)`; el.classList.toggle('edge', edge);
+  const ang = Math.atan2(y - H / 2, x - W / 2); el.style.setProperty('--ang', ang + 'rad');
+  const txt = `${tg.letter}|${tg.name}|${Math.round(d)}`; if (el._t !== txt) { el._t = txt; $('#tg-l').textContent = tg.letter; $('#tg-n').textContent = tg.name; $('#tg-d').textContent = Math.round(d) + ' m'; }
 }
 function tryInteract() {
-  const s = nearestSage(); if (!s) return;
+  const s = nearestSage();
+  if (!s || s.state === 'defeated') { if (currentTarget()) { input.auto = !input.auto; if (input.auto) Audio.click(); } return; }
   if (s.state === 'idle') Duel.start(s);
   else if (s.state === 'sealed') toast(`${s.data.short}: «Primero demuestra tu valía ante los demás.»`);
 }
+$('#target').addEventListener('click', (e) => { e.stopPropagation(); if (G.state !== 'play') return; input.auto = !input.auto; Audio.click(); buzz(10); });
 function updatePortal(dt) {
   const P = world.portal; if (!P) return;
   P.disc.material.uniforms.t.value = tAcc;
@@ -3533,7 +3653,7 @@ function updatePlay(dt) {
   updateSages(dt, false);
   for (const e of enemies) e.update(dt, game);
   updateBolts(dt); updatePickups(dt); updateDirector(dt); updatePrompt(); updatePortal(dt);
-  updateEpojeHud();
+  updateEpojeHud(); updatePathMe();
   Audio.mode = sages.some((s) => s.state === 'shielded') ? 'boss' : enemies.length > 1 ? 'combat' : 'calm';
   $('#lowhp').style.opacity = G.hp < 30 ? 0.6 + Math.sin(tAcc * 5) * 0.25 : 0;
 }
@@ -3728,8 +3848,10 @@ function closeConcept() {
     toast(s.data.final ? 'Se abre el último portal: la salida de la caverna.' : 'Se abre el portal hacia la siguiente época.');
   } else {
     const left = regularsLeft();
-    if (left === 0) { const b = sages.find((x) => x.boss); b.state = 'idle'; Audio.shield(); toast(`El sello se rompe: ${b.data.short} te espera.`); }
-    else toast(`Quedan ${left} ${left === 1 ? 'pensador' : 'pensadores'} antes del maestro.`);
+    openGate(world, s.idx); Audio.portal(); player.shake = 0.3;
+    const nx = sages[s.idx + 1];
+    if (left === 0) { const b = sages.find((x) => x.boss); b.state = 'idle'; toast(`Se abre el último paso: ${b.data.short}, el maestro, te espera.`); }
+    else toast(`Se abre el camino hacia ${nx.data.short}. Quedan ${left} antes del maestro.`);
     spawnFromPoints(2 + Math.floor(G.eraIdx / 2));
   }
   updateHud();
@@ -3762,8 +3884,18 @@ function updateHud() {
   else if (left > 0) obj = `Desafía a los pensadores: quedan ${left}.`;
   else obj = `Desafía a ${boss.data.short}, el maestro de esta época.`;
   $('#h-obj').textContent = obj;
-  $('#guardians').innerHTML = sages.map((s) => `<div class="gm${s.boss ? ' boss' : ''}${s.state === 'defeated' ? ' done' : ''}${s.state === 'sealed' ? ' sealed' : ''}" title="${s.data.name}">${s.data.short[0]}</div>`).join('');
+  buildPathHud();
 }
+// barra del camino: nodos en el orden real del recorrido y tu posición
+const pathT = (z) => clamp((world.start.z - z) / (world.start.z - world.bossPos.z), 0, 1);
+function buildPathHud() {
+  const tg = currentTarget();
+  $('#p-era').textContent = ERAS[G.eraIdx].num;
+  const nodes = sages.map((s) => `<div class="node${s.boss ? ' boss' : ''}${s.state === 'defeated' ? ' done' : ''}${tg && tg.sage === s ? ' now' : ''}" style="left:${(pathT(s.pos.z) * 100).toFixed(2)}%"><b>${s.data.short[0]}</b><span>${s.data.short}</span></div>`).join('');
+  $('#p-nodes').innerHTML = nodes;
+  const done = sages.filter((s) => s.state === 'defeated').pop(); $('#p-fill').style.width = (done ? pathT(done.pos.z) * 100 : 0) + '%';
+}
+function updatePathMe() { const el = $('#p-me'); if (!world) return; const v = (pathT(player.pos.z) * 100).toFixed(1) + '%'; if (el._v !== v) { el._v = v; el.style.left = v; } }
 let lastEp = -1;
 function updateEpojeHud() {
   const k = clamp(1 - player.epojeCd / EPOJE_CD, 0, 1); if (Math.abs(k - lastEp) < 0.01) return; lastEp = k;
@@ -3959,6 +4091,7 @@ function frame() {
   Audio.updateMusic();
   if (G.settings.quality !== 'low') composer.render(); else renderer.render(scene, camera);
   // calidad automática: si va muy lento al principio, bajar
+  if (G.state !== 'play' && !$('#target').hidden) $('#target').hidden = true;
   if (!autoChecked && G.state === 'play') {
     fpsAcc += raw; fpsN++;
     if (fpsAcc > 4) {

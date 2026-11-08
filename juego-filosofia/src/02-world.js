@@ -212,9 +212,10 @@ function newWorld(idx) {
     spawns: [],
   };
 }
+// El camino: los pensadores esperan uno tras otro sobre la vía central, en orden cronológico
 function stationPositions(n) {
-  if (n === 3) return [[-13, 14], [13, 0], [-13, -14]];
-  return [[-13, 19], [13, 8], [-13, -4], [13, -15]];
+  if (n === 3) return [[0, 19], [0, 6], [0, -8]];
+  return [[0, 22], [0, 11], [0, 0], [0, -11]];
 }
 function addBounds(W) {
   const { x0, x1, z0, z1 } = ARENA, T = 4;
@@ -301,8 +302,8 @@ const ERA_BUILDERS = [
     const r = mulberry32(22);
     for (const side of [-1, 1]) for (const z of [24, 6, -12]) { const s = statue(marble, r); s.position.set(side * 7.5, 0, z); s.rotation.y = -side * Math.PI / 2; W.group.add(s); W.colliders.push({ t: 0, x0: side * 7.5 - 0.7, x1: side * 7.5 + 0.7, z0: z - 0.7, z1: z + 0.7, h: 4 }); }
     // altar central
-    addBox(W, 2.6, 1, 1.6, marble, 0, 0.5, 18);
-    W.emitters.push({ x: 0, y: 1.1, z: 18, col: 0xffa040, rate: 10, acc: 0, kind: 'flame' });
+    addBox(W, 2.6, 1, 1.6, marble, -15, 0.5, 16);
+    W.emitters.push({ x: -15, y: 1.1, z: 16, col: 0xffa040, rate: 10, acc: 0, kind: 'flame' });
     // Partenón
     const tmp = templeFacade(8, 'doric', marble, cap, 9.5); tmp.position.set(0, 0, -54); W.group.add(tmp);
     brazier(W, -5, -36, 0xff9a40); brazier(W, 5, -36, 0xff9a40);
@@ -333,7 +334,7 @@ const ERA_BUILDERS = [
     arch.position.set(0, 0, -51); W.group.add(arch);
     const r = mulberry32(33);
     for (let i = 0; i < 10; i++) { const x = (i % 2 ? -1 : 1) * (16.5 + r() * 1.5), z = -40 + i * 7.5; if (W._near(x, z, 4)) continue; const c = cypress(5 + r() * 3); c.position.set(x, 0, z); W.group.add(c); W.colliders.push({ t: 1, x, z, r: 0.7, h: 6 }); }
-    brazier(W, -4, -36, 0xff7040); brazier(W, 4, -36, 0xff7040); brazier(W, 0, 24, 0xff7040); brazier(W, -10, 5, 0xff7040, false); brazier(W, 10, -9, 0xff7040, false);
+    brazier(W, -4, -36, 0xff7040); brazier(W, 4, -36, 0xff7040); brazier(W, 4, 30, 0xff7040); brazier(W, -10, 5, 0xff7040, false); brazier(W, 10, -9, 0xff7040, false);
   },
   // ------------------------------------------------------------------ IV
   function (W) {
@@ -412,13 +413,13 @@ const ERA_BUILDERS = [
     duomo.add(mesh(new THREE.SphereGeometry(0.45, 12, 8), std(0xd6a84a, { metalness: 1, roughness: 0.3 }), 0, 29.7, 0));
     duomo.position.set(0, 0, -58); W.group.add(duomo);
     // fuente
-    const f = new THREE.Group(); f.position.set(0, 0, 9);
+    const f = new THREE.Group(); f.position.set(-15, 0, 26);
     f.add(mesh(new THREE.CylinderGeometry(3, 3.2, 0.8, 24), white, 0, 0.4, 0));
     f.add(mesh(new THREE.CylinderGeometry(2.7, 2.7, 0.1, 24), std(0x3a7aa8, { roughness: 0.05, metalness: 0.4 }), 0, 0.72, 0, false));
     f.add(mesh(new THREE.CylinderGeometry(0.3, 0.45, 2.5, 10), white, 0, 1.6, 0));
     f.add(mesh(new THREE.CylinderGeometry(1.1, 0.4, 0.4, 16), white, 0, 2.9, 0));
-    W.group.add(f); W.colliders.push({ t: 1, x: 0, z: 9, r: 3.3, h: 1 });
-    W.emitters.push({ x: 0, y: 3.1, z: 9, col: 0xbfe4ff, rate: 22, acc: 0, kind: 'water' });
+    W.group.add(f); W.colliders.push({ t: 1, x: -15, z: 26, r: 3.3, h: 1 });
+    W.emitters.push({ x: -15, y: 3.1, z: 26, col: 0xbfe4ff, rate: 22, acc: 0, kind: 'water' });
     const r = mulberry32(55);
     for (const [x, z] of [[-12, 30], [12, 30], [-12, -30], [12, -30]]) { const s = statue(std(0xf4f0e8, { roughness: 0.45 }), r); s.position.set(x, 0, z); W.group.add(s); W.colliders.push({ t: 0, x0: x - 0.7, x1: x + 0.7, z0: z - 0.7, z1: z + 0.7, h: 4 }); }
     brazier(W, -4, -36, 0xffb060, true); brazier(W, 4, -36, 0xffb060, true);
@@ -448,7 +449,7 @@ const ERA_BUILDERS = [
       W.group.add(mesh(new THREE.SphereGeometry(0.22, 12, 8), glow(0xffc070, 4), side * 7.5, 4.9, z, false, false));
     }
     // planetario mecánico central
-    const orr = new THREE.Group(); orr.position.set(0, 0, 8);
+    const orr = new THREE.Group(); orr.position.set(-15, 0, 4);
     const brass = std(0xc8a050, { metalness: 0.9, roughness: 0.3 });
     orr.add(mesh(new THREE.CylinderGeometry(1.4, 1.8, 1.2, 16), wood, 0, 0.6, 0));
     orr.add(mesh(new THREE.CylinderGeometry(0.1, 0.1, 2, 8), brass, 0, 2.2, 0));
@@ -461,8 +462,8 @@ const ERA_BUILDERS = [
       orr.add(arm); planets.push([arm, sp]);
     });
     W.anim.push((t, dt) => planets.forEach(([a, sp]) => (a.rotation.y += sp * dt * 0.5)));
-    W.group.add(orr); W.colliders.push({ t: 1, x: 0, z: 8, r: 2, h: 4 });
-    const l = new THREE.PointLight(0xffc070, 30, 18, 2); l.position.set(0, 3.4, 8); W.group.add(l); W.lightBudget--;
+    W.group.add(orr); W.colliders.push({ t: 1, x: -15, z: 4, r: 2, h: 4 });
+    const l = new THREE.PointLight(0xffc070, 30, 18, 2); l.position.set(-15, 3.4, 4); W.group.add(l); W.lightBudget--;
     // telescopio al norte
     const tel = new THREE.Group(); tel.position.set(0, 0, -45);
     tel.add(mesh(new THREE.CylinderGeometry(3.5, 4, 1.2, 24), wood, 0, 0.6, 0));
@@ -504,9 +505,11 @@ function buildWorld(idx) {
   if (!th.indoor && idx !== 5) addClouds(W, idx);
   if (idx === 0 || idx === 2) addGrass(W, idx, sp);
   // estaciones de los filósofos
-  regs.forEach((s, i) => W.stations.push({ data: s, pos: new THREE.Vector3(sp[i][0], 0, sp[i][1]) }));
-  const boss = era.sages.find((s) => s.boss); W.stations.push({ data: boss, pos: W.bossPos.clone(), boss: true });
+  regs.forEach((s, i) => W.stations.push({ data: s, pos: new THREE.Vector3(sp[i][0], 0, sp[i][1]), side: i % 2 ? 1 : -1 }));
+  const boss = era.sages.find((s) => s.boss); W.stations.push({ data: boss, pos: W.bossPos.clone(), boss: true, side: 1 });
   for (const st of W.stations) buildStation(W, st);
+  // puertas de luz: cada una se abre al vencer al pensador que la custodia
+  W.gates = regs.map((s, i) => buildGate(W, sp[i][1] - 6.5, i));
   buildPortal(W);
   // puntos de aparición de enemigos
   const r = mulberry32(idx * 101 + 3);
@@ -525,8 +528,8 @@ function buildStation(W, st) {
   const ring = mesh(new THREE.RingGeometry(R - 0.18, R - 0.06, 64), glow(th.accent, 2.2, { transparent: true, opacity: 0.85 }), 0, 0.15, 0, false, false);
   ring.rotation.x = -Math.PI / 2; g.add(ring); st.ring = ring;
   W.group.add(g); st.group = g;
-  const side = x === 0 ? 0 : Math.sign(x);
-  const off = st.boss ? new THREE.Vector3(0, 0, -2.6) : new THREE.Vector3(side * 3.6, 0, 0);
+  const side = st.side; // lado del camino donde se levanta su escenario
+  const off = st.boss ? new THREE.Vector3(0, 0, -2.6) : new THREE.Vector3(side * 4.2, 0, -0.6);
   const prop = buildProp(W, st.data.prop, st, off);
   g.add(prop);
   if (st.boss) {
@@ -598,11 +601,11 @@ function buildProp(W, kind, st, off) {
     }
     case 'cave': {
       const rock = std(0x4a4038, { roughness: 1, flat: true });
-      const arch = add(mesh(new THREE.SphereGeometry(2.6, 10, 8, 0, Math.PI, 0, Math.PI / 2), rock, 0, 0, 0)); arch.rotation.y = Math.PI / 2 * Math.sign(st.pos.x || 1); arch.material.side = THREE.DoubleSide;
+      const arch = add(mesh(new THREE.SphereGeometry(2.6, 10, 8, 0, Math.PI, 0, Math.PI / 2), rock, 0, 0, 0)); arch.rotation.y = Math.PI / 2 * st.side; arch.material.side = THREE.DoubleSide;
       const fire = add(mesh(new THREE.ConeGeometry(0.3, 0.7, 8), glow(0xff8a30, 5, { transparent: true, opacity: 0.85, additive: true }), 0, 0.35, 0, false, false));
       const shadows = add(new THREE.Group());
       for (let i = 0; i < 3; i++) { const s = mesh(new THREE.CircleGeometry(0.4, 12), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.75 }), 0, 1.3, 0, false, false); s.scale.set(0.7, 1.6, 1); shadows.add(s); }
-      shadows.position.x = Math.sign(st.pos.x || 1) * 2.3; shadows.rotation.y = -Math.PI / 2 * Math.sign(st.pos.x || 1);
+      shadows.position.x = st.side * 2.3; shadows.rotation.y = -Math.PI / 2 * st.side;
       W.emitters.push({ x: 0, y: 0.5, z: 0, col: 0xff8a30, rate: 14, acc: 0, kind: 'flame', g });
       W.anim.push((t) => { shadows.children.forEach((s, i) => { s.position.x = Math.sin(t * 0.7 + i * 2) * 1.2; s.position.y = 1.3 + Math.sin(t * 2 + i) * 0.1; }); fire.scale.y = 1 + Math.sin(t * 13) * 0.2; });
       col(1.8); break;
@@ -617,13 +620,13 @@ function buildProp(W, kind, st, off) {
     }
     case 'barrel': {
       const jar = add(mesh(new THREE.LatheGeometry([[0, 0], [0.6, 0.05], [1.3, 0.6], [1.45, 1.4], [1.2, 2.2], [0.75, 2.6], [0.8, 2.8]].map((p) => new THREE.Vector2(p[0], p[1])), 24), std(0xa0583a, { roughness: 0.9, side: THREE.DoubleSide }), 0, 1.3, 0));
-      const sg = Math.sign(st.pos.x || 1); jar.rotation.z = sg * Math.PI / 2; jar.position.set(sg * 2.0, 1.35, 0);
+      const sg = st.side; jar.rotation.z = sg * Math.PI / 2; jar.position.set(sg * 2.0, 1.35, 0);
       col(1.6); break;
     }
     case 'garden': {
-      for (const [dx, dz] of [[0, -2], [0.6, 2], [1.4, 0]]) { const c = cypress(3.2); c.position.set(dx * Math.sign(st.pos.x || 1), 0, dz); c.scale.setScalar(0.7); g.add(c); }
+      for (const [dx, dz] of [[0, -2], [0.6, 2], [1.4, 0]]) { const c = cypress(3.2); c.position.set(dx * st.side, 0, dz); c.scale.setScalar(0.7); g.add(c); }
       for (let i = 0; i < 12; i++) { const f = mesh(new THREE.SphereGeometry(0.08, 6, 4), glow(pick([0xff6a8a, 0xffe06a, 0xffffff]), 2), (Math.random() - 0.5) * 2.5, 0.12, (Math.random() - 0.5) * 3, false, false); g.add(f); }
-      add(mesh(new THREE.BoxGeometry(0.6, 0.45, 2), stone, -0.6 * Math.sign(st.pos.x || 1), 0.22, 0));
+      add(mesh(new THREE.BoxGeometry(0.6, 0.45, 2), stone, -0.6 * st.side, 0.22, 0));
       col(1.4); break;
     }
     case 'scales': {
@@ -698,7 +701,7 @@ function buildProp(W, kind, st, off) {
     case 'tower': {
       const tw = add(mesh(new THREE.CylinderGeometry(1.4, 1.6, 6, 16), std(0xffffff, { map: texStone('tw', 0xc8b490), roughness: 0.95 }), 0, 3, 0));
       add(mesh(new THREE.ConeGeometry(1.8, 2, 16), std(0x6a3a2a, { roughness: 0.8 }), 0, 7, 0));
-      add(mesh(new THREE.PlaneGeometry(0.6, 1), glow(0xffc070, 2.5), -Math.sign(st.pos.x || 1) * 1.41, 4.5, 0, false, false)).rotation.y = -Math.sign(st.pos.x || 1) * Math.PI / 2;
+      add(mesh(new THREE.PlaneGeometry(0.6, 1), glow(0xffc070, 2.5), -st.side * 1.41, 4.5, 0, false, false)).rotation.y = -st.side * Math.PI / 2;
       col(1.7); break;
     }
     case 'idols': {
@@ -849,4 +852,37 @@ function addGrass(W, idx, sp) {
     }
   }
   inst.count = k; inst.receiveShadow = true; W.group.add(inst);
+}
+
+// ============================================================================
+//  PUERTAS DE LUZ DEL CAMINO
+// ============================================================================
+function buildGate(W, z, i) {
+  const th = W.theme; const g = new THREE.Group(); g.position.set(0, 0, z);
+  const mat = new THREE.ShaderMaterial({
+    transparent: true, depthWrite: false, side: THREE.DoubleSide, blending: THREE.AdditiveBlending,
+    uniforms: { t: { value: 0 }, col: { value: new THREE.Color(th.accent).multiplyScalar(1.4) }, a: { value: 1 } },
+    vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+    fragmentShader: `uniform float t, a; uniform vec3 col; varying vec2 vUv;
+      void main(){ float x = vUv.x * 48.0; float strand = pow(abs(sin(x * 1.7 + sin(vUv.y * 3.0 + t) * 0.6)), 18.0);
+        float wave = 0.5 + 0.5 * sin(vUv.y * 14.0 - t * 3.0 + x * 0.3);
+        float base = smoothstep(0.0, 0.08, vUv.y) * (1.0 - vUv.y);
+        float k = (0.10 + strand * 0.55 + wave * 0.08) * base;
+        gl_FragColor = vec4(col * k * a, k * a); }`,
+  });
+  const curtain = new THREE.Mesh(new THREE.PlaneGeometry(48, 6.5), mat); curtain.position.y = 3.25; g.add(curtain);
+  const line = mesh(new THREE.BoxGeometry(48, 0.05, 0.25), glow(th.accent, 2.5), 0, 0.03, 0, false, false); g.add(line);
+  for (const x of [-4, 4]) { const p = mesh(new THREE.CylinderGeometry(0.22, 0.32, 3.4, 8), std(0x8a8070, { roughness: 0.7 }), x, 1.7, 0); g.add(p); g.add(mesh(new THREE.SphereGeometry(0.25, 12, 8), glow(th.accent, 4), x, 3.6, 0, false, false)); }
+  W.group.add(g);
+  const col = { t: 0, x0: -24, x1: 24, z0: z - 0.35, z1: z + 0.35, h: 99 }; W.colliders.push(col);
+  const gate = { z, i, group: g, mat, col, open: false };
+  W.anim.push((t, dt) => {
+    mat.uniforms.t.value = t;
+    if (gate.open) { mat.uniforms.a.value = Math.max(0, mat.uniforms.a.value - dt * 0.9); line.scale.x = Math.max(0.001, mat.uniforms.a.value); if (mat.uniforms.a.value <= 0) g.visible = false; }
+  });
+  return gate;
+}
+function openGate(W, i) {
+  const gate = W.gates && W.gates[i]; if (!gate || gate.open) return;
+  gate.open = true; const k = W.colliders.indexOf(gate.col); if (k >= 0) W.colliders.splice(k, 1);
 }

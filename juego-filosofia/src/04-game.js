@@ -267,6 +267,8 @@ function updatePlayer(dt) {
   let mx = 0, mz = 0;
   if (k.KeyW || k.ArrowUp) mz -= 1; if (k.KeyS || k.ArrowDown) mz += 1; if (k.KeyA) mx -= 1; if (k.KeyD) mx += 1;
   mx += input.joy.x; mz += input.joy.y;
+  if (Math.abs(mx) + Math.abs(mz) > 0.05 || Math.abs(lx) + Math.abs(ly) > 0.02) input.auto = false; // el control manual cancela el paseo
+  const aw = autoWalkDir(dt); if (aw) { mx = aw.mx; mz = aw.mz; }
   const ml = Math.hypot(mx, mz); if (ml > 1) { mx /= ml; mz /= ml; }
   const sprint = k.ShiftLeft || k.ShiftRight || (IS_TOUCH && ml > 0.95);
   const speed = sprint ? 8.8 : 5.4;
@@ -378,6 +380,8 @@ function loadWorld(idx) {
   lamp.userData.light.color.set(th.lampCol); lamp.userData.flame.material = glow(th.lampCol, 4);
   lamp.userData.light.intensity = th.indoor || th.stars ? 5 : 2.5;
   sages = world.stations.map((st, i) => new Sage(world, st, i));
+  world.beam = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.8, 40, 20, 1, true), new THREE.MeshBasicMaterial({ color: new THREE.Color(world.theme.accent).multiplyScalar(1.6), transparent: true, opacity: 0.2, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false, fog: false }));
+  world.beam.geometry.translate(0, 20, 0); world.beam.visible = false; world.group.add(world.beam); input.auto = false;
   director.budget = 9 + idx * 2; director.timer = 5; director.queue = [];
   player.pos.copy(world.start); player.vel.set(0, 0, 0); player.yaw = 0; player.pitch = 0;
 }
@@ -389,7 +393,9 @@ function spawnEnemy(pos, summoned = false) {
   return e;
 }
 function spawnFromPoints(n) {
-  const cands = world.spawns.filter((s) => s.distanceTo(player.pos) > 13 && s.distanceTo(player.pos) < 38);
+  const fz = frontierZ() + 2;
+  let cands = world.spawns.filter((s) => s.z > fz && s.distanceTo(player.pos) > 10 && s.distanceTo(player.pos) < 38);
+  if (!cands.length) cands = world.spawns.filter((s) => s.z > fz && s.distanceTo(player.pos) > 6);
   shuffle(cands); for (let i = 0; i < n && i < cands.length; i++) director.queue.push({ pos: cands[i].clone(), t: i * 0.35 });
 }
 function updateDirector(dt) {
@@ -515,6 +521,27 @@ function nearestSage() {
   }
   return best;
 }
+// la puerta cerrada más cercana marca hasta dónde llega el camino abierto
+function frontierZ() { const g = world.gates && world.gates.find((x) => !x.open); return g ? g.z : ARENA.z0; }
+// el siguiente pensador del camino (o el portal si ya no queda ninguno)
+function currentTarget() {
+  const s = sages.find((x) => x.state !== 'defeated');
+  if (s) return { sage: s, pos: s.pos, name: s.data.short, letter: s.data.short[0], reach: 2.9 + s.radius, h: 2.5 * s.scale + (s.boss ? 0.6 : 0) };
+  if (world.portal.open) return { sage: null, pos: world.portal.group.position, name: 'el portal', letter: 'Ω', reach: 1.2, h: 5.4 };
+  return null;
+}
+function autoWalkDir(dt) {
+  // devuelve el movimiento (en ejes de cámara) para caminar hacia el objetivo, o null
+  if (!input.auto) return null;
+  const tg = currentTarget(); if (!tg) { input.auto = false; return null; }
+  const dx = tg.pos.x - player.pos.x, dz = tg.pos.z - player.pos.z; const d = Math.hypot(dx, dz);
+  if (d < tg.reach) { input.auto = false; if (tg.sage && tg.sage.state === 'idle') { toast(IS_TOUCH ? `Toca «Desafiar» para hablar con ${tg.name}.` : `Pulsa E para desafiar a ${tg.name}.`); buzz(15); } return null; }
+  // girar la vista suavemente hacia el destino
+  const want = Math.atan2(-dx, -dz); let dy = want - player.yaw; while (dy > Math.PI) dy -= TAU; while (dy < -Math.PI) dy += TAU;
+  player.yaw += dy * Math.min(1, dt * 3.5); player.pitch = damp(player.pitch, 0, 3, dt);
+  const sy = Math.sin(player.yaw), cy = Math.cos(player.yaw); const ux = dx / d, uz = dz / d;
+  return { mx: ux * cy - uz * sy, mz: ux * sy + uz * cy };
+}
 function regularsLeft() { return sages.filter((s) => !s.boss && s.state !== 'defeated').length; }
 function updatePrompt() {
   const s = nearestSage(); const el = $('#prompt'); const ch = $('#crosshair');
@@ -526,15 +553,45 @@ function updatePrompt() {
     else if (s.state === 'shielded') txt = `Destruye a ${s.boss ? 'los ' + ERAS[G.eraIdx].enemy.many : 'sus defensores'}`;
     else if (s.state === 'defeated') txt = `${s.data.short} · <b>${s.data.concept.name}</b>`;
   }
+  const tg = currentTarget();
+  if (!txt) {
+    const gate = world.gates && world.gates.find((g) => !g.open && Math.abs(player.pos.z - g.z) < 3.5);
+    if (gate) txt = `El paso se abrirá al vencer a <b>${sages[gate.i].data.short}</b>`;
+  }
   el.hidden = !txt; if (txt && el.innerHTML !== txt) el.innerHTML = txt;
   ch.classList.toggle('talk', can);
-  if (tact && tact._ready !== can) { tact._ready = can; tact.classList.toggle('ready', can); }
+  if (tact) {
+    const label = can ? 'Desafiar' : input.auto ? 'Caminando…' : tg ? 'Ir a ' + tg.name.split(' ')[0] : 'Desafiar';
+    if (tact._label !== label) { tact._label = label; tact.textContent = label; }
+    const st = can ? 'ready' : tg ? 'go' : '';
+    if (tact._st !== st) { tact._st = st; tact.classList.toggle('ready', st === 'ready'); tact.classList.toggle('go', st === 'go'); }
+  }
+  updateTargetMarker(tg, can);
+}
+// marcador flotante sobre el siguiente pensador (con distancia); en los bordes si está fuera de la vista
+const _mk = new THREE.Vector3();
+function updateTargetMarker(tg, near) {
+  const el = $('#target');
+  if (!tg || near || G.state !== 'play') { if (!el.hidden) el.hidden = true; if (world.beam) world.beam.visible = false; return; }
+  const d = Math.hypot(tg.pos.x - player.pos.x, tg.pos.z - player.pos.z);
+  if (world.beam) { world.beam.visible = true; world.beam.position.set(tg.pos.x, 0, tg.pos.z); world.beam.material.opacity = (0.03 + 0.11 * clamp((d - 5) / 14, 0, 1)) * (1 + Math.sin(tAcc * 3) * 0.3); }
+  _mk.set(tg.pos.x, tg.h, tg.pos.z).project(camera);
+  const W = app.clientWidth, H = app.clientHeight; let x = (_mk.x * 0.5 + 0.5) * W, y = (-_mk.y * 0.5 + 0.5) * H;
+  const behind = _mk.z > 1; let edge = false;
+  if (behind) { x = W - x; y = H - 90; }
+  const m = 44; if (behind || x < m || x > W - m || y < m + 60 || y > H - m) edge = true;
+  x = clamp(x, m, W - m); y = clamp(y, m + 60, H - 120);
+  el.hidden = false; el.style.transform = `translate(${x}px, ${y}px)`; el.classList.toggle('edge', edge);
+  const ang = Math.atan2(y - H / 2, x - W / 2); el.style.setProperty('--ang', ang + 'rad');
+  const txt = `${tg.letter}|${tg.name}|${Math.round(d)}`; if (el._t !== txt) { el._t = txt; $('#tg-l').textContent = tg.letter; $('#tg-n').textContent = tg.name; $('#tg-d').textContent = Math.round(d) + ' m'; }
 }
 function tryInteract() {
-  const s = nearestSage(); if (!s) return;
+  const s = nearestSage();
+  if (!s || s.state === 'defeated') { if (currentTarget()) { input.auto = !input.auto; if (input.auto) Audio.click(); } return; }
   if (s.state === 'idle') Duel.start(s);
   else if (s.state === 'sealed') toast(`${s.data.short}: «Primero demuestra tu valía ante los demás.»`);
 }
+$('#target').addEventListener('click', (e) => { e.stopPropagation(); if (G.state !== 'play') return; input.auto = !input.auto; Audio.click(); buzz(10); });
 function updatePortal(dt) {
   const P = world.portal; if (!P) return;
   P.disc.material.uniforms.t.value = tAcc;
@@ -552,7 +609,7 @@ function updatePlay(dt) {
   updateSages(dt, false);
   for (const e of enemies) e.update(dt, game);
   updateBolts(dt); updatePickups(dt); updateDirector(dt); updatePrompt(); updatePortal(dt);
-  updateEpojeHud();
+  updateEpojeHud(); updatePathMe();
   Audio.mode = sages.some((s) => s.state === 'shielded') ? 'boss' : enemies.length > 1 ? 'combat' : 'calm';
   $('#lowhp').style.opacity = G.hp < 30 ? 0.6 + Math.sin(tAcc * 5) * 0.25 : 0;
 }
@@ -747,8 +804,10 @@ function closeConcept() {
     toast(s.data.final ? 'Se abre el último portal: la salida de la caverna.' : 'Se abre el portal hacia la siguiente época.');
   } else {
     const left = regularsLeft();
-    if (left === 0) { const b = sages.find((x) => x.boss); b.state = 'idle'; Audio.shield(); toast(`El sello se rompe: ${b.data.short} te espera.`); }
-    else toast(`Quedan ${left} ${left === 1 ? 'pensador' : 'pensadores'} antes del maestro.`);
+    openGate(world, s.idx); Audio.portal(); player.shake = 0.3;
+    const nx = sages[s.idx + 1];
+    if (left === 0) { const b = sages.find((x) => x.boss); b.state = 'idle'; toast(`Se abre el último paso: ${b.data.short}, el maestro, te espera.`); }
+    else toast(`Se abre el camino hacia ${nx.data.short}. Quedan ${left} antes del maestro.`);
     spawnFromPoints(2 + Math.floor(G.eraIdx / 2));
   }
   updateHud();
@@ -781,8 +840,18 @@ function updateHud() {
   else if (left > 0) obj = `Desafía a los pensadores: quedan ${left}.`;
   else obj = `Desafía a ${boss.data.short}, el maestro de esta época.`;
   $('#h-obj').textContent = obj;
-  $('#guardians').innerHTML = sages.map((s) => `<div class="gm${s.boss ? ' boss' : ''}${s.state === 'defeated' ? ' done' : ''}${s.state === 'sealed' ? ' sealed' : ''}" title="${s.data.name}">${s.data.short[0]}</div>`).join('');
+  buildPathHud();
 }
+// barra del camino: nodos en el orden real del recorrido y tu posición
+const pathT = (z) => clamp((world.start.z - z) / (world.start.z - world.bossPos.z), 0, 1);
+function buildPathHud() {
+  const tg = currentTarget();
+  $('#p-era').textContent = ERAS[G.eraIdx].num;
+  const nodes = sages.map((s) => `<div class="node${s.boss ? ' boss' : ''}${s.state === 'defeated' ? ' done' : ''}${tg && tg.sage === s ? ' now' : ''}" style="left:${(pathT(s.pos.z) * 100).toFixed(2)}%"><b>${s.data.short[0]}</b><span>${s.data.short}</span></div>`).join('');
+  $('#p-nodes').innerHTML = nodes;
+  const done = sages.filter((s) => s.state === 'defeated').pop(); $('#p-fill').style.width = (done ? pathT(done.pos.z) * 100 : 0) + '%';
+}
+function updatePathMe() { const el = $('#p-me'); if (!world) return; const v = (pathT(player.pos.z) * 100).toFixed(1) + '%'; if (el._v !== v) { el._v = v; el.style.left = v; } }
 let lastEp = -1;
 function updateEpojeHud() {
   const k = clamp(1 - player.epojeCd / EPOJE_CD, 0, 1); if (Math.abs(k - lastEp) < 0.01) return; lastEp = k;
@@ -978,6 +1047,7 @@ function frame() {
   Audio.updateMusic();
   if (G.settings.quality !== 'low') composer.render(); else renderer.render(scene, camera);
   // calidad automática: si va muy lento al principio, bajar
+  if (G.state !== 'play' && !$('#target').hidden) $('#target').hidden = true;
   if (!autoChecked && G.state === 'play') {
     fpsAcc += raw; fpsN++;
     if (fpsAcc > 4) {

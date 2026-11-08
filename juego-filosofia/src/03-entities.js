@@ -138,7 +138,7 @@ class Sage {
     this.group = new THREE.Group(); this.group.add(this.fig.group); this.group.position.copy(station.pos); this.group.position.y = 0.14;
     // mirar hacia el centro
     this.baseYaw = Math.atan2(-station.pos.x, this.boss ? 1 : -station.pos.x * 0.0001 + 0.0001) || 0;
-    if (!this.boss) this.baseYaw = station.pos.x < 0 ? Math.PI / 2 : -Math.PI / 2; else this.baseYaw = 0;
+    this.baseYaw = 0; // miran hacia quien llega por el camino
     this.group.rotation.y = this.baseYaw; this.yaw = this.baseYaw;
     // etiqueta
     const tex = labelTexture(this.data.short, this.data.epithet);
