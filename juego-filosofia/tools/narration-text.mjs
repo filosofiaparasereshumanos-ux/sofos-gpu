@@ -22,10 +22,10 @@ ERAS.forEach((era) => era.sages.forEach((d) => {
   const lesson = new Set((LESSONS[d.id] || []).flatMap(narrSplit));
   pack('p-' + d.id, v.voice, v.pitch, d.id, sageSpeech(d).flatMap(narrSplit).filter((s) => !lesson.has(s)));
 }));
-POIS.forEach((list, i) => pack('n-' + i, 'mls_9972', 1, 'narr', [...list.flatMap((p) => [p.name + '. ' + p.text, p.text + ' ' + p.fact]), ...(i === 0 ? NARR_GENERIC : [])]));
+POIS.forEach((list, i) => pack('n-' + i, 'carlfm', 1, 'narr', [...list.flatMap((p) => [p.name + '. ' + p.text, p.text + ' ' + p.fact]), ...(i === 0 ? NARR_GENERIC : [])]));
 NPCS.forEach((list, i) => list.forEach((n) => {
-  const v = n.female ? { voice: 'mls_10246', pitch: 1 } : { voice: 'carlfm', pitch: [1.08, 0.97, 1.14, 1.02][n.id.length % 4] };
+  const v = n.female ? { voice: 'carlfm', pitch: 1.12 } : { voice: 'carlfm', pitch: [1.08, 0.97, 1.14, 1.02][n.id.length % 4] };
   pack('c-' + n.id, v.voice, v.pitch, n.id, [...n.lines, ...NPC_GENERIC]);
 }));
-BOOKS.flat().forEach((b) => pack('b-' + b.id, 'mls_9972', 1, 'narr', [...b.parts.map(bookPartText), 'Una cita para recordar. ' + b.quote]));
+BOOKS.flat().forEach((b) => pack('b-' + b.id, 'carlfm', 1, 'narr', [...b.parts.map(bookPartText), 'Una cita para recordar. ' + b.quote]));
 process.stdout.write(JSON.stringify(packs));
