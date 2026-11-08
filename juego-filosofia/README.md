@@ -42,7 +42,18 @@ ejes cartesianos de Descartes, las bolas de billar de Hume, el cielo estrellado 
   destruirlas para seguir. Kant lo hace dos veces.
 - **Códice:** cada filósofo vencido te entrega su concepto central (Arjé, Logos, Mayéutica,
   Ataraxia, Navaja de Ockham, Cogito, Giro copernicano…), que puedes repasar en el menú.
-- Progreso guardado automáticamente al empezar cada etapa. En móvil hay controles táctiles.
+- **Rachas:** cada tres aciertos seguidos sube el multiplicador de sabiduría (×2, ×3, ×4).
+- **Maestros con presentación cinematográfica**, cámara lenta al vencer a cada filósofo y **voces**:
+  los filósofos hablan en español con la voz del sistema (se puede desactivar en Ajustes).
+- Progreso guardado automáticamente al empezar cada etapa.
+
+### En el móvil
+
+- Joystick flotante: pon el pulgar en cualquier punto de la mitad izquierda; desliza por la derecha para mirar.
+- La lámpara **dispara sola** cuando apuntas a una sombra, con asistencia de puntería (se puede desactivar).
+- Vibración al recibir daño, acertar o vencer; botón de pantalla completa; la pantalla no se apaga mientras juegas.
+- Funciona en vertical y en horizontal (en vertical el campo de visión se amplía). Se juega mejor en horizontal.
+- Calidad "Media" con resplandor pensada para móviles; si el juego va lento, baja la calidad sola.
 
 En total: 25 filósofos y unas 200 preguntas con explicación.
 
