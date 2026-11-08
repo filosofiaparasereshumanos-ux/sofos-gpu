@@ -5,11 +5,11 @@ import vm from 'node:vm';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const files = ['src/01-data.js', 'src/01a-lessons.js', 'src/02b-places.js', 'src/02c-polis.js', 'src/02d-narration.js'];
+const files = ['src/01-data.js', 'src/01a-lessons.js', 'src/02b-places.js', 'src/02c-polis.js', 'src/02d-narration.js', 'src/02e-books.js'];
 const code = files.map((f) => readFileSync(join(root, f), 'utf8')).join('\n') +
-  '\n;globalThis.__out = { ERAS, LESSONS, POIS, NPCS, sageSpeech, NPC_GENERIC, NARR_GENERIC, narrSplit, narrHash, SAGE_VOICE };';
+  '\n;globalThis.__out = { ERAS, LESSONS, POIS, NPCS, sageSpeech, NPC_GENERIC, NARR_GENERIC, narrSplit, narrHash, SAGE_VOICE, BOOKS, bookPartText };';
 const ctx = { console }; vm.createContext(ctx); vm.runInContext(code, ctx);
-const { ERAS, LESSONS, POIS, NPCS, sageSpeech, NPC_GENERIC, NARR_GENERIC, narrSplit, SAGE_VOICE } = ctx.__out;
+const { ERAS, LESSONS, POIS, NPCS, sageSpeech, NPC_GENERIC, NARR_GENERIC, narrSplit, SAGE_VOICE, BOOKS, bookPartText } = ctx.__out;
 const packs = [];
 const pack = (name, voice, pitch, speaker, texts) => {
   const seen = new Set(); const sentences = [];
@@ -27,4 +27,5 @@ NPCS.forEach((list, i) => list.forEach((n) => {
   const v = n.female ? { voice: 'mls_10246', pitch: 1 } : { voice: 'carlfm', pitch: [1.08, 0.97, 1.14, 1.02][n.id.length % 4] };
   pack('c-' + n.id, v.voice, v.pitch, n.id, [...n.lines, ...NPC_GENERIC]);
 }));
+BOOKS.flat().forEach((b) => pack('b-' + b.id, 'mls_9972', 1, 'narr', [...b.parts.map(bookPartText), 'Una cita para recordar. ' + b.quote]));
 process.stdout.write(JSON.stringify(packs));

@@ -149,7 +149,7 @@ class Sage {
     this.breaks = []; // sin fases de combate: es un viaje de conocimiento
     this.state = this.boss ? 'sealed' : 'idle'; // sealed | idle | shielded | defeated
     // el maestro también pregunta por los lugares de su época
-    this.qs = this.boss ? [...this.data.q, ...(POIS[world.idx] || []).filter((p) => p.q).map((p) => ({ ...p.q, place: p.name }))] : this.data.q;
+    this.qs = this.boss ? [...this.data.q, ...(POIS[world.idx] || []).filter((p) => p.q).map((p) => ({ ...p.q, place: p.name })), ...(BOOKS[world.idx] || []).map((b) => ({ ...b.q, place: b.title }))] : this.data.q;
     this.order = shuffle([...this.qs.keys()]); this.qptr = 0;
     this.t = Math.random() * 10; this.gesture = 0; this.shootCd = 2;
     this.radius = this.boss ? 1.3 : 0.8;

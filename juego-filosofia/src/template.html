@@ -227,6 +227,17 @@ kbd { font-family: var(--display); font-size: 0.78em; border: 1px solid var(--li
 .tk-quest li { margin: 3px 0; }
 .tk-quest li.ok { color: #bfe6a8; }
 .tk-quest li b { color: var(--gold-bright); font-weight: 600; }
+#lesson.quiz .ls-text, #lesson.quiz .ls-bar { display: none; }
+#lesson .lesson-card { max-height: 100%; overflow-y: auto; }
+.bq-ops .tk-op { padding: 8px 12px; }
+.bq-q { margin: 0 0 8px; color: var(--gold-bright); font-size: 1rem; }
+.bq-ops { display: flex; flex-wrap: wrap; gap: 6px; }
+.bq-ops .tk-op.bad { opacity: 0.45; text-decoration: line-through; }
+.bq-ops .tk-op.good { border-color: #8fd18a; color: #cdf5c4; background: rgba(120,200,110,0.15); }
+.bq-msg { margin: 8px 0 0; color: #cdf5c4; font-size: 0.95rem; }
+#lesson.book .lesson-card { background: linear-gradient(180deg, rgba(48,38,24,0.97), rgba(28,22,16,0.97)); }
+#lesson.book .ls-text { font-family: var(--body); }
+#lesson.book .ls-text .ttl { display: block; font-family: var(--display); letter-spacing: 0.06em; color: var(--gold-bright); font-size: 0.95em; margin-bottom: 6px; }
 .tk-op.bye { border-color: transparent; color: var(--parchment-dim); }
 .tk-ask { margin-top: 12px; }
 .tk-hint { margin: 0 0 6px; font-size: 0.9rem; color: var(--parchment-dim); }
@@ -600,7 +611,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <div class="ls-bar"><div class="ls-dots" id="ls-dots"></div><span id="ls-count"></span></div>
       <p class="ls-text" id="ls-text" aria-live="polite"></p>
       <p class="ls-note" id="ls-note" hidden></p>
-      <p class="ls-reward" id="ls-reward" hidden></p>
+      <div class="ls-reward" id="ls-reward" hidden></div>
       <footer class="ls-foot">
         <button class="aid" id="ls-prev">Anterior</button>
         <button class="btn primary" id="ls-play">Escuchar</button>

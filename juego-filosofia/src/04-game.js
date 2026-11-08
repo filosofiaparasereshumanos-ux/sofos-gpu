@@ -99,7 +99,8 @@ const Voice = {
       const id = this.spk(who); const h = [...id].reduce((a, c) => a + c.charCodeAt(0), 0);
       const boss = who && (who.boss || (who.data && who.data.boss)); const fem = who && who.npc && who.npc.npc.female;
       u.pitch = !who ? 1 : boss ? 0.62 : fem ? 1.15 : 0.8 + (h % 5) * 0.08; u.rate = (boss ? 0.92 : 0.98) * rate; u.volume = Math.min(1, 0.4 + G.settings.sfx);
-      if (onend) { let fired = false; const once = () => { if (!fired) { fired = true; onend(); } }; u.onend = once; u.onerror = once; setTimeout(once, (text.length / 11 + 3) * 1000 / rate); }
+      // si la voz falla o acaba demasiado pronto (sin sonido), respetamos el tiempo de lectura
+      if (onend) { let fired = false; const t0 = performance.now(); const minMs = Math.max(1500, text.length * 55) / rate; const once = () => { if (fired) return; fired = true; onend(); }; const soon = () => setTimeout(once, Math.max(0, minMs - (performance.now() - t0))); u.onend = soon; u.onerror = soon; setTimeout(once, (text.length / 11 + 3) * 1000 / rate); }
       speechSynthesis.speak(u);
     } catch (e) { if (onend) setTimeout(onend, 2000); }
   },
@@ -758,6 +759,7 @@ function updatePrompt() {
   let txt = '', can = false;
   if (s) { txt = IS_TOUCH ? `Hablar con <b>${s.data.short}</b>` : `<b>E</b> · Hablar con ${s.data.short}`; can = true; }
   else if (th && th.npc) { txt = IS_TOUCH ? `Hablar con <b>${th.npc.npc.name}</b>` : `<b>E</b> · Hablar con ${th.npc.npc.name}`; can = true; }
+  else if (th && th.book) { txt = IS_TOUCH ? `Leer: <b>${th.book.title}</b>` : `<b>E</b> · Leer: ${th.book.title}`; can = true; }
   else if (th && th.poi) { txt = IS_TOUCH ? `Descubrir: <b>${th.poi.name}</b>` : `<b>E</b> · Descubrir: ${th.poi.name}`; can = true; }
   const tg = currentTarget();
   if (!txt) {
@@ -768,7 +770,7 @@ function updatePrompt() {
   ch.classList.toggle('talk', can);
   const tl = $('#t-lesson'); const showL = !!(s && (s.state === 'idle' || s.state === 'defeated')); if (tl && tl._on !== showL) { tl._on = showL; tl.hidden = !showL; }
   if (tact) {
-    const label = s || (th && th.npc) ? 'Hablar' : can ? 'Descubrir' : input.auto ? 'Caminando…' : tg ? 'Ir a ' + tg.name.split(' ')[0] : 'Explorar';
+    const label = s || (th && th.npc) ? 'Hablar' : th && th.book ? 'Leer' : can ? 'Descubrir' : input.auto ? 'Caminando…' : tg ? 'Ir a ' + tg.name.split(' ')[0] : 'Explorar';
     if (tact._label !== label) { tact._label = label; tact.textContent = label; }
     const st = can ? 'ready' : tg ? 'go' : '';
     if (tact._st !== st) { tact._st = st; tact.classList.toggle('ready', st === 'ready'); tact.classList.toggle('go', st === 'go'); }
@@ -807,10 +809,15 @@ function nearestCitizen() {
   }
   return best;
 }
+function nearestBook() {
+  let best = null, bd = 2.6;
+  for (const b of world.books || []) { const d = Math.hypot(b.at[0] - player.pos.x, b.at[1] - player.pos.z); if (d < bd) { bd = d; best = b; } }
+  return best;
+}
 function nearestThing() {
-  const dist = (o) => o.sage ? Math.hypot(o.sage.pos.x - player.pos.x, o.sage.pos.z - player.pos.z) - o.sage.radius : o.npc ? Math.hypot(o.npc.pos.x - player.pos.x, o.npc.pos.z - player.pos.z) - 0.3 : Math.hypot(o.poi.at[0] - player.pos.x, o.poi.at[1] - player.pos.z);
-  const s = nearestSage(), p = nearestPoi(), c = nearestCitizen();
-  const all = [s && { sage: s }, c && { npc: c }, p && { poi: p }].filter(Boolean);
+  const dist = (o) => o.sage ? Math.hypot(o.sage.pos.x - player.pos.x, o.sage.pos.z - player.pos.z) - o.sage.radius : o.npc ? Math.hypot(o.npc.pos.x - player.pos.x, o.npc.pos.z - player.pos.z) - 0.3 : o.book ? Math.hypot(o.book.at[0] - player.pos.x, o.book.at[1] - player.pos.z) - 0.4 : Math.hypot(o.poi.at[0] - player.pos.x, o.poi.at[1] - player.pos.z);
+  const s = nearestSage(), p = nearestPoi(), c = nearestCitizen(), b = nearestBook();
+  const all = [s && { sage: s }, c && { npc: c }, p && { poi: p }, b && { book: b }].filter(Boolean);
   if (!all.length) return null;
   return all.reduce((a, b) => (dist(b) < dist(a) ? b : a));
 }
@@ -819,6 +826,7 @@ function tryInteract() {
   if (!t) { if (currentTarget()) { input.auto = !input.auto; input.walk = null; if (input.auto) Audio.click(); } return; }
   if (t.poi) return Places.open(t.poi);
   if (t.npc) return Talk.openNpc(t.npc);
+  if (t.book) return Lesson.openBook(t.book, true);
   if (t.sage.state !== 'shielded') Talk.open(t.sage);
 }
 $('#target').addEventListener('click', (e) => { e.stopPropagation(); if (G.state !== 'play') return; input.auto = !input.auto; Audio.click(); buzz(10); });
@@ -1073,7 +1081,7 @@ function updateHud() {
   else if (boss.state === 'shielded') obj = `Destruye a los ${era.enemy.many} que protegen a ${boss.data.short}.`;
   else {
     const pf = world.pois ? world.pois.filter((p) => p.found).length : 0, pt = world.pois ? world.pois.length : 0;
-    obj = (left > 0 ? `Cumple sus encargos y debate con los pensadores: quedan ${left}.` : `Debate con ${boss.data.short}, el maestro de esta época.`) + ` Lugares: ${pf}/${pt}.`;
+    obj = (left > 0 ? `Cumple sus encargos y debate con los pensadores: quedan ${left}.` : `Debate con ${boss.data.short}, el maestro de esta época.`) + ` Lugares: ${pf}/${pt}.` + (world.books && world.books.length ? ` Libros: ${world.books.filter((b) => b.read).length}/${world.books.length}.` : '');
   }
   $('#h-obj').textContent = obj;
   buildPathHud();
@@ -1197,6 +1205,23 @@ function renderCodex() {
     });
     sec.appendChild(grid); body.appendChild(sec);
   });
+  // biblioteca: libros estudiados (se pueden releer)
+  {
+    const studied = new Set(store.get(BOOK_KEY, []));
+    const sec = document.createElement('div'); sec.className = 'codex-era';
+    const h = document.createElement('h3'); h.textContent = `Biblioteca · ${BOOKS.flat().filter((b) => studied.has(b.id)).length} de ${BOOKS.flat().length} libros estudiados`; sec.appendChild(h);
+    const grid = document.createElement('div'); grid.className = 'codex-grid';
+    BOOKS.forEach((list, ei) => list.forEach((b) => {
+      const ok = studied.has(b.id); const c = document.createElement('div'); c.className = 'cc' + (ok ? '' : ' locked');
+      const h4 = document.createElement('h4'); h4.textContent = b.title;
+      const by = document.createElement('div'); by.className = 'by'; by.textContent = `${b.by} · ${b.year}`;
+      const t = document.createElement('p'); t.textContent = ok ? '«' + b.quote + '»' : `Búscalo en un atril de la época ${ERAS[ei].num} y estúdialo.`;
+      c.append(h4, by, t);
+      if (ok) { const lb = document.createElement('button'); lb.className = 'mini-b lesson-b'; lb.textContent = '▶ Releer'; lb.addEventListener('click', () => { Audio.init(); Lesson.openBook(b, false); }); c.appendChild(lb); }
+      grid.appendChild(c);
+    }));
+    sec.appendChild(grid); body.appendChild(sec);
+  }
   // lugares descubiertos
   const found = new Set(store.get('odisea-razon.lugares', []));
   const sec = document.createElement('div'); sec.className = 'codex-era';

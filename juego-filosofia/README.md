@@ -27,6 +27,11 @@ ratón y `E` para interactuar.
 - **Encargos**: antes de debatir, cada pensador te pide algo: descubrir lugares, escuchar a ciertos
   ciudadanos y resolver su enigma. Diógenes busca un ser humano honesto… ¿sabrás encontrarlo?
   Fallar cuesta razón.
+- **Estudiar los grandes libros**: 15 obras en atriles repartidos por las épocas (Fragmentos de
+  Heráclito, el Poema de Parménides, El banquete, Fedón, Apología, La República, Ética a Nicómaco,
+  Carta a Meneceo, Meditaciones, Confesiones, Suma teológica, El príncipe, Ensayos, Discurso del
+  método y ¿Qué es la Ilustración?). Se leen por capítulos con voz y terminan con una pregunta de
+  estudio; los libros estudiados se pueden releer en la Biblioteca del códice.
 - **Debatir**: desafía a cada filósofo a un debate de preguntas (207 en total, con explicación).
   Los fragmentos que ganas descubriendo lugares sirven como comodines.
 - Al vencer a todos los pensadores de una época, debates con su **maestro** (Parménides,
@@ -45,6 +50,7 @@ node build.mjs   # genera index.html (viaje 3D) y cartas.html (versión de duelo
 - `src/02-world.js` escenarios de cada época · `src/03-entities.js` figuras de los filósofos
 - `src/04-game.js` jugador, debates y pantallas · `src/04b-talk.js` conversaciones y lugares
 - `src/02c-polis.js` ciudadanos, encargos, anécdotas y lugares de las polis · `src/03b-citizens.js` ciudadanos en 3D
+- `src/02e-books.js` libros para estudiar
 - `src/02d-narration.js` reproductor de la voz grabada · `audio/` paquetes MP3 e índice
 - `tools/` generación de la voz: `narration-text.mjs` (frases) → `narrate.py` (Piper TTS + ffmpeg) → `narration-index.mjs`
 - `cartas/` versión alternativa de duelo de cartas en 2D (`cartas.html`)

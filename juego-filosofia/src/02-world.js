@@ -607,7 +607,8 @@ function buildWorld(idx) {
   const regs = era.sages.filter((s) => !s.boss);
   const sp = stationPositions(regs.length);
   const npcPts = (NPCS[idx] || []).flatMap((n) => [0, 0.5, 1].map((k) => [n.at[0] + n.path[0] * k, n.at[1] + n.path[1] * k]));
-  W._near = (x, z, d) => npcPts.some(([nx, nz]) => Math.hypot(nx - x, nz - z) < d + 1) || sp.some(([sx, sz]) => Math.hypot(sx - x, sz - z) < d + 3) || Math.hypot(x, z - W.bossPos.z) < d + 5 || (POIS[idx] || []).some((p) => Math.hypot(p.at[0] - x, p.at[1] - z) < d + 1.5);
+  const bookPts = (BOOKS[idx] || []).map((b) => b.at);
+  W._near = (x, z, d) => bookPts.some(([bx, bz]) => Math.hypot(bx - x, bz - z) < d + 1.5) || npcPts.some(([nx, nz]) => Math.hypot(nx - x, nz - z) < d + 1) || sp.some(([sx, sz]) => Math.hypot(sx - x, sz - z) < d + 3) || Math.hypot(x, z - W.bossPos.z) < d + 5 || (POIS[idx] || []).some((p) => Math.hypot(p.at[0] - x, p.at[1] - z) < d + 1.5);
   W.floors = [];
   addBounds(W);
   W.sky = makeSky(th); W.group.add(W.sky);
@@ -633,7 +634,7 @@ function buildWorld(idx) {
   buildPortal(W);
   // puntos de aparición de enemigos
   const r = mulberry32(idx * 101 + 3);
-   buildPois(W);
+   buildPois(W); buildBooks(W);
   for (let i = 0; i < 24; i++) { const x = (r() * 2 - 1) * 20, z = -38 + r() * 64; if (z > 24 && Math.abs(x) < 8) continue; W.spawns.push(new THREE.Vector3(x, 0, z)); }
   return W;
 }

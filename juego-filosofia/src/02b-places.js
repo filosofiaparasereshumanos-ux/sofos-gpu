@@ -64,3 +64,38 @@ function markPoiFound(poi) {
   poi.gem.material = glow(0x9ab0c0, 1.4); poi.ring.material = glow(0x9ab0c0, 1.2, { transparent: true, opacity: 0.5, side: THREE.DoubleSide });
   poi.label.material.map = labelTexture(poi.name, '✓ Descubierto', '#cfd8e0'); poi.label.material.needsUpdate = true;
 }
+
+// ---------- atriles con libros para estudiar
+function buildBooks(W) {
+  W.books = [];
+  const wood = std(0x5a3a22, { roughness: 0.7 }); const dark = std(0x3a2414, { roughness: 0.8 });
+  const page = new THREE.MeshStandardMaterial({ color: 0xf4ead0, roughness: 0.9, emissive: 0xffe8b0, emissiveIntensity: 0.25 });
+  const studied = new Set(store.get(BOOK_KEY, []));
+  for (const b of BOOKS[W.idx] || []) {
+    const g = new THREE.Group(); g.position.set(b.at[0], 0, b.at[1]);
+    g.rotation.y = b.at[0] < 0 ? Math.PI / 2 : -Math.PI / 2; // el atril mira hacia la vía central
+    g.add(mesh(new THREE.CylinderGeometry(0.42, 0.55, 0.12, 16), dark, 0, 0.06, 0));
+    g.add(mesh(new THREE.CylinderGeometry(0.07, 0.1, 1.05, 10), wood, 0, 0.6, 0));
+    const top = new THREE.Group(); top.position.set(0, 1.18, 0); top.rotation.x = 0.6; top.scale.setScalar(1.3); g.add(top);
+    top.add(mesh(new THREE.BoxGeometry(0.95, 0.05, 0.65), wood, 0, 0, 0));
+    top.add(mesh(new THREE.BoxGeometry(0.9, 0.02, 0.06), dark, 0, 0.03, -0.32));
+    // libro abierto: dos páginas curvadas y lomo
+    for (const sx of [-1, 1]) { const pg = mesh(new THREE.BoxGeometry(0.4, 0.025, 0.52), page, sx * 0.21, 0.05, 0, false); pg.rotation.z = sx * -0.08; top.add(pg); }
+    top.add(mesh(new THREE.BoxGeometry(0.88, 0.03, 0.56), std(0x6a1f1f, { roughness: 0.6 }), 0, 0.03, 0, false));
+    // líneas de texto
+    for (const sx of [-1, 1]) for (let k = 0; k < 6; k++) top.add(mesh(new THREE.BoxGeometry(0.3, 0.004, 0.012), std(0x3a2a1a), sx * 0.21, 0.066, -0.18 + k * 0.07, false, false));
+    // brillo y halo de luz
+    const glowRing = mesh(new THREE.RingGeometry(0.75, 0.9, 36), glow(0x9fd8ff, 2, { transparent: true, opacity: 0.7, side: THREE.DoubleSide }), 0, 0.03, 0, false, false); glowRing.rotation.x = -Math.PI / 2; g.add(glowRing);
+    const motes = mesh(new THREE.OctahedronGeometry(0.09, 0), glow(0xcfeaff, 3), 0, 1.75, 0, false, false); g.add(motes);
+    const label = new THREE.Sprite(new THREE.SpriteMaterial({ map: labelTexture(b.title, b.by + ' · Libro para estudiar', '#cfeaff'), transparent: true, depthWrite: false, toneMapped: false }));
+    label.scale.set(2.5, 0.62, 1); label.position.y = 2.45; g.add(label);
+    W.group.add(g); W.colliders.push({ t: 1, x: b.at[0], z: b.at[1], r: 0.55, h: 1.4 });
+    const wb = { ...b, group: g, ring: glowRing, label, motes, read: false };
+    W.books.push(wb); if (studied.has(b.id)) markBookRead(wb);
+    W.anim.push((t) => { motes.position.y = 1.75 + Math.sin(t * 2 + b.at[1]) * 0.12; motes.rotation.y = t * 1.5; glowRing.material.opacity = 0.45 + Math.sin(t * 2.5 + b.at[0]) * 0.2; });
+  }
+}
+function markBookRead(wb) {
+  wb.read = true; wb.ring.material = glow(0xffd36a, 1.6, { transparent: true, opacity: 0.6, side: THREE.DoubleSide });
+  wb.label.material.map = labelTexture(wb.title, '✓ Estudiado · ' + wb.by, '#ffd98a'); wb.label.material.needsUpdate = true;
+}
