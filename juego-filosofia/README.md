@@ -1,135 +1,45 @@
-# Odisea de la Razón
+# Odisea de la Razón · Duelo de filósofos
 
-Juego de filosofía en primera persona (3D, navegador). Recorres veinticinco siglos de pensamiento,
-de Tales de Mileto a Immanuel Kant, venciendo a las sombras del error con la lámpara de Diógenes
-y derrotando a cada filósofo en un **duelo dialéctico** de preguntas.
+Juego de cartas y preguntas para el móvil (y el ordenador): recorres un camino de **Tales a Kant**,
+vences a **25 filósofos** en duelos y coleccionas sus ideas como cartas. Sirve para jugar por gusto
+y para repasar filosofía en clase.
 
 ## Cómo jugarlo
 
-Abre `index.html` en un navegador moderno (Chrome, Edge, Firefox o Safari). Es un único archivo:
-no necesita instalación. Three.js se carga desde jsDelivr, así que hace falta conexión a internet.
+Abre `index.html` en un navegador (un solo archivo, sin instalación). Para publicarlo gratis con
+GitHub Pages: Settings → Pages → rama principal, y entra a `…/juego-filosofia/`.
 
-Para publicarlo gratis: activa **GitHub Pages** en el repositorio (Settings → Pages → rama
-`main`, carpeta raíz) y entra a `https://<usuario>.github.io/<repo>/juego-filosofia/`.
+## Cómo se juega
 
-## Las seis etapas
+1. **Si aciertas, golpeas tú; si fallas, golpea el filósofo.** Cada uno te pregunta sobre su pensamiento.
+2. **Antes de responder puedes jugar una carta** de tu mano (una por pregunta, opcional):
+   - *Ataque*: más daño si aciertas (Logos +4, Armonía ×2, Giro copernicano…)
+   - *Defensa*: menos daño si fallas (Prudencia, el Ser, Epojé anula el golpe…)
+   - *Ingenio*: quita respuestas falsas, da tiempo, cambia la pregunta (Mayéutica, Navaja de Ockham…)
+   - *Cura*: recuperas razón (Autarquía, Arjé…)
 
-| Etapa | Escenario | Pensadores | Maestro final | Enemigos |
-|---|---|---|---|---|
-| I · Los Presocráticos | Ruinas jonias al atardecer | Tales, Pitágoras, Heráclito | Parménides | Quimeras del Mito |
-| II · La Atenas Clásica | El ágora y el Partenón a mediodía | Protágoras, Sócrates, Platón | Aristóteles | Sofismas |
-| III · Helenismo y Roma | Arcadas romanas al crepúsculo | Diógenes, Epicuro, Pirrón | Marco Aurelio | Pasiones |
-| IV · La Edad Media | Catedral gótica con vidrieras | Agustín, Averroes, Ockham | Tomás de Aquino | Dogmas |
-| V · Renacimiento | Plaza florentina con cúpula | Pico della Mirandola, Maquiavelo, Montaigne | Francis Bacon | Ídolos |
-| VI · La Modernidad | Biblioteca-observatorio bajo las estrellas | Descartes, Spinoza, Locke, Hume | Kant | Genios Malignos |
+   El juego premia saber *cuánto sabes*: si estás seguro, ataca; si dudas, defiéndete.
+3. **Cada filósofo tiene una habilidad**: Heráclito «el Oscuro» nubla las respuestas, Sócrates
+   duplica su golpe con la ironía, Platón hace brillar una sombra falsa, Diógenes te roba cartas…
+4. **Al vencerlo ganas su concepto como carta** (25 en total) y hasta 3 estrellas.
+5. **Repaso**: tras cada duelo ves las preguntas con su explicación.
 
-Cada filósofo tiene su propio escenario simbólico: el estanque de Tales, el fuego de Heráclito,
-la esfera de Parménides, la caverna de Platón, la tinaja de Diógenes, la navaja de Ockham, los
-ejes cartesianos de Descartes, las bolas de billar de Hume, el cielo estrellado de Kant…
+## Además
 
-## Lecciones habladas
-
-Cada uno de los 25 filósofos puede darte **una clase de toda su filosofía**, contada por él mismo
-en primera persona y en seis partes. Es opcional: junto a cada filósofo pulsa `L` (o el botón
-«Lección» en el móvil), o escúchalas cuando quieras desde el Códice. Se narran con la voz del
-sistema, con un tono distinto para cada filósofo y subtítulos que resaltan la frase que suena.
-Si escuchas la lección antes del duelo, tendrás una *Mayéutica* gratis contra ese filósofo.
-
-## Modos
-
-- **Odisea:** la campaña completa por las seis épocas.
-- **Oráculo de Delfos (diario):** 10 preguntas de Tales a Kant, iguales para todo el mundo cada día,
-  15 segundos por pregunta y rachas que multiplican la puntuación. Al terminar genera un resultado
-  para compartir (🟨 acierto rápido, 🟩 acierto, 🟥 fallo, ⬛ tiempo agotado).
-- **Salón de la Fama:** ranking del oráculo de hoy y de la odisea completa (en la versión publicada en
-  claude.ai, con base de datos compartida). Cada jugador elige su nombre de filósofo.
-- **16 logros**: Mayéutica perfecta, Rayo de razón, Fuera de la caverna, Elegido de Apolo…
-
-## La aventura
-
-Cada época empieza en un **camino suspendido sobre el vacío** (un mar de nubes o la noche estrellada). Antes de cada pensador hay una **prueba de plataformas inspirada en su filosofía**:
-
-| Pensador | Prueba |
-|---|---|
-| Tales | El río del arjé: saltar de piedra en piedra (algunas se hunden) |
-| Pitágoras, Agustín, Pico | Escaleras que aparecen y desaparecen al compás |
-| Heráclito | El fuego siempre vivo: chorros de llamas en oleadas |
-| Protágoras, Maquiavelo, Descartes | Losas móviles (sentidos opuestos, fortuna, ejes x/y) |
-| Sócrates, Montaigne, Locke | Suelo que se desmorona tras pisarlo |
-| Platón, Spinoza | Puente invisible que solo revela tu lámpara |
-| Diógenes, Hume | Tinajas o bolas de billar rodando hacia ti |
-| Epicuro | Estanque de nenúfares a la deriva |
-| Pirrón | El puente de la duda: losas falsas que tiemblan |
-| Averroes | Plataformas en órbita, como un astrolabio |
-| Ockham | Navajas pendulares que barren el puente |
-
-**Pensado para que cualquiera pueda jugar:**
-
-- **Salto guiado:** dentro de una prueba, al pulsar «Saltar» (o Espacio) saltas solo hasta la siguiente
-  plataforma, marcada con un anillo azul. Tú solo decides cuándo.
-- **Ayuda de los dioses:** tras varios fallos aparece un puente de luz, o se calman el fuego, las
-  navajas o las tinajas.
-- **Dificultad de las pruebas** (Ajustes): Fácil (por defecto), Normal o Difícil (sin salto guiado ni ayudas).
-
-Si caes, vuelves a la última tierra firme con un poco menos de razón (nunca te elimina una caída). Al final del camino se entra en la gran plaza, una isla flotante donde espera el maestro de la época.
-
-## El camino
-
-Cada época es una **vía recta**: los pensadores esperan uno tras otro sobre el camino, en orden
-cronológico (Tales → Pitágoras → Heráclito → Parménides…). Entre uno y otro hay una **puerta de luz**
-que se abre al vencer al pensador que la custodia. Un marcador dorado con la distancia y una
-columna de luz señalan al siguiente; tócalo (o pulsa `E`) para caminar solo hasta él. Arriba,
-una barra muestra el recorrido de la época y tu posición.
-
-## Mecánicas
-
-- **Exploración y combate (FPS):** `WASD` para moverte, ratón para mirar, clic para disparar la
-  lámpara, `Mayús` para correr, `Espacio` para saltar.
-- **Impulso** (`C` o `Ctrl`): esquiva rápida con un instante de invulnerabilidad.
-- **Epojé** (`Q` o clic derecho): una onda de "suspensión del juicio" que daña a las sombras
-  cercanas y disuelve sus proyectiles.
-- **Duelos dialécticos** (`E` junto a un filósofo): preguntas de opción múltiple con tiempo.
-  Cada acierto quiebra su *convicción*; cada fallo daña tu *razón* (tu vida). Después de cada
-  respuesta se explica la respuesta correcta.
-- **Comodines:** con los fragmentos de sabiduría que sueltan las sombras puedes usar
-  *Mayéutica* (elimina dos respuestas falsas) o *Clepsidra* (+10 segundos).
-- **Maestros finales:** a mitad del duelo se protegen con un escudo e invocan sombras; hay que
-  destruirlas para seguir. Kant lo hace dos veces.
-- **Códice:** cada filósofo vencido te entrega su concepto central (Arjé, Logos, Mayéutica,
-  Ataraxia, Navaja de Ockham, Cogito, Giro copernicano…), que puedes repasar en el menú.
-- **Rachas:** cada tres aciertos seguidos sube el multiplicador de sabiduría (×2, ×3, ×4).
-- **Maestros con presentación cinematográfica**, cámara lenta al vencer a cada filósofo y **voces**:
-  los filósofos hablan en español con la voz del sistema (se puede desactivar en Ajustes).
-- Progreso guardado automáticamente al empezar cada etapa.
-
-### En el móvil
-
-- Joystick flotante: pon el pulgar en cualquier punto de la mitad izquierda; desliza por la derecha para mirar.
-- La lámpara **dispara sola** cuando apuntas a una sombra, con asistencia de puntería (se puede desactivar).
-- Vibración al recibir daño, acertar o vencer; botón de pantalla completa; la pantalla no se apaga mientras juegas.
-- Funciona en vertical y en horizontal (en vertical el campo de visión se amplía). Se juega mejor en horizontal.
-- Calidad "Media" con resplandor pensada para móviles; si el juego va lento, baja la calidad sola.
-
-En total: 25 filósofos y unas 200 preguntas con explicación.
+- **Lecciones habladas**: cada filósofo explica su filosofía en primera persona, con su voz y
+  subtítulos. Si la escuchas antes del duelo, empiezas con la carta *Lección aprendida*.
+- **Oráculo de Delfos**: 10 preguntas al día, iguales para todos, con resultado para compartir.
+- **Salón de la Fama** compartido (en la versión publicada en claude.ai), **21 logros**.
+- **Modo estudio**: en Ajustes puedes quitar el límite de tiempo.
+- 207 preguntas con explicación, música generativa por época y efectos de sonido.
 
 ## Código
 
-El juego se escribe en `src/` y se empaqueta en un solo `index.html`:
-
 ```bash
-node build.mjs
+node build.mjs   # genera index.html (cartas) y aventura.html (la versión 3D anterior)
 ```
 
-- `src/00-core.js`: utilidades, texturas procedurales (mármol, teselas, vidrieras…) y audio generativo.
-- `src/01a-lessons.js`: las lecciones de los 25 filósofos.
-- `src/04a-lesson.js`: el reproductor de lecciones.
-- `src/01-data.js`: etapas, filósofos, preguntas y conceptos (para añadir preguntas, edita aquí).
-- `src/02-world.js`: cielos, arquitectura de cada época y escenarios de los filósofos.
-- `src/03-entities.js`: figuras de los filósofos, enemigos, proyectiles y partículas.
-- `src/03a-music.js`: banda sonora generativa (acordes, bajo, arpegios, melodía y percusión por época).
-- `src/04-game.js`: jugador, duelos, pantallas y bucle principal.
-- `src/05-features.js`: Oráculo diario, Salón de la Fama y logros.
-- `src/template.html`: interfaz y estilos.
-
-Todo (modelos, texturas, música y efectos) se genera por código: no hay archivos externos aparte
-de Three.js y dos fuentes de Google Fonts.
+- `cartas/`: el juego de cartas (`base.js`, `cards.js` con cartas, habilidades y arte SVG, `game.js`, `template.html`).
+- `src/01-data.js`: épocas, filósofos y preguntas (compartido). `src/01a-lessons.js`: lecciones.
+- `src/00b-audio.js`, `src/03a-music.js`: efectos y música (compartidos).
+- El resto de `src/` es la aventura 3D en primera persona, que se conserva en `aventura.html`.
