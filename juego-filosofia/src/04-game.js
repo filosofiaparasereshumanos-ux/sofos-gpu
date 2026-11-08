@@ -6,7 +6,7 @@ const G = {
   state: 'loading', prevScreen: null, eraIdx: 0, score: 0, frags: 0, hp: 100, maxHp: 100,
   stats: { correct: 0, wrong: 0, kills: 0, time: 0 }, eraStart: null,
   codex: new Set(store.get(CODEX_KEY, [])),
-  settings: Object.assign({ sens: 1, music: 0.7, sfx: 0.85, quality: IS_TOUCH ? 'mid' : 'high', invertY: false, voices: true, autofire: true, vibrate: true }, store.get(SET_KEY, {})),
+  settings: Object.assign({ sens: 1, music: 0.7, sfx: 0.85, quality: IS_TOUCH ? 'mid' : 'high', invertY: false, voices: true, autofire: true, vibrate: true, trialDiff: 'facil' }, store.get(SET_KEY, {})),
   streak: 0, bestStreak: 0,
   noLock: false, intentionalUnlock: false,
 };
@@ -249,7 +249,7 @@ function collide(p, r) {
   }
   // las plataformas altas actúan como muros
   for (const f of world.floors) {
-    if (!f.solid() || f.top <= p.y + 0.55 || f.top - f.th > p.y + 1.6) continue;
+    if (f.ghost || !f.solid() || f.top <= p.y + 0.55 || f.top - f.th > p.y + 1.6) continue;
     if (f.kind === 'cyl') { const dx = p.x - f.x, dz = p.z - f.z; const rr = r + f.r; const d2 = dx * dx + dz * dz; if (d2 < rr * rr && d2 > 1e-8) { const d = Math.sqrt(d2); p.x += (dx / d) * (rr - d); p.z += (dz / d) * (rr - d); } }
     else {
       const cx = clamp(p.x, f.x - f.hw, f.x + f.hw), cz = clamp(p.z, f.z - f.hd, f.z + f.hd); const dx = p.x - cx, dz = p.z - cz; const d2 = dx * dx + dz * dz;
@@ -303,26 +303,33 @@ function updatePlayer(dt) {
     player.dashT -= dt; player.vel.x = player.dashDir.x * 23; player.vel.z = player.dashDir.z * 23;
     if (Math.random() < dt * 50) particles.emit(_v1.copy(player.pos).setY(0.9 + Math.random()), 1, { color: world.theme.lampCol, speed: 0.3, life: 0.4, size: 0.4, intensity: 1.6 });
   }
-  // salto (con un instante de margen al salir de un borde)
-  const wantJump = k.Space || input.jumpReq; input.jumpReq = false;
-  if (wantJump && !player.jumpHeld && (player.onGround || player.coyote > 0)) { player.vel.y = 7.5; player.onGround = false; player.coyote = 0; player.floor = null; Audio.jump(); }
-  player.jumpHeld = !!k.Space;
-  // las plataformas móviles te llevan consigo
-  if (player.onGround && player.floor) { player.pos.x += player.floor.dx; player.pos.z += player.floor.dz; if (player.floor.dy < 0) player.pos.y += player.floor.dy; }
-  player.vel.y -= 22 * dt;
-  player.pos.addScaledVector(player.vel, dt);
-  const gnd = groundAt(world, player.pos.x, player.pos.z, player.pos.y);
-  if (gnd && player.pos.y <= gnd.top + 0.03 && player.vel.y <= 0) {
-    if (!player.onGround && player.airT > 0.3) { player.land = 1; Audio.step(); }
-    player.pos.y = gnd.top; player.vel.y = 0; player.onGround = true; player.airT = 0; player.coyote = 0.12; player.floor = gnd.f;
-    if (gnd.f && gnd.f.onStand) gnd.f.onStand();
-    if (!gnd.f) player.safe.set(player.pos.x, 0, player.pos.z);
-    else if (gnd.f.safe) player.safe.set(0, 0, gnd.f.respawnZ);
-  } else {
-    if (player.onGround) player.coyote = 0.12; else player.coyote -= dt;
-    player.onGround = false; player.floor = null; player.airT += dt;
+  if (player.guide) updateGuide(dt);
+  else {
+    // salto (con un instante de margen al salir de un borde)
+    const wantJump = k.Space || input.jumpReq; input.jumpReq = false;
+    if (wantJump && !player.jumpHeld && (player.onGround || player.coyote > 0)) {
+      const jt = assistOn() ? jumpTarget(wx, wz) : null;
+      if (jt) startGuide(jt);
+      else { player.vel.y = 7.5; player.onGround = false; player.coyote = 0; player.floor = null; Audio.jump(); }
+    }
+    player.jumpHeld = !!k.Space;
+    // las plataformas móviles te llevan consigo
+    if (player.onGround && player.floor) { player.pos.x += player.floor.dx; player.pos.z += player.floor.dz; if (player.floor.dy < 0) player.pos.y += player.floor.dy; }
+    player.vel.y -= 22 * dt;
+    player.pos.addScaledVector(player.vel, dt);
+    const gnd = groundAt(world, player.pos.x, player.pos.z, player.pos.y);
+    if (gnd && player.pos.y <= gnd.top + 0.03 && player.vel.y <= 0) {
+      if (!player.onGround && player.airT > 0.3) { player.land = 1; Audio.step(); }
+      player.pos.y = gnd.top; player.vel.y = 0; player.onGround = true; player.airT = 0; player.coyote = 0.12; player.floor = gnd.f;
+      if (gnd.f && gnd.f.onStand) gnd.f.onStand();
+      if (!gnd.f) player.safe.set(player.pos.x, 0, player.pos.z);
+      else if (gnd.f.safe) player.safe.set(0, 0, gnd.f.respawnZ);
+    } else {
+      if (player.onGround) player.coyote = 0.12; else player.coyote -= dt;
+      player.onGround = false; player.floor = null; player.airT += dt;
+    }
+    if (player.pos.y < -7) respawnPlayer('void');
   }
-  if (player.pos.y < -7) respawnPlayer('void');
   collide(player.pos, 0.45);
   // balanceo
   const hs = Math.hypot(player.vel.x, player.vel.z);
@@ -409,6 +416,8 @@ function loadWorld(idx) {
   sages = world.stations.map((st, i) => new Sage(world, st, i));
   world.beam = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.8, 40, 20, 1, true), new THREE.MeshBasicMaterial({ color: new THREE.Color(world.theme.accent).multiplyScalar(1.6), transparent: true, opacity: 0.2, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false, fog: false }));
   world.beam.geometry.translate(0, 20, 0); world.beam.visible = false; world.group.add(world.beam); input.auto = false;
+  world.jumpRing = new THREE.Mesh(new THREE.RingGeometry(0.45, 0.62, 32), new THREE.MeshBasicMaterial({ color: new THREE.Color(0x8fe9ff).multiplyScalar(2.5), transparent: true, opacity: 0.9, side: THREE.DoubleSide, depthWrite: false, toneMapped: false }));
+  world.jumpRing.rotation.x = -Math.PI / 2; world.jumpRing.visible = false; world.group.add(world.jumpRing); player.guide = null;
   director.budget = 9 + idx * 2; director.timer = 5; director.queue = [];
   player.pos.copy(world.start); player.vel.set(0, 0, 0); player.yaw = 0; player.pitch = 0;
 }
@@ -576,6 +585,77 @@ function autoWalkDir(dt) {
   const sy = Math.sin(player.yaw), cy = Math.cos(player.yaw); const ux = dx / d, uz = dz / d;
   return { mx: ux * cy - uz * sy, mz: ux * sy + uz * cy };
 }
+// ---------- salto guiado ----------
+// Al saltar dentro (o al borde) de una prueba, el salto te lleva a la siguiente plataforma.
+function assistOn() { return G.settings.trialDiff !== 'dificil' && !!(trialAt(player.pos.z) || trialAt(player.pos.z - 3)); }
+const _jt = new THREE.Vector3();
+function jumpTarget(wx, wz) {
+  let fx = wx, fz = wz; const wl = Math.hypot(fx, fz);
+  if (wl < 0.5) { fx = -Math.sin(player.yaw); fz = -Math.cos(player.yaw); } else { fx /= wl; fz /= wl; }
+  let best = null, bs = 1e9;
+  for (const f of world.floors) {
+    if (f === player.floor || f.ghost || !f.solid()) continue;
+    if (f.top - player.pos.y > 1.8 || f.top - player.pos.y < -3) continue;
+    // punto de aterrizaje: el más cercano del suelo, metido un poco hacia dentro
+    let tx, tz;
+    if (f.kind === 'cyl') { tx = f.x; tz = f.z; }
+    else { tx = clamp(player.pos.x + fx * 2, f.x - Math.max(0, f.hw - 0.7), f.x + Math.max(0, f.hw - 0.7)); tz = clamp(player.pos.z + fz * 2, f.z - Math.max(0, f.hd - 0.7), f.z + Math.max(0, f.hd - 0.7)); }
+    const dx = tx - player.pos.x, dz = tz - player.pos.z; const d = Math.hypot(dx, dz);
+    if (d < 1.1 || d > 6.8) continue;
+    const dot = (dx * fx + dz * fz) / d; if (dot < 0.25) continue;
+    if (player.floor && inFloor(player.floor, tx, tz, 0)) continue;
+    const back = tz > player.pos.z + 0.3 ? 4 : 0;
+    const sc = d * (1.6 - dot) + back + (f.safe ? -0.5 : 0);
+    if (sc < bs) { bs = sc; best = { f, x: tx, z: tz, ox: tx - f.x, oz: tz - f.z }; }
+  }
+  return best;
+}
+function startGuide(jt) {
+  const d = Math.hypot(jt.x - player.pos.x, jt.z - player.pos.z);
+  player.guide = { f: jt.f, ox: jt.ox, oz: jt.oz, sx: player.pos.x, sy: player.pos.y, sz: player.pos.z, t: 0, T: clamp(0.38 + d * 0.06, 0.45, 0.8), h: 0.9 + d * 0.12 };
+  player.onGround = false; player.floor = null; player.vel.set(0, 0, 0); Audio.jump(); buzz(10);
+}
+function updateGuide(dt) {
+  const g = player.guide; g.t += dt; const u = Math.min(1, g.t / g.T); const e = u * u * (3 - 2 * u);
+  const tx = g.f.kind === 'cyl' ? g.f.x : g.f.x + g.ox, tz = g.f.kind === 'cyl' ? g.f.z : g.f.z + g.oz;
+  player.pos.x = lerp(g.sx, tx, e); player.pos.z = lerp(g.sz, tz, e);
+  player.pos.y = lerp(g.sy, g.f.top, u) + 4 * g.h * u * (1 - u);
+  if (u >= 1) {
+    player.guide = null; player.airT = 0.4; player.vel.set(0, 0, 0);
+    if (g.f.solid()) { player.pos.y = g.f.top; player.onGround = true; player.floor = g.f; player.land = 1; Audio.step(); if (g.f.onStand) g.f.onStand(); if (g.f.safe) player.safe.set(0, 0, g.f.respawnZ); }
+  }
+}
+// anillo que muestra dónde caerás
+function updateJumpMarker() {
+  const m = world.jumpRing; if (!m) return;
+  let jt = null;
+  if (G.state === 'play' && player.onGround && !player.guide && assistOn()) {
+    const k = input.keys; let mx = input.joy.x + (k.KeyD ? 1 : 0) - (k.KeyA ? 1 : 0), mz = input.joy.y + (k.KeyS ? 1 : 0) - (k.KeyW || k.ArrowUp ? 1 : 0);
+    const sy = Math.sin(player.yaw), cy = Math.cos(player.yaw); jt = jumpTarget(mx * cy + mz * sy, -mx * sy + mz * cy);
+  }
+  m.visible = !!jt;
+  if (jt) { const x = jt.f.kind === 'cyl' ? jt.f.x : jt.f.x + jt.ox, z = jt.f.kind === 'cyl' ? jt.f.z : jt.f.z + jt.oz; m.position.set(x, jt.f.top + 0.06, z); m.scale.setScalar(1 + Math.sin(tAcc * 6) * 0.08); }
+  const tj = $('#t-jump'); if (tj && tj._jt !== !!jt) { tj._jt = !!jt; tj.textContent = jt ? 'Saltar ➜' : 'Saltar'; tj.classList.toggle('aim', !!jt); }
+}
+// ayuda de los dioses: tras varios fallos aparece un puente o se calman los peligros
+function mercyLimit() { return G.settings.trialDiff === 'facil' ? 2 : G.settings.trialDiff === 'normal' ? 4 : 1e9; }
+function giveMercy(tr) {
+  tr.mercy = true;
+  if (['fire', 'rollers', 'pendulum'].includes(tr.cfg.type)) {
+    tr.tick = () => null; if (tr.calm) tr.calm();
+    toast(tr.cfg.type === 'fire' ? 'Los dioses se apiadan: el fuego se calma. Cruza tranquilo.' : tr.cfg.type === 'pendulum' ? 'Los dioses se apiadan: las navajas se detienen.' : 'Los dioses se apiadan: dejan de rodar.');
+  } else {
+    for (const f of world.floors) if (f.z < tr.zS && f.z > tr.zE) f.ghost = true;
+    const len = tr.zS - tr.zE + 1.2, cz = (tr.zS + tr.zE) / 2;
+    const mat = new THREE.MeshStandardMaterial({ color: new THREE.Color(tr.cfg.col).multiplyScalar(0.5), emissive: new THREE.Color(tr.cfg.col), emissiveIntensity: 0.7, transparent: true, opacity: 0.75, roughness: 0.3 });
+    const m = platformMesh(world, 'box', 2.6, 0.2, len, mat, tr.cfg.col, 2.2); m.position.set(0, -0.04, cz);
+    addFloor(world, { kind: 'box', x: 0, z: cz, hw: 1.3, hd: len / 2, top: 0.06, th: 0.2, mesh: m });
+    particles.emit(_v1.set(0, 0.5, cz), 80, { color: tr.cfg.col, speed: 4, life: 1.2, size: 0.5, intensity: 2.5, jitter: 6 });
+    toast('Los dioses se apiadan: aparece un puente de luz. Camina por él.');
+  }
+  Audio.portal(); buzz([20, 40, 20]);
+}
+
 // ---------- pruebas del camino ----------
 function updateTrials(dt) {
   for (const tr of world.trials) {
@@ -583,10 +663,12 @@ function updateTrials(dt) {
     const inside = player.pos.z < tr.zS && player.pos.z > tr.zE;
     if (inside && !tr.entered) { tr.entered = true; announceTrial(tr); }
     if (!tr.done && tr.entered && player.pos.z < tr.zE - 0.6 && player.onGround && player.pos.y > -0.5) completeTrial(tr);
+    if (!tr.done && !tr.mercy && tr.falls + (tr.hits || 0) >= mercyLimit()) giveMercy(tr);
     if (tr.near && tr.tick) {
       const r = tr.tick(dt, player);
       if (r === 'water') respawnPlayer('water', tr);
       else if (r && player.iframe <= 0) {
+        tr.hits = (tr.hits || 0) + 1; player.guide = null;
         G.hp = Math.max(0, G.hp - r.hurt); player.vel.copy(r.push); player.onGround = false; player.floor = null; player.iframe = 0.9; player.shake = 0.8; G.hurtFx = 1;
         Audio.hurt(); buzz(50); popup(`−${r.hurt} razón`, 'bad'); updateHud(); if (G.hp <= 0) gameOver();
       }
@@ -596,7 +678,8 @@ function updateTrials(dt) {
 function trialAt(z) { return world.trials.find((t) => z < t.zS + 0.5 && z > t.zE - 0.5); }
 let trialCardT = 0;
 function announceTrial(tr) {
-  const c = $('#trialcard'); $('#tc-kind').textContent = TRIAL_KIND[tr.cfg.type] || 'Prueba'; $('#tc-name').textContent = tr.cfg.name; $('#tc-hint').textContent = tr.cfg.hint;
+  const c = $('#trialcard'); $('#tc-kind').textContent = TRIAL_KIND[tr.cfg.type] || 'Prueba'; $('#tc-name').textContent = tr.cfg.name;
+  $('#tc-hint').textContent = tr.cfg.hint + (G.settings.trialDiff !== 'dificil' ? (IS_TOUCH ? ' Toca «Saltar» y saltarás solo hasta el anillo azul.' : ' Pulsa Espacio y saltarás solo hasta el anillo azul.') : '');
   c.style.setProperty('--tc', '#' + new THREE.Color(tr.cfg.col).getHexString());
   c.hidden = true; void c.offsetWidth; c.hidden = false; document.body.classList.add('tc-on'); clearTimeout(trialCardT); trialCardT = setTimeout(() => { c.hidden = true; document.body.classList.remove('tc-on'); }, 6200);
   Music.sting('boss'); buzz([15, 30, 15]); input.auto = false;
@@ -690,7 +773,7 @@ function updatePlay(dt) {
   updatePlayer(dt);
   updateSages(dt, false);
   for (const e of enemies) e.update(dt, game);
-  updateTrials(dt); updateBolts(dt); updatePickups(dt); updateDirector(dt); updatePrompt(); updatePortal(dt);
+  updateTrials(dt); updateJumpMarker(); updateBolts(dt); updatePickups(dt); updateDirector(dt); updatePrompt(); updatePortal(dt);
   updateEpojeHud(); updatePathMe();
   Audio.mode = sages.some((s) => s.state === 'shielded') ? 'boss' : enemies.length > 1 ? 'combat' : 'calm';
   $('#lowhp').style.opacity = G.hp < 30 ? 0.6 + Math.sin(tAcc * 5) * 0.25 : 0;
@@ -1059,7 +1142,9 @@ function syncSettings() {
   document.querySelectorAll('#s-quality button').forEach((b) => b.classList.toggle('on', b.dataset.v === G.settings.quality));
   document.querySelectorAll('#s-invert button').forEach((b) => b.classList.toggle('on', (b.dataset.v === '1') === !!G.settings.invertY));
   for (const [id, k] of TOGGLES) document.querySelectorAll(id + ' button').forEach((b) => b.classList.toggle('on', (b.dataset.v === '1') === !!G.settings[k]));
+  document.querySelectorAll('#s-diff button').forEach((b) => b.classList.toggle('on', b.dataset.v === G.settings.trialDiff));
 }
+document.querySelectorAll('#s-diff button').forEach((b) => b.addEventListener('click', () => { G.settings.trialDiff = b.dataset.v; saveSettings(); syncSettings(); toast('La dificultad de las pruebas cambia desde la próxima etapa.'); }));
 const TOGGLES = [['#s-voices', 'voices'], ['#s-auto', 'autofire'], ['#s-vib', 'vibrate']];
 for (const [id, k] of TOGGLES) document.querySelectorAll(id + ' button').forEach((b) => b.addEventListener('click', () => {
   G.settings[k] = b.dataset.v === '1'; saveSettings(); syncSettings();

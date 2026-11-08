@@ -63,6 +63,14 @@ Cada época empieza en un **camino suspendido sobre el vacío** (un mar de nubes
 | Averroes | Plataformas en órbita, como un astrolabio |
 | Ockham | Navajas pendulares que barren el puente |
 
+**Pensado para que cualquiera pueda jugar:**
+
+- **Salto guiado:** dentro de una prueba, al pulsar «Saltar» (o Espacio) saltas solo hasta la siguiente
+  plataforma, marcada con un anillo azul. Tú solo decides cuándo.
+- **Ayuda de los dioses:** tras varios fallos aparece un puente de luz, o se calman el fuego, las
+  navajas o las tinajas.
+- **Dificultad de las pruebas** (Ajustes): Fácil (por defecto), Normal o Difícil (sin salto guiado ni ayudas).
+
 Si caes, vuelves a la última tierra firme con un poco menos de razón (nunca te elimina una caída). Al final del camino se entra en la gran plaza, una isla flotante donde espera el maestro de la época.
 
 ## El camino

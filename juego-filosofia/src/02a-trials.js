@@ -4,6 +4,7 @@
 //  pensador hay una prueba inspirada en su filosofía (agua, fuego, ritmo...).
 //  Al final del camino se entra en la gran plaza, donde espera el maestro.
 // ============================================================================
+const easy = () => G.settings.trialDiff === 'facil', hard = () => G.settings.trialDiff === 'dificil';
 const SEG = 30, PAD_A = 6, TRIAL_LEN = 15, PLAZA_Z = 37;
 const TRIALS = {
   tales: { type: 'river', name: 'El río del arjé', hint: 'Salta de piedra en piedra: todo es agua, pero mejor no caer en ella. Algunas piedras se hunden y vuelven a salir.', col: 0x4ab0e0 },
@@ -156,7 +157,7 @@ const TRIAL_BUILDERS = {
     let x = 0; const stones = 7;
     for (let k = 0; k < stones; k++) {
       const z = zS - 1.5 - k * ((TRIAL_LEN - 3) / (stones - 1)); x = clamp(x + (r() < 0.5 ? -1 : 1) * (1 + r() * 1.3), -3.2, 3.2);
-      const rad = lily ? 0.95 : 0.8 + r() * 0.2; const bob = k === 2 || k === 4 || (k === 5 && W.idx > 0);
+      const rad = (lily ? 0.95 : 0.8 + r() * 0.2) * (easy() ? 1.25 : 1); const bob = !easy() && (k === 2 || k === 4 || (k === 5 && (W.idx > 0 || hard())));
       const m = platformMesh(W, 'cyl', rad, lily ? 0.15 : 0.9, 0, stoneMat, cfg.col, 0.9);
       const f = addFloor(W, { kind: 'cyl', x, z, r: rad, top: lily ? 0.02 : 0.25, th: lily ? 0.15 : 0.9, mesh: m });
       if (lily) { for (let q = 0; q < 3; q++) m.add(mesh(new THREE.SphereGeometry(0.09, 6, 4), glow(q ? 0xff8ab0 : 0xffffff, 2), (r() - 0.5) * rad, 0.1, (r() - 0.5) * rad, false, false)); }
@@ -211,7 +212,8 @@ const TRIAL_BUILDERS = {
         g.add(flame); jets.push({ x, z, flame, ph: k * 0.55 + (x === 0 ? 0.25 : 0) });
       }
     }
-    const P = 2.8; const state = (j, t) => { const c = ((t + j.ph) % P) / P; return c < 0.38 ? 'on' : c < 0.52 ? 'warn' : 'off'; };
+    const P = easy() ? 3.6 : 2.8, ON = easy() ? 0.26 : 0.38; let calm = false; tr.calm = () => (calm = true);
+    const state = (j, t) => { if (calm) return 'off'; const c = ((t + j.ph) % P) / P; return c < ON ? 'on' : c < ON + 0.14 ? 'warn' : 'off'; };
     W.anim.push((t) => {
       for (const j of jets) {
         const s = state(j, t); j.flame.visible = s !== 'off';
@@ -233,7 +235,7 @@ const TRIAL_BUILDERS = {
       const f = addFloor(W, { kind: 'box', x: 0, z, hw: 1.2, hd: 1.15, top: 0.2, th: 0.5, mesh: m });
       const dir = k % 2 ? 1 : -1; const yAxis = cfg.axes && k % 2 === 1; const ph = k * 1.3;
       movers.push((t) => {
-        const sp = cfg.fortune ? 1 + 0.4 * Math.sin(t * 0.37 + k) : 1;
+        const sp = (cfg.fortune ? 1 + 0.4 * Math.sin(t * 0.37 + k) : 1) * (easy() ? 0.55 : hard() ? 1.25 : 1);
         if (yAxis) moveFloor(f, 0, z, 0.2 + (Math.sin(t * 1.1 * sp + ph) * 0.5 + 0.5) * 1.6);
         else moveFloor(f, dir * Math.sin(t * 0.9 * sp + ph) * 3.4, z, 0.2);
       });
@@ -251,7 +253,7 @@ const TRIAL_BUILDERS = {
       const f = addFloor(W, { kind: 'box', x, z, hw: 1.15, hd: 1.15, top: 0, th: 0.5, mesh: m }); moveFloor(f, x, z, 0);
       const tile = { f, m, t: -1, gone: 0, x, z };
       f.solid = () => tile.gone <= 0;
-      f.onStand = () => { if (tile.t < 0 && tile.gone <= 0) tile.t = 0.55; };
+      f.onStand = () => { if (tile.t < 0 && tile.gone <= 0) tile.t = easy() ? 1.4 : hard() ? 0.4 : 0.55; };
       tiles.push(tile);
     }
     W.anim.push((t, dt) => {
@@ -298,11 +300,11 @@ const TRIAL_BUILDERS = {
       else { m = mesh(new THREE.LatheGeometry([[0, 0], [0.35, 0.05], [0.6, 0.4], [0.62, 0.9], [0.45, 1.3], [0.3, 1.4]].map((p) => new THREE.Vector2(p[0], p[1])), 16), std(0xa0583a, { roughness: 0.85, side: THREE.DoubleSide }), 0, 0.6, 0); m.geometry.translate(0, -0.7, 0); m.rotation.z = Math.PI / 2; }
       m.visible = false; W.group.add(m); pool.push({ m, active: false, x: 0, z: 0, sp: 0 });
     }
-    let timer = 0, pattern = 0;
+    let timer = 0, pattern = 0, calm = false; tr.calm = () => { calm = true; pool.forEach((b) => { b.active = false; b.m.visible = false; }); };
     W.anim.push((t, dt) => {
       timer -= dt;
-      if (timer <= 0 && tr.near) {
-        timer = balls ? 1.25 : 1.1 + r() * 0.6;
+      if (timer <= 0 && tr.near && !calm) {
+        timer = (balls ? 1.25 : 1.1 + r() * 0.6) * (easy() ? 1.6 : 1);
         const b = pool.find((q) => !q.active); if (b) { b.active = true; b.x = balls ? lanes[pattern++ % 3] : lanes[Math.floor(r() * 3)]; b.z = zE + 0.5; b.sp = balls ? 6 : 5 + r() * 2; b.m.visible = true; }
       }
       for (const b of pool) {
@@ -345,7 +347,7 @@ const TRIAL_BUILDERS = {
         const m = platformMesh(W, 'box', 1.7, 0.4, 1.7, mat, cfg.col, 1.6); m.add(mesh(new THREE.BoxGeometry(0.15, 0.15, 1.0), brass, 0.85, 0, 0));
         const f = addFloor(W, { kind: 'box', x: 0, z: cz, hw: 0.85, hd: 0.85, top: 0.3, th: 0.4, mesh: m });
         const ph = (k / 3) * TAU, dir = ci % 2 ? 1 : -1;
-        movers.push((t) => { const a = ph + t * 0.55 * dir; moveFloor(f, Math.cos(a) * 2.6, cz + Math.sin(a) * 2.6, 0.3); });
+        movers.push((t) => { const a = ph + t * (easy() ? 0.3 : 0.55) * dir; moveFloor(f, Math.cos(a) * 2.6, cz + Math.sin(a) * 2.6, 0.3); });
       }
     });
     W.anim.push((t, dt) => { for (const m of movers) m(t, dt); });
@@ -365,7 +367,8 @@ const TRIAL_BUILDERS = {
       W.group.add(mesh(new THREE.BoxGeometry(4, 0.3, 0.3), sideMat, 0, 7.6, z));
       blades.push({ piv, z, ph: k * 1.1 });
     }
-    const ang = (b, t) => Math.sin(t * 1.7 + b.ph) * 0.95;
+    let calm = false; tr.calm = () => (calm = true);
+    const ang = (b, t) => (calm ? 1.4 : Math.sin(t * (easy() ? 1.1 : 1.7) + b.ph) * 0.95);
     W.anim.push((t) => { for (const b of blades) b.piv.rotation.z = ang(b, t); });
     tr.tick = (dt, P) => {
       const t = tAccW();
@@ -385,6 +388,6 @@ let tAccW = () => 0;
 const Rhythm = {
   period: 3.8,
   phase() { return (tAccW() % this.period) / this.period; },
-  on(g) { const p = this.phase(); return g === 0 ? p < 0.6 : p >= 0.42 || p < 0.1; },
-  warn(g) { const p = this.phase(); return g === 0 ? p > 0.42 && p < 0.6 : p > 0.92 || p < 0.1; },
+  on(g) { const p = this.phase(); if (easy()) return g === 0 ? p < 0.8 : p >= 0.3; return g === 0 ? p < 0.6 : p >= 0.42 || p < 0.1; },
+  warn(g) { const p = this.phase(); if (easy()) return g === 0 ? p > 0.62 && p < 0.8 : p > 0.12 && p < 0.3; return g === 0 ? p > 0.42 && p < 0.6 : p > 0.92 || p < 0.1; },
 };

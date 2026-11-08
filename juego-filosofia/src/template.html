@@ -261,6 +261,7 @@ input[type=range] { width: 100%; accent-color: var(--gold); }
 .tb { width: 62px; height: 62px; border-radius: 50%; border: 1.5px solid var(--line); background: rgba(13,12,18,0.5); font-family: var(--display); font-size: 0.68rem; letter-spacing: 0.06em; touch-action: none; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0; color: var(--parchment); transition: transform .08s, opacity .2s; -webkit-tap-highlight-color: transparent; }
 .tb:active, .tb.down { transform: scale(0.92); }
 .tb.jump { width: 100px; height: 100px; grid-column: 2; grid-row: 3 / span 2; border-color: #8fe9ff; background: radial-gradient(circle, rgba(143,233,255,0.28), rgba(60,120,160,0.12)); font-size: 0.8rem; box-shadow: 0 0 22px rgba(143,233,255,0.3); }
+.tb.jump.aim { border-color: #fff; box-shadow: 0 0 30px rgba(143,233,255,0.8); animation: pulse 1.1s infinite; }
 .tb.fire { width: 70px; height: 70px; grid-column: 2; grid-row: 1 / span 2; border-color: var(--gold); background: radial-gradient(circle, rgba(255,211,106,0.32), rgba(214,168,74,0.12)); box-shadow: 0 0 22px rgba(214,168,74,0.3); font-size: 0.75rem; }
 .tb.fire.auto { box-shadow: 0 0 30px rgba(255,211,106,0.75); border-color: var(--gold-bright); }
 .tb.act { color: var(--gold-bright); border-color: var(--gold); opacity: 0.35; }
@@ -645,6 +646,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <div class="row"><label for="s-music">Música</label><input type="range" id="s-music" min="0" max="1" step="0.05"></div>
       <div class="row"><label for="s-sfx">Efectos</label><input type="range" id="s-sfx" min="0" max="1" step="0.05"></div>
       <div class="row"><label>Calidad</label><div class="seg" id="s-quality"><button data-v="low">Baja</button><button data-v="mid">Media</button><button data-v="high">Alta</button></div></div>
+      <div class="row"><label>Pruebas del camino</label><div class="seg" id="s-diff"><button data-v="facil">Fácil</button><button data-v="normal">Normal</button><button data-v="dificil">Difícil</button></div></div>
       <div class="row"><label>Voces</label><div class="seg" id="s-voices"><button data-v="0">No</button><button data-v="1">Sí</button></div></div>
       <div class="row"><label>Disparo automático</label><div class="seg" id="s-auto"><button data-v="0">No</button><button data-v="1">Sí</button></div></div>
       <div class="row"><label>Vibración</label><div class="seg" id="s-vib"><button data-v="0">No</button><button data-v="1">Sí</button></div></div>
