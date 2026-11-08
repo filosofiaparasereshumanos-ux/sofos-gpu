@@ -154,6 +154,7 @@ window.addEventListener('keydown', (e) => {
   if (G.state === 'play') {
     if (e.code === 'KeyE' || e.code === 'KeyF') tryInteract();
     if (e.code === 'KeyQ') epoje();
+    if (e.code === 'KeyL') tryLesson();
     if (e.code === 'KeyC' || e.code === 'ControlLeft') input.dashReq = true;
     if (e.code === 'KeyP' || (e.code === 'Escape' && !input.locked)) pauseGame();
     if (e.code === 'Space') e.preventDefault();
@@ -220,6 +221,7 @@ function setupTouch() {
   };
   hold('#t-fire', () => (input.fire = true), () => (input.fire = false));
   hold('#t-act', () => tryInteract());
+  hold('#t-lesson', () => tryLesson());
   hold('#t-epoje', () => epoje());
   hold('#t-dash', () => (input.dashReq = true));
   hold('#t-jump', () => (input.jumpReq = true));
@@ -627,10 +629,10 @@ function updatePrompt() {
   const tact = $('#t-act');
   let txt = '', can = false;
   if (s) {
-    if (s.state === 'idle') { txt = IS_TOUCH ? `Desafiar a <b>${s.data.short}</b>` : `<b>E</b> · Desafiar a ${s.data.short}`; can = true; }
+    if (s.state === 'idle') { txt = IS_TOUCH ? `Desafiar a <b>${s.data.short}</b> o escuchar su lección` : `<b>E</b> · Desafiar a ${s.data.short} &nbsp;·&nbsp; <b>L</b> · Escuchar su lección`; can = true; }
     else if (s.state === 'sealed') { const n = regularsLeft(); txt = `Vence antes a ${n === 1 ? 'otro pensador' : n + ' pensadores'}`; }
     else if (s.state === 'shielded') txt = `Destruye a ${s.boss ? 'los ' + ERAS[G.eraIdx].enemy.many : 'sus defensores'}`;
-    else if (s.state === 'defeated') txt = `${s.data.short} · <b>${s.data.concept.name}</b>`;
+    else if (s.state === 'defeated') txt = `${s.data.short} · <b>${s.data.concept.name}</b>${IS_TOUCH ? '' : ' &nbsp;·&nbsp; <b>L</b> · Su lección'}`;
   }
   const tg = currentTarget();
   if (!txt) {
@@ -639,6 +641,7 @@ function updatePrompt() {
   }
   el.hidden = !txt; if (txt && el.innerHTML !== txt) el.innerHTML = txt;
   ch.classList.toggle('talk', can);
+  const tl = $('#t-lesson'); const showL = !!(s && (s.state === 'idle' || s.state === 'defeated')); if (tl && tl._on !== showL) { tl._on = showL; tl.hidden = !showL; }
   if (tact) {
     const label = can ? 'Desafiar' : input.auto ? 'Caminando…' : tg ? 'Ir a ' + tg.name.split(' ')[0] : 'Desafiar';
     if (tact._label !== label) { tact._label = label; tact.textContent = label; }
@@ -742,13 +745,18 @@ const Duel = {
     $('#d-explain').hidden = true; $('#d-next').hidden = true;
     this.updateAids();
   },
+  freeFifty() { return !!(G.lessonFree && this.sage && G.lessonFree[this.sage.data.id]); },
   updateAids() {
-    $('#aid-5050').disabled = this.answered || this.used.fifty || G.frags < 2;
+    const free = this.freeFifty(); const b = $('#aid-5050');
+    b.innerHTML = free ? 'Mayéutica <em>gratis</em>' : 'Mayéutica <em>2◆</em>';
+    b.disabled = this.answered || this.used.fifty || (!free && G.frags < 2);
     $('#aid-time').disabled = this.answered || this.used.time || G.frags < 1;
   },
   fifty() {
-    if (this.answered || this.used.fifty || G.frags < 2) return;
-    G.frags -= 2; this.used.fifty = true; this.aidsUsed = true; Audio.pickup();
+    const free = this.freeFifty();
+    if (this.answered || this.used.fifty || (!free && G.frags < 2)) return;
+    if (free) delete G.lessonFree[this.sage.data.id]; else G.frags -= 2;
+    this.used.fifty = true; this.aidsUsed = true; Audio.pickup();
     const wrong = this.opts.map((o, i) => (o.ok ? -1 : i)).filter((i) => i >= 0); shuffle(wrong);
     const btns = $('#d-answers').children; wrong.slice(0, 2).forEach((i) => { btns[i].classList.add('gone'); btns[i].disabled = true; });
     this.say('Pregúntate bien, y lo verás tú mismo...'); this.updateAids(); updateHud();
@@ -892,6 +900,7 @@ function closeConcept() {
   updateHud();
 }
 $('#b-concept').addEventListener('click', closeConcept);
+$('#b-clesson').addEventListener('click', () => { const s = Duel._won; closeConcept(); if (s) Lesson.open(s.data, s); });
 
 // ============================================================================
 //  HUD Y AVISOS
@@ -1034,7 +1043,9 @@ function renderCodex() {
       const h4 = document.createElement('h4'); h4.textContent = ok ? s.concept.name : '· · ·';
       const by = document.createElement('div'); by.className = 'by'; by.textContent = s.name;
       const p = document.createElement('p'); p.textContent = ok ? s.concept.text : 'Vence a este pensador en un duelo para comprender su idea central.';
-      c.append(h4, by, p); grid.appendChild(c);
+      const lb = document.createElement('button'); lb.className = 'mini-b lesson-b'; lb.textContent = '▶ Escuchar su lección';
+      lb.addEventListener('click', () => { Audio.init(); Lesson.open(s, null); });
+      c.append(h4, by, p, lb); grid.appendChild(c);
     });
     sec.appendChild(grid); body.appendChild(sec);
   });
@@ -1115,6 +1126,7 @@ function frame() {
   if (G.state === 'play') updatePlay(dt);
   else if (G.state === 'duel') { Duel.update(dt); updateSages(dt, true); }
   else if (G.state === 'oracle') { Oracle.update(raw); titleCam(); }
+  else if (G.state === 'lesson') { Lesson.update(raw); updateSages(dt, true); }
   else if (G.state === 'victory') { updateSages(dt, true); camera.fov = damp(camera.fov, baseFov() * 0.62, 2, raw); camera.updateProjectionMatrix(); if (performance.now() >= Duel.vicEnd) Duel.showConcept(); }
   else if (world && (G.state === 'title' || G.state === 'intro' || G.state === 'ending')) { titleCam(); updateSages(dt, false); }
   if (world && ['play', 'duel', 'title', 'intro', 'oracle', 'victory', 'ending'].includes(G.state)) ambientMotes(raw);

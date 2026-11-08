@@ -188,6 +188,27 @@ kbd { font-family: var(--display); font-size: 0.78em; border: 1px solid var(--li
 .aid em { font-style: normal; color: #8fe9ff; }
 #d-next { min-width: 0; padding: 9px 18px; font-size: 0.9rem; }
 
+/* ---------- lección ---------- */
+#lesson { position: absolute; inset: 0; z-index: 26; display: flex; align-items: flex-end; justify-content: center; padding: max(12px, var(--sat)) max(12px, var(--sar)) max(12px, var(--sab)) max(12px, var(--sal)); background: linear-gradient(180deg, transparent 25%, rgba(13,12,18,0.6) 60%, rgba(13,12,18,0.92) 100%); }
+.lesson-card { width: min(860px, 100%); max-height: 100%; overflow-y: auto; background: linear-gradient(180deg, rgba(23,21,30,0.94), rgba(13,12,18,0.97)); border: 1px solid var(--line); border-top: 2px solid var(--gold); box-shadow: 0 20px 60px rgba(0,0,0,0.6); padding: 16px 22px 16px; animation: rise .35s ease-out; }
+.lesson-card .duel-head { grid-template-columns: auto 1fr auto; }
+.ls-x { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: none; color: var(--parchment); cursor: pointer; font-size: 1rem; }
+.ls-bar { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+.ls-dots { display: flex; gap: 6px; flex: 1; }
+.ls-dots i { flex: 1; height: 3px; background: rgba(239,227,198,0.18); }
+.ls-dots i.done { background: var(--gold); } .ls-dots i.now { background: var(--gold-bright); box-shadow: 0 0 8px rgba(255,211,106,0.6); }
+#ls-count { font-family: var(--display); font-size: 0.75rem; letter-spacing: 0.16em; color: var(--parchment-dim); white-space: nowrap; }
+.ls-text { font-size: clamp(1.12rem, 3.3vw, 1.38rem); line-height: 1.55; margin: 14px 0 0; min-height: 4.6em; color: var(--parchment-dim); user-select: text; -webkit-user-select: text; }
+.ls-text span { transition: color .25s; }
+.ls-text span.on { color: var(--parchment); text-shadow: 0 0 18px rgba(255,211,106,0.18); }
+.ls-note { font-size: 0.9rem; font-style: italic; color: var(--parchment-dim); margin: 8px 0 0; }
+.ls-reward { margin: 12px 0 0; padding: 10px 12px; border-left: 2px solid var(--right); background: rgba(92,196,154,0.1); }
+.ls-foot { display: flex; gap: 10px; align-items: center; justify-content: center; margin-top: 14px; flex-wrap: wrap; }
+.ls-foot .btn { min-width: 0; padding: 10px 26px; }
+.ls-foot .aid { font-size: 0.85rem; padding: 10px 14px; }
+.lesson-b { margin-top: 8px; font-size: 0.68rem; }
+.tb.lesson { color: #cdf4ff; border-color: rgba(143,233,255,0.5); background: rgba(40,80,110,0.4); font-size: 0.62rem; }
+
 /* ---------- concepto ---------- */
 .concept-card { width: min(560px, 100%); padding: 30px 26px; border: 1px solid var(--gold); background: radial-gradient(ellipse at top, rgba(214,168,74,0.16), rgba(13,12,18,0.96) 70%); box-shadow: 0 0 80px rgba(214,168,74,0.18); text-align: center; animation: rise .5s ease-out; }
 .concept-card h2 { font-family: var(--display); font-weight: 400; font-size: clamp(2rem, 8vw, 3.2rem); margin: 8px 0 4px; color: var(--gold-bright); text-wrap: balance; letter-spacing: 0.04em; }
@@ -236,11 +257,11 @@ input[type=range] { width: 100%; accent-color: var(--gold); }
 #joy { position: absolute; left: calc(40px + var(--sal)); bottom: calc(56px + var(--sab)); width: 132px; height: 132px; margin: 0; border-radius: 50%; border: 1.5px solid var(--line); background: radial-gradient(circle, rgba(214,168,74,0.08), rgba(13,12,18,0.35)); pointer-events: none; opacity: 0.45; transition: opacity .2s; }
 #joy.active { opacity: 1; transition: none; }
 #joy i { position: absolute; left: 50%; top: 50%; width: 56px; height: 56px; margin: -28px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, rgba(255,230,170,0.7), rgba(214,168,74,0.45)); border: 1px solid var(--gold-bright); box-shadow: 0 0 18px rgba(214,168,74,0.45); }
-.tbtns { position: absolute; right: calc(16px + var(--sar)); bottom: calc(52px + var(--sab)); display: grid; grid-template-columns: 62px 100px; grid-template-rows: 62px 62px 62px; gap: 10px 14px; pointer-events: auto; align-items: center; justify-items: center; }
+.tbtns { position: absolute; right: calc(16px + var(--sar)); bottom: calc(52px + var(--sab)); display: grid; grid-template-columns: 62px 100px; grid-template-rows: 62px 62px 62px 62px; gap: 10px 14px; pointer-events: auto; align-items: center; justify-items: center; }
 .tb { width: 62px; height: 62px; border-radius: 50%; border: 1.5px solid var(--line); background: rgba(13,12,18,0.5); font-family: var(--display); font-size: 0.68rem; letter-spacing: 0.06em; touch-action: none; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0; color: var(--parchment); transition: transform .08s, opacity .2s; -webkit-tap-highlight-color: transparent; }
 .tb:active, .tb.down { transform: scale(0.92); }
-.tb.jump { width: 100px; height: 100px; grid-column: 2; grid-row: 2 / span 2; border-color: #8fe9ff; background: radial-gradient(circle, rgba(143,233,255,0.28), rgba(60,120,160,0.12)); font-size: 0.8rem; box-shadow: 0 0 22px rgba(143,233,255,0.3); }
-.tb.fire { width: 70px; height: 70px; grid-column: 2; grid-row: 1; border-color: var(--gold); background: radial-gradient(circle, rgba(255,211,106,0.32), rgba(214,168,74,0.12)); box-shadow: 0 0 22px rgba(214,168,74,0.3); font-size: 0.75rem; }
+.tb.jump { width: 100px; height: 100px; grid-column: 2; grid-row: 3 / span 2; border-color: #8fe9ff; background: radial-gradient(circle, rgba(143,233,255,0.28), rgba(60,120,160,0.12)); font-size: 0.8rem; box-shadow: 0 0 22px rgba(143,233,255,0.3); }
+.tb.fire { width: 70px; height: 70px; grid-column: 2; grid-row: 1 / span 2; border-color: var(--gold); background: radial-gradient(circle, rgba(255,211,106,0.32), rgba(214,168,74,0.12)); box-shadow: 0 0 22px rgba(214,168,74,0.3); font-size: 0.75rem; }
 .tb.fire.auto { box-shadow: 0 0 30px rgba(255,211,106,0.75); border-color: var(--gold-bright); }
 .tb.act { color: var(--gold-bright); border-color: var(--gold); opacity: 0.35; }
 .tb.act.go { opacity: 0.95; color: var(--parchment); font-size: 0.6rem; }
@@ -305,6 +326,7 @@ input[type=range] { width: 100%; accent-color: var(--gold); }
 #trialcard .eyebrow { color: var(--tc); }
 #trialcard h3 { font-family: var(--display); font-weight: 400; font-size: clamp(1.4rem, 5.5vw, 2.1rem); margin: 4px 0 0; color: var(--parchment); text-shadow: 0 0 22px var(--tc); letter-spacing: 0.05em; }
 #trialcard p { margin: 6px 0 0; font-size: 1rem; line-height: 1.35; color: var(--parchment-dim); }
+@media (max-height: 520px) { body.touch .tbtns { grid-template-columns: 52px 84px; grid-template-rows: repeat(4, 52px); gap: 6px 10px; bottom: calc(14px + var(--sab)); } body.touch .tb { width: 52px; height: 52px; font-size: 0.56rem; } body.touch .tb.jump { width: 84px; height: 84px; } body.touch .tb.fire { width: 60px; height: 60px; } .lesson-card { padding: 10px 16px; } .ls-text { min-height: 3em; margin-top: 8px; } }
 @media (max-height: 520px) { #trialcard { width: min(400px, calc(100% - 300px)); top: calc(96px + var(--sat)); padding: 6px 12px 8px; } #trialcard h3 { font-size: 1.15rem; } #trialcard p { font-size: 0.82rem; } }
 @keyframes tcin { 0% { opacity: 0; transform: translate(-50%, -14px); } 8%, 85% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; } }
 
@@ -406,6 +428,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
     <div id="joy"><i></i></div>
     <div class="tbtns">
       <button class="tb act" id="t-act">Desafiar</button>
+      <button class="tb lesson" id="t-lesson" hidden>Lección</button>
       <button class="tb fire" id="t-fire">Lámpara</button>
       <button class="tb" id="t-epoje">Epojé</button>
       <button class="tb" id="t-dash">Impulso</button>
@@ -501,6 +524,26 @@ body.touch .gm.boss { width: 30px; height: 30px; }
     </div>
   </section>
 
+  <section id="lesson" hidden>
+    <div class="lesson-card" role="dialog" aria-label="Lección">
+      <header class="duel-head">
+        <div class="medal" id="ls-medal">Σ</div>
+        <div class="who"><h2 id="ls-name"></h2><p id="ls-meta"></p></div>
+        <button class="ls-x" id="ls-close" aria-label="Cerrar la lección">✕</button>
+      </header>
+      <div class="ls-bar"><div class="ls-dots" id="ls-dots"></div><span id="ls-count"></span></div>
+      <p class="ls-text" id="ls-text" aria-live="polite"></p>
+      <p class="ls-note" id="ls-note" hidden></p>
+      <p class="ls-reward" id="ls-reward" hidden></p>
+      <footer class="ls-foot">
+        <button class="aid" id="ls-prev">Anterior</button>
+        <button class="btn primary" id="ls-play">Escuchar</button>
+        <button class="aid" id="ls-next">Siguiente</button>
+        <button class="aid" id="ls-speed" title="Velocidad de la voz">1×</button>
+      </footer>
+    </div>
+  </section>
+
   <section id="concept" class="screen dim" hidden>
     <div class="concept-card">
       <div class="eyebrow">Concepto adquirido</div>
@@ -510,7 +553,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <p class="txt" id="c-text"></p>
       <p class="last" id="c-last"></p>
       <div class="rewards" id="c-rew"></div>
-      <div class="btns"><button class="btn primary" id="b-concept">Continuar</button></div>
+      <div class="btns"><button class="btn primary" id="b-concept">Continuar</button><button class="btn ghost" id="b-clesson">Escuchar su lección completa</button></div>
     </div>
   </section>
 

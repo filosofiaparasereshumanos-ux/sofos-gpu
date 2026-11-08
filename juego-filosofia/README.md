@@ -27,6 +27,14 @@ Cada filósofo tiene su propio escenario simbólico: el estanque de Tales, el fu
 la esfera de Parménides, la caverna de Platón, la tinaja de Diógenes, la navaja de Ockham, los
 ejes cartesianos de Descartes, las bolas de billar de Hume, el cielo estrellado de Kant…
 
+## Lecciones habladas
+
+Cada uno de los 25 filósofos puede darte **una clase de toda su filosofía**, contada por él mismo
+en primera persona y en seis partes. Es opcional: junto a cada filósofo pulsa `L` (o el botón
+«Lección» en el móvil), o escúchalas cuando quieras desde el Códice. Se narran con la voz del
+sistema, con un tono distinto para cada filósofo y subtítulos que resaltan la frase que suena.
+Si escuchas la lección antes del duelo, tendrás una *Mayéutica* gratis contra ese filósofo.
+
 ## Modos
 
 - **Odisea:** la campaña completa por las seis épocas.
@@ -105,6 +113,8 @@ node build.mjs
 ```
 
 - `src/00-core.js`: utilidades, texturas procedurales (mármol, teselas, vidrieras…) y audio generativo.
+- `src/01a-lessons.js`: las lecciones de los 25 filósofos.
+- `src/04a-lesson.js`: el reproductor de lecciones.
 - `src/01-data.js`: etapas, filósofos, preguntas y conceptos (para añadir preguntas, edita aquí).
 - `src/02-world.js`: cielos, arquitectura de cada época y escenarios de los filósofos.
 - `src/03-entities.js`: figuras de los filósofos, enemigos, proyectiles y partículas.
