@@ -501,6 +501,8 @@ function buildWorld(idx) {
   sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.03;
   W.group.add(sun); W.group.add(sun.target);
   ERA_BUILDERS[idx](W);
+  if (!th.indoor && idx !== 5) addClouds(W, idx);
+  if (idx === 0 || idx === 2) addGrass(W, idx, sp);
   // estaciones de los filósofos
   regs.forEach((s, i) => W.stations.push({ data: s, pos: new THREE.Vector3(sp[i][0], 0, sp[i][1]) }));
   const boss = era.sages.find((s) => s.boss); W.stations.push({ data: boss, pos: W.bossPos.clone(), boss: true });
@@ -801,4 +803,50 @@ function buildPortal(W) {
   W.group.add(g);
   W.portal = { group: g, disc, ring, light, open: false, k: 0 };
   W.colliders.push({ t: 0, x0: -2.9, x1: -2.0, z0: -41.4, z1: -40.6, h: 6 }, { t: 0, x0: 2.0, x1: 2.9, z0: -41.4, z1: -40.6, h: 6 });
+}
+
+// ============================================================================
+//  NUBES Y HIERBA
+// ============================================================================
+function cloudTexture() {
+  return cachedTex('cloud', () => {
+    const c = document.createElement('canvas'); c.width = 256; c.height = 128; const ctx = c.getContext('2d');
+    const r = mulberry32(99);
+    for (let i = 0; i < 26; i++) {
+      const x = 40 + r() * 176, y = 50 + r() * 40 - Math.abs(x - 128) * 0.12, rad = 18 + r() * 30;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, rad); g.addColorStop(0, 'rgba(255,255,255,0.55)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, rad, 0, TAU); ctx.fill();
+    }
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+  });
+}
+function addClouds(W, idx) {
+  const th = W.theme; const g = new THREE.Group(); const r = mulberry32(idx * 7 + 5);
+  const tint = new THREE.Color(th.sky[1]).lerp(new THREE.Color(0xffffff), 0.55);
+  for (let i = 0; i < 16; i++) {
+    const m = new THREE.SpriteMaterial({ map: cloudTexture(), color: tint, transparent: true, opacity: 0.55 + r() * 0.35, depthWrite: false, fog: false });
+    const sp = new THREE.Sprite(m); const a = r() * TAU, rad = 170 + r() * 150;
+    sp.position.set(Math.cos(a) * rad, 45 + r() * 70, Math.sin(a) * rad); const sc = 70 + r() * 90; sp.scale.set(sc, sc * 0.45, 1);
+    g.add(sp);
+  }
+  W.group.add(g); W.anim.push((t, dt) => (g.rotation.y += dt * 0.006));
+}
+function addGrass(W, idx, sp) {
+  const n = 1400; const geo = new THREE.ConeGeometry(0.06, 0.55, 3); geo.translate(0, 0.27, 0);
+  const mat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1 });
+  const inst = new THREE.InstancedMesh(geo, mat, n); const r = mulberry32(idx * 13 + 1);
+  const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), v = new THREE.Vector3(), sc = new THREE.Vector3(); const col = new THREE.Color();
+  const base = idx === 0 ? [0xb8a060, 0x8a8a50, 0xc8b070] : [0x6a7a40, 0x8a8a50, 0x5a6a38];
+  let k = 0;
+  for (let i = 0; i < n * 3 && k < n; i++) {
+    // matas agrupadas, fuera del camino central y de los estrados
+    const cx = (r() * 2 - 1) * 23, cz = -45 + r() * 80;
+    if (Math.abs(cx) < 4.5 || W._near(cx, cz, 1.2)) continue;
+    for (let j = 0; j < 6 && k < n; j++, k++) {
+      v.set(cx + (r() - 0.5) * 0.7, 0, cz + (r() - 0.5) * 0.7);
+      e.set((r() - 0.5) * 0.5, r() * TAU, (r() - 0.5) * 0.5); q.setFromEuler(e); const h = 0.6 + r() * 0.9; sc.set(1, h, 1);
+      m4.compose(v, q, sc); inst.setMatrixAt(k, m4); inst.setColorAt(k, col.set(base[Math.floor(r() * 3)]).multiplyScalar(0.8 + r() * 0.4));
+    }
+  }
+  inst.count = k; inst.receiveShadow = true; W.group.add(inst);
 }

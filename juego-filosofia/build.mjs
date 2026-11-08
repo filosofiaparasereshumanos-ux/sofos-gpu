@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const src = join(here, 'src');
-const parts = readdirSync(src).filter((f) => /^\d\d-.*\.js$/.test(f)).sort();
+const parts = readdirSync(src).filter((f) => /^\d\d[a-z]?-.*\.js$/.test(f)).sort();
 const code = parts.map((f) => `// ---- ${f} ----\n` + readFileSync(join(src, f), 'utf8')).join('\n');
 const template = readFileSync(join(src, 'template.html'), 'utf8');
 const fragment = template.replace('/*__GAME__*/', () => code);

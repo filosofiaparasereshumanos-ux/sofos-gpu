@@ -190,11 +190,17 @@ class Sage {
     let diff = want - this.yaw; while (diff > Math.PI) diff -= TAU; while (diff < -Math.PI) diff += TAU;
     this.yaw += diff * Math.min(1, dt * 3); this.group.rotation.y = this.yaw;
     this.label.visible = !inDuel && d > 3.4 + this.radius;
+    // gestos espontáneos cuando el jugador está cerca
+    this.nextGesture = (this.nextGesture ?? 3 + Math.random() * 4) - dt;
+    if (this.nextGesture <= 0) { this.nextGesture = 4 + Math.random() * 5; if (d < 12 && this.state !== 'defeated') this.gesture = 1; }
+    f.head.rotation.y = damp(f.head.rotation.y, clamp(diff * 0.6, -0.6, 0.6), 4, dt);
+    f.body.scale.y = 1 + Math.sin(this.t * 1.8) * 0.012; // respiración
     // gestos
     this.gesture = Math.max(0, this.gesture - dt);
     const g = this.gesture > 0 ? Math.sin((1 - this.gesture) * Math.PI) : 0;
     f.armR.rotation.x = -0.25 - g * 1.6 + Math.sin(this.t * 1.1) * 0.05 - (inDuel ? 0.4 + Math.sin(this.t * 2.2) * 0.15 : 0);
-    f.armL.rotation.x = -0.1 + Math.sin(this.t * 0.9 + 1) * 0.05;
+    f.armL.rotation.x = -0.1 + Math.sin(this.t * 0.9 + 1) * 0.05 - (this.gesture > 0.7 ? Math.sin((this.gesture - 0.7) * 4.5) * 0.5 : 0);
+    f.armL.rotation.z = -0.18 - (inDuel ? 0.25 + Math.sin(this.t * 1.7) * 0.12 : 0);
     f.head.rotation.x = Math.sin(this.t * 0.7) * 0.05 + (this.state === 'defeated' ? 0.12 : 0);
     if (this.shield) this.shield.material.uniforms.t.value = this.t;
     // escenario
@@ -259,18 +265,32 @@ class Shade {
     this.group.rotation.y = Math.atan2(tx, tz);
     let vx = 0, vz = 0;
     if (this.kind === 'charger') {
-      this.hitCd -= dt;
-      const sp = this.hitCd > 0 ? -this.speed * 0.4 : this.speed;
-      vx = (tx / d) * sp; vz = (tz / d) * sp;
+      // acecha → se carga (aviso) → embiste en línea recta → se recupera
+      this.hitCd -= dt; this.phaseT = (this.phaseT || 0) - dt; this.phase = this.phase || 'stalk';
       p.y = damp(p.y, 1.2 + Math.sin(this.t * 6) * 0.1, 4, dt);
-      if (d < 1.1 && this.hitCd <= 0 && Math.abs(pl.y + 1 - p.y) < 1.6) { game.hurtPlayer(this.dmg, p); this.hitCd = 1.4; }
+      if (this.phase === 'stalk') {
+        const sp = this.hitCd > 0 ? -this.speed * 0.3 : this.speed * 0.8;
+        vx = (tx / d) * sp + (-tz / d) * this.strafe * 1.5; vz = (tz / d) * sp + (tx / d) * this.strafe * 1.5;
+        if (d < 8 && this.hitCd <= 0) { this.phase = 'windup'; this.phaseT = 0.55; }
+      } else if (this.phase === 'windup') {
+        this.shell.rotation.y += dt * 25; this.flash = Math.max(this.flash, 0.6 + Math.sin(this.t * 40) * 0.4);
+        this.group.position.x += (Math.random() - 0.5) * 0.06;
+        if (this.phaseT <= 0) { this.phase = 'lunge'; this.phaseT = 0.5; this.lungeDir = new THREE.Vector3(tx / d, 0, tz / d); }
+      } else if (this.phase === 'lunge') {
+        vx = this.lungeDir.x * this.speed * 3.2; vz = this.lungeDir.z * this.speed * 3.2;
+        if (Math.random() < dt * 60) game.particles.emit(p, 1, { color: this.color, speed: 0.5, life: 0.4, size: 0.5, intensity: 2.5 });
+        if (d < 1.2 && this.hitCd <= 0 && Math.abs(pl.y + 1 - p.y) < 1.6) { game.hurtPlayer(this.dmg, p); this.hitCd = 1.6; this.phase = 'recover'; this.phaseT = 0.9; }
+        if (this.phaseT <= 0) { this.phase = 'recover'; this.phaseT = 0.8; this.hitCd = 0.6; }
+      } else { vx = -(tx / d) * 1.5; vz = -(tz / d) * 1.5; if (this.phaseT <= 0) this.phase = 'stalk'; }
     } else {
       const want = 9 + Math.sin(this.t * 0.4) * 2;
       const radial = d > want + 1 ? 1 : d < want - 1 ? -1 : 0;
       vx = (tx / d) * radial * this.speed + (-tz / d) * this.strafe * this.speed * 0.6;
       vz = (tz / d) * radial * this.speed + (tx / d) * this.strafe * this.speed * 0.6;
       if (Math.random() < dt * 0.25) this.strafe *= -1;
-      p.y = this.y + Math.sin(this.t * 1.7) * 0.35;
+      p.y = this.y + Math.sin(this.t * 1.7) * 0.35 + Math.sin(this.t * 3.1) * 0.12;
+      vx += Math.sin(this.t * 2.3) * 1.2; vz += Math.cos(this.t * 1.9) * 1.2;
+      const pulse = 1 + Math.sin(this.t * 5) * 0.06; this.core.scale.setScalar(pulse);
       this.fireCd -= dt;
       if (this.fireCd <= 0 && d < 26) {
         this.fireCd = 2.2 + Math.random() * 1.6 - game.eraIdx * 0.12;

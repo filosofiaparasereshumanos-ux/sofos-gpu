@@ -27,10 +27,21 @@ Cada filósofo tiene su propio escenario simbólico: el estanque de Tales, el fu
 la esfera de Parménides, la caverna de Platón, la tinaja de Diógenes, la navaja de Ockham, los
 ejes cartesianos de Descartes, las bolas de billar de Hume, el cielo estrellado de Kant…
 
+## Modos
+
+- **Odisea:** la campaña completa por las seis épocas.
+- **Oráculo de Delfos (diario):** 10 preguntas de Tales a Kant, iguales para todo el mundo cada día,
+  15 segundos por pregunta y rachas que multiplican la puntuación. Al terminar genera un resultado
+  para compartir (🟨 acierto rápido, 🟩 acierto, 🟥 fallo, ⬛ tiempo agotado).
+- **Salón de la Fama:** ranking del oráculo de hoy y de la odisea completa (en la versión publicada en
+  claude.ai, con base de datos compartida). Cada jugador elige su nombre de filósofo.
+- **16 logros**: Mayéutica perfecta, Rayo de razón, Fuera de la caverna, Elegido de Apolo…
+
 ## Mecánicas
 
 - **Exploración y combate (FPS):** `WASD` para moverte, ratón para mirar, clic para disparar la
   lámpara, `Mayús` para correr, `Espacio` para saltar.
+- **Impulso** (`C` o `Ctrl`): esquiva rápida con un instante de invulnerabilidad.
 - **Epojé** (`Q` o clic derecho): una onda de "suspensión del juicio" que daña a las sombras
   cercanas y disuelve sus proyectiles.
 - **Duelos dialécticos** (`E` junto a un filósofo): preguntas de opción múltiple con tiempo.
@@ -69,7 +80,9 @@ node build.mjs
 - `src/01-data.js`: etapas, filósofos, preguntas y conceptos (para añadir preguntas, edita aquí).
 - `src/02-world.js`: cielos, arquitectura de cada época y escenarios de los filósofos.
 - `src/03-entities.js`: figuras de los filósofos, enemigos, proyectiles y partículas.
+- `src/03a-music.js`: banda sonora generativa (acordes, bajo, arpegios, melodía y percusión por época).
 - `src/04-game.js`: jugador, duelos, pantallas y bucle principal.
+- `src/05-features.js`: Oráculo diario, Salón de la Fama y logros.
 - `src/template.html`: interfaz y estilos.
 
 Todo (modelos, texturas, música y efectos) se genera por código: no hay archivos externos aparte

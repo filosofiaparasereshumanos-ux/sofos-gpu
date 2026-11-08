@@ -33,6 +33,20 @@ const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
 const bloom = new UnrealBloomPass(new THREE.Vector2(app.clientWidth, app.clientHeight), 0.45, 0.5, 0.95);
 composer.addPass(bloom);
+// gradación: viñeta, grano y aberración cromática al recibir daño
+const grade = new ShaderPass({
+  uniforms: { tDiffuse: { value: null }, time: { value: 0 }, hurt: { value: 0 } },
+  vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+  fragmentShader: `uniform sampler2D tDiffuse; uniform float time, hurt; varying vec2 vUv;
+    void main(){ vec2 d = vUv - 0.5; float ca = 0.0015 + hurt * 0.014;
+      vec3 c = vec3(texture2D(tDiffuse, vUv + d * ca).r, texture2D(tDiffuse, vUv).g, texture2D(tDiffuse, vUv - d * ca).b);
+      float v = smoothstep(0.95, 0.3, length(d * vec2(1.1, 1.25))); c *= mix(0.62, 1.0, v);
+      c = mix(c, c * vec3(1.35, 0.55, 0.55), hurt * 0.45);
+      float n = fract(sin(dot(vUv * 913.7 + time, vec2(12.9898, 78.233))) * 43758.5453);
+      c += (n - 0.5) * 0.03 * max(c, vec3(0.05));
+      gl_FragColor = vec4(c, 1.0); }`,
+});
+composer.addPass(grade);
 composer.addPass(new OutputPass());
 const particles = new Particles(3000); scene.add(particles.points);
 
@@ -111,7 +125,7 @@ camera.add(lamp);
 // ============================================================================
 //  JUGADOR Y CONTROLES
 // ============================================================================
-const player = { pos: new THREE.Vector3(), vel: new THREE.Vector3(), yaw: 0, pitch: 0, onGround: true, fireCd: 0, epojeCd: 0, bob: 0, stepT: 0, recoil: 0, shake: 0 };
+const player = { pos: new THREE.Vector3(), vel: new THREE.Vector3(), yaw: 0, pitch: 0, onGround: true, fireCd: 0, epojeCd: 0, bob: 0, stepT: 0, recoil: 0, shake: 0, dashT: 0, dashCd: 0, iframe: 0, dashDir: new THREE.Vector3(), roll: 0, airT: 0, land: 0 };
 const input = { keys: {}, mdx: 0, mdy: 0, fire: false, locked: false, joy: { x: 0, y: 0 }, lookDX: 0, lookDY: 0, drag: false };
 const EPOJE_CD = 7;
 
@@ -136,9 +150,11 @@ document.addEventListener('pointerlockerror', () => { G.noLock = true; if (G.sta
 window.addEventListener('keydown', (e) => {
   if (e.repeat && !['KeyW', 'KeyA', 'KeyS', 'KeyD'].includes(e.code)) return;
   input.keys[e.code] = true;
+  if (G.state === 'oracle') { Oracle.key(e); return; }
   if (G.state === 'play') {
     if (e.code === 'KeyE' || e.code === 'KeyF') tryInteract();
     if (e.code === 'KeyQ') epoje();
+    if (e.code === 'KeyC' || e.code === 'ControlLeft') input.dashReq = true;
     if (e.code === 'KeyP' || (e.code === 'Escape' && !input.locked)) pauseGame();
     if (e.code === 'Space') e.preventDefault();
   } else if (G.state === 'duel') {
@@ -205,6 +221,7 @@ function setupTouch() {
   hold('#t-fire', () => (input.fire = true), () => (input.fire = false));
   hold('#t-act', () => tryInteract());
   hold('#t-epoje', () => epoje());
+  hold('#t-dash', () => (input.dashReq = true));
   $('#tpause').addEventListener('click', () => pauseGame());
   if (FS_OK) { $('#tfs').hidden = false; $('#tfs').addEventListener('click', toggleFS); }
 }
@@ -257,10 +274,26 @@ function updatePlayer(dt) {
   const wx = (mx * cy + mz * sy) * speed, wz = (-mx * sy + mz * cy) * speed;
   const accel = player.onGround ? 14 : 4;
   player.vel.x = damp(player.vel.x, wx, accel, dt); player.vel.z = damp(player.vel.z, wz, accel, dt);
+  // impulso: ráfaga corta con invulnerabilidad
+  player.dashCd -= dt; player.iframe -= dt;
+  if (input.dashReq) {
+    input.dashReq = false;
+    if (player.dashCd <= 0) {
+      const wl = Math.hypot(wx, wz);
+      if (wl > 0.5) player.dashDir.set(wx / wl, 0, wz / wl); else player.dashDir.set(-sy, 0, -cy);
+      player.dashT = 0.2; player.dashCd = 1.0; player.iframe = 0.32; Audio.dash(); buzz(20);
+      particles.emit(_v1.copy(player.pos).setY(1), 24, { color: world.theme.lampCol, speed: 3, life: 0.5, size: 0.35, dir: player.dashDir.clone().negate(), spread: 0.8 });
+    }
+  }
+  if (player.dashT > 0) {
+    player.dashT -= dt; player.vel.x = player.dashDir.x * 23; player.vel.z = player.dashDir.z * 23;
+    if (Math.random() < dt * 50) particles.emit(_v1.copy(player.pos).setY(0.9 + Math.random()), 1, { color: world.theme.lampCol, speed: 0.3, life: 0.4, size: 0.4, intensity: 1.6 });
+  }
   if (k.Space && player.onGround) { player.vel.y = 7.2; player.onGround = false; }
   player.vel.y -= 22 * dt;
   player.pos.addScaledVector(player.vel, dt);
-  if (player.pos.y <= 0) { player.pos.y = 0; player.vel.y = 0; player.onGround = true; }
+  if (!player.onGround) player.airT += dt;
+  if (player.pos.y <= 0) { if (!player.onGround && player.airT > 0.3) { player.land = 1; Audio.step(); } player.pos.y = 0; player.vel.y = 0; player.onGround = true; player.airT = 0; }
   collide(player.pos, 0.45);
   // balanceo
   const hs = Math.hypot(player.vel.x, player.vel.z);
@@ -271,12 +304,17 @@ function updatePlayer(dt) {
   const bobY = Math.sin(player.bob * 2) * 0.045 * Math.min(1, hs / 5), bobX = Math.cos(player.bob) * 0.03 * Math.min(1, hs / 5);
   player.shake = Math.max(0, player.shake - dt * 3);
   const sh = player.shake * player.shake;
-  camera.position.set(player.pos.x, player.pos.y + 1.68 + bobY, player.pos.z);
-  camera.rotation.set(player.pitch + (Math.random() - 0.5) * sh * 0.05, player.yaw + (Math.random() - 0.5) * sh * 0.05, 0, 'YXZ');
+  player.land = Math.max(0, player.land - dt * 5);
+  player.roll = damp(player.roll, -mx * 0.03 - (player.dashT > 0 ? (player.dashDir.x * cy - player.dashDir.z * sy) * 0.06 : 0), 6, dt);
+  camera.position.set(player.pos.x, player.pos.y + 1.68 + bobY - Math.sin(player.land * Math.PI) * 0.12, player.pos.z);
+  camera.rotation.set(player.pitch + (Math.random() - 0.5) * sh * 0.05, player.yaw + (Math.random() - 0.5) * sh * 0.05, player.roll, 'YXZ');
+  const fovT = baseFov() + (sprint && hs > 6 ? 6 : 0) + (player.dashT > 0 ? 14 : 0);
+  if (Math.abs(camera.fov - fovT) > 0.05) { camera.fov = damp(camera.fov, fovT, player.dashT > 0 ? 14 : 6, dt); camera.updateProjectionMatrix(); }
   // lámpara
   player.recoil = Math.max(0, player.recoil - dt * 6);
   lamp.position.set((IS_TOUCH ? 0.13 : 0.27) + bobX, (IS_TOUCH ? -0.31 : -0.25) + bobY * 0.6 - player.recoil * 0.025, -0.5 + player.recoil * 0.06);
   lamp.rotation.set(player.recoil * 0.3, 0, 0);
+  const portrait = camera.aspect < 1; lamp.scale.setScalar(portrait ? 0.5 : 0.72); if (portrait) lamp.position.x -= 0.05;
   // disparo
   player.fireCd -= dt; player.epojeCd -= dt;
   const auto = IS_TOUCH && G.settings.autofire ? aimTarget(6) : null;
@@ -310,7 +348,9 @@ function epoje() {
   const c = _v1.copy(player.pos); c.y += 1;
   for (let i = 0; i < 90; i++) { const a = (i / 90) * TAU; particles.emit(c, 1, { color: 0xffe0a0, speed: 14, life: 0.7, size: 0.5, dir: new THREE.Vector3(Math.cos(a), 0.05, Math.sin(a)), spread: 0.05, intensity: 3 }); }
   particles.emit(c, 40, { color: 0xffffff, speed: 4, life: 0.9, size: 0.6, intensity: 2 });
-  for (const e of enemies) { const d = e.pos.distanceTo(c); if (d < 8) { const dir = _v2.copy(e.pos).sub(c).setY(0).normalize(); if (e.damage(3, dir)) killEnemy(e); else e.recoil.addScaledVector(dir, 10); } }
+  let kills = 0;
+  for (const e of enemies) { const d = e.pos.distanceTo(c); if (d < 8) { const dir = _v2.copy(e.pos).sub(c).setY(0).normalize(); if (e.damage(3, dir)) { killEnemy(e); kills++; } else e.recoil.addScaledVector(dir, 10); } }
+  if (kills >= 3) achieve('epoje3');
   for (const b of bolts) if (b.owner === 'enemy' && b.pos.distanceTo(c) < 8) { particles.emit(b.pos, 8, { color: b.color, speed: 3, life: 0.4 }); b.kill(); }
 }
 
@@ -363,7 +403,7 @@ function updateDirector(dt) {
 }
 function killEnemy(e) {
   if (e.dead) return; e.dead = true;
-  Audio.kill(); G.stats.kills++; addScore(25); buzz(15); popup('+25 · ' + ERAS[G.eraIdx].enemy.one, 'kill');
+  Audio.kill(); G.stats.kills++; addScore(25); buzz(15); if (Stats.add('kills') >= 50) achieve('cazador'); popup('+25 · ' + ERAS[G.eraIdx].enemy.one, 'kill');
   particles.emit(e.pos, 50, { color: e.color, speed: 7, life: 0.9, size: 0.45, intensity: 2.5, gravity: 4 });
   particles.emit(e.pos, 20, { color: 0xffffff, speed: 3, life: 0.5, size: 0.3 });
   pickups.push(new Pickup(world.group, e.pos.clone(), 'frag'));
@@ -381,6 +421,8 @@ function killEnemy(e) {
 }
 function hurtPlayer(dmg, from) {
   if (G.state !== 'play') return;
+  if (player.iframe > 0) { popup('¡Esquivado!', 'kill'); if (Stats.add('dodges') >= 10) achieve('esquiva'); return; }
+  G.hurtFx = 1;
   G.hp = Math.max(0, G.hp - dmg); Audio.hurt(); player.shake = 0.8; buzz(40);
   const v = $('#vignette'); v.style.opacity = 1; setTimeout(() => (v.style.opacity = 0), 140);
   updateHud();
@@ -511,7 +553,7 @@ function updatePlay(dt) {
   for (const e of enemies) e.update(dt, game);
   updateBolts(dt); updatePickups(dt); updateDirector(dt); updatePrompt(); updatePortal(dt);
   updateEpojeHud();
-  Audio.mode = sages.some((s) => s.state === 'shielded') ? 'boss' : enemies.length > 2 ? 'duel' : 'calm';
+  Audio.mode = sages.some((s) => s.state === 'shielded') ? 'boss' : enemies.length > 1 ? 'combat' : 'calm';
   $('#lowhp').style.opacity = G.hp < 30 ? 0.6 + Math.sin(tAcc * 5) * 0.25 : 0;
 }
 
@@ -522,7 +564,8 @@ const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'
 const Duel = {
   sage: null, q: null, opts: [], answered: false, time: 0, maxTime: 20, round: 0, used: { fifty: false, time: false }, lastTick: 0, resumed: false,
   start(s) {
-    this.sage = s; G.state = 'duel'; unlockPointer(); input.fire = false;
+    this.sage = s; G.state = 'duel'; unlockPointer(); input.fire = false; this.aidsUsed = false; s._wrongs = s._wrongs || 0;
+    $('#duel').classList.remove('oracle');
     Audio.gong(); Audio.mode = s.boss ? 'boss' : 'duel';
     $('#hud').hidden = true; $('#touch').hidden = true; $('#duel').hidden = false;
     const d = s.data;
@@ -537,7 +580,7 @@ const Duel = {
       this.intro = 2.8; this.introEnd = performance.now() + 2800; this.answered = true; this.introLine = line;
       $('#duel').hidden = true; $('#bc-eye').textContent = d.final ? 'El último maestro' : 'Maestro de la época';
       $('#bc-name').textContent = d.short; $('#bc-ep').textContent = d.epithet; $('#bosscard').hidden = false;
-      Audio.tone(55, 2.6, { type: 'sine', vol: 0.4, slide: 0.5 }); buzz([20, 60, 120]);
+      Audio.tone(55, 2.6, { type: 'sine', vol: 0.4, slide: 0.5 }); Music.sting('boss'); buzz([20, 60, 120]);
     } else { this.intro = 0; this.say(line); this.ask(); }
     s._met = true;
   },
@@ -569,14 +612,14 @@ const Duel = {
   },
   fifty() {
     if (this.answered || this.used.fifty || G.frags < 2) return;
-    G.frags -= 2; this.used.fifty = true; Audio.pickup();
+    G.frags -= 2; this.used.fifty = true; this.aidsUsed = true; Audio.pickup();
     const wrong = this.opts.map((o, i) => (o.ok ? -1 : i)).filter((i) => i >= 0); shuffle(wrong);
     const btns = $('#d-answers').children; wrong.slice(0, 2).forEach((i) => { btns[i].classList.add('gone'); btns[i].disabled = true; });
     this.say('Pregúntate bien, y lo verás tú mismo...'); this.updateAids(); updateHud();
   },
   moreTime() {
     if (this.answered || this.used.time || G.frags < 1) return;
-    G.frags -= 1; this.used.time = true; this.time = Math.min(this.time + 10, this.maxTime + 10); Audio.pickup(); this.updateAids(); updateHud();
+    G.frags -= 1; this.used.time = true; this.aidsUsed = true; this.time = Math.min(this.time + 10, this.maxTime + 10); Audio.pickup(); this.updateAids(); updateHud();
   },
   answer(i) {
     if (this.answered || G.state !== 'duel' || this.intro > 0) return;
@@ -592,11 +635,14 @@ const Duel = {
       popup(`+${pts}${mult > 1 ? `<small>racha ×${mult}</small>` : fast ? '<small>¡veloz!</small>' : ''}`, 'up');
       Audio.correct(); s.gesture = 1; buzz(25);
       if (mult > 1 && G.streak % 3 === 0) Audio.victory();
+      if (this.maxTime - this.time < 3) achieve('veloz');
+      if (G.streak >= 10) achieve('racha4');
       this.say(pick(fast ? LINES.fast : LINES.right));
       particles.emit(head, 50, { color: 0xffd36a, speed: 5, life: 0.9, size: 0.4, intensity: 2.5 });
     } else {
       const dmg = Math.round((s.boss ? 17 : 13) + G.eraIdx * 1.5);
       G.hp = Math.max(0, G.hp - dmg); G.stats.wrong++; Audio.wrong(); player.shake = 0.5; buzz([50, 40, 80]);
+      s._wrongs++;
       popup(`−${dmg} razón${G.streak >= 3 ? '<small>racha perdida</small>' : ''}`, 'bad up'); G.streak = 0;
       const v = $('#vignette'); v.style.opacity = 0.8; setTimeout(() => (v.style.opacity = 0), 200);
       this.say(pick(i < 0 ? LINES.timeout : LINES.wrong));
@@ -663,9 +709,11 @@ const Duel = {
     s.shootCd = 3;
   },
   win() {
-    const s = this.sage; s.defeat(); Audio.victory(); buzz([30, 50, 30, 50, 140]);
+    const s = this.sage; s.defeat(); Audio.victory(); Music.sting('victory'); buzz([30, 50, 30, 50, 140]);
+    achieve('primer'); if (s.data.id === 'socrates') achieve('tabano'); if (s.data.id === 'platon') achieve('caverna');
+    if (!s._wrongs) achieve('perfecto'); if (s.boss && !this.aidsUsed) achieve('sincomodin');
     const bonus = s.boss ? 500 : 250; addScore(bonus); G.frags += 2; const heal = Math.min(25, G.maxHp - G.hp); G.hp += heal;
-    G.codex.add(s.data.id); store.set(CODEX_KEY, [...G.codex]);
+    G.codex.add(s.data.id); store.set(CODEX_KEY, [...G.codex]); if (G.codex.size >= 25) achieve('erudito');
     particles.emit(_v1.copy(s.pos).setY(2.5), 160, { color: 0xffd36a, speed: 9, life: 1.6, size: 0.55, intensity: 3, gravity: 2 });
     particles.emit(_v1.copy(s.pos).setY(1.2), 80, { color: 0xffffff, speed: 6, life: 1.2, size: 0.4, intensity: 2, flat: true });
     $('#duel').hidden = true; Voice.say(s.data.defeat, s);
@@ -689,7 +737,7 @@ const Duel = {
 };
 $('#aid-5050').addEventListener('click', () => Duel.fifty());
 $('#aid-time').addEventListener('click', () => Duel.moreTime());
-$('#d-next').addEventListener('click', () => Duel.next());
+$('#d-next').addEventListener('click', () => (G.state === 'oracle' ? Oracle.next() : Duel.next()));
 
 function closeConcept() {
   if (G.state !== 'concept') return;
@@ -746,14 +794,14 @@ function updateEpojeHud() {
 // ============================================================================
 //  FLUJO DE PANTALLAS
 // ============================================================================
-const SCREENS = ['title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept'];
+const SCREENS = ['title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept', 'oracle', 'oracle-end', 'fame', 'logros'];
 function show(id) { SCREENS.forEach((s) => ($('#' + s).hidden = s !== id)); if (id) { const b = $('#' + id).querySelector('.btn.primary, .btn'); if (b && !IS_TOUCH) setTimeout(() => b.focus({ preventScroll: true }), 30); } }
 function hideAll() { SCREENS.forEach((s) => ($('#' + s).hidden = true)); }
 
 function saveProgress() { store.set(SAVE_KEY, { eraIdx: G.eraIdx, score: G.score, frags: G.frags, stats: G.stats }); }
 function titleScreen() {
   G.state = 'title'; unlockPointer(); Duel.close(); Voice.stop();
-  $('#b-fs').hidden = !(FS_OK && IS_TOUCH);
+  $('#b-fs').hidden = !(FS_OK && IS_TOUCH); if (typeof refreshTitleExtras === 'function') refreshTitleExtras();
   $('#hud').hidden = true; $('#touch').hidden = true; $('#duel').hidden = true;
   const sv = store.get(SAVE_KEY, null);
   const bc = $('#b-continue');
@@ -798,7 +846,7 @@ function pauseGame() {
 }
 function resumeGame() { hideAll(); G.state = 'play'; lockPointer(); keepAwake(); }
 function gameOver() {
-  G.state = 'gameover'; unlockPointer(); input.fire = false; Voice.stop(); G.streak = 0; buzz([100, 60, 300]);
+  G.state = 'gameover'; unlockPointer(); input.fire = false; Voice.stop(); G.diedEra = G.eraIdx; G.streak = 0; buzz([100, 60, 300]);
   $('#hud').hidden = true; $('#touch').hidden = true; Audio.mode = 'calm';
   Audio.tone(220, 1.5, { type: 'sawtooth', vol: 0.12, slide: 0.3, filter: 800 });
   show('gameover');
@@ -806,6 +854,7 @@ function gameOver() {
 function retryEra() { G.score = G.eraStart.score; G.frags = G.eraStart.frags; G.stats = { ...G.eraStart.stats }; startEra(G.eraIdx, false); }
 function enterPortal() {
   G.state = 'transition'; Audio.portal(); unlockPointer();
+  if (G.diedEra !== G.eraIdx) achieve('logos'); G.diedEra = -1;
   const f = $('#fade'); f.classList.add('on');
   setTimeout(() => {
     if (G.eraIdx >= ERAS.length - 1) { showEnding(); f.classList.remove('on'); return; }
@@ -817,6 +866,8 @@ function showEnding() {
   store.set(SAVE_KEY, null);
   const tot = G.stats.correct + G.stats.wrong; const acc = tot ? G.stats.correct / tot : 0;
   const r = RANKS.find((x) => acc >= x.min);
+  achieve('kant'); if (r === RANKS[0]) achieve('rey');
+  Fame.submitOdyssey(G.score, r.name, Math.round(acc * 100));
   $('#e-rank').textContent = r.name; $('#e-rtext').textContent = r.text;
   const mins = Math.floor(G.stats.time / 60);
   $('#e-stats').innerHTML = `<div><b>${G.score.toLocaleString('es-ES')}</b><span>Sabiduría</span></div><div><b>${Math.round(acc * 100)}%</b><span>Aciertos</span></div><div><b>${G.bestStreak}</b><span>Mejor racha</span></div><div><b>${mins} min</b><span>Tiempo</span></div>`;
@@ -885,6 +936,25 @@ on('#b-ecodex', () => openSub('codex'));
 // ============================================================================
 const clock = new THREE.Clock();
 let fpsAcc = 0, fpsN = 0, autoChecked = false;
+function titleCam() {
+  const a = tAcc * 0.05; camera.position.set(Math.sin(a) * 26, 7 + Math.sin(tAcc * 0.2) * 1.5, -6 + Math.cos(a) * 26);
+  camera.lookAt(0, 3, -10); camera.fov = baseFov(); camera.updateProjectionMatrix(); lamp.visible = false;
+}
+// partículas ambientales de cada época: polvo dorado, polen, ascuas, motas en la luz, pétalos, luciérnagas
+const MOTES = [
+  { c: 0xffd9a0, up: 0.08, g: 0, i: 1.4, s: 0.12 }, { c: 0xfff6e0, up: 0.05, g: 0, i: 1.1, s: 0.1 },
+  { c: 0xff8a40, up: 0.9, g: 0, i: 2.4, s: 0.13 }, { c: 0xc8d4ff, up: 0.02, g: 0, i: 1.3, s: 0.1 },
+  { c: 0xffb6c8, up: 0, g: 0.25, i: 1.2, s: 0.16 }, { c: 0xb8ff9a, up: 0.1, g: 0, i: 3, s: 0.12 },
+];
+let moteAcc = 0;
+function ambientMotes(dt) {
+  const m = MOTES[world.idx]; moteAcc += dt * (G.settings.quality === 'low' ? 7 : 14);
+  while (moteAcc >= 1) {
+    moteAcc--; const a = Math.random() * TAU, r = 2 + Math.random() * 13;
+    _v1.set(camera.position.x + Math.cos(a) * r, 0.3 + Math.random() * 5, camera.position.z + Math.sin(a) * r);
+    particles.emit(_v1, 1, { color: m.c, speed: 0.35, up: m.up, gravity: m.g, life: 4.5, size: m.s, drag: 0.15, intensity: m.i });
+  }
+}
 function frame() {
   requestAnimationFrame(frame);
   const raw = Math.min(clock.getDelta(), 0.05); const dt = G.state === 'victory' ? raw * 0.22 : raw; tAcc += dt;
@@ -895,12 +965,11 @@ function frame() {
   }
   if (G.state === 'play') updatePlay(dt);
   else if (G.state === 'duel') { Duel.update(dt); updateSages(dt, true); }
+  else if (G.state === 'oracle') { Oracle.update(raw); titleCam(); }
   else if (G.state === 'victory') { updateSages(dt, true); camera.fov = damp(camera.fov, baseFov() * 0.62, 2, raw); camera.updateProjectionMatrix(); if (performance.now() >= Duel.vicEnd) Duel.showConcept(); }
-  else if (world && (G.state === 'title' || G.state === 'intro' || G.state === 'ending')) {
-    const a = tAcc * 0.05; camera.position.set(Math.sin(a) * 26, 7 + Math.sin(tAcc * 0.2) * 1.5, -6 + Math.cos(a) * 26);
-    camera.lookAt(0, 3, -10); updateSages(dt, false); camera.fov = baseFov(); camera.updateProjectionMatrix();
-    lamp.visible = false;
-  }
+  else if (world && (G.state === 'title' || G.state === 'intro' || G.state === 'ending')) { titleCam(); updateSages(dt, false); }
+  if (world && ['play', 'duel', 'title', 'intro', 'oracle', 'victory', 'ending'].includes(G.state)) ambientMotes(raw);
+  G.hurtFx = Math.max(0, (G.hurtFx || 0) - raw * 2.5); grade.uniforms.hurt.value = G.hurtFx; grade.uniforms.time.value = tAcc % 100;
   if (G.state === 'play' || G.state === 'duel' || G.state === 'victory') lamp.visible = true;
   // llama de la lámpara
   const fl = lamp.userData.flame; fl.scale.set(1 + Math.sin(tAcc * 23) * 0.08, 1.6 + Math.sin(tAcc * 17) * 0.2, 1);
@@ -933,7 +1002,6 @@ async function boot() {
   const unlock = () => { Audio.init(); Audio.startMusic(world ? world.idx : 0); window.removeEventListener('pointerdown', unlock); window.removeEventListener('keydown', unlock); };
   window.addEventListener('pointerdown', unlock); window.addEventListener('keydown', unlock);
 }
-boot();
 
 // Gancho de pruebas automáticas (solo con #debug en la URL)
-if (location.hash === '#debug') window.__dbg = { G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy };
+if (location.hash === '#debug') window.__dbg = { G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music };
