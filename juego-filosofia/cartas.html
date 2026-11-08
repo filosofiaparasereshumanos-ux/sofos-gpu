@@ -1446,7 +1446,7 @@ const Music = {
     // salida de batería algo más seca (menos reverb)
   },
   start(era) {
-    if (!Audio.ctx) return; this.setup();
+    if (!Audio.ctx) return; this.setup(); Track.play(era);
     this.song = SONGS[clamp(era, 0, SONGS.length - 1)];
     const r = mulberry32(this.song.seed);
     // motivo melódico de 2 compases (16 corcheas), en grados de la escala
@@ -1465,7 +1465,7 @@ const Music = {
     const t = Audio.ctx.currentTime; for (const g of Object.values(this.layers)) { g.gain.cancelScheduledValues(t); g.gain.setTargetAtTime(0, t, 0.4); }
   },
   applyMix(fast) {
-    if (!this.layers) return; const m = MIX[this.mode] || MIX.calm; const t = Audio.ctx.currentTime;
+    if (!this.layers) return; const m = Track.ready && (this.mode === 'title' || this.mode === 'calm') ? {} : MIX[this.mode] || MIX.calm; const t = Audio.ctx.currentTime;
     for (const [k, g] of Object.entries(this.layers)) g.gain.setTargetAtTime(m[k] ?? 0, t, fast ? 0.05 : 0.8);
     this._mixed = this.mode;
   },
@@ -1530,8 +1530,9 @@ const Music = {
   // nota de la escala por grado (puede pasar de octava)
   deg(d, oct = 0) { const s = this.song.scale; const n = ((d % 7) + 7) % 7; const o = Math.floor(d / 7); return mtof(this.song.root + s[n] + 12 * (o + oct)); },
   update() {
+    Track.update();
     if (!this.on || !Audio.ctx || !this.song) return;
-    const c = Audio.ctx; if (this._mixed !== this.mode) this.applyMix(false);
+    const c = Audio.ctx; if (this._mixed !== this.mode || this._trk !== Track.ready) { this._trk = Track.ready; this.applyMix(false); }
     const S = this.song, L = this.layers, mode = this.mode; const sd = 60 / S.bpm / 4; // semicorchea
     while (this.nextT < c.currentTime + 0.25) {
       const t = this.nextT, st = this.step % 16, bar = Math.floor(this.step / 16);
@@ -1604,6 +1605,39 @@ const Music = {
   },
 };
 // La música nueva sustituye a la antigua
+// ---- banda sonora grabada de cada época (Suno, en audio/m-<época>.mp3)
+// Suena en la exploración y el menú; en los debates baja y entra la música de tensión.
+const Track = {
+  el: null, idx: -1, ready: false, vol: 0, lastT: 0,
+  play(idx) {
+    if (idx === this.idx && this.el) { this.resume(); return; }
+    this.idx = idx; this.ready = false;
+    if (this.el) { try { this.el.pause(); } catch (e) { /* nada */ } this.el.removeAttribute('src'); }
+    const el = document.createElement('audio'); el.loop = true; el.preload = 'auto'; el.volume = 0; this.vol = 0; this.el = el;
+    el.addEventListener('playing', () => { if (this.el === el) this.ready = true; });
+    el.addEventListener('error', () => { if (this.el === el) { this.ready = false; this.el = null; } });
+    el.src = 'audio/m-' + idx + '.mp3';
+    // en iOS el volumen del elemento es fijo: lo controlamos con una ganancia de WebAudio
+    this.gain = null; const c = Audio.ctx;
+    if (c && location.protocol !== 'file:') { try { const src = c.createMediaElementSource(el); const g = c.createGain(); g.gain.value = 0; src.connect(g); g.connect(Audio.master || c.destination); this.gain = g; } catch (e) { this.gain = null; } }
+    this.resume();
+  },
+  resume() { const el = this.el; if (!el || document.hidden) return; const p = el.play(); if (p && p.catch) p.catch(() => { const once = () => { window.removeEventListener('pointerdown', once); this.resume(); }; window.addEventListener('pointerdown', once); }); },
+  pause() { if (this.el) try { this.el.pause(); } catch (e) { /* nada */ } },
+  update() {
+    const el = this.el; if (!el) return;
+    const now = performance.now(); const dt = Math.min(0.1, (now - (this.lastT || now)) / 1000); this.lastT = now;
+    const m = Music.mode; const st = G.state;
+    let k = m === 'duel' ? 0.22 : m === 'boss' ? 0.3 : m === 'combat' ? 0.6 : 1;
+    if (st === 'talk' || st === 'lesson' || st === 'place' || G.lessonMenu) k *= 0.35; // la voz manda
+    if (st === 'paused' || st === 'gameover') k *= 0.5;
+    const target = Math.min(1, 0.7 * G.settings.music * k);
+    this.vol += (target - this.vol) * Math.min(1, dt * 2.2);
+    const v = Math.max(0, Math.min(1, this.vol));
+    if (this.gain) { this.gain.gain.value = v; if (el.volume !== 1) el.volume = 1; } else try { el.volume = v; } catch (e) { /* sin control de volumen */ }
+  },
+};
+document.addEventListener('visibilitychange', () => { if (document.hidden) Track.pause(); else Track.resume(); });
 Audio.startMusic = function (era) { if (!this.ctx) return; if (this.drone) this.stopDrone(); Music.start(era); };
 Audio.updateMusic = function () { Music.update(); };
 

@@ -71,7 +71,7 @@ const QD = {
   card(p) {
     const c = document.createElement('article'); c.className = 'qd-card';
     c.innerHTML = '<header><span class="medal"></span><div><h4></h4><small></small></div></header><p class="qd-text thinking">Pensando…</p><footer><button class="mini-b qd-lesson">Escuchar su lección</button></footer>';
-    c.querySelector('.medal').textContent = p.s.short[0]; c.querySelector('h4').textContent = p.s.name; c.querySelector('small').textContent = `${ERAS[p.ei].name} · ${p.s.dates}`;
+    setMedal(c.querySelector('.medal'), p.s.id, p.s.short[0]); c.querySelector('h4').textContent = p.s.name; c.querySelector('small').textContent = `${ERAS[p.ei].name} · ${p.s.dates}`;
     c.querySelector('.qd-lesson').addEventListener('click', () => { Audio.init(); this.stop(); Lesson.open(p.s, null); });
     return c;
   },

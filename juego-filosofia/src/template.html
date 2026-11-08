@@ -386,6 +386,14 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .tv-sec { grid-column: 1 / -1; margin: 14px 0 0; font-family: var(--display); font-weight: 400; letter-spacing: 0.08em; color: var(--gold-bright); font-size: 1.05rem; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
 .tv-note { grid-column: 1 / -1; margin: -2px 0 4px; font-style: italic; color: var(--parchment-dim); font-size: 0.95rem; }
 .tv-card.world .tv-num { color: #6ae0c8; }
+.medal.portrait { background-size: cover; background-position: center 22%; color: transparent; box-shadow: 0 0 0 2px var(--gold), 0 0 18px rgba(255,211,106,0.35); }
+#talk .medal, #lesson .medal, #duel .medal { width: 72px; height: 72px; }
+.bc-medal { width: 140px; height: 140px; margin: 0 auto 12px; font-size: 3rem; }
+.medal.sm { width: 46px; height: 46px; font-size: 1.1rem; flex: 0 0 auto; }
+.cc .medal.sm { float: right; margin: 0 0 6px 10px; }
+.au-n { display: flex; gap: 10px; align-items: center; }
+#intro.has-art { background: linear-gradient(180deg, rgba(13,12,18,0.45), rgba(13,12,18,0.82) 55%, rgba(13,12,18,0.95)), var(--era-img) center / cover no-repeat; backdrop-filter: none; }
+.tv-art { height: 92px; margin: -12px -14px 8px; background: #1a1610 center / cover no-repeat; border-bottom: 1px solid rgba(239,227,198,0.14); }
 .tv-card { cursor: pointer; text-align: left; font: inherit; color: inherit; display: flex; flex-direction: column; gap: 2px; transition: border-color .2s, background .2s; }
 .tv-card:hover, .tv-card:focus-visible { border-color: var(--gold); background: rgba(214,168,74,0.1); }
 .tv-card .tv-num { font-family: var(--display); color: var(--gold); font-size: 1.6rem; line-height: 1; }
@@ -600,7 +608,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
     <button id="tfs" aria-label="Pantalla completa" hidden>⛶</button>
     <button id="tpause" aria-label="Pausa">II</button>
   </div>
-  <div id="bosscard" hidden><div class="bc-in"><div class="eyebrow" id="bc-eye">Maestro de la época</div><h2 id="bc-name"></h2><p id="bc-ep"></p></div></div>
+  <div id="bosscard" hidden><div class="bc-in"><div class="medal bc-medal" id="bc-medal"></div><div class="eyebrow" id="bc-eye">Maestro de la época</div><h2 id="bc-name"></h2><p id="bc-ep"></p></div></div>
   <div id="popups"></div>
   <div id="trialcard" hidden><div class="eyebrow" id="tc-kind"></div><h3 id="tc-name"></h3><p id="tc-hint"></p></div>
   <div id="flash"></div>

@@ -11,7 +11,7 @@ const Lesson = {
   open(data, sage) {
     this.book = null; this.data = data; this.parts = LESSONS[data.id] || [];
     this.begin(sage ? 'world' : 'menu', sage);
-    $('#ls-medal').textContent = data.short[0]; $('#ls-name').textContent = 'Lección de ' + data.short; $('#ls-meta').textContent = `${data.epithet} · ${data.dates}`;
+    setMedal($('#ls-medal'), data.id, data.short[0]); $('#ls-name').textContent = 'Lección de ' + data.short; $('#ls-meta').textContent = `${data.epithet} · ${data.dates}`;
     this.show();
   },
   // abre un libro (BOOKS) para estudiarlo, junto a su atril o desde la biblioteca del códice
@@ -19,7 +19,7 @@ const Lesson = {
     this.book = b; this.data = { id: b.author, short: b.by };
     this.parts = [...b.parts.map(bookPartText), 'Una cita para recordar. ' + b.quote];
     this.begin(inWorld ? 'world' : 'menu', null);
-    $('#ls-medal').textContent = '❦'; $('#ls-name').textContent = b.title; $('#ls-meta').textContent = `${b.by} · ${b.year} · ${b.kind}`;
+    setMedal($('#ls-medal'), null, '❦'); $('#ls-name').textContent = b.title; $('#ls-meta').textContent = `${b.by} · ${b.year} · ${b.kind}`;
     this.show();
   },
   begin(from, sage) {

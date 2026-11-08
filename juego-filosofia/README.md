@@ -12,6 +12,10 @@ ratón y `E` para interactuar.
 
 ## Qué puedes hacer
 
+- **Arte y música**: retratos al óleo de los 68 pensadores, una ilustración para cada época y
+  cultura, y una banda sonora propia para cada una (generados con kie.ai: nano-banana y Suno; los
+  scripts están en `tools/kie/`, la clave nunca se incluye en el juego).
+
 - **Modo aula** (funciona sin servidor):
   - *Docente*: crea una tarea eligiendo pensadores y qué cuenta (lección, encargo, debate, libro) y
     obtiene un código de clase con instrucciones para compartir. Pega las entregas de sus
@@ -84,6 +88,7 @@ node build.mjs   # genera index.html (viaje 3D) y cartas.html (versión de duelo
 - `src/01d-pensadoras.js` filósofas de la Antigüedad al Renacimiento · `src/01e-latinoamerica.js` y `src/02g-latinoamerica.js` época IX
 - `src/01f-mundo.js` y `src/02h-mundo.js` ruta «Sabidurías del mundo»
 - `src/05b-quediria.js` «¿Qué diría…?» · `src/06-aula.js` modo aula
+- `src/00c-art.js` retratos e ilustraciones (`img/`) · banda sonora en `audio/m-*.mp3`
 - `src/02d-narration.js` reproductor de la voz grabada · `audio/` paquetes MP3 e índice
 - `tools/` generación de la voz: `narration-text.mjs` (frases) → `narrate.py` (Piper TTS + ffmpeg) → `narration-index.mjs`
 - `cartas/` versión alternativa de duelo de cartas en 2D (`cartas.html`)

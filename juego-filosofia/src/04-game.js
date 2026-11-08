@@ -866,7 +866,7 @@ const Duel = {
     Audio.gong(); Audio.mode = s.boss ? 'boss' : 'duel';
     $('#hud').hidden = true; $('#touch').hidden = true; $('#duel').hidden = false;
     const d = s.data;
-    $('#d-medal').textContent = d.short[0];
+    setMedal($('#d-medal'), d.id, d.short[0]);
     $('#d-name').textContent = d.name;
     $('#d-meta').textContent = `${d.epithet} · ${d.dates}`;
     this.round = s._round || 0;
@@ -876,7 +876,7 @@ const Duel = {
       // presentación cinematográfica del maestro
       this.intro = 2.8; this.introEnd = performance.now() + 2800; this.answered = true; this.introLine = line;
       $('#duel').hidden = true; $('#bc-eye').textContent = d.final ? 'El último maestro' : 'Maestro de la época';
-      $('#bc-name').textContent = d.short; $('#bc-ep').textContent = d.epithet; $('#bosscard').hidden = false;
+      setMedal($('#bc-medal'), d.id, d.short[0]); $('#bc-name').textContent = d.short; $('#bc-ep').textContent = d.epithet; $('#bosscard').hidden = false;
       Audio.tone(55, 2.6, { type: 'sine', vol: 0.4, slide: 0.5 }); Music.sting('boss'); buzz([20, 60, 120]);
     } else { this.intro = 0; this.say(line); this.ask(); }
     s._met = true;
@@ -1137,7 +1137,7 @@ function startEra(idx, fresh) {
   loadWorld(idx); Audio.startMusic(idx);
   const e = ERAS[idx];
   $('#i-eyebrow').textContent = e.world ? `Sabidurías del mundo · ${e.years}` : G.explore ? `Modo explorador · ${e.years}` : `Etapa ${idx + 1} de ${CAMPAIGN} · ${e.years}`;
-  $('#i-num').textContent = e.num; $('#i-name').textContent = e.name; $('#i-meta').textContent = e.place;
+  setEraBackdrop($('#intro'), idx); $('#i-num').textContent = e.num; $('#i-name').textContent = e.name; $('#i-meta').textContent = e.place;
   $('#i-story').textContent = e.story;
   $('#i-quote').innerHTML = ''; $('#i-quote').append(document.createTextNode('«' + e.quote.t + '»')); const c = document.createElement('cite'); c.textContent = e.quote.a; $('#i-quote').append(c);
   $('#i-roster').innerHTML = e.sages.map((s) => `<span class="${s.boss ? 'boss' : ''}">${s.short}</span>`).join('<span aria-hidden="true">·</span>');
@@ -1203,7 +1203,8 @@ function renderCodex() {
       const p = document.createElement('p'); p.textContent = ok ? s.concept.text : 'Vence a este pensador en un duelo para comprender su idea central.';
       const lb = document.createElement('button'); lb.className = 'mini-b lesson-b'; lb.textContent = '▶ Escuchar su lección';
       lb.addEventListener('click', () => { Audio.init(); Lesson.open(s, null); });
-      c.append(h4, by, p, lb); grid.appendChild(c);
+      const md = document.createElement('span'); md.className = 'medal sm'; setMedal(md, s.id, s.short[0]);
+      c.append(md, h4, by, p, lb); grid.appendChild(c);
     });
     sec.appendChild(grid); body.appendChild(sec);
   });
@@ -1281,7 +1282,7 @@ function renderTravel() {
     if (i === 0 || i === CAMPAIGN) { const h = document.createElement('h3'); h.className = 'tv-sec'; h.textContent = i === 0 ? 'La odisea: de Tales a nuestros días' : 'Sabidurías del mundo'; grid.appendChild(h); if (i === CAMPAIGN) { const p = document.createElement('p'); p.className = 'tv-note'; p.textContent = 'Pueblos y tradiciones de todo el planeta. Donde no se conservan autores con nombre, hablan portavoces de su tradición.'; grid.appendChild(p); } }
     const b = document.createElement('button'); b.className = 'cc tv-card' + (e.world ? ' world' : '') + (G.travelFrom === 'pause' && i === G.eraIdx ? ' here' : '');
     const pf = POIS[i].filter((p) => found.has(p.id)).length, bs = BOOKS[i].filter((x) => studied.has(x.id)).length;
-    b.innerHTML = `<span class="tv-num">${e.num}</span><h4></h4><div class="by"></div><p></p><span class="tv-prog">Lugares ${pf}/${POIS[i].length} · ${BOOKS[i].length ? `Libros ${bs}/${BOOKS[i].length} · ` : ""}${NPCS[i].length} ciudadanos</span>`;
+    b.innerHTML = `<div class="tv-art" style="background-image:url('${ART.era(i)}')"></div><span class="tv-num">${e.num}</span><h4></h4><div class="by"></div><p></p><span class="tv-prog">Lugares ${pf}/${POIS[i].length} · ${BOOKS[i].length ? `Libros ${bs}/${BOOKS[i].length} · ` : ""}${NPCS[i].length} ciudadanos</span>`;
     b.querySelector('h4').textContent = e.name; b.querySelector('.by').textContent = `${e.years} · ${e.place}`;
     b.querySelector('p').textContent = e.sages.map((s) => s.short).join(', ');
     b.addEventListener('click', () => { Audio.init(); Audio.click(); travelTo(i); });
@@ -1388,4 +1389,4 @@ async function boot() {
 }
 
 // Gancho de pruebas automáticas (solo con #debug en la URL)
-if (location.hash === '#debug') window.__dbg = { G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc };
+if (location.hash === '#debug') window.__dbg = { G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc };

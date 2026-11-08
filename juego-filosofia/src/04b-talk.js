@@ -34,7 +34,7 @@ const Talk = {
   open(sage) {
     this.npc = null; this.data = sage.data; this.part = 1; this.anec = 0;
     this.begin(sage);
-    $('#tk-medal').textContent = this.data.short[0]; $('#tk-name').textContent = this.data.name; $('#tk-meta').textContent = `${this.data.epithet} · ${this.data.dates}`;
+    setMedal($('#tk-medal'), this.data.id, this.data.short[0]); $('#tk-name').textContent = this.data.name; $('#tk-meta').textContent = `${this.data.epithet} · ${this.data.dates}`;
     const talked = new Set(store.get(TALK_KEY, [])); const first = !talked.has(this.data.id); talked.add(this.data.id); store.set(TALK_KEY, [...talked]);
     if (talked.size >= 10) achieve('conversador');
     this.say(first ? this.greeting() : this.sage.state === 'defeated' ? SAGE_GENERIC[1] : SAGE_GENERIC[0]);
@@ -44,7 +44,7 @@ const Talk = {
   openNpc(c) {
     this.npc = c; this.data = null;
     this.begin(c);
-    const n = c.npc; $('#tk-medal').textContent = n.name[0]; $('#tk-name').textContent = n.name; $('#tk-meta').textContent = `${n.role[0].toUpperCase() + n.role.slice(1)} · ${ERAS[world.idx].name}`;
+    const n = c.npc; setMedal($('#tk-medal'), null, n.name[0]); $('#tk-name').textContent = n.name; $('#tk-meta').textContent = `${n.role[0].toUpperCase() + n.role.slice(1)} · ${ERAS[world.idx].name}`;
     this.line = Math.min(npcHeard(n.id), n.lines.length) % n.lines.length;
     this.npcLine();
   },

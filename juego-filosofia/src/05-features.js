@@ -203,7 +203,7 @@ const Oracle = {
   ask() {
     const it = this.qs[this.i]; const e = ERAS[it.ei];
     this.answered = false; this.time = this.maxTime; this.askedAt = performance.now(); this.lastTick = 99;
-    $('#d-medal').textContent = it.s.short[0]; $('#d-name').textContent = it.s.name; $('#d-meta').textContent = `${e.num} · ${it.s.epithet} · ${it.s.dates}`;
+    setMedal($('#d-medal'), it.s.id, it.s.short[0]); $('#d-name').textContent = it.s.name; $('#d-meta').textContent = `${e.num} · ${it.s.epithet} · ${it.s.dates}`;
     $('#d-say').textContent = '«' + it.s.intro + '»';
     $('#d-qnum').textContent = `Pregunta ${this.i + 1} de ${this.qs.length}`;
     $('#d-q').textContent = it.q.q;

@@ -66,7 +66,8 @@ const AULA = {
     for (const r of pr.rows) {
       const li = document.createElement('div'); li.className = 'au-row';
       const name = document.createElement('div'); name.className = 'au-n'; name.innerHTML = '<b></b><small></small>';
-      name.querySelector('b').textContent = r.x.s.short; name.querySelector('small').textContent = `${ERAS[r.x.ei].num} · ${ERAS[r.x.ei].name}`;
+      const md = document.createElement('span'); md.className = 'medal sm'; setMedal(md, r.x.s.id, r.x.s.short[0]); const tx = document.createElement('div'); tx.append(name.querySelector('b'), name.querySelector('small')); name.append(md, tx);
+      tx.querySelector('b').textContent = r.x.s.short; tx.querySelector('small').textContent = `${ERAS[r.x.ei].num} · ${ERAS[r.x.ei].name}`;
       const cells = document.createElement('div'); cells.className = 'au-cells';
       r.cells.forEach((c, i) => { const sp = document.createElement('span'); sp.className = 'au-c' + (c === null ? ' na' : c ? ' ok' : ''); sp.title = tasks[i].n; sp.textContent = c === null ? '–' : c ? '✓' : tasks[i].icon; cells.appendChild(sp); });
       const go = document.createElement('button'); go.className = 'mini-b'; go.textContent = 'Ir';
