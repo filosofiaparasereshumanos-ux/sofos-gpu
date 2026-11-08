@@ -47,6 +47,36 @@ const THEMES = [
     hemi: [0xd8e8ff, 0xa07a50, 0.78], fog: [0xf0d8b8, 0.0072], exposure: 1.08, stars: false,
     accent: 0xff5a8a, enemy: { col: 0xff4a8a, core: 0x200410, shell: 'octa' }, lampCol: 0xffd090,
   },
+  { // X · Mexicas: mañana luminosa sobre el lago
+    sky: [0x2a70d8, 0xd8ecff, 0x7a8a7a], sunDir: [0.4, 0.6, -0.5], sunCol: 0xfff4e0, sunInt: 2.5, sunDisk: 0xfff2d8,
+    hemi: [0xd8e8ff, 0x8a7a5a, 0.8], fog: [0xd8e4ec, 0.0068], exposure: 1.05, stars: false,
+    accent: 0x2ad0c0, enemy: { col: 0x2ad0c0, core: 0x04201c, shell: 'octa' }, lampCol: 0xffd090,
+  },
+  { // XI · Incas: cielo andino intenso
+    sky: [0x1a50c0, 0xbfe0ff, 0x6a7a5a], sunDir: [-0.3, 0.7, -0.4], sunCol: 0xfff8e8, sunInt: 2.7, sunDisk: 0xfffae0,
+    hemi: [0xcfe4ff, 0x6a7a4a, 0.8], fog: [0xc8dcf0, 0.006], exposure: 1.02, stars: false,
+    accent: 0xffc040, enemy: { col: 0xffc040, core: 0x201404, shell: 'cube' }, lampCol: 0xffd090,
+  },
+  { // XII · Mapuche: atardecer húmedo entre araucarias
+    sky: [0x2a3a6a, 0xf0b890, 0x2a3a2a], sunDir: [0.5, 0.15, -0.8], sunCol: 0xffc8a0, sunInt: 2.2, sunDisk: 0xffb080,
+    hemi: [0xd0c8e0, 0x3a4a2a, 0.7], fog: [0xc8b8b0, 0.011], exposure: 1.15, stars: false,
+    accent: 0x5ab0ff, enemy: { col: 0x5ab0ff, core: 0x041020, shell: 'torus' }, lampCol: 0xffb070,
+  },
+  { // XIII · China: amanecer rosado entre montañas de niebla
+    sky: [0x4a6ab0, 0xffd8d0, 0x6a6a70], sunDir: [-0.6, 0.25, -0.6], sunCol: 0xffe0d0, sunInt: 2.2, sunDisk: 0xffd0b0,
+    hemi: [0xe0d8f0, 0x6a6058, 0.75], fog: [0xe8c8c8, 0.0068], exposure: 0.98, stars: false,
+    accent: 0xff4a3a, enemy: { col: 0xff4a3a, core: 0x200404, shell: 'icosa' }, lampCol: 0xffb080,
+  },
+  { // XIV · India: atardecer anaranjado
+    sky: [0x3a3a8a, 0xffa860, 0x6a4a3a], sunDir: [0.6, 0.18, -0.7], sunCol: 0xffb070, sunInt: 2.5, sunDisk: 0xffa050,
+    hemi: [0xffd8b8, 0x6a4a3a, 0.7], fog: [0xf0b890, 0.0085], exposure: 1.12, stars: false,
+    accent: 0xff9a1a, enemy: { col: 0xff9a1a, core: 0x201004, shell: 'torus' }, lampCol: 0xffb050,
+  },
+  { // XV · África: sabana dorada al caer la tarde
+    sky: [0x3a3a7a, 0xffb868, 0x6a4a2a], sunDir: [-0.5, 0.15, -0.85], sunCol: 0xffb060, sunInt: 2.6, sunDisk: 0xff9a40,
+    hemi: [0xffd8b0, 0x7a5a3a, 0.72], fog: [0xe8b080, 0.0078], exposure: 1.12, stars: false,
+    accent: 0xffb020, enemy: { col: 0xffb020, core: 0x201404, shell: 'cube' }, lampCol: 0xffc070,
+  },
 ];
 
 const ARENA = { x0: -24, x1: 24, z0: -47, z1: 37 };
@@ -859,6 +889,187 @@ const ERA_BUILDERS = [
     for (const [x, z] of [[-5, -36], [5, -36], [-5, 20], [5, -8]]) { W.group.add(mesh(new THREE.CylinderGeometry(0.06, 0.1, 3.6, 8), std(0x2a2a2a, { metalness: 0.6 }), x, 1.8, z)); W.group.add(mesh(new THREE.SphereGeometry(0.22, 10, 8), glow(0xffd090, 4), x, 3.7, z, false, false)); W.colliders.push({ t: 1, x, z, r: 0.25, h: 4 }); }
     brazier(W, -4, -33, 0xff8a40); brazier(W, 4, -33, 0xff8a40);
   },
+  // ------------------------------------------------------------------ X · Mexicas
+  function (W) {
+    const fl = texTiles('x', 0xc8b490, 0x8a7a5a, 5, 0.2); fl.repeat.set(14, 22);
+    ground(W, fl, [80, 120], 0.8);
+    const r = mulberry32(110);
+    const water = new THREE.MeshStandardMaterial({ color: 0x2a7a9a, roughness: 0.05, metalness: 0.5, emissive: 0x0a3a50, emissiveIntensity: 0.4 });
+    const stucco = std(0xf2ece0, { roughness: 0.85 }); const red = std(0xb83a2a, { roughness: 0.8 }); const blue = std(0x3a6ab8, { roughness: 0.8 });
+    // canales con chinampas y ahuejotes a ambos lados
+    for (const side of [-1, 1]) {
+      const w = mesh(new THREE.PlaneGeometry(4, 84), water, side * 21.5, 0.05, -5, false, true); w.rotation.x = -Math.PI / 2; W.group.add(w);
+      W.colliders.push({ t: 0, x0: side > 0 ? 19.5 : -23.5, x1: side > 0 ? 23.5 : -19.5, z0: -47, z1: 37, h: 3 });
+      for (let z = -42; z < 34; z += 7) {
+        if (W._near(side * 18.2, z, 3)) continue;
+        const ch = mesh(new THREE.BoxGeometry(2.4, 0.5, 5.5), std(0x5a4a30, { roughness: 1 }), side * 18.2, 0.25, z); W.group.add(ch); W.colliders.push({ t: 0, x0: side * 18.2 - 1.2, x1: side * 18.2 + 1.2, z0: z - 2.75, z1: z + 2.75, h: 1 });
+        for (let k = 0; k < 8; k++) W.group.add(mesh(new THREE.IcosahedronGeometry(0.22 + r() * 0.12, 0), std([0x4a8a3a, 0xff8a2a, 0xf6d06a, 0x5aa040][k % 4], { roughness: 0.8, flat: true }), side * 18.2 + (r() - 0.5) * 1.8, 0.65, z + (r() - 0.5) * 4.5, false, false));
+        if (!W._near(side * 16.6, z, 0.5)) { const c = cypress(6 + r() * 3); c.scale.set(0.6, 1, 0.6); c.position.set(side * 16.6, 0, z); W.group.add(c); W.colliders.push({ t: 1, x: side * 16.6, z, r: 0.4, h: 6 }); }
+      }
+      // casas blancas de azotea al otro lado del canal
+      for (let z = -44; z < 36; z += 9) { const h = 3 + r() * 3; W.group.add(mesh(new THREE.BoxGeometry(5, h, 7), stucco, side * 27, h / 2, z + 3, false, true)); W.group.add(mesh(new THREE.BoxGeometry(5.4, 0.3, 7.4), red, side * 27, h + 0.15, z + 3, false, false)); }
+    }
+    // Templo Mayor al fondo: doble pirámide con dos santuarios
+    { const tm = new THREE.Group(); tm.position.set(0, 0, -85); const st = std(0xd8c8a8, { roughness: 1, flat: true });
+      for (let k = 0; k < 5; k++) { const w = 40 - k * 6; tm.add(mesh(new THREE.BoxGeometry(w, 4, w * 0.8), st, 0, 2 + k * 4, 0, false, false)); }
+      for (const [x, m] of [[-4, blue], [4, red]]) { tm.add(mesh(new THREE.BoxGeometry(6, 5, 6), m, x, 22.5, 0, false, false)); tm.add(mesh(new THREE.BoxGeometry(6.6, 1, 6.6), stucco, x, 25.5, 0, false, false)); }
+      const stair = mesh(new THREE.BoxGeometry(12, 1, 26), std(0xc8b898), 0, 10, 13, false, false); stair.rotation.x = -0.65; tm.add(stair);
+      W.group.add(tm); }
+    // volcanes: Popocatépetl e Iztaccíhuatl
+    const mtn = std(0x5a6a7a, { roughness: 1, flat: true }); const snow = std(0xf4f0f8, { roughness: 0.8, flat: true });
+    for (const [x, z, h, w, smoke] of [[-90, -180, 95, 55, true], [70, -190, 75, 70, false], [-30, -220, 60, 50, false], [140, -170, 55, 45, false]]) {
+      const m = new THREE.Group(); m.position.set(x, -4, z); m.add(mesh(new THREE.ConeGeometry(w, h, 8), mtn, 0, h / 2, 0, false, false)); m.add(mesh(new THREE.ConeGeometry(w * 0.33, h * 0.33, 8), snow, 0, h - h * 0.165 + 0.3, 0, false, false)); W.group.add(m);
+      if (smoke) W.emitters.push({ x, y: h - 2, z, col: 0xd8d0c8, rate: 2, acc: 0, kind: 'smoke' });
+    }
+    // braseros y estandartes de plumas
+    for (const [x, z] of [[-5, 24], [5, 24], [-5, -6], [5, -6]]) { if (!W._near(x, z, 0.3)) brazier(W, x, z, 0xff8a30, false); }
+    brazier(W, -4, -34, 0xff8a30); brazier(W, 4, -34, 0xff8a30);
+  },
+  // ------------------------------------------------------------------ XI · Incas
+  function (W) {
+    const fl = texTiles('xi', 0x7a9a5a, 0x5a7a3a, 4, 0.3); fl.repeat.set(10, 16);
+    ground(W, fl, [80, 120], 0.95);
+    const r = mulberry32(111);
+    const granite = std(0x9a948a, { roughness: 0.95, flat: true }); const dark = std(0x2a2620, { roughness: 1 });
+    // camino de piedra central
+    W.group.add(mesh(new THREE.BoxGeometry(6, 0.06, 84), std(0xa8a090, { roughness: 0.9 }), 0, 0.03, -5, false, true));
+    // muros de piedras encajadas con hornacinas trapezoidales
+    for (const side of [-1, 1]) {
+      for (let z = -46; z < 36;) {
+        const len = 1.2 + r() * 1.6; let y = 0;
+        for (let row = 0; row < 4; row++) { const h = 0.6 + r() * 0.5; W.group.add(mesh(new THREE.BoxGeometry(1.4, h, len - 0.05), granite, side * 20.5 + (r() - 0.5) * 0.08, y + h / 2, z + len / 2)); y += h; }
+        z += len;
+      }
+      W.colliders.push({ t: 0, x0: side * 20.5 - 0.8, x1: side * 20.5 + 0.8, z0: -47, z1: 37, h: 5 });
+      for (let z = -40; z < 32; z += 6) { const n = mesh(new THREE.CylinderGeometry(0.45, 0.65, 1.4, 4), dark, side * 19.78, 1.6, z, false, false); n.rotation.y = Math.PI / 4; n.scale.z = 0.2; W.group.add(n); }
+      // andenes escalonados más allá del muro
+      for (let k = 0; k < 6; k++) { const x = side * (23 + k * 3.5), h = 2 + k * 2.4; W.group.add(mesh(new THREE.BoxGeometry(3.6, h, 90), granite, x, h / 2, -5, false, true)); W.group.add(mesh(new THREE.BoxGeometry(3.6, 0.3, 90), std(0x6a9a4a, { roughness: 1 }), x, h + 0.15, -5, false, true)); }
+    }
+    // llamas
+    const wool = std(0xe8dcc8, { roughness: 1 }); const brown = std(0x8a5a3a, { roughness: 1 });
+    for (let i = 0; i < 6; i++) { const x = (i % 2 ? -1 : 1) * (9 + r() * 7), z = -38 + i * 12; if (W._near(x, z, 1.2)) continue; const g = new THREE.Group(); g.position.set(x, 0, z); g.rotation.y = r() * TAU; const m = i % 3 ? wool : brown;
+      g.add(mesh(new THREE.BoxGeometry(0.6, 0.6, 1.2), m, 0, 1.1, 0)); g.add(mesh(new THREE.BoxGeometry(0.25, 0.9, 0.25), m, 0, 1.7, 0.55)); g.add(mesh(new THREE.BoxGeometry(0.28, 0.25, 0.45), m, 0, 2.15, 0.7));
+      for (const [a, b] of [[-0.2, -0.45], [0.2, -0.45], [-0.2, 0.45], [0.2, 0.45]]) g.add(mesh(new THREE.BoxGeometry(0.12, 0.8, 0.12), m, a, 0.4, b));
+      for (const s of [-1, 1]) g.add(mesh(new THREE.ConeGeometry(0.05, 0.2, 4), m, s * 0.09, 2.37, 0.62));
+      W.group.add(g); W.colliders.push({ t: 1, x, z, r: 0.7, h: 2 }); W.anim.push((t) => { g.children[2].rotation.x = Math.sin(t * 0.7 + i) * 0.15; }); }
+    // picos andinos: un Huayna Picchu verde y la cordillera nevada
+    const green = std(0x3a5a3a, { roughness: 1, flat: true }); const snow = std(0xf4f0f8, { roughness: 0.8, flat: true }); const rock = std(0x6a6a7a, { roughness: 1, flat: true });
+    { const hp = mesh(new THREE.ConeGeometry(22, 85, 7), green, 0, 38, -105, false, false); hp.scale.x = 0.7; W.group.add(hp); }
+    for (let i = 0; i < 14; i++) { const x = -170 + i * 26 + (r() - 0.5) * 12, z = -180 - r() * 60, h = 70 + r() * 60, w = 30 + r() * 25; const m = new THREE.Group(); m.position.set(x, -4, z); m.add(mesh(new THREE.ConeGeometry(w, h, 7), rock, 0, h / 2, 0, false, false)); m.add(mesh(new THREE.ConeGeometry(w * 0.36, h * 0.36, 7), snow, 0, h - h * 0.18 + 0.3, 0, false, false)); W.group.add(m); }
+    brazier(W, -4, -34, 0xffb040); brazier(W, 4, -34, 0xffb040);
+  },
+  // ------------------------------------------------------------------ XII · Mapuche
+  function (W) {
+    const fl = texTiles('xii', 0x6a7a4a, 0x4a5a32, 3, 0.35); fl.repeat.set(10, 16);
+    ground(W, fl, [80, 120], 1);
+    const r = mulberry32(112);
+    W.group.add(mesh(new THREE.BoxGeometry(5, 0.05, 84), std(0x8a7a5a, { roughness: 1 }), 0, 0.03, -5, false, true));
+    // araucarias: troncos altos con copas en paraguas
+    const bark = std(0x5a4a3a, { roughness: 1 }); const needle = std(0x2f5a3a, { roughness: 0.9, flat: true });
+    const araucaria = (x, z, s) => { const g = new THREE.Group(); g.position.set(x, 0, z); g.scale.setScalar(s);
+      g.add(mesh(new THREE.CylinderGeometry(0.25, 0.4, 9, 8), bark, 0, 4.5, 0));
+      for (let k = 0; k < 5; k++) { const y = 6 + k * 0.9; const rr = 2.6 - k * 0.45; const disk = mesh(new THREE.ConeGeometry(rr, 0.8, 10), needle, 0, y, 0); disk.scale.y = 0.6; g.add(disk); }
+      W.group.add(g); W.colliders.push({ t: 1, x, z, r: 0.5 * s, h: 9 }); };
+    for (let i = 0; i < 30; i++) { const x = (r() < 0.5 ? -1 : 1) * (9 + r() * 12), z = -44 + r() * 78; if (W._near(x, z, 2)) continue; araucaria(x, z, 0.8 + r() * 0.5); }
+    for (const side of [-1, 1]) for (let z = -46; z < 36; z += 7) araucaria(side * (25 + r() * 6), z + r() * 3, 1 + r() * 0.5);
+    // rukas de paja
+    const straw = std(0xc8a868, { roughness: 1, flat: true }); const wood = std(0x6a4a30, { roughness: 1 });
+    for (const [x, z] of [[-20, 20], [20, 4], [-20, -32], [19, -36]]) { if (W._near(x, z, 2)) continue; const g = new THREE.Group(); g.position.set(x, 0, z);
+      const roof = mesh(new THREE.SphereGeometry(3.2, 14, 10, 0, TAU, 0, Math.PI / 2), straw, 0, 0, 0); roof.scale.set(1, 1.1, 1.4); g.add(roof);
+      const door = mesh(new THREE.PlaneGeometry(1, 1.6), wood, 0, 0.8, 0, false, false); door.position.set(-Math.sign(x) * 3.1, 0.8, 0); door.rotation.y = -Math.sign(x) * Math.PI / 2; g.add(door);
+      W.group.add(g); W.colliders.push({ t: 1, x, z, r: 3.3, h: 3 }); W.emitters.push({ x, y: 3.4, z, col: 0xb8b0a8, rate: 1.2, acc: 0, kind: 'smoke' }); }
+    // volcán nevado humeante (el Rukapillan) y montañas
+    const mtn = std(0x4a5a5a, { roughness: 1, flat: true }); const snow = std(0xf4f0f8, { roughness: 0.8, flat: true });
+    { const v = new THREE.Group(); v.position.set(-10, -4, -170); v.add(mesh(new THREE.ConeGeometry(70, 110, 10), mtn, 0, 55, 0, false, false)); v.add(mesh(new THREE.ConeGeometry(30, 47, 10), snow, 0, 87, 0, false, false)); W.group.add(v); W.emitters.push({ x: -10, y: 104, z: -170, col: 0xe0dcd8, rate: 3, acc: 0, kind: 'smoke' }); }
+    for (let i = 0; i < 10; i++) { const x = -180 + i * 40 + (r() - 0.5) * 20, z = -200 - r() * 40, h = 50 + r() * 40, w = 40 + r() * 20; const m = new THREE.Group(); m.position.set(x, -4, z); m.add(mesh(new THREE.ConeGeometry(w, h, 7), mtn, 0, h / 2, 0, false, false)); W.group.add(m); }
+    // un estero de agua a un costado
+    const est = mesh(new THREE.PlaneGeometry(5, 30), new THREE.MeshStandardMaterial({ color: 0x3a6a7a, roughness: 0.05, metalness: 0.5 }), 20.5, 0.05, 20, false, true); est.rotation.x = -Math.PI / 2; W.group.add(est);
+    W.colliders.push({ t: 0, x0: 18, x1: 23, z0: 5, z1: 35, h: 2 });
+    brazier(W, -4, -34, 0xff9a40); brazier(W, 4, -34, 0xff9a40);
+  },
+  // ------------------------------------------------------------------ XIII · China
+  function (W) {
+    const fl = texTiles('xiii', 0x9a9890, 0x5a5850, 4, 0.12); fl.repeat.set(14, 22);
+    ground(W, fl, [80, 120], 0.6);
+    const r = mulberry32(113);
+    const red = std(0xb02a20, { roughness: 0.6 }); const roofM = std(0x2a4a4a, { roughness: 0.7, flat: true }); const gold = std(0xd8b048, { metalness: 0.6, roughness: 0.4 });
+    // galerías de columnas rojas con tejados curvos
+    for (const side of [-1, 1]) {
+      for (let z = -44; z <= 34; z += 5) { W.group.add(mesh(new THREE.CylinderGeometry(0.28, 0.3, 4.5, 12), red, side * 20, 2.25, z)); W.colliders.push({ t: 1, x: side * 20, z, r: 0.4, h: 5 }); }
+      W.group.add(mesh(new THREE.BoxGeometry(1.2, 0.5, 82), red, side * 20, 4.7, -5));
+      const roof = mesh(new THREE.CylinderGeometry(0.1, 4.2, 1.6, 4, 1, false), roofM, side * 21.5, 5.6, -5, true, false); roof.scale.set(1, 1, 19.5); roof.rotation.y = Math.PI / 4; W.group.add(roof);
+      for (let z = -44; z <= 34; z += 10) { const tip = mesh(new THREE.ConeGeometry(0.15, 0.6, 5), gold, side * 18.3, 5.2, z, false, false); tip.rotation.z = side * 0.9; W.group.add(tip); }
+      // bambú y faroles rojos
+      for (let z = -42; z < 34; z += 5) { if (W._near(side * 16.5, z, 0.8)) continue; for (let k = 0; k < 5; k++) { const h = 4 + r() * 3; W.group.add(mesh(new THREE.CylinderGeometry(0.07, 0.08, h, 6), std(0x6a9a3a, { roughness: 0.6 }), side * (16.5 + (r() - 0.5) * 1.2), h / 2, z + (r() - 0.5) * 1.2)); } W.colliders.push({ t: 1, x: side * 16.5, z, r: 0.8, h: 5 }); }
+    }
+    for (let z = 30; z > -30; z -= 8) for (const side of [-1, 1]) { if (W._near(side * 5.5, z, 0.3)) continue; W.group.add(mesh(new THREE.CylinderGeometry(0.05, 0.06, 3.4, 6), std(0x2a2a2a), side * 5.5, 1.7, z)); const lan = mesh(new THREE.SphereGeometry(0.35, 12, 10), glow(0xff3a2a, 2.2), side * 5.5, 3.5, z, false, false); lan.scale.y = 1.25; W.group.add(lan); W.colliders.push({ t: 1, x: side * 5.5, z, r: 0.2, h: 4 }); }
+    // pagoda al fondo
+    { const pg = new THREE.Group(); pg.position.set(0, 0, -80);
+      for (let k = 0; k < 7; k++) { const w = 12 - k * 1.3, y = k * 5; pg.add(mesh(new THREE.BoxGeometry(w * 0.7, 4, w * 0.7), red, 0, y + 2, 0, false, false)); const rf = mesh(new THREE.CylinderGeometry(0.2, w * 0.75, 1.5, 4), roofM, 0, y + 4.6, 0, false, false); rf.rotation.y = Math.PI / 4; pg.add(rf); }
+      pg.add(mesh(new THREE.CylinderGeometry(0.1, 0.3, 5, 8), gold, 0, 38, 0, false, false)); W.group.add(pg); }
+    // montañas kársticas en la niebla
+    const karst = std(0x5a7a6a, { roughness: 1 });
+    for (let i = 0; i < 18; i++) { const x = -190 + i * 22 + (r() - 0.5) * 12, z = -150 - r() * 80, h = 50 + r() * 50, w = 9 + r() * 8; const k = mesh(new THREE.CapsuleGeometry(w, h, 6, 10), karst, x, h / 2 - 5, z, false, false); W.group.add(k); }
+    brazier(W, -4, -34, 0xff6a30); brazier(W, 4, -34, 0xff6a30);
+  },
+  // ------------------------------------------------------------------ XIV · India
+  function (W) {
+    const fl = texTiles('xiv', 0xd8a878, 0x9a6a4a, 5, 0.2); fl.repeat.set(14, 22);
+    ground(W, fl, [80, 120], 0.75);
+    const r = mulberry32(114);
+    const sand = std(0xe0b088, { roughness: 0.85 }); const trim = std(0xc89068, { roughness: 0.7 });
+    for (const side of [-1, 1]) {
+      const a = arcade(80, 13, 4.5, sand, trim, { attic: 0.9 }); a.rotation.y = Math.PI / 2; a.position.set(side * 20.5, 0, -4); W.group.add(a);
+      for (let i = 0; i <= 13; i++) { const z = -4 - 40 + i * (80 / 13); W.colliders.push({ t: 0, x0: side * 20.5 - 0.6, x1: side * 20.5 + 0.6, z0: z - 0.6, z1: z + 0.6, h: 9 }); }
+      // pequeños templos con shikhara detrás
+      for (let z = -40; z < 36; z += 12) { const g = new THREE.Group(); g.position.set(side * 27, 0, z); g.add(mesh(new THREE.BoxGeometry(4, 4, 4), sand, 0, 2, 0, false, false)); g.add(mesh(new THREE.ConeGeometry(2.4, 7, 8), trim, 0, 7.5, 0, false, false)); g.add(mesh(new THREE.SphereGeometry(0.5, 10, 8), std(0xd8b048, { metalness: 0.7, roughness: 0.3 }), 0, 11.2, 0, false, false)); W.group.add(g); }
+    }
+    // árboles banianos de copa ancha
+    const lc = std(0x3f6a2e, { roughness: 0.9, flat: true });
+    for (let i = 0; i < 12; i++) { const x = (r() < 0.5 ? -1 : 1) * (9 + r() * 8), z = -42 + r() * 74; if (W._near(x, z, 2.5)) continue; const t = new THREE.Group(); t.position.set(x, 0, z); const s = 0.9 + r() * 0.4; t.scale.setScalar(s);
+      t.add(mesh(new THREE.CylinderGeometry(0.4, 0.6, 3, 8), std(0x6a5040, { roughness: 1 }), 0, 1.5, 0));
+      for (let k = 0; k < 4; k++) t.add(mesh(new THREE.CylinderGeometry(0.04, 0.05, 3, 4), std(0x6a5040), (r() - 0.5) * 3, 1.5, (r() - 0.5) * 3));
+      for (let k = 0; k < 8; k++) t.add(mesh(new THREE.IcosahedronGeometry(1.1 + r() * 0.5, 0), lc, (r() - 0.5) * 4, 3.4 + r() * 0.8, (r() - 0.5) * 4));
+      W.group.add(t); W.colliders.push({ t: 1, x, z, r: 0.7 * s, h: 4 }); }
+    // guirnaldas de caléndulas sobre el camino y lamparitas diya
+    for (let z = 30; z > -30; z -= 10) {
+      for (const side of [-1, 1]) { W.group.add(mesh(new THREE.CylinderGeometry(0.06, 0.08, 4.8, 6), std(0x8a5a3a), side * 6, 2.4, z)); W.colliders.push({ t: 1, x: side * 6, z, r: 0.2, h: 5 }); }
+      for (let k = 0; k <= 24; k++) { const u = k / 24; W.group.add(mesh(new THREE.SphereGeometry(0.11, 6, 4), std(k % 3 ? 0xff9a1a : 0xffd02a, { roughness: 0.7, emissive: 0x4a2000, ei: 0.4 }), -6 + u * 12, 4.6 - Math.sin(u * Math.PI) * 1.2, z, false, false)); }
+    }
+    for (let z = 33; z > -30; z -= 2.5) for (const side of [-1, 1]) W.group.add(mesh(new THREE.SphereGeometry(0.07, 6, 4), glow(0xffb040, 5), side * 3.2, 0.12, z, false, false));
+    // gran estupa al fondo
+    { const sp = new THREE.Group(); sp.position.set(0, 0, -82); const white = std(0xf2ece0, { roughness: 0.8 });
+      sp.add(mesh(new THREE.CylinderGeometry(20, 21, 4, 40), sand, 0, 2, 0, false, false)); sp.add(mesh(new THREE.SphereGeometry(17, 40, 20, 0, TAU, 0, Math.PI / 2), white, 0, 4, 0, false, false));
+      sp.add(mesh(new THREE.BoxGeometry(5, 3, 5), trim, 0, 22, 0, false, false)); sp.add(mesh(new THREE.CylinderGeometry(0.4, 0.4, 8, 8), std(0xd8b048, { metalness: 0.7, roughness: 0.3 }), 0, 27, 0, false, false));
+      for (let k = 0; k < 3; k++) sp.add(mesh(new THREE.CylinderGeometry(3 - k * 0.8, 3 - k * 0.8, 0.3, 20), std(0xd8b048, { metalness: 0.7, roughness: 0.3 }), 0, 25 + k * 2, 0, false, false));
+      W.group.add(sp); }
+    brazier(W, -4, -34, 0xffa030); brazier(W, 4, -34, 0xffa030);
+  },
+  // ------------------------------------------------------------------ XV · África
+  function (W) {
+    const fl = texTiles('xv', 0xc89a5a, 0x9a6a3a, 4, 0.3); fl.repeat.set(12, 20);
+    ground(W, fl, [80, 120], 0.95);
+    const r = mulberry32(115);
+    const mud = std(0xb8804a, { roughness: 1 }); const stick = std(0x5a3a22, { roughness: 1 });
+    // muros de adobe al estilo de Tombuctú, con vigas de madera y contrafuertes
+    for (const side of [-1, 1]) {
+      W.group.add(mesh(new THREE.BoxGeometry(1.4, 6, 84), mud, side * 21, 3, -5)); W.colliders.push({ t: 0, x0: side * 21 - 0.8, x1: side * 21 + 0.8, z0: -47, z1: 37, h: 7 });
+      for (let z = -44; z < 36; z += 4) { W.group.add(mesh(new THREE.CylinderGeometry(0.3, 0.7, 7.5, 6), mud, side * 20.3, 3.75, z)); for (let k = 0; k < 3; k++) { const b = mesh(new THREE.CylinderGeometry(0.06, 0.06, 1.8, 5), stick, side * 20.2, 2 + k * 1.8, z + 2); b.rotation.z = Math.PI / 2; W.group.add(b); } }
+    }
+    // baobabs y acacias
+    const bark = std(0x8a7060, { roughness: 1 }); const leaf = std(0x6a8a3a, { roughness: 0.9, flat: true });
+    for (let i = 0; i < 18; i++) { const x = (r() < 0.5 ? -1 : 1) * (9 + r() * 8), z = -42 + r() * 74; if (W._near(x, z, 2.5)) continue; const t = new THREE.Group(); t.position.set(x, 0, z); const s = 0.8 + r() * 0.4; t.scale.setScalar(s);
+      if (r() < 0.5) { t.add(mesh(new THREE.CylinderGeometry(0.9, 1.3, 5, 10), bark, 0, 2.5, 0)); for (let k = 0; k < 5; k++) { const a = (k / 5) * TAU; const br = mesh(new THREE.CylinderGeometry(0.1, 0.2, 1.8, 5), bark, Math.cos(a) * 0.7, 5.6, Math.sin(a) * 0.7); br.rotation.set(Math.sin(a) * 0.6, 0, -Math.cos(a) * 0.6); t.add(br); t.add(mesh(new THREE.IcosahedronGeometry(0.5, 0), leaf, Math.cos(a) * 1.3, 6.4, Math.sin(a) * 1.3)); } W.colliders.push({ t: 1, x, z, r: 1.3 * s, h: 5 }); }
+      else { t.add(mesh(new THREE.CylinderGeometry(0.12, 0.2, 3.5, 6), bark, 0, 1.75, 0)); const c = mesh(new THREE.CylinderGeometry(2.6, 2.2, 0.6, 12), leaf, 0, 3.8, 0); t.add(c); W.colliders.push({ t: 1, x, z, r: 0.35 * s, h: 3 }); }
+      W.group.add(t); }
+    // estela de Aksum y tambores
+    { const st = mesh(new THREE.BoxGeometry(1.4, 9, 0.8), std(0x8a8070, { roughness: 0.9 }), 9, 4.5, 34, true, true); W.group.add(st); W.group.add(mesh(new THREE.SphereGeometry(0.7, 12, 8, 0, TAU, 0, Math.PI / 2), std(0x8a8070), 9, 9, 34)); W.colliders.push({ t: 1, x: 9, z: 34, r: 1, h: 9 }); }
+    // pirámides y el Kilimanjaro en el horizonte
+    const pyr = std(0xd8b080, { roughness: 1, flat: true });
+    for (const [x, z, s] of [[-60, -170, 40], [-20, -190, 48], [20, -175, 30]]) { const p = mesh(new THREE.ConeGeometry(s, s * 1.2, 4), pyr, x, s * 0.6 - 4, z, false, false); p.rotation.y = Math.PI / 4; W.group.add(p); }
+    { const k = new THREE.Group(); k.position.set(120, -4, -200); k.add(mesh(new THREE.ConeGeometry(90, 70, 9), std(0x6a5a5a, { roughness: 1, flat: true }), 0, 35, 0, false, false)); k.add(mesh(new THREE.CylinderGeometry(15, 30, 12, 9), std(0xf4f0f8, { roughness: 0.8, flat: true }), 0, 66, 0, false, false)); W.group.add(k); }
+    brazier(W, -4, -34, 0xff8a30); brazier(W, 4, -34, 0xff8a30);
+  },
 ];
 
 function buildWorld(idx) {
@@ -1065,6 +1276,73 @@ function buildProp(W, kind, st, off) {
       for (const s of [-1, 1]) add(mesh(new THREE.BoxGeometry(0.08, 1.2, 0.08), darkW, s * 0.9, 0.6, 0));
       add(mesh(new THREE.BoxGeometry(1.6, 0.06, 0.18), darkW, 0, 1.05, 0.1));
       col(1.1); break;
+    }
+    case 'sun': { // Pachacútec: el disco de Inti
+      add(mesh(new THREE.CylinderGeometry(0.5, 0.7, 1.2, 10), std(0x8a7a6a, { roughness: 0.9, flat: true }), 0, 0.6, 0));
+      const sun = add(new THREE.Group()); sun.position.y = 2.4;
+      sun.add(mesh(new THREE.CylinderGeometry(0.7, 0.7, 0.12, 32), std(0xffc040, { metalness: 0.9, roughness: 0.25, emissive: 0xff9a20, ei: 0.5 }), 0, 0, 0));
+      sun.children[0].rotation.x = Math.PI / 2;
+      for (let k = 0; k < 16; k++) { const a = (k / 16) * TAU; const ray = mesh(new THREE.ConeGeometry(0.1, 0.55, 4), std(0xffc040, { metalness: 0.9, roughness: 0.25, emissive: 0xff9a20, ei: 0.5 }), Math.cos(a) * 0.95, Math.sin(a) * 0.95, 0); ray.rotation.z = a - Math.PI / 2; sun.add(ray); }
+      W.anim.push((t) => { sun.rotation.z = t * 0.2; });
+      col(0.8); break;
+    }
+    case 'quipu': { // Inca Roca: cuerdas anudadas
+      const bar = add(mesh(new THREE.CylinderGeometry(0.05, 0.05, 2, 8), std(0xd8c8a0), 0, 2.4, 0)); bar.rotation.z = Math.PI / 2;
+      for (const s of [-1, 1]) add(mesh(new THREE.CylinderGeometry(0.05, 0.06, 2.5, 6), darkW, s * 1, 1.25, 0));
+      const cols = [0xc84a2a, 0xd8b048, 0x2a5aa8, 0x3a8a4a, 0xf2efe6, 0x6a3a8a];
+      const cords = [];
+      for (let k = 0; k < 10; k++) { const x = -0.85 + k * 0.19; const len = 0.9 + ((k * 37) % 5) * 0.15; const c = new THREE.Group(); c.position.set(x, 2.38, 0); c.add(mesh(new THREE.CylinderGeometry(0.018, 0.018, len, 4), std(cols[k % cols.length]), 0, -len / 2, 0, false)); for (let n = 0; n < 1 + (k % 4); n++) c.add(mesh(new THREE.SphereGeometry(0.045, 6, 4), std(cols[(k + 2) % cols.length]), 0, -0.2 - n * 0.18, 0, false)); add(c); cords.push(c); }
+      W.anim.push((t) => cords.forEach((c, k) => { c.rotation.z = Math.sin(t * 1.3 + k) * 0.05; }));
+      col(1.1); break;
+    }
+    case 'drum': { // la machi: el kultrún sobre un rewe
+      const wood = std(0x6a4a30, { roughness: 0.9 });
+      const rewe = add(mesh(new THREE.CylinderGeometry(0.22, 0.28, 3, 8), wood, -0.7, 1.5, 0));
+      for (let k = 0; k < 6; k++) add(mesh(new THREE.BoxGeometry(0.5, 0.08, 0.3), wood, -0.7, 0.4 + k * 0.45, 0.2));
+      const kt = add(new THREE.Group()); kt.position.set(0.5, 1.2, 0);
+      kt.add(mesh(new THREE.SphereGeometry(0.45, 16, 10, 0, TAU, Math.PI / 2, Math.PI / 2), wood, 0, 0, 0));
+      const skin = new THREE.CanvasTexture((() => { const c = document.createElement('canvas'); c.width = c.height = 128; const x = c.getContext('2d'); x.fillStyle = '#e8d8b0'; x.beginPath(); x.arc(64, 64, 63, 0, TAU); x.fill(); x.strokeStyle = '#8a1a1a'; x.lineWidth = 6; x.beginPath(); x.moveTo(64, 4); x.lineTo(64, 124); x.moveTo(4, 64); x.lineTo(124, 64); x.stroke(); for (const [a, b] of [[32, 32], [96, 32], [32, 96], [96, 96]]) { x.beginPath(); x.arc(a, b, 10, 0, TAU); x.stroke(); } return c; })());
+      const top = mesh(new THREE.CircleGeometry(0.45, 24), std(0xffffff, { map: skin, roughness: 0.8 }), 0, 0.01, 0, false); top.rotation.x = -Math.PI / 2; kt.add(top);
+      add(mesh(new THREE.CylinderGeometry(0.2, 0.3, 0.8, 8), wood, 0.5, 0.4, 0));
+      W.anim.push((t) => { kt.position.y = 1.2 + Math.max(0, Math.sin(t * 6)) * 0.02; });
+      col(1.1); break;
+    }
+    case 'tree': { // Buda, el kimche, Maathai: un árbol sagrado joven
+      const t = add(new THREE.Group());
+      t.add(mesh(new THREE.CylinderGeometry(0.15, 0.3, 2.4, 8), std(0x5a4030, { roughness: 1 }), 0, 1.2, 0));
+      const lc = std(0x3f7a3a, { roughness: 0.85, flat: true });
+      for (let k = 0; k < 7; k++) { const a = (k / 7) * TAU; t.add(mesh(new THREE.IcosahedronGeometry(0.6, 0), lc, Math.cos(a) * 0.7, 2.6 + (k % 2) * 0.4, Math.sin(a) * 0.7)); }
+      t.add(mesh(new THREE.IcosahedronGeometry(0.75, 0), lc, 0, 3.2, 0));
+      const lights = []; for (let k = 0; k < 6; k++) { const l = mesh(new THREE.SphereGeometry(0.06, 6, 4), glow(acc, 3), 0, 0, 0, false, false); t.add(l); lights.push(l); }
+      W.anim.push((tt) => lights.forEach((l, k) => { const a = tt * 0.5 + k; l.position.set(Math.cos(a) * 1.2, 2.4 + Math.sin(tt + k) * 0.6, Math.sin(a) * 1.2); }));
+      col(0.6); break;
+    }
+    case 'yinyang': { // Laozi
+      add(mesh(new THREE.CylinderGeometry(0.5, 0.65, 1.2, 12), stone, 0, 0.6, 0));
+      const yy = add(new THREE.Group()); yy.position.y = 2.2;
+      const tex = new THREE.CanvasTexture((() => { const c = document.createElement('canvas'); c.width = c.height = 128; const x = c.getContext('2d'); x.fillStyle = '#f4f0e8'; x.beginPath(); x.arc(64, 64, 62, 0, TAU); x.fill(); x.fillStyle = '#1a1a1e'; x.beginPath(); x.arc(64, 64, 62, -Math.PI / 2, Math.PI / 2); x.arc(64, 95, 31, Math.PI / 2, -Math.PI / 2, true); x.arc(64, 33, 31, Math.PI / 2, -Math.PI / 2); x.fill(); x.beginPath(); x.arc(64, 33, 9, 0, TAU); x.fill(); x.fillStyle = '#f4f0e8'; x.beginPath(); x.arc(64, 95, 9, 0, TAU); x.fill(); return c; })());
+      for (const s of [1, -1]) { const d = mesh(new THREE.CircleGeometry(0.7, 40), std(0xffffff, { map: tex, roughness: 0.5, emissive: 0xffffff, emissiveMap: tex, ei: 0.2 }), 0, 0, s * 0.01, false); if (s < 0) d.rotation.y = Math.PI; yy.add(d); }
+      yy.add(mesh(new THREE.TorusGeometry(0.72, 0.04, 6, 40), glow(acc, 2), 0, 0, 0, false, false));
+      W.anim.push((t) => { yy.rotation.z = t * 0.4; yy.rotation.y = Math.sin(t * 0.3) * 0.5; });
+      col(0.7); break;
+    }
+    case 'butterfly': { // Zhuangzi: mariposas que revolotean sobre una flor
+      add(mesh(new THREE.CylinderGeometry(0.4, 0.5, 0.8, 10), stone, 0, 0.4, 0));
+      add(mesh(new THREE.SphereGeometry(0.3, 10, 8), std(0xff8ab0, { roughness: 0.6 }), 0, 1.0, 0));
+      const wing = new THREE.PlaneGeometry(0.3, 0.22); wing.translate(0.15, 0, 0);
+      const bs = [];
+      for (let k = 0; k < 3; k++) { const m = new THREE.MeshBasicMaterial({ color: new THREE.Color([0x6ad0ff, 0xffd34a, 0xff8ab0][k]).multiplyScalar(1.4), side: THREE.DoubleSide, toneMapped: false }); const b = new THREE.Group(); const L = new THREE.Mesh(wing, m), R = new THREE.Mesh(wing, m); R.scale.x = -1; b.add(L, R); add(b); bs.push([b, L, R, k]); }
+      W.anim.push((t) => bs.forEach(([b, L, R, k]) => { const a = t * (0.7 + k * 0.2) + k * 2; b.position.set(Math.cos(a) * (0.8 + k * 0.2), 1.6 + Math.sin(a * 1.7) * 0.4 + k * 0.3, Math.sin(a) * (0.8 + k * 0.2)); b.rotation.y = -a; const f = Math.sin(t * 18 + k) * 1.1; L.rotation.y = f; R.rotation.y = -f; }));
+      col(0.6); break;
+    }
+    case 'lotus': { // Mahavira: una flor de loto sobre el agua
+      add(mesh(new THREE.CylinderGeometry(1.1, 1.2, 0.4, 24), stone, 0, 0.2, 0));
+      add(mesh(new THREE.CylinderGeometry(1, 1, 0.05, 24), new THREE.MeshStandardMaterial({ color: 0x2a6a8a, roughness: 0.05, metalness: 0.6 }), 0, 0.42, 0, false));
+      const lt = add(new THREE.Group()); lt.position.y = 0.5;
+      for (let ring = 0; ring < 2; ring++) for (let k = 0; k < 8; k++) { const a = (k / 8) * TAU + ring * 0.4; const p = mesh(new THREE.SphereGeometry(0.22, 10, 8), std(ring ? 0xffd0e0 : 0xff9ac0, { roughness: 0.5, emissive: 0x401020, ei: 0.3 }), Math.cos(a) * (0.32 - ring * 0.12), 0.12 + ring * 0.1, Math.sin(a) * (0.32 - ring * 0.12)); p.scale.set(0.5, 0.9, 1); p.rotation.set(0, -a, ring ? 0.3 : 0.7); lt.add(p); }
+      lt.add(mesh(new THREE.SphereGeometry(0.1, 10, 8), glow(0xffe08a, 3), 0, 0.3, 0, false, false));
+      W.anim.push((t) => { lt.rotation.y = t * 0.15; });
+      col(1.2); break;
     }
     case 'water': {
       add(mesh(new THREE.CylinderGeometry(1.5, 1.6, 0.6, 28, 1, true), stone, 0, 0.3, 0));

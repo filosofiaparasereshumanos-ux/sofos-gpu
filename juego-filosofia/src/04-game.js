@@ -772,7 +772,7 @@ function updatePrompt() {
   ch.classList.toggle('talk', can);
   const tl = $('#t-lesson'); const showL = !!(s && (s.state === 'idle' || s.state === 'defeated')); if (tl && tl._on !== showL) { tl._on = showL; tl.hidden = !showL; }
   if (tact) {
-    const label = s || (th && th.npc) ? 'Hablar' : th && th.book ? 'Leer' : can ? 'Descubrir' : input.auto ? 'Caminando…' : tg ? 'Ir a ' + tg.name.split(' ')[0] : 'Explorar';
+    const label = s || (th && th.npc) ? 'Hablar' : th && th.book ? 'Leer' : can ? 'Descubrir' : input.auto ? 'Caminando…' : tg ? 'Ir a ' + (tg.name.length <= 13 ? tg.name : tg.name.split(' ')[0]) : 'Explorar';
     if (tact._label !== label) { tact._label = label; tact.textContent = label; }
     const st = can ? 'ready' : tg ? 'go' : '';
     if (tact._st !== st) { tact._st = st; tact.classList.toggle('ready', st === 'ready'); tact.classList.toggle('go', st === 'go'); }
@@ -1015,7 +1015,7 @@ const Duel = {
     achieve('primer'); if (s.data.id === 'socrates') achieve('tabano'); if (s.data.id === 'platon') achieve('caverna');
     if (!s._wrongs) achieve('perfecto'); if (s.boss && !this.aidsUsed) achieve('sincomodin');
     const bonus = s.boss ? 500 : 250; addScore(bonus); G.frags += 2; const heal = Math.min(25, G.maxHp - G.hp); G.hp += heal;
-    G.codex.add(s.data.id); store.set(CODEX_KEY, [...G.codex]); if (['teano', 'hipatia', 'hildegarda', 'pizan', 'sorjuana', 'castellanos', 'beauvoir', 'arendt'].filter((id) => G.codex.has(id)).length >= 4) achieve('pensadoras'); if (['nezahualcoyotl', 'sorjuana', 'marti', 'castellanos', 'freire'].every((id) => G.codex.has(id))) achieve('nuestra'); if (G.codex.size >= ERAS.flatMap((e) => e.sages).length) achieve('erudito');
+    G.codex.add(s.data.id); store.set(CODEX_KEY, [...G.codex]); if (['teano', 'hipatia', 'hildegarda', 'pizan', 'sorjuana', 'castellanos', 'beauvoir', 'arendt'].filter((id) => G.codex.has(id)).length >= 4) achieve('pensadoras'); if (['nezahualcoyotl', 'sorjuana', 'marti', 'castellanos', 'freire'].every((id) => G.codex.has(id))) achieve('nuestra'); if (['tlacaelel', 'pachacutec', 'lautaro', 'confucio', 'buda', 'tutu'].some((id) => G.codex.has(id))) achieve('mundo1'); if (['tlacaelel', 'pachacutec', 'lautaro', 'confucio', 'buda', 'tutu'].every((id) => G.codex.has(id))) achieve('mundo'); if (G.codex.size >= ERAS.flatMap((e) => e.sages).length) achieve('erudito');
     particles.emit(_v1.copy(s.pos).setY(2.5), 160, { color: 0xffd36a, speed: 9, life: 1.6, size: 0.55, intensity: 3, gravity: 2 });
     particles.emit(_v1.copy(s.pos).setY(1.2), 80, { color: 0xffffff, speed: 6, life: 1.2, size: 0.4, intensity: 2, flat: true });
     $('#duel').hidden = true; Voice.say(s.data.defeat, s);
@@ -1122,7 +1122,7 @@ function titleScreen() {
   const bc = $('#b-continue');
   if (sv && sv.eraIdx > 0) { bc.hidden = false; $('#b-continue-s').textContent = `Etapa ${ERAS[sv.eraIdx].num} · ${ERAS[sv.eraIdx].name}`; } else bc.hidden = true;
   const reached = sv ? sv.eraIdx : -1;
-  $('#t-timeline').innerHTML = ERAS.map((e, i) => `<span data-i="${i}" title="Viajar a ${e.name}" class="${i < reached || G.codex.has(e.sages.find((s) => s.boss).id) ? 'done' : ''}">${e.num}</span>`).join('');
+  $('#t-timeline').innerHTML = ERAS.slice(0, CAMPAIGN).map((e, i) => `<span data-i="${i}" title="Viajar a ${e.name}" class="${i < reached || G.codex.has(e.sages.find((s) => s.boss).id) ? 'done' : ''}">${e.num}</span>`).join('');
   const bg = clamp(reached, 0, 5);
   if (!world || world.idx !== bg) loadWorld(bg);
   Audio.startMusic(bg);
@@ -1136,7 +1136,7 @@ function startEra(idx, fresh) {
   saveProgress();
   loadWorld(idx); Audio.startMusic(idx);
   const e = ERAS[idx];
-  $('#i-eyebrow').textContent = G.explore ? `Modo explorador · ${e.years}` : `Etapa ${idx + 1} de ${ERAS.length} · ${e.years}`;
+  $('#i-eyebrow').textContent = e.world ? `Sabidurías del mundo · ${e.years}` : G.explore ? `Modo explorador · ${e.years}` : `Etapa ${idx + 1} de ${CAMPAIGN} · ${e.years}`;
   $('#i-num').textContent = e.num; $('#i-name').textContent = e.name; $('#i-meta').textContent = e.place;
   $('#i-story').textContent = e.story;
   $('#i-quote').innerHTML = ''; $('#i-quote').append(document.createTextNode('«' + e.quote.t + '»')); const c = document.createElement('cite'); c.textContent = e.quote.a; $('#i-quote').append(c);
@@ -1172,7 +1172,7 @@ function enterPortal() {
   if (G.diedEra !== G.eraIdx) achieve('logos'); G.diedEra = -1;
   const f = $('#fade'); f.classList.add('on');
   setTimeout(() => {
-    if (G.eraIdx >= ERAS.length - 1) { f.classList.remove('on'); if (G.explore) { $('#hud').hidden = true; $('#touch').hidden = true; G.state = 'title'; openTravel('title'); } else showEnding(); return; }
+    if (G.eraIdx === CAMPAIGN - 1 || G.eraIdx >= ERAS.length - 1) { f.classList.remove('on'); if (G.explore) { $('#hud').hidden = true; $('#touch').hidden = true; G.state = 'title'; openTravel('title'); } else showEnding(); return; }
     startEra(G.eraIdx + 1, false); f.classList.remove('on');
   }, 900);
 }
@@ -1278,9 +1278,10 @@ function renderTravel() {
   const found = new Set(store.get('odisea-razon.lugares', [])), studied = new Set(store.get(BOOK_KEY, []));
   const grid = $('#tv-grid'); grid.innerHTML = '';
   ERAS.forEach((e, i) => {
-    const b = document.createElement('button'); b.className = 'cc tv-card' + (G.travelFrom === 'pause' && i === G.eraIdx ? ' here' : '');
+    if (i === 0 || i === CAMPAIGN) { const h = document.createElement('h3'); h.className = 'tv-sec'; h.textContent = i === 0 ? 'La odisea: de Tales a nuestros días' : 'Sabidurías del mundo'; grid.appendChild(h); if (i === CAMPAIGN) { const p = document.createElement('p'); p.className = 'tv-note'; p.textContent = 'Pueblos y tradiciones de todo el planeta. Donde no se conservan autores con nombre, hablan portavoces de su tradición.'; grid.appendChild(p); } }
+    const b = document.createElement('button'); b.className = 'cc tv-card' + (e.world ? ' world' : '') + (G.travelFrom === 'pause' && i === G.eraIdx ? ' here' : '');
     const pf = POIS[i].filter((p) => found.has(p.id)).length, bs = BOOKS[i].filter((x) => studied.has(x.id)).length;
-    b.innerHTML = `<span class="tv-num">${e.num}</span><h4></h4><div class="by"></div><p></p><span class="tv-prog">Lugares ${pf}/${POIS[i].length} · Libros ${bs}/${BOOKS[i].length} · ${NPCS[i].length} ciudadanos</span>`;
+    b.innerHTML = `<span class="tv-num">${e.num}</span><h4></h4><div class="by"></div><p></p><span class="tv-prog">Lugares ${pf}/${POIS[i].length} · ${BOOKS[i].length ? `Libros ${bs}/${BOOKS[i].length} · ` : ""}${NPCS[i].length} ciudadanos</span>`;
     b.querySelector('h4').textContent = e.name; b.querySelector('.by').textContent = `${e.years} · ${e.place}`;
     b.querySelector('p').textContent = e.sages.map((s) => s.short).join(', ');
     b.addEventListener('click', () => { Audio.init(); Audio.click(); travelTo(i); });
@@ -1321,6 +1322,8 @@ const MOTES = [
   { c: 0xffb6c8, up: 0, g: 0.25, i: 1.2, s: 0.16 }, { c: 0xb8ff9a, up: 0.1, g: 0, i: 3, s: 0.12 },
   { c: 0xffc488, up: 0.06, g: 0, i: 1.4, s: 0.11 }, { c: 0x9ae8ff, up: 0.12, g: 0, i: 2.8, s: 0.11 },
   { c: 0xffd8a0, up: 0.08, g: 0, i: 1.5, s: 0.11 },
+  { c: 0xffe8b0, up: 0.06, g: 0, i: 1.3, s: 0.1 }, { c: 0xfff4d0, up: 0.04, g: 0, i: 1.2, s: 0.1 }, { c: 0xc8ffa0, up: 0.1, g: 0, i: 2.8, s: 0.12 },
+  { c: 0xffb8c8, up: 0, g: 0.2, i: 1.2, s: 0.14 }, { c: 0xffb040, up: 0.5, g: 0, i: 2.2, s: 0.12 }, { c: 0xffd890, up: 0.05, g: 0, i: 1.4, s: 0.11 },
 ];
 let moteAcc = 0;
 function ambientMotes(dt) {

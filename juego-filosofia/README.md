@@ -12,6 +12,13 @@ ratón y `E` para interactuar.
 
 ## Qué puedes hacer
 
+- **Sabidurías del mundo**: una ruta aparte, desde «Viajar por las épocas», con seis culturas: los
+  Mexicas, los Incas, el pueblo mapuche, la China clásica, la India y África. Pensadoras y
+  pensadores como Tochihuitzin, Macuilxochitzin, Guamán Poma, el Inca Garcilaso, Pachacútec,
+  Lautaro, Janequeo, Laozi, Ban Zhao, Confucio, Gargi, Buda, Ptahhotep, Zera Yacob, Wangari Maathai
+  y Desmond Tutu. Donde la tradición no conserva autores con nombre (la machi, el kimche), hablan
+  portavoces de esa tradición.
+
 - **Filósofas y pensamiento latinoamericano**: Teano, Hipatia, Hildegarda de Bingen, Christine de
   Pizan, Simone de Beauvoir y Hannah Arendt; y en la época IX, Nezahualcóyotl, Sor Juana Inés de la
   Cruz, José Martí, Rosario Castellanos y Paulo Freire.
@@ -60,6 +67,7 @@ node build.mjs   # genera index.html (viaje 3D) y cartas.html (versión de duelo
 - `src/02c-polis.js` ciudadanos, encargos, anécdotas y lugares de las polis · `src/03b-citizens.js` ciudadanos en 3D
 - `src/02e-books.js` libros para estudiar
 - `src/01d-pensadoras.js` filósofas de la Antigüedad al Renacimiento · `src/01e-latinoamerica.js` y `src/02g-latinoamerica.js` época IX
+- `src/01f-mundo.js` y `src/02h-mundo.js` ruta «Sabidurías del mundo»
 - `src/02d-narration.js` reproductor de la voz grabada · `audio/` paquetes MP3 e índice
 - `tools/` generación de la voz: `narration-text.mjs` (frases) → `narrate.py` (Piper TTS + ffmpeg) → `narration-index.mjs`
 - `cartas/` versión alternativa de duelo de cartas en 2D (`cartas.html`)

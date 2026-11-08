@@ -279,6 +279,9 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .cc p { margin: 6px 0 0; font-size: 0.98rem; line-height: 1.4; }
 #t-timeline span[data-i] { cursor: pointer; }
 #t-timeline span[data-i]:hover { color: var(--gold-bright); }
+.tv-sec { grid-column: 1 / -1; margin: 14px 0 0; font-family: var(--display); font-weight: 400; letter-spacing: 0.08em; color: var(--gold-bright); font-size: 1.05rem; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+.tv-note { grid-column: 1 / -1; margin: -2px 0 4px; font-style: italic; color: var(--parchment-dim); font-size: 0.95rem; }
+.tv-card.world .tv-num { color: #6ae0c8; }
 .tv-card { cursor: pointer; text-align: left; font: inherit; color: inherit; display: flex; flex-direction: column; gap: 2px; transition: border-color .2s, background .2s; }
 .tv-card:hover, .tv-card:focus-visible { border-color: var(--gold); background: rgba(214,168,74,0.1); }
 .tv-card .tv-num { font-family: var(--display); color: var(--gold); font-size: 1.6rem; line-height: 1; }
@@ -508,7 +511,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="btn primary oracle-btn" id="b-oracle">Oráculo de hoy<small id="b-oracle-s">10 preguntas · las mismas para todos</small></button>
         <button class="btn" id="b-continue" hidden>Continuar la odisea<small id="b-continue-s"></small></button>
         <button class="btn" id="b-new">Nueva odisea<small>Nueve épocas · 44 pensadoras y pensadores</small></button>
-        <button class="btn" id="b-travel">Viajar por las épocas<small>Visita cualquier época libremente</small></button>
+        <button class="btn" id="b-travel">Viajar por las épocas<small>Y descubre las sabidurías del mundo</small></button>
       </div>
       <div class="minis">
         <button class="mini-b" id="b-fame">Salón de la Fama</button>

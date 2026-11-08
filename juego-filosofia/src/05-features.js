@@ -26,6 +26,8 @@ const ACH = [
   { id: 'alejandria', i: 'Ω', n: 'La Biblioteca de Alejandría', d: 'Estudia todos los libros de la odisea.' },
   { id: 'pensadoras', i: 'Φ', n: 'Ellas también pensaron', d: 'Gana el debate a 4 filósofas distintas.' },
   { id: 'nuestra', i: 'Ñ', n: 'Nuestra América', d: 'Comprende las ideas de los cinco pensadores de América Latina.' },
+  { id: 'mundo1', i: 'Ш', n: 'Primer viaje', d: 'Vence a un maestro de las sabidurías del mundo.' },
+  { id: 'mundo', i: 'Ⴟ', n: 'Ubuntu', d: 'Vence a los seis maestros de las sabidurías del mundo.' },
   { id: 'viajero', i: 'Ω', n: 'Viajero del tiempo', d: 'Descubre todos los lugares de todas las épocas.' },
   { id: 'kant', i: 'Κ', n: 'Sapere aude', d: 'Completa la odisea venciendo a Paulo Freire, el último maestro.' },
   { id: 'rey', i: 'Β', n: 'Rey filósofo', d: 'Termina la odisea con el rango más alto.' },
