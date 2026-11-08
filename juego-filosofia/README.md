@@ -16,7 +16,7 @@ ratón y `E` para interactuar.
   escuchar su **lección completa** narrada con su voz, o **preguntarles lo que quieras**: en la
   versión publicada en claude.ai responden en personaje con la IA de Claude (pide permiso la
   primera vez y usa la cuenta de quien juega).
-- **Descubrir 39 lugares**: el puerto de Mileto, el Partenón, el ágora, la Stoa, la Biblioteca de
+- **Descubrir 40 lugares**: el puerto de Mileto, el Partenón, el ágora, la Stoa, la Biblioteca de
   Alejandría, el rosetón gótico, las primeras universidades, la cúpula de Brunelleschi, la imprenta,
   el planetario de Newton, la Enciclopedia, el teatro de Dioniso, Esparta, Olimpia, Delfos, la tinaja de Diógenes, el faro de Alejandría… Cada uno con su historia y un dato curioso.
 - **Voz grabada**: lecciones, conversaciones, anécdotas, lugares y ciudadanos tienen narración

@@ -249,6 +249,93 @@ function columnRows(W, style, h, mat, cap, opts = {}) {
   }
 }
 
+// ============================================================================
+//  JARDINES: parterres con flores, laureles, fuentes y mariposas
+// ============================================================================
+const FLOWER_COLS = [0xff5a7a, 0xffd34a, 0xf4f0ff, 0xc77dff, 0xff8a3d, 0xff9fc8, 0x7ab8ff];
+function addGardens(W, r, opts = {}) {
+  const stone = std(0xece6d8, { roughness: 0.55 }); const soil = std(0x4a3a28, { roughness: 1 });
+  const bushes = [], flowers = [], m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), v = new THREE.Vector3(), sc = new THREE.Vector3();
+  const beds = []; const blades = [];
+  const lawnMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1, map: texTiles('lawn', 0x6f9e48, 0x5a8a3a, 6, 0.4) });
+  const free = (x, z, hw, hd) => !W._near(x, z, Math.max(hw, hd) - 0.5) && !beds.some((b) => Math.abs(b.x - x) < b.hw + hw + 1.6 && Math.abs(b.z - z) < b.hd + hd + 1.6) &&
+    !(opts.avoid || []).some(([ax, az, ar]) => Math.hypot(ax - x, az - z) < ar + Math.max(hw, hd));
+  for (const side of [-1, 1]) for (let z = opts.z1 ?? 34; z >= (opts.z0 ?? -44); z -= 1.5) {
+    const hw = 1.6 + r() * 1.2, hd = 1.4 + r() * 1.6; const x = side * (opts.x0 ?? 9.5) + side * (hw + r() * 2.5);
+    if (Math.abs(x) + hw > (opts.xMax ?? 17.6) || !free(x, z, hw, hd)) continue;
+    beds.push({ x, z, hw, hd });
+  }
+  for (const b of beds) {
+    const g = new THREE.Group(); g.position.set(b.x, 0, b.z);
+    // bordillo de mármol y tierra
+    for (const [w, d, x, z] of [[b.hw * 2 + 0.3, 0.25, 0, b.hd], [b.hw * 2 + 0.3, 0.25, 0, -b.hd], [0.25, b.hd * 2, b.hw, 0], [0.25, b.hd * 2, -b.hw, 0]]) g.add(mesh(new THREE.BoxGeometry(w, 0.38, d), stone, x, 0.19, z));
+    g.add(mesh(new THREE.BoxGeometry(b.hw * 2, 0.3, b.hd * 2), soil, 0, 0.15, 0, false));
+    // césped alrededor, con matas de hierba
+    const lawn = mesh(new THREE.PlaneGeometry(b.hw * 2 + 2, b.hd * 2 + 2), lawnMat, 0, 0.02, 0, false); lawn.rotation.x = -Math.PI / 2; lawn.receiveShadow = true; g.add(lawn);
+    for (let i = 0; i < 40; i++) { const side = r() < 0.5; const gx = side ? (r() * 2 - 1) * (b.hw + 0.9) : (r() < 0.5 ? -1 : 1) * (b.hw + 0.3 + r() * 0.6), gz = side ? (r() < 0.5 ? -1 : 1) * (b.hd + 0.3 + r() * 0.6) : (r() * 2 - 1) * (b.hd + 0.9); blades.push([b.x + gx, b.z + gz]); }
+    W.group.add(g); W.colliders.push({ t: 0, x0: b.x - b.hw - 0.15, x1: b.x + b.hw + 0.15, z0: b.z - b.hd - 0.15, z1: b.z + b.hd + 0.15, h: 1.2 });
+    // un árbol en el centro de los parterres grandes: laurel, ciprés o granado
+    const big = b.hw * b.hd > 4.5;
+    if (big) {
+      const k = r(); const t = k < 0.4 ? cypress(3.5 + r() * 2) : oliveTree(r); if (k >= 0.4) t.scale.setScalar(0.75 + r() * 0.2);
+      t.position.set((r() - 0.5) * b.hw * 0.6, 0.3, (r() - 0.5) * b.hd * 0.6); W.group.add(t);
+      if (k >= 0.75) for (let i = 0; i < 9; i++) flowers.push([b.x + t.position.x + (r() - 0.5) * 2.4, 2 + r() * 1.4, b.z + t.position.z + (r() - 0.5) * 2.4, 0.14, 0xd6283a]); // granadas
+    }
+    // arbustos de flores (adelfas, rosas, mirtos)
+    const nb = Math.round(b.hw * b.hd * 0.9) + 2;
+    for (let i = 0; i < nb; i++) {
+      const bx = b.x + (r() * 2 - 1) * (b.hw - 0.45), bz = b.z + (r() * 2 - 1) * (b.hd - 0.45), s = 0.35 + r() * 0.35;
+      bushes.push([bx, 0.3 + s * 0.6, bz, s, [0x3f6b2e, 0x4f7a34, 0x2f5a2a, 0x5a7d3a][Math.floor(r() * 4)]]);
+      const fc = FLOWER_COLS[Math.floor(r() * FLOWER_COLS.length)];
+      for (let j = 0; j < 11; j++) { const a = r() * TAU, rr = s * (0.7 + r() * 0.35); flowers.push([bx + Math.cos(a) * rr, 0.3 + s * 0.6 + (r() - 0.1) * s * 0.9, bz + Math.sin(a) * rr, 0.08 + r() * 0.05, fc]); }
+    }
+    // flores sueltas por el borde
+    for (let i = 0; i < 46; i++) { const fx = b.x + (r() * 2 - 1) * (b.hw - 0.2), fz = b.z + (r() * 2 - 1) * (b.hd - 0.2); flowers.push([fx, 0.38 + r() * 0.12, fz, 0.08 + r() * 0.04, FLOWER_COLS[Math.floor(r() * FLOWER_COLS.length)]]); }
+  }
+  const inst = (geo, mat, list) => {
+    if (!list.length) return; const im = new THREE.InstancedMesh(geo, mat, list.length); const col = new THREE.Color();
+    list.forEach(([x, y, z, s, c], i) => { e.set(r() * 0.4, r() * TAU, r() * 0.4); q.setFromEuler(e); m4.compose(v.set(x, y, z), q, sc.set(s, s * 0.85, s)); im.setMatrixAt(i, m4); im.setColorAt(i, col.set(c).multiplyScalar(0.85 + r() * 0.3)); });
+    im.castShadow = true; im.receiveShadow = true; W.group.add(im);
+  };
+  inst(new THREE.IcosahedronGeometry(1, 1), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.9, flatShading: true }), bushes);
+  inst(new THREE.IcosahedronGeometry(1, 0), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.6, emissive: 0x221018, emissiveIntensity: 0.3 }), flowers);
+  if (blades.length) {
+    const geo = new THREE.ConeGeometry(0.06, 0.5, 3); geo.translate(0, 0.25, 0); const n = blades.length * 5;
+    const im = new THREE.InstancedMesh(geo, new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1 }), n); const col = new THREE.Color(); let k = 0;
+    for (const [x, z] of blades) for (let j = 0; j < 5; j++, k++) { e.set((r() - 0.5) * 0.5, r() * TAU, (r() - 0.5) * 0.5); q.setFromEuler(e); m4.compose(v.set(x + (r() - 0.5) * 0.5, 0, z + (r() - 0.5) * 0.5), q, sc.set(1, 0.6 + r() * 0.8, 1)); im.setMatrixAt(k, m4); im.setColorAt(k, col.set([0x5a8a38, 0x7aa048, 0x4a7a30][j % 3]).multiplyScalar(0.85 + r() * 0.3)); }
+    W.group.add(im);
+  }
+  W.gardens = beds;
+  return beds;
+}
+// fuente con surtidor
+function fountain(W, x, z, stoneMat) {
+  const g = new THREE.Group(); g.position.set(x, 0, z);
+  g.add(mesh(new THREE.CylinderGeometry(2.1, 2.3, 0.6, 28), stoneMat, 0, 0.3, 0));
+  const water = mesh(new THREE.CylinderGeometry(1.85, 1.85, 0.08, 28), new THREE.MeshStandardMaterial({ color: 0x4aa8c8, roughness: 0.08, metalness: 0.2, emissive: 0x0a3a50, emissiveIntensity: 0.6, transparent: true, opacity: 0.88 }), 0, 0.55, 0, false); g.add(water);
+  g.add(mesh(new THREE.CylinderGeometry(0.22, 0.32, 1.6, 12), stoneMat, 0, 1.1, 0));
+  g.add(mesh(new THREE.CylinderGeometry(0.8, 0.35, 0.25, 20), stoneMat, 0, 1.95, 0));
+  g.add(mesh(new THREE.SphereGeometry(0.2, 12, 8), stoneMat, 0, 2.2, 0));
+  W.group.add(g); W.colliders.push({ t: 1, x, z, r: 2.2, h: 1 });
+  W.emitters.push({ x, y: 2.25, z, col: 0xbfeaff, rate: 26, acc: 0, kind: 'water' });
+  W.anim.push((t) => { water.material.emissiveIntensity = 0.5 + Math.sin(t * 2 + x) * 0.15; });
+}
+// mariposas que revolotean entre las flores
+function addButterflies(W, beds, n, r) {
+  if (!beds.length) return;
+  const wing = new THREE.PlaneGeometry(0.16, 0.12); wing.translate(0.08, 0, 0);
+  for (let i = 0; i < n; i++) {
+    const b = beds[Math.floor(r() * beds.length)]; const col = [0xffd34a, 0xffffff, 0x7ab8ff, 0xff8a3d, 0xff9fc8][i % 5];
+    const mat = new THREE.MeshBasicMaterial({ color: new THREE.Color(col).multiplyScalar(1.3), side: THREE.DoubleSide, toneMapped: false });
+    const g = new THREE.Group(); const L = new THREE.Mesh(wing, mat), R = new THREE.Mesh(wing, mat); R.scale.x = -1; g.add(L, R); W.group.add(g);
+    const ph = r() * 10, sp = 0.4 + r() * 0.4, rad = 1 + r() * 1.6;
+    W.anim.push((t) => {
+      const a = t * sp + ph; g.position.set(b.x + Math.cos(a) * rad + Math.sin(a * 2.3) * 0.4, 1 + Math.sin(a * 1.7) * 0.35 + Math.sin(t * 6 + ph) * 0.05, b.z + Math.sin(a * 1.3) * rad);
+      g.rotation.y = -a * 1.1; const f = Math.sin(t * 22 + ph) * 1.1; L.rotation.y = f; R.rotation.y = -f;
+    });
+  }
+}
+
 const ERA_BUILDERS = [
   // ------------------------------------------------------------------ I
   function (W) {
@@ -312,6 +399,34 @@ const ERA_BUILDERS = [
     brazier(W, -5, -36, 0xff9a40); brazier(W, 5, -36, 0xff9a40);
     // olivos de Atenea
     for (const [x, z] of [[-18, 30], [18, 30], [-17, -40], [17, -40]]) { const t = oliveTree(r); t.position.set(x, 0, z); W.group.add(t); }
+    // jardines de Atenas: parterres floridos, fuentes, macetas y mariposas
+    const fountains = [[8.5, 33], [-9, -2]].filter(([x, z]) => !W._near(x, z, 1.5));
+    for (const [x, z] of fountains) fountain(W, x, z, marble);
+    const statues = [24, 6, -12].flatMap((z) => [[-7.5, z, 1.4], [7.5, z, 1.4]]);
+    const beds = addGardens(W, r, { avoid: [...statues, ...fountains.map(([x, z]) => [x, z, 2.6]), [-13, 31, 3.6]] });
+    addButterflies(W, beds, 16, r);
+    // macetas con flores junto a la vía central
+    const pot = std(0xb8643a, { roughness: 0.8 }); const potFl = [];
+    for (const side of [-1, 1]) for (let z = 32; z > -34; z -= 6) {
+      const x = side * 4.6; if (W._near(x, z, 0.2) || statues.some(([sx, sz]) => Math.hypot(sx - x, sz - z) < 3)) continue;
+      const g = new THREE.Group(); g.position.set(x, 0, z);
+      g.add(mesh(new THREE.CylinderGeometry(0.42, 0.28, 0.7, 12), pot, 0, 0.35, 0)); put(g, mesh(new THREE.TorusGeometry(0.42, 0.06, 6, 16), pot, 0, 0.7, 0)).rotation.x = Math.PI / 2;
+      g.add(mesh(new THREE.IcosahedronGeometry(0.45, 1), std(0x3f6b2e, { roughness: 0.9, flat: true }), 0, 1.0, 0));
+      const fc = FLOWER_COLS[Math.floor(r() * FLOWER_COLS.length)];
+      for (let k = 0; k < 8; k++) { const a = (k / 8) * TAU; g.add(mesh(new THREE.IcosahedronGeometry(0.08, 0), std(fc, { roughness: 0.6 }), Math.cos(a) * 0.38, 1.05 + Math.sin(k * 2.1) * 0.15, Math.sin(a) * 0.38, false)); }
+      W.group.add(g); W.colliders.push({ t: 1, x, z, r: 0.5, h: 1.2 });
+    }
+    // pérgola con parra en el jardín de la Academia
+    { const pg = new THREE.Group(); pg.position.set(-13, 0, 31);
+      for (const [px, pz] of [[-2.4, -1.6], [2.4, -1.6], [-2.4, 1.6], [2.4, 1.6]]) { const c = column('doric', 3.2, marble, cap); c.scale.setScalar(0.55); c.position.set(px, 0, pz); pg.add(c); W.colliders.push({ t: 1, x: -13 + px, z: 31 + pz, r: 0.35, h: 3 }); }
+      const wood = std(0x6a4a30, { roughness: 0.9 });
+      for (const pz of [-1.6, 1.6]) pg.add(mesh(new THREE.BoxGeometry(5.6, 0.2, 0.25), wood, 0, 3.15, pz));
+      for (let k = -2.4; k <= 2.4; k += 0.6) pg.add(mesh(new THREE.BoxGeometry(0.15, 0.15, 3.8), wood, k, 3.3, 0));
+      const vine = std(0x4a7a30, { roughness: 0.9, flat: true }); const grape = std(0x5a2a6a, { roughness: 0.5 });
+      for (let k = 0; k < 22; k++) pg.add(mesh(new THREE.IcosahedronGeometry(0.35 + r() * 0.25, 0), vine, (r() - 0.5) * 5.2, 3.4 + r() * 0.3, (r() - 0.5) * 3.6, false));
+      for (let k = 0; k < 8; k++) { const gx = (r() - 0.5) * 4.6, gz = (r() - 0.5) * 3; put(pg, mesh(new THREE.ConeGeometry(0.16, 0.4, 6), grape, gx, 2.95, gz, false)).rotation.x = Math.PI; }
+      pg.add(mesh(new THREE.BoxGeometry(2.6, 0.45, 0.7), marble, 0, 0.45, 0)); // banco
+      W.group.add(pg); }
   },
   // ------------------------------------------------------------------ III
   function (W) {
