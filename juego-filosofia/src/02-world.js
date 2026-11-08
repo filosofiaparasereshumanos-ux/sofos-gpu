@@ -32,6 +32,16 @@ const THEMES = [
     hemi: [0x7a86c0, 0x5a3a20, 0.95], fog: [0x0c1230, 0.012], exposure: 1.45, stars: true, moon: true,
     accent: 0x9ab8ff, enemy: { col: 0x8a5cff, core: 0x05030f, shell: 'eye' }, lampCol: 0xffc070,
   },
+  { // VII · Siglo XIX: atardecer dorado entre hierro, vidrio y montañas
+    sky: [0x2e3a78, 0xffa872, 0x4a3438], sunDir: [0.15, 0.1, -1], sunCol: 0xffb47a, sunInt: 2.5, sunDisk: 0xffa060,
+    hemi: [0xffd2b4, 0x4a3a40, 0.62], fog: [0xe0a07e, 0.0085], exposure: 1.15, stars: false,
+    accent: 0xffa05a, enemy: { col: 0xff7a2a, core: 0x200a04, shell: 'cube' }, lampCol: 0xffc080,
+  },
+  { // VIII · Época contemporánea: noche azul con la Tierra en el cielo
+    sky: [0x040a26, 0x3d5fae, 0x0a0c18], sunDir: [-0.3, 0.55, -0.6], sunCol: 0xa8c0ff, sunInt: 0.85, sunDisk: 0x000000,
+    hemi: [0x9ab4f0, 0x3a3048, 1.05], fog: [0x1c2850, 0.0062], exposure: 1.4, stars: true,
+    accent: 0x6ae0ff, enemy: { col: 0x40e0ff, core: 0x020814, shell: 'icosa' }, lampCol: 0xd8ecff,
+  },
 ];
 
 const ARENA = { x0: -24, x1: 24, z0: -47, z1: 37 };
@@ -205,6 +215,26 @@ function statue(mat, r) {
 // ============================================================================
 //  CONSTRUCCIÓN DE CADA ETAPA
 // ============================================================================
+// ventanas encendidas de los rascacielos
+function windowsTexture() {
+  return cachedTex('windows', () => {
+    const c = document.createElement('canvas'); c.width = 64; c.height = 64; const x = c.getContext('2d'); const r = mulberry32(5);
+    x.fillStyle = '#05070c'; x.fillRect(0, 0, 64, 64);
+    for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) { if (r() < 0.45) continue; x.fillStyle = ['#ffd890', '#fff0c8', '#a8d0ff', '#ffc070'][Math.floor(r() * 4)]; x.globalAlpha = 0.5 + r() * 0.5; x.fillRect(i * 16 + 3, j * 16 + 4, 10, 9); }
+    const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.colorSpace = THREE.SRGBColorSpace; t.magFilter = THREE.NearestFilter; return t;
+  });
+}
+// la Tierra: océanos, continentes y nubes
+function earthTexture() {
+  return cachedTex('earth', () => {
+    const c = document.createElement('canvas'); c.width = 512; c.height = 256; const x = c.getContext('2d'); const r = mulberry32(42);
+    const g = x.createLinearGradient(0, 0, 0, 256); g.addColorStop(0, '#dfe8f4'); g.addColorStop(0.1, '#1f4f9a'); g.addColorStop(0.5, '#1a5aa8'); g.addColorStop(0.9, '#1f4f9a'); g.addColorStop(1, '#e8eef6');
+    x.fillStyle = g; x.fillRect(0, 0, 512, 256);
+    for (let i = 0; i < 26; i++) { const cx = r() * 512, cy = 50 + r() * 156; x.fillStyle = ['#3f7a3a', '#5a8a3a', '#b89a5a', '#4a7a40'][Math.floor(r() * 4)]; for (let k = 0; k < 14; k++) { x.beginPath(); x.arc(cx + (r() - 0.5) * 70, cy + (r() - 0.5) * 40, 6 + r() * 16, 0, Math.PI * 2); x.fill(); } }
+    x.globalAlpha = 0.55; x.fillStyle = '#ffffff'; for (let i = 0; i < 70; i++) { x.beginPath(); x.ellipse(r() * 512, r() * 256, 10 + r() * 30, 3 + r() * 6, 0, 0, Math.PI * 2); x.fill(); }
+    return c;
+  });
+}
 function newWorld(idx) {
   return {
     idx, theme: THEMES[idx], group: new THREE.Group(), colliders: [], anim: [], emitters: [], lightBudget: 7,
@@ -600,6 +630,151 @@ const ERA_BUILDERS = [
     });
     brazier(W, -4, -35, 0xffb060); brazier(W, 4, -35, 0xffb060);
   },
+  // ------------------------------------------------------------------ VII
+  function (W) {
+    const fl = texTiles('vii', 0x7a6e62, 0x3e362e, 10, 0.3); fl.repeat.set(10, 16);
+    ground(W, fl, [80, 120], 0.75);
+    const r = mulberry32(77);
+    const iron = std(0x2c3a36, { metalness: 0.65, roughness: 0.4 });
+    const brick = std(0xffffff, { map: texStone('vii', 0x9a5a44), roughness: 0.95 });
+    const glass = new THREE.MeshStandardMaterial({ color: 0xcfe6ff, roughness: 0.05, metalness: 0.3, transparent: true, opacity: 0.18, depthWrite: false, side: THREE.DoubleSide });
+    // galerías de hierro y vidrio a ambos lados, como el Palacio de Cristal
+    for (const side of [-1, 1]) {
+      const gal = new THREE.Group();
+      for (let z = -44; z <= 34; z += 6) {
+        gal.add(mesh(new THREE.CylinderGeometry(0.22, 0.3, 7, 10), iron, side * 19.5, 3.5, z));
+        gal.add(mesh(new THREE.CylinderGeometry(0.45, 0.45, 0.3, 12), iron, side * 19.5, 0.15, z));
+        W.colliders.push({ t: 1, x: side * 19.5, z, r: 0.45, h: 7 });
+        if (z < 34) { const a = mesh(new THREE.TorusGeometry(3, 0.1, 6, 24, Math.PI), iron, side * 19.5, 7, z + 3, true, false); a.rotation.y = Math.PI / 2; gal.add(a); }
+      }
+      // bóveda de cristal (cuarto de cilindro) con costillas de hierro
+      const vault = mesh(new THREE.CylinderGeometry(5.5, 5.5, 80, 24, 1, true, side > 0 ? 0 : Math.PI, Math.PI / 2), glass, side * 22, 7, -5, false, false); vault.rotation.x = Math.PI / 2; vault.rotation.z = side > 0 ? 0 : 0; gal.add(vault);
+      for (let z = -44; z <= 34; z += 3) { const rib = mesh(new THREE.TorusGeometry(5.5, 0.06, 4, 16, Math.PI / 2), iron, side * 22, 7, z, false, false); rib.rotation.z = side > 0 ? 0 : Math.PI / 2; gal.add(rib); }
+      // muro de ladrillo con grandes ventanales iluminados
+      gal.add(mesh(new THREE.BoxGeometry(1, 12, 84), brick, side * 25.2, 6, -5));
+      for (let z = -40; z <= 30; z += 8) {
+        const win = mesh(new THREE.PlaneGeometry(3, 5.2), glow(0xffb870, 1.7), side * 24.65, 3.6, z, false, false); win.rotation.y = -side * Math.PI / 2; gal.add(win);
+        const top = mesh(new THREE.CircleGeometry(1.5, 16, 0, Math.PI), glow(0xffc888, 1.5), side * 24.65, 6.2, z, false, false); top.rotation.y = -side * Math.PI / 2; gal.add(top);
+        for (const dy of [1.8, 3.6]) { const bar = mesh(new THREE.BoxGeometry(0.06, 0.08, 3), iron, side * 24.6, dy + 0.8, z, false, false); gal.add(bar); }
+      }
+      W.group.add(gal);
+      // chimeneas de fábrica con humo, al fondo
+      for (const z of [-30, 0, 26]) {
+        const x = side * (34 + r() * 6); W.group.add(mesh(new THREE.CylinderGeometry(1.1, 1.6, 26, 12), brick, x, 13, z, false, false));
+        W.emitters.push({ x, y: 26.5, z, col: 0x8a7a70, rate: 3, acc: 0, kind: 'smoke' });
+      }
+    }
+    // farolas de gas a lo largo del camino
+    const lampPost = (x, z, light) => {
+      const g = new THREE.Group(); g.position.set(x, 0, z);
+      g.add(mesh(new THREE.CylinderGeometry(0.07, 0.12, 3.6, 8), iron, 0, 1.8, 0));
+      g.add(mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.25, 8), iron, 0, 0.12, 0));
+      g.add(mesh(new THREE.CylinderGeometry(0.28, 0.18, 0.55, 6, 1, true), glass, 0, 3.85, 0, false, false));
+      const fl = mesh(new THREE.SphereGeometry(0.16, 10, 8), glow(0xffc070, 5), 0, 3.85, 0, false, false); g.add(fl);
+      g.add(mesh(new THREE.ConeGeometry(0.36, 0.3, 6), iron, 0, 4.25, 0));
+      W.group.add(g); W.colliders.push({ t: 1, x, z, r: 0.3, h: 4 });
+      let pl = null; if (light && W.lightBudget > 1) { pl = new THREE.PointLight(0xffb060, 10, 12, 2); pl.position.set(x, 3.8, z); W.group.add(pl); W.lightBudget--; }
+      W.anim.push((t) => { const k = 1 + Math.sin(t * 9 + x * 3 + z) * 0.06; fl.scale.setScalar(k); if (pl) pl.intensity = 9 + Math.sin(t * 7 + z) * 0.8; });
+    };
+    let li = 0; for (const side of [-1, 1]) for (let z = 28; z > -28; z -= 10) { if (!W._near(side * 5.3, z, 0.2)) lampPost(side * 5.3, z, (li++ % 3) === 0); }
+    // árboles de otoño
+    const autumn = [0xd2691e, 0xe8a03a, 0xb8442a, 0xd8b048, 0x9a3a22];
+    for (let i = 0; i < 26; i++) {
+      const x = (r() < 0.5 ? -1 : 1) * (8.5 + r() * 8), z = -42 + r() * 74; if (W._near(x, z, 2.2)) continue;
+      const t = new THREE.Group(); t.position.set(x, 0, z); const s = 0.8 + r() * 0.5; t.scale.setScalar(s);
+      t.add(mesh(new THREE.CylinderGeometry(0.15, 0.25, 2.6, 7), std(0x3a2a20, { roughness: 1 }), 0, 1.3, 0));
+      const lc = std(autumn[Math.floor(r() * autumn.length)], { roughness: 0.9, flat: true });
+      for (let k = 0; k < 5; k++) t.add(mesh(new THREE.IcosahedronGeometry(0.75 + r() * 0.5, 0), lc, (r() - 0.5) * 1.6, 2.7 + r() * 1.1, (r() - 0.5) * 1.6));
+      W.group.add(t); W.colliders.push({ t: 1, x, z, r: 0.4 * s + 0.1, h: 3 });
+      if (r() < 0.35) W.emitters.push({ x, y: 3.2 * s, z, col: autumn[Math.floor(r() * autumn.length)], rate: 0.5, acc: 0, kind: 'leaf' });
+    }
+    // fuente de hierro fundido en el centro
+    fountain(W, 0, 2, std(0x3a4a44, { metalness: 0.6, roughness: 0.4 }));
+    // locomotora de vapor junto al andén
+    { const loco = new THREE.Group(); loco.position.set(-21.6, 0, 27); const black = std(0x1a1a1e, { metalness: 0.5, roughness: 0.45 }); const red = std(0x8c1d2c, { roughness: 0.5 }); const brass = std(0xc8a050, { metalness: 0.9, roughness: 0.3 });
+      const boiler = mesh(new THREE.CylinderGeometry(0.9, 0.9, 5, 20), black, 0, 2, 0.6); boiler.rotation.x = Math.PI / 2; loco.add(boiler);
+      for (let k = 0; k < 3; k++) { const band = mesh(new THREE.TorusGeometry(0.92, 0.05, 6, 24), brass, 0, 2, -1 + k * 1.6); loco.add(band); }
+      loco.add(mesh(new THREE.BoxGeometry(2, 2.6, 1.8), red, 0, 2.3, 3.8)); loco.add(mesh(new THREE.BoxGeometry(2.3, 0.2, 2.1), black, 0, 3.7, 3.8));
+      loco.add(mesh(new THREE.CylinderGeometry(0.28, 0.4, 1.4, 12), black, 0, 3.4, -1.3));
+      for (const s of [-1, 1]) for (const z of [-1.2, 0.4, 2.2, 3.8]) { const wh = mesh(new THREE.CylinderGeometry(z > 2 ? 0.75 : 0.55, z > 2 ? 0.75 : 0.55, 0.15, 18), red, s * 0.95, z > 2 ? 0.75 : 0.55, z); wh.rotation.z = Math.PI / 2; loco.add(wh); }
+      loco.add(mesh(new THREE.SphereGeometry(0.25, 12, 10), glow(0xfff0c0, 4), 0, 2.2, -1.95, false, false));
+      W.group.add(loco); W.colliders.push({ t: 0, x0: -22.8, x1: -20.4, z0: 25, z1: 32, h: 4 });
+      W.emitters.push({ x: -21.6, y: 4.3, z: 25.7, col: 0xcfc8c0, rate: 4, acc: 0, kind: 'smoke' });
+      const rails = std(0x5a5a5a, { metalness: 0.7, roughness: 0.4 }); for (const s of [-0.75, 0.75]) W.group.add(mesh(new THREE.BoxGeometry(0.12, 0.1, 80), rails, -21.6 + s, 0.05, -5, false, true));
+    }
+    // montañas nevadas al fondo (los Alpes de Nietzsche) y mar de niebla
+    const mtn = std(0x6a6a80, { roughness: 1, flat: true }); const snow = std(0xf4f0f8, { roughness: 0.8, flat: true });
+    for (let i = 0; i < 14; i++) {
+      const x = -150 + i * 23 + (r() - 0.5) * 12, z = -150 - r() * 60, h = 45 + r() * 50, w = 30 + r() * 25;
+      const m = new THREE.Group(); m.position.set(x, -4, z);
+      m.add(mesh(new THREE.ConeGeometry(w, h, 6), mtn, 0, h / 2, 0, false, false));
+      m.add(mesh(new THREE.ConeGeometry(w * 0.32, h * 0.32, 6), snow, 0, h - h * 0.16 + 0.2, 0, false, false));
+      W.group.add(m);
+    }
+    const mist = new THREE.Mesh(new THREE.PlaneGeometry(500, 140), new THREE.MeshBasicMaterial({ color: 0xffd8c0, transparent: true, opacity: 0.35, depthWrite: false, fog: false }));
+    mist.rotation.x = -Math.PI / 2; mist.position.set(0, 6, -130); W.group.add(mist);
+    W.anim.push((t) => { mist.material.opacity = 0.3 + Math.sin(t * 0.3) * 0.06; });
+    brazier(W, -4, -36, 0xffa050); brazier(W, 4, -36, 0xffa050);
+  },
+  // ------------------------------------------------------------------ VIII
+  function (W) {
+    const fl = texTiles('viii', 0x646a78, 0x3a3e48, 3, 0.06); fl.repeat.set(16, 26);
+    const gnd = ground(W, fl, [80, 120], 0.22, false); gnd.material.metalness = 0.35;
+    const r = mulberry32(88);
+    const steel = std(0xb8c0cc, { metalness: 0.85, roughness: 0.25 });
+    // rascacielos con ventanas encendidas
+    const winTex = windowsTexture();
+    for (const side of [-1, 1]) for (let i = 0; i < 9; i++) {
+      const x = side * (40 + r() * 40), z = -60 + i * 13 + (r() - 0.5) * 6, w = 7 + r() * 7, d = 7 + r() * 7, h = 18 + r() * 42;
+      const tex = winTex.clone(); tex.needsUpdate = true; tex.repeat.set(Math.round(w / 2.5), Math.round(h / 3));
+      const m = mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshStandardMaterial({ color: 0x1a2030, roughness: 0.3, metalness: 0.6, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 1.1 }), x, h / 2, z, false, false);
+      W.group.add(m);
+      if (r() < 0.5) W.group.add(mesh(new THREE.SphereGeometry(0.35, 8, 6), glow(0xff3040, 4), x, h + 0.6, z, false, false));
+    }
+    // límites de la plaza: jardineras bajas con setos
+    const planter = std(0x5a5e68, { roughness: 0.5 }); const hedge = std(0x2f5a3a, { roughness: 0.9, flat: true });
+    for (const side of [-1, 1]) { W.group.add(mesh(new THREE.BoxGeometry(1.6, 0.9, 84), planter, side * 23.4, 0.45, -5)); W.group.add(mesh(new THREE.BoxGeometry(1.3, 0.8, 84), hedge, side * 23.4, 1.2, -5)); }
+    // cerezos en flor con pétalos que caen
+    const pinks = [0xffb7d0, 0xffc8dc, 0xf7a1c4, 0xffe0ec];
+    for (let i = 0; i < 24; i++) {
+      const x = (r() < 0.5 ? -1 : 1) * (8.5 + r() * 9), z = -42 + r() * 74; if (W._near(x, z, 2.2)) continue;
+      const t = new THREE.Group(); t.position.set(x, 0, z); const s = 0.85 + r() * 0.45; t.scale.setScalar(s);
+      const tr = mesh(new THREE.CylinderGeometry(0.13, 0.24, 2.4, 7), std(0x3a2626, { roughness: 1 }), 0, 1.2, 0); tr.rotation.z = (r() - 0.5) * 0.25; t.add(tr);
+      const lc = std(pinks[Math.floor(r() * pinks.length)], { roughness: 0.8, flat: true, emissive: 0x401020, ei: 0.35 });
+      for (let k = 0; k < 6; k++) t.add(mesh(new THREE.IcosahedronGeometry(0.7 + r() * 0.45, 0), lc, (r() - 0.5) * 2, 2.6 + r() * 1.0, (r() - 0.5) * 2));
+      W.group.add(t); W.colliders.push({ t: 1, x, z, r: 0.4 * s + 0.1, h: 3 });
+      if (r() < 0.5) W.emitters.push({ x, y: 3 * s, z, col: 0xffc0d8, rate: 0.9, acc: 0, kind: 'petal' });
+    }
+    // guirnaldas de luces sobre el camino
+    for (let z = 30; z > -30; z -= 12) {
+      for (const side of [-1, 1]) { W.group.add(mesh(new THREE.CylinderGeometry(0.06, 0.08, 5, 8), steel, side * 6, 2.5, z)); W.colliders.push({ t: 1, x: side * 6, z, r: 0.2, h: 5 }); }
+      for (let k = 0; k <= 16; k++) { const u = k / 16; const x = -6 + u * 12; const y = 4.9 - Math.sin(u * Math.PI) * 1.1; W.group.add(mesh(new THREE.SphereGeometry(0.09, 6, 4), glow([0xffd890, 0xffffff, 0xffc0e0][k % 3], 4), x, y, z, false, false)); }
+      for (let k = 0; k <= 10; k++) { const u = k / 10; const zz = z - u * 12; if (zz < -30) break; for (const side of [-1, 1]) W.group.add(mesh(new THREE.SphereGeometry(0.08, 6, 4), glow(0xffe0a0, 3.5), side * 6, 4.9 - Math.sin(u * Math.PI) * 0.9, zz, false, false)); }
+    }
+    // fuente-espejo de agua en el centro
+    { const pool = mesh(new THREE.CylinderGeometry(3.2, 3.3, 0.35, 40), std(0x8a909a, { roughness: 0.3, metalness: 0.4 }), 0, 0.17, 2); W.group.add(pool);
+      const water = mesh(new THREE.CylinderGeometry(3, 3, 0.05, 40), new THREE.MeshStandardMaterial({ color: 0x1a3a6a, roughness: 0.02, metalness: 0.9, emissive: 0x0a2a5a, emissiveIntensity: 0.5 }), 0, 0.37, 2, false); W.group.add(water);
+      W.colliders.push({ t: 1, x: 0, z: 2, r: 3.3, h: 0.5 });
+      for (let k = 0; k < 8; k++) { const a = (k / 8) * TAU; W.emitters.push({ x: Math.cos(a) * 2.2, y: 0.5, z: 2 + Math.sin(a) * 2.2, col: 0x9fe0ff, rate: 5, acc: 0, kind: 'water' }); }
+      const ring = mesh(new THREE.TorusGeometry(3.05, 0.04, 6, 64), glow(0x6ae0ff, 2.5), 0, 0.42, 2, false, false); ring.rotation.x = Math.PI / 2; W.group.add(ring);
+      if (W.lightBudget > 1) { const pl = new THREE.PointLight(0x6ae0ff, 14, 14, 2); pl.position.set(0, 1.5, 2); W.group.add(pl); W.lightBudget--; } }
+    // terraza del café junto al Flore
+    for (const [x, z] of [[20, 21], [20.5, 25], [20, 29], [17.5, 30.5]]) {
+      if (W._near(x, z, -1.5)) continue;
+      const g = new THREE.Group(); g.position.set(x, 0, z);
+      g.add(mesh(new THREE.CylinderGeometry(0.45, 0.45, 0.04, 16), std(0xe8e4dc, { roughness: 0.3 }), 0, 0.95, 0)); g.add(mesh(new THREE.CylinderGeometry(0.04, 0.06, 0.95, 6), std(0x2a2a30), 0, 0.47, 0));
+      g.add(mesh(new THREE.CylinderGeometry(0.03, 0.03, 2.4, 6), std(0x2a2a30), 0, 1.2, 0)); g.add(mesh(new THREE.ConeGeometry(1.3, 0.5, 8, 1, true), std(0x8c1d2c, { roughness: 0.7, side: THREE.DoubleSide }), 0, 2.45, 0));
+      g.add(mesh(new THREE.SphereGeometry(0.07, 6, 4), glow(0xffd080, 4), 0, 1.1, 0, false, false));
+      W.group.add(g); W.colliders.push({ t: 1, x, z, r: 0.6, h: 2 });
+    }
+    // la Tierra vista desde el espacio, sobre el portal: el punto azul pálido
+    { const earth = mesh(new THREE.SphereGeometry(16, 48, 32), std(0xffffff, { map: earthTexture(), roughness: 0.7, emissive: 0x1a3a80, ei: 0.55 }), 0, 46, -150, false, false); earth.material.fog = false; W.group.add(earth);
+      const atm = new THREE.Sprite(new THREE.SpriteMaterial({ map: cloudTexture(), color: 0x6ab0ff, transparent: true, opacity: 0.55, depthWrite: false, fog: false, blending: THREE.AdditiveBlending })); atm.scale.set(52, 52, 1); atm.position.set(0, 46, -151); W.group.add(atm);
+      W.anim.push((t, dt) => { earth.rotation.y += dt * 0.02; }); }
+    // farolas modernas
+    for (const [x, z] of [[-5, -36], [5, -36]]) { W.group.add(mesh(new THREE.CylinderGeometry(0.06, 0.08, 4, 8), steel, x, 2, z)); W.group.add(mesh(new THREE.BoxGeometry(0.8, 0.1, 0.25), glow(0xe8f4ff, 3.5), x, 4, z, false, false)); W.colliders.push({ t: 1, x, z, r: 0.2, h: 4 }); }
+    if (W.lightBudget > 0) { const pl = new THREE.PointLight(0xd8ecff, 18, 16, 2); pl.position.set(0, 4, -34); W.group.add(pl); W.lightBudget--; }
+  },
 ];
 
 function buildWorld(idx) {
@@ -645,7 +820,7 @@ function buildWorld(idx) {
 function buildStation(W, st) {
   const th = W.theme; const { x, z } = st.pos; const R = st.boss ? 4.2 : 2.6;
   const g = new THREE.Group(); g.position.set(x, 0, z);
-  const daisMat = W.idx === 5 ? std(0x2a1a10, { roughness: 0.5 }) : W.idx === 3 ? std(0x5a544c, { roughness: 0.7 }) : std(0xe2d8c4, { roughness: 0.55 });
+  const daisMat = W.idx === 7 ? std(0x2a2e38, { roughness: 0.3, metalness: 0.4 }) : W.idx === 5 ? std(0x2a1a10, { roughness: 0.5 }) : W.idx === 3 ? std(0x5a544c, { roughness: 0.7 }) : std(0xe2d8c4, { roughness: 0.55 });
   g.add(mesh(new THREE.CylinderGeometry(R, R + 0.25, 0.14, 40), daisMat, 0, 0.07, 0, false, true));
   const ring = mesh(new THREE.RingGeometry(R - 0.18, R - 0.06, 64), glow(th.accent, 2.2, { transparent: true, opacity: 0.85 }), 0, 0.15, 0, false, false);
   ring.rotation.x = -Math.PI / 2; g.add(ring); st.ring = ring;
@@ -673,6 +848,83 @@ function buildProp(W, kind, st, off) {
   const add = (o) => (g.add(o), o);
   const col = (r) => W.colliders.push({ t: 1, x: st.pos.x + g.position.x, z: st.pos.z + g.position.z, r, h: 2, _prop: g });
   switch (kind) {
+    case 'owl': { // Hegel: la lechuza de Minerva sobre un pedestal
+      add(mesh(new THREE.CylinderGeometry(0.5, 0.65, 1.6, 12), stone, 0, 0.8, 0));
+      const owl = add(new THREE.Group()); owl.position.y = 1.6;
+      const fe = std(0x8a6a4a, { roughness: 0.9, flat: true });
+      const body = mesh(new THREE.SphereGeometry(0.45, 12, 10), fe, 0, 0.5, 0); body.scale.set(1, 1.3, 0.9); owl.add(body);
+      owl.add(mesh(new THREE.SphereGeometry(0.34, 12, 10), fe, 0, 1.15, 0));
+      for (const s of [-1, 1]) { owl.add(mesh(new THREE.SphereGeometry(0.11, 10, 8), glow(0xffc040, 3), s * 0.13, 1.2, 0.28, false, false)); put(owl, mesh(new THREE.ConeGeometry(0.07, 0.22, 4), fe, s * 0.2, 1.47, 0)).rotation.z = -s * 0.3; }
+      owl.add(mesh(new THREE.ConeGeometry(0.05, 0.12, 4), std(0x3a2a1a), 0, 1.08, 0.33));
+      W.anim.push((t) => { owl.rotation.y = Math.sin(t * 0.4) * 0.6; });
+      col(0.7); break;
+    }
+    case 'leap': { // Kierkegaard: dos bordes y un abismo de luz entre ellos
+      for (const s of [-1, 1]) add(mesh(new THREE.BoxGeometry(1.1, 1.2 + (s > 0 ? 0.4 : 0), 1.2), stone, s * 1.1, 0.6 + (s > 0 ? 0.2 : 0), 0));
+      const gap = add(mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.05, 20), glow(acc, 2.4, { transparent: true, opacity: 0.8 }), 0, 0.03, 0, false, false));
+      const orb = add(mesh(new THREE.SphereGeometry(0.16, 12, 10), glow(0xffffff, 3), 0, 1.6, 0, false, false));
+      W.anim.push((t) => { const k = (t * 0.5) % 1; orb.position.set(-1.1 + k * 2.2, 1.6 + Math.sin(k * Math.PI) * 1.4, 0); gap.material.opacity = 0.5 + Math.sin(t * 2) * 0.3; });
+      col(1.2); break;
+    }
+    case 'gears': { // Marx: engranajes de una fábrica
+      const iron = std(0x4a4440, { metalness: 0.7, roughness: 0.45 });
+      const gearsA = [];
+      for (const [x, y, r, dir] of [[-0.6, 1.4, 0.8, 1], [0.55, 2.1, 0.55, -1.45], [0.75, 0.8, 0.45, -1.8]]) {
+        const gg = add(new THREE.Group()); gg.position.set(x, y, 0);
+        gg.add(mesh(new THREE.TorusGeometry(r, 0.12, 8, 24), iron, 0, 0, 0));
+        for (let k = 0; k < 10; k++) { const a = (k / 10) * TAU; const tth = mesh(new THREE.BoxGeometry(0.18, 0.22, 0.2), iron, Math.cos(a) * (r + 0.15), Math.sin(a) * (r + 0.15), 0); tth.rotation.z = a; gg.add(tth); }
+        for (let k = 0; k < 3; k++) { const sp = mesh(new THREE.BoxGeometry(r * 2, 0.08, 0.08), iron); sp.rotation.z = (k / 3) * Math.PI; gg.add(sp); }
+        put(gg, mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.3, 10), glow(acc, 2), 0, 0, 0, false, false)).rotation.x = Math.PI / 2;
+        gearsA.push([gg, dir]);
+      }
+      add(mesh(new THREE.BoxGeometry(2.4, 0.3, 0.8), iron, 0, 0.15, 0));
+      W.anim.push((t, dt) => gearsA.forEach(([gg, d]) => (gg.rotation.z += d * dt * 0.6)));
+      col(1.3); break;
+    }
+    case 'hammer': { // Nietzsche: el martillo sobre una roca de los Alpes
+      const rock = add(mesh(new THREE.DodecahedronGeometry(1.1, 0), std(0x8a8478, { roughness: 1, flat: true }), 0, 0.7, 0)); rock.scale.set(1.3, 0.8, 1);
+      const hm = add(new THREE.Group()); hm.position.set(0.2, 1.4, 0); hm.rotation.z = 0.5;
+      hm.add(mesh(new THREE.CylinderGeometry(0.06, 0.07, 1.6, 8), darkW, 0, 0.8, 0));
+      hm.add(mesh(new THREE.BoxGeometry(0.7, 0.3, 0.3), std(0x5a5a62, { metalness: 0.8, roughness: 0.35 }), 0, 1.6, 0));
+      const spark = add(mesh(new THREE.OctahedronGeometry(0.12, 0), glow(acc, 4), 0, 2.9, 0, false, false));
+      W.anim.push((t) => { spark.rotation.y = t * 2; spark.position.y = 2.9 + Math.sin(t * 2) * 0.15; });
+      col(1.4); break;
+    }
+    case 'cafe': { // Sartre: mesa de café con dos tazas y un libro
+      add(mesh(new THREE.CylinderGeometry(0.6, 0.6, 0.05, 20), std(0xd8d4cc, { roughness: 0.3 }), 0, 1.05, 0));
+      add(mesh(new THREE.CylinderGeometry(0.05, 0.08, 1.05, 8), darkW, 0, 0.52, 0));
+      for (const s of [-1, 1]) {
+        add(mesh(new THREE.CylinderGeometry(0.08, 0.06, 0.12, 10), std(0xf6f2ea), s * 0.25, 1.14, 0.1));
+        const ch = add(new THREE.Group()); ch.position.set(s * 0.95, 0, 0);
+        ch.add(mesh(new THREE.BoxGeometry(0.45, 0.05, 0.45), darkW, 0, 0.5, 0)); ch.add(mesh(new THREE.BoxGeometry(0.05, 0.55, 0.45), darkW, s * 0.22, 0.78, 0));
+        for (const [a, b] of [[-1, -1], [-1, 1], [1, -1], [1, 1]]) ch.add(mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.5, 5), darkW, a * 0.19, 0.25, b * 0.19));
+      }
+      add(mesh(new THREE.BoxGeometry(0.3, 0.05, 0.22), std(0x8c1d2c), 0, 1.1, -0.2));
+      const steam = add(mesh(new THREE.SphereGeometry(0.06, 8, 6), glow(0xffffff, 1.5, { transparent: true, opacity: 0.4 }), 0.25, 1.3, 0.1, false, false));
+      W.anim.push((t) => { steam.position.y = 1.3 + ((t * 0.4) % 0.5); steam.material.opacity = 0.4 * (1 - ((t * 0.4) % 0.5) * 2); });
+      col(1.2); break;
+    }
+    case 'mirror': { // Beauvoir: un espejo de pie que refleja luz
+      const frame = std(0xc8a050, { metalness: 0.8, roughness: 0.3 });
+      const fr = add(mesh(new THREE.TorusGeometry(0.7, 0.07, 8, 32), frame, 0, 1.9, 0)); fr.scale.y = 1.4;
+      const glass = add(mesh(new THREE.CircleGeometry(0.66, 32), new THREE.MeshStandardMaterial({ color: 0xbfd8ff, metalness: 1, roughness: 0.05, emissive: new THREE.Color(acc), emissiveIntensity: 0.25 }), 0, 1.9, 0, false)); glass.scale.y = 1.4;
+      add(mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.9, 6), frame, 0, 0.45, 0)); add(mesh(new THREE.CylinderGeometry(0.4, 0.45, 0.08, 16), frame, 0, 0.04, 0));
+      W.anim.push((t) => { glass.material.emissiveIntensity = 0.2 + Math.sin(t * 1.3) * 0.12; fr.parent.rotation.y = Math.sin(t * 0.3) * 0.25; });
+      col(0.7); break;
+    }
+    case 'boulder': { // Camus: la roca de Sísifo en su pendiente
+      const ramp = add(mesh(new THREE.BoxGeometry(1.4, 0.2, 3.2), std(0x9a8a6a, { roughness: 1 }), 0, 0.7, 0)); ramp.rotation.x = 0.42;
+      const rk = add(mesh(new THREE.DodecahedronGeometry(0.55, 1), std(0x7a7066, { roughness: 1, flat: true }), 0, 1.1, 0));
+      W.anim.push((t) => { const k = (Math.sin(t * 0.35) * 0.5 + 0.5); rk.position.set(0, 0.55 + 0.55 + (k - 0.5) * 1.3, (0.5 - k) * 2.8); rk.rotation.x = -k * 6; });
+      col(1.3); break;
+    }
+    case 'globe': { // Arendt: la Tierra, nuestro mundo común
+      add(mesh(new THREE.CylinderGeometry(0.5, 0.7, 1.4, 16), stone, 0, 0.7, 0));
+      const earth = add(mesh(new THREE.SphereGeometry(0.75, 32, 20), std(0xffffff, { map: earthTexture(), roughness: 0.6, emissive: 0x0a2040, ei: 0.4 }), 0, 2.3, 0));
+      const ring = add(mesh(new THREE.TorusGeometry(1.05, 0.02, 6, 64), glow(acc, 2.5), 0, 2.3, 0, false, false)); ring.rotation.x = 1.2;
+      W.anim.push((t, dt) => { earth.rotation.y += dt * 0.25; ring.rotation.z += dt * 0.4; });
+      col(0.9); break;
+    }
     case 'water': {
       add(mesh(new THREE.CylinderGeometry(1.5, 1.6, 0.6, 28, 1, true), stone, 0, 0.3, 0));
       add(mesh(new THREE.TorusGeometry(1.55, 0.12, 8, 28), stone, 0, 0.6, 0)).rotation.x = Math.PI / 2;

@@ -564,6 +564,8 @@ function updateEmitters(dt) {
       const p = _v1.set(em.x, em.y, em.z); if (em.g) em.g.localToWorld(p);
       if (em.kind === 'flame') particles.emit(p, 1, { color: em.col, speed: em.big ? 1.2 : 0.6, up: em.big ? 2.6 : 1.6, life: em.big ? 0.9 : 0.7, size: em.big ? 0.7 : 0.4, jitter: em.big ? 0.8 : 0.3, drag: 1, intensity: 2.5 });
       else if (em.kind === 'water') particles.emit(p, 1, { color: em.col, speed: 1.5, up: 3.5, life: 1.1, size: 0.18, gravity: 7, drag: 0.3, intensity: 1.3 });
+      else if (em.kind === 'smoke') particles.emit(p, 1, { color: em.col, speed: 0.6, up: 2.2, life: 4, size: 2.2, jitter: 1, drag: 0.2, intensity: 0.35 });
+      else if (em.kind === 'petal' || em.kind === 'leaf') particles.emit(p, 1, { color: em.col, speed: 0.5, up: -0.2, life: 4.5, size: em.kind === 'petal' ? 0.16 : 0.2, jitter: 3, gravity: 0.35, drag: 0.8, intensity: 0.9 });
       else particles.emit(p, 1, { color: em.col, speed: 0.4, up: 0.6, life: 1.6, size: 0.5, jitter: 2, drag: 0.5, intensity: 0.8 });
     }
   }
@@ -1013,7 +1015,7 @@ const Duel = {
     achieve('primer'); if (s.data.id === 'socrates') achieve('tabano'); if (s.data.id === 'platon') achieve('caverna');
     if (!s._wrongs) achieve('perfecto'); if (s.boss && !this.aidsUsed) achieve('sincomodin');
     const bonus = s.boss ? 500 : 250; addScore(bonus); G.frags += 2; const heal = Math.min(25, G.maxHp - G.hp); G.hp += heal;
-    G.codex.add(s.data.id); store.set(CODEX_KEY, [...G.codex]); if (G.codex.size >= 25) achieve('erudito');
+    G.codex.add(s.data.id); store.set(CODEX_KEY, [...G.codex]); if (G.codex.size >= ERAS.flatMap((e) => e.sages).length) achieve('erudito');
     particles.emit(_v1.copy(s.pos).setY(2.5), 160, { color: 0xffd36a, speed: 9, life: 1.6, size: 0.55, intensity: 3, gravity: 2 });
     particles.emit(_v1.copy(s.pos).setY(1.2), 80, { color: 0xffffff, speed: 6, life: 1.2, size: 0.4, intensity: 2, flat: true });
     $('#duel').hidden = true; Voice.say(s.data.defeat, s);
@@ -1317,6 +1319,7 @@ const MOTES = [
   { c: 0xffd9a0, up: 0.08, g: 0, i: 1.4, s: 0.12 }, { c: 0xfff6e0, up: 0.05, g: 0, i: 1.1, s: 0.1 },
   { c: 0xff8a40, up: 0.9, g: 0, i: 2.4, s: 0.13 }, { c: 0xc8d4ff, up: 0.02, g: 0, i: 1.3, s: 0.1 },
   { c: 0xffb6c8, up: 0, g: 0.25, i: 1.2, s: 0.16 }, { c: 0xb8ff9a, up: 0.1, g: 0, i: 3, s: 0.12 },
+  { c: 0xffc488, up: 0.06, g: 0, i: 1.4, s: 0.11 }, { c: 0x9ae8ff, up: 0.12, g: 0, i: 2.8, s: 0.11 },
 ];
 let moteAcc = 0;
 function ambientMotes(dt) {

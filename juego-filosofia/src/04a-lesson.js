@@ -78,13 +78,13 @@ const Lesson = {
     this.pause();
     if (this.book) return this.bookQuiz();
     const heard = new Set(store.get(LESSON_KEY, [])); const first = !heard.has(this.data.id); heard.add(this.data.id); store.set(LESSON_KEY, [...heard]);
-    achieve('discipulo'); if (heard.size >= 10) achieve('academia'); if (heard.size >= 25) achieve('liceo');
+    achieve('discipulo'); if (heard.size >= 10) achieve('academia'); if (heard.size >= ERAS.flatMap((e) => e.sages).length) achieve('liceo');
     const rew = $('#ls-reward'); rew.hidden = false;
     const s = this.sage;
     if (s && s.state !== 'defeated') {
       G.lessonFree = G.lessonFree || {}; G.lessonFree[this.data.id] = true;
       rew.textContent = `Has escuchado a ${this.data.short}. En su duelo tendrás una Mayéutica gratis.`;
-    } else rew.textContent = first ? `Lección completada. ${heard.size} de 25 lecciones escuchadas.` : 'Lección completada.';
+    } else rew.textContent = first ? `Lección completada. ${heard.size} de ${ERAS.flatMap((e) => e.sages).length} lecciones escuchadas.` : 'Lección completada.';
     if (first && this.from === 'world') { G.frags += 1; rew.textContent += ' +1 fragmento.'; }
     Music.sting('achievement'); buzz([20, 40]);
     $('#ls-next').textContent = 'Cerrar'; $('#ls-play').textContent = 'Repetir';
