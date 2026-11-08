@@ -12,6 +12,12 @@ ratón y `E` para interactuar.
 
 ## Qué puedes hacer
 
+- **¿Qué diría…?**: haz una pregunta actual (las redes sociales, la IA, la felicidad…) y cuatro
+  pensadores de épocas y culturas distintas la responden a la vez, en personaje, con la IA de
+  Claude. Hay una pregunta del día y las respuestas se pueden compartir.
+- **Oráculo de Delfos diario**: diez preguntas iguales para todos, número de oráculo, racha de días,
+  calendario de la semana, idea del día, compartir desde el móvil y ranking de hoy y de la semana.
+
 - **Sabidurías del mundo**: una ruta aparte, desde «Viajar por las épocas», con seis culturas: los
   Mexicas, los Incas, el pueblo mapuche, la China clásica, la India y África. Pensadoras y
   pensadores como Tochihuitzin, Macuilxochitzin, Guamán Poma, el Inca Garcilaso, Pachacútec,
@@ -68,6 +74,7 @@ node build.mjs   # genera index.html (viaje 3D) y cartas.html (versión de duelo
 - `src/02e-books.js` libros para estudiar
 - `src/01d-pensadoras.js` filósofas de la Antigüedad al Renacimiento · `src/01e-latinoamerica.js` y `src/02g-latinoamerica.js` época IX
 - `src/01f-mundo.js` y `src/02h-mundo.js` ruta «Sabidurías del mundo»
+- `src/05b-quediria.js` «¿Qué diría…?»
 - `src/02d-narration.js` reproductor de la voz grabada · `audio/` paquetes MP3 e índice
 - `tools/` generación de la voz: `narration-text.mjs` (frases) → `narrate.py` (Piper TTS + ffmpeg) → `narration-index.mjs`
 - `cartas/` versión alternativa de duelo de cartas en 2D (`cartas.html`)

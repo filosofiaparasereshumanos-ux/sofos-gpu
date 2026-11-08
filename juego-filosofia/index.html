@@ -285,6 +285,45 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .cc p { margin: 6px 0 0; font-size: 0.98rem; line-height: 1.4; }
 #t-timeline span[data-i] { cursor: pointer; }
 #t-timeline span[data-i]:hover { color: var(--gold-bright); }
+.chip { padding: 7px 12px; border: 1px solid var(--line); background: rgba(239,227,198,0.05); color: var(--parchment); border-radius: 18px; font-family: var(--body); font-size: 0.95rem; cursor: pointer; }
+.chip:hover { border-color: var(--gold); }
+.chip.on { background: rgba(214,168,74,0.25); border-color: var(--gold); color: var(--gold-bright); }
+.chip.today { border-color: #ffb36a; color: #ffd0a0; }
+.qd-btn small { color: #ffd0a0; }
+.qd-wrap { max-width: 860px; margin: 0 auto; }
+.qd-ask textarea, .qd-share textarea { width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.3); color: var(--parchment); border: 1px solid var(--line); border-radius: 10px; padding: 12px; font-family: var(--body); font-size: 1.1rem; resize: vertical; }
+.qd-sugg { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.qd-who { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0; }
+.qd-lbl { color: var(--parchment-dim); font-style: italic; }
+.qd-picks { display: flex; flex-wrap: wrap; gap: 6px; }
+.pick { display: inline-flex; align-items: center; gap: 6px; padding: 5px 6px 5px 12px; border: 1px solid var(--gold); border-radius: 18px; background: rgba(214,168,74,0.12); }
+.pick b { color: var(--gold-bright); font-weight: 600; }
+.pick small { color: var(--parchment-dim); font-size: 0.78rem; }
+.pick button { background: none; border: 0; color: var(--parchment-dim); cursor: pointer; font-size: 0.9rem; padding: 2px 6px; }
+.qd-list { max-height: 40vh; overflow-y: auto; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: rgba(0,0,0,0.25); }
+.qd-list h4 { margin: 8px 0 4px; font-family: var(--display); font-weight: 400; color: var(--gold); font-size: 0.9rem; letter-spacing: 0.06em; }
+.qd-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.qd-note { color: var(--parchment-dim); font-size: 0.92rem; font-style: italic; text-align: center; }
+.qd-out { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-top: 14px; }
+.qd-q { grid-column: 1 / -1; margin: 6px 0 0; text-align: center; font-family: var(--display); font-weight: 400; color: var(--gold-bright); font-size: 1.25rem; }
+.qd-card { padding: 14px; border: 1px solid rgba(239,227,198,0.16); border-radius: 12px; background: linear-gradient(180deg, rgba(48,38,24,0.8), rgba(20,16,12,0.8)); display: flex; flex-direction: column; gap: 8px; }
+.qd-card header { display: flex; gap: 10px; align-items: center; }
+.qd-card .medal { width: 40px; height: 40px; font-size: 1.2rem; flex: 0 0 auto; }
+.qd-card h4 { margin: 0; font-family: var(--display); font-weight: 400; color: var(--gold-bright); font-size: 1rem; }
+.qd-card small { color: var(--parchment-dim); font-size: 0.82rem; }
+.qd-text { margin: 0; line-height: 1.5; font-size: 1.02rem; flex: 1; }
+.qd-text.thinking { color: var(--parchment-dim); font-style: italic; animation: qdpulse 1.4s ease-in-out infinite; }
+@keyframes qdpulse { 50% { opacity: 0.45; } }
+.qd-share { margin-top: 14px; }
+.o-streak { margin: 10px 0 0; text-align: center; color: #ffb36a; font-size: 1.05rem; letter-spacing: 0.02em; }
+.o-week { display: flex; justify-content: center; gap: 8px; margin: 10px 0 0; }
+.o-week span { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.o-week i { width: 28px; height: 28px; border-radius: 50%; border: 1px dashed rgba(239,227,198,0.3); display: grid; place-items: center; font-style: normal; font-size: 0.9rem; color: #1a1410; }
+.o-week span.on i { background: var(--gold); border: 1px solid var(--gold-bright); }
+.o-week span.today i { box-shadow: 0 0 0 2px rgba(255,211,106,0.6); }
+.o-week small { font-size: 0.75rem; color: var(--parchment-dim); }
+.o-idea { margin: 14px auto 0; max-width: 560px; padding: 10px 14px; border-left: 2px solid var(--gold); background: rgba(214,168,74,0.07); font-size: 0.98rem; text-align: left; }
+.o-idea b { color: var(--gold-bright); font-weight: 600; }
 .tv-sec { grid-column: 1 / -1; margin: 14px 0 0; font-family: var(--display); font-weight: 400; letter-spacing: 0.08em; color: var(--gold-bright); font-size: 1.05rem; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
 .tv-note { grid-column: 1 / -1; margin: -2px 0 4px; font-style: italic; color: var(--parchment-dim); font-size: 0.95rem; }
 .tv-card.world .tv-num { color: #6ae0c8; }
@@ -519,6 +558,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="btn primary oracle-btn" id="b-oracle">Oráculo de hoy<small id="b-oracle-s">10 preguntas · las mismas para todos</small></button>
         <button class="btn" id="b-continue" hidden>Continuar la odisea<small id="b-continue-s"></small></button>
         <button class="btn" id="b-new">Nueva odisea<small>Nueve épocas · 44 pensadoras y pensadores</small></button>
+        <button class="btn qd-btn" id="b-qd">¿Qué diría…?<small>Pregunta lo que quieras a varios pensadores a la vez</small></button>
         <button class="btn" id="b-travel">Viajar por las épocas<small>Y descubre las sabidurías del mundo</small></button>
       </div>
       <div class="minis">
@@ -657,12 +697,14 @@ body.touch .gm.boss { width: 30px; height: 30px; }
   <section id="oracle" class="screen dim" hidden>
     <div class="panel">
       <div class="eyebrow" id="o-date"></div>
-      <div class="numeral" style="font-size:clamp(3rem,12vw,5rem)">Δ</div>
-      <h2 class="era-name">El Oráculo de Delfos</h2>
+      <h2 class="era-name">Δ · El Oráculo de Delfos</h2>
       <p class="era-meta">«Conócete a ti mismo», decía la inscripción del templo.</p>
+      <p class="o-streak" id="o-streak"></p>
+      <div class="o-week" id="o-week" aria-label="Tus últimos siete días"></div>
       <hr class="rule">
-      <p class="story" id="o-text">Cada día el oráculo plantea diez preguntas, de Tales a nuestros días. Son las mismas para todo el mundo: compara tu resultado y compártelo. Tienes 15 segundos por pregunta y las rachas multiplican la puntuación.</p>
+      <p class="story" id="o-text">Diez preguntas al día, de todas las épocas y culturas, las mismas para todo el mundo. 15 segundos por pregunta. Vuelve cada día para mantener tu racha y compite en el ranking de la semana.</p>
       <div class="oracle-done" id="o-done" hidden></div>
+      <p class="o-idea" id="o-idea"></p>
       <div class="btns">
         <button class="btn primary" id="b-ostart">Consultar al oráculo</button>
         <button class="btn" id="b-ofame">Ver el Salón de la Fama</button>
@@ -678,9 +720,11 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <div class="grid-emoji" id="oe-grid"></div>
       <div class="final-stats" id="oe-stats" style="grid-template-columns:repeat(3,1fr)"></div>
       <p class="story" id="oe-msg"></p>
+      <p class="o-streak" id="oe-streak"></p>
       <textarea id="oe-share" readonly rows="6" aria-label="Texto para compartir"></textarea>
       <div class="btns">
         <button class="btn primary" id="b-oshare">Copiar resultado para compartir</button>
+        <button class="btn" id="b-oqd">¿Qué dirían los filósofos de la pregunta de hoy?</button>
         <button class="btn" id="b-ofame2">Salón de la Fama</button>
         <button class="btn ghost" id="b-omenu">Volver al menú</button>
       </div>
@@ -691,7 +735,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
     <div class="panel" style="width:min(640px,100%)">
       <div class="eyebrow">Los mejores pensadores</div>
       <h2 class="era-name">Salón de la Fama</h2>
-      <div class="seg tabs" id="f-tabs"><button data-v="daily" class="on">Oráculo de hoy</button><button data-v="odyssey">Odisea completa</button></div>
+      <div class="seg tabs" id="f-tabs"><button data-v="daily" class="on">Hoy</button><button data-v="week">Esta semana</button><button data-v="odyssey">Odisea completa</button></div>
       <div class="alias"><label for="f-alias">Tu nombre de filósofo</label><input id="f-alias" maxlength="22" placeholder="p. ej. Hipatia de Alejandría" autocomplete="off"><button class="mini-b" id="f-save">Guardar</button></div>
       <ol class="board" id="f-list"></ol>
       <p class="story" id="f-note" style="font-size:0.98rem"></p>
@@ -723,6 +767,29 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="btn" id="b-psettings">Ajustes</button>
         <button class="btn ghost" id="b-quit">Salir al menú</button>
       </div>
+    </div>
+  </section>
+
+  <section id="qd" class="screen dim" hidden>
+    <div class="codex-wrap qd-wrap">
+      <div class="eyebrow" style="text-align:center">Pensadores de todas las épocas y culturas</div>
+      <h2>¿Qué diría…?</h2>
+      <p class="codex-count">Haz una pregunta de hoy y escucha cómo la responderían, a la vez, cuatro pensadores muy distintos.</p>
+      <div class="qd-ask">
+        <textarea id="qd-in" maxlength="240" rows="2" placeholder="Por ejemplo: ¿qué opinas de las redes sociales?" aria-label="Tu pregunta"></textarea>
+        <div class="qd-sugg" id="qd-sugg"></div>
+        <div class="qd-who"><span class="qd-lbl">Responden:</span><div class="qd-picks" id="qd-picks"></div>
+          <button class="mini-b" id="qd-dice">🎲 Sorpréndeme</button><button class="mini-b" id="qd-add">Elegir pensadores</button></div>
+        <div class="qd-list" id="qd-list" hidden></div>
+        <div class="btns"><button class="btn primary" id="qd-go">Preguntar a los pensadores</button></div>
+        <p class="qd-note" id="qd-note"></p>
+      </div>
+      <div class="qd-out" id="qd-out" aria-live="polite"></div>
+      <div class="qd-share" id="qd-share" hidden>
+        <textarea id="qd-sharetext" readonly rows="5" aria-label="Texto para compartir"></textarea>
+        <div class="btns"><button class="btn primary" id="qd-sharebtn">Compartir estas respuestas</button></div>
+      </div>
+      <div class="btns"><button class="btn ghost" id="qd-back">Volver</button></div>
     </div>
   </section>
 
@@ -8048,7 +8115,7 @@ function updateEpojeHud() {
 // ============================================================================
 //  FLUJO DE PANTALLAS
 // ============================================================================
-const SCREENS = ['travel', 'title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept', 'oracle', 'oracle-end', 'fame', 'logros'];
+const SCREENS = ['qd', 'travel', 'title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept', 'oracle', 'oracle-end', 'fame', 'logros'];
 function show(id) { SCREENS.forEach((s) => ($('#' + s).hidden = s !== id)); if (id) { const b = $('#' + id).querySelector('.btn.primary, .btn'); if (b && !IS_TOUCH) setTimeout(() => b.focus({ preventScroll: true }), 30); } }
 function hideAll() { SCREENS.forEach((s) => ($('#' + s).hidden = true)); }
 
@@ -8749,6 +8816,9 @@ const ACH = [
   { id: 'nuestra', i: 'Ñ', n: 'Nuestra América', d: 'Comprende las ideas de los cinco pensadores de América Latina.' },
   { id: 'mundo1', i: 'Ш', n: 'Primer viaje', d: 'Vence a un maestro de las sabidurías del mundo.' },
   { id: 'mundo', i: 'Ⴟ', n: 'Ubuntu', d: 'Vence a los seis maestros de las sabidurías del mundo.' },
+  { id: 'quediria', i: '?', n: '¿Qué diría…?', d: 'Haz tu primera pregunta a varios pensadores a la vez.' },
+  { id: 'quediria10', i: '‽', n: 'Ágora abierta', d: 'Haz 10 preguntas en «¿Qué diría…?».' },
+  { id: 'racha7', i: '🔥', n: 'Fiel al oráculo', d: 'Consulta al oráculo siete días seguidos.' },
   { id: 'viajero', i: 'Ω', n: 'Viajero del tiempo', d: 'Descubre todos los lugares de todas las épocas.' },
   { id: 'kant', i: 'Κ', n: 'Sapere aude', d: 'Completa la odisea venciendo a Paulo Freire, el último maestro.' },
   { id: 'rey', i: 'Β', n: 'Rey filósofo', d: 'Termina la odisea con el rango más alto.' },
@@ -8814,7 +8884,7 @@ const Fame = {
     });
     return this.chain;
   },
-  submitDaily(r) { return this.save({ dailyDate: r.date, dailyScore: r.score, dailyCorrect: r.correct, dailyGrid: r.grid }); },
+  submitDaily(r) { return this.save({ dailyDate: r.date, dailyScore: r.score, dailyCorrect: r.correct, dailyGrid: r.grid, weekKey: Oracle.weekKey(r.date), weekScore: Oracle.weekScore(), streakDays: Oracle.streakDays() }); },
   async submitOdyssey(score, rankName, acc) {
     const best = store.get('odisea-razon.best', 0); if (score > best) store.set('odisea-razon.best', score);
     if (!this.ready) return;
@@ -8823,36 +8893,36 @@ const Fame = {
   },
   async load(tab) {
     const col = this.db.collection('fama');
-    const q = tab === 'daily' ? col.where('dailyDate', '==', Oracle.today()).orderBy('dailyScore', 'desc').limit(30) : col.where('best', '>', 0).orderBy('best', 'desc').limit(30);
+    const q = tab === 'daily' ? col.where('dailyDate', '==', Oracle.today()).orderBy('dailyScore', 'desc').limit(30) : tab === 'week' ? col.where('weekKey', '==', Oracle.weekKey()).orderBy('weekScore', 'desc').limit(30) : col.where('best', '>', 0).orderBy('best', 'desc').limit(30);
     return Promise.race([q.get(), new Promise((_, rej) => setTimeout(() => rej({ code: 'timeout' }), 10000))]);
   },
   async render() {
     const list = $('#f-list'), note = $('#f-note'); list.innerHTML = '';
     document.querySelectorAll('#f-tabs button').forEach((b) => b.classList.toggle('on', b.dataset.v === this.tab));
     $('#f-alias').value = this.alias();
-    const mine = this.tab === 'daily' ? store.get(DAILY_KEY, {})[Oracle.today()] : null;
+    const mine = this.tab === 'daily' ? store.get(DAILY_KEY, {})[Oracle.today()] : null; const myWeek = Oracle.weekScore();
     const localBest = store.get('odisea-razon.best', 0);
     if (!this.ready) {
       const li = document.createElement('li'); li.className = 'empty';
-      li.textContent = this.tab === 'daily' ? (mine ? `Tu resultado de hoy: ${mine.correct}/10 · ${mine.score.toLocaleString('es-ES')} de sabiduría` : 'Aún no has consultado al oráculo hoy.') : (localBest ? `Tu mejor odisea: ${localBest.toLocaleString('es-ES')} de sabiduría` : 'Completa la odisea para entrar en el salón.');
+      li.textContent = this.tab === 'week' ? (myWeek ? `Tu sabiduría esta semana: ${myWeek.toLocaleString('es-ES')} · 🔥 ${Oracle.streakDays()} días seguidos` : 'Aún no has consultado al oráculo esta semana.') : this.tab === 'daily' ? (mine ? `Tu resultado de hoy: ${mine.correct}/10 · ${mine.score.toLocaleString('es-ES')} de sabiduría` : 'Aún no has consultado al oráculo hoy.') : (localBest ? `Tu mejor odisea: ${localBest.toLocaleString('es-ES')} de sabiduría` : 'Completa la odisea para entrar en el salón.');
       list.appendChild(li);
       note.textContent = 'El ranking compartido funciona en la versión publicada en claude.ai, con tu cuenta. Aquí se muestran tus marcas en este dispositivo.';
       return;
     }
-    note.textContent = this.writable ? (this.tab === 'daily' ? 'Las preguntas del oráculo son las mismas para todos hoy. Mañana, nuevas.' : 'Las mejores puntuaciones de la odisea completa.') : 'Puedes ver el ranking, pero tu acceso a esta página no permite publicar puntuaciones.';
+    note.textContent = this.writable ? (this.tab === 'week' ? 'Suma de tus oráculos de lunes a domingo. Cada lunes empieza una semana nueva.' : this.tab === 'daily' ? 'Las preguntas del oráculo son las mismas para todos hoy. Mañana, nuevas.' : 'Las mejores puntuaciones de la odisea completa.') : 'Puedes ver el ranking, pero tu acceso a esta página no permite publicar puntuaciones.';
     const loading = document.createElement('li'); loading.className = 'empty'; loading.textContent = 'Consultando los anales…'; list.appendChild(loading);
     let snap;
     try { snap = await this.load(this.tab); } catch (e) { loading.textContent = 'No se pudo cargar el ranking ahora. Inténtalo en un momento.'; return; }
     list.innerHTML = '';
     const rows = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-    if (!rows.length) { const li = document.createElement('li'); li.className = 'empty'; li.textContent = this.tab === 'daily' ? 'Nadie ha consultado al oráculo hoy todavía. ¡Sé el primero!' : 'Nadie ha completado la odisea todavía.'; list.appendChild(li); return; }
+    if (!rows.length) { const li = document.createElement('li'); li.className = 'empty'; li.textContent = this.tab === 'week' ? 'Nadie ha consultado al oráculo esta semana todavía.' : this.tab === 'daily' ? 'Nadie ha consultado al oráculo hoy todavía. ¡Sé el primero!' : 'Nadie ha completado la odisea todavía.'; list.appendChild(li); return; }
     let names = {}; try { names = await this.user.profiles(rows.filter((r) => !r.alias).map((r) => r.id)); } catch (e) { /* sin nombres */ }
     rows.forEach((r, i) => {
       const li = document.createElement('li'); li.className = (i < 3 ? 'top' + (i + 1) : '') + (r.id === this.uid ? ' me' : '');
       const n = document.createElement('span'); n.className = 'n'; n.textContent = i + 1;
       const who = document.createElement('span'); who.className = 'who'; who.textContent = String(r.alias || (names[r.id] && names[r.id].name) || 'Pensador anónimo').slice(0, 22);
-      const sub = document.createElement('small'); sub.textContent = this.tab === 'daily' ? `${r.dailyCorrect ?? '?'}/10 ${typeof r.dailyGrid === 'string' ? r.dailyGrid : ''}` : String(r.bestRank || ''); who.appendChild(sub);
-      const sc = document.createElement('span'); sc.className = 'sc'; sc.textContent = Number(this.tab === 'daily' ? r.dailyScore : r.best || 0).toLocaleString('es-ES');
+      const sub = document.createElement('small'); sub.textContent = this.tab === 'week' ? (r.streakDays > 1 ? `🔥 ${r.streakDays} días seguidos` : '') : this.tab === 'daily' ? `${r.dailyCorrect ?? '?'}/10 ${typeof r.dailyGrid === 'string' ? r.dailyGrid : ''}` : String(r.bestRank || ''); who.appendChild(sub);
+      const sc = document.createElement('span'); sc.className = 'sc'; sc.textContent = Number(this.tab === 'week' ? r.weekScore : this.tab === 'daily' ? r.dailyScore : r.best || 0).toLocaleString('es-ES');
       li.append(n, who, sc); list.appendChild(li);
     });
   },
@@ -8870,18 +8940,33 @@ const Oracle = {
   qs: [], i: 0, score: 0, streak: 0, best: 0, grid: [], time: 0, maxTime: 15, answered: true, practice: false, askedAt: 0, correct: 0,
   today() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; },
   label(ds) { const [y, m, d] = ds.split('-').map(Number); return new Date(y, m - 1, d).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }); },
+  dayStr(dt) { return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`; },
+  shift(ds, n) { const [y, m, d] = ds.split('-').map(Number); return this.dayStr(new Date(y, m - 1, d + n)); },
+  // número de oráculo, como un periódico: el n.º 1 fue el 1 de noviembre de 2026
+  number(ds = this.today()) { const [y, m, d] = ds.split('-').map(Number); return Math.round((new Date(y, m - 1, d) - new Date(2026, 10, 1)) / 864e5) + 1; },
+  // días seguidos consultando al oráculo (vale si hoy aún no has jugado pero ayer sí)
+  streakDays() { const all = store.get(DAILY_KEY, {}); let d = this.today(); if (!all[d]) d = this.shift(d, -1); let n = 0; while (all[d]) { n++; d = this.shift(d, -1); } return n; },
+  weekKey(ds = this.today()) { const [y, m, d] = ds.split('-').map(Number); const dt = new Date(y, m - 1, d); const wd = (dt.getDay() + 6) % 7; return this.shift(ds, -wd); },
+  weekScore() { const all = store.get(DAILY_KEY, {}); const wk = this.weekKey(); let s = 0; for (let i = 0; i < 7; i++) { const r = all[this.shift(wk, i)]; if (r) s += r.score; } return s; },
+  last7() { const all = store.get(DAILY_KEY, {}); const out = []; for (let i = 6; i >= 0; i--) { const ds = this.shift(this.today(), -i); out.push({ ds, r: all[ds] }); } return out; },
+  // idea del día: un pensador distinto cada día
+  thought(ds = this.today()) { let h = 7; for (const ch of ds + 'idea') h = (Math.imul(h, 31) + ch.charCodeAt(0)) | 0; const all = ERAS.flatMap((e) => e.sages); return all[Math.abs(h) % all.length]; },
   build(ds) {
     let h = 2166136261; for (const ch of ds + 'delfos') { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); }
-    const r = mulberry32(h >>> 0); const picks = [];
-    ERAS.forEach((e, ei) => { const s = e.sages[Math.floor(r() * e.sages.length)]; picks.push({ s, ei }); });
-    const rest = []; ERAS.forEach((e, ei) => e.sages.forEach((s) => { if (!picks.some((p) => p.s === s)) rest.push({ s, ei }); }));
-    shuffle(rest, r); picks.push(...rest.slice(0, 4));
+    const r = mulberry32(h >>> 0);
+    // diez épocas o culturas distintas cada día, un pensador de cada una
+    const eras = shuffle([...ERAS.keys()], r).slice(0, 10);
+    const picks = eras.map((ei) => ({ s: ERAS[ei].sages[Math.floor(r() * ERAS[ei].sages.length)], ei }));
     picks.sort((a, b) => a.ei - b.ei || ERAS[a.ei].sages.indexOf(a.s) - ERAS[b.ei].sages.indexOf(b.s));
     this.qs = picks.map(({ s, ei }) => { const q = s.q[Math.floor(r() * s.q.length)]; const opts = shuffle(q.a.map((t, k) => ({ t, ok: k === 0 })), r); return { s, ei, q, opts }; });
   },
   open() {
     G.prevScreen = 'title'; const ds = this.today(); const done = store.get(DAILY_KEY, {})[ds];
-    $('#o-date').textContent = 'Consulta del ' + this.label(ds);
+    $('#o-date').textContent = `Oráculo n.º ${this.number(ds)} · ${this.label(ds)}`;
+    const sd = this.streakDays();
+    $('#o-week').innerHTML = this.last7().map(({ ds: d, r }) => `<span class="${r ? 'on' : ''}${d === ds ? ' today' : ''}" title="${d}"><i>${r ? (r.correct >= 8 ? '★' : '✓') : ''}</i><small>${['L', 'M', 'X', 'J', 'V', 'S', 'D'][(new Date(d.replace(/-/g, '/')).getDay() + 6) % 7]}</small></span>`).join('');
+    $('#o-streak').textContent = sd ? `🔥 Racha de ${sd} ${sd === 1 ? 'día' : 'días'}${done ? '' : ' · ¡no la pierdas hoy!'}` : 'Empieza hoy tu racha de días';
+    const th = this.thought(ds); $('#o-idea').innerHTML = ''; { const b = document.createElement('b'); b.textContent = `Idea del día · ${th.short}: ${th.concept.name}. `; $('#o-idea').append(b, document.createTextNode(th.concept.text)); }
     const box = $('#o-done');
     if (done) {
       box.hidden = false; box.innerHTML = '';
@@ -8968,23 +9053,32 @@ const Oracle = {
     const [title, msg] = this.verdict();
     const res = { date: ds, score: this.score, correct: this.correct, grid: gridStr, streak: this.best };
     if (!this.practice) { const all = store.get(DAILY_KEY, {}); all[ds] = res; store.set(DAILY_KEY, all); Fame.submitDaily(res); Stats.add('oracles'); }
-    achieve('oraculo'); if (this.correct === 10) achieve('pitia');
+    achieve('oraculo'); if (this.correct === 10) achieve('pitia'); if (!this.practice && this.streakDays() >= 7) achieve('racha7');
     $('#oe-eye').textContent = this.practice ? 'Práctica · no cuenta para el ranking' : 'El oráculo ha hablado · ' + this.label(ds);
     $('#oe-title').textContent = title; $('#oe-grid').textContent = gridStr; $('#oe-msg').textContent = msg;
     $('#oe-stats').innerHTML = `<div><b>${this.correct}/10</b><span>Aciertos</span></div><div><b>${this.score.toLocaleString('es-ES')}</b><span>Sabiduría</span></div><div><b>${this.best}</b><span>Mejor racha</span></div>`;
-    $('#oe-share').value = `Odisea de la Razón · Oráculo de Delfos\n${this.label(ds)}\n${gridStr}\n${this.correct}/10 · ${this.score.toLocaleString('es-ES')} de sabiduría · «${title}»\n¿Puedes superarme? https://claude.ai/artifact/5C4Rz4jpDYiEaEYcdbUJew`;
+    const sd = this.streakDays();
+    $('#oe-streak').textContent = this.practice ? '' : `🔥 Racha de ${sd} ${sd === 1 ? 'día' : 'días'} · Esta semana: ${this.weekScore().toLocaleString('es-ES')} de sabiduría`;
+    $('#oe-share').value = `Oráculo de Delfos n.º ${this.number(ds)} · ${this.correct}/10${sd > 1 && !this.practice ? ` · 🔥${sd}` : ''}\n${gridStr}\n«${title}» · ${this.score.toLocaleString('es-ES')} de sabiduría\nOdisea de la Razón: ¿puedes superarme?\nhttps://claude.ai/artifact/5C4Rz4jpDYiEaEYcdbUJew`;
+    $('#b-oshare').textContent = navigator.share ? 'Compartir mi resultado' : 'Copiar resultado para compartir';
     G.prevScreen = 'title'; show('oracle-end'); refreshTitleExtras();
   },
 };
-$('#b-oshare').addEventListener('click', () => {
-  const ta = $('#oe-share'); const text = ta.value; const done = () => { $('#b-oshare').textContent = '¡Copiado! Pégalo donde quieras'; Audio.pickup(); };
-  const fallback = () => { ta.focus(); ta.select(); try { if (document.execCommand('copy')) done(); else $('#b-oshare').textContent = 'Selecciona el texto y cópialo'; } catch (e) { $('#b-oshare').textContent = 'Selecciona el texto y cópialo'; } };
+function shareOrCopy(text, btn, ta) {
+  if (navigator.share) { navigator.share({ text }).then(() => { Audio.pickup(); }, () => {}); return; }
+  copyText(text, btn, ta);
+}
+function copyText(text, btn, ta) {
+  const done = () => { btn.textContent = '¡Copiado! Pégalo donde quieras'; Audio.pickup(); };
+  const fallback = () => { if (!ta) { btn.textContent = 'No se pudo copiar'; return; } ta.focus(); ta.select(); try { if (document.execCommand('copy')) done(); else btn.textContent = 'Selecciona el texto y cópialo'; } catch (e) { btn.textContent = 'Selecciona el texto y cópialo'; } };
   try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback(); } catch (e) { fallback(); }
-});
+}
+$('#b-oshare').addEventListener('click', () => shareOrCopy($('#oe-share').value, $('#b-oshare'), $('#oe-share')));
 function refreshTitleExtras() {
   const done = store.get(DAILY_KEY, {})[Oracle.today()]; const b = $('#b-oracle');
   b.classList.toggle('fresh', !done);
-  $('#b-oracle-s').textContent = done ? `Hoy: ${done.grid} · ${done.score.toLocaleString('es-ES')}` : '10 preguntas · las mismas para todos';
+  const sd = Oracle.streakDays();
+  $('#b-oracle-s').textContent = done ? `Hoy: ${done.grid}${sd > 1 ? ` · 🔥${sd}` : ''}` : sd ? `🔥 Racha de ${sd} ${sd === 1 ? 'día' : 'días'} · ¡no la pierdas!` : '10 preguntas · las mismas para todos';
   updateLogrosCount();
 }
 on('#b-oracle', () => Oracle.open());
@@ -8999,6 +9093,142 @@ on('#b-logros', () => { openSub('logros'); renderLogros(); });
 //  ARRANQUE
 // ============================================================================
 boot().then(() => { refreshTitleExtras(); Fame.init(); });
+
+// ---- src/05b-quediria.js ----
+// ============================================================================
+//  ¿QUÉ DIRÍA…? Una pregunta de hoy, respondida a la vez por pensadores de
+//  épocas y culturas distintas (con la IA de Claude, en la versión publicada).
+// ============================================================================
+const QD_QUESTIONS = [
+  '¿Qué opinas de las redes sociales?', '¿Qué es la felicidad?', '¿Deberíamos temer a la inteligencia artificial?', '¿Es justo que haya ricos y pobres?',
+  '¿Qué deberíamos hacer frente al cambio climático?', '¿Para qué sirve estudiar?', '¿Qué es un buen amigo?', '¿Está bien mentir alguna vez?',
+  '¿Tienen derechos los animales?', '¿Qué es el amor?', '¿Hay que obedecer siempre las leyes?', '¿Qué es la libertad?',
+  '¿Tiene sentido la vida?', '¿Por qué tenemos miedo a la muerte?', '¿Qué es más importante: ser feliz o ser bueno?', '¿Cómo debería ser la escuela ideal?',
+  '¿Es bueno pasar tantas horas con el móvil?', '¿Qué significa ser una buena persona?', '¿Puede una máquina pensar?', '¿Qué es la belleza?',
+  '¿Hay que perdonar siempre?', '¿Somos iguales mujeres y hombres?', '¿Qué le debemos a las generaciones futuras?', '¿Es posible conocer la verdad?',
+  '¿Qué hacemos con la soledad?', '¿Para qué sirve la filosofía?', '¿Qué es la justicia?', '¿Cómo deberíamos tratar a los migrantes?',
+  '¿Existe el destino o somos libres?', '¿Qué haría con un millón de euros un sabio?',
+];
+const QD_KEY = 'odisea-razon.quediria';
+const QD = {
+  picks: [], busy: false, ctl: null, last: null, from: 'title',
+  all() { return ERAS.flatMap((e, ei) => e.sages.map((s) => ({ s, ei }))); },
+  find(id) { return this.all().find((x) => x.s.id === id); },
+  todayQuestion() { return QD_QUESTIONS[(Oracle.number() % QD_QUESTIONS.length + QD_QUESTIONS.length) % QD_QUESTIONS.length]; },
+  // cuatro voces variadas: épocas y culturas distintas, al menos una mujer si es posible
+  surprise() {
+    const byEra = shuffle([...ERAS.keys()]).slice(0, 4);
+    let picks = byEra.map((ei) => ({ s: ERAS[ei].sages[Math.floor(Math.random() * ERAS[ei].sages.length)], ei }));
+    const women = ['teano', 'hipatia', 'hildegarda', 'pizan', 'beauvoir', 'arendt', 'sorjuana', 'castellanos', 'macuilxochitzin', 'janequeo', 'machi', 'banzhao', 'gargi', 'maathai'];
+    if (!picks.some((p) => women.includes(p.s.id))) { const w = shuffle(women.map((id) => this.find(id)).filter((x) => x && !picks.slice(0, 3).some((p) => p.ei === x.ei)))[0]; if (w) picks[3] = w; }
+    picks.sort((a, b) => a.ei - b.ei);
+    this.picks = picks; this.renderPicks();
+  },
+  open(question, from = 'title') {
+    this.from = from; G.prevScreen = from;
+    if (!this.picks.length) this.surprise(); else this.renderPicks();
+    $('#qd-in').value = question || ''; $('#qd-out').innerHTML = ''; $('#qd-share').hidden = true; $('#qd-list').hidden = true;
+    $('#qd-sugg').innerHTML = '';
+    const today = this.todayQuestion();
+    for (const q of [today, ...shuffle(QD_QUESTIONS.filter((x) => x !== today)).slice(0, 4)]) {
+      const b = document.createElement('button'); b.className = 'chip' + (q === today ? ' today' : ''); b.textContent = (q === today ? 'Pregunta de hoy · ' : '') + q;
+      b.addEventListener('click', () => { Audio.click(); $('#qd-in').value = q; }); $('#qd-sugg').appendChild(b);
+    }
+    show('qd');
+    $('#qd-note').textContent = AI.fn ? '' : 'Esta función usa la IA de Claude en la versión publicada del juego. Si no está disponible, cada pensador responderá con su idea central.';
+  },
+  renderPicks() {
+    const box = $('#qd-picks'); box.innerHTML = '';
+    for (const p of this.picks) {
+      const c = document.createElement('span'); c.className = 'pick'; c.innerHTML = '<b></b><small></small><button aria-label="Quitar">✕</button>';
+      c.querySelector('b').textContent = p.s.short; c.querySelector('small').textContent = ERAS[p.ei].name;
+      c.querySelector('button').addEventListener('click', () => { Audio.click(); this.picks = this.picks.filter((x) => x !== p); this.renderPicks(); });
+      box.appendChild(c);
+    }
+    $('#qd-add').textContent = this.picks.length >= 4 ? 'Cambiar pensadores' : 'Elegir pensadores';
+  },
+  renderList() {
+    const box = $('#qd-list'); box.innerHTML = ''; box.hidden = false;
+    ERAS.forEach((e, ei) => {
+      const h = document.createElement('h4'); h.textContent = `${e.num} · ${e.name}`; box.appendChild(h);
+      const row = document.createElement('div'); row.className = 'qd-row';
+      for (const s of e.sages) {
+        const on = this.picks.some((p) => p.s === s);
+        const b = document.createElement('button'); b.className = 'chip' + (on ? ' on' : ''); b.textContent = s.short;
+        b.addEventListener('click', () => {
+          Audio.click();
+          if (on) this.picks = this.picks.filter((p) => p.s !== s); else if (this.picks.length < 4) this.picks.push({ s, ei }); else return toast('Puedes elegir hasta cuatro pensadores.');
+          this.renderPicks(); this.renderList();
+        });
+        row.appendChild(b);
+      }
+      box.appendChild(row);
+    });
+  },
+  card(p) {
+    const c = document.createElement('article'); c.className = 'qd-card';
+    c.innerHTML = '<header><span class="medal"></span><div><h4></h4><small></small></div></header><p class="qd-text thinking">Pensando…</p><footer><button class="mini-b qd-lesson">Escuchar su lección</button></footer>';
+    c.querySelector('.medal').textContent = p.s.short[0]; c.querySelector('h4').textContent = p.s.name; c.querySelector('small').textContent = `${ERAS[p.ei].name} · ${p.s.dates}`;
+    c.querySelector('.qd-lesson').addEventListener('click', () => { Audio.init(); this.stop(); Lesson.open(p.s, null); });
+    return c;
+  },
+  rules(q) {
+    const who = this.picks.map((p) => `[[${p.s.id}]] ${p.s.name} (${p.s.dates}; ${ERAS[p.ei].name}). Su idea central: ${p.s.concept.name}: ${p.s.concept.text}`).join('\n');
+    return `Eres el guionista de un juego educativo de filosofía para estudiantes y público general. Un visitante hace esta pregunta: «${q}».\n\n` +
+      `Responde como lo harían los siguientes pensadores, cada uno en primera persona, en español, con su propio estilo y fiel a lo que históricamente pensó y vivió. ` +
+      `Si el tema es posterior a su época, que razone desde sus ideas y lo diga con naturalidad (por ejemplo: «en mi tiempo no existía…, pero…»). ` +
+      `Cada respuesta debe tener entre 45 y 75 palabras, sin listas ni títulos, y terminar con una idea clara que haga pensar. Que las respuestas sean distintas entre sí; si sus ideas chocan, que se note, incluso que alguno responda a otro. ` +
+      `No inventes citas literales ni datos: si no hay información fiable, que hablen desde su pensamiento general. Si alguien habla como portavoz de una tradición (por ejemplo, la machi o el kimche), que hable en nombre de esa tradición, no como una persona concreta. ` +
+      `Si la pregunta es ofensiva, violenta o no tiene que ver, que reconduzcan con amabilidad hacia una pregunta filosófica.\n\n` +
+      `Formato obligatorio: para cada pensador, una línea con su marca exacta (por ejemplo [[socrates]]) y debajo su respuesta. No escribas nada más.\n\nPensadores:\n${who}`;
+  },
+  parse(text) { const out = {}; const re = /\[\[([a-z0-9_]+)\]\]\s*/g; let m, last = null, idx = 0; while ((m = re.exec(text))) { if (last) out[last] = text.slice(idx, m.index).trim(); last = m[1]; idx = re.lastIndex; } if (last) out[last] = text.slice(idx).trim(); return out; },
+  async ask() {
+    const q = $('#qd-in').value.replace(/\s+/g, ' ').trim().slice(0, 240);
+    if (!q) { $('#qd-in').focus(); return toast('Escribe una pregunta o elige una de las sugerencias.'); }
+    if (!this.picks.length) this.surprise();
+    if (this.busy) return;
+    $('#qd-list').hidden = true;
+    const out = $('#qd-out'); out.innerHTML = ''; $('#qd-share').hidden = true;
+    const qh = document.createElement('h3'); qh.className = 'qd-q'; qh.textContent = '«' + q + '»'; out.appendChild(qh);
+    const cards = {}; for (const p of this.picks) { cards[p.s.id] = this.card(p); out.appendChild(cards[p.s.id]); }
+    out.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const fill = (map, final) => {
+      for (const p of this.picks) { const t = map[p.s.id]; const el = cards[p.s.id].querySelector('.qd-text'); if (t) { el.textContent = t; el.classList.remove('thinking'); } else if (final) { el.textContent = this.fallback(p); el.classList.remove('thinking'); } }
+    };
+    const fn = await AI.get();
+    this.last = { q, picks: [...this.picks], answers: {} };
+    if (!fn || !AI.ok) { const map = {}; for (const p of this.picks) map[p.s.id] = this.fallback(p); fill(map, true); this.last.answers = map; this.done(); return; }
+    this.busy = true; $('#qd-go').disabled = true; $('#qd-go').textContent = 'Pensando…';
+    this.ctl = new AbortController();
+    try {
+      const { text } = await fn([{ role: 'user', content: this.rules(q) }], { modelTier: 'quick', cache: false, signal: this.ctl.signal, onText: ({ text: t }) => fill(this.parse(t), false) });
+      const map = this.parse(text); fill(map, true); this.last.answers = map;
+      const n = Stats.add('quediria'); achieve('quediria'); if (n >= 10) achieve('quediria10');
+      const hist = store.get(QD_KEY, []); hist.unshift({ q, ids: this.picks.map((p) => p.s.id), t: Date.now() }); store.set(QD_KEY, hist.slice(0, 30));
+    } catch (e) {
+      if (e && e.code === 'not_granted') AI.ok = false;
+      const map = {}; for (const p of this.picks) map[p.s.id] = this.fallback(p); fill(map, true); this.last.answers = map;
+      if (e && e.code !== 'cancelled') toast(e && e.code === 'rate_limited' ? 'Demasiadas preguntas seguidas: espera un momento.' : 'No he podido consultar a los pensadores ahora: te muestro su idea central.');
+    } finally { this.busy = false; $('#qd-go').disabled = false; $('#qd-go').textContent = 'Preguntar a los pensadores'; this.done(); }
+  },
+  fallback(p) { return `No puedo pensar tu pregunta ahora mismo, pero esta es mi idea central: ${p.s.concept.name}. ${p.s.concept.text}`; },
+  done() {
+    const L = this.last; if (!L) return;
+    const cut = (t) => { t = String(t || '').replace(/\s+/g, ' '); return t.length > 150 ? t.slice(0, 147).replace(/\s\S*$/, '') + '…' : t; };
+    $('#qd-sharetext').value = `¿Qué dirían los filósofos? «${L.q}»\n\n` + L.picks.map((p) => `${p.s.short}: «${cut(L.answers[p.s.id])}»`).join('\n\n') + `\n\nPregúntales tú en Odisea de la Razón:\nhttps://claude.ai/artifact/5C4Rz4jpDYiEaEYcdbUJew`;
+    $('#qd-share').hidden = false; $('#qd-sharebtn').textContent = navigator.share ? 'Compartir estas respuestas' : 'Copiar para compartir';
+  },
+  stop() { if (this.ctl) this.ctl.abort(); },
+};
+$('#qd-go').addEventListener('click', () => { Audio.init(); Audio.click(); QD.ask(); });
+$('#qd-in').addEventListener('keydown', (e) => { e.stopPropagation(); if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); QD.ask(); } });
+$('#qd-dice').addEventListener('click', () => { Audio.click(); QD.surprise(); if (!$('#qd-list').hidden) QD.renderList(); });
+$('#qd-add').addEventListener('click', () => { Audio.click(); if ($('#qd-list').hidden) QD.renderList(); else $('#qd-list').hidden = true; });
+$('#qd-sharebtn').addEventListener('click', () => shareOrCopy($('#qd-sharetext').value, $('#qd-sharebtn'), $('#qd-sharetext')));
+$('#qd-back').addEventListener('click', () => { Audio.click(); QD.stop(); show(QD.from === 'oracle-end' ? 'oracle-end' : 'title'); });
+on('#b-qd', () => QD.open('', 'title'));
+on('#b-oqd', () => QD.open(QD.todayQuestion(), 'oracle-end'));
 
 </script>
 </body>

@@ -279,6 +279,45 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .cc p { margin: 6px 0 0; font-size: 0.98rem; line-height: 1.4; }
 #t-timeline span[data-i] { cursor: pointer; }
 #t-timeline span[data-i]:hover { color: var(--gold-bright); }
+.chip { padding: 7px 12px; border: 1px solid var(--line); background: rgba(239,227,198,0.05); color: var(--parchment); border-radius: 18px; font-family: var(--body); font-size: 0.95rem; cursor: pointer; }
+.chip:hover { border-color: var(--gold); }
+.chip.on { background: rgba(214,168,74,0.25); border-color: var(--gold); color: var(--gold-bright); }
+.chip.today { border-color: #ffb36a; color: #ffd0a0; }
+.qd-btn small { color: #ffd0a0; }
+.qd-wrap { max-width: 860px; margin: 0 auto; }
+.qd-ask textarea, .qd-share textarea { width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.3); color: var(--parchment); border: 1px solid var(--line); border-radius: 10px; padding: 12px; font-family: var(--body); font-size: 1.1rem; resize: vertical; }
+.qd-sugg { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.qd-who { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0; }
+.qd-lbl { color: var(--parchment-dim); font-style: italic; }
+.qd-picks { display: flex; flex-wrap: wrap; gap: 6px; }
+.pick { display: inline-flex; align-items: center; gap: 6px; padding: 5px 6px 5px 12px; border: 1px solid var(--gold); border-radius: 18px; background: rgba(214,168,74,0.12); }
+.pick b { color: var(--gold-bright); font-weight: 600; }
+.pick small { color: var(--parchment-dim); font-size: 0.78rem; }
+.pick button { background: none; border: 0; color: var(--parchment-dim); cursor: pointer; font-size: 0.9rem; padding: 2px 6px; }
+.qd-list { max-height: 40vh; overflow-y: auto; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: rgba(0,0,0,0.25); }
+.qd-list h4 { margin: 8px 0 4px; font-family: var(--display); font-weight: 400; color: var(--gold); font-size: 0.9rem; letter-spacing: 0.06em; }
+.qd-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.qd-note { color: var(--parchment-dim); font-size: 0.92rem; font-style: italic; text-align: center; }
+.qd-out { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-top: 14px; }
+.qd-q { grid-column: 1 / -1; margin: 6px 0 0; text-align: center; font-family: var(--display); font-weight: 400; color: var(--gold-bright); font-size: 1.25rem; }
+.qd-card { padding: 14px; border: 1px solid rgba(239,227,198,0.16); border-radius: 12px; background: linear-gradient(180deg, rgba(48,38,24,0.8), rgba(20,16,12,0.8)); display: flex; flex-direction: column; gap: 8px; }
+.qd-card header { display: flex; gap: 10px; align-items: center; }
+.qd-card .medal { width: 40px; height: 40px; font-size: 1.2rem; flex: 0 0 auto; }
+.qd-card h4 { margin: 0; font-family: var(--display); font-weight: 400; color: var(--gold-bright); font-size: 1rem; }
+.qd-card small { color: var(--parchment-dim); font-size: 0.82rem; }
+.qd-text { margin: 0; line-height: 1.5; font-size: 1.02rem; flex: 1; }
+.qd-text.thinking { color: var(--parchment-dim); font-style: italic; animation: qdpulse 1.4s ease-in-out infinite; }
+@keyframes qdpulse { 50% { opacity: 0.45; } }
+.qd-share { margin-top: 14px; }
+.o-streak { margin: 10px 0 0; text-align: center; color: #ffb36a; font-size: 1.05rem; letter-spacing: 0.02em; }
+.o-week { display: flex; justify-content: center; gap: 8px; margin: 10px 0 0; }
+.o-week span { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.o-week i { width: 28px; height: 28px; border-radius: 50%; border: 1px dashed rgba(239,227,198,0.3); display: grid; place-items: center; font-style: normal; font-size: 0.9rem; color: #1a1410; }
+.o-week span.on i { background: var(--gold); border: 1px solid var(--gold-bright); }
+.o-week span.today i { box-shadow: 0 0 0 2px rgba(255,211,106,0.6); }
+.o-week small { font-size: 0.75rem; color: var(--parchment-dim); }
+.o-idea { margin: 14px auto 0; max-width: 560px; padding: 10px 14px; border-left: 2px solid var(--gold); background: rgba(214,168,74,0.07); font-size: 0.98rem; text-align: left; }
+.o-idea b { color: var(--gold-bright); font-weight: 600; }
 .tv-sec { grid-column: 1 / -1; margin: 14px 0 0; font-family: var(--display); font-weight: 400; letter-spacing: 0.08em; color: var(--gold-bright); font-size: 1.05rem; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
 .tv-note { grid-column: 1 / -1; margin: -2px 0 4px; font-style: italic; color: var(--parchment-dim); font-size: 0.95rem; }
 .tv-card.world .tv-num { color: #6ae0c8; }
@@ -511,6 +550,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="btn primary oracle-btn" id="b-oracle">Oráculo de hoy<small id="b-oracle-s">10 preguntas · las mismas para todos</small></button>
         <button class="btn" id="b-continue" hidden>Continuar la odisea<small id="b-continue-s"></small></button>
         <button class="btn" id="b-new">Nueva odisea<small>Nueve épocas · 44 pensadoras y pensadores</small></button>
+        <button class="btn qd-btn" id="b-qd">¿Qué diría…?<small>Pregunta lo que quieras a varios pensadores a la vez</small></button>
         <button class="btn" id="b-travel">Viajar por las épocas<small>Y descubre las sabidurías del mundo</small></button>
       </div>
       <div class="minis">
@@ -649,12 +689,14 @@ body.touch .gm.boss { width: 30px; height: 30px; }
   <section id="oracle" class="screen dim" hidden>
     <div class="panel">
       <div class="eyebrow" id="o-date"></div>
-      <div class="numeral" style="font-size:clamp(3rem,12vw,5rem)">Δ</div>
-      <h2 class="era-name">El Oráculo de Delfos</h2>
+      <h2 class="era-name">Δ · El Oráculo de Delfos</h2>
       <p class="era-meta">«Conócete a ti mismo», decía la inscripción del templo.</p>
+      <p class="o-streak" id="o-streak"></p>
+      <div class="o-week" id="o-week" aria-label="Tus últimos siete días"></div>
       <hr class="rule">
-      <p class="story" id="o-text">Cada día el oráculo plantea diez preguntas, de Tales a nuestros días. Son las mismas para todo el mundo: compara tu resultado y compártelo. Tienes 15 segundos por pregunta y las rachas multiplican la puntuación.</p>
+      <p class="story" id="o-text">Diez preguntas al día, de todas las épocas y culturas, las mismas para todo el mundo. 15 segundos por pregunta. Vuelve cada día para mantener tu racha y compite en el ranking de la semana.</p>
       <div class="oracle-done" id="o-done" hidden></div>
+      <p class="o-idea" id="o-idea"></p>
       <div class="btns">
         <button class="btn primary" id="b-ostart">Consultar al oráculo</button>
         <button class="btn" id="b-ofame">Ver el Salón de la Fama</button>
@@ -670,9 +712,11 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <div class="grid-emoji" id="oe-grid"></div>
       <div class="final-stats" id="oe-stats" style="grid-template-columns:repeat(3,1fr)"></div>
       <p class="story" id="oe-msg"></p>
+      <p class="o-streak" id="oe-streak"></p>
       <textarea id="oe-share" readonly rows="6" aria-label="Texto para compartir"></textarea>
       <div class="btns">
         <button class="btn primary" id="b-oshare">Copiar resultado para compartir</button>
+        <button class="btn" id="b-oqd">¿Qué dirían los filósofos de la pregunta de hoy?</button>
         <button class="btn" id="b-ofame2">Salón de la Fama</button>
         <button class="btn ghost" id="b-omenu">Volver al menú</button>
       </div>
@@ -683,7 +727,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
     <div class="panel" style="width:min(640px,100%)">
       <div class="eyebrow">Los mejores pensadores</div>
       <h2 class="era-name">Salón de la Fama</h2>
-      <div class="seg tabs" id="f-tabs"><button data-v="daily" class="on">Oráculo de hoy</button><button data-v="odyssey">Odisea completa</button></div>
+      <div class="seg tabs" id="f-tabs"><button data-v="daily" class="on">Hoy</button><button data-v="week">Esta semana</button><button data-v="odyssey">Odisea completa</button></div>
       <div class="alias"><label for="f-alias">Tu nombre de filósofo</label><input id="f-alias" maxlength="22" placeholder="p. ej. Hipatia de Alejandría" autocomplete="off"><button class="mini-b" id="f-save">Guardar</button></div>
       <ol class="board" id="f-list"></ol>
       <p class="story" id="f-note" style="font-size:0.98rem"></p>
@@ -715,6 +759,29 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="btn" id="b-psettings">Ajustes</button>
         <button class="btn ghost" id="b-quit">Salir al menú</button>
       </div>
+    </div>
+  </section>
+
+  <section id="qd" class="screen dim" hidden>
+    <div class="codex-wrap qd-wrap">
+      <div class="eyebrow" style="text-align:center">Pensadores de todas las épocas y culturas</div>
+      <h2>¿Qué diría…?</h2>
+      <p class="codex-count">Haz una pregunta de hoy y escucha cómo la responderían, a la vez, cuatro pensadores muy distintos.</p>
+      <div class="qd-ask">
+        <textarea id="qd-in" maxlength="240" rows="2" placeholder="Por ejemplo: ¿qué opinas de las redes sociales?" aria-label="Tu pregunta"></textarea>
+        <div class="qd-sugg" id="qd-sugg"></div>
+        <div class="qd-who"><span class="qd-lbl">Responden:</span><div class="qd-picks" id="qd-picks"></div>
+          <button class="mini-b" id="qd-dice">🎲 Sorpréndeme</button><button class="mini-b" id="qd-add">Elegir pensadores</button></div>
+        <div class="qd-list" id="qd-list" hidden></div>
+        <div class="btns"><button class="btn primary" id="qd-go">Preguntar a los pensadores</button></div>
+        <p class="qd-note" id="qd-note"></p>
+      </div>
+      <div class="qd-out" id="qd-out" aria-live="polite"></div>
+      <div class="qd-share" id="qd-share" hidden>
+        <textarea id="qd-sharetext" readonly rows="5" aria-label="Texto para compartir"></textarea>
+        <div class="btns"><button class="btn primary" id="qd-sharebtn">Compartir estas respuestas</button></div>
+      </div>
+      <div class="btns"><button class="btn ghost" id="qd-back">Volver</button></div>
     </div>
   </section>
 

@@ -28,6 +28,9 @@ const ACH = [
   { id: 'nuestra', i: 'Ñ', n: 'Nuestra América', d: 'Comprende las ideas de los cinco pensadores de América Latina.' },
   { id: 'mundo1', i: 'Ш', n: 'Primer viaje', d: 'Vence a un maestro de las sabidurías del mundo.' },
   { id: 'mundo', i: 'Ⴟ', n: 'Ubuntu', d: 'Vence a los seis maestros de las sabidurías del mundo.' },
+  { id: 'quediria', i: '?', n: '¿Qué diría…?', d: 'Haz tu primera pregunta a varios pensadores a la vez.' },
+  { id: 'quediria10', i: '‽', n: 'Ágora abierta', d: 'Haz 10 preguntas en «¿Qué diría…?».' },
+  { id: 'racha7', i: '🔥', n: 'Fiel al oráculo', d: 'Consulta al oráculo siete días seguidos.' },
   { id: 'viajero', i: 'Ω', n: 'Viajero del tiempo', d: 'Descubre todos los lugares de todas las épocas.' },
   { id: 'kant', i: 'Κ', n: 'Sapere aude', d: 'Completa la odisea venciendo a Paulo Freire, el último maestro.' },
   { id: 'rey', i: 'Β', n: 'Rey filósofo', d: 'Termina la odisea con el rango más alto.' },
@@ -93,7 +96,7 @@ const Fame = {
     });
     return this.chain;
   },
-  submitDaily(r) { return this.save({ dailyDate: r.date, dailyScore: r.score, dailyCorrect: r.correct, dailyGrid: r.grid }); },
+  submitDaily(r) { return this.save({ dailyDate: r.date, dailyScore: r.score, dailyCorrect: r.correct, dailyGrid: r.grid, weekKey: Oracle.weekKey(r.date), weekScore: Oracle.weekScore(), streakDays: Oracle.streakDays() }); },
   async submitOdyssey(score, rankName, acc) {
     const best = store.get('odisea-razon.best', 0); if (score > best) store.set('odisea-razon.best', score);
     if (!this.ready) return;
@@ -102,36 +105,36 @@ const Fame = {
   },
   async load(tab) {
     const col = this.db.collection('fama');
-    const q = tab === 'daily' ? col.where('dailyDate', '==', Oracle.today()).orderBy('dailyScore', 'desc').limit(30) : col.where('best', '>', 0).orderBy('best', 'desc').limit(30);
+    const q = tab === 'daily' ? col.where('dailyDate', '==', Oracle.today()).orderBy('dailyScore', 'desc').limit(30) : tab === 'week' ? col.where('weekKey', '==', Oracle.weekKey()).orderBy('weekScore', 'desc').limit(30) : col.where('best', '>', 0).orderBy('best', 'desc').limit(30);
     return Promise.race([q.get(), new Promise((_, rej) => setTimeout(() => rej({ code: 'timeout' }), 10000))]);
   },
   async render() {
     const list = $('#f-list'), note = $('#f-note'); list.innerHTML = '';
     document.querySelectorAll('#f-tabs button').forEach((b) => b.classList.toggle('on', b.dataset.v === this.tab));
     $('#f-alias').value = this.alias();
-    const mine = this.tab === 'daily' ? store.get(DAILY_KEY, {})[Oracle.today()] : null;
+    const mine = this.tab === 'daily' ? store.get(DAILY_KEY, {})[Oracle.today()] : null; const myWeek = Oracle.weekScore();
     const localBest = store.get('odisea-razon.best', 0);
     if (!this.ready) {
       const li = document.createElement('li'); li.className = 'empty';
-      li.textContent = this.tab === 'daily' ? (mine ? `Tu resultado de hoy: ${mine.correct}/10 · ${mine.score.toLocaleString('es-ES')} de sabiduría` : 'Aún no has consultado al oráculo hoy.') : (localBest ? `Tu mejor odisea: ${localBest.toLocaleString('es-ES')} de sabiduría` : 'Completa la odisea para entrar en el salón.');
+      li.textContent = this.tab === 'week' ? (myWeek ? `Tu sabiduría esta semana: ${myWeek.toLocaleString('es-ES')} · 🔥 ${Oracle.streakDays()} días seguidos` : 'Aún no has consultado al oráculo esta semana.') : this.tab === 'daily' ? (mine ? `Tu resultado de hoy: ${mine.correct}/10 · ${mine.score.toLocaleString('es-ES')} de sabiduría` : 'Aún no has consultado al oráculo hoy.') : (localBest ? `Tu mejor odisea: ${localBest.toLocaleString('es-ES')} de sabiduría` : 'Completa la odisea para entrar en el salón.');
       list.appendChild(li);
       note.textContent = 'El ranking compartido funciona en la versión publicada en claude.ai, con tu cuenta. Aquí se muestran tus marcas en este dispositivo.';
       return;
     }
-    note.textContent = this.writable ? (this.tab === 'daily' ? 'Las preguntas del oráculo son las mismas para todos hoy. Mañana, nuevas.' : 'Las mejores puntuaciones de la odisea completa.') : 'Puedes ver el ranking, pero tu acceso a esta página no permite publicar puntuaciones.';
+    note.textContent = this.writable ? (this.tab === 'week' ? 'Suma de tus oráculos de lunes a domingo. Cada lunes empieza una semana nueva.' : this.tab === 'daily' ? 'Las preguntas del oráculo son las mismas para todos hoy. Mañana, nuevas.' : 'Las mejores puntuaciones de la odisea completa.') : 'Puedes ver el ranking, pero tu acceso a esta página no permite publicar puntuaciones.';
     const loading = document.createElement('li'); loading.className = 'empty'; loading.textContent = 'Consultando los anales…'; list.appendChild(loading);
     let snap;
     try { snap = await this.load(this.tab); } catch (e) { loading.textContent = 'No se pudo cargar el ranking ahora. Inténtalo en un momento.'; return; }
     list.innerHTML = '';
     const rows = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-    if (!rows.length) { const li = document.createElement('li'); li.className = 'empty'; li.textContent = this.tab === 'daily' ? 'Nadie ha consultado al oráculo hoy todavía. ¡Sé el primero!' : 'Nadie ha completado la odisea todavía.'; list.appendChild(li); return; }
+    if (!rows.length) { const li = document.createElement('li'); li.className = 'empty'; li.textContent = this.tab === 'week' ? 'Nadie ha consultado al oráculo esta semana todavía.' : this.tab === 'daily' ? 'Nadie ha consultado al oráculo hoy todavía. ¡Sé el primero!' : 'Nadie ha completado la odisea todavía.'; list.appendChild(li); return; }
     let names = {}; try { names = await this.user.profiles(rows.filter((r) => !r.alias).map((r) => r.id)); } catch (e) { /* sin nombres */ }
     rows.forEach((r, i) => {
       const li = document.createElement('li'); li.className = (i < 3 ? 'top' + (i + 1) : '') + (r.id === this.uid ? ' me' : '');
       const n = document.createElement('span'); n.className = 'n'; n.textContent = i + 1;
       const who = document.createElement('span'); who.className = 'who'; who.textContent = String(r.alias || (names[r.id] && names[r.id].name) || 'Pensador anónimo').slice(0, 22);
-      const sub = document.createElement('small'); sub.textContent = this.tab === 'daily' ? `${r.dailyCorrect ?? '?'}/10 ${typeof r.dailyGrid === 'string' ? r.dailyGrid : ''}` : String(r.bestRank || ''); who.appendChild(sub);
-      const sc = document.createElement('span'); sc.className = 'sc'; sc.textContent = Number(this.tab === 'daily' ? r.dailyScore : r.best || 0).toLocaleString('es-ES');
+      const sub = document.createElement('small'); sub.textContent = this.tab === 'week' ? (r.streakDays > 1 ? `🔥 ${r.streakDays} días seguidos` : '') : this.tab === 'daily' ? `${r.dailyCorrect ?? '?'}/10 ${typeof r.dailyGrid === 'string' ? r.dailyGrid : ''}` : String(r.bestRank || ''); who.appendChild(sub);
+      const sc = document.createElement('span'); sc.className = 'sc'; sc.textContent = Number(this.tab === 'week' ? r.weekScore : this.tab === 'daily' ? r.dailyScore : r.best || 0).toLocaleString('es-ES');
       li.append(n, who, sc); list.appendChild(li);
     });
   },
@@ -149,18 +152,33 @@ const Oracle = {
   qs: [], i: 0, score: 0, streak: 0, best: 0, grid: [], time: 0, maxTime: 15, answered: true, practice: false, askedAt: 0, correct: 0,
   today() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; },
   label(ds) { const [y, m, d] = ds.split('-').map(Number); return new Date(y, m - 1, d).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }); },
+  dayStr(dt) { return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`; },
+  shift(ds, n) { const [y, m, d] = ds.split('-').map(Number); return this.dayStr(new Date(y, m - 1, d + n)); },
+  // número de oráculo, como un periódico: el n.º 1 fue el 1 de noviembre de 2026
+  number(ds = this.today()) { const [y, m, d] = ds.split('-').map(Number); return Math.round((new Date(y, m - 1, d) - new Date(2026, 10, 1)) / 864e5) + 1; },
+  // días seguidos consultando al oráculo (vale si hoy aún no has jugado pero ayer sí)
+  streakDays() { const all = store.get(DAILY_KEY, {}); let d = this.today(); if (!all[d]) d = this.shift(d, -1); let n = 0; while (all[d]) { n++; d = this.shift(d, -1); } return n; },
+  weekKey(ds = this.today()) { const [y, m, d] = ds.split('-').map(Number); const dt = new Date(y, m - 1, d); const wd = (dt.getDay() + 6) % 7; return this.shift(ds, -wd); },
+  weekScore() { const all = store.get(DAILY_KEY, {}); const wk = this.weekKey(); let s = 0; for (let i = 0; i < 7; i++) { const r = all[this.shift(wk, i)]; if (r) s += r.score; } return s; },
+  last7() { const all = store.get(DAILY_KEY, {}); const out = []; for (let i = 6; i >= 0; i--) { const ds = this.shift(this.today(), -i); out.push({ ds, r: all[ds] }); } return out; },
+  // idea del día: un pensador distinto cada día
+  thought(ds = this.today()) { let h = 7; for (const ch of ds + 'idea') h = (Math.imul(h, 31) + ch.charCodeAt(0)) | 0; const all = ERAS.flatMap((e) => e.sages); return all[Math.abs(h) % all.length]; },
   build(ds) {
     let h = 2166136261; for (const ch of ds + 'delfos') { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); }
-    const r = mulberry32(h >>> 0); const picks = [];
-    ERAS.forEach((e, ei) => { const s = e.sages[Math.floor(r() * e.sages.length)]; picks.push({ s, ei }); });
-    const rest = []; ERAS.forEach((e, ei) => e.sages.forEach((s) => { if (!picks.some((p) => p.s === s)) rest.push({ s, ei }); }));
-    shuffle(rest, r); picks.push(...rest.slice(0, 4));
+    const r = mulberry32(h >>> 0);
+    // diez épocas o culturas distintas cada día, un pensador de cada una
+    const eras = shuffle([...ERAS.keys()], r).slice(0, 10);
+    const picks = eras.map((ei) => ({ s: ERAS[ei].sages[Math.floor(r() * ERAS[ei].sages.length)], ei }));
     picks.sort((a, b) => a.ei - b.ei || ERAS[a.ei].sages.indexOf(a.s) - ERAS[b.ei].sages.indexOf(b.s));
     this.qs = picks.map(({ s, ei }) => { const q = s.q[Math.floor(r() * s.q.length)]; const opts = shuffle(q.a.map((t, k) => ({ t, ok: k === 0 })), r); return { s, ei, q, opts }; });
   },
   open() {
     G.prevScreen = 'title'; const ds = this.today(); const done = store.get(DAILY_KEY, {})[ds];
-    $('#o-date').textContent = 'Consulta del ' + this.label(ds);
+    $('#o-date').textContent = `Oráculo n.º ${this.number(ds)} · ${this.label(ds)}`;
+    const sd = this.streakDays();
+    $('#o-week').innerHTML = this.last7().map(({ ds: d, r }) => `<span class="${r ? 'on' : ''}${d === ds ? ' today' : ''}" title="${d}"><i>${r ? (r.correct >= 8 ? '★' : '✓') : ''}</i><small>${['L', 'M', 'X', 'J', 'V', 'S', 'D'][(new Date(d.replace(/-/g, '/')).getDay() + 6) % 7]}</small></span>`).join('');
+    $('#o-streak').textContent = sd ? `🔥 Racha de ${sd} ${sd === 1 ? 'día' : 'días'}${done ? '' : ' · ¡no la pierdas hoy!'}` : 'Empieza hoy tu racha de días';
+    const th = this.thought(ds); $('#o-idea').innerHTML = ''; { const b = document.createElement('b'); b.textContent = `Idea del día · ${th.short}: ${th.concept.name}. `; $('#o-idea').append(b, document.createTextNode(th.concept.text)); }
     const box = $('#o-done');
     if (done) {
       box.hidden = false; box.innerHTML = '';
@@ -247,23 +265,32 @@ const Oracle = {
     const [title, msg] = this.verdict();
     const res = { date: ds, score: this.score, correct: this.correct, grid: gridStr, streak: this.best };
     if (!this.practice) { const all = store.get(DAILY_KEY, {}); all[ds] = res; store.set(DAILY_KEY, all); Fame.submitDaily(res); Stats.add('oracles'); }
-    achieve('oraculo'); if (this.correct === 10) achieve('pitia');
+    achieve('oraculo'); if (this.correct === 10) achieve('pitia'); if (!this.practice && this.streakDays() >= 7) achieve('racha7');
     $('#oe-eye').textContent = this.practice ? 'Práctica · no cuenta para el ranking' : 'El oráculo ha hablado · ' + this.label(ds);
     $('#oe-title').textContent = title; $('#oe-grid').textContent = gridStr; $('#oe-msg').textContent = msg;
     $('#oe-stats').innerHTML = `<div><b>${this.correct}/10</b><span>Aciertos</span></div><div><b>${this.score.toLocaleString('es-ES')}</b><span>Sabiduría</span></div><div><b>${this.best}</b><span>Mejor racha</span></div>`;
-    $('#oe-share').value = `Odisea de la Razón · Oráculo de Delfos\n${this.label(ds)}\n${gridStr}\n${this.correct}/10 · ${this.score.toLocaleString('es-ES')} de sabiduría · «${title}»\n¿Puedes superarme? https://claude.ai/artifact/5C4Rz4jpDYiEaEYcdbUJew`;
+    const sd = this.streakDays();
+    $('#oe-streak').textContent = this.practice ? '' : `🔥 Racha de ${sd} ${sd === 1 ? 'día' : 'días'} · Esta semana: ${this.weekScore().toLocaleString('es-ES')} de sabiduría`;
+    $('#oe-share').value = `Oráculo de Delfos n.º ${this.number(ds)} · ${this.correct}/10${sd > 1 && !this.practice ? ` · 🔥${sd}` : ''}\n${gridStr}\n«${title}» · ${this.score.toLocaleString('es-ES')} de sabiduría\nOdisea de la Razón: ¿puedes superarme?\nhttps://claude.ai/artifact/5C4Rz4jpDYiEaEYcdbUJew`;
+    $('#b-oshare').textContent = navigator.share ? 'Compartir mi resultado' : 'Copiar resultado para compartir';
     G.prevScreen = 'title'; show('oracle-end'); refreshTitleExtras();
   },
 };
-$('#b-oshare').addEventListener('click', () => {
-  const ta = $('#oe-share'); const text = ta.value; const done = () => { $('#b-oshare').textContent = '¡Copiado! Pégalo donde quieras'; Audio.pickup(); };
-  const fallback = () => { ta.focus(); ta.select(); try { if (document.execCommand('copy')) done(); else $('#b-oshare').textContent = 'Selecciona el texto y cópialo'; } catch (e) { $('#b-oshare').textContent = 'Selecciona el texto y cópialo'; } };
+function shareOrCopy(text, btn, ta) {
+  if (navigator.share) { navigator.share({ text }).then(() => { Audio.pickup(); }, () => {}); return; }
+  copyText(text, btn, ta);
+}
+function copyText(text, btn, ta) {
+  const done = () => { btn.textContent = '¡Copiado! Pégalo donde quieras'; Audio.pickup(); };
+  const fallback = () => { if (!ta) { btn.textContent = 'No se pudo copiar'; return; } ta.focus(); ta.select(); try { if (document.execCommand('copy')) done(); else btn.textContent = 'Selecciona el texto y cópialo'; } catch (e) { btn.textContent = 'Selecciona el texto y cópialo'; } };
   try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback(); } catch (e) { fallback(); }
-});
+}
+$('#b-oshare').addEventListener('click', () => shareOrCopy($('#oe-share').value, $('#b-oshare'), $('#oe-share')));
 function refreshTitleExtras() {
   const done = store.get(DAILY_KEY, {})[Oracle.today()]; const b = $('#b-oracle');
   b.classList.toggle('fresh', !done);
-  $('#b-oracle-s').textContent = done ? `Hoy: ${done.grid} · ${done.score.toLocaleString('es-ES')}` : '10 preguntas · las mismas para todos';
+  const sd = Oracle.streakDays();
+  $('#b-oracle-s').textContent = done ? `Hoy: ${done.grid}${sd > 1 ? ` · 🔥${sd}` : ''}` : sd ? `🔥 Racha de ${sd} ${sd === 1 ? 'día' : 'días'} · ¡no la pierdas!` : '10 preguntas · las mismas para todos';
   updateLogrosCount();
 }
 on('#b-oracle', () => Oracle.open());
