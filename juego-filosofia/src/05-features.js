@@ -31,6 +31,9 @@ const ACH = [
   { id: 'quediria', i: '?', n: '¿Qué diría…?', d: 'Haz tu primera pregunta a varios pensadores a la vez.' },
   { id: 'quediria10', i: '‽', n: 'Ágora abierta', d: 'Haz 10 preguntas en «¿Qué diría…?».' },
   { id: 'racha7', i: '🔥', n: 'Fiel al oráculo', d: 'Consulta al oráculo siete días seguidos.' },
+  { id: 'aula', i: '✎', n: 'En clase', d: 'Únete a una clase con un código del modo aula.' },
+  { id: 'aula100', i: '✔', n: 'Tarea completa', d: 'Completa todas las tareas de tu clase.' },
+  { id: 'docente', i: '☗', n: 'Maestro de la Academia', d: 'Crea una tarea para tu clase en el modo aula.' },
   { id: 'viajero', i: 'Ω', n: 'Viajero del tiempo', d: 'Descubre todos los lugares de todas las épocas.' },
   { id: 'kant', i: 'Κ', n: 'Sapere aude', d: 'Completa la odisea venciendo a Paulo Freire, el último maestro.' },
   { id: 'rey', i: 'Β', n: 'Rey filósofo', d: 'Termina la odisea con el rango más alto.' },
@@ -291,7 +294,7 @@ function refreshTitleExtras() {
   b.classList.toggle('fresh', !done);
   const sd = Oracle.streakDays();
   $('#b-oracle-s').textContent = done ? `Hoy: ${done.grid}${sd > 1 ? ` · 🔥${sd}` : ''}` : sd ? `🔥 Racha de ${sd} ${sd === 1 ? 'día' : 'días'} · ¡no la pierdas!` : '10 preguntas · las mismas para todos';
-  updateLogrosCount();
+  updateLogrosCount(); if (typeof refreshAulaButton === 'function') refreshAulaButton();
 }
 on('#b-oracle', () => Oracle.open());
 on('#b-ostart', () => Oracle.start());

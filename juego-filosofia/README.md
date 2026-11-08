@@ -12,6 +12,15 @@ ratón y `E` para interactuar.
 
 ## Qué puedes hacer
 
+- **Modo aula** (funciona sin servidor):
+  - *Docente*: crea una tarea eligiendo pensadores y qué cuenta (lección, encargo, debate, libro) y
+    obtiene un código de clase con instrucciones para compartir. Pega las entregas de sus
+    estudiantes y ve una tabla de progreso que puede copiar a una hoja de cálculo.
+  - *Estudiante*: escribe el código y su nombre, ve su tarea con el progreso, viaja a cada pensador
+    y entrega un texto firmado (las entregas modificadas se rechazan).
+  - *Proyector y fichas*: debate por equipos en la pizarra digital y fichas imprimibles con
+    solucionario.
+
 - **¿Qué diría…?**: haz una pregunta actual (las redes sociales, la IA, la felicidad…) y cuatro
   pensadores de épocas y culturas distintas la responden a la vez, en personaje, con la IA de
   Claude. Hay una pregunta del día y las respuestas se pueden compartir.
@@ -74,7 +83,7 @@ node build.mjs   # genera index.html (viaje 3D) y cartas.html (versión de duelo
 - `src/02e-books.js` libros para estudiar
 - `src/01d-pensadoras.js` filósofas de la Antigüedad al Renacimiento · `src/01e-latinoamerica.js` y `src/02g-latinoamerica.js` época IX
 - `src/01f-mundo.js` y `src/02h-mundo.js` ruta «Sabidurías del mundo»
-- `src/05b-quediria.js` «¿Qué diría…?»
+- `src/05b-quediria.js` «¿Qué diría…?» · `src/06-aula.js` modo aula
 - `src/02d-narration.js` reproductor de la voz grabada · `audio/` paquetes MP3 e índice
 - `tools/` generación de la voz: `narration-text.mjs` (frases) → `narrate.py` (Piper TTS + ffmpeg) → `narration-index.mjs`
 - `cartas/` versión alternativa de duelo de cartas en 2D (`cartas.html`)
