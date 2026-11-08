@@ -6,7 +6,7 @@
 const LESSON_KEY = 'odisea-razon.lecciones';
 const Lesson = {
   data: null, sage: null, parts: [], i: 0, s: 0, sentences: [], playing: false, from: 'world', rate: 1, gen: 0, timer: 0, prevState: null,
-  hasVoice() { return 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined'; },
+  hasVoice() { return Narr.has(this.data.id, (LESSONS[this.data.id] || [''])[0]) || ('speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined'); },
   // abre la lección de un filósofo (data de ERAS); sage = objeto 3D si estamos junto a él
   open(data, sage) {
     this.data = data; this.sage = sage || null; this.parts = LESSONS[data.id] || []; this.i = 0; this.s = 0;
@@ -24,7 +24,7 @@ const Lesson = {
     Audio.click();
   },
   duck(on) { if (!Audio.ctx) return; const t = Audio.ctx.currentTime; Audio.music.gain.setTargetAtTime(on ? 0.55 * G.settings.music * 0.18 : 0.55 * G.settings.music, t, 0.4); },
-  split(text) { return (text.match(/[^.!?¿¡]*(?:[¿¡][^?!]*[?!]|[^.!?]+[.!?]+)\s*|[^.!?]+$/g) || [text]).map((x) => x.trim()).filter(Boolean); },
+  split(text) { return narrSplit(text); },
   render() {
     const p = this.parts[this.i] || ''; this.sentences = this.split(p);
     const box = $('#ls-text'); box.innerHTML = '';
@@ -44,11 +44,7 @@ const Lesson = {
     const text = this.sentences[this.s]; if (!text) return;
     this.mark();
     const after = () => { if (gen !== this.gen || !this.playing) return; this.advance(true); };
-    if (this.hasVoice()) {
-      Voice.utter(text, this.sage || { data: this.data, boss: !!this.data.boss }, this.rate, after);
-      // seguridad: si el navegador no avisa del final, avanzamos igualmente
-      this.timer = setTimeout(after, (text.length / 11 + 3) * 1000 / this.rate);
-    } else this.timer = setTimeout(after, Math.max(2200, text.length * 62) / this.rate);
+    Voice.utter(text, this.sage || { data: this.data, boss: !!this.data.boss }, this.rate, after);
     if (this.sage) this.sage.gesture = Math.max(this.sage.gesture, 0.6);
   },
   advance(auto) {
@@ -96,18 +92,6 @@ const Lesson = {
     camera.position.copy(eye); camera.rotation.set(player.pitch, player.yaw, 0, 'YXZ');
     camera.fov = damp(camera.fov, baseFov() * 0.8, 2, dt); camera.updateProjectionMatrix();
   },
-};
-// voz por frases, con aviso al terminar
-Voice.utter = function (text, sage, rate, onend) {
-  try {
-    speechSynthesis.cancel(); if (!this.v) this.pick();
-    const u = new SpeechSynthesisUtterance(text); u.lang = 'es-ES'; if (this.v) u.voice = this.v;
-    const id = sage && sage.data ? sage.data.id : ''; const h = [...id].reduce((a, c) => a + c.charCodeAt(0), 0);
-    const boss = sage && (sage.boss || (sage.data && sage.data.boss));
-    u.pitch = boss ? 0.62 : 0.8 + (h % 5) * 0.08; u.rate = (boss ? 0.92 : 0.98) * rate; u.volume = Math.min(1, 0.4 + G.settings.sfx);
-    u.onend = onend; u.onerror = () => {};
-    speechSynthesis.speak(u);
-  } catch (e) { /* sin voz */ }
 };
 $('#ls-play').addEventListener('click', () => { if (Lesson.done) { Lesson.done = false; $('#ls-reward').hidden = true; Lesson.i = 0; Lesson.s = 0; Lesson.render(); Lesson.play(); } else Lesson.toggle(); });
 $('#ls-next').addEventListener('click', () => { if (Lesson.done) Lesson.close(); else Lesson.next(); });

@@ -35,7 +35,8 @@ console.log(`cartas.html (duelo de cartas): ${(c.full.length / 1024).toFixed(0)}
 
 // --- Aventura 3D (versión anterior)
 const parts3d = readdirSync(join(here, 'src')).filter((f) => /^\d\d[a-z]?-.*\.js$/.test(f)).sort().map((f) => 'src/' + f);
-const a = page(read('src/template.html'), join_(parts3d), 'Aventura 3D de filosofía en primera persona: de los presocráticos a Kant.');
+let narr = '{}'; try { narr = read('audio/index.json'); } catch (e) { console.log('(sin audio/index.json: solo voz del sistema)'); }
+const a = page(read('src/template.html'), `const NARR_INDEX = ${narr};\n` + join_(parts3d), 'Aventura 3D de filosofía en primera persona: de los presocráticos a Kant.');
 writeFileSync(join(here, 'index.html'), a.full);
 console.log(`index.html (viaje 3D): ${(a.full.length / 1024).toFixed(0)} KB`);
 

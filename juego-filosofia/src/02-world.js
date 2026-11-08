@@ -491,7 +491,8 @@ function buildWorld(idx) {
   const W = newWorld(idx); const th = W.theme; const era = ERAS[idx];
   const regs = era.sages.filter((s) => !s.boss);
   const sp = stationPositions(regs.length);
-  W._near = (x, z, d) => sp.some(([sx, sz]) => Math.hypot(sx - x, sz - z) < d + 3) || Math.hypot(x, z - W.bossPos.z) < d + 5 || (POIS[idx] || []).some((p) => Math.hypot(p.at[0] - x, p.at[1] - z) < d + 1.5);
+  const npcPts = (NPCS[idx] || []).flatMap((n) => [0, 0.5, 1].map((k) => [n.at[0] + n.path[0] * k, n.at[1] + n.path[1] * k]));
+  W._near = (x, z, d) => npcPts.some(([nx, nz]) => Math.hypot(nx - x, nz - z) < d + 1) || sp.some(([sx, sz]) => Math.hypot(sx - x, sz - z) < d + 3) || Math.hypot(x, z - W.bossPos.z) < d + 5 || (POIS[idx] || []).some((p) => Math.hypot(p.at[0] - x, p.at[1] - z) < d + 1.5);
   W.floors = [];
   addBounds(W);
   W.sky = makeSky(th); W.group.add(W.sky);

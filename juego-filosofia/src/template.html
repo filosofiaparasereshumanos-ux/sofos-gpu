@@ -221,6 +221,12 @@ kbd { font-family: var(--display); font-size: 0.78em; border: 1px solid var(--li
 .tk-op:hover { border-color: var(--gold); background: rgba(214,168,74,0.16); }
 .tk-op.ai { border-color: rgba(143,233,255,0.5); color: #cdf4ff; background: rgba(143,233,255,0.08); }
 .tk-op.duel { border-color: var(--gold); color: var(--gold-bright); background: rgba(214,168,74,0.18); font-family: var(--display); letter-spacing: 0.08em; font-size: 0.9rem; }
+.tk-op.quest { border-color: #f0b85a; color: #ffd98a; background: rgba(240,184,90,0.16); font-family: var(--display); letter-spacing: 0.06em; font-size: 0.9rem; }
+.tk-op.ans { flex: 1 1 100%; text-align: left; border-radius: 12px; }
+.tk-quest { list-style: none; margin: 10px 0 0; padding: 10px 12px; border: 1px dashed rgba(240,184,90,0.5); border-radius: 10px; font-size: 0.95rem; color: var(--parchment-dim); }
+.tk-quest li { margin: 3px 0; }
+.tk-quest li.ok { color: #bfe6a8; }
+.tk-quest li b { color: var(--gold-bright); font-weight: 600; }
 .tk-op.bye { border-color: transparent; color: var(--parchment-dim); }
 .tk-ask { margin-top: 12px; }
 .tk-hint { margin: 0 0 6px; font-size: 0.9rem; color: var(--parchment-dim); }
@@ -564,6 +570,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       </header>
       <p class="tk-you" id="tk-you"></p>
       <p class="tk-text" id="tk-text" aria-live="polite"></p>
+      <ul class="tk-quest" id="tk-quest" hidden></ul>
       <div class="tk-ask" id="tk-ask" hidden>
         <p class="tk-hint" id="tk-hint"></p>
         <div class="tk-row"><input id="tk-in" maxlength="300" placeholder="Por ejemplo: ¿qué es para ti la felicidad?" autocomplete="off" aria-label="Tu pregunta"><button class="btn primary" id="tk-send">Preguntar</button></div>

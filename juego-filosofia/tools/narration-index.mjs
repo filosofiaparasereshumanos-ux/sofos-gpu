@@ -1,0 +1,19 @@
+// Crea audio/index.json (dónde está cada frase) a partir de los trabajos y los tiempos de narrate.py
+//   node tools/narration-index.mjs narr-jobs.json narr-timings.json
+import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
+import vm from 'node:vm';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+const ctx = {}; vm.createContext(ctx); vm.runInContext(readFileSync(join(root, 'src/02d-narration.js'), 'utf8').split('// reproductor')[0] + ';globalThis.h = narrHash;', ctx);
+const jobs = JSON.parse(readFileSync(process.argv[2], 'utf8')), tm = JSON.parse(readFileSync(process.argv[3], 'utf8'));
+const have = new Set(readdirSync(join(root, 'audio')).filter((f) => f.endsWith('.mp3')).map((f) => f.slice(0, -4)));
+const idx = { spk: {}, p: {} };
+for (const j of jobs) {
+  const t = tm[j.name]; if (!t || !have.has(j.name)) { console.error('falta', j.name); continue; }
+  if (t.length !== j.sentences.length) { console.error('desfasado', j.name); continue; }
+  const m = {}; j.sentences.forEach((s, k) => { m[ctx.h(s)] = [Math.round(t[k][0] * 100), Math.round(t[k][1] * 100)]; });
+  idx.p[j.name] = m; (idx.spk[j.speaker] = idx.spk[j.speaker] || []).push(j.name);
+}
+writeFileSync(join(root, 'audio/index.json'), JSON.stringify(idx));
+console.log('paquetes:', Object.keys(idx.p).length, 'bytes:', JSON.stringify(idx).length);

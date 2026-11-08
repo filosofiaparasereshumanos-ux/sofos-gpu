@@ -148,15 +148,17 @@ class Sage {
     this.maxConv = this.boss ? (this.data.final ? 7 : 5) : 3; this.conv = this.maxConv;
     this.breaks = []; // sin fases de combate: es un viaje de conocimiento
     this.state = this.boss ? 'sealed' : 'idle'; // sealed | idle | shielded | defeated
-    this.order = shuffle([...this.data.q.keys()]); this.qptr = 0;
+    // el maestro también pregunta por los lugares de su época
+    this.qs = this.boss ? [...this.data.q, ...(POIS[world.idx] || []).filter((p) => p.q).map((p) => ({ ...p.q, place: p.name }))] : this.data.q;
+    this.order = shuffle([...this.qs.keys()]); this.qptr = 0;
     this.t = Math.random() * 10; this.gesture = 0; this.shootCd = 2;
     this.radius = this.boss ? 1.3 : 0.8;
     this.shield = null;
   }
   get pos() { return this.group.position; }
   nextQuestion() {
-    if (this.qptr >= this.order.length) { this.order = shuffle([...this.data.q.keys()]); this.qptr = 0; }
-    return this.data.q[this.order[this.qptr++]];
+    if (this.qptr >= this.order.length) { this.order = shuffle([...this.qs.keys()]); this.qptr = 0; }
+    return this.qs[this.order[this.qptr++]];
   }
   setShield(on) {
     if (on && !this.shield) {

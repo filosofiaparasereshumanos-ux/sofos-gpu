@@ -81,17 +81,35 @@ async function keepAwake() { try { if ('wakeLock' in navigator && !wakeLock) { w
 const Voice = {
   v: null,
   pick() { try { const vs = speechSynthesis.getVoices(); this.v = vs.find((v) => /^es[-_]ES/i.test(v.lang)) || vs.find((v) => /^es/i.test(v.lang)) || null; } catch (e) { /* sin voces */ } },
-  say(text, sage) {
-    if (!G.settings.voices || !('speechSynthesis' in window)) return;
+  // quién habla: un pensador, un ciudadano o (null) el narrador
+  spk(who) { return who ? (who.npc ? who.npc.id : who.data ? who.data.id : 'narr') : 'narr'; },
+  available(who, text) { return Narr.has(this.spk(who), text) || ('speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined'); },
+  say(text, who) {
+    if (!G.settings.voices) return;
+    this.stop();
+    if (Narr.play(this.spk(who), text, { fallback: () => this.synth(text, who, 1, null) })) return;
+    this.synth(text, who, 1, null);
+  },
+  // voz del sistema (si el navegador la tiene)
+  synth(text, who, rate, onend) {
+    if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') { if (onend) setTimeout(onend, Math.max(2000, text.length * 62) / rate); return; }
     try {
       speechSynthesis.cancel(); if (!this.v) this.pick();
       const u = new SpeechSynthesisUtterance(text); u.lang = 'es-ES'; if (this.v) u.voice = this.v;
-      const h = sage ? [...sage.data.id].reduce((a, c) => a + c.charCodeAt(0), 0) : 0;
-      u.pitch = sage ? (sage.boss ? 0.6 : 0.78 + (h % 5) * 0.09) : 1; u.rate = sage && sage.boss ? 0.9 : 1.02; u.volume = Math.min(1, 0.3 + G.settings.sfx);
+      const id = this.spk(who); const h = [...id].reduce((a, c) => a + c.charCodeAt(0), 0);
+      const boss = who && (who.boss || (who.data && who.data.boss)); const fem = who && who.npc && who.npc.npc.female;
+      u.pitch = !who ? 1 : boss ? 0.62 : fem ? 1.15 : 0.8 + (h % 5) * 0.08; u.rate = (boss ? 0.92 : 0.98) * rate; u.volume = Math.min(1, 0.4 + G.settings.sfx);
+      if (onend) { let fired = false; const once = () => { if (!fired) { fired = true; onend(); } }; u.onend = once; u.onerror = once; setTimeout(once, (text.length / 11 + 3) * 1000 / rate); }
       speechSynthesis.speak(u);
-    } catch (e) { /* sin voz */ }
+    } catch (e) { if (onend) setTimeout(onend, 2000); }
   },
-  stop() { try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch (e) { /* sin voz */ } },
+  // frase a frase, con aviso al terminar (lecciones)
+  utter(text, who, rate, onend) {
+    this.stop();
+    if (G.settings.voices && Narr.play(this.spk(who), text, { rate, onend, fallback: () => this.synth(text, who, rate, onend) })) return;
+    if (G.settings.voices) this.synth(text, who, rate, onend); else if (onend) setTimeout(onend, Math.max(2200, text.length * 62) / rate);
+  },
+  stop() { Narr.stop(); try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch (e) { /* sin voz */ } },
 };
 try { if ('speechSynthesis' in window) speechSynthesis.onvoiceschanged = () => Voice.pick(); } catch (e) { /* sin voz */ }
 document.addEventListener('visibilitychange', () => {
@@ -270,6 +288,7 @@ function collide(p, r) {
       if (d2 < r * r && d2 > 1e-8) { const d = Math.sqrt(d2); p.x += (dx / d) * (r - d); p.z += (dz / d) * (r - d); }
     }
   }
+  for (const s of citizens) { const dx = p.x - s.pos.x, dz = p.z - s.pos.z; const rr = r + s.radius; const d2 = dx * dx + dz * dz; if (d2 < rr * rr && d2 > 1e-8) { const d = Math.sqrt(d2); p.x += (dx / d) * (rr - d); p.z += (dz / d) * (rr - d); } }
   for (const s of sages) { const dx = p.x - s.pos.x, dz = p.z - s.pos.z; const rr = r + s.radius; const d2 = dx * dx + dz * dz; if (d2 < rr * rr && d2 > 1e-8) { const d = Math.sqrt(d2); p.x += (dx / d) * (rr - d); p.z += (dz / d) * (rr - d); } }
 }
 function pointBlocked(p) {
@@ -407,7 +426,7 @@ function epoje() {
 // ============================================================================
 //  MUNDO, ENTIDADES Y DIRECTOR
 // ============================================================================
-let world = null; let sages = []; let enemies = []; let bolts = []; let pickups = []; let tAcc = 0;
+let world = null; let sages = []; let citizens = []; let enemies = []; let bolts = []; let pickups = []; let tAcc = 0;
 const director = { budget: 0, timer: 0, queue: [] };
 const game = { player, particles, get eraIdx() { return G.eraIdx; }, spawnBolt, hurtPlayer };
 
@@ -416,7 +435,7 @@ function disposeWorld() {
   scene.remove(world.group);
   world.group.traverse((o) => { if (o.geometry && !Object.values(SHELL_GEO).includes(o.geometry) && o.geometry !== BOLT_GEO) o.geometry.dispose(); });
   for (const b of bolts) b.kill(); for (const p of pickups) p.kill();
-  world = null; sages = []; enemies = []; bolts = []; pickups = []; particles.clear();
+  world = null; sages = []; citizens = []; enemies = []; bolts = []; pickups = []; particles.clear();
 }
 function loadWorld(idx) {
   disposeWorld();
@@ -429,6 +448,7 @@ function loadWorld(idx) {
   lamp.userData.light.color.set(th.lampCol); lamp.userData.flame.material = glow(th.lampCol, 4);
   lamp.userData.light.intensity = th.indoor || th.stars ? 5 : 2.5;
   sages = world.stations.map((st, i) => new Sage(world, st, i));
+  citizens = (NPCS[idx] || []).map((n) => new Citizen(world, n));
   world.beam = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.8, 40, 20, 1, true), new THREE.MeshBasicMaterial({ color: new THREE.Color(world.theme.accent).multiplyScalar(1.6), transparent: true, opacity: 0.2, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false, fog: false }));
   world.beam.geometry.translate(0, 20, 0); world.beam.visible = false; world.group.add(world.beam); input.auto = false;
   world.jumpRing = new THREE.Mesh(new THREE.RingGeometry(0.45, 0.62, 32), new THREE.MeshBasicMaterial({ color: new THREE.Color(0x8fe9ff).multiplyScalar(2.5), transparent: true, opacity: 0.9, side: THREE.DoubleSide, depthWrite: false, toneMapped: false }));
@@ -548,6 +568,7 @@ function updateEmitters(dt) {
   }
 }
 function updateSages(dt, inDuel) {
+  for (const c of citizens) c.update(dt, player, G.state === 'talk' && Talk.sage === c);
   for (const s of sages) {
     s.update(dt, tAcc, player, inDuel && Duel.sage === s);
     if (s.state === 'shielded' && G.state === 'play') {
@@ -736,6 +757,7 @@ function updatePrompt() {
   const tact = $('#t-act');
   let txt = '', can = false;
   if (s) { txt = IS_TOUCH ? `Hablar con <b>${s.data.short}</b>` : `<b>E</b> · Hablar con ${s.data.short}`; can = true; }
+  else if (th && th.npc) { txt = IS_TOUCH ? `Hablar con <b>${th.npc.npc.name}</b>` : `<b>E</b> · Hablar con ${th.npc.npc.name}`; can = true; }
   else if (th && th.poi) { txt = IS_TOUCH ? `Descubrir: <b>${th.poi.name}</b>` : `<b>E</b> · Descubrir: ${th.poi.name}`; can = true; }
   const tg = currentTarget();
   if (!txt) {
@@ -746,7 +768,7 @@ function updatePrompt() {
   ch.classList.toggle('talk', can);
   const tl = $('#t-lesson'); const showL = !!(s && (s.state === 'idle' || s.state === 'defeated')); if (tl && tl._on !== showL) { tl._on = showL; tl.hidden = !showL; }
   if (tact) {
-    const label = s ? 'Hablar' : can ? 'Descubrir' : input.auto ? 'Caminando…' : tg ? 'Ir a ' + tg.name.split(' ')[0] : 'Explorar';
+    const label = s || (th && th.npc) ? 'Hablar' : can ? 'Descubrir' : input.auto ? 'Caminando…' : tg ? 'Ir a ' + tg.name.split(' ')[0] : 'Explorar';
     if (tact._label !== label) { tact._label = label; tact.textContent = label; }
     const st = can ? 'ready' : tg ? 'go' : '';
     if (tact._st !== st) { tact._st = st; tact.classList.toggle('ready', st === 'ready'); tact.classList.toggle('go', st === 'go'); }
@@ -776,15 +798,27 @@ function nearestPoi() {
   return best;
 }
 // lo más cercano con lo que se puede interactuar: un pensador o un lugar
+function nearestCitizen() {
+  let best = null, bd = 3.3; const fwd = forwardVec(_v1).setY(0).normalize();
+  for (const c of citizens) {
+    const dx = c.pos.x - player.pos.x, dz = c.pos.z - player.pos.z; const d = Math.hypot(dx, dz);
+    if (d > bd || ((dx * fwd.x + dz * fwd.z) / (d || 1) < 0.1 && d > 1.6)) continue;
+    bd = d; best = c;
+  }
+  return best;
+}
 function nearestThing() {
-  const s = nearestSage(); const p = nearestPoi();
-  if (s && p) return Math.hypot(s.pos.x - player.pos.x, s.pos.z - player.pos.z) - s.radius < Math.hypot(p.at[0] - player.pos.x, p.at[1] - player.pos.z) ? { sage: s } : { poi: p };
-  return s ? { sage: s } : p ? { poi: p } : null;
+  const dist = (o) => o.sage ? Math.hypot(o.sage.pos.x - player.pos.x, o.sage.pos.z - player.pos.z) - o.sage.radius : o.npc ? Math.hypot(o.npc.pos.x - player.pos.x, o.npc.pos.z - player.pos.z) - 0.3 : Math.hypot(o.poi.at[0] - player.pos.x, o.poi.at[1] - player.pos.z);
+  const s = nearestSage(), p = nearestPoi(), c = nearestCitizen();
+  const all = [s && { sage: s }, c && { npc: c }, p && { poi: p }].filter(Boolean);
+  if (!all.length) return null;
+  return all.reduce((a, b) => (dist(b) < dist(a) ? b : a));
 }
 function tryInteract() {
   const t = nearestThing();
   if (!t) { if (currentTarget()) { input.auto = !input.auto; input.walk = null; if (input.auto) Audio.click(); } return; }
   if (t.poi) return Places.open(t.poi);
+  if (t.npc) return Talk.openNpc(t.npc);
   if (t.sage.state !== 'shielded') Talk.open(t.sage);
 }
 $('#target').addEventListener('click', (e) => { e.stopPropagation(); if (G.state !== 'play') return; input.auto = !input.auto; Audio.click(); buzz(10); });
@@ -850,7 +884,7 @@ const Duel = {
     this.maxTime = (s.boss ? 22 : 26) - G.eraIdx * 0.5; this.time = this.maxTime; this.lastTick = Math.ceil(this.time);
     const opts = this.q.a.map((t, i) => ({ t, ok: i === 0 })); shuffle(opts); this.opts = opts;
     $('#d-qnum').textContent = 'Argumento ' + (ROMAN[this.round - 1] || this.round);
-    $('#d-q').textContent = this.q.q;
+    $('#d-q').textContent = this.q.place ? `Sobre «${this.q.place}»: ${this.q.q}` : this.q.q;
     const box = $('#d-answers'); box.innerHTML = '';
     opts.forEach((o, i) => {
       const b = document.createElement('button'); b.className = 'ans'; b.innerHTML = `<span class="k">${'ABCD'[i]}</span><span></span>`; b.lastChild.textContent = o.t;
@@ -1006,7 +1040,7 @@ function closeConcept() {
   } else {
     const left = regularsLeft();
     const nx = sages.find((x) => !x.boss && x.state !== 'defeated');
-    if (left === 0) { const b = sages.find((x) => x.boss); b.state = 'idle'; Audio.portal(); toast(`${b.data.short}, el maestro de esta época, ya puede recibirte.`); }
+    if (left === 0) { const b = sages.find((x) => x.boss); b.state = 'idle'; Audio.portal(); toast(`${b.data.short}, el maestro de esta época, ya puede recibirte. Ojo: también te preguntará por los lugares que has visitado.`); }
     else toast(`Bien hecho. Te esperan ${left === 1 ? 'otro pensador' : left + ' pensadores'} más: ${nx.data.short} es el siguiente.`);
   }
   updateHud();
@@ -1039,7 +1073,7 @@ function updateHud() {
   else if (boss.state === 'shielded') obj = `Destruye a los ${era.enemy.many} que protegen a ${boss.data.short}.`;
   else {
     const pf = world.pois ? world.pois.filter((p) => p.found).length : 0, pt = world.pois ? world.pois.length : 0;
-    obj = (left > 0 ? `Habla y debate con los pensadores: quedan ${left}.` : `Debate con ${boss.data.short}, el maestro de esta época.`) + ` Lugares: ${pf}/${pt}.`;
+    obj = (left > 0 ? `Cumple sus encargos y debate con los pensadores: quedan ${left}.` : `Debate con ${boss.data.short}, el maestro de esta época.`) + ` Lugares: ${pf}/${pt}.`;
   }
   $('#h-obj').textContent = obj;
   buildPathHud();
@@ -1298,4 +1332,4 @@ async function boot() {
 }
 
 // Gancho de pruebas automáticas (solo con #debug en la URL)
-if (location.hash === '#debug') window.__dbg = { G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc };
+if (location.hash === '#debug') window.__dbg = { G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc };
