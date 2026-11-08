@@ -34,7 +34,7 @@ const THEMES = [
   },
 ];
 
-const ARENA = { x0: -24, x1: 24, z0: -47, z1: 37 };
+const ARENA = { x0: -24, x1: 24, z0: -47, z1: 240 }; // al sur de la plaza se extiende el camino de aventura
 
 // ============================================================================
 //  CIELO
@@ -230,8 +230,10 @@ function addBox(W, geoW, geoH, geoD, mat, x, y, z, collide = true) {
   return m;
 }
 function ground(W, map, size = [70, 110], rough = 0.9, bump = true) {
-  const geo = new THREE.PlaneGeometry(size[0], size[1]); geo.rotateX(-Math.PI / 2);
-  const m = mesh(geo, std(0xffffff, { map, roughness: rough, bump: bump ? map : undefined, bumpScale: 1.2 }), 0, 0, -5, false, true);
+  // la plaza termina en su entrada sur: más allá está el camino sobre el vacío
+  const zmin = -5 - size[1] / 2, zmax = Math.min(-5 + size[1] / 2, 37.6);
+  const geo = new THREE.PlaneGeometry(size[0], zmax - zmin); geo.rotateX(-Math.PI / 2);
+  const m = mesh(geo, std(0xffffff, { map, roughness: rough, bump: bump ? map : undefined, bumpScale: 1.2 }), 0, 0, (zmin + zmax) / 2, false, true);
   W.group.add(m); return m;
 }
 function columnRows(W, style, h, mat, cap, opts = {}) {
@@ -358,7 +360,6 @@ const ERA_BUILDERS = [
       }
     }
     W.group.add(mesh(new THREE.BoxGeometry(52, 22, 1.4), stone, 0, 11, -50));
-    W.group.add(mesh(new THREE.BoxGeometry(52, 22, 1.4), stone, 0, 11, 39));
     const vault = mesh(new THREE.BoxGeometry(52, 1, 92), std(0x1a1816, { roughness: 1 }), 0, 22, -5, false, false); W.group.add(vault);
     // rosetón
     const rose = mesh(new THREE.CircleGeometry(6.5, 48), new THREE.MeshBasicMaterial({ map: texRose(), toneMapped: false, color: new THREE.Color(2.6, 2.6, 2.6) }), 0, 13, -49.2, false, false); W.group.add(rose);
@@ -487,8 +488,9 @@ const ERA_BUILDERS = [
 function buildWorld(idx) {
   const W = newWorld(idx); const th = W.theme; const era = ERAS[idx];
   const regs = era.sages.filter((s) => !s.boss);
-  const sp = stationPositions(regs.length);
-  W._near = (x, z, d) => sp.some(([sx, sz]) => Math.hypot(sx - x, sz - z) < d + 3) || Math.hypot(x, z - W.bossPos.z) < d + 5;
+  const sp = []; // los pensadores esperan en el camino; en la plaza solo queda el maestro
+  W._near = (x, z, d) => Math.hypot(x, z - W.bossPos.z) < d + 5 || (Math.abs(x) < 5 && z > 30);
+  W.floors = [];
   addBounds(W);
   W.sky = makeSky(th); W.group.add(W.sky);
   if (th.stars) { W.stars = makeStars(idx === 5 ? 2600 : 1400, idx); W.group.add(W.stars); }
@@ -500,19 +502,20 @@ function buildWorld(idx) {
   sun.castShadow = G.settings.quality === 'high';
   sun.shadow.mapSize.set(2048, 2048); const sc = sun.shadow.camera; sc.left = -48; sc.right = 48; sc.top = 48; sc.bottom = -48; sc.near = 1; sc.far = 160;
   sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.03;
-  W.group.add(sun); W.group.add(sun.target);
+  W.group.add(sun); W.group.add(sun.target); W.sun = sun; W.sunOff = sun.position.clone();
   ERA_BUILDERS[idx](W);
   if (!th.indoor && idx !== 5) addClouds(W, idx);
   if (idx === 0 || idx === 2) addGrass(W, idx, sp);
   // estaciones de los filósofos
-  regs.forEach((s, i) => W.stations.push({ data: s, pos: new THREE.Vector3(sp[i][0], 0, sp[i][1]), side: i % 2 ? 1 : -1 }));
+  const path = buildCauseway(W, regs);
+  regs.forEach((s, i) => W.stations.push({ data: s, pos: new THREE.Vector3(path[i][0], 0, path[i][1]), side: i % 2 ? 1 : -1 }));
   const boss = era.sages.find((s) => s.boss); W.stations.push({ data: boss, pos: W.bossPos.clone(), boss: true, side: 1 });
   for (const st of W.stations) buildStation(W, st);
-  // puertas de luz: cada una se abre al vencer al pensador que la custodia
-  W.gates = regs.map((s, i) => buildGate(W, sp[i][1] - 6.5, i));
+
   buildPortal(W);
   // puntos de aparición de enemigos
   const r = mulberry32(idx * 101 + 3);
+  for (const st of W.stations) if (!st.boss) for (const [dx, dz] of [[-5, 3], [5, -2], [0, -5]]) W.spawns.push(new THREE.Vector3(dx, 0, st.pos.z + dz));
   for (let i = 0; i < 24; i++) { const x = (r() * 2 - 1) * 20, z = -38 + r() * 64; if (z > 24 && Math.abs(x) < 8) continue; W.spawns.push(new THREE.Vector3(x, 0, z)); }
   return W;
 }
@@ -864,14 +867,14 @@ function buildGate(W, z, i) {
     uniforms: { t: { value: 0 }, col: { value: new THREE.Color(th.accent).multiplyScalar(1.4) }, a: { value: 1 } },
     vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
     fragmentShader: `uniform float t, a; uniform vec3 col; varying vec2 vUv;
-      void main(){ float x = vUv.x * 48.0; float strand = pow(abs(sin(x * 1.7 + sin(vUv.y * 3.0 + t) * 0.6)), 18.0);
+      void main(){ float x = vUv.x * 16.0; float strand = pow(abs(sin(x * 1.7 + sin(vUv.y * 3.0 + t) * 0.6)), 18.0);
         float wave = 0.5 + 0.5 * sin(vUv.y * 14.0 - t * 3.0 + x * 0.3);
         float base = smoothstep(0.0, 0.08, vUv.y) * (1.0 - vUv.y);
         float k = (0.10 + strand * 0.55 + wave * 0.08) * base;
         gl_FragColor = vec4(col * k * a, k * a); }`,
   });
-  const curtain = new THREE.Mesh(new THREE.PlaneGeometry(48, 6.5), mat); curtain.position.y = 3.25; g.add(curtain);
-  const line = mesh(new THREE.BoxGeometry(48, 0.05, 0.25), glow(th.accent, 2.5), 0, 0.03, 0, false, false); g.add(line);
+  const curtain = new THREE.Mesh(new THREE.PlaneGeometry(16, 6.5), mat); curtain.position.y = 3.25; g.add(curtain);
+  const line = mesh(new THREE.BoxGeometry(16, 0.05, 0.25), glow(th.accent, 2.5), 0, 0.03, 0, false, false); g.add(line);
   for (const x of [-4, 4]) { const p = mesh(new THREE.CylinderGeometry(0.22, 0.32, 3.4, 8), std(0x8a8070, { roughness: 0.7 }), x, 1.7, 0); g.add(p); g.add(mesh(new THREE.SphereGeometry(0.25, 12, 8), glow(th.accent, 4), x, 3.6, 0, false, false)); }
   W.group.add(g);
   const col = { t: 0, x0: -24, x1: 24, z0: z - 0.35, z1: z + 0.35, h: 99 }; W.colliders.push(col);

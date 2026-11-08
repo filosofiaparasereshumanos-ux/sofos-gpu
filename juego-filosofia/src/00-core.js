@@ -344,6 +344,9 @@ const Audio = {
   victory() { [0, 4, 7, 12, 16, 19, 24].forEach((s, i) => this.tone(392 * Math.pow(2, s / 12), 1.2, { type: 'triangle', vol: 0.1, when: i * 0.09 })); },
   click() { this.tone(1200, 0.05, { type: 'triangle', vol: 0.05 }); },
   step() { this.noise(0.07, { vol: 0.025, freq: 500, q: 0.7 }); },
+  jump() { this.tone(260, 0.18, { type: 'triangle', vol: 0.07, slide: 1.6 }); },
+  splash() { this.noise(0.8, { vol: 0.3, freq: 900, q: 0.5, slide: 0.3 }); this.tone(140, 0.4, { type: 'sine', vol: 0.15, slide: 0.5 }); },
+  fall() { this.tone(500, 1.0, { type: 'sine', vol: 0.12, slide: 0.15 }); },
   dash() { this.noise(0.35, { vol: 0.2, freq: 900, q: 0.6, slide: 3 }); this.tone(180, 0.3, { type: 'sine', vol: 0.12, slide: 2.2 }); },
 
   // ---- música generativa por etapa

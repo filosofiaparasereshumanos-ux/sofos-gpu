@@ -37,6 +37,26 @@ ejes cartesianos de Descartes, las bolas de billar de Hume, el cielo estrellado 
   claude.ai, con base de datos compartida). Cada jugador elige su nombre de filósofo.
 - **16 logros**: Mayéutica perfecta, Rayo de razón, Fuera de la caverna, Elegido de Apolo…
 
+## La aventura
+
+Cada época empieza en un **camino suspendido sobre el vacío** (un mar de nubes o la noche estrellada). Antes de cada pensador hay una **prueba de plataformas inspirada en su filosofía**:
+
+| Pensador | Prueba |
+|---|---|
+| Tales | El río del arjé: saltar de piedra en piedra (algunas se hunden) |
+| Pitágoras, Agustín, Pico | Escaleras que aparecen y desaparecen al compás |
+| Heráclito | El fuego siempre vivo: chorros de llamas en oleadas |
+| Protágoras, Maquiavelo, Descartes | Losas móviles (sentidos opuestos, fortuna, ejes x/y) |
+| Sócrates, Montaigne, Locke | Suelo que se desmorona tras pisarlo |
+| Platón, Spinoza | Puente invisible que solo revela tu lámpara |
+| Diógenes, Hume | Tinajas o bolas de billar rodando hacia ti |
+| Epicuro | Estanque de nenúfares a la deriva |
+| Pirrón | El puente de la duda: losas falsas que tiemblan |
+| Averroes | Plataformas en órbita, como un astrolabio |
+| Ockham | Navajas pendulares que barren el puente |
+
+Si caes, vuelves a la última tierra firme con un poco menos de razón (nunca te elimina una caída). Al final del camino se entra en la gran plaza, una isla flotante donde espera el maestro de la época.
+
 ## El camino
 
 Cada época es una **vía recta**: los pensadores esperan uno tras otro sobre el camino, en orden

@@ -239,7 +239,8 @@ input[type=range] { width: 100%; accent-color: var(--gold); }
 .tbtns { position: absolute; right: calc(16px + var(--sar)); bottom: calc(52px + var(--sab)); display: grid; grid-template-columns: 62px 100px; grid-template-rows: 62px 62px 62px; gap: 10px 14px; pointer-events: auto; align-items: center; justify-items: center; }
 .tb { width: 62px; height: 62px; border-radius: 50%; border: 1.5px solid var(--line); background: rgba(13,12,18,0.5); font-family: var(--display); font-size: 0.68rem; letter-spacing: 0.06em; touch-action: none; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0; color: var(--parchment); transition: transform .08s, opacity .2s; -webkit-tap-highlight-color: transparent; }
 .tb:active, .tb.down { transform: scale(0.92); }
-.tb.fire { width: 100px; height: 100px; grid-column: 2; grid-row: 2 / span 2; border-color: var(--gold); background: radial-gradient(circle, rgba(255,211,106,0.32), rgba(214,168,74,0.12)); box-shadow: 0 0 22px rgba(214,168,74,0.3); font-size: 0.75rem; }
+.tb.jump { width: 100px; height: 100px; grid-column: 2; grid-row: 2 / span 2; border-color: #8fe9ff; background: radial-gradient(circle, rgba(143,233,255,0.28), rgba(60,120,160,0.12)); font-size: 0.8rem; box-shadow: 0 0 22px rgba(143,233,255,0.3); }
+.tb.fire { width: 70px; height: 70px; grid-column: 2; grid-row: 1; border-color: var(--gold); background: radial-gradient(circle, rgba(255,211,106,0.32), rgba(214,168,74,0.12)); box-shadow: 0 0 22px rgba(214,168,74,0.3); font-size: 0.75rem; }
 .tb.fire.auto { box-shadow: 0 0 30px rgba(255,211,106,0.75); border-color: var(--gold-bright); }
 .tb.act { color: var(--gold-bright); border-color: var(--gold); opacity: 0.35; }
 .tb.act.go { opacity: 0.95; color: var(--parchment); font-size: 0.6rem; }
@@ -299,6 +300,14 @@ input[type=range] { width: 100%; accent-color: var(--gold); }
 #achv span:last-child { font-size: 0.9rem; color: var(--parchment-dim); }
 @keyframes achin { 0% { opacity: 0; transform: translate(-50%, -30px); } 10%, 85% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; transform: translate(-50%, -20px); } }
 
+/* ---------- tarjeta de prueba ---------- */
+#trialcard { --tc: #ffd36a; position: absolute; z-index: 27; left: 50%; top: calc(108px + var(--sat)); transform: translateX(-50%); width: min(520px, calc(100% - 32px)); text-align: center; padding: 12px 18px 14px; background: linear-gradient(180deg, rgba(13,12,18,0.88), rgba(13,12,18,0.7)); border-top: 2px solid var(--tc); border-bottom: 1px solid rgba(214,168,74,0.25); pointer-events: none; animation: tcin 6.2s ease-in-out forwards; }
+#trialcard .eyebrow { color: var(--tc); }
+#trialcard h3 { font-family: var(--display); font-weight: 400; font-size: clamp(1.4rem, 5.5vw, 2.1rem); margin: 4px 0 0; color: var(--parchment); text-shadow: 0 0 22px var(--tc); letter-spacing: 0.05em; }
+#trialcard p { margin: 6px 0 0; font-size: 1rem; line-height: 1.35; color: var(--parchment-dim); }
+@media (max-height: 520px) { #trialcard { width: min(400px, calc(100% - 300px)); top: calc(96px + var(--sat)); padding: 6px 12px 8px; } #trialcard h3 { font-size: 1.15rem; } #trialcard p { font-size: 0.82rem; } }
+@keyframes tcin { 0% { opacity: 0; transform: translate(-50%, -14px); } 8%, 85% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; } }
+
 /* ---------- presentación de jefe ---------- */
 #bosscard { position: absolute; inset: 0; z-index: 30; pointer-events: none; display: grid; place-items: center; }
 #bosscard::before, #bosscard::after { content: ""; position: absolute; left: 0; right: 0; height: 13%; background: #000; animation: bars 2.8s ease-in-out forwards; }
@@ -329,6 +338,7 @@ body.touch .hud-bl { bottom: calc(14px + var(--sab)); width: min(220px, 40vw); }
 body.touch .hud-br { display: none; }
 body.touch #toasts { top: calc(140px + var(--sat)); width: min(520px, 84vw); }
 #toasts { top: calc(124px + var(--sat)) !important; }
+body.tc-on #toasts { top: calc(250px + var(--sat)) !important; }
 body.touch #tfs, body.touch #tpause { top: calc(12px + var(--sat)); }
 body.touch .hud-tr { right: calc(116px + var(--sar)); }
 body.touch .toast { font-size: 0.92rem; padding: 6px 12px; }
@@ -399,12 +409,14 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <button class="tb fire" id="t-fire">Lámpara</button>
       <button class="tb" id="t-epoje">Epojé</button>
       <button class="tb" id="t-dash">Impulso</button>
+      <button class="tb jump" id="t-jump">Saltar</button>
     </div>
     <button id="tfs" aria-label="Pantalla completa" hidden>⛶</button>
     <button id="tpause" aria-label="Pausa">II</button>
   </div>
   <div id="bosscard" hidden><div class="bc-in"><div class="eyebrow" id="bc-eye">Maestro de la época</div><h2 id="bc-name"></h2><p id="bc-ep"></p></div></div>
   <div id="popups"></div>
+  <div id="trialcard" hidden><div class="eyebrow" id="tc-kind"></div><h3 id="tc-name"></h3><p id="tc-hint"></p></div>
   <div id="flash"></div>
 
   <section id="title" class="screen" hidden>
@@ -436,7 +448,8 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <h2 class="era-name">Cómo jugar</h2>
       <hr class="rule">
       <div class="tips">
-        <div class="tip"><b>Moverse</b><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> para caminar, ratón para mirar, <kbd>Mayús</kbd> para correr y <kbd>Espacio</kbd> para saltar.</div>
+        <div class="tip"><b>Moverse y saltar</b><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> para caminar, ratón para mirar, <kbd>Mayús</kbd> para correr y <kbd>Espacio</kbd> para saltar. Corriendo saltas más lejos.</div>
+        <div class="tip"><b>Las pruebas</b>Antes de cada pensador hay una prueba de su filosofía: el río de Tales, el fuego de Heráclito, la escalera armónica de Pitágoras… Si caes, vuelves a la última tierra firme con algo menos de razón.</div>
         <div class="tip"><b>Lámpara de Diógenes</b>Clic izquierdo dispara luz contra las sombras del error. Cada sombra vencida suelta un fragmento de sabiduría.</div>
         <div class="tip"><b>Impulso</b><kbd>C</kbd> o <kbd>Ctrl</kbd>: un salto rápido en la dirección en que te mueves. Durante un instante eres invulnerable: úsalo para esquivar embestidas y proyectiles.</div>
         <div class="tip"><b>Epojé</b><kbd>Q</kbd> o clic derecho: suspendes el juicio y liberas una onda que daña a todo lo cercano y disuelve proyectiles.</div>

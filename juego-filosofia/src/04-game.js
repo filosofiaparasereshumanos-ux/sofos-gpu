@@ -125,7 +125,7 @@ camera.add(lamp);
 // ============================================================================
 //  JUGADOR Y CONTROLES
 // ============================================================================
-const player = { pos: new THREE.Vector3(), vel: new THREE.Vector3(), yaw: 0, pitch: 0, onGround: true, fireCd: 0, epojeCd: 0, bob: 0, stepT: 0, recoil: 0, shake: 0, dashT: 0, dashCd: 0, iframe: 0, dashDir: new THREE.Vector3(), roll: 0, airT: 0, land: 0 };
+const player = { pos: new THREE.Vector3(), vel: new THREE.Vector3(), yaw: 0, pitch: 0, onGround: true, fireCd: 0, epojeCd: 0, bob: 0, stepT: 0, recoil: 0, shake: 0, dashT: 0, dashCd: 0, iframe: 0, dashDir: new THREE.Vector3(), roll: 0, airT: 0, land: 0, floor: null, coyote: 0, jumpHeld: false, safe: new THREE.Vector3() };
 const input = { keys: {}, mdx: 0, mdy: 0, fire: false, locked: false, joy: { x: 0, y: 0 }, lookDX: 0, lookDY: 0, drag: false };
 const EPOJE_CD = 7;
 
@@ -222,6 +222,7 @@ function setupTouch() {
   hold('#t-act', () => tryInteract());
   hold('#t-epoje', () => epoje());
   hold('#t-dash', () => (input.dashReq = true));
+  hold('#t-jump', () => (input.jumpReq = true));
   $('#tpause').addEventListener('click', () => pauseGame());
   if (FS_OK) { $('#tfs').hidden = false; $('#tfs').addEventListener('click', toggleFS); }
 }
@@ -242,6 +243,15 @@ function collide(p, r) {
     } else {
       const dx = p.x - c.x, dz = p.z - c.z; const rr = r + c.r; const d2 = dx * dx + dz * dz;
       if (d2 < rr * rr && d2 > 1e-8) { const d = Math.sqrt(d2); p.x += (dx / d) * (rr - d); p.z += (dz / d) * (rr - d); }
+    }
+  }
+  // las plataformas altas actúan como muros
+  for (const f of world.floors) {
+    if (!f.solid() || f.top <= p.y + 0.55 || f.top - f.th > p.y + 1.6) continue;
+    if (f.kind === 'cyl') { const dx = p.x - f.x, dz = p.z - f.z; const rr = r + f.r; const d2 = dx * dx + dz * dz; if (d2 < rr * rr && d2 > 1e-8) { const d = Math.sqrt(d2); p.x += (dx / d) * (rr - d); p.z += (dz / d) * (rr - d); } }
+    else {
+      const cx = clamp(p.x, f.x - f.hw, f.x + f.hw), cz = clamp(p.z, f.z - f.hd, f.z + f.hd); const dx = p.x - cx, dz = p.z - cz; const d2 = dx * dx + dz * dz;
+      if (d2 < r * r && d2 > 1e-8) { const d = Math.sqrt(d2); p.x += (dx / d) * (r - d); p.z += (dz / d) * (r - d); }
     }
   }
   for (const s of sages) { const dx = p.x - s.pos.x, dz = p.z - s.pos.z; const rr = r + s.radius; const d2 = dx * dx + dz * dz; if (d2 < rr * rr && d2 > 1e-8) { const d = Math.sqrt(d2); p.x += (dx / d) * (rr - d); p.z += (dz / d) * (rr - d); } }
@@ -291,11 +301,26 @@ function updatePlayer(dt) {
     player.dashT -= dt; player.vel.x = player.dashDir.x * 23; player.vel.z = player.dashDir.z * 23;
     if (Math.random() < dt * 50) particles.emit(_v1.copy(player.pos).setY(0.9 + Math.random()), 1, { color: world.theme.lampCol, speed: 0.3, life: 0.4, size: 0.4, intensity: 1.6 });
   }
-  if (k.Space && player.onGround) { player.vel.y = 7.2; player.onGround = false; }
+  // salto (con un instante de margen al salir de un borde)
+  const wantJump = k.Space || input.jumpReq; input.jumpReq = false;
+  if (wantJump && !player.jumpHeld && (player.onGround || player.coyote > 0)) { player.vel.y = 7.5; player.onGround = false; player.coyote = 0; player.floor = null; Audio.jump(); }
+  player.jumpHeld = !!k.Space;
+  // las plataformas móviles te llevan consigo
+  if (player.onGround && player.floor) { player.pos.x += player.floor.dx; player.pos.z += player.floor.dz; if (player.floor.dy < 0) player.pos.y += player.floor.dy; }
   player.vel.y -= 22 * dt;
   player.pos.addScaledVector(player.vel, dt);
-  if (!player.onGround) player.airT += dt;
-  if (player.pos.y <= 0) { if (!player.onGround && player.airT > 0.3) { player.land = 1; Audio.step(); } player.pos.y = 0; player.vel.y = 0; player.onGround = true; player.airT = 0; }
+  const gnd = groundAt(world, player.pos.x, player.pos.z, player.pos.y);
+  if (gnd && player.pos.y <= gnd.top + 0.03 && player.vel.y <= 0) {
+    if (!player.onGround && player.airT > 0.3) { player.land = 1; Audio.step(); }
+    player.pos.y = gnd.top; player.vel.y = 0; player.onGround = true; player.airT = 0; player.coyote = 0.12; player.floor = gnd.f;
+    if (gnd.f && gnd.f.onStand) gnd.f.onStand();
+    if (!gnd.f) player.safe.set(player.pos.x, 0, player.pos.z);
+    else if (gnd.f.safe) player.safe.set(0, 0, gnd.f.respawnZ);
+  } else {
+    if (player.onGround) player.coyote = 0.12; else player.coyote -= dt;
+    player.onGround = false; player.floor = null; player.airT += dt;
+  }
+  if (player.pos.y < -7) respawnPlayer('void');
   collide(player.pos, 0.45);
   // balanceo
   const hs = Math.hypot(player.vel.x, player.vel.z);
@@ -372,7 +397,7 @@ function disposeWorld() {
 }
 function loadWorld(idx) {
   disposeWorld();
-  world = buildWorld(idx); scene.add(world.group);
+  world = buildWorld(idx); scene.add(world.group); player.safe.copy(world.start); $('#trialcard').hidden = true;
   const th = world.theme;
   scene.fog = new THREE.FogExp2(th.fog[0], th.fog[1]);
   scene.background = new THREE.Color(th.sky[1]);
@@ -402,6 +427,7 @@ function updateDirector(dt) {
   for (let i = director.queue.length - 1; i >= 0; i--) { const q = director.queue[i]; q.t -= dt; if (q.t <= 0) { spawnEnemy(q.pos, q.summoned); director.queue.splice(i, 1); } }
   const alive = enemies.filter((e) => !e.summoned).length;
   director.timer -= dt;
+  if (trialAt(player.pos.z)) director.timer = Math.max(director.timer, 2);
   if (director.timer <= 0) {
     director.timer = 7 - Math.min(3, G.eraIdx * 0.5) + Math.random() * 4;
     if (director.budget > 0 && alive < 3 + Math.min(3, G.eraIdx)) { director.budget--; spawnFromPoints(1); }
@@ -533,14 +559,67 @@ function currentTarget() {
 function autoWalkDir(dt) {
   // devuelve el movimiento (en ejes de cámara) para caminar hacia el objetivo, o null
   if (!input.auto) return null;
-  const tg = currentTarget(); if (!tg) { input.auto = false; return null; }
+  let tg = currentTarget(); if (!tg) { input.auto = false; return null; }
+  const tr = world.trials.find((t) => !t.done && player.pos.z > t.zE);
+  if (tr && tg.pos.z < tr.zS) {
+    if (player.pos.z < tr.zS + 0.3) { input.auto = false; return null; }
+    tg = { pos: new THREE.Vector3(0, 0, tr.zS + 1.2), reach: 0.8, trialStop: tr };
+  }
   const dx = tg.pos.x - player.pos.x, dz = tg.pos.z - player.pos.z; const d = Math.hypot(dx, dz);
+  if (tg.trialStop && d < tg.reach) { input.auto = false; toast(`${tg.trialStop.cfg.name}: esta prueba la cruzas tú. ${IS_TOUCH ? 'Usa «Saltar».' : 'Salta con Espacio.'}`); return null; }
   if (d < tg.reach) { input.auto = false; if (tg.sage && tg.sage.state === 'idle') { toast(IS_TOUCH ? `Toca «Desafiar» para hablar con ${tg.name}.` : `Pulsa E para desafiar a ${tg.name}.`); buzz(15); } return null; }
   // girar la vista suavemente hacia el destino
   const want = Math.atan2(-dx, -dz); let dy = want - player.yaw; while (dy > Math.PI) dy -= TAU; while (dy < -Math.PI) dy += TAU;
   player.yaw += dy * Math.min(1, dt * 3.5); player.pitch = damp(player.pitch, 0, 3, dt);
   const sy = Math.sin(player.yaw), cy = Math.cos(player.yaw); const ux = dx / d, uz = dz / d;
   return { mx: ux * cy - uz * sy, mz: ux * sy + uz * cy };
+}
+// ---------- pruebas del camino ----------
+function updateTrials(dt) {
+  for (const tr of world.trials) {
+    tr.near = Math.abs(player.pos.z - (tr.zS + tr.zE) / 2) < 24;
+    const inside = player.pos.z < tr.zS && player.pos.z > tr.zE;
+    if (inside && !tr.entered) { tr.entered = true; announceTrial(tr); }
+    if (!tr.done && tr.entered && player.pos.z < tr.zE - 0.6 && player.onGround && player.pos.y > -0.5) completeTrial(tr);
+    if (tr.near && tr.tick) {
+      const r = tr.tick(dt, player);
+      if (r === 'water') respawnPlayer('water', tr);
+      else if (r && player.iframe <= 0) {
+        G.hp = Math.max(0, G.hp - r.hurt); player.vel.copy(r.push); player.onGround = false; player.floor = null; player.iframe = 0.9; player.shake = 0.8; G.hurtFx = 1;
+        Audio.hurt(); buzz(50); popup(`−${r.hurt} razón`, 'bad'); updateHud(); if (G.hp <= 0) gameOver();
+      }
+    }
+  }
+}
+function trialAt(z) { return world.trials.find((t) => z < t.zS + 0.5 && z > t.zE - 0.5); }
+let trialCardT = 0;
+function announceTrial(tr) {
+  const c = $('#trialcard'); $('#tc-kind').textContent = TRIAL_KIND[tr.cfg.type] || 'Prueba'; $('#tc-name').textContent = tr.cfg.name; $('#tc-hint').textContent = tr.cfg.hint;
+  c.style.setProperty('--tc', '#' + new THREE.Color(tr.cfg.col).getHexString());
+  c.hidden = true; void c.offsetWidth; c.hidden = false; document.body.classList.add('tc-on'); clearTimeout(trialCardT); trialCardT = setTimeout(() => { c.hidden = true; document.body.classList.remove('tc-on'); }, 6200);
+  Music.sting('boss'); buzz([15, 30, 15]); input.auto = false;
+}
+function completeTrial(tr) {
+  tr.done = true; const clean = tr.falls === 0; const pts = 150 + (clean ? 100 : 0); addScore(pts);
+  popup(`+${pts}<small>${clean ? 'prueba superada sin caer' : 'prueba superada'}</small>`); Music.sting('victory'); Audio.correct(); buzz([20, 40, 60]);
+  $('#trialcard').hidden = true;
+  if (Stats.add('trials') >= 12) achieve('pruebas');
+  if (tr.sage.id === 'tales' && clean) achieve('agua');
+  if (clean && tr.cfg.type === 'rhythm') achieve('armonia');
+  updateHud();
+}
+function respawnPlayer(kind, tr) {
+  if (G.state !== 'play' || player.respawning) return;
+  player.respawning = true; tr = tr || trialAt(player.pos.z); if (tr) tr.falls++;
+  if (kind === 'water') Audio.splash(); else Audio.fall();
+  const lost = Math.min(5, Math.max(0, G.hp - 10)); G.hp -= lost; buzz([40, 30, 40]);
+  const f = $('#fade'); f.style.transition = 'opacity .25s'; f.classList.add('on');
+  setTimeout(() => {
+    player.pos.copy(player.safe); player.vel.set(0, 0, 0); player.yaw = 0; player.pitch = 0; player.iframe = 1.2; player.floor = null; player.onGround = false;
+    f.classList.remove('on'); setTimeout(() => (f.style.transition = ''), 300); player.respawning = false;
+    toast((kind === 'water' ? 'El agua te devuelve a la orilla.' : 'Caes al vacío… y despiertas en la última tierra firme.') + (lost ? ` −${lost} razón.` : ''));
+    updateHud(); if (G.hp <= 0) gameOver();
+  }, 280);
 }
 function regularsLeft() { return sages.filter((s) => !s.boss && s.state !== 'defeated').length; }
 function updatePrompt() {
@@ -608,7 +687,7 @@ function updatePlay(dt) {
   updatePlayer(dt);
   updateSages(dt, false);
   for (const e of enemies) e.update(dt, game);
-  updateBolts(dt); updatePickups(dt); updateDirector(dt); updatePrompt(); updatePortal(dt);
+  updateTrials(dt); updateBolts(dt); updatePickups(dt); updateDirector(dt); updatePrompt(); updatePortal(dt);
   updateEpojeHud(); updatePathMe();
   Audio.mode = sages.some((s) => s.state === 'shielded') ? 'boss' : enemies.length > 1 ? 'combat' : 'calm';
   $('#lowhp').style.opacity = G.hp < 30 ? 0.6 + Math.sin(tAcc * 5) * 0.25 : 0;
@@ -1004,6 +1083,7 @@ on('#b-ecodex', () => openSub('codex'));
 //  BUCLE PRINCIPAL
 // ============================================================================
 const clock = new THREE.Clock();
+tAccW = () => tAcc;
 let fpsAcc = 0, fpsN = 0, autoChecked = false;
 function titleCam() {
   const a = tAcc * 0.05; camera.position.set(Math.sin(a) * 26, 7 + Math.sin(tAcc * 0.2) * 1.5, -6 + Math.cos(a) * 26);
@@ -1048,6 +1128,7 @@ function frame() {
   if (G.settings.quality !== 'low') composer.render(); else renderer.render(scene, camera);
   // calidad automática: si va muy lento al principio, bajar
   if (G.state !== 'play' && !$('#target').hidden) $('#target').hidden = true;
+  if (world && world.sun) { world.sun.target.position.set(camera.position.x, 0, camera.position.z - 4); world.sun.position.copy(world.sun.target.position).add(world.sunOff); }
   if (!autoChecked && G.state === 'play') {
     fpsAcc += raw; fpsN++;
     if (fpsAcc > 4) {
@@ -1074,4 +1155,4 @@ async function boot() {
 }
 
 // Gancho de pruebas automáticas (solo con #debug en la URL)
-if (location.hash === '#debug') window.__dbg = { G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music };
+if (location.hash === '#debug') window.__dbg = { G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc };
