@@ -1,0 +1,34 @@
+const { chromium } = require('playwright');
+const NM = '/tmp/claude-0/-home-user-sofos-gpu/0d6e0aee-100c-5a3a-a348-9b7bd95f50c2/scratchpad/npmtest/node_modules/three/';
+const OUT = '/tmp/claude-0/-home-user-sofos-gpu/0d6e0aee-100c-5a3a-a348-9b7bd95f50c2/scratchpad/trailer/';
+(async () => {
+  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const ctx = await browser.newContext({ viewport: { width: 432, height: 768 }, deviceScaleFactor: 2.5, isMobile: true, hasTouch: true });
+  const page = await ctx.newPage(); const errs = [];
+  await page.addInitScript(() => { window.claude = { use: async (n) => (n === 'sample' ? async (input, o) => { const t = 'Ah, amigo, me preguntas por la felicidad. Para mí, nadie es feliz sin conocerse a sí mismo. Una vida sin examen no merece ser vivida. ¿Y tú, qué crees que es una vida buena?'; if (o && o.onText) o.onText({ text: t }); return { text: t }; } : null) }; });
+  page.on('pageerror', (e) => errs.push(e.message));
+  await page.route('https://cdn.jsdelivr.net/npm/three@0.160.0/**', (r) => r.fulfill({ path: NM + r.request().url().split('three@0.160.0/')[1], contentType: 'application/javascript' }));
+  await page.route('https://fonts.googleapis.com/**', (r) => r.abort());
+  await page.goto('http://localhost:8765/index.html#debug');
+  await page.waitForFunction(() => document.getElementById('loading').style.display === 'none', null, { timeout: 90000 });
+  await page.waitForTimeout(1500); await page.screenshot({ path: OUT + 'g-title.png' });
+  const walk = async (era, id, name, dx) => {
+    await page.evaluate((era) => { const d = window.__dbg; d.startEra(era, true); d.enterEra(); d.G.settings.quality = 'high'; }, era);
+    await page.waitForTimeout(3500);
+    await page.evaluate(([id, dx]) => { const d = window.__dbg; const s = d.sages.find((x) => x.data.id === id); d.input.walk = null; d.player.pos.set(s.pos.x + (s.pos.x < 0 ? dx : -dx), 0, s.pos.z + 1.5); d.player.yaw = s.pos.x < 0 ? Math.PI / 2 + 0.35 : -Math.PI / 2 - 0.35; }, [id, dx]);
+    await page.waitForTimeout(1500); await page.screenshot({ path: OUT + 'g-' + name + '.png' });
+  };
+  await walk(1, 'socrates', 'athens', 5.5);
+  await page.evaluate(() => { const d = window.__dbg; const s = d.sages.find((x) => x.data.id === 'socrates'); d.player.pos.set(s.pos.x + (s.pos.x < 0 ? 2.6 : -2.6), 0, s.pos.z); d.player.yaw = s.pos.x < 0 ? Math.PI / 2 : -Math.PI / 2; });
+  await page.waitForTimeout(700); await page.tap('#t-act').catch(()=>{}); await page.waitForTimeout(1500);
+  const ok = await page.evaluate(() => { const b=[...document.querySelectorAll('#talk button')].find(b=>/felicidad|pregunt|conversa/i.test(b.textContent)); if(b){b.click();return b.textContent;} return [...document.querySelectorAll('#talk button')].map(b=>b.textContent).join('|'); });
+  console.log('talk opts', ok); await page.waitForTimeout(3000); await page.screenshot({ path: OUT + 'g-talk.png' });
+  await page.evaluate(() => { const d = window.__dbg; d.Talk.close && d.Talk.close(); const s = d.sages.find((x) => x.data.id === 'socrates'); d.Duel.start(s); });
+  await page.waitForTimeout(2500); await page.screenshot({ path: OUT + 'g-duel.png' });
+  await page.evaluate(() => { window.__dbg.Duel.close(); });
+  await walk(12, 'laozi', 'china', 6);
+  await walk(10, 'incaroca', 'incas', 6);
+  await page.evaluate(() => { window.__dbg.G.state = 'title'; document.getElementById('b-travel').click(); }); await page.waitForTimeout(1200); await page.screenshot({ path: OUT + 'g-travel.png' });
+  console.log('ERR', errs.join('\n'));
+  await browser.close();
+})();
