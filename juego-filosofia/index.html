@@ -271,6 +271,9 @@ kbd { font-family: var(--display); font-size: 0.78em; border: 1px solid var(--li
 .mp-l { text-align: right; opacity: 0.85; } .mp-r { text-align: left; opacity: 0.85; }
 .mp-track { position: relative; height: 6px; border-radius: 3px; background: linear-gradient(90deg, #6aa8d8, #e8d8b0 50%, #d88a5a); }
 .mp-track i { position: absolute; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #fff6dc; box-shadow: 0 0 0 2px var(--gold), 0 0 10px rgba(255,211,106,0.7); }
+.mp-track i.sm { width: 11px; height: 11px; margin-left: -5px; box-shadow: 0 0 0 1.5px var(--gold); }
+.au-mp { margin-top: 14px; text-align: left; }
+.au-mp .mp-row { margin-top: 18px; }
 .mp-hint { font-size: 0.8rem; opacity: 0.8; margin-top: 3px; font-style: italic; }
 .mp-af { margin: 12px 0 0; font-size: 0.98rem; color: #ffe0a0; line-height: 1.4; }
 .cu-item { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: rgba(214,168,74,0.05); }
@@ -11912,7 +11915,7 @@ async function boot() {
 }
 
 // Gancho de pruebas automáticas (solo con #debug en la URL)
-if (location.hash === '#debug') window.__dbg = { ga: (x, z, y) => groundAt(world, x, z, y), get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc };
+if (location.hash === '#debug') window.__dbg = { get AULA() { return AULA; }, ga: (x, z, y) => groundAt(world, x, z, y), get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc };
 
 // ---- src/04a-lesson.js ----
 // ============================================================================
@@ -12963,7 +12966,9 @@ const AULA = {
     const pr = this.progress(cls); const bits = pr.rows.flatMap((r) => r.cells.filter((c) => c !== null).map((c) => (c ? '1' : '0'))).join('');
     const hex = BigInt('0b' + (bits || '0')).toString(36).toUpperCase();
     const ds = Oracle.today().replace(/-/g, ''); const name = t.name.replace(/[:|\n]/g, ' ');
-    const line = `ENTREGA:${cls.raw}:${name}:${bits.length}.${hex}:${ds}`; const sig = this.check(line) + this.check(line.split('').reverse().join(''));
+    // mapa filosófico del estudiante: seis cifras de 0 (un polo) a 8 (el otro), o «-» si aún no tiene postura
+    const mp = typeof Mapa !== 'undefined' ? Mapa.calc().map((e) => (e.v === null ? '-' : String(Math.round((e.v + 1) * 4)))).join('') : '';
+    const line = `ENTREGA:${cls.raw}:${name}:${bits.length}.${hex}:${ds}${/[0-8]/.test(mp) ? ':M' + mp : ''}`; const sig = this.check(line) + this.check(line.split('').reverse().join(''));
     const pct = pr.tot ? Math.round((pr.ok / pr.tot) * 100) : 0;
     return { t, cls, pr, pct, linea: `${line}:${sig}` };
   },
@@ -13037,12 +13042,12 @@ const AULA = {
   parseSubs(text, k) {
     const all = store.get(this.KEY_CLASSES, {}); const c = all[k]; if (!c) return 0; const d = this.decode(c.code);
     let n = 0, bad = 0;
-    for (const m of String(text).matchAll(/ENTREGA:([0-9A-Z]+):([^:\n]{1,40}):(\d+)\.([0-9A-Z]+):(\d{8}):([0-9A-Z]{2})/g)) {
-      const line = `ENTREGA:${m[1]}:${m[2]}:${m[3]}.${m[4]}:${m[5]}`; const sig = this.check(line) + this.check(line.split('').reverse().join(''));
-      if (sig !== m[6] || m[1] !== d.raw) { bad++; continue; }
+    for (const m of String(text).matchAll(/ENTREGA:([0-9A-Z]+):([^:\n]{1,40}):(\d+)\.([0-9A-Z]+):(\d{8})(?::M([0-8-]{6}))?:([0-9A-Z]{2})/g)) {
+      const line = `ENTREGA:${m[1]}:${m[2]}:${m[3]}.${m[4]}:${m[5]}${m[6] ? ':M' + m[6] : ''}`; const sig = this.check(line) + this.check(line.split('').reverse().join(''));
+      if (sig !== m[7] || m[1] !== d.raw) { bad++; continue; }
       let bits; try { bits = [...m[4].toLowerCase()].reduce((acc, ch) => acc * 36n + BigInt(parseInt(ch, 36)), 0n); } catch (e) { bad++; continue; }
       const str = bits.toString(2).padStart(+m[3], '0'); const name = m[2].trim();
-      const prev = c.subs[name.toLowerCase()]; if (!prev || prev.date <= m[5]) c.subs[name.toLowerCase()] = { name, bits: str, date: m[5] };
+      const prev = c.subs[name.toLowerCase()]; if (!prev || prev.date <= m[5]) c.subs[name.toLowerCase()] = { name, bits: str, date: m[5], map: m[6] || (prev && prev.map) || '' };
       n++;
     }
     store.set(this.KEY_CLASSES, all);
@@ -13070,6 +13075,32 @@ const AULA = {
     const wrap = document.createElement('div'); wrap.className = 'au-tblwrap'; wrap.appendChild(tbl); box.appendChild(wrap);
     const leg = document.createElement('p'); leg.className = 'qd-note'; leg.textContent = `Cada punto es una tarea por pensador (${tasks.map((t) => t.short.toLowerCase()).join(', ')}): ● hecha, ○ pendiente.`; box.appendChild(leg);
     $('#au-csv').hidden = false; $('#au-csvtext').value = csv.join('\n');
+    this.renderClassMap(subs, box);
+  },
+  // ---------- el mapa filosófico de toda la clase
+  renderClassMap(subs, box) {
+    if (typeof MAPA_EJES === 'undefined') return;
+    const withMap = subs.filter((s) => s.map && /[0-8]/.test(s.map)); if (!withMap.length) return;
+    const sec = document.createElement('div'); sec.className = 'mp au-mp';
+    const h = document.createElement('div'); h.className = 'mp-head'; h.innerHTML = `<b>Mapa filosófico de la clase</b><span>${withMap.length} ${withMap.length === 1 ? 'estudiante' : 'estudiantes'}</span>`; sec.appendChild(h);
+    let best = null;
+    MAPA_EJES.forEach((e, i) => {
+      const pts = withMap.map((s) => ({ n: s.name, c: s.map[i] })).filter((p) => p.c && p.c !== '-').map((p) => ({ n: p.n, v: +p.c / 4 - 1 }));
+      const row = document.createElement('div'); row.className = 'mp-row' + (pts.length ? '' : ' off');
+      const q = document.createElement('div'); q.className = 'mp-q'; q.textContent = e.q; row.appendChild(q);
+      const bar = document.createElement('div'); bar.className = 'mp-bar';
+      const l = document.createElement('span'); l.className = 'mp-l'; l.textContent = e.neg; const r = document.createElement('span'); r.className = 'mp-r'; r.textContent = e.pos;
+      const track = document.createElement('div'); track.className = 'mp-track'; const seen = {};
+      for (const p of pts) { const k = Math.round((p.v + 1) * 4); seen[k] = (seen[k] || 0) + 1; const dot = document.createElement('i'); dot.className = 'sm'; dot.title = p.n; dot.style.left = `${6 + ((p.v + 1) / 2) * 88}%`; dot.style.marginTop = `${-6 - (seen[k] - 1) * 9}px`; dot.addEventListener('click', () => toast(p.n)); track.appendChild(dot); }
+      bar.append(l, track, r); row.appendChild(bar);
+      const neg = pts.filter((p) => p.v < -0.3).length, pos = pts.filter((p) => p.v > 0.3).length, mid = pts.length - neg - pos;
+      const sm = document.createElement('div'); sm.className = 'mp-hint'; sm.textContent = pts.length ? `${neg} · ${e.neg}  |  ${mid} · intermedio  |  ${pos} · ${e.pos}` : 'Nadie ha tomado postura todavía'; row.appendChild(sm);
+      sec.appendChild(row);
+      const split = Math.min(neg, pos); if (split > 0 && (!best || split > best.split)) best = { e, neg, pos, split };
+    });
+    const p = document.createElement('p'); p.className = 'mp-af';
+    p.textContent = best ? `Para debatir en clase: en «${best.e.q}» la clase está dividida (${best.neg} ${best.neg === 1 ? 'piensa' : 'piensan'} «${best.e.neg}» y ${best.pos} ${best.pos === 1 ? 'piensa' : 'piensan'} «${best.e.pos}»). Pide a cada grupo que dé su mejor razón y que responda a la objeción del otro.` : 'Cuando haya posturas distintas en una misma pregunta, aquí aparecerá una sugerencia de debate.';
+    sec.appendChild(p); box.appendChild(sec);
   },
   deleteClass() { if (!this.current) return; const all = store.get(this.KEY_CLASSES, {}); if (!confirm(`¿Borrar la tarea «${all[this.current].title}» y sus entregas de este dispositivo?`)) return; delete all[this.current]; store.set(this.KEY_CLASSES, all); this.current = null; this.renderTeacher(); },
   // ---------- herramientas: proyector y fichas
