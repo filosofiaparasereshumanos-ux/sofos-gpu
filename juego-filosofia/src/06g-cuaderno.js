@@ -7,7 +7,7 @@ const CUADERNO_KEY = 'odisea-razon.cuaderno';
 const Cuaderno = {
   d: null,
   question(d) {
-    if (d.q) return d.q;
+    if (typeof d.q === 'string') return d.q;
     const L = LESSONS[d.id] || []; const last = L[L.length - 1] || '';
     const m = last.match(/Mi pregunta para ti[^:]*:\s*(.+)$/); if (m) return m[1].trim();
     const D = typeof DIALOGOS !== 'undefined' && DIALOGOS[d.id]; if (D) return `¿Estás de acuerdo con esta idea: «${D.tesis}»? ¿Por qué?`;
@@ -60,7 +60,7 @@ const Cuaderno = {
     for (const p of ps) add('cu-dlg', `Diálogo con ${p.who}`, [[`«${p.tesis}»`, 'cq'], ['Tu postura: ' + p.postura, ''], [`Tu razón: ${p.razon}`, 'c' + (p.rk === 'b' ? 'ok' : p.rk === 'f' ? 'bad' : 'meh')], [`Ante la objeción: ${p.resp}`, 'c' + (p.xk === 'b' ? 'ok' : p.xk === 'f' ? 'bad' : 'meh')]]);
     for (const x of Object.values(this.experiencias())) add('cu-dlg', x.who, (x.el || []).map((e) => ['· ' + e, '']));
     for (const e of es) add('cu-ans', e.who, [[e.q, 'cq'], [e.t, 'ctxt'], [this.checks(e.c), 'cchk']]);
-    if (!ps.length && !es.length && !Object.keys(this.experiencias()).length) { const p = document.createElement('p'); p.className = 'story'; p.textContent = 'Tu cuaderno está vacío. Habla con un pensador y elige «📓 Escribir en mi cuaderno», o dialoga con Protágoras, Sócrates o Platón en Atenas.'; box.appendChild(p); }
+    if (!ps.length && !es.length && !Object.keys(this.experiencias()).length) { const p = document.createElement('p'); p.className = 'story'; p.textContent = 'Tu cuaderno está vacío. Habla con un pensador y elige «📓 Escribir en mi cuaderno», o elige «Dialoguemos» con pensadores como Sócrates, Heráclito, Descartes o Camus.'; box.appendChild(p); }
   },
   download() {
     const blob = new Blob([this.text()], { type: 'text/plain;charset=utf-8' });

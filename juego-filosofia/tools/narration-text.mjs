@@ -16,18 +16,15 @@ const pack = (name, voice, pitch, speaker, texts) => {
   for (const t of texts) for (const s of narrSplit(t)) if (!seen.has(s)) { seen.add(s); sentences.push(s); }
   packs.push({ name, voice, pitch, speaker, sentences });
 };
+// diálogos socráticos: sus frases van en el paquete p- del pensador (frases fijas: deben coincidir con src/04c-dialogo.js)
+const DLG_FIXED = ['Te propongo una idea, para que la examinemos juntos.', 'Interesante. ¿Por qué lo piensas? Dame tu mejor razón.', 'Has dialogado de verdad: has tomado postura, has dado razones y has respondido a la objeción.', 'Pero todavía no me has dado razones firmes. Pensémoslo otra vez, sin prisa.'];
+const dlgTexts = (D) => (D ? [...DLG_FIXED, `${DLG_FIXED[0]} «${D.tesis}» ¿Qué piensas tú?`, ...D.posturas.flatMap((p) => [p.objecion, p.cierre])] : []);
 ERAS.forEach((era) => era.sages.forEach((d) => {
   const v = SAGE_VOICE(d);
   pack('l-' + d.id, v.voice, v.pitch, d.id, LESSONS[d.id] || []);
   const lesson = new Set((LESSONS[d.id] || []).flatMap(narrSplit));
-  pack('p-' + d.id, v.voice, v.pitch, d.id, sageSpeech(d).flatMap(narrSplit).filter((s) => !lesson.has(s)));
+  pack('p-' + d.id, v.voice, v.pitch, d.id, [...sageSpeech(d).flatMap(narrSplit).filter((s) => !lesson.has(s)), ...dlgTexts(DIALOGOS[d.id])]);
 }));
-// diálogos socráticos (frases fijas: deben coincidir con src/04c-dialogo.js)
-const DLG_FIXED = ['Te propongo una idea, para que la examinemos juntos.', 'Interesante. ¿Por qué lo piensas? Dame tu mejor razón.', 'Has dialogado de verdad: has tomado postura, has dado razones y has respondido a la objeción.', 'Pero todavía no me has dado razones firmes. Pensémoslo otra vez, sin prisa.'];
-for (const [id, D] of Object.entries(DIALOGOS)) {
-  const d = ERAS.flatMap((e) => e.sages).find((x) => x.id === id); const v = SAGE_VOICE(d);
-  pack('d-' + id, v.voice, v.pitch, id, [...DLG_FIXED, `${DLG_FIXED[0]} «${D.tesis}» ¿Qué piensas tú?`, ...D.posturas.flatMap((p) => [p.objecion, p.cierre])]);
-}
 POIS.forEach((list, i) => pack('n-' + i, 'carlfm', 1, 'narr', [...list.flatMap((p) => [p.name + '. ' + p.text, p.text + ' ' + p.fact]), ...(i === 0 ? NARR_GENERIC : [])]));
 NPCS.forEach((list, i) => list.forEach((n) => {
   const v = n.id.startsWith('guia') ? { voice: 'carlfm', pitch: 0.93 } : n.female ? { voice: 'carlfm', pitch: 1.12 } : { voice: 'carlfm', pitch: [1.08, 0.97, 1.14, 1.02][n.id.length % 4] };
