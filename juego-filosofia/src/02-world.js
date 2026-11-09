@@ -1935,7 +1935,7 @@ function addClouds(W, idx) {
     sp.position.set(Math.cos(a) * rad, 45 + r() * 70, Math.sin(a) * rad); const sc = 70 + r() * 90; sp.scale.set(sc, sc * 0.45, 1);
     g.add(sp);
   }
-  W.group.add(g); W.anim.push((t, dt) => (g.rotation.y += dt * 0.006));
+  W.group.add(g); W.clouds = g; W.anim.push((t, dt) => (g.rotation.y += dt * 0.006));
 }
 function addGrass(W, idx, sp) {
   const n = 1400; const geo = new THREE.ConeGeometry(0.06, 0.55, 3); geo.translate(0, 0.27, 0);

@@ -94,7 +94,7 @@ function buildZones(W) {
     if (Z.era !== W.idx) continue; const st = W.stations.find((s) => s.data.id === Z.near); if (!st) continue;
     Z.s = {}; zoneMouth(W, Z, st); Z.build(W, Z);
     W.spots.push({ x: Z.exit[0], z: Z.exit[1], r: 2, verb: 'Salir', label: Z.exitLabel, on: () => W.zoneIn === Z, act: () => zoneExit(W, Z) });
-    { const ex = mesh(new THREE.PlaneGeometry(1.8, 2.8), new THREE.MeshBasicMaterial({ color: new THREE.Color(Z.color).multiplyScalar(1.4), transparent: true, opacity: 0.6, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }), Z.exit[0], 1.5, Z.exit[1], false, false); ex.lookAt(Z.entry[0], 1.5, Z.entry[2]); W.group.add(ex); zoneLabel(W, 'Salida', Z.exitLabel, Z.exit[0], 3.4, Z.exit[1], 0.8); }
+    { const ex = mesh(new THREE.PlaneGeometry(1.8, 2.8), new THREE.MeshBasicMaterial({ color: new THREE.Color(Z.color).multiplyScalar(1.4), transparent: true, opacity: 0.6, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }), Z.exit[0], (Z.exitY || 0) + 1.5, Z.exit[1], false, false); ex.lookAt(Z.entry[0], (Z.exitY || 0) + 1.5, Z.entry[2]); W.group.add(ex); zoneLabel(W, 'Salida', Z.exitLabel, Z.exit[0], (Z.exitY || 0) + 3.4, Z.exit[1], 0.8); }
   }
   W.anim.push(() => {
     if (typeof player === 'undefined' || G.state !== 'play' || W.zoneIn || (W.cave && W.cave.in)) return;
