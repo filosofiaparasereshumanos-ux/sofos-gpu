@@ -469,6 +469,11 @@ input[type=range] { width: 100%; accent-color: var(--gold); }
 .brand-by { display: block; margin-top: 16px; font-size: 13px; color: rgba(244,234,214,.6); text-decoration: none; letter-spacing: .3px; }
 .brand-by b { color: #e9c77a; font-weight: 500; }
 .install-b { border-color: rgba(233,199,122,.7) !important; color: #e9c77a !important; }
+.cuenta .ct-txt { text-align: center; margin: 6px 0 12px; line-height: 1.45; }
+.cuenta .ct-or { text-align: center; opacity: .7; font-style: italic; margin: 14px 0 6px; font-size: 15px; }
+.cuenta .ct-row { display: flex; gap: 8px; } .cuenta .ct-row input { flex: 1; min-width: 0; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(233,199,122,.45); background: rgba(0,0,0,.35); color: #f4ead6; font: inherit; }
+.cuenta .ct-msg { text-align: center; min-height: 1.3em; color: #e9c77a; font-size: 15px; }
+.login-b { border-color: rgba(233,199,122,.7) !important; color: #e9c77a !important; }
 .minis { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 4px; margin-top: 18px; }
 .mini-b { font-family: var(--display); letter-spacing: 0.12em; font-size: 0.78rem; text-transform: uppercase; padding: 8px 12px; background: rgba(13,12,18,0.45); border: 1px solid rgba(214,168,74,0.22); color: var(--parchment); cursor: pointer; }
 .mini-b:hover { border-color: var(--gold); }
@@ -658,6 +663,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="mini-b" id="b-howto">Cómo jugar</button>
         <button class="mini-b" id="b-settings">Ajustes</button>
         <button class="mini-b" id="b-fs" hidden>Pantalla completa</button>
+        <button class="mini-b login-b" id="b-login" hidden>Iniciar sesión</button>
         <button class="mini-b install-b" id="b-install" hidden>Instalar app</button>
       </div>
       <a class="brand-by" href="https://filosofiaparasereshumanos.com" target="_blank" rel="noopener">Una propuesta de <b>Filosofía para Seres Humanos</b></a>
@@ -987,6 +993,24 @@ body.touch .gm.boss { width: 30px; height: 30px; }
     </div>
   </section>
 
+  <section id="cuenta" class="screen dim" hidden>
+    <div class="settings cuenta">
+      <h2>Tu camino</h2>
+      <div id="ct-out">
+        <p class="ct-txt">Inicia sesión para guardar tu odisea en tu cuenta y continuarla en cualquier celular o computador.</p>
+        <div class="btns"><button class="btn primary" id="ct-google">Continuar con Google</button></div>
+        <p class="ct-or">o recibe un enlace de acceso en tu correo</p>
+        <div class="ct-row"><input id="ct-mail" type="email" placeholder="tu@correo.com" autocomplete="email" aria-label="Tu correo"><button class="btn" id="ct-send">Enviar enlace</button></div>
+      </div>
+      <div id="ct-in" hidden>
+        <p class="ct-txt">Has iniciado sesión como <b id="ct-who"></b>.</p>
+        <p class="ct-txt" id="ct-state"></p>
+        <div class="btns"><button class="btn" id="ct-sync">Guardar ahora</button><button class="btn ghost" id="ct-logout">Cerrar sesión</button></div>
+      </div>
+      <p class="ct-msg" id="ct-msg" aria-live="polite"></p>
+      <div class="btns"><button class="btn" data-back>Volver</button></div>
+    </div>
+  </section>
   <section id="settings" class="screen dim" hidden>
     <div class="settings">
       <h2>Ajustes</h2>
@@ -8412,7 +8436,7 @@ function updateEpojeHud() {
 // ============================================================================
 //  FLUJO DE PANTALLAS
 // ============================================================================
-const SCREENS = ['aula', 'qd', 'travel', 'title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept', 'oracle', 'oracle-end', 'fame', 'logros'];
+const SCREENS = ['cuenta', 'aula', 'qd', 'travel', 'title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept', 'oracle', 'oracle-end', 'fame', 'logros'];
 function show(id) { SCREENS.forEach((s) => ($('#' + s).hidden = s !== id)); if (id) { const b = $('#' + id).querySelector('.btn.primary, .btn'); if (b && !IS_TOUCH) setTimeout(() => b.focus({ preventScroll: true }), 30); } }
 function hideAll() { SCREENS.forEach((s) => ($('#' + s).hidden = true)); }
 
@@ -9850,6 +9874,88 @@ on('#b-install', async () => {
   if (AppInstall.evt) { AppInstall.evt.prompt(); await AppInstall.evt.userChoice.catch(() => {}); AppInstall.evt = null; $('#b-install').hidden = true; return; }
   if (AppInstall.ios) toast('En iPhone: toca el botón Compartir y luego «Agregar a inicio».');
 });
+
+// ---- src/06d-cuenta.js ----
+// ============================================================================
+//  CUENTAS (Supabase): inicio de sesión con Google o enlace por correo, y el camino
+//  de cada jugador guardado en su cuenta para seguir en cualquier aparato.
+//  Solo en la versión web (dominio propio); en Claude el botón no aparece.
+// ============================================================================
+const CUENTA_CFG = {
+  url: '', // p. ej. https://xxxx.supabase.co
+  key: '', // clave pública «anon» del proyecto (es pública: la protegen las reglas RLS)
+};
+const Cuenta = {
+  sb: null, user: null, timer: null, busy: false,
+  on() { return !!(CUENTA_CFG.url && CUENTA_CFG.key) && typeof AppInstall !== 'undefined' && AppInstall.web; },
+  // todo lo que el juego guarda empieza por «odisea-razon.»
+  snapshot() {
+    const d = {};
+    for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.startsWith('odisea-razon.') && k !== 'odisea-razon.settings') d[k] = localStorage.getItem(k); }
+    return d;
+  },
+  weight(d) { // cuánto camino hay en una copia: para no pisar la buena con una vacía
+    const j = (k, def) => { try { return JSON.parse(d[k]) ?? def; } catch (e) { return def; } };
+    const sv = j('odisea-razon.save', {}) || {}; const cx = j('odisea-razon.codex', []) || [];
+    return cx.length * 1000 + (sv.eraIdx || 0) * 100 + (sv.beaten || []).length * 10 + Math.min(9, Math.floor((sv.score || 0) / 1000));
+  },
+  async init() {
+    if (!this.on()) return;
+    $('#b-login').hidden = false;
+    try {
+      const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm');
+      this.sb = createClient(CUENTA_CFG.url, CUENTA_CFG.key, { auth: { persistSession: true, detectSessionInUrl: true, flowType: 'pkce' } });
+      this.sb.auth.onAuthStateChange((ev, s) => this.setUser(s ? s.user : null, ev));
+      const { data } = await this.sb.auth.getSession(); this.setUser(data.session ? data.session.user : null, 'INITIAL');
+    } catch (e) { $('#b-login').hidden = true; }
+  },
+  name(u) { const m = (u && u.user_metadata) || {}; return m.full_name || m.name || (u && u.email) || 'viajero'; },
+  async setUser(u, ev) {
+    const had = this.user && u && this.user.id === u.id; this.user = u;
+    $('#b-login').textContent = u ? 'Mi cuenta · ' + this.name(u).split(' ')[0] : 'Iniciar sesión';
+    $('#ct-out').hidden = !!u; $('#ct-in').hidden = !u; if (u) $('#ct-who').textContent = this.name(u);
+    if (u && !had) await this.pull();
+  },
+  // al entrar: si la cuenta tiene más camino que este aparato, se recupera; si no, se sube
+  async pull() {
+    if (!this.sb || !this.user) return;
+    const { data, error } = await this.sb.from('progreso').select('datos').eq('user_id', this.user.id).maybeSingle();
+    if (error) { this.msg('No se pudo leer tu cuenta. Tu camino sigue guardado en este aparato.'); return; }
+    const local = this.snapshot(), remote = (data && data.datos) || {};
+    if (this.weight(remote) > this.weight(local)) {
+      for (const k of Object.keys(local)) localStorage.removeItem(k);
+      for (const [k, v] of Object.entries(remote)) if (k.startsWith('odisea-razon.')) localStorage.setItem(k, v);
+      this.msg('Recuperamos tu odisea desde tu cuenta.'); setTimeout(() => location.reload(), 900);
+    } else { await this.push(); this.msg('Tu camino quedó guardado en tu cuenta.'); }
+  },
+  async push() {
+    if (!this.sb || !this.user || this.busy) return; this.busy = true;
+    const d = this.snapshot(); let sv = {}; try { sv = JSON.parse(d['odisea-razon.save'] || '{}') || {}; } catch (e) { /* nada */ }
+    const { error } = await this.sb.from('progreso').upsert({ user_id: this.user.id, nombre: this.name(this.user), datos: d, sabiduria: sv.score || 0, actualizado: new Date().toISOString() });
+    this.busy = false;
+    $('#ct-state').textContent = error ? 'No se pudo guardar ahora; se intentará otra vez.' : 'Última copia en tu cuenta: ' + new Date().toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' }) + '.';
+  },
+  dirty() { if (!this.user) return; clearTimeout(this.timer); this.timer = setTimeout(() => this.push(), 4000); },
+  msg(t) { $('#ct-msg').textContent = t; },
+};
+// cada vez que el juego guarda algo, se programa una copia en la cuenta
+{ const set0 = store.set.bind(store); store.set = (k, v) => { set0(k, v); if (String(k).startsWith('odisea-razon.')) Cuenta.dirty(); }; }
+window.addEventListener('pagehide', () => { if (Cuenta.timer) { clearTimeout(Cuenta.timer); Cuenta.push(); } });
+on('#b-login', () => { Cuenta.msg(''); show('cuenta'); });
+on('#ct-google', async () => {
+  if (!Cuenta.sb) return; Cuenta.msg('Abriendo Google…');
+  const { error } = await Cuenta.sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.href.split('#')[0] } });
+  if (error) Cuenta.msg('No se pudo abrir Google: ' + error.message);
+});
+on('#ct-send', async () => {
+  const mail = $('#ct-mail').value.trim(); if (!/^\S+@\S+\.\S+$/.test(mail)) return Cuenta.msg('Escribe un correo válido.');
+  if (!Cuenta.sb) return; Cuenta.msg('Enviando…');
+  const { error } = await Cuenta.sb.auth.signInWithOtp({ email: mail, options: { emailRedirectTo: location.href.split('#')[0] } });
+  Cuenta.msg(error ? 'No se pudo enviar: ' + error.message : 'Listo. Abre el enlace que te llegó a ' + mail + ' en este mismo aparato.');
+});
+on('#ct-sync', () => Cuenta.push());
+on('#ct-logout', async () => { if (Cuenta.sb) await Cuenta.sb.auth.signOut(); Cuenta.msg('Sesión cerrada. Tu camino sigue guardado en este aparato.'); });
+Cuenta.init();
 
 </script>
 </body>
