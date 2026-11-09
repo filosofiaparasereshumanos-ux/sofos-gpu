@@ -5,7 +5,7 @@
 // ============================================================================
 const CUENTA_CFG = {
   url: 'https://xmslbqzmztcaoddchzsz.supabase.co',
-  key: '', // clave pública «anon» del proyecto (es pública: la protegen las reglas RLS)
+  key: 'sb_publishable_5yoU56-AIWpkIelBPgeqPw_ydkMGEdk', // clave pública «anon» del proyecto (es pública: la protegen las reglas RLS)
 };
 const Cuenta = {
   sb: null, user: null, timer: null, busy: false,
