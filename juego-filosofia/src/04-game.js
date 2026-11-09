@@ -261,7 +261,8 @@ function walkToScreen(cx, cy) {
   _ray.setFromCamera(_ndc, camera);
   if (!_ray.ray.intersectPlane(_plane, _hit)) return;
   const d = _hit.distanceTo(player.pos); if (d > 45) return;
-  input.walk = { x: clamp(_hit.x, ARENA.x0 + 1, ARENA.x1 - 1), z: clamp(_hit.z, ARENA.z0 + 1, ARENA.z1 - 1), t: 12 }; input.auto = false;
+  const cv = typeof CAVE !== 'undefined' && world.cave && world.cave.in; const B = cv ? { x0: CAVE.x0, x1: CAVE.x1, z0: CAVE.z0, z1: CAVE.z1 } : ARENA;
+  input.walk = { x: clamp(_hit.x, B.x0 + 1, B.x1 - 1), z: clamp(_hit.z, B.z0 + 1, B.z1 - 1), t: 12 }; input.auto = false;
   if (!world.walkMark) { world.walkMark = mesh(new THREE.RingGeometry(0.3, 0.45, 28), glow(0xffffff, 2, { transparent: true, opacity: 0.8, side: THREE.DoubleSide }), 0, 0.05, 0, false, false); world.walkMark.rotation.x = -Math.PI / 2; world.group.add(world.walkMark); }
   world.walkMark.position.set(input.walk.x, 0.05, input.walk.z); world.walkMark.visible = true; Audio.click();
 }
@@ -361,6 +362,7 @@ function updatePlayer(dt) {
       if (gnd.f && gnd.f.onStand) gnd.f.onStand();
       if (!gnd.f) player.safe.set(player.pos.x, 0, player.pos.z);
       else if (gnd.f.safe) player.safe.set(0, 0, gnd.f.respawnZ);
+      else if (gnd.f.safePos) player.safe.copy(gnd.f.safePos);
     } else {
       if (player.onGround) player.coyote = 0.12; else player.coyote -= dt;
       player.onGround = false; player.floor = null; player.airT += dt;

@@ -1408,6 +1408,7 @@ function buildWorld(idx) {
   regs.forEach((s, i) => W.stations.push({ data: s, pos: new THREE.Vector3(sp[i][0], 0, sp[i][1]), side: Math.sign(sp[i][0]) || 1 }));
   const boss = era.sages.find((s) => s.boss); W.stations.push({ data: boss, pos: W.bossPos.clone(), boss: true, side: 1 });
   for (const st of W.stations) buildStation(W, st);
+  if (typeof buildCave === 'function' && idx === CAVE_ERA) buildCave(W);
 
   buildPortal(W);
   // puntos de aparición de enemigos

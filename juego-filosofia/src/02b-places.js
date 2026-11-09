@@ -46,7 +46,7 @@ function buildPois(W) {
   W.pois = [];
   const col = W.theme.accent;
   for (const p of POIS[W.idx] || []) {
-    const g = new THREE.Group(); g.position.set(p.at[0], 0, p.at[1]);
+    const g = new THREE.Group(); g.position.set(p.at[0], p.y || 0, p.at[1]);
     const ring = mesh(new THREE.RingGeometry(0.85, 1.05, 40), glow(0xffd36a, 2.2, { transparent: true, opacity: 0.85, side: THREE.DoubleSide }), 0, 0.04, 0, false, false); ring.rotation.x = -Math.PI / 2; g.add(ring);
     const gem = mesh(new THREE.OctahedronGeometry(0.32, 0), glow(0xffd36a, 3.5), 0, 2.1, 0, false, false); g.add(gem);
     const cage = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.OctahedronGeometry(0.5, 0)), new THREE.LineBasicMaterial({ color: new THREE.Color(col).multiplyScalar(2.2), toneMapped: false })); cage.position.y = 2.1; g.add(cage);
