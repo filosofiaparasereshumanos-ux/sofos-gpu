@@ -83,11 +83,20 @@ const Cuenta = {
     if (!this.ses || this.busy) return; this.busy = true;
     const d = this.snapshot(); let sv = {}; try { sv = JSON.parse(d['odisea-razon.save'] || '{}') || {}; } catch (e) { /* nada */ }
     try {
-      const ok = await this.rpc('odisea_guardar', { p_usuario: this.ses.usuario, p_token: this.ses.token, p_datos: d, p_sabiduria: sv.score || 0 });
+      let ok;
+      try { ok = await this.rpc('odisea_guardar_v2', { p_usuario: this.ses.usuario, p_token: this.ses.token, p_datos: d, p_m: this.metricas(sv) }); }
+      catch (e) { if (!/PGRST202|Could not find/.test(String(e.message))) throw e; ok = await this.rpc('odisea_guardar', { p_usuario: this.ses.usuario, p_token: this.ses.token, p_datos: d, p_sabiduria: sv.score || 0 }); }
+      if (ok !== false && typeof AULA !== 'undefined') { const en = AULA.entrega(); if (en) this.rpc('odisea_clase_entregar', { p_usuario: this.ses.usuario, p_token: this.ses.token, p_codigo: en.cls.raw, p_linea: en.linea }).catch(() => {}); }
       if (ok === false) this.forget('Tu sesión terminó. Vuelve a entrar para seguir guardando.');
       else $('#ct-state').textContent = 'Última copia en tu cuenta: ' + new Date().toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' }) + '.';
     } catch (e) { $('#ct-state').textContent = 'No se pudo guardar ahora; se intentará otra vez.'; }
     this.busy = false;
+  },
+  // marcas para el ranking mundial
+  metricas(sv) {
+    const today = Oracle.today(); const day = store.get(DAILY_KEY, {})[today];
+    return { sabiduria: sv.score || 0, alias: store.get(ALIAS_KEY, '') || '', vencidos: (store.get(CODEX_KEY, []) || []).length, mejor: store.get('odisea-razon.best', 0) || 0,
+      hoy_fecha: today, hoy_puntos: day ? day.score : 0, hoy_aciertos: day ? day.correct : 0, semana: Oracle.weekKey(), semana_puntos: Oracle.weekScore(), racha: Oracle.streakDays() };
   },
   forget(m) { this.ses = null; try { localStorage.removeItem(CUENTA_KEY); } catch (e) { /* nada */ } this.paint(); if (m) this.msg(m); },
   dirty() { if (!this.ses) return; clearTimeout(this.timer); this.timer = setTimeout(() => this.push(), 3000); },

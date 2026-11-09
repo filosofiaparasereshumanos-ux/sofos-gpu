@@ -111,12 +111,35 @@ const Fame = {
     const q = tab === 'daily' ? col.where('dailyDate', '==', Oracle.today()).orderBy('dailyScore', 'desc').limit(30) : tab === 'week' ? col.where('weekKey', '==', Oracle.weekKey()).orderBy('weekScore', 'desc').limit(30) : col.where('best', '>', 0).orderBy('best', 'desc').limit(30);
     return Promise.race([q.get(), new Promise((_, rej) => setTimeout(() => rej({ code: 'timeout' }), 10000))]);
   },
+  // ranking mundial de la versión web (cuentas de usuario y contraseña)
+  async renderWeb() {
+    const list = $('#f-list'), note = $('#f-note');
+    document.querySelector('#f-tabs [data-v=odyssey]').textContent = 'Pensadores vencidos';
+    const tipo = this.tab === 'daily' ? 'hoy' : this.tab === 'week' ? 'semana' : 'odisea';
+    const clave = tipo === 'hoy' ? Oracle.today() : tipo === 'semana' ? Oracle.weekKey() : '';
+    note.textContent = (Cuenta.ses ? '' : 'Crea tu cuenta en «Mi cuenta» para aparecer en el ranking. ') + (tipo === 'hoy' ? 'Las preguntas del oráculo son las mismas para todos hoy.' : tipo === 'semana' ? 'Suma de tus oráculos de lunes a domingo.' : 'Quién ha vencido a más pensadores en todo el mundo.');
+    const loading = document.createElement('li'); loading.className = 'empty'; loading.textContent = 'Consultando los anales…'; list.appendChild(loading);
+    if (Cuenta.ses) await Cuenta.push();
+    let rows;
+    try { rows = await Cuenta.rpc('odisea_ranking', { p_tipo: tipo, p_clave: clave }); } catch (e) { loading.textContent = /PGRST202|Could not find/.test(String(e.message)) ? 'El ranking mundial se está preparando.' : 'No se pudo cargar el ranking ahora. Inténtalo en un momento.'; return; }
+    list.innerHTML = '';
+    if (!rows || !rows.length) { const li = document.createElement('li'); li.className = 'empty'; li.textContent = tipo === 'hoy' ? 'Nadie ha consultado al oráculo hoy todavía. ¡Sé el primero!' : tipo === 'semana' ? 'Nadie ha consultado al oráculo esta semana todavía.' : 'Nadie ha vencido a un pensador todavía.'; list.appendChild(li); return; }
+    rows.forEach((r, i) => {
+      const li = document.createElement('li'); li.className = (i < 3 ? 'top' + (i + 1) : '') + (Cuenta.ses && r.usuario === Cuenta.ses.usuario ? ' me' : '');
+      const n = document.createElement('span'); n.className = 'n'; n.textContent = i + 1;
+      const who = document.createElement('span'); who.className = 'who'; who.textContent = String(r.nombre).slice(0, 22);
+      const sub = document.createElement('small'); sub.textContent = tipo === 'odisea' ? (Number(r.detalle) > 0 ? `mejor odisea: ${Number(r.detalle).toLocaleString('es-ES')}` : '') : r.detalle || ''; who.appendChild(sub);
+      const sc = document.createElement('span'); sc.className = 'sc'; sc.textContent = Number(r.puntos || 0).toLocaleString('es-ES');
+      li.append(n, who, sc); list.appendChild(li);
+    });
+  },
   async render() {
     const list = $('#f-list'), note = $('#f-note'); list.innerHTML = '';
     document.querySelectorAll('#f-tabs button').forEach((b) => b.classList.toggle('on', b.dataset.v === this.tab));
     $('#f-alias').value = this.alias();
     const mine = this.tab === 'daily' ? store.get(DAILY_KEY, {})[Oracle.today()] : null; const myWeek = Oracle.weekScore();
     const localBest = store.get('odisea-razon.best', 0);
+    if (typeof Cuenta !== 'undefined' && Cuenta.on()) return this.renderWeb();
     if (!this.ready) {
       const li = document.createElement('li'); li.className = 'empty';
       li.textContent = this.tab === 'week' ? (myWeek ? `Tu sabiduría esta semana: ${myWeek.toLocaleString('es-ES')} · 🔥 ${Oracle.streakDays()} días seguidos` : 'Aún no has consultado al oráculo esta semana.') : this.tab === 'daily' ? (mine ? `Tu resultado de hoy: ${mine.correct}/10 · ${mine.score.toLocaleString('es-ES')} de sabiduría` : 'Aún no has consultado al oráculo hoy.') : (localBest ? `Tu mejor odisea: ${localBest.toLocaleString('es-ES')} de sabiduría` : 'Completa la odisea para entrar en el salón.');

@@ -456,6 +456,7 @@ input[type=range] { width: 100%; accent-color: var(--gold); }
 .cuenta .ct-msg { text-align: center; min-height: 1.3em; color: #e9c77a; font-size: 15px; }
 .login-b { border-color: rgba(233,199,122,.7) !important; color: #e9c77a !important; }
 #b-qd, #b-oqd { display: none !important; } /* «¿Qué diría…?» retirado: necesitaba IA en vivo */
+.au-online { color: #e9c77a; font-style: normal; }
 .minis { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 4px; margin-top: 18px; }
 .mini-b { font-family: var(--display); letter-spacing: 0.12em; font-size: 0.78rem; text-transform: uppercase; padding: 8px 12px; background: rgba(13,12,18,0.45); border: 1px solid rgba(214,168,74,0.22); color: var(--parchment); cursor: pointer; }
 .mini-b:hover { border-color: var(--gold); }
@@ -866,6 +867,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
           <div class="au-prog"><div class="au-bar"><i id="au-bar"></i></div><span id="au-pct"></span></div>
           <div class="au-list" id="au-list"></div>
           <p class="qd-note" id="au-legend"></p>
+          <p class="qd-note au-online" id="au-online-s" hidden></p>
           <div class="btns"><button class="btn primary" id="au-delbtn0">Entregar mi tarea</button><button class="btn ghost" id="au-leave">Salir de esta clase</button></div>
           <div id="au-deliver" hidden>
             <p class="qd-note">Envía este texto a tu docente (por WhatsApp, Classroom o correo). Puedes entregar varias veces: cuenta la última.</p>
@@ -891,6 +893,8 @@ body.touch .gm.boss { width: 30px; height: 30px; }
           <textarea id="au-invite" readonly rows="5" aria-label="Instrucciones para estudiantes"></textarea>
           <div class="btns"><button class="btn" id="au-invbtn">Compartir instrucciones con la clase</button></div>
           <h3 class="tv-sec">3. Entregas</h3>
+          <p class="qd-note au-online" id="au-online-t" hidden></p>
+          <div class="btns"><button class="btn" id="au-sync" hidden>Actualizar entregas en línea</button></div>
           <textarea id="au-subs" rows="4" placeholder="Pega aquí las entregas de tus estudiantes (puedes pegar muchas a la vez)" aria-label="Entregas"></textarea>
           <div class="btns"><button class="btn primary" id="au-addsubs">Añadir entregas</button></div>
           <div id="au-table"></div>

@@ -76,22 +76,30 @@ const AULA = {
     }
     $('#au-legend').textContent = tasks.map((x) => `${x.icon} ${x.n}`).join(' · ');
     $('#au-deliver').hidden = true; refreshAulaButton();
+    const on = typeof Cuenta !== 'undefined' && Cuenta.on();
+    $('#au-online-s').hidden = !on;
+    if (on) $('#au-online-s').textContent = Cuenta.ses ? `✓ Tu avance le llega solo a tu docente (cuenta «${Cuenta.ses.usuario}»). No necesitas enviar nada.` : 'Consejo: crea tu cuenta en «Mi cuenta» (pantalla de título) y tu avance le llegará solo a tu docente.';
   },
   join() {
     const cls = this.decode($('#au-code').value); const name = $('#au-name').value.replace(/\s+/g, ' ').trim().slice(0, 40);
     if (!cls) { toast('Ese código de clase no es válido. Revísalo con tu docente.'); Audio.wrong(); return; }
     if (!name) { toast('Escribe tu nombre para que tu docente sepa quién eres.'); $('#au-name').focus(); return; }
-    store.set(this.KEY_TASK, { code: cls.code, name, t: Date.now() }); Audio.correct(); achieve('aula');
+    store.set(this.KEY_TASK, { code: cls.code, name, t: Date.now() }); Audio.correct(); achieve('aula'); if (typeof Cuenta !== 'undefined' && Cuenta.ses) Cuenta.push();
     toast(`¡Te has unido a la clase! Tienes ${cls.items.length} pensadores en tu tarea.`); this.renderStudent(); refreshAulaButton();
   },
-  deliver() {
-    const t = store.get(this.KEY_TASK, null); const cls = t && this.decode(t.code); if (!cls) return;
+  // entrega firmada de la tarea actual (la misma para copiarla a mano o enviarla en línea)
+  entrega() {
+    const t = store.get(this.KEY_TASK, null); const cls = t && this.decode(t.code); if (!cls) return null;
     const pr = this.progress(cls); const bits = pr.rows.flatMap((r) => r.cells.filter((c) => c !== null).map((c) => (c ? '1' : '0'))).join('');
     const hex = BigInt('0b' + (bits || '0')).toString(36).toUpperCase();
     const ds = Oracle.today().replace(/-/g, ''); const name = t.name.replace(/[:|\n]/g, ' ');
     const line = `ENTREGA:${cls.raw}:${name}:${bits.length}.${hex}:${ds}`; const sig = this.check(line) + this.check(line.split('').reverse().join(''));
     const pct = pr.tot ? Math.round((pr.ok / pr.tot) * 100) : 0;
-    const txt = `Odisea de la Razón · Entrega de tarea\n${t.name} · clase ${cls.code}\n${pr.ok} de ${pr.tot} tareas completadas (${pct} %)\n${line}:${sig}`;
+    return { t, cls, pr, pct, linea: `${line}:${sig}` };
+  },
+  deliver() {
+    const e = this.entrega(); if (!e) return; const { t, cls, pr, pct } = e;
+    const txt = `Odisea de la Razón · Entrega de tarea\n${t.name} · clase ${cls.code}\n${pr.ok} de ${pr.tot} tareas completadas (${pct} %)\n${e.linea}`;
     $('#au-deltext').value = txt; $('#au-deliver').hidden = false;
     $('#au-delbtn').textContent = navigator.share ? 'Enviar a mi docente' : 'Copiar para enviar a mi docente';
     if (pct === 100) achieve('aula100');
@@ -134,8 +142,27 @@ const AULA = {
     const all = store.get(this.KEY_CLASSES, {}); const c = all[k]; const d = c && this.decode(c.code); if (!d) return;
     $('#au-classbox').hidden = false; $('#au-ctitle').textContent = c.title; $('#au-ccode').textContent = c.code;
     $('#au-cinfo').textContent = `${d.items.length} pensadores: ${d.items.map((x) => x.s.short).join(', ')}. Cuenta: ${this.tasksOf(d).map((t) => t.short.toLowerCase()).join(', ')}.`;
-    $('#au-invite').value = `Tarea de filosofía: ${c.title}\n1. Entra en Odisea de la Razón: ${GAME_URL}\n2. Toca «Modo aula» → «Soy estudiante».\n3. Escribe el código de clase: ${c.code}\n4. Al terminar, toca «Entregar mi tarea» y envíame el texto.`;
-    this.renderSubs(k);
+    const online = typeof Cuenta !== 'undefined' && Cuenta.on();
+    $('#au-invite').value = online
+      ? `Tarea de filosofía: ${c.title}\n1. Entra en Odisea de la Razón: ${GAME_URL}\n2. Toca «Crear cuenta / Entrar» y crea tu cuenta (usuario y contraseña).\n3. Toca «Modo aula» → «Soy estudiante» y escribe el código de clase: ${c.code}\n4. Juega: tu avance me llega solo. (Sin cuenta: toca «Entregar mi tarea» y envíame el texto.)`
+      : `Tarea de filosofía: ${c.title}\n1. Entra en Odisea de la Razón: ${GAME_URL}\n2. Toca «Modo aula» → «Soy estudiante».\n3. Escribe el código de clase: ${c.code}\n4. Al terminar, toca «Entregar mi tarea» y envíame el texto.`;
+    this.renderSubs(k); this.syncOnline(k);
+  },
+  // entregas en línea: el docente con cuenta registra la clase y recibe las entregas solo
+  async syncOnline(k) {
+    const box = $('#au-online-t'); const on = typeof Cuenta !== 'undefined' && Cuenta.on(); box.hidden = !on; $('#au-sync').hidden = !(on && Cuenta.ses);
+    if (!on) return;
+    if (!Cuenta.ses) { box.textContent = 'Crea tu cuenta de docente en «Mi cuenta» (pantalla de título) y las entregas de quienes tengan cuenta te llegarán solas aquí.'; return; }
+    const all = store.get(this.KEY_CLASSES, {}); const c = all[k]; const d = c && this.decode(c.code); if (!d) return;
+    box.textContent = 'Consultando entregas en línea…';
+    try {
+      const mine = await Cuenta.rpc('odisea_clase_registrar', { p_usuario: Cuenta.ses.usuario, p_token: Cuenta.ses.token, p_codigo: d.raw, p_titulo: c.title });
+      if (!mine) { box.textContent = 'Esta clase ya la registró otra cuenta de docente: aquí solo verás las entregas que pegues.'; return; }
+      const rows = await Cuenta.rpc('odisea_clase_entregas', { p_usuario: Cuenta.ses.usuario, p_token: Cuenta.ses.token, p_codigo: d.raw });
+      const n = rows && rows.length ? this.parseSubs(rows.map((r) => r.linea).join('\n'), k) : 0;
+      if (this.current === k) this.renderSubs(k);
+      box.textContent = `✓ Clase en línea · ${n} ${n === 1 ? 'estudiante ha' : 'estudiantes han'} enviado su avance · actualizado ${new Date().toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' })}.`;
+    } catch (e) { box.textContent = /PGRST202|Could not find/.test(String(e.message)) ? 'La clase en línea aún no está activada en el servidor.' : 'No se pudieron consultar las entregas en línea ahora.'; }
   },
   parseSubs(text, k) {
     const all = store.get(this.KEY_CLASSES, {}); const c = all[k]; if (!c) return 0; const d = this.decode(c.code);
@@ -267,6 +294,7 @@ on('#au-invbtn', () => shareOrCopy($('#au-invite').value, $('#au-invbtn'), $('#a
 on('#au-addsubs', () => { const n = AULA.parseSubs($('#au-subs').value, AULA.current); $('#au-subs').value = ''; toast(n ? `${n} ${n === 1 ? 'entrega añadida' : 'entregas añadidas'}.` : 'No encontré entregas válidas en el texto.'); AULA.renderSubs(AULA.current); });
 on('#au-csvbtn', () => copyText($('#au-csvtext').value, $('#au-csvbtn'), $('#au-csvtext')));
 on('#au-del', () => AULA.deleteClass());
+on('#au-sync', () => { if (AULA.current) AULA.syncOnline(AULA.current); });
 on('#au-proj', () => Proj.start());
 on('#au-sheet', () => aulaSheet());
 on('#pj-reveal', () => Proj.reveal());

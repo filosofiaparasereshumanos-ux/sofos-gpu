@@ -475,6 +475,7 @@ input[type=range] { width: 100%; accent-color: var(--gold); }
 .cuenta .ct-msg { text-align: center; min-height: 1.3em; color: #e9c77a; font-size: 15px; }
 .login-b { border-color: rgba(233,199,122,.7) !important; color: #e9c77a !important; }
 #b-qd, #b-oqd { display: none !important; } /* «¿Qué diría…?» retirado: necesitaba IA en vivo */
+.au-online { color: #e9c77a; font-style: normal; }
 .minis { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 4px; margin-top: 18px; }
 .mini-b { font-family: var(--display); letter-spacing: 0.12em; font-size: 0.78rem; text-transform: uppercase; padding: 8px 12px; background: rgba(13,12,18,0.45); border: 1px solid rgba(214,168,74,0.22); color: var(--parchment); cursor: pointer; }
 .mini-b:hover { border-color: var(--gold); }
@@ -887,6 +888,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
           <div class="au-prog"><div class="au-bar"><i id="au-bar"></i></div><span id="au-pct"></span></div>
           <div class="au-list" id="au-list"></div>
           <p class="qd-note" id="au-legend"></p>
+          <p class="qd-note au-online" id="au-online-s" hidden></p>
           <div class="btns"><button class="btn primary" id="au-delbtn0">Entregar mi tarea</button><button class="btn ghost" id="au-leave">Salir de esta clase</button></div>
           <div id="au-deliver" hidden>
             <p class="qd-note">Envía este texto a tu docente (por WhatsApp, Classroom o correo). Puedes entregar varias veces: cuenta la última.</p>
@@ -912,6 +914,8 @@ body.touch .gm.boss { width: 30px; height: 30px; }
           <textarea id="au-invite" readonly rows="5" aria-label="Instrucciones para estudiantes"></textarea>
           <div class="btns"><button class="btn" id="au-invbtn">Compartir instrucciones con la clase</button></div>
           <h3 class="tv-sec">3. Entregas</h3>
+          <p class="qd-note au-online" id="au-online-t" hidden></p>
+          <div class="btns"><button class="btn" id="au-sync" hidden>Actualizar entregas en línea</button></div>
           <textarea id="au-subs" rows="4" placeholder="Pega aquí las entregas de tus estudiantes (puedes pegar muchas a la vez)" aria-label="Entregas"></textarea>
           <div class="btns"><button class="btn primary" id="au-addsubs">Añadir entregas</button></div>
           <div id="au-table"></div>
@@ -9246,12 +9250,35 @@ const Fame = {
     const q = tab === 'daily' ? col.where('dailyDate', '==', Oracle.today()).orderBy('dailyScore', 'desc').limit(30) : tab === 'week' ? col.where('weekKey', '==', Oracle.weekKey()).orderBy('weekScore', 'desc').limit(30) : col.where('best', '>', 0).orderBy('best', 'desc').limit(30);
     return Promise.race([q.get(), new Promise((_, rej) => setTimeout(() => rej({ code: 'timeout' }), 10000))]);
   },
+  // ranking mundial de la versión web (cuentas de usuario y contraseña)
+  async renderWeb() {
+    const list = $('#f-list'), note = $('#f-note');
+    document.querySelector('#f-tabs [data-v=odyssey]').textContent = 'Pensadores vencidos';
+    const tipo = this.tab === 'daily' ? 'hoy' : this.tab === 'week' ? 'semana' : 'odisea';
+    const clave = tipo === 'hoy' ? Oracle.today() : tipo === 'semana' ? Oracle.weekKey() : '';
+    note.textContent = (Cuenta.ses ? '' : 'Crea tu cuenta en «Mi cuenta» para aparecer en el ranking. ') + (tipo === 'hoy' ? 'Las preguntas del oráculo son las mismas para todos hoy.' : tipo === 'semana' ? 'Suma de tus oráculos de lunes a domingo.' : 'Quién ha vencido a más pensadores en todo el mundo.');
+    const loading = document.createElement('li'); loading.className = 'empty'; loading.textContent = 'Consultando los anales…'; list.appendChild(loading);
+    if (Cuenta.ses) await Cuenta.push();
+    let rows;
+    try { rows = await Cuenta.rpc('odisea_ranking', { p_tipo: tipo, p_clave: clave }); } catch (e) { loading.textContent = /PGRST202|Could not find/.test(String(e.message)) ? 'El ranking mundial se está preparando.' : 'No se pudo cargar el ranking ahora. Inténtalo en un momento.'; return; }
+    list.innerHTML = '';
+    if (!rows || !rows.length) { const li = document.createElement('li'); li.className = 'empty'; li.textContent = tipo === 'hoy' ? 'Nadie ha consultado al oráculo hoy todavía. ¡Sé el primero!' : tipo === 'semana' ? 'Nadie ha consultado al oráculo esta semana todavía.' : 'Nadie ha vencido a un pensador todavía.'; list.appendChild(li); return; }
+    rows.forEach((r, i) => {
+      const li = document.createElement('li'); li.className = (i < 3 ? 'top' + (i + 1) : '') + (Cuenta.ses && r.usuario === Cuenta.ses.usuario ? ' me' : '');
+      const n = document.createElement('span'); n.className = 'n'; n.textContent = i + 1;
+      const who = document.createElement('span'); who.className = 'who'; who.textContent = String(r.nombre).slice(0, 22);
+      const sub = document.createElement('small'); sub.textContent = tipo === 'odisea' ? (Number(r.detalle) > 0 ? `mejor odisea: ${Number(r.detalle).toLocaleString('es-ES')}` : '') : r.detalle || ''; who.appendChild(sub);
+      const sc = document.createElement('span'); sc.className = 'sc'; sc.textContent = Number(r.puntos || 0).toLocaleString('es-ES');
+      li.append(n, who, sc); list.appendChild(li);
+    });
+  },
   async render() {
     const list = $('#f-list'), note = $('#f-note'); list.innerHTML = '';
     document.querySelectorAll('#f-tabs button').forEach((b) => b.classList.toggle('on', b.dataset.v === this.tab));
     $('#f-alias').value = this.alias();
     const mine = this.tab === 'daily' ? store.get(DAILY_KEY, {})[Oracle.today()] : null; const myWeek = Oracle.weekScore();
     const localBest = store.get('odisea-razon.best', 0);
+    if (typeof Cuenta !== 'undefined' && Cuenta.on()) return this.renderWeb();
     if (!this.ready) {
       const li = document.createElement('li'); li.className = 'empty';
       li.textContent = this.tab === 'week' ? (myWeek ? `Tu sabiduría esta semana: ${myWeek.toLocaleString('es-ES')} · 🔥 ${Oracle.streakDays()} días seguidos` : 'Aún no has consultado al oráculo esta semana.') : this.tab === 'daily' ? (mine ? `Tu resultado de hoy: ${mine.correct}/10 · ${mine.score.toLocaleString('es-ES')} de sabiduría` : 'Aún no has consultado al oráculo hoy.') : (localBest ? `Tu mejor odisea: ${localBest.toLocaleString('es-ES')} de sabiduría` : 'Completa la odisea para entrar en el salón.');
@@ -9659,22 +9686,30 @@ const AULA = {
     }
     $('#au-legend').textContent = tasks.map((x) => `${x.icon} ${x.n}`).join(' · ');
     $('#au-deliver').hidden = true; refreshAulaButton();
+    const on = typeof Cuenta !== 'undefined' && Cuenta.on();
+    $('#au-online-s').hidden = !on;
+    if (on) $('#au-online-s').textContent = Cuenta.ses ? `✓ Tu avance le llega solo a tu docente (cuenta «${Cuenta.ses.usuario}»). No necesitas enviar nada.` : 'Consejo: crea tu cuenta en «Mi cuenta» (pantalla de título) y tu avance le llegará solo a tu docente.';
   },
   join() {
     const cls = this.decode($('#au-code').value); const name = $('#au-name').value.replace(/\s+/g, ' ').trim().slice(0, 40);
     if (!cls) { toast('Ese código de clase no es válido. Revísalo con tu docente.'); Audio.wrong(); return; }
     if (!name) { toast('Escribe tu nombre para que tu docente sepa quién eres.'); $('#au-name').focus(); return; }
-    store.set(this.KEY_TASK, { code: cls.code, name, t: Date.now() }); Audio.correct(); achieve('aula');
+    store.set(this.KEY_TASK, { code: cls.code, name, t: Date.now() }); Audio.correct(); achieve('aula'); if (typeof Cuenta !== 'undefined' && Cuenta.ses) Cuenta.push();
     toast(`¡Te has unido a la clase! Tienes ${cls.items.length} pensadores en tu tarea.`); this.renderStudent(); refreshAulaButton();
   },
-  deliver() {
-    const t = store.get(this.KEY_TASK, null); const cls = t && this.decode(t.code); if (!cls) return;
+  // entrega firmada de la tarea actual (la misma para copiarla a mano o enviarla en línea)
+  entrega() {
+    const t = store.get(this.KEY_TASK, null); const cls = t && this.decode(t.code); if (!cls) return null;
     const pr = this.progress(cls); const bits = pr.rows.flatMap((r) => r.cells.filter((c) => c !== null).map((c) => (c ? '1' : '0'))).join('');
     const hex = BigInt('0b' + (bits || '0')).toString(36).toUpperCase();
     const ds = Oracle.today().replace(/-/g, ''); const name = t.name.replace(/[:|\n]/g, ' ');
     const line = `ENTREGA:${cls.raw}:${name}:${bits.length}.${hex}:${ds}`; const sig = this.check(line) + this.check(line.split('').reverse().join(''));
     const pct = pr.tot ? Math.round((pr.ok / pr.tot) * 100) : 0;
-    const txt = `Odisea de la Razón · Entrega de tarea\n${t.name} · clase ${cls.code}\n${pr.ok} de ${pr.tot} tareas completadas (${pct} %)\n${line}:${sig}`;
+    return { t, cls, pr, pct, linea: `${line}:${sig}` };
+  },
+  deliver() {
+    const e = this.entrega(); if (!e) return; const { t, cls, pr, pct } = e;
+    const txt = `Odisea de la Razón · Entrega de tarea\n${t.name} · clase ${cls.code}\n${pr.ok} de ${pr.tot} tareas completadas (${pct} %)\n${e.linea}`;
     $('#au-deltext').value = txt; $('#au-deliver').hidden = false;
     $('#au-delbtn').textContent = navigator.share ? 'Enviar a mi docente' : 'Copiar para enviar a mi docente';
     if (pct === 100) achieve('aula100');
@@ -9717,8 +9752,27 @@ const AULA = {
     const all = store.get(this.KEY_CLASSES, {}); const c = all[k]; const d = c && this.decode(c.code); if (!d) return;
     $('#au-classbox').hidden = false; $('#au-ctitle').textContent = c.title; $('#au-ccode').textContent = c.code;
     $('#au-cinfo').textContent = `${d.items.length} pensadores: ${d.items.map((x) => x.s.short).join(', ')}. Cuenta: ${this.tasksOf(d).map((t) => t.short.toLowerCase()).join(', ')}.`;
-    $('#au-invite').value = `Tarea de filosofía: ${c.title}\n1. Entra en Odisea de la Razón: ${GAME_URL}\n2. Toca «Modo aula» → «Soy estudiante».\n3. Escribe el código de clase: ${c.code}\n4. Al terminar, toca «Entregar mi tarea» y envíame el texto.`;
-    this.renderSubs(k);
+    const online = typeof Cuenta !== 'undefined' && Cuenta.on();
+    $('#au-invite').value = online
+      ? `Tarea de filosofía: ${c.title}\n1. Entra en Odisea de la Razón: ${GAME_URL}\n2. Toca «Crear cuenta / Entrar» y crea tu cuenta (usuario y contraseña).\n3. Toca «Modo aula» → «Soy estudiante» y escribe el código de clase: ${c.code}\n4. Juega: tu avance me llega solo. (Sin cuenta: toca «Entregar mi tarea» y envíame el texto.)`
+      : `Tarea de filosofía: ${c.title}\n1. Entra en Odisea de la Razón: ${GAME_URL}\n2. Toca «Modo aula» → «Soy estudiante».\n3. Escribe el código de clase: ${c.code}\n4. Al terminar, toca «Entregar mi tarea» y envíame el texto.`;
+    this.renderSubs(k); this.syncOnline(k);
+  },
+  // entregas en línea: el docente con cuenta registra la clase y recibe las entregas solo
+  async syncOnline(k) {
+    const box = $('#au-online-t'); const on = typeof Cuenta !== 'undefined' && Cuenta.on(); box.hidden = !on; $('#au-sync').hidden = !(on && Cuenta.ses);
+    if (!on) return;
+    if (!Cuenta.ses) { box.textContent = 'Crea tu cuenta de docente en «Mi cuenta» (pantalla de título) y las entregas de quienes tengan cuenta te llegarán solas aquí.'; return; }
+    const all = store.get(this.KEY_CLASSES, {}); const c = all[k]; const d = c && this.decode(c.code); if (!d) return;
+    box.textContent = 'Consultando entregas en línea…';
+    try {
+      const mine = await Cuenta.rpc('odisea_clase_registrar', { p_usuario: Cuenta.ses.usuario, p_token: Cuenta.ses.token, p_codigo: d.raw, p_titulo: c.title });
+      if (!mine) { box.textContent = 'Esta clase ya la registró otra cuenta de docente: aquí solo verás las entregas que pegues.'; return; }
+      const rows = await Cuenta.rpc('odisea_clase_entregas', { p_usuario: Cuenta.ses.usuario, p_token: Cuenta.ses.token, p_codigo: d.raw });
+      const n = rows && rows.length ? this.parseSubs(rows.map((r) => r.linea).join('\n'), k) : 0;
+      if (this.current === k) this.renderSubs(k);
+      box.textContent = `✓ Clase en línea · ${n} ${n === 1 ? 'estudiante ha' : 'estudiantes han'} enviado su avance · actualizado ${new Date().toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' })}.`;
+    } catch (e) { box.textContent = /PGRST202|Could not find/.test(String(e.message)) ? 'La clase en línea aún no está activada en el servidor.' : 'No se pudieron consultar las entregas en línea ahora.'; }
   },
   parseSubs(text, k) {
     const all = store.get(this.KEY_CLASSES, {}); const c = all[k]; if (!c) return 0; const d = this.decode(c.code);
@@ -9850,6 +9904,7 @@ on('#au-invbtn', () => shareOrCopy($('#au-invite').value, $('#au-invbtn'), $('#a
 on('#au-addsubs', () => { const n = AULA.parseSubs($('#au-subs').value, AULA.current); $('#au-subs').value = ''; toast(n ? `${n} ${n === 1 ? 'entrega añadida' : 'entregas añadidas'}.` : 'No encontré entregas válidas en el texto.'); AULA.renderSubs(AULA.current); });
 on('#au-csvbtn', () => copyText($('#au-csvtext').value, $('#au-csvbtn'), $('#au-csvtext')));
 on('#au-del', () => AULA.deleteClass());
+on('#au-sync', () => { if (AULA.current) AULA.syncOnline(AULA.current); });
 on('#au-proj', () => Proj.start());
 on('#au-sheet', () => aulaSheet());
 on('#pj-reveal', () => Proj.reveal());
@@ -9967,11 +10022,20 @@ const Cuenta = {
     if (!this.ses || this.busy) return; this.busy = true;
     const d = this.snapshot(); let sv = {}; try { sv = JSON.parse(d['odisea-razon.save'] || '{}') || {}; } catch (e) { /* nada */ }
     try {
-      const ok = await this.rpc('odisea_guardar', { p_usuario: this.ses.usuario, p_token: this.ses.token, p_datos: d, p_sabiduria: sv.score || 0 });
+      let ok;
+      try { ok = await this.rpc('odisea_guardar_v2', { p_usuario: this.ses.usuario, p_token: this.ses.token, p_datos: d, p_m: this.metricas(sv) }); }
+      catch (e) { if (!/PGRST202|Could not find/.test(String(e.message))) throw e; ok = await this.rpc('odisea_guardar', { p_usuario: this.ses.usuario, p_token: this.ses.token, p_datos: d, p_sabiduria: sv.score || 0 }); }
+      if (ok !== false && typeof AULA !== 'undefined') { const en = AULA.entrega(); if (en) this.rpc('odisea_clase_entregar', { p_usuario: this.ses.usuario, p_token: this.ses.token, p_codigo: en.cls.raw, p_linea: en.linea }).catch(() => {}); }
       if (ok === false) this.forget('Tu sesión terminó. Vuelve a entrar para seguir guardando.');
       else $('#ct-state').textContent = 'Última copia en tu cuenta: ' + new Date().toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' }) + '.';
     } catch (e) { $('#ct-state').textContent = 'No se pudo guardar ahora; se intentará otra vez.'; }
     this.busy = false;
+  },
+  // marcas para el ranking mundial
+  metricas(sv) {
+    const today = Oracle.today(); const day = store.get(DAILY_KEY, {})[today];
+    return { sabiduria: sv.score || 0, alias: store.get(ALIAS_KEY, '') || '', vencidos: (store.get(CODEX_KEY, []) || []).length, mejor: store.get('odisea-razon.best', 0) || 0,
+      hoy_fecha: today, hoy_puntos: day ? day.score : 0, hoy_aciertos: day ? day.correct : 0, semana: Oracle.weekKey(), semana_puntos: Oracle.weekScore(), racha: Oracle.streakDays() };
   },
   forget(m) { this.ses = null; try { localStorage.removeItem(CUENTA_KEY); } catch (e) { /* nada */ } this.paint(); if (m) this.msg(m); },
   dirty() { if (!this.ses) return; clearTimeout(this.timer); this.timer = setTimeout(() => this.push(), 3000); },
