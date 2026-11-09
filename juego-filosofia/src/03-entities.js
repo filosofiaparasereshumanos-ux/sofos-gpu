@@ -99,6 +99,10 @@ function buildFigure(look, accent) {
     case 'wig': cap(new THREE.SphereGeometry(0.22, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01);
       for (const s of [-1, 1]) for (let i = 0; i < 2; i++) put(head, mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.12, 12), hair, s * 0.19, -0.02 - i * 0.1, -0.03)).rotation.z = Math.PI / 2;
       break;
+    case 'braids': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.3), hair, 0.02, -0.01);
+      head.add(mesh(new THREE.BoxGeometry(0.14, 0.07, 0.36), hair, 0, 0.19, -0.02));
+      for (let i = 0; i < 4; i++) head.add(mesh(new THREE.SphereGeometry(0.055 - i * 0.006, 10, 8), hair, 0, 0.08 - i * 0.1, -0.2 - i * 0.015));
+      break;
     case 'longhair': cap(new THREE.SphereGeometry(0.215, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01);
       for (const s of [-1, 1]) { const l = mesh(new THREE.BoxGeometry(0.09, 0.42, 0.2), hair, s * 0.17, -0.14, -0.05); head.add(l); }
       break;

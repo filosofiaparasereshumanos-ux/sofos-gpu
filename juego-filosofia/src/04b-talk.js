@@ -44,7 +44,7 @@ const Talk = {
   openNpc(c) {
     this.npc = c; this.data = null;
     this.begin(c);
-    const n = c.npc; setMedal($('#tk-medal'), null, n.name[0]); $('#tk-name').textContent = n.name; $('#tk-meta').textContent = `${n.role[0].toUpperCase() + n.role.slice(1)} · ${ERAS[world.idx].name}`;
+    const n = c.npc; setMedal($('#tk-medal'), n.portrait ? n.id : null, n.name[0]); $('#tk-name').textContent = n.name; $('#tk-meta').textContent = `${n.role[0].toUpperCase() + n.role.slice(1)} · ${ERAS[world.idx].name}`;
     this.line = Math.min(npcHeard(n.id), n.lines.length) % n.lines.length;
     this.npcLine();
   },

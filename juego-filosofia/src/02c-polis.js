@@ -96,6 +96,11 @@ const POI_Q = {
 // look como el de los filósofos · female: voz femenina · path: [dx, dz] de su paseo
 const NPCS = [
   [ // I · Mileto
+    // el filósofo guía de Filosofía para Seres Humanos: lo primero que encuentra quien empieza la odisea
+    { id: 'guia', name: 'El guía', role: 'Filosofía para Seres Humanos', portrait: true, greeter: true, at: [0, 25], path: [0, 0.01],
+      look: { robe: 0xefe4cc, robe2: 0x4a2352, skin: 0xd9ab8a, hair: 0x221a14, beard: 0x2a221c, hat: 'braids', acc: 'lamp' },
+      lines: ['Bienvenido, bienvenida, al camino del filósofo. Recuerda: la filosofía es la luz que ilumina cuando todo parece oscuro… pero también es la oscuridad, cuando todo parece demasiado claro.',
+        'Te invito a estudiar filosofía conmigo. ¡Comienza tu odisea!'] },
     { id: 'pescador', name: 'Damón', role: 'pescador de Mileto', at: [-17, 16], path: [0, 6], look: { robe: 0x8a7a5a, robe2: 0x3e6d8f, skin: 0xa8754f, hair: 0x3a2a20, beard: 0x3a2a20, hat: 'none', acc: 'staff' },
       lines: ['Yo salgo al mar antes del alba. Tales dice que todo es agua, y yo le creo: el mar nos da de comer, nos lleva a Egipto y a veces nos lo quita todo.', 'Los marinos fenicios nos enseñaron a orientarnos por la Osa Menor. Dicen que Tales aconsejó a los navegantes guiarse por ella.', 'En Mileto hay más barcos que en ninguna otra ciudad de Jonia. Con el comercio vienen historias, dioses extranjeros y, ahora, esos filósofos que lo preguntan todo.'] },
     { id: 'rapsoda', name: 'Ione', role: 'rapsoda', female: true, at: [10, 28], path: [6, 0], look: { robe: 0xf2e6c8, robe2: 0x9c3d2e, skin: 0xd2a684, hair: 0x2a1a10, beard: false, hat: 'longhair', acc: 'scroll' },

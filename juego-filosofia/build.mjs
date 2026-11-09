@@ -36,6 +36,8 @@ console.log(`cartas.html (duelo de cartas): ${(c.full.length / 1024).toFixed(0)}
 // --- Aventura 3D (versión anterior)
 const parts3d = readdirSync(join(here, 'src')).filter((f) => /^\d\d[a-z]?-.*\.js$/.test(f)).sort().map((f) => 'src/' + f);
 let narr = '{}'; try { narr = read('audio/index.json'); } catch (e) { console.log('(sin audio/index.json: solo voz del sistema)'); }
+// voces grabadas aparte (p. ej. el filósofo guía), que no salen de tools/narrate.py
+try { const n = JSON.parse(narr), x = JSON.parse(read('audio/extra-index.json')); Object.assign(n.spk, x.spk); Object.assign(n.p, x.p); narr = JSON.stringify(n); } catch (e) { /* sin extras */ }
 // Cabecera de la versión web: app instalable y vista previa al compartir el enlace
 const APP_HEAD = `<meta name="theme-color" content="#120d07">
 <link rel="manifest" href="manifest.webmanifest">

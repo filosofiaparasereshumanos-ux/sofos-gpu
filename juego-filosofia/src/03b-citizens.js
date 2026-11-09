@@ -29,7 +29,8 @@ class Citizen {
     this.t += dt; const f = this.fig;
     const dx = player.pos.x - this.pos.x, dz = player.pos.z - this.pos.z; const d = Math.hypot(dx, dz);
     let want = this.yaw, moving = false;
-    if (talking || d < 3.6) { want = Math.atan2(dx, dz); this.wait = Math.max(this.wait, 1.5); }
+    if (talking || d < 3.6 || (this.npc.greeter && d < 22)) { want = Math.atan2(dx, dz); this.wait = Math.max(this.wait, 1.5); }
+    else if (this.npc.greeter) { /* el guía espera quieto */ }
     else if (this.wait > 0) this.wait -= dt;
     else {
       this.k += this.dir * 1.05 * dt / this.len;

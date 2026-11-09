@@ -572,6 +572,10 @@ function updateEmitters(dt) {
 }
 function updateSages(dt, inDuel) {
   for (const c of citizens) c.update(dt, player, G.state === 'talk' && Talk.sage === c);
+  if (G.state === 'play' && !G.guideMet && world.idx === 0) { // el filósofo guía da la bienvenida al empezar
+    const gd = citizens.find((c) => c.npc.id === 'guia');
+    if (gd && Math.hypot(player.pos.x - gd.pos.x, player.pos.z - gd.pos.z) < 4.2) { G.guideMet = true; input.walk = null; Talk.openNpc(gd); }
+  }
   for (const s of sages) {
     s.update(dt, tAcc, player, inDuel && Duel.sage === s);
     if (s.state === 'shielded' && G.state === 'play') {
@@ -1109,7 +1113,7 @@ function updateEpojeHud() {
 // ============================================================================
 //  FLUJO DE PANTALLAS
 // ============================================================================
-const SCREENS = ['welcome', 'aula', 'qd', 'travel', 'title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept', 'oracle', 'oracle-end', 'fame', 'logros'];
+const SCREENS = ['aula', 'qd', 'travel', 'title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept', 'oracle', 'oracle-end', 'fame', 'logros'];
 function show(id) { SCREENS.forEach((s) => ($('#' + s).hidden = s !== id)); if (id) { const b = $('#' + id).querySelector('.btn.primary, .btn'); if (b && !IS_TOUCH) setTimeout(() => b.focus({ preventScroll: true }), 30); } }
 function hideAll() { SCREENS.forEach((s) => ($('#' + s).hidden = true)); }
 
@@ -1265,7 +1269,7 @@ document.querySelectorAll('#s-quality button').forEach((b) => b.addEventListener
 document.querySelectorAll('#s-invert button').forEach((b) => b.addEventListener('click', () => { G.settings.invertY = b.dataset.v === '1'; saveSettings(); syncSettings(); }));
 
 const on = (id, fn) => $(id).addEventListener('click', () => { Audio.init(); Audio.click(); fn(); });
-on('#b-new', () => Welcome.play(() => { G.explore = false; G.codexRun = new Set(); startEra(0, true); }));
+on('#b-new', () => { G.explore = false; G.codexRun = new Set(); G.guideMet = false; startEra(0, true); });
 on('#b-continue', () => { G.explore = false; const sv = store.get(SAVE_KEY, null); if (!sv) return startEra(0, true); G.score = sv.score || 0; G.frags = sv.frags || 0; G.stats = sv.stats || { correct: 0, wrong: 0, kills: 0, time: 0 }; startEra(sv.eraIdx, false); });
 on('#b-howto', () => openSub('howto'));
 on('#b-fs', () => toggleFS());
