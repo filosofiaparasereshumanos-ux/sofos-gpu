@@ -455,6 +455,7 @@ input[type=range] { width: 100%; accent-color: var(--gold); }
 .cuenta .ct-row { display: flex; flex-direction: column; gap: 8px; align-items: stretch; } .cuenta .ct-row .btn { min-width: 0; } .cuenta .ct-row input { flex: 1; min-width: 0; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(233,199,122,.45); background: rgba(0,0,0,.35); color: #f4ead6; font: inherit; }
 .cuenta .ct-msg { text-align: center; min-height: 1.3em; color: #e9c77a; font-size: 15px; }
 .login-b { border-color: rgba(233,199,122,.7) !important; color: #e9c77a !important; }
+#b-qd, #b-oqd { display: none !important; } /* «¿Qué diría…?» retirado: necesitaba IA en vivo */
 .minis { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 4px; margin-top: 18px; }
 .mini-b { font-family: var(--display); letter-spacing: 0.12em; font-size: 0.78rem; text-transform: uppercase; padding: 8px 12px; background: rgba(13,12,18,0.45); border: 1px solid rgba(214,168,74,0.22); color: var(--parchment); cursor: pointer; }
 .mini-b:hover { border-color: var(--gold); }
@@ -631,7 +632,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="btn primary oracle-btn" id="b-oracle">Oráculo de hoy<small id="b-oracle-s">10 preguntas · las mismas para todos</small></button>
         <button class="btn" id="b-continue" hidden>Continuar la odisea<small id="b-continue-s"></small></button>
         <button class="btn" id="b-new">Nueva odisea<small>Nueve épocas · 44 pensadoras y pensadores</small></button>
-        <button class="btn qd-btn" id="b-qd">¿Qué diría…?<small>Pregunta lo que quieras a varios pensadores a la vez</small></button>
+        <button class="btn qd-btn" id="b-qd" hidden>¿Qué diría…?<small>Pregunta lo que quieras a varios pensadores a la vez</small></button>
         <button class="btn aula-btn" id="b-aula">Modo aula<small id="b-aula-s">Para docentes y estudiantes</small></button>
         <button class="btn" id="b-travel">Viajar por las épocas<small>Y descubre las sabidurías del mundo</small></button>
       </div>
@@ -801,7 +802,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <textarea id="oe-share" readonly rows="6" aria-label="Texto para compartir"></textarea>
       <div class="btns">
         <button class="btn primary" id="b-oshare">Copiar resultado para compartir</button>
-        <button class="btn" id="b-oqd">¿Qué dirían los filósofos de la pregunta de hoy?</button>
+        <button class="btn" id="b-oqd" hidden>¿Qué dirían los filósofos de la pregunta de hoy?</button>
         <button class="btn" id="b-ofame2">Salón de la Fama</button>
         <button class="btn ghost" id="b-omenu">Volver al menú</button>
       </div>
