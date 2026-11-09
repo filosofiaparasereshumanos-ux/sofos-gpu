@@ -35,11 +35,14 @@ const bloom = new UnrealBloomPass(new THREE.Vector2(app.clientWidth, app.clientH
 composer.addPass(bloom);
 // gradación: viñeta, grano y aberración cromática al recibir daño
 const grade = new ShaderPass({
-  uniforms: { tDiffuse: { value: null }, time: { value: 0 }, hurt: { value: 0 } },
+  uniforms: { tDiffuse: { value: null }, time: { value: 0 }, hurt: { value: 0 }, gain: { value: new THREE.Color(1, 1, 1) }, shade: { value: new THREE.Color(0, 0, 0) }, sat: { value: 1 } },
   vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-  fragmentShader: `uniform sampler2D tDiffuse; uniform float time, hurt; varying vec2 vUv;
+  fragmentShader: `uniform sampler2D tDiffuse; uniform float time, hurt, sat; uniform vec3 gain, shade; varying vec2 vUv;
     void main(){ vec2 d = vUv - 0.5; float ca = 0.0015 + hurt * 0.014;
       vec3 c = vec3(texture2D(tDiffuse, vUv + d * ca).r, texture2D(tDiffuse, vUv).g, texture2D(tDiffuse, vUv - d * ca).b);
+      // gradación de color de cada época: luces teñidas, sombras teñidas y saturación
+      float l = dot(c, vec3(0.2126, 0.7152, 0.0722)); c = max(mix(vec3(l), c, sat), 0.0);
+      c *= gain; c += shade * (1.0 - smoothstep(0.0, 0.35, l)) * 0.06;
       float v = smoothstep(0.95, 0.3, length(d * vec2(1.1, 1.25))); c *= mix(0.62, 1.0, v);
       c = mix(c, c * vec3(1.35, 0.55, 0.55), hurt * 0.45);
       float n = fract(sin(dot(vUv * 913.7 + time, vec2(12.9898, 78.233))) * 43758.5453);
@@ -433,10 +436,18 @@ const game = { player, particles, get eraIdx() { return G.eraIdx; }, spawnBolt, 
 
 function disposeWorld() {
   if (!world) return;
-  scene.remove(world.group);
+  scene.remove(world.group); world.disposed = true;
+  (world.paintMats || []).forEach((m) => m.dispose()); if (world.paintTex) world.paintTex.dispose();
   world.group.traverse((o) => { if (o.geometry && !Object.values(SHELL_GEO).includes(o.geometry) && o.geometry !== BOLT_GEO) o.geometry.dispose(); });
   for (const b of bolts) b.kill(); for (const p of pickups) p.kill();
   world = null; sages = []; citizens = []; enemies = []; bolts = []; pickups = []; particles.clear();
+}
+// telas de cada cultura (img/f-<época>.jpg) sobre las túnicas de pensadores y ciudadanos
+const FABRIC = {};
+function dressFabrics(idx) {
+  const apply = (tex) => { if (!world || world.idx !== idx) return; scene.traverse((o) => { const m = o.material; if (o.isMesh && m && m.userData && m.userData.robe && m.map !== tex) { m.map = tex; m.needsUpdate = true; } }); };
+  if (FABRIC[idx]) { apply(FABRIC[idx]); return; }
+  new THREE.TextureLoader().load('img/f-' + idx + '.jpg', (tex) => { tex.colorSpace = THREE.SRGBColorSpace; tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.repeat.set(3, 2); tex.anisotropy = 4; FABRIC[idx] = tex; apply(tex); }, undefined, () => {});
 }
 function loadWorld(idx) {
   disposeWorld();
@@ -446,10 +457,13 @@ function loadWorld(idx) {
   scene.fog = new THREE.FogExp2(th.fog[0], th.fog[1]);
   scene.background = new THREE.Color(th.sky[1]);
   renderer.toneMappingExposure = th.exposure;
+  { const gr = th.grade || {}; const g = grade.uniforms; g.gain.value.set(0xffffff).lerp(new THREE.Color(gr.gain ?? th.sunCol), gr.k ?? 0.14).multiplyScalar(1 / Math.max(0.85, (g.gain.value.r + g.gain.value.g + g.gain.value.b) / 3));
+    g.shade.value.set(gr.shade ?? th.sky[0]); g.sat.value = gr.sat ?? (th.indoor ? 1.06 : 1.12); }
   lamp.userData.light.color.set(th.lampCol); lamp.userData.flame.material = glow(th.lampCol, 4);
   lamp.userData.light.intensity = th.indoor || th.stars ? 5 : 2.5;
   sages = world.stations.map((st, i) => new Sage(world, st, i));
   citizens = (NPCS[idx] || []).map((n) => new Citizen(world, n));
+  dressFabrics(idx);
   world.beam = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.8, 40, 20, 1, true), new THREE.MeshBasicMaterial({ color: new THREE.Color(world.theme.accent).multiplyScalar(1.6), transparent: true, opacity: 0.2, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false, fog: false }));
   world.beam.geometry.translate(0, 20, 0); world.beam.visible = false; world.group.add(world.beam); input.auto = false;
   world.jumpRing = new THREE.Mesh(new THREE.RingGeometry(0.45, 0.62, 32), new THREE.MeshBasicMaterial({ color: new THREE.Color(0x8fe9ff).multiplyScalar(2.5), transparent: true, opacity: 0.9, side: THREE.DoubleSide, depthWrite: false, toneMapped: false }));

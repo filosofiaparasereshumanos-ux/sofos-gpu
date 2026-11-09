@@ -334,6 +334,32 @@ function addHorizon(W, idx) {
     W.group.add(cyl); W.horizon = cyl;
   }, undefined, () => {});
 }
+// muros pintados (img/w-<época>.jpg): los muros, columnas y edificios grandes de cada escenario
+// reciben la textura de su época, teñida suavemente con su color original
+function paintWalls(W, idx) {
+  const targets = [];
+  W.group.traverse((o) => {
+    if (!o.isMesh || !o.geometry || !o.material || Array.isArray(o.material)) return;
+    const m = o.material, g = o.geometry, pr = g.parameters || {}; const sc = o.scale;
+    if (!m.isMeshStandardMaterial || m.map || m.transparent || m.metalness > 0.5 || (m.emissive && m.emissive.getHex() !== 0 && m.emissiveIntensity > 0)) return;
+    if (g.type === 'BoxGeometry') { const w = pr.width * sc.x, h = pr.height * sc.y, d = pr.depth * sc.z; if (h >= 2.2 && Math.max(w, d) >= 1.4) targets.push([o, 'box', w, h, d]); }
+    else if (g.type === 'CylinderGeometry') { const h = pr.height * sc.y, r = Math.max(pr.radiusTop, pr.radiusBottom) * Math.max(sc.x, sc.z); if (h >= 2.5 && r >= 0.2) targets.push([o, 'cyl', r, h]); }
+  });
+  if (!targets.length) return;
+  new THREE.TextureLoader().load('img/w-' + idx + '.jpg', (tex) => {
+    if (W.disposed) return;
+    tex.colorSpace = THREE.SRGBColorSpace; tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.anisotropy = 8;
+    W.paintTex = tex; const mats = new Map(); const T = 3.2; // metros por baldosa de textura
+    for (const [o, kind, a, b, c] of targets) {
+      let nm = mats.get(o.material); if (!nm) { nm = o.material.clone(); nm.map = tex; nm.color = o.material.color.clone().lerp(new THREE.Color(0xffffff), 0.62); nm.needsUpdate = true; mats.set(o.material, nm); (W.paintMats = W.paintMats || []).push(nm); }
+      const g = o.geometry.clone(); const uv = g.attributes.uv;
+      if (kind === 'box') { const [w, h, d] = [a, b, c]; const per = uv.count / 6; const dims = [[d, h], [d, h], [w, d], [w, d], [w, h], [w, h]];
+        for (let f = 0; f < 6; f++) for (let k = 0; k < per; k++) { const i = f * per + k; uv.setXY(i, uv.getX(i) * dims[f][0] / T, uv.getY(i) * dims[f][1] / T); } }
+      else { const circ = TAU * a; for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * Math.max(1, Math.round(circ / T)), uv.getY(i) * b / T); }
+      uv.needsUpdate = true; o.geometry = g; o.material = nm;
+    }
+  }, undefined, () => {});
+}
 // suelo pintado (img/t-<época>.jpg): sustituye la textura generada de la plaza
 function paintGround(W, idx) {
   const m = W.groundMesh; if (!m) return;
@@ -1321,7 +1347,7 @@ function buildWorld(idx) {
   sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.03;
   W.group.add(sun); W.group.add(sun.target); W.sun = sun; W.sunOff = sun.position.clone();
   ERA_BUILDERS[idx](W);
-  addHorizon(W, idx); paintGround(W, idx);
+  addHorizon(W, idx); paintGround(W, idx); paintWalls(W, idx);
   if (!th.indoor && idx !== 5) addClouds(W, idx);
   if (idx === 0 || idx === 2) addGrass(W, idx, sp);
   // estaciones de los filósofos

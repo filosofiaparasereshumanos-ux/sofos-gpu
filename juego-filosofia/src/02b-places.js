@@ -54,10 +54,35 @@ function buildPois(W) {
     const label = new THREE.Sprite(new THREE.SpriteMaterial({ map: labelTexture(p.name, 'Lugar para descubrir'), transparent: true, depthWrite: false, toneMapped: false }));
     label.scale.set(2.3, 0.58, 1); label.position.y = 3.1; g.add(label);
     W.group.add(g);
+    paintingFor(W, p);
     const poi = { ...p, group: g, gem, cage, ring, label, found: false };
     W.pois.push(poi);
     W.anim.push((t) => { gem.rotation.y = t * 1.4; cage.rotation.y = -t * 0.8; gem.position.y = cage.position.y = 2.1 + Math.sin(t * 2 + p.at[0]) * 0.12; });
   }
+}
+// cuadro con la pintura del lugar, sobre un caballete junto al punto dorado
+const PAINT_TEX = {};
+function paintingFor(W, p) {
+  const at = typeof PLACE_ART !== 'undefined' && PLACE_ART[p.id]; if (!at) return;
+  const [era, row, rows] = at;
+  if (!PAINT_TEX[era]) { PAINT_TEX[era] = new THREE.TextureLoader().load('img/lugares-' + era + '.jpg'); PAINT_TEX[era].colorSpace = THREE.SRGBColorSpace; PAINT_TEX[era].anisotropy = 4; }
+  const tex = PAINT_TEX[era].clone(); tex.repeat.set(1, 1 / rows); tex.offset.set(0, 1 - (row + 1) / rows); tex.needsUpdate = true;
+  const side = p.at[0] >= 0 ? 1 : -1;
+  const free = (x, z) => Math.abs(x) < 21.5 && z > -45 && z < 35 && !(W._near && W._near(x, z, 0.4)) && !(POIS[W.idx] || []).some((q) => q !== p && Math.hypot(q.at[0] - x, q.at[1] - z) < 2.2) &&
+    !W.colliders.some((o) => (o.r !== undefined ? Math.hypot(o.x - x, o.z - z) < o.r + 0.8 : x > o.x0 - 0.8 && x < o.x1 + 0.8 && z > o.z0 - 0.8 && z < o.z1 + 0.8));
+  const cand = [[side * 1.9, -0.6], [-side * 1.9, -0.6], [0, -2.1], [side * 1.9, 1.2], [-side * 1.9, 1.2], [side * 2.6, -1.8], [-side * 2.6, -1.8], [0, 2.2]];
+  const pick = cand.find(([dx, dz]) => free(p.at[0] + dx, p.at[1] + dz)); if (!pick) return;
+  const x = p.at[0] + pick[0], z = p.at[1] + pick[1];
+  const g = new THREE.Group(); g.position.set(x, 0, z);
+  const wood = std(0x4a2e18, { roughness: 0.75 }); const gold = std(0xc8a050, { metalness: 0.85, roughness: 0.35 });
+  const W2 = 3.0, H2 = 1.69, cy = 1.95;
+  const pic = mesh(new THREE.PlaneGeometry(W2, H2), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.6, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0.35 }), 0, cy, 0.05, false, false); g.add(pic);
+  g.add(mesh(new THREE.BoxGeometry(W2 + 0.22, H2 + 0.22, 0.08), gold, 0, cy, 0, true, false));
+  for (const lx of [-0.9, 0.9]) { const leg = mesh(new THREE.BoxGeometry(0.08, 2.9, 0.08), wood, lx, 1.4, -0.12, true, false); leg.rotation.z = lx > 0 ? -0.08 : 0.08; g.add(leg); }
+  const back = mesh(new THREE.BoxGeometry(0.08, 3, 0.08), wood, 0, 1.45, -0.65, true, false); back.rotation.x = -0.24; g.add(back);
+  g.add(mesh(new THREE.BoxGeometry(W2 * 0.8, 0.08, 0.2), wood, 0, cy - H2 / 2 - 0.12, 0.05, true, false));
+  g.lookAt(0, 0, p.at[1] + 7); W.group.add(g);
+  W.colliders.push({ t: 1, x, z, r: 0.75, h: 3, _paint: true });
 }
 function markPoiFound(poi) {
   poi.found = true;

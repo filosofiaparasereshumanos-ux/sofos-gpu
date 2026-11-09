@@ -62,7 +62,7 @@ class Particles {
 // ============================================================================
 function buildFigure(look, accent) {
   const g = new THREE.Group(); const body = new THREE.Group(); g.add(body);
-  const robe = std(look.robe, { roughness: 0.85 }); const robe2 = std(look.robe2, { roughness: 0.7 });
+  const robe = std(look.robe, { roughness: look.plain ? 0.86 : 0.85 }); const robe2 = std(look.robe2, { roughness: look.plain ? 0.71 : 0.7 }); if (!look.plain) { robe.userData.robe = true; robe2.userData.robe = true; }
   const skin = std(look.skin, { roughness: 0.6 }); const hair = std(look.hair, { roughness: 0.9 });
   const prof = [[0, 0], [0.6, 0], [0.57, 0.2], [0.49, 0.65], [0.41, 1.05], [0.39, 1.28], [0.45, 1.4], [0.34, 1.5], [0.15, 1.56], [0, 1.57]];
   body.add(mesh(new THREE.LatheGeometry(prof.map((p) => new THREE.Vector2(p[0], p[1])), 24), robe));

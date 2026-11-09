@@ -4459,6 +4459,32 @@ function addHorizon(W, idx) {
     W.group.add(cyl); W.horizon = cyl;
   }, undefined, () => {});
 }
+// muros pintados (img/w-<época>.jpg): los muros, columnas y edificios grandes de cada escenario
+// reciben la textura de su época, teñida suavemente con su color original
+function paintWalls(W, idx) {
+  const targets = [];
+  W.group.traverse((o) => {
+    if (!o.isMesh || !o.geometry || !o.material || Array.isArray(o.material)) return;
+    const m = o.material, g = o.geometry, pr = g.parameters || {}; const sc = o.scale;
+    if (!m.isMeshStandardMaterial || m.map || m.transparent || m.metalness > 0.5 || (m.emissive && m.emissive.getHex() !== 0 && m.emissiveIntensity > 0)) return;
+    if (g.type === 'BoxGeometry') { const w = pr.width * sc.x, h = pr.height * sc.y, d = pr.depth * sc.z; if (h >= 2.2 && Math.max(w, d) >= 1.4) targets.push([o, 'box', w, h, d]); }
+    else if (g.type === 'CylinderGeometry') { const h = pr.height * sc.y, r = Math.max(pr.radiusTop, pr.radiusBottom) * Math.max(sc.x, sc.z); if (h >= 2.5 && r >= 0.2) targets.push([o, 'cyl', r, h]); }
+  });
+  if (!targets.length) return;
+  new THREE.TextureLoader().load('img/w-' + idx + '.jpg', (tex) => {
+    if (W.disposed) return;
+    tex.colorSpace = THREE.SRGBColorSpace; tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.anisotropy = 8;
+    W.paintTex = tex; const mats = new Map(); const T = 3.2; // metros por baldosa de textura
+    for (const [o, kind, a, b, c] of targets) {
+      let nm = mats.get(o.material); if (!nm) { nm = o.material.clone(); nm.map = tex; nm.color = o.material.color.clone().lerp(new THREE.Color(0xffffff), 0.62); nm.needsUpdate = true; mats.set(o.material, nm); (W.paintMats = W.paintMats || []).push(nm); }
+      const g = o.geometry.clone(); const uv = g.attributes.uv;
+      if (kind === 'box') { const [w, h, d] = [a, b, c]; const per = uv.count / 6; const dims = [[d, h], [d, h], [w, d], [w, d], [w, h], [w, h]];
+        for (let f = 0; f < 6; f++) for (let k = 0; k < per; k++) { const i = f * per + k; uv.setXY(i, uv.getX(i) * dims[f][0] / T, uv.getY(i) * dims[f][1] / T); } }
+      else { const circ = TAU * a; for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * Math.max(1, Math.round(circ / T)), uv.getY(i) * b / T); }
+      uv.needsUpdate = true; o.geometry = g; o.material = nm;
+    }
+  }, undefined, () => {});
+}
 // suelo pintado (img/t-<época>.jpg): sustituye la textura generada de la plaza
 function paintGround(W, idx) {
   const m = W.groundMesh; if (!m) return;
@@ -5446,7 +5472,7 @@ function buildWorld(idx) {
   sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.03;
   W.group.add(sun); W.group.add(sun.target); W.sun = sun; W.sunOff = sun.position.clone();
   ERA_BUILDERS[idx](W);
-  addHorizon(W, idx); paintGround(W, idx);
+  addHorizon(W, idx); paintGround(W, idx); paintWalls(W, idx);
   if (!th.indoor && idx !== 5) addClouds(W, idx);
   if (idx === 0 || idx === 2) addGrass(W, idx, sp);
   // estaciones de los filósofos
@@ -6486,10 +6512,35 @@ function buildPois(W) {
     const label = new THREE.Sprite(new THREE.SpriteMaterial({ map: labelTexture(p.name, 'Lugar para descubrir'), transparent: true, depthWrite: false, toneMapped: false }));
     label.scale.set(2.3, 0.58, 1); label.position.y = 3.1; g.add(label);
     W.group.add(g);
+    paintingFor(W, p);
     const poi = { ...p, group: g, gem, cage, ring, label, found: false };
     W.pois.push(poi);
     W.anim.push((t) => { gem.rotation.y = t * 1.4; cage.rotation.y = -t * 0.8; gem.position.y = cage.position.y = 2.1 + Math.sin(t * 2 + p.at[0]) * 0.12; });
   }
+}
+// cuadro con la pintura del lugar, sobre un caballete junto al punto dorado
+const PAINT_TEX = {};
+function paintingFor(W, p) {
+  const at = typeof PLACE_ART !== 'undefined' && PLACE_ART[p.id]; if (!at) return;
+  const [era, row, rows] = at;
+  if (!PAINT_TEX[era]) { PAINT_TEX[era] = new THREE.TextureLoader().load('img/lugares-' + era + '.jpg'); PAINT_TEX[era].colorSpace = THREE.SRGBColorSpace; PAINT_TEX[era].anisotropy = 4; }
+  const tex = PAINT_TEX[era].clone(); tex.repeat.set(1, 1 / rows); tex.offset.set(0, 1 - (row + 1) / rows); tex.needsUpdate = true;
+  const side = p.at[0] >= 0 ? 1 : -1;
+  const free = (x, z) => Math.abs(x) < 21.5 && z > -45 && z < 35 && !(W._near && W._near(x, z, 0.4)) && !(POIS[W.idx] || []).some((q) => q !== p && Math.hypot(q.at[0] - x, q.at[1] - z) < 2.2) &&
+    !W.colliders.some((o) => (o.r !== undefined ? Math.hypot(o.x - x, o.z - z) < o.r + 0.8 : x > o.x0 - 0.8 && x < o.x1 + 0.8 && z > o.z0 - 0.8 && z < o.z1 + 0.8));
+  const cand = [[side * 1.9, -0.6], [-side * 1.9, -0.6], [0, -2.1], [side * 1.9, 1.2], [-side * 1.9, 1.2], [side * 2.6, -1.8], [-side * 2.6, -1.8], [0, 2.2]];
+  const pick = cand.find(([dx, dz]) => free(p.at[0] + dx, p.at[1] + dz)); if (!pick) return;
+  const x = p.at[0] + pick[0], z = p.at[1] + pick[1];
+  const g = new THREE.Group(); g.position.set(x, 0, z);
+  const wood = std(0x4a2e18, { roughness: 0.75 }); const gold = std(0xc8a050, { metalness: 0.85, roughness: 0.35 });
+  const W2 = 3.0, H2 = 1.69, cy = 1.95;
+  const pic = mesh(new THREE.PlaneGeometry(W2, H2), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.6, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0.35 }), 0, cy, 0.05, false, false); g.add(pic);
+  g.add(mesh(new THREE.BoxGeometry(W2 + 0.22, H2 + 0.22, 0.08), gold, 0, cy, 0, true, false));
+  for (const lx of [-0.9, 0.9]) { const leg = mesh(new THREE.BoxGeometry(0.08, 2.9, 0.08), wood, lx, 1.4, -0.12, true, false); leg.rotation.z = lx > 0 ? -0.08 : 0.08; g.add(leg); }
+  const back = mesh(new THREE.BoxGeometry(0.08, 3, 0.08), wood, 0, 1.45, -0.65, true, false); back.rotation.x = -0.24; g.add(back);
+  g.add(mesh(new THREE.BoxGeometry(W2 * 0.8, 0.08, 0.2), wood, 0, cy - H2 / 2 - 0.12, 0.05, true, false));
+  g.lookAt(0, 0, p.at[1] + 7); W.group.add(g);
+  W.colliders.push({ t: 1, x, z, r: 0.75, h: 3, _paint: true });
 }
 function markPoiFound(poi) {
   poi.found = true;
@@ -7898,7 +7949,7 @@ BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });
 //  EL FILÓSOFO GUÍA (Filosofía para Seres Humanos)
 //  Está en todas las épocas, junto al punto de llegada, y da la bienvenida a cada mundo.
 // ============================================================================
-const GUIDE_LOOK = { robe: 0xefe4cc, robe2: 0x4a2352, skin: 0xdba184, hair: 0x1e1712, beard: 0x231d19, beardLen: 1.3, beardTop: 0.53, beardGrey: 0x9a948c, eyes: 0x6f8fa8, stubble: 0x5e4c40, hat: 'braids', acc: 'lamp' };
+const GUIDE_LOOK = { plain: true, robe: 0xefe4cc, robe2: 0x4a2352, skin: 0xdba184, hair: 0x1e1712, beard: 0x231d19, beardLen: 1.3, beardTop: 0.53, beardGrey: 0x9a948c, eyes: 0x6f8fa8, stubble: 0x5e4c40, hat: 'braids', acc: 'lamp' };
 const GUIDE_LINES = [
   ['Bienvenido, bienvenida, al camino del filósofo. Recuerda: la filosofía es la luz que ilumina cuando todo parece oscuro… pero también es la oscuridad, cuando todo parece demasiado claro.',
     'Te invito a estudiar filosofía conmigo. ¡Comienza tu odisea!'],
@@ -8014,7 +8065,7 @@ class Particles {
 // ============================================================================
 function buildFigure(look, accent) {
   const g = new THREE.Group(); const body = new THREE.Group(); g.add(body);
-  const robe = std(look.robe, { roughness: 0.85 }); const robe2 = std(look.robe2, { roughness: 0.7 });
+  const robe = std(look.robe, { roughness: look.plain ? 0.86 : 0.85 }); const robe2 = std(look.robe2, { roughness: look.plain ? 0.71 : 0.7 }); if (!look.plain) { robe.userData.robe = true; robe2.userData.robe = true; }
   const skin = std(look.skin, { roughness: 0.6 }); const hair = std(look.hair, { roughness: 0.9 });
   const prof = [[0, 0], [0.6, 0], [0.57, 0.2], [0.49, 0.65], [0.41, 1.05], [0.39, 1.28], [0.45, 1.4], [0.34, 1.5], [0.15, 1.56], [0, 1.57]];
   body.add(mesh(new THREE.LatheGeometry(prof.map((p) => new THREE.Vector2(p[0], p[1])), 24), robe));
@@ -8676,11 +8727,14 @@ const bloom = new UnrealBloomPass(new THREE.Vector2(app.clientWidth, app.clientH
 composer.addPass(bloom);
 // gradación: viñeta, grano y aberración cromática al recibir daño
 const grade = new ShaderPass({
-  uniforms: { tDiffuse: { value: null }, time: { value: 0 }, hurt: { value: 0 } },
+  uniforms: { tDiffuse: { value: null }, time: { value: 0 }, hurt: { value: 0 }, gain: { value: new THREE.Color(1, 1, 1) }, shade: { value: new THREE.Color(0, 0, 0) }, sat: { value: 1 } },
   vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-  fragmentShader: `uniform sampler2D tDiffuse; uniform float time, hurt; varying vec2 vUv;
+  fragmentShader: `uniform sampler2D tDiffuse; uniform float time, hurt, sat; uniform vec3 gain, shade; varying vec2 vUv;
     void main(){ vec2 d = vUv - 0.5; float ca = 0.0015 + hurt * 0.014;
       vec3 c = vec3(texture2D(tDiffuse, vUv + d * ca).r, texture2D(tDiffuse, vUv).g, texture2D(tDiffuse, vUv - d * ca).b);
+      // gradación de color de cada época: luces teñidas, sombras teñidas y saturación
+      float l = dot(c, vec3(0.2126, 0.7152, 0.0722)); c = max(mix(vec3(l), c, sat), 0.0);
+      c *= gain; c += shade * (1.0 - smoothstep(0.0, 0.35, l)) * 0.06;
       float v = smoothstep(0.95, 0.3, length(d * vec2(1.1, 1.25))); c *= mix(0.62, 1.0, v);
       c = mix(c, c * vec3(1.35, 0.55, 0.55), hurt * 0.45);
       float n = fract(sin(dot(vUv * 913.7 + time, vec2(12.9898, 78.233))) * 43758.5453);
@@ -9074,10 +9128,18 @@ const game = { player, particles, get eraIdx() { return G.eraIdx; }, spawnBolt, 
 
 function disposeWorld() {
   if (!world) return;
-  scene.remove(world.group);
+  scene.remove(world.group); world.disposed = true;
+  (world.paintMats || []).forEach((m) => m.dispose()); if (world.paintTex) world.paintTex.dispose();
   world.group.traverse((o) => { if (o.geometry && !Object.values(SHELL_GEO).includes(o.geometry) && o.geometry !== BOLT_GEO) o.geometry.dispose(); });
   for (const b of bolts) b.kill(); for (const p of pickups) p.kill();
   world = null; sages = []; citizens = []; enemies = []; bolts = []; pickups = []; particles.clear();
+}
+// telas de cada cultura (img/f-<época>.jpg) sobre las túnicas de pensadores y ciudadanos
+const FABRIC = {};
+function dressFabrics(idx) {
+  const apply = (tex) => { if (!world || world.idx !== idx) return; scene.traverse((o) => { const m = o.material; if (o.isMesh && m && m.userData && m.userData.robe && m.map !== tex) { m.map = tex; m.needsUpdate = true; } }); };
+  if (FABRIC[idx]) { apply(FABRIC[idx]); return; }
+  new THREE.TextureLoader().load('img/f-' + idx + '.jpg', (tex) => { tex.colorSpace = THREE.SRGBColorSpace; tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.repeat.set(3, 2); tex.anisotropy = 4; FABRIC[idx] = tex; apply(tex); }, undefined, () => {});
 }
 function loadWorld(idx) {
   disposeWorld();
@@ -9087,10 +9149,13 @@ function loadWorld(idx) {
   scene.fog = new THREE.FogExp2(th.fog[0], th.fog[1]);
   scene.background = new THREE.Color(th.sky[1]);
   renderer.toneMappingExposure = th.exposure;
+  { const gr = th.grade || {}; const g = grade.uniforms; g.gain.value.set(0xffffff).lerp(new THREE.Color(gr.gain ?? th.sunCol), gr.k ?? 0.14).multiplyScalar(1 / Math.max(0.85, (g.gain.value.r + g.gain.value.g + g.gain.value.b) / 3));
+    g.shade.value.set(gr.shade ?? th.sky[0]); g.sat.value = gr.sat ?? (th.indoor ? 1.06 : 1.12); }
   lamp.userData.light.color.set(th.lampCol); lamp.userData.flame.material = glow(th.lampCol, 4);
   lamp.userData.light.intensity = th.indoor || th.stars ? 5 : 2.5;
   sages = world.stations.map((st, i) => new Sage(world, st, i));
   citizens = (NPCS[idx] || []).map((n) => new Citizen(world, n));
+  dressFabrics(idx);
   world.beam = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.8, 40, 20, 1, true), new THREE.MeshBasicMaterial({ color: new THREE.Color(world.theme.accent).multiplyScalar(1.6), transparent: true, opacity: 0.2, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false, fog: false }));
   world.beam.geometry.translate(0, 20, 0); world.beam.visible = false; world.group.add(world.beam); input.auto = false;
   world.jumpRing = new THREE.Mesh(new THREE.RingGeometry(0.45, 0.62, 32), new THREE.MeshBasicMaterial({ color: new THREE.Color(0x8fe9ff).multiplyScalar(2.5), transparent: true, opacity: 0.9, side: THREE.DoubleSide, depthWrite: false, toneMapped: false }));

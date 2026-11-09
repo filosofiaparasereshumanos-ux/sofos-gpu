@@ -2,7 +2,7 @@
 //  EL FILÓSOFO GUÍA (Filosofía para Seres Humanos)
 //  Está en todas las épocas, junto al punto de llegada, y da la bienvenida a cada mundo.
 // ============================================================================
-const GUIDE_LOOK = { robe: 0xefe4cc, robe2: 0x4a2352, skin: 0xdba184, hair: 0x1e1712, beard: 0x231d19, beardLen: 1.3, beardTop: 0.53, beardGrey: 0x9a948c, eyes: 0x6f8fa8, stubble: 0x5e4c40, hat: 'braids', acc: 'lamp' };
+const GUIDE_LOOK = { plain: true, robe: 0xefe4cc, robe2: 0x4a2352, skin: 0xdba184, hair: 0x1e1712, beard: 0x231d19, beardLen: 1.3, beardTop: 0.53, beardGrey: 0x9a948c, eyes: 0x6f8fa8, stubble: 0x5e4c40, hat: 'braids', acc: 'lamp' };
 const GUIDE_LINES = [
   ['Bienvenido, bienvenida, al camino del filósofo. Recuerda: la filosofía es la luz que ilumina cuando todo parece oscuro… pero también es la oscuridad, cuando todo parece demasiado claro.',
     'Te invito a estudiar filosofía conmigo. ¡Comienza tu odisea!'],
