@@ -469,6 +469,14 @@ input[type=range] { width: 100%; accent-color: var(--gold); }
 .brand-by { display: block; margin-top: 16px; font-size: 13px; color: rgba(244,234,214,.6); text-decoration: none; letter-spacing: .3px; }
 .brand-by b { color: #e9c77a; font-weight: 500; }
 .install-b { border-color: rgba(233,199,122,.7) !important; color: #e9c77a !important; }
+#welcome { background: #0b0805; display: flex; align-items: center; justify-content: center; overflow: hidden; z-index: 60; }
+#welcome video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: radial-gradient(circle at 50% 40%, #2a1c0c, #0b0805 70%); }
+.wl-top { position: absolute; top: max(16px, env(safe-area-inset-top)); left: 0; right: 0; text-align: center; display: flex; flex-direction: column; gap: 2px; text-shadow: 0 2px 8px #000; pointer-events: none; }
+.wl-eye { font-family: 'Marcellus SC', serif; letter-spacing: 3px; font-size: 12px; color: #e9c77a; text-transform: uppercase; }
+.wl-brand { font-size: 15px; color: rgba(244,234,214,.85); font-style: italic; }
+.wl-sub { position: absolute; left: 50%; transform: translateX(-50%); bottom: calc(96px + env(safe-area-inset-bottom)); width: min(92%, 640px); margin: 0; text-align: center; font-size: clamp(19px, 4.6vw, 26px); line-height: 1.3; color: #fff; text-shadow: 0 2px 4px #000, 0 0 18px rgba(0,0,0,.9); min-height: 2.6em; transition: opacity .25s; }
+.wl-btns { position: absolute; bottom: calc(24px + env(safe-area-inset-bottom)); left: 0; right: 0; display: flex; justify-content: center; gap: 10px; }
+.wl-btns .btn { min-width: 0; padding: 10px 22px; }
 .minis { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 4px; margin-top: 18px; }
 .mini-b { font-family: var(--display); letter-spacing: 0.12em; font-size: 0.78rem; text-transform: uppercase; padding: 8px 12px; background: rgba(13,12,18,0.45); border: 1px solid rgba(214,168,74,0.22); color: var(--parchment); cursor: pointer; }
 .mini-b:hover { border-color: var(--gold); }
@@ -637,6 +645,12 @@ body.touch .gm.boss { width: 30px; height: 30px; }
   <div id="trialcard" hidden><div class="eyebrow" id="tc-kind"></div><h3 id="tc-name"></h3><p id="tc-hint"></p></div>
   <div id="flash"></div>
 
+  <section id="welcome" class="screen" hidden>
+    <video id="wl-video" playsinline preload="none" poster="img/guia.jpg"></video>
+    <div class="wl-top"><span class="wl-eye">Tu guía en el camino del filósofo</span><span class="wl-brand">Filosofía para Seres Humanos</span></div>
+    <p class="wl-sub" id="wl-sub" aria-live="polite"></p>
+    <div class="wl-btns"><button class="btn ghost" id="wl-skip">Saltar</button><button class="btn primary" id="wl-go" hidden>Comenzar la odisea</button></div>
+  </section>
   <section id="title" class="screen" hidden>
     <div class="panel">
       <div class="eyebrow">Un viaje de veintiséis siglos</div>
@@ -8349,7 +8363,7 @@ function updateEpojeHud() {
 // ============================================================================
 //  FLUJO DE PANTALLAS
 // ============================================================================
-const SCREENS = ['aula', 'qd', 'travel', 'title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept', 'oracle', 'oracle-end', 'fame', 'logros'];
+const SCREENS = ['welcome', 'aula', 'qd', 'travel', 'title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept', 'oracle', 'oracle-end', 'fame', 'logros'];
 function show(id) { SCREENS.forEach((s) => ($('#' + s).hidden = s !== id)); if (id) { const b = $('#' + id).querySelector('.btn.primary, .btn'); if (b && !IS_TOUCH) setTimeout(() => b.focus({ preventScroll: true }), 30); } }
 function hideAll() { SCREENS.forEach((s) => ($('#' + s).hidden = true)); }
 
@@ -8505,7 +8519,7 @@ document.querySelectorAll('#s-quality button').forEach((b) => b.addEventListener
 document.querySelectorAll('#s-invert button').forEach((b) => b.addEventListener('click', () => { G.settings.invertY = b.dataset.v === '1'; saveSettings(); syncSettings(); }));
 
 const on = (id, fn) => $(id).addEventListener('click', () => { Audio.init(); Audio.click(); fn(); });
-on('#b-new', () => { G.explore = false; G.codexRun = new Set(); startEra(0, true); });
+on('#b-new', () => Welcome.play(() => { G.explore = false; G.codexRun = new Set(); startEra(0, true); }));
 on('#b-continue', () => { G.explore = false; const sv = store.get(SAVE_KEY, null); if (!sv) return startEra(0, true); G.score = sv.score || 0; G.frags = sv.frags || 0; G.stats = sv.stats || { correct: 0, wrong: 0, kills: 0, time: 0 }; startEra(sv.eraIdx, false); });
 on('#b-howto', () => openSub('howto'));
 on('#b-fs', () => toggleFS());
@@ -9768,6 +9782,49 @@ on('#b-install', async () => {
   if (AppInstall.evt) { AppInstall.evt.prompt(); await AppInstall.evt.userChoice.catch(() => {}); AppInstall.evt = null; $('#b-install').hidden = true; return; }
   if (AppInstall.ios) toast('En iPhone: toca el botón Compartir y luego «Agregar a inicio».');
 });
+
+// ---- src/06c-bienvenida.js ----
+// ============================================================================
+//  BIENVENIDA DEL FILÓSOFO GUÍA (Filosofía para Seres Humanos)
+//  Al empezar una nueva odisea, el guía da la bienvenida en video con subtítulos.
+// ============================================================================
+const Welcome = {
+  src: 'video/bienvenida.mp4',
+  lines: [
+    [0.0, 3.2, 'Bienvenido, bienvenida, al camino del filósofo.'],
+    [3.35, 7.95, 'Recuerda: la filosofía es la luz que ilumina cuando todo parece oscuro…'],
+    [7.95, 13.2, '…pero también es la oscuridad, cuando todo parece demasiado claro.'],
+    [13.4, 16.8, 'Te invito a estudiar filosofía conmigo.'],
+    [16.8, 30, '¡Comienza tu odisea!'],
+  ],
+  next: null, done: false,
+  play(next) {
+    this.next = next; this.done = false;
+    const v = $('#wl-video');
+    if (!v.getAttribute('src')) v.src = this.src;
+    G.state = 'welcome'; try { Track.pause(); } catch (e) {}
+    $('#wl-go').hidden = true; $('#wl-skip').hidden = false; $('#wl-sub').textContent = '';
+    show('welcome');
+    v.currentTime = 0;
+    const p = v.play();
+    if (p && p.catch) p.catch(() => { $('#wl-go').hidden = false; }); // sin video o sin permiso de audio: se puede seguir igual
+  },
+  finish() {
+    if (this.done) return; this.done = true;
+    const v = $('#wl-video'); v.pause();
+    $('#welcome').hidden = true;
+    try { Track.resume(); } catch (e) {}
+    const n = this.next; this.next = null; if (n) n();
+  },
+};
+$('#wl-video').addEventListener('timeupdate', (e) => {
+  const t = e.target.currentTime; const l = Welcome.lines.find((x) => t >= x[0] && t < x[1]);
+  const txt = l ? l[2] : ''; if ($('#wl-sub').textContent !== txt) $('#wl-sub').textContent = txt;
+});
+$('#wl-video').addEventListener('ended', () => { $('#wl-skip').hidden = true; $('#wl-go').hidden = false; setTimeout(() => Welcome.finish(), 1200); });
+$('#wl-video').addEventListener('error', () => { $('#wl-go').hidden = false; });
+on('#wl-skip', () => Welcome.finish());
+on('#wl-go', () => Welcome.finish());
 
 </script>
 </body>

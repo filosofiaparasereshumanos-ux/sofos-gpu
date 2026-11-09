@@ -1109,7 +1109,7 @@ function updateEpojeHud() {
 // ============================================================================
 //  FLUJO DE PANTALLAS
 // ============================================================================
-const SCREENS = ['aula', 'qd', 'travel', 'title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept', 'oracle', 'oracle-end', 'fame', 'logros'];
+const SCREENS = ['welcome', 'aula', 'qd', 'travel', 'title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept', 'oracle', 'oracle-end', 'fame', 'logros'];
 function show(id) { SCREENS.forEach((s) => ($('#' + s).hidden = s !== id)); if (id) { const b = $('#' + id).querySelector('.btn.primary, .btn'); if (b && !IS_TOUCH) setTimeout(() => b.focus({ preventScroll: true }), 30); } }
 function hideAll() { SCREENS.forEach((s) => ($('#' + s).hidden = true)); }
 
@@ -1265,7 +1265,7 @@ document.querySelectorAll('#s-quality button').forEach((b) => b.addEventListener
 document.querySelectorAll('#s-invert button').forEach((b) => b.addEventListener('click', () => { G.settings.invertY = b.dataset.v === '1'; saveSettings(); syncSettings(); }));
 
 const on = (id, fn) => $(id).addEventListener('click', () => { Audio.init(); Audio.click(); fn(); });
-on('#b-new', () => { G.explore = false; G.codexRun = new Set(); startEra(0, true); });
+on('#b-new', () => Welcome.play(() => { G.explore = false; G.codexRun = new Set(); startEra(0, true); }));
 on('#b-continue', () => { G.explore = false; const sv = store.get(SAVE_KEY, null); if (!sv) return startEra(0, true); G.score = sv.score || 0; G.frags = sv.frags || 0; G.stats = sv.stats || { correct: 0, wrong: 0, kills: 0, time: 0 }; startEra(sv.eraIdx, false); });
 on('#b-howto', () => openSub('howto'));
 on('#b-fs', () => toggleFS());
