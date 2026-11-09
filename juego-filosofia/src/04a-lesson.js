@@ -19,7 +19,7 @@ const Lesson = {
     this.book = b; this.data = { id: b.author, short: b.by };
     this.parts = [...b.parts.map(bookPartText), 'Una cita para recordar. ' + b.quote];
     this.begin(inWorld ? 'world' : 'menu', null);
-    setMedal($('#ls-medal'), null, '❦'); $('#ls-name').textContent = b.title; $('#ls-meta').textContent = `${b.by} · ${b.year} · ${b.kind}`;
+    setMedal($('#ls-medal'), 'b-' + b.id, '❦'); $('#ls-medal').classList.toggle('cover', !!(typeof SPRITES !== 'undefined' && SPRITES['b-' + b.id])); $('#ls-name').textContent = b.title; $('#ls-meta').textContent = `${b.by} · ${b.year} · ${b.kind}`;
     this.show();
   },
   begin(from, sage) {

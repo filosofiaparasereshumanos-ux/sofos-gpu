@@ -315,12 +315,35 @@ function addBox(W, geoW, geoH, geoD, mat, x, y, z, collide = true) {
   if (collide) W.colliders.push({ t: 0, x0: x - geoW / 2, x1: x + geoW / 2, z0: z - geoD / 2, z1: z + geoD / 2, h: y + geoH / 2 });
   return m;
 }
+// horizonte pintado (img/h-<época>.jpg): un cilindro lejano que se funde con el cielo hacia arriba
+let HORIZON_FADE = null;
+function addHorizon(W, idx) {
+  new THREE.TextureLoader().load('img/h-' + idx + '.jpg', (tex) => {
+    if (!W.group.parent && W.disposed) return;
+    tex.colorSpace = THREE.SRGBColorSpace; tex.wrapS = THREE.MirroredRepeatWrapping; tex.repeat.set(2, 1); tex.anisotropy = 4;
+    if (!HORIZON_FADE) { const c = document.createElement('canvas'); c.width = 4; c.height = 256; const g = c.getContext('2d'); const gr = g.createLinearGradient(0, 0, 0, 256);
+      gr.addColorStop(0, 'rgba(0,0,0,1)'); gr.addColorStop(0.32, 'rgba(0,0,0,1)'); gr.addColorStop(0.62, 'rgba(255,255,255,1)'); gr.addColorStop(1, 'rgba(255,255,255,1)'); g.fillStyle = gr; g.fillRect(0, 0, 4, 256); HORIZON_FADE = new THREE.CanvasTexture(c); }
+    const R = 400, H = (Math.PI * R * 9) / 21;
+    const mat = new THREE.MeshBasicMaterial({ map: tex, alphaMap: HORIZON_FADE, transparent: true, depthWrite: false, fog: false, side: THREE.BackSide, toneMapped: false, color: 0xe8e8e8 });
+    const cyl = new THREE.Mesh(new THREE.CylinderGeometry(R, R, H, 96, 1, true), mat); cyl.position.y = H / 2 - H * 0.3; cyl.rotation.y = Math.PI; cyl.renderOrder = -9; cyl.frustumCulled = false;
+    W.group.add(cyl); W.horizon = cyl;
+  }, undefined, () => {});
+}
+// suelo pintado (img/t-<época>.jpg): sustituye la textura generada de la plaza
+function paintGround(W, idx) {
+  const m = W.groundMesh; if (!m) return;
+  new THREE.TextureLoader().load('img/t-' + idx + '.jpg', (tex) => {
+    tex.colorSpace = THREE.SRGBColorSpace; tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.anisotropy = 8;
+    const p = m.geometry.parameters || { width: 80, height: 110 }; tex.repeat.set(p.width / 7, p.height / 7);
+    m.material.map = tex; m.material.bumpMap = null; m.material.needsUpdate = true;
+  }, undefined, () => {});
+}
 function ground(W, map, size = [70, 110], rough = 0.9, bump = true) {
   // la plaza termina en su entrada sur: más allá está el camino sobre el vacío
   const zmin = -5 - size[1] / 2, zmax = Math.min(-5 + size[1] / 2, 37.6);
   const geo = new THREE.PlaneGeometry(size[0], zmax - zmin); geo.rotateX(-Math.PI / 2);
   const m = mesh(geo, std(0xffffff, { map, roughness: rough, bump: bump ? map : undefined, bumpScale: 1.2 }), 0, 0, (zmin + zmax) / 2, false, true);
-  W.group.add(m); return m;
+  W.group.add(m); if (!W.groundMesh) W.groundMesh = m; return m;
 }
 function columnRows(W, style, h, mat, cap, opts = {}) {
   const zs = opts.zs || [26, 18, 10, 2, -6, -14, -22];
@@ -1247,6 +1270,7 @@ function buildWorld(idx) {
   sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.03;
   W.group.add(sun); W.group.add(sun.target); W.sun = sun; W.sunOff = sun.position.clone();
   ERA_BUILDERS[idx](W);
+  addHorizon(W, idx); paintGround(W, idx);
   if (!th.indoor && idx !== 5) addClouds(W, idx);
   if (idx === 0 || idx === 2) addGrass(W, idx, sp);
   // estaciones de los filósofos
