@@ -38,9 +38,13 @@ const GUIDE_LINES = [
     'Enheduanna, la primera autora con nombre, Shuruppak, Hammurabi y el rey Gilgamesh te esperan. Gilgamesh buscó vencer a la muerte; pregúntate con él qué hace valiosa una vida que se acaba.'],
   ['Bienvenido a Bagdad, la ciudad redonda, en los siglos del islam clásico. En la Casa de la Sabiduría, sabios de muchos pueblos y religiones tradujeron a los griegos y los hicieron crecer.',
     'Al-Kindi, Rabia de Basora, Al-Farabi y Avicena te esperan. Recuerda lo que decía Al-Kindi: la verdad hay que aceptarla venga de donde venga.'],
+  ['Bienvenido al jardín de los poetas. Aquí la filosofía se calla un momento para escuchar: la poesía no define el amor, el tiempo o la muerte; los hace sentir.',
+    'Safo, Li Bai, Rumi, Gabriela Mistral y Pablo Neruda te esperan. Pregúntate con ellos si un poema puede enseñarte algo que un razonamiento no alcanza.'],
+  ['Bienvenido al taller de los científicos. La ciencia nació de la filosofía: los primeros científicos se llamaban filósofos de la naturaleza.',
+    'Arquímedes, Galileo, Ada Lovelace, Marie Curie y Albert Einstein te esperan. Observa, mide, experimenta e imagina. Y pregúntate: ¿qué es saber algo de verdad?'],
 ];
 // dónde espera en cada época (junto al punto de llegada, en z = 31)
-const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5] };
+const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5], 17: [2.8, 24.5], 18: [2.8, 24.5] };
 GUIDE_LINES.forEach((lines, i) => {
   if (!NPCS[i]) NPCS[i] = [];
   NPCS[i].unshift({ id: i === 0 ? 'guia' : 'guia-' + ERAS[i].id, name: 'El guía', role: 'Filosofía para Seres Humanos', portrait: 'guia', greeter: true,

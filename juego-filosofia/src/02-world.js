@@ -87,6 +87,16 @@ const THEMES = [
     hemi: [0x8a9ad8, 0x4a3a30, 0.62], fog: [0x2a3060, 0.0085], exposure: 1.18, stars: true,
     accent: 0x3ad8b0, enemy: { col: 0x3ad8b0, core: 0x04201a, shell: 'cube' }, lampCol: 0xffc070, indoor: false,
   },
+  { // XVIII · Jardín de los poetas: crepúsculo rosa y violeta con la primera estrella
+    sky: [0x2a2a6a, 0xffa8b8, 0x6a4a6a], sunDir: [0.5, 0.1, -0.85], sunCol: 0xffb0a0, sunInt: 2.0, sunDisk: 0xffd0b0,
+    hemi: [0xffd8e8, 0x4a5a3a, 0.7], fog: [0xe8b0c0, 0.0075], exposure: 1.12, stars: true,
+    accent: 0xff7aa8, enemy: { col: 0xff7aa8, core: 0x280818, shell: 'cube' }, lampCol: 0xffc8a0,
+  },
+  { // XIX · Taller de los científicos: tarde clara y luz de laboratorio
+    sky: [0x3a6aa8, 0xd8e8f8, 0x8a8a8a], sunDir: [-0.4, 0.5, -0.75], sunCol: 0xfff0d8, sunInt: 2.6, sunDisk: 0xfff4e0,
+    hemi: [0xe0ecff, 0x5a5a5a, 0.78], fog: [0xc8d4e4, 0.0065], exposure: 1.08, stars: false,
+    accent: 0x58c8ff, enemy: { col: 0x58c8ff, core: 0x061a28, shell: 'cube' }, lampCol: 0xd8f0ff,
+  },
 ];
 
 const ARENA = { x0: -24, x1: 24, z0: -47, z1: 37 };
@@ -1159,6 +1169,60 @@ const ERA_BUILDERS = [
     // faroles en la vía central
     for (const [x, z] of [[-5, 24], [5, 24], [-5, -6], [5, -6]]) { if (!W._near(x, z, 0.3)) brazier(W, x, z, 0xffb050, false); }
     brazier(W, -4, -34, 0xffb050); brazier(W, 4, -34, 0xffb050);
+  },
+  // ------------------------------------------------------------------ XVIII · Jardín de los poetas
+  function (W) {
+    const grass = texTiles('xviii', 0x6a9a4a, 0x5a8a3a, 10, 0.25); grass.repeat.set(16, 24); ground(W, grass, [80, 120], 1);
+    const path = new THREE.PlaneGeometry(6, 84); path.rotateX(-Math.PI / 2);
+    const pt = texTiles('xviiip', 0xd8c8b0, 0x9a8a70, 4, 0.2); const ptc = pt.clone(); ptc.repeat.set(2, 24); ptc.needsUpdate = true;
+    W.group.add(mesh(path, std(0xffffff, { map: ptc, roughness: 0.95 }), 0, 0.01, -5, false, true));
+    const r = mulberry32(118);
+    const petals = [0xff6a9a, 0xffd04a, 0xffffff, 0xc86aff, 0xff8a4a, 0x6aa8ff];
+    // arriates de flores y cipreses a lo largo del paseo
+    for (const side of [-1, 1]) for (let z = -42; z < 34; z += 5) {
+      const x = side * (6 + r() * 2); if (W._near(x, z, 2)) continue;
+      W.group.add(mesh(new THREE.BoxGeometry(2.2, 0.35, 3.4), std(0x5a3a22, { roughness: 1 }), x, 0.17, z, false, false));
+      for (let k = 0; k < 14; k++) W.group.add(mesh(new THREE.IcosahedronGeometry(0.13 + r() * 0.08, 0), std(petals[(k + Math.floor(z)) % petals.length], { roughness: 0.7, flat: true }), x + (r() - 0.5) * 1.9, 0.45, z + (r() - 0.5) * 3, false, false));
+      W.colliders.push({ t: 0, x0: x - 1.1, x1: x + 1.1, z0: z - 1.7, z1: z + 1.7, h: 0.4 });
+    }
+    for (const side of [-1, 1]) for (let z = -44; z < 36; z += 4) { const x = side * (21 + r()); const c = cypress(7 + r() * 3); c.position.set(x, 0, z); W.group.add(c); W.colliders.push({ t: 1, x, z, r: 0.5, h: 7 }); }
+    // pérgolas con enredaderas
+    const wood = std(0xe8e0d0, { roughness: 0.8 }); const vine = std(0x4a8a3a, { roughness: 0.9, flat: true });
+    for (const z of [26, 2, -22]) { if (W._near(0, z, 2.5)) continue; for (const x of [-3.4, 3.4]) { W.group.add(mesh(new THREE.CylinderGeometry(0.16, 0.18, 3.6, 8), wood, x, 1.8, z)); W.colliders.push({ t: 1, x, z, r: 0.25, h: 3.6 }); }
+      const arc = mesh(new THREE.TorusGeometry(3.4, 0.14, 6, 20, Math.PI), wood, 0, 3.6, z, false, false); W.group.add(arc);
+      for (let k = 0; k < 16; k++) { const a = (k / 15) * Math.PI; W.group.add(mesh(new THREE.IcosahedronGeometry(0.35, 0), k % 3 ? vine : std(0xff7aa8, { flat: true }), Math.cos(a) * 3.4, 3.6 + Math.sin(a) * 3.4, z + (r() - 0.5) * 0.4, false, false)); } }
+    // estanque con puente en el lado izquierdo y glorieta al fondo
+    { const pond = mesh(new THREE.CylinderGeometry(4, 4, 0.1, 24), new THREE.MeshStandardMaterial({ color: 0x4a7a9a, roughness: 0.05, metalness: 0.4, emissive: 0x1a2a40, emissiveIntensity: 0.3 }), -13, 0.06, 18, false, false); if (!W._near(-13, 18, 4.5)) { W.group.add(pond); W.colliders.push({ t: 1, x: -13, z: 18, r: 4, h: 0.5 }); for (let k = 0; k < 6; k++) W.group.add(mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.05, 8), std(0x5a9a4a), -13 + (r() - 0.5) * 5, 0.13, 18 + (r() - 0.5) * 5, false, false)); } }
+    { const g = new THREE.Group(); g.position.set(0, 0, -60); for (let k = 0; k < 8; k++) { const a = (k / 8) * TAU; g.add(mesh(new THREE.CylinderGeometry(0.3, 0.3, 6, 8), wood, Math.cos(a) * 6, 3, Math.sin(a) * 6, false, false)); } g.add(mesh(new THREE.SphereGeometry(7, 20, 10, 0, TAU, 0, Math.PI / 2), std(0xe8d8e8, { roughness: 0.7 }), 0, 6, 0, false, false)); W.group.add(g); }
+    for (const [x, z] of [[-5, 24], [5, 24], [-5, -6], [5, -6]]) { if (!W._near(x, z, 0.3)) brazier(W, x, z, 0xffb0a0, false); }
+    brazier(W, -4, -34, 0xffa080); brazier(W, 4, -34, 0xffa080);
+  },
+  // ------------------------------------------------------------------ XIX · Taller de los científicos
+  function (W) {
+    const fl = texTiles('xix', 0x9aa0a8, 0x5a6068, 6, 0.12); fl.repeat.set(14, 22); ground(W, fl, [80, 120], 0.7);
+    const r = mulberry32(119);
+    const iron = std(0x3a3e48, { metalness: 0.7, roughness: 0.4 }); const glass = new THREE.MeshStandardMaterial({ color: 0xbfe0ff, roughness: 0.05, metalness: 0.2, transparent: true, opacity: 0.25 });
+    const brass = std(0xc8a050, { metalness: 0.9, roughness: 0.3 }); const board = std(0x1e2a24, { roughness: 0.9 }); const chalk = std(0xf0f0e8, { roughness: 1 });
+    // naves de hierro y vidrio a ambos lados
+    for (const side of [-1, 1]) {
+      W.group.add(mesh(new THREE.BoxGeometry(0.4, 9, 84), glass, side * 24, 4.5, -5, false, false)); W.colliders.push({ t: 0, x0: side * 24 - 0.5, x1: side * 24 + 0.5, z0: -47, z1: 37, h: 9 });
+      for (let z = -44; z < 37; z += 4) { W.group.add(mesh(new THREE.BoxGeometry(0.3, 9, 0.3), iron, side * 23.8, 4.5, z, false, false)); const a = mesh(new THREE.TorusGeometry(5, 0.12, 6, 18, Math.PI / 2), iron, side * 19, 9, z, false, false); a.rotation.y = side > 0 ? 0 : Math.PI; W.group.add(a); }
+      // pizarras con fórmulas
+      for (let z = -36; z < 30; z += 16) { const x = side * 22.6; if (W._near(x, z, 2)) continue; const b = mesh(new THREE.BoxGeometry(0.2, 2.4, 4.6), board, x, 2.2, z, false, false); W.group.add(b);
+        for (let k = 0; k < 9; k++) W.group.add(mesh(new THREE.BoxGeometry(0.05, 0.06, 0.4 + r() * 1.6), chalk, x - side * 0.12, 1.4 + (k % 5) * 0.35, z - 1.6 + Math.floor(k / 5) * 2 + r() * 0.6, false, false)); }
+      // engranajes en los muros
+      for (let z = -40; z < 34; z += 12) { const g = mesh(new THREE.TorusGeometry(1 + r() * 0.6, 0.18, 6, 16), brass, side * 23.5, 6 + r() * 1.5, z, false, false); g.rotation.y = Math.PI / 2; W.group.add(g); W.anim && W.anim.push((t) => { g.rotation.x = t * (0.3 + (z % 3) * 0.1) * side; }); }
+    }
+    // gran planetario mecánico en el centro de la plaza
+    if (!W._near(0, 9, 3.5)) { const o = new THREE.Group(); o.position.set(0, 0, 9);
+      o.add(mesh(new THREE.CylinderGeometry(1.2, 1.6, 1, 12), iron, 0, 0.5, 0)); o.add(mesh(new THREE.SphereGeometry(0.7, 20, 14), glow(0xffd070, 3), 0, 2.4, 0, false, false));
+      const rings = []; for (let k = 0; k < 4; k++) { const ring = new THREE.Group(); ring.position.y = 2.4; const t2 = mesh(new THREE.TorusGeometry(1.3 + k * 0.6, 0.03, 6, 48), brass, 0, 0, 0, false, false); t2.rotation.x = Math.PI / 2; ring.add(t2); ring.add(mesh(new THREE.SphereGeometry(0.16 + k * 0.04, 12, 8), std([0x8a8aff, 0x4aa8ff, 0xff8a4a, 0xd8b070][k]), 1.3 + k * 0.6, 0, 0, false, false)); o.add(ring); rings.push(ring); }
+      W.group.add(o); W.colliders.push({ t: 1, x: 0, z: 9, r: 2, h: 3 }); W.anim && W.anim.push((t) => rings.forEach((rg, k) => (rg.rotation.y = t * (0.6 / (k + 1))))); }
+    // cúpula de observatorio al fondo
+    { const g = new THREE.Group(); g.position.set(0, 0, -78); g.add(mesh(new THREE.CylinderGeometry(14, 14, 10, 24), std(0xe8e4dc, { roughness: 0.8 }), 0, 5, 0, false, false)); g.add(mesh(new THREE.SphereGeometry(14, 24, 12, 0, TAU, 0, Math.PI / 2), std(0xc8ccd4, { metalness: 0.6, roughness: 0.35 }), 0, 10, 0, false, false));
+      const tel = mesh(new THREE.CylinderGeometry(1, 1.4, 14, 12), iron, 0, 20, 4, false, false); tel.rotation.x = -0.7; g.add(tel); W.group.add(g); }
+    for (const [x, z] of [[-5, 24], [5, 24], [-5, -6], [5, -6]]) { if (!W._near(x, z, 0.3)) brazier(W, x, z, 0x9adcff, false); }
+    brazier(W, -4, -34, 0x9adcff); brazier(W, 4, -34, 0x9adcff);
   },
 ];
 

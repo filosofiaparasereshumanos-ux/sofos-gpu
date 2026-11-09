@@ -39,6 +39,10 @@ const SONGS = [
   { bpm: 80, root: 48, scale: [0, 1, 3, 5, 7, 8, 10], prog: [0, 6, 5, 6], pad: 'warm', arp: 'lyre', arpPat: [0, 2, 1, 3, 0, 2, 3, 1], lead: 'aulos', kit: 'frame', seed: 181 },
   // XVII · Bagdad: laúd y ney, maqam hiyaz
   { bpm: 88, root: 50, scale: [0, 1, 4, 5, 7, 8, 10], prog: [0, 5, 6, 0], pad: 'warm', arp: 'lute', arpPat: [0, 1, 2, 1, 3, 2, 1, 2], lead: 'aulos', kit: 'tambourine', seed: 191 },
+  // XVIII · Jardín de los poetas: arpa y flauta, mayor lidio
+  { bpm: 72, root: 53, scale: [0, 2, 4, 6, 7, 9, 11], prog: [0, 3, 5, 4], pad: 'warm', arp: 'lyre', arpPat: [0, 2, 4, 2, 1, 3, 2, 1], lead: 'flute', kit: 'none', seed: 201 },
+  // XIX · Taller de los científicos: pulso de clave, curioso
+  { bpm: 96, root: 48, scale: [0, 2, 4, 5, 7, 9, 11], prog: [0, 4, 5, 3], pad: 'organ', arp: 'lute', arpPat: [0, 1, 2, 3, 2, 1, 0, 1], lead: 'flute', kit: 'frame', seed: 211 },
 ];
 // volumen de cada capa según el modo
 const MIX = {
