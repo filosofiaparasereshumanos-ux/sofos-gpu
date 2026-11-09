@@ -1211,6 +1211,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 // ============================================================================
 //  UTILIDADES
@@ -4685,8 +4686,7 @@ function paintWalls(W, idx) {
     else if (g.type === 'CylinderGeometry') { const h = pr.height * sc.y, r = Math.max(pr.radiusTop, pr.radiusBottom) * Math.max(sc.x, sc.z); if (h >= 2.5 && r >= 0.2) targets.push([o, 'cyl', r, h]); }
   });
   if (!targets.length) return;
-  new THREE.TextureLoader().load('img/w-' + idx + '.jpg', (tex) => {
-    if (W.disposed) return;
+  { const tex = new THREE.TextureLoader().load('img/w-' + idx + '.jpg');
     tex.colorSpace = THREE.SRGBColorSpace; tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.anisotropy = 8;
     W.paintTex = tex; const mats = new Map(); const T = 3.2; // metros por baldosa de textura
     for (const [o, kind, a, b, c] of targets) {
@@ -4697,7 +4697,40 @@ function paintWalls(W, idx) {
       else { const circ = TAU * a; for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * Math.max(1, Math.round(circ / T)), uv.getY(i) * b / T); }
       uv.needsUpdate = true; o.geometry = g; o.material = nm;
     }
-  }, undefined, () => {});
+  }
+}
+// rendimiento: une en una sola malla la decoración estática del escenario que comparte material.
+// Se detecta lo que se mueve ejecutando las animaciones en dos instantes y viendo qué cambió.
+function mergeStatic(W, n0, n1) {
+  const roots = W.group.children.slice(n0, n1); const cand = [];
+  const skip = new Set([W.groundMesh, ...(W.floors || []).map((f) => f.mesh).filter(Boolean)]);
+  for (const r of roots) r.traverse((o) => { if (o.isMesh && !o.isInstancedMesh && !o.isSkinnedMesh && !skip.has(o) && !Array.isArray(o.material) && !o.material.transparent && o.geometry && o.geometry.attributes.position && !o.userData.noMerge) cand.push(o); });
+  if (cand.length < 2) return;
+  W.group.updateMatrixWorld(true);
+  const snap = () => cand.map((o) => { o.updateMatrixWorld(true); return o.matrixWorld.elements.slice(0).concat([o.visible ? 1 : 0]); });
+  const a = snap(); for (const f of W.anim) try { f(1.37, 0.016); } catch (e) { /* nada */ }
+  const b = snap(); for (const f of W.anim) try { f(4.11, 0.016); } catch (e) { /* nada */ }
+  const c = snap();
+  const moved = (i) => { for (let k = 0; k < a[i].length; k++) if (Math.abs(a[i][k] - b[i][k]) > 1e-5 || Math.abs(a[i][k] - c[i][k]) > 1e-5) return true; return false; };
+  // un grupo con alguna pieza que se mueve queda entero sin tocar (las animaciones a veces usan children[n])
+  const tainted = new Set(); cand.forEach((o, i) => { if (!moved(i)) return; let p = o.parent; while (p && p !== W.group) { tainted.add(p); p = p.parent; } });
+  const groups = new Map();
+  cand.forEach((o, i) => { if (moved(i) || !o.visible) return; { let p = o.parent; while (p && p !== W.group) { if (tainted.has(p)) return; p = p.parent; } } let p = o.parent, vis = true; while (p && p !== W.group) { if (!p.visible) vis = false; p = p.parent; } if (!vis) return;
+    const key = o.material.uuid + '|' + o.castShadow + o.receiveShadow; if (!groups.has(key)) groups.set(key, []); groups.get(key).push(o); });
+  let merged = 0, removed = 0;
+  for (const list of groups.values()) {
+    if (list.length < 2) continue;
+    const geos = [];
+    for (const o of list) { let g = o.geometry.index ? o.geometry.toNonIndexed() : o.geometry.clone(); const ng = new THREE.BufferGeometry();
+      ng.setAttribute('position', g.attributes.position); if (g.attributes.normal) ng.setAttribute('normal', g.attributes.normal); else { ng.setAttribute('position', g.attributes.position); ng.computeVertexNormals(); }
+      ng.setAttribute('uv', g.attributes.uv || new THREE.BufferAttribute(new Float32Array(g.attributes.position.count * 2), 2));
+      ng.applyMatrix4(o.matrixWorld); geos.push(ng); }
+    let mg = null; try { mg = mergeGeometries(geos, false); } catch (e) { mg = null; }
+    if (!mg) continue;
+    const m = new THREE.Mesh(mg, list[0].material); m.castShadow = list[0].castShadow; m.receiveShadow = list[0].receiveShadow; m.matrixAutoUpdate = false; m.updateMatrix(); W.group.add(m);
+    for (const o of list) { o.parent.remove(o); removed++; } merged++;
+  }
+  W.mergeInfo = { merged, removed };
 }
 // suelo pintado (img/t-<época>.jpg): sustituye la textura generada de la plaza
 function paintGround(W, idx) {
@@ -5733,8 +5766,9 @@ function buildWorld(idx) {
   sun.shadow.mapSize.set(2048, 2048); const sc = sun.shadow.camera; sc.left = -48; sc.right = 48; sc.top = 48; sc.bottom = -48; sc.near = 1; sc.far = 160;
   sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.03;
   W.group.add(sun); W.group.add(sun.target); W.sun = sun; W.sunOff = sun.position.clone();
-  ERA_BUILDERS[idx](W);
+  const nB = W.group.children.length; ERA_BUILDERS[idx](W); const nE = W.group.children.length;
   addHorizon(W, idx); paintGround(W, idx); paintWalls(W, idx);
+  if (G.settings.merge !== false) mergeStatic(W, nB, nE);
   if (!th.indoor && idx !== 5) addClouds(W, idx);
   if (idx === 0 || idx === 2) addGrass(W, idx, sp);
   // estaciones de los filósofos
@@ -9116,6 +9150,7 @@ function buildCave(W) {
     for (const s of [-1, 1]) W.colliders.push({ t: 1, x: mx + Math.cos(g.rotation.y) * 1.8 * s, z: mz - Math.sin(g.rotation.y) * 1.8 * s, r: 0.7, h: 3 });
     W.caveMouth = { x: mx + Math.sin(g.rotation.y) * 0.9, z: mz + Math.cos(g.rotation.y) * 0.9, back: { x: mx + Math.sin(g.rotation.y) * 2.6, z: mz + Math.cos(g.rotation.y) * 2.6 }, yaw: g.rotation.y + Math.PI };
   }
+  const n0 = W.group.children.length;
   // ---------- terrazas de roca (cada una es un bloque macizo desde el suelo)
   const safePos = new THREE.Vector3(...C.entry);
   const block = (z0, z1, top, x0 = C.x0, x1 = C.x1, mat = rock) => {
@@ -9193,6 +9228,7 @@ function buildCave(W) {
   }
   // ---------- luz ambiente de la caverna
   const amb = new THREE.PointLight(0xff8a40, 26, 30, 1.3); amb.position.set(cx, 3, -8); W.group.add(amb);
+  W.caveG = zoneGroup(W, n0);
   // ---------- entrar, salir y cambiar el ambiente
   W.cave = { in: false };
   W.anim.push(() => {
@@ -9213,11 +9249,11 @@ function caveTeleport(x, y, z, yaw) {
   player.pos.set(x, y, z); player.vel.set(0, 0, 0); player.yaw = yaw; player.pitch = -0.12; player.floor = null; player.onGround = false; input.walk = null;
 }
 function caveEnter(W) {
-  W.cave.in = true; caveFog(W, true); const [x, y, z] = CAVE.entry; caveTeleport(x, y + 0.05, z, 0); player.safe.set(x, y, z);
+  W.cave.in = true; zoneShow(W, W.caveG); caveFog(W, true); const [x, y, z] = CAVE.entry; caveTeleport(x, y + 0.05, z, 0); player.safe.set(x, y, z);
   Audio.portal && Audio.portal(); toast('Has entrado en la caverna de Platón. Baja por las terrazas hasta los prisioneros… y descubre qué ven.');
 }
 function caveExit(W) {
-  W.cave.in = false; caveFog(W, false); const m = W.caveMouth; caveTeleport(m.back.x, 0, m.back.z, m.yaw); player.safe.set(m.back.x, 0, m.back.z);
+  W.cave.in = false; zoneShow(W, null); caveFog(W, false); const m = W.caveMouth; caveTeleport(m.back.x, 0, m.back.z, m.yaw); player.safe.set(m.back.x, 0, m.back.z);
   toast('Has salido de la caverna. Como el prisionero liberado, ahora ves la luz del sol.');
   if (typeof achieve === 'function' && (store.get('odisea-razon.lugares', []) || []).includes('cueva-prisioneros')) achieve('salida');
 }
@@ -9303,25 +9339,37 @@ function zoneMouth(W, Z, st) {
   const ry = g.rotation.y; for (const s of [-1, 1]) W.colliders.push({ t: 1, x: mx + Math.cos(ry) * 1.25 * s, z: mz - Math.sin(ry) * 1.25 * s, r: 0.45, h: 3.4 });
   Z.mouth = { x: mx + Math.sin(ry) * 0.5, z: mz + Math.cos(ry) * 0.5, back: { x: mx + Math.sin(ry) * 2.4, z: mz + Math.cos(ry) * 2.4 }, yaw: ry + Math.PI };
 }
+// rendimiento: cada espacio vive en su propio grupo, visible solo cuando estás dentro;
+// y mientras estás dentro, la plaza (lejana y oculta por la niebla) no se dibuja
+function zoneGroup(W, n0) { const g = new THREE.Group(); const kids = W.group.children.slice(n0); for (const k of kids) g.add(k); W.group.add(g); g.visible = false; (W.zoneGroups = W.zoneGroups || []).push(g); return g; }
+function zoneShow(W, g) {
+  for (const c of W.group.children) {
+    if ((W.zoneGroups || []).includes(c)) { c.visible = c === g; continue; }
+    if (c.isLight || c === W.sky || c === W.horizon || c === W.stars || c === W.clouds) continue;
+    if (g) { if (c.userData.zh === undefined) { c.userData.zh = c.visible; c.visible = false; } }
+    else if (c.userData.zh !== undefined) { c.visible = c.userData.zh; delete c.userData.zh; }
+  }
+}
 function zoneTeleport(x, y, z, yaw) {
   const f = $('#flash'); if (f) { f.classList.remove('on'); void f.offsetWidth; f.classList.add('on'); }
   player.pos.set(x, y, z); player.vel.set(0, 0, 0); player.yaw = yaw; player.pitch = -0.05; player.floor = null; player.onGround = false; input.walk = null; input.auto = false;
 }
 function zoneEnter(W, Z) {
-  W.zoneIn = Z; zoneAmbient(W, Z.amb); const [x, y, z] = Z.entry; zoneTeleport(x, y + 0.05, z, Z.yaw || 0); player.safe.set(x, y, z);
+  W.zoneIn = Z; zoneShow(W, Z.g); zoneAmbient(W, Z.amb); const [x, y, z] = Z.entry; zoneTeleport(x, y + 0.05, z, Z.yaw || 0); player.safe.set(x, y, z);
   if (Audio.portal) Audio.portal(); if (Z.onEnter) Z.onEnter(W, Z); toast(Z.enterMsg);
 }
 function zoneExit(W, Z) {
   if (Z.onExit) Z.onExit(W, Z);
-  W.zoneIn = null; zoneAmbient(W, null); const m = Z.mouth; zoneTeleport(m.back.x, 0, m.back.z, m.yaw); player.safe.set(m.back.x, 0, m.back.z);
+  W.zoneIn = null; zoneShow(W, null); zoneAmbient(W, null); const m = Z.mouth; zoneTeleport(m.back.x, 0, m.back.z, m.yaw); player.safe.set(m.back.x, 0, m.back.z);
 }
 function buildZones(W) {
   W.spots = W.spots || [];
   for (const Z of ZONES) {
     if (Z.era !== W.idx) continue; const st = W.stations.find((s) => s.data.id === Z.near); if (!st) continue;
-    Z.s = {}; zoneMouth(W, Z, st); Z.build(W, Z);
+    Z.s = {}; zoneMouth(W, Z, st); const n0 = W.group.children.length; Z.build(W, Z);
     W.spots.push({ x: Z.exit[0], z: Z.exit[1], r: 2, verb: 'Salir', label: Z.exitLabel, on: () => W.zoneIn === Z, act: () => zoneExit(W, Z) });
     { const ex = mesh(new THREE.PlaneGeometry(1.8, 2.8), new THREE.MeshBasicMaterial({ color: new THREE.Color(Z.color).multiplyScalar(1.4), transparent: true, opacity: 0.6, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }), Z.exit[0], (Z.exitY || 0) + 1.5, Z.exit[1], false, false); ex.lookAt(Z.entry[0], (Z.exitY || 0) + 1.5, Z.entry[2]); W.group.add(ex); zoneLabel(W, 'Salida', Z.exitLabel, Z.exit[0], (Z.exitY || 0) + 3.4, Z.exit[1], 0.8); }
+    Z.g = zoneGroup(W, n0);
   }
   W.anim.push(() => {
     if (typeof player === 'undefined' || G.state !== 'play' || W.zoneIn || (W.cave && W.cave.in)) return;
@@ -11865,7 +11913,7 @@ function frame() {
   requestAnimationFrame(frame);
   const raw = Math.min(clock.getDelta(), 0.05); const dt = G.state === 'victory' ? raw * 0.22 : raw; tAcc += dt;
   if (world) {
-    for (const a of world.anim) a(tAcc, dt);
+    for (const a of world.anim) { try { a(tAcc, dt); } catch (e) { if (!a._err) { a._err = true; console.warn('animación fallida', e); } } }
     updateEmitters(dt);
     world.sky.position.copy(camera.position); if (world.stars) world.stars.position.copy(camera.position);
   }

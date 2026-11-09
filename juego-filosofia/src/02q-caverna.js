@@ -51,6 +51,7 @@ function buildCave(W) {
     for (const s of [-1, 1]) W.colliders.push({ t: 1, x: mx + Math.cos(g.rotation.y) * 1.8 * s, z: mz - Math.sin(g.rotation.y) * 1.8 * s, r: 0.7, h: 3 });
     W.caveMouth = { x: mx + Math.sin(g.rotation.y) * 0.9, z: mz + Math.cos(g.rotation.y) * 0.9, back: { x: mx + Math.sin(g.rotation.y) * 2.6, z: mz + Math.cos(g.rotation.y) * 2.6 }, yaw: g.rotation.y + Math.PI };
   }
+  const n0 = W.group.children.length;
   // ---------- terrazas de roca (cada una es un bloque macizo desde el suelo)
   const safePos = new THREE.Vector3(...C.entry);
   const block = (z0, z1, top, x0 = C.x0, x1 = C.x1, mat = rock) => {
@@ -128,6 +129,7 @@ function buildCave(W) {
   }
   // ---------- luz ambiente de la caverna
   const amb = new THREE.PointLight(0xff8a40, 26, 30, 1.3); amb.position.set(cx, 3, -8); W.group.add(amb);
+  W.caveG = zoneGroup(W, n0);
   // ---------- entrar, salir y cambiar el ambiente
   W.cave = { in: false };
   W.anim.push(() => {
@@ -148,11 +150,11 @@ function caveTeleport(x, y, z, yaw) {
   player.pos.set(x, y, z); player.vel.set(0, 0, 0); player.yaw = yaw; player.pitch = -0.12; player.floor = null; player.onGround = false; input.walk = null;
 }
 function caveEnter(W) {
-  W.cave.in = true; caveFog(W, true); const [x, y, z] = CAVE.entry; caveTeleport(x, y + 0.05, z, 0); player.safe.set(x, y, z);
+  W.cave.in = true; zoneShow(W, W.caveG); caveFog(W, true); const [x, y, z] = CAVE.entry; caveTeleport(x, y + 0.05, z, 0); player.safe.set(x, y, z);
   Audio.portal && Audio.portal(); toast('Has entrado en la caverna de Platón. Baja por las terrazas hasta los prisioneros… y descubre qué ven.');
 }
 function caveExit(W) {
-  W.cave.in = false; caveFog(W, false); const m = W.caveMouth; caveTeleport(m.back.x, 0, m.back.z, m.yaw); player.safe.set(m.back.x, 0, m.back.z);
+  W.cave.in = false; zoneShow(W, null); caveFog(W, false); const m = W.caveMouth; caveTeleport(m.back.x, 0, m.back.z, m.yaw); player.safe.set(m.back.x, 0, m.back.z);
   toast('Has salido de la caverna. Como el prisionero liberado, ahora ves la luz del sol.');
   if (typeof achieve === 'function' && (store.get('odisea-razon.lugares', []) || []).includes('cueva-prisioneros')) achieve('salida');
 }

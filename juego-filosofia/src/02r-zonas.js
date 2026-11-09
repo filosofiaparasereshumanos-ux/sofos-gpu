@@ -78,25 +78,37 @@ function zoneMouth(W, Z, st) {
   const ry = g.rotation.y; for (const s of [-1, 1]) W.colliders.push({ t: 1, x: mx + Math.cos(ry) * 1.25 * s, z: mz - Math.sin(ry) * 1.25 * s, r: 0.45, h: 3.4 });
   Z.mouth = { x: mx + Math.sin(ry) * 0.5, z: mz + Math.cos(ry) * 0.5, back: { x: mx + Math.sin(ry) * 2.4, z: mz + Math.cos(ry) * 2.4 }, yaw: ry + Math.PI };
 }
+// rendimiento: cada espacio vive en su propio grupo, visible solo cuando estás dentro;
+// y mientras estás dentro, la plaza (lejana y oculta por la niebla) no se dibuja
+function zoneGroup(W, n0) { const g = new THREE.Group(); const kids = W.group.children.slice(n0); for (const k of kids) g.add(k); W.group.add(g); g.visible = false; (W.zoneGroups = W.zoneGroups || []).push(g); return g; }
+function zoneShow(W, g) {
+  for (const c of W.group.children) {
+    if ((W.zoneGroups || []).includes(c)) { c.visible = c === g; continue; }
+    if (c.isLight || c === W.sky || c === W.horizon || c === W.stars || c === W.clouds) continue;
+    if (g) { if (c.userData.zh === undefined) { c.userData.zh = c.visible; c.visible = false; } }
+    else if (c.userData.zh !== undefined) { c.visible = c.userData.zh; delete c.userData.zh; }
+  }
+}
 function zoneTeleport(x, y, z, yaw) {
   const f = $('#flash'); if (f) { f.classList.remove('on'); void f.offsetWidth; f.classList.add('on'); }
   player.pos.set(x, y, z); player.vel.set(0, 0, 0); player.yaw = yaw; player.pitch = -0.05; player.floor = null; player.onGround = false; input.walk = null; input.auto = false;
 }
 function zoneEnter(W, Z) {
-  W.zoneIn = Z; zoneAmbient(W, Z.amb); const [x, y, z] = Z.entry; zoneTeleport(x, y + 0.05, z, Z.yaw || 0); player.safe.set(x, y, z);
+  W.zoneIn = Z; zoneShow(W, Z.g); zoneAmbient(W, Z.amb); const [x, y, z] = Z.entry; zoneTeleport(x, y + 0.05, z, Z.yaw || 0); player.safe.set(x, y, z);
   if (Audio.portal) Audio.portal(); if (Z.onEnter) Z.onEnter(W, Z); toast(Z.enterMsg);
 }
 function zoneExit(W, Z) {
   if (Z.onExit) Z.onExit(W, Z);
-  W.zoneIn = null; zoneAmbient(W, null); const m = Z.mouth; zoneTeleport(m.back.x, 0, m.back.z, m.yaw); player.safe.set(m.back.x, 0, m.back.z);
+  W.zoneIn = null; zoneShow(W, null); zoneAmbient(W, null); const m = Z.mouth; zoneTeleport(m.back.x, 0, m.back.z, m.yaw); player.safe.set(m.back.x, 0, m.back.z);
 }
 function buildZones(W) {
   W.spots = W.spots || [];
   for (const Z of ZONES) {
     if (Z.era !== W.idx) continue; const st = W.stations.find((s) => s.data.id === Z.near); if (!st) continue;
-    Z.s = {}; zoneMouth(W, Z, st); Z.build(W, Z);
+    Z.s = {}; zoneMouth(W, Z, st); const n0 = W.group.children.length; Z.build(W, Z);
     W.spots.push({ x: Z.exit[0], z: Z.exit[1], r: 2, verb: 'Salir', label: Z.exitLabel, on: () => W.zoneIn === Z, act: () => zoneExit(W, Z) });
     { const ex = mesh(new THREE.PlaneGeometry(1.8, 2.8), new THREE.MeshBasicMaterial({ color: new THREE.Color(Z.color).multiplyScalar(1.4), transparent: true, opacity: 0.6, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }), Z.exit[0], (Z.exitY || 0) + 1.5, Z.exit[1], false, false); ex.lookAt(Z.entry[0], (Z.exitY || 0) + 1.5, Z.entry[2]); W.group.add(ex); zoneLabel(W, 'Salida', Z.exitLabel, Z.exit[0], (Z.exitY || 0) + 3.4, Z.exit[1], 0.8); }
+    Z.g = zoneGroup(W, n0);
   }
   W.anim.push(() => {
     if (typeof player === 'undefined' || G.state !== 'play' || W.zoneIn || (W.cave && W.cave.in)) return;

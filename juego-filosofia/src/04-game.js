@@ -1390,7 +1390,7 @@ function frame() {
   requestAnimationFrame(frame);
   const raw = Math.min(clock.getDelta(), 0.05); const dt = G.state === 'victory' ? raw * 0.22 : raw; tAcc += dt;
   if (world) {
-    for (const a of world.anim) a(tAcc, dt);
+    for (const a of world.anim) { try { a(tAcc, dt); } catch (e) { if (!a._err) { a._err = true; console.warn('animación fallida', e); } } }
     updateEmitters(dt);
     world.sky.position.copy(camera.position); if (world.stars) world.stars.position.copy(camera.position);
   }

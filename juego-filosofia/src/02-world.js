@@ -351,8 +351,7 @@ function paintWalls(W, idx) {
     else if (g.type === 'CylinderGeometry') { const h = pr.height * sc.y, r = Math.max(pr.radiusTop, pr.radiusBottom) * Math.max(sc.x, sc.z); if (h >= 2.5 && r >= 0.2) targets.push([o, 'cyl', r, h]); }
   });
   if (!targets.length) return;
-  new THREE.TextureLoader().load('img/w-' + idx + '.jpg', (tex) => {
-    if (W.disposed) return;
+  { const tex = new THREE.TextureLoader().load('img/w-' + idx + '.jpg');
     tex.colorSpace = THREE.SRGBColorSpace; tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.anisotropy = 8;
     W.paintTex = tex; const mats = new Map(); const T = 3.2; // metros por baldosa de textura
     for (const [o, kind, a, b, c] of targets) {
@@ -363,7 +362,40 @@ function paintWalls(W, idx) {
       else { const circ = TAU * a; for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * Math.max(1, Math.round(circ / T)), uv.getY(i) * b / T); }
       uv.needsUpdate = true; o.geometry = g; o.material = nm;
     }
-  }, undefined, () => {});
+  }
+}
+// rendimiento: une en una sola malla la decoración estática del escenario que comparte material.
+// Se detecta lo que se mueve ejecutando las animaciones en dos instantes y viendo qué cambió.
+function mergeStatic(W, n0, n1) {
+  const roots = W.group.children.slice(n0, n1); const cand = [];
+  const skip = new Set([W.groundMesh, ...(W.floors || []).map((f) => f.mesh).filter(Boolean)]);
+  for (const r of roots) r.traverse((o) => { if (o.isMesh && !o.isInstancedMesh && !o.isSkinnedMesh && !skip.has(o) && !Array.isArray(o.material) && !o.material.transparent && o.geometry && o.geometry.attributes.position && !o.userData.noMerge) cand.push(o); });
+  if (cand.length < 2) return;
+  W.group.updateMatrixWorld(true);
+  const snap = () => cand.map((o) => { o.updateMatrixWorld(true); return o.matrixWorld.elements.slice(0).concat([o.visible ? 1 : 0]); });
+  const a = snap(); for (const f of W.anim) try { f(1.37, 0.016); } catch (e) { /* nada */ }
+  const b = snap(); for (const f of W.anim) try { f(4.11, 0.016); } catch (e) { /* nada */ }
+  const c = snap();
+  const moved = (i) => { for (let k = 0; k < a[i].length; k++) if (Math.abs(a[i][k] - b[i][k]) > 1e-5 || Math.abs(a[i][k] - c[i][k]) > 1e-5) return true; return false; };
+  // un grupo con alguna pieza que se mueve queda entero sin tocar (las animaciones a veces usan children[n])
+  const tainted = new Set(); cand.forEach((o, i) => { if (!moved(i)) return; let p = o.parent; while (p && p !== W.group) { tainted.add(p); p = p.parent; } });
+  const groups = new Map();
+  cand.forEach((o, i) => { if (moved(i) || !o.visible) return; { let p = o.parent; while (p && p !== W.group) { if (tainted.has(p)) return; p = p.parent; } } let p = o.parent, vis = true; while (p && p !== W.group) { if (!p.visible) vis = false; p = p.parent; } if (!vis) return;
+    const key = o.material.uuid + '|' + o.castShadow + o.receiveShadow; if (!groups.has(key)) groups.set(key, []); groups.get(key).push(o); });
+  let merged = 0, removed = 0;
+  for (const list of groups.values()) {
+    if (list.length < 2) continue;
+    const geos = [];
+    for (const o of list) { let g = o.geometry.index ? o.geometry.toNonIndexed() : o.geometry.clone(); const ng = new THREE.BufferGeometry();
+      ng.setAttribute('position', g.attributes.position); if (g.attributes.normal) ng.setAttribute('normal', g.attributes.normal); else { ng.setAttribute('position', g.attributes.position); ng.computeVertexNormals(); }
+      ng.setAttribute('uv', g.attributes.uv || new THREE.BufferAttribute(new Float32Array(g.attributes.position.count * 2), 2));
+      ng.applyMatrix4(o.matrixWorld); geos.push(ng); }
+    let mg = null; try { mg = mergeGeometries(geos, false); } catch (e) { mg = null; }
+    if (!mg) continue;
+    const m = new THREE.Mesh(mg, list[0].material); m.castShadow = list[0].castShadow; m.receiveShadow = list[0].receiveShadow; m.matrixAutoUpdate = false; m.updateMatrix(); W.group.add(m);
+    for (const o of list) { o.parent.remove(o); removed++; } merged++;
+  }
+  W.mergeInfo = { merged, removed };
 }
 // suelo pintado (img/t-<época>.jpg): sustituye la textura generada de la plaza
 function paintGround(W, idx) {
@@ -1399,8 +1431,9 @@ function buildWorld(idx) {
   sun.shadow.mapSize.set(2048, 2048); const sc = sun.shadow.camera; sc.left = -48; sc.right = 48; sc.top = 48; sc.bottom = -48; sc.near = 1; sc.far = 160;
   sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.03;
   W.group.add(sun); W.group.add(sun.target); W.sun = sun; W.sunOff = sun.position.clone();
-  ERA_BUILDERS[idx](W);
+  const nB = W.group.children.length; ERA_BUILDERS[idx](W); const nE = W.group.children.length;
   addHorizon(W, idx); paintGround(W, idx); paintWalls(W, idx);
+  if (G.settings.merge !== false) mergeStatic(W, nB, nE);
   if (!th.indoor && idx !== 5) addClouds(W, idx);
   if (idx === 0 || idx === 2) addGrass(W, idx, sp);
   // estaciones de los filósofos
