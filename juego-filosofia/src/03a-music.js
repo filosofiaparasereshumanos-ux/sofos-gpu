@@ -45,6 +45,8 @@ const SONGS = [
   { bpm: 96, root: 48, scale: [0, 2, 4, 5, 7, 9, 11], prog: [0, 4, 5, 3], pad: 'organ', arp: 'lute', arpPat: [0, 1, 2, 3, 2, 1, 0, 1], lead: 'flute', kit: 'frame', seed: 211 },
   // XX · Japón del zen: koto y shakuhachi, escala in
   { bpm: 66, root: 50, scale: [0, 1, 5, 7, 8, 12, 13], prog: [0, 3, 4, 0], pad: 'warm', arp: 'lyre', arpPat: [0, 2, 4, 2, 1, 3, 4, 2], lead: 'flute', kit: 'none', seed: 221 },
+  // XXI · El Norte vikingo: tambor y lira nórdica, modo dórico
+  { bpm: 84, root: 45, scale: [0, 2, 3, 5, 7, 9, 10], prog: [0, 6, 3, 4], pad: 'warm', arp: 'lyre', arpPat: [0, 2, 4, 2, 0, 3, 2, 1], lead: 'flute', kit: 'frame', seed: 231 },
 ];
 // volumen de cada capa según el modo
 const MIX = {

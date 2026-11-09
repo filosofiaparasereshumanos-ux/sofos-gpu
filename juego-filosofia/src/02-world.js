@@ -102,6 +102,11 @@ const THEMES = [
     hemi: [0xffe8f0, 0x5a6a4a, 0.74], fog: [0xf0dce4, 0.0072], exposure: 1.1, stars: false,
     accent: 0xff5a6a, enemy: { col: 0xff5a6a, core: 0x280a0e, shell: 'cube' }, lampCol: 0xffd8a0,
   },
+  { // XXI · El Norte vikingo: crepúsculo frío con aurora boreal
+    sky: [0x0a1a2a, 0x3a5a6a, 0x5a5a6a], sunDir: [-0.5, 0.08, -0.85], sunCol: 0xffc8a0, sunInt: 1.4, sunDisk: 0xffd8b0,
+    hemi: [0x9ac8d8, 0x3a3a30, 0.66], fog: [0x3a4a58, 0.0095], exposure: 1.16, stars: true,
+    accent: 0x5affb0, enemy: { col: 0x5affb0, core: 0x04201a, shell: 'cube' }, lampCol: 0xffb060,
+  },
 ];
 
 const ARENA = { x0: -24, x1: 24, z0: -47, z1: 37 };
@@ -1323,6 +1328,54 @@ const ERA_BUILDERS = [
       g.add(mesh(new THREE.CylinderGeometry(0.15, 0.15, 7, 8), std(0xc8a050, { metalness: 0.8, roughness: 0.3 }), 0, 29, 0, false, false)); W.group.add(g); }
     for (const [x, z] of [[-5, 24], [5, 24], [-5, -6], [5, -6]]) { if (!W._near(x, z, 0.3)) brazier(W, x, z, 0xffc890, false); }
     brazier(W, -4, -34, 0xffc890); brazier(W, 4, -34, 0xffc890);
+  },
+  // ------------------------------------------------------------------ XXI · El Norte vikingo
+  function (W) {
+    const dirt = texTiles('xxi', 0x5a4a3a, 0x3a3028, 8, 0.3); dirt.repeat.set(16, 24); ground(W, dirt, [80, 120], 1);
+    const path = new THREE.PlaneGeometry(4, 84); path.rotateX(-Math.PI / 2);
+    const pt = texTiles('xxip', 0x6a5a48, 0x4a3a2a, 2, 0.2); const ptc = pt.clone(); ptc.repeat.set(1, 24); ptc.needsUpdate = true;
+    W.group.add(mesh(path, std(0xffffff, { map: ptc, roughness: 1 }), 0, 0.01, -5, false, true));
+    const r = mulberry32(121);
+    const timber = std(0x4a3424, { roughness: 0.9 }); const turf = std(0x4a6a3a, { roughness: 1, flat: true }); const stone = std(0x7a7a78, { roughness: 1, flat: true }); const snow = std(0xeef2f6, { roughness: 0.9, flat: true });
+    // casas largas a ambos lados, con techo de turba
+    for (const side of [-1, 1]) for (const z of [22, 0, -24]) {
+      const x = side * 17; if (W._near(x, z, 5)) continue; const g = new THREE.Group(); g.position.set(x, 0, z);
+      g.add(mesh(new THREE.BoxGeometry(7, 3, 14), timber, 0, 1.5, 0));
+      const roof = mesh(new THREE.CylinderGeometry(4.6, 4.6, 14.6, 4, 1, false, 0, Math.PI), turf, 0, 2.9, 0, false, false); roof.rotation.set(Math.PI / 2, 0, Math.PI / 2); roof.scale.set(1, 1, 0.62); g.add(roof);
+      g.add(mesh(new THREE.BoxGeometry(1.4, 2.2, 0.2), std(0x2a1a10), -side * 3.55, 1.1, 0, false, false).rotateY(Math.PI / 2));
+      W.group.add(g); W.colliders.push({ t: 0, x0: x - 3.6, x1: x + 3.6, z0: z - 7.2, z1: z + 7.2, h: 4 }); }
+    // pinos y rocas nevadas junto a los muros
+    for (const side of [-1, 1]) for (let z = -44; z < 36; z += 3.2) { const x = side * (21.5 + r() * 1.5); const h = 5 + r() * 4;
+      const g = new THREE.Group(); g.position.set(x, 0, z); g.add(mesh(new THREE.CylinderGeometry(0.15, 0.22, h * 0.3, 6), timber, 0, h * 0.15, 0, false, false));
+      for (let k = 0; k < 3; k++) g.add(mesh(new THREE.ConeGeometry(1.5 - k * 0.38, h * 0.38, 7), std(0x2a4a34, { roughness: 1, flat: true }), 0, h * (0.32 + k * 0.22), 0, false, false));
+      g.add(mesh(new THREE.ConeGeometry(0.42, h * 0.16, 7), snow, 0, h * 0.95, 0, false, false)); W.group.add(g); W.colliders.push({ t: 1, x, z, r: 0.9, h }); }
+    // piedras rúnicas
+    for (const [x, z] of [[-6, 16], [6, -12], [-6, -30]]) { if (W._near(x, z, 1.2)) continue; const st = mesh(new THREE.BoxGeometry(1.1, 2.6, 0.4), stone, x, 1.3, z); st.rotation.y = r() * 0.6 - 0.3; W.group.add(st);
+      for (let k = 0; k < 6; k++) W.group.add(mesh(new THREE.BoxGeometry(0.06, 0.32, 0.05), glow(0xd83a2a, 1.2), x - 0.3 + (k % 3) * 0.3, 1.2 + Math.floor(k / 3) * 0.6, z + 0.22, false, false));
+      W.colliders.push({ t: 1, x, z, r: 0.7, h: 2.6 }); }
+    // fuego largo en el centro de la plaza
+    if (!W._near(0, 6, 2.5)) { W.group.add(mesh(new THREE.BoxGeometry(1.6, 0.3, 5), stone, 0, 0.15, 6)); for (let k = -2; k <= 2; k++) brazier(W, 0, 6 + k * 1.1, 0xff8a30, k === 0); }
+    // barco vikingo varado junto a la costa del fondo, con proa de dragón
+    { const g = new THREE.Group(); g.position.set(0, 0, -64);
+      const hull = mesh(new THREE.SphereGeometry(1, 20, 10, 0, TAU, Math.PI / 2, Math.PI / 2), timber, 0, 2.2, 0, false, false); hull.scale.set(3.4, 2.2, 13); g.add(hull);
+      const prow = mesh(new THREE.TorusGeometry(1.6, 0.25, 6, 12, Math.PI), timber, 0, 3.6, -12.4, false, false); prow.rotation.y = Math.PI / 2; g.add(prow);
+      g.add(mesh(new THREE.CylinderGeometry(0.2, 0.25, 12, 8), timber, 0, 8, 0, false, false));
+      const sail = mesh(new THREE.PlaneGeometry(8, 6), new THREE.MeshStandardMaterial({ color: 0xc83a2a, roughness: 0.9, side: THREE.DoubleSide }), 0, 9, 0.3, false, false); g.add(sail);
+      for (let k = -3; k <= 3; k += 2) g.add(mesh(new THREE.BoxGeometry(0.9, 6, 0.04), std(0xf0e8d8, { roughness: 0.9 }), k * 1.1, 9, 0.35, false, false));
+      for (let k = 0; k < 7; k++) for (const sd of [-1, 1]) g.add(mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.1, 14), k % 2 ? std(0xc8a050, { metalness: 0.6, roughness: 0.4 }) : std(0x2a4a7a), sd * 3.3, 2.6, -8 + k * 2.6, false, false).rotateZ(Math.PI / 2));
+      W.group.add(g); }
+    // montañas nevadas al fondo
+    for (let k = 0; k < 7; k++) { const m = mesh(new THREE.ConeGeometry(18 + r() * 10, 30 + r() * 20, 7), std(0x5a6a7a, { roughness: 1, flat: true }), -60 + k * 20, 12, -110 - r() * 20, false, false); W.group.add(m);
+      W.group.add(mesh(new THREE.ConeGeometry(7, 10, 7), snow, m.position.x, m.position.y + m.geometry.parameters.height / 2 - 4, m.position.z, false, false)); }
+    // aurora boreal: cortinas de luz que ondulan en el cielo
+    { const c = document.createElement('canvas'); c.width = 128; c.height = 128; const x = c.getContext('2d'); const gr = x.createLinearGradient(0, 0, 0, 128); gr.addColorStop(0, 'rgba(120,255,200,0)'); gr.addColorStop(0.35, 'rgba(120,255,190,0.55)'); gr.addColorStop(0.75, 'rgba(80,200,255,0.25)'); gr.addColorStop(1, 'rgba(60,120,255,0)'); x.fillStyle = gr; x.fillRect(0, 0, 128, 128);
+      x.globalCompositeOperation = 'destination-in'; const gh = x.createLinearGradient(0, 0, 128, 0); gh.addColorStop(0, 'rgba(0,0,0,0)'); gh.addColorStop(0.3, 'rgba(0,0,0,1)'); gh.addColorStop(0.7, 'rgba(0,0,0,1)'); gh.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = gh; x.fillRect(0, 0, 128, 128);
+      const tex = new THREE.CanvasTexture(c);
+      for (let k = 0; k < 3; k++) { const geo = new THREE.PlaneGeometry(260, 46, 48, 1); const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, fog: false, toneMapped: false, opacity: 0.55 });
+        const a = new THREE.Mesh(geo, mat); a.position.set(-30 + k * 30, 95 + k * 12, -170 - k * 25); a.rotation.x = -0.25; W.group.add(a);
+        const base = geo.attributes.position.array.slice(); W.anim && W.anim.push((t) => { const p = geo.attributes.position.array; for (let i = 0; i < p.length; i += 3) p[i + 2] = base[i + 2] + Math.sin(base[i] * 0.04 + t * 0.6 + k) * 10; geo.attributes.position.needsUpdate = true; }); } }
+    for (const [x, z] of [[-5, 24], [5, 24], [-5, -6], [5, -6]]) { if (!W._near(x, z, 0.3)) brazier(W, x, z, 0xffa040, false); }
+    brazier(W, -4, -34, 0xffa040); brazier(W, 4, -34, 0xffa040);
   },
 ];
 

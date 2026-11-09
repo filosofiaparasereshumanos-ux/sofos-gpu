@@ -66,7 +66,7 @@ sola, sin subir una versión nueva a Play.
 ## Descripción para la ficha
 
 **Breve (80 caracteres):**
-Debate con 91 filósofas y filósofos en 20 mundos, de Sócrates a Bashō.
+Debate con 96 filósofas y filósofos en 21 mundos, de Sócrates a Bashō.
 
 **Completa:**
 Odisea de la Razón es un viaje en 3D por la historia del pensamiento. Camina por la

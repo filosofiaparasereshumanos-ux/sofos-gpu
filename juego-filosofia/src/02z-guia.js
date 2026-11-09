@@ -44,9 +44,11 @@ const GUIDE_LINES = [
     'Arquímedes, Galileo, Ada Lovelace, Marie Curie y Albert Einstein te esperan. Observa, mide, experimenta e imagina. Y pregúntate: ¿qué es saber algo de verdad?'],
   ['Bienvenido al Japón del zen. Aquí la filosofía se practica: sentándose en silencio, sirviendo una taza de té, caminando y escribiendo poemas de tres versos.',
     'Murasaki Shikibu, Dōgen, Sen no Rikyū, Bashō y Kitarō Nishida te esperan. Camina despacio: la prisa es la única sombra que no se vence corriendo.'],
+  ['Bienvenido al Norte de los vikingos. No solo hubo guerreros: hubo poetas, sabias, navegantes y una asamblea donde la ley se hacía entre todos.',
+    'La vidente de la Völuspá, Egill, Aud la Sabia, Thorgeir y Snorri Sturluson te esperan. Recuerda lo que dice el Hávamál: un ser humano es la alegría de otro ser humano.'],
 ];
 // dónde espera en cada época (junto al punto de llegada, en z = 31)
-const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5], 17: [2.8, 24.5], 18: [2.8, 24.5], 19: [2.8, 24.5] };
+const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5], 17: [2.8, 24.5], 18: [2.8, 24.5], 19: [2.8, 24.5], 20: [2.8, 24.5] };
 GUIDE_LINES.forEach((lines, i) => {
   if (!NPCS[i]) NPCS[i] = [];
   NPCS[i].unshift({ id: i === 0 ? 'guia' : 'guia-' + ERAS[i].id, name: 'El guía', role: 'Filosofía para Seres Humanos', portrait: 'guia', greeter: true,
