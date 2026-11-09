@@ -1,48 +1,20 @@
-# Inicio de sesión (Supabase) — puesta en marcha
+# Cuentas de jugador (usuario y contraseña)
 
-El juego ya trae el código de cuentas (`src/06d-cuenta.js`). Solo falta crear el proyecto y pegar dos datos.
+Cada jugador puede **crear su cuenta** con un nombre de usuario y una contraseña, sin correo ni Google, y recuperar su odisea en cualquier aparato. Funciona en la versión web (GitHub Pages / dominio propio).
 
-## 1. Crear el proyecto (gratis)
-1. Entra en https://supabase.com → **Start your project** → inicia sesión (con GitHub es lo más rápido).
-2. **New project**: nombre `odisea`, una contraseña de base de datos (guárdala, no hace falta dármela) y la región más cercana (por ejemplo *South America (São Paulo)*).
+## Puesta en marcha (una vez)
+1. Abre tu proyecto en https://supabase.com → **SQL Editor** → **New query**.
+2. Pega **entero** el contenido de [`tools/cuentas.sql`](tools/cuentas.sql) y pulsa **Run**.
 
-> Si tu web de Lovable ya usa Supabase, puedes usar ese mismo proyecto.
+Eso crea la tabla `odisea_viajeros` y las funciones `odisea_registrar`, `odisea_entrar`, `odisea_guardar`, `odisea_cargar` y `odisea_salir`. No toca los usuarios ni las tablas de otras apps del proyecto.
 
-## 2. Crear la tabla del camino de cada jugador
-En el proyecto: **SQL Editor** → **New query** → pega esto y pulsa **Run**:
+## Cómo protege los datos
+- Las contraseñas se guardan cifradas (bcrypt); nadie, ni siquiera desde el panel, puede leerlas.
+- La tabla está cerrada: el juego solo puede usar las funciones, y para guardar hace falta la sesión del propio jugador.
+- La clave del juego (`sb_publishable_…`) es pública por diseño. **Nunca** pongas la clave secreta (`sb_secret_…`) en el juego.
 
-```sql
-create table if not exists public.progreso (
-  user_id uuid primary key references auth.users on delete cascade,
-  nombre text,
-  datos jsonb not null default '{}'::jsonb,
-  sabiduria integer not null default 0,
-  actualizado timestamptz not null default now()
-);
-alter table public.progreso enable row level security;
-create policy "cada jugador lee su camino" on public.progreso for select using (auth.uid() = user_id);
-create policy "cada jugador crea su camino" on public.progreso for insert with check (auth.uid() = user_id);
-create policy "cada jugador actualiza su camino" on public.progreso for update using (auth.uid() = user_id);
-```
+## Ver a los jugadores
+En **Table Editor → odisea_viajeros** ves los usuarios, su sabiduría y cuándo jugaron por última vez.
 
-Las reglas (RLS) hacen que cada jugador solo pueda ver y cambiar **su propio** camino.
-
-## 3. Permitir volver al juego después de iniciar sesión
-**Authentication → URL Configuration**:
-- *Site URL*: `https://filosofiaparasereshumanos-ux.github.io/sofos-gpu/juego-filosofia/index.html`
-- *Redirect URLs*: añade `https://filosofiaparasereshumanos-ux.github.io/sofos-gpu/**` (y, si lo usas, `https://juego.filosofiaparasereshumanos.com/**`).
-
-## 4. Activar Google (opcional, recomendado)
-El enlace por correo funciona sin hacer nada más. Para el botón **Continuar con Google**:
-1. En https://console.cloud.google.com → **APIs y servicios → Credenciales → Crear credenciales → ID de cliente de OAuth** (tipo *Aplicación web*). Si te lo pide, configura antes la *pantalla de consentimiento* (externa, con el nombre «Odisea de la Razón»).
-2. En *URI de redireccionamiento autorizados* pega la que te muestra Supabase en **Authentication → Providers → Google** (termina en `/auth/v1/callback`).
-3. Copia el *ID de cliente* y el *secreto* de Google en **Authentication → Providers → Google** de Supabase y activa el proveedor.
-
-## 5. Pasarme los dos datos públicos
-En **Project Settings → API**:
-- **Project URL** (algo como `https://abcdxyz.supabase.co`)
-- **anon public key** (una clave larga que empieza por `eyJ…`)
-
-Son públicos por diseño (van dentro de la página); quien protege los datos son las reglas del paso 2. **No** me pases la *service_role key* ni la contraseña de la base de datos.
-
-Con eso relleno `CUENTA_CFG` en `src/06d-cuenta.js` y aparece el botón **Iniciar sesión** en la pantalla de título.
+## Límite actual
+No hay recuperación de contraseña (no se pide correo). Si alguien la olvida, se puede crear otra cuenta.

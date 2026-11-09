@@ -642,7 +642,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="mini-b" id="b-howto">Cómo jugar</button>
         <button class="mini-b" id="b-settings">Ajustes</button>
         <button class="mini-b" id="b-fs" hidden>Pantalla completa</button>
-        <button class="mini-b login-b" id="b-login" hidden>Iniciar sesión</button>
+        <button class="mini-b login-b" id="b-login" hidden>Mi cuenta</button>
         <button class="mini-b install-b" id="b-install" hidden>Instalar app</button>
       </div>
       <a class="brand-by" href="https://filosofiaparasereshumanos.com" target="_blank" rel="noopener">Una propuesta de <b>Filosofía para Seres Humanos</b></a>
@@ -976,13 +976,18 @@ body.touch .gm.boss { width: 30px; height: 30px; }
     <div class="settings cuenta">
       <h2>Tu camino</h2>
       <div id="ct-out">
-        <p class="ct-txt">Inicia sesión para guardar tu odisea en tu cuenta y continuarla en cualquier celular o computador.</p>
-        <div class="btns"><button class="btn primary" id="ct-google">Continuar con Google</button></div>
-        <p class="ct-or">o recibe un enlace de acceso en tu correo</p>
-        <div class="ct-row"><input id="ct-mail" type="email" placeholder="tu@correo.com" autocomplete="email" aria-label="Tu correo"><button class="btn" id="ct-send">Enviar enlace</button></div>
+        <p class="ct-txt">Crea tu cuenta para guardar tu odisea y continuarla en cualquier celular o computador.</p>
+        <div class="seg tabs" id="ct-tabs"><button data-v="nueva" class="on">Crear cuenta</button><button data-v="entrar">Ya tengo cuenta</button></div>
+        <div class="ct-row">
+          <input id="ct-user" maxlength="24" placeholder="Nombre de usuario" autocomplete="username" autocapitalize="none" spellcheck="false" aria-label="Nombre de usuario">
+          <input id="ct-pass" type="password" maxlength="72" placeholder="Contraseña (mínimo 6)" autocomplete="new-password" aria-label="Contraseña">
+          <input id="ct-pass2" type="password" maxlength="72" placeholder="Repite la contraseña" autocomplete="new-password" aria-label="Repite la contraseña">
+          <button class="btn primary" id="ct-go">Crear mi cuenta</button>
+        </div>
+        <p class="ct-or">Guarda bien tu contraseña: por ahora no se puede recuperar.</p>
       </div>
       <div id="ct-in" hidden>
-        <p class="ct-txt">Has iniciado sesión como <b id="ct-who"></b>.</p>
+        <p class="ct-txt">Viajero: <b id="ct-who"></b></p>
         <p class="ct-txt" id="ct-state"></p>
         <div class="btns"><button class="btn" id="ct-sync">Guardar ahora</button><button class="btn ghost" id="ct-logout">Cerrar sesión</button></div>
       </div>
