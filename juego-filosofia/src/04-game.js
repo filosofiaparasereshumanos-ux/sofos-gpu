@@ -261,7 +261,7 @@ function walkToScreen(cx, cy) {
   _ray.setFromCamera(_ndc, camera);
   if (!_ray.ray.intersectPlane(_plane, _hit)) return;
   const d = _hit.distanceTo(player.pos); if (d > 45) return;
-  const cv = typeof CAVE !== 'undefined' && world.cave && world.cave.in; const B = cv ? { x0: CAVE.x0, x1: CAVE.x1, z0: CAVE.z0, z1: CAVE.z1 } : ARENA;
+  const cv = typeof CAVE !== 'undefined' && world.cave && world.cave.in; const B = world.zoneIn ? world.zoneIn.b : cv ? { x0: CAVE.x0, x1: CAVE.x1, z0: CAVE.z0, z1: CAVE.z1 } : ARENA;
   input.walk = { x: clamp(_hit.x, B.x0 + 1, B.x1 - 1), z: clamp(_hit.z, B.z0 + 1, B.z1 - 1), t: 12 }; input.auto = false;
   if (!world.walkMark) { world.walkMark = mesh(new THREE.RingGeometry(0.3, 0.45, 28), glow(0xffffff, 2, { transparent: true, opacity: 0.8, side: THREE.DoubleSide }), 0, 0.05, 0, false, false); world.walkMark.rotation.x = -Math.PI / 2; world.group.add(world.walkMark); }
   world.walkMark.position.set(input.walk.x, 0.05, input.walk.z); world.walkMark.visible = true; Audio.click();
@@ -783,6 +783,7 @@ function updatePrompt() {
   else if (th && th.npc) { txt = IS_TOUCH ? `Hablar con <b>${th.npc.npc.name}</b>` : `<b>E</b> · Hablar con ${th.npc.npc.name}`; can = true; }
   else if (th && th.book) { txt = IS_TOUCH ? `Leer: <b>${th.book.title}</b>` : `<b>E</b> · Leer: ${th.book.title}`; can = true; }
   else if (th && th.poi) { txt = IS_TOUCH ? `Descubrir: <b>${th.poi.name}</b>` : `<b>E</b> · Descubrir: ${th.poi.name}`; can = true; }
+  else if (th && th.spot) { txt = IS_TOUCH ? `${th.spot.verb}: <b>${th.spot.label}</b>` : `<b>E</b> · ${th.spot.verb}: ${th.spot.label}`; can = true; }
   const tg = currentTarget();
   if (!txt) {
     const gate = world.gates && world.gates.find((g) => !g.open && Math.abs(player.pos.z - g.z) < 3.5);
@@ -792,7 +793,7 @@ function updatePrompt() {
   ch.classList.toggle('talk', can);
   const tl = $('#t-lesson'); const showL = !!(s && (s.state === 'idle' || s.state === 'defeated')); if (tl && tl._on !== showL) { tl._on = showL; tl.hidden = !showL; }
   if (tact) {
-    const label = s || (th && th.npc) ? 'Hablar' : th && th.book ? 'Leer' : can ? 'Descubrir' : input.auto ? 'Caminando…' : tg ? 'Ir a ' + (tg.name.length <= 13 ? tg.name : tg.name.split(' ')[0]) : 'Explorar';
+    const label = th && th.spot ? th.spot.verb : s || (th && th.npc) ? 'Hablar' : th && th.book ? 'Leer' : can ? 'Descubrir' : input.auto ? 'Caminando…' : tg ? 'Ir a ' + (tg.name.length <= 13 ? tg.name : tg.name.split(' ')[0]) : 'Explorar';
     if (tact._label !== label) { tact._label = label; tact.textContent = label; }
     const st = can ? 'ready' : tg ? 'go' : '';
     if (tact._st !== st) { tact._st = st; tact.classList.toggle('ready', st === 'ready'); tact.classList.toggle('go', st === 'go'); }
@@ -836,8 +837,14 @@ function nearestBook() {
   for (const b of world.books || []) { const d = Math.hypot(b.at[0] - player.pos.x, b.at[1] - player.pos.z); if (d < bd) { bd = d; best = b; } }
   return best;
 }
+function nearestSpot() {
+  let best = null, bd = 99;
+  for (const s of world.spots || []) { if (s.on && !s.on()) continue; const d = Math.hypot(s.x - player.pos.x, s.z - player.pos.z); if (d < s.r && d < bd) { bd = d; best = s; } }
+  return best;
+}
 function nearestThing() {
   const dist = (o) => o.sage ? Math.hypot(o.sage.pos.x - player.pos.x, o.sage.pos.z - player.pos.z) - o.sage.radius : o.npc ? Math.hypot(o.npc.pos.x - player.pos.x, o.npc.pos.z - player.pos.z) - 0.3 : o.book ? Math.hypot(o.book.at[0] - player.pos.x, o.book.at[1] - player.pos.z) - 0.4 : Math.hypot(o.poi.at[0] - player.pos.x, o.poi.at[1] - player.pos.z);
+  const sp = nearestSpot(); if (sp) return { spot: sp };
   const s = nearestSage(), p = nearestPoi(), c = nearestCitizen(), b = nearestBook();
   const all = [s && { sage: s }, c && { npc: c }, p && { poi: p }, b && { book: b }].filter(Boolean);
   if (!all.length) return null;
@@ -846,6 +853,7 @@ function nearestThing() {
 function tryInteract() {
   const t = nearestThing();
   if (!t) { if (currentTarget()) { input.auto = !input.auto; input.walk = null; if (input.auto) Audio.click(); } return; }
+  if (t.spot) return t.spot.act();
   if (t.poi) return Places.open(t.poi);
   if (t.npc) return Talk.openNpc(t.npc);
   if (t.book) return Lesson.openBook(t.book, true);
@@ -1432,4 +1440,4 @@ async function boot() {
 }
 
 // Gancho de pruebas automáticas (solo con #debug en la URL)
-if (location.hash === '#debug') window.__dbg = { G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc };
+if (location.hash === '#debug') window.__dbg = { get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc };

@@ -233,6 +233,9 @@ kbd { font-family: var(--display); font-size: 0.78em; border: 1px solid var(--li
 .nb-card { width: min(620px, 100%); max-height: calc(100vh - 32px); overflow: auto; background: #1a140c; border: 1px solid var(--gold); border-radius: 14px; padding: 18px 18px 14px; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
 .nb-q { font-size: 1.15rem; margin: 10px 0 12px; color: var(--parchment); line-height: 1.4; }
 #nb-t { width: 100%; box-sizing: border-box; min-height: 140px; padding: 12px; border-radius: 10px; border: 1px solid rgba(233,199,122,0.45); background: rgba(0,0,0,0.35); color: inherit; font: inherit; font-size: 1.05rem; line-height: 1.45; resize: vertical; }
+.xp-title { font-family: var(--display); font-weight: normal; color: var(--gold); font-size: 1.5rem; margin: 8px 0 0; letter-spacing: 0.04em; }
+.xp-ops { flex-direction: column; align-items: stretch; }
+.xp-ops .btn { white-space: normal; text-align: center; }
 .nb-checks { display: grid; gap: 6px; margin: 10px 0 0; font-size: 0.98rem; }
 .nb-checks input { margin-right: 8px; accent-color: #d6a84a; }
 .nb-msg { color: #ffb0a0; min-height: 1.2em; margin: 6px 0 0; font-size: 0.95rem; }
@@ -707,6 +710,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <div class="tip"><b>Descubrir</b>Los rombos dorados marcan lugares: el Partenón, el ágora, la Biblioteca de Alejandría… Cada uno te cuenta su historia y te da un fragmento de sabiduría.</div>
         <div class="tip"><b>Debates</b>Desafía a un filósofo desde la conversación. Responde con clic o con <kbd>1</kbd>–<kbd>4</kbd>. Acertar quiebra su convicción; fallar daña tu razón.</div>
         <div class="tip"><b>Diálogos y cuaderno</b>En Atenas, Protágoras, Sócrates y Platón te proponen una idea: toma postura, da tu mejor razón y responde a su objeción. No hay una respuesta única: cuenta la calidad de tus razones. Y en el <em>Cuaderno</em> puedes escribir tu respuesta a la pregunta de cada pensador.</div>
+        <div class="tip"><b>Experimentos mentales</b>Busca las puertas que brillan junto a algunos pensadores: la caverna de Platón, el anillo de Giges y el barco de Teseo en Atenas, la habitación de Descartes y la roca de Sísifo. Dentro, acércate a lo que brilla y pulsa <em>E</em> (o toca la pantalla) para decidir qué harías.</div>
         <div class="tip"><b>Comodines</b>Los fragmentos que ganas descubriendo lugares sirven en los debates: <em>Mayéutica</em> elimina dos respuestas falsas; <em>Clepsidra</em> añade diez segundos.</div>
         <div class="tip"><b>El camino</b>Cada época es una vía recta: los pensadores te esperan uno tras otro, en orden. Al vencer a cada uno se abre la puerta de luz hacia el siguiente. El marcador dorado y la barra de arriba te guían; tócalo (o pulsa <kbd>E</kbd>) para caminar solo hasta él.</div>
       </div>
@@ -1134,6 +1138,14 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       </div>
       <p class="nb-msg" id="nb-msg"></p>
       <div class="btns"><button class="btn primary" id="nb-save">Guardar en mi cuaderno</button><button class="btn ghost" id="nb-cancel">Cancelar</button></div>
+    </div>
+  </div>
+  <div id="xp" class="nb" hidden>
+    <div class="nb-card xp-card">
+      <div class="eyebrow" id="xp-eye"></div>
+      <h3 class="xp-title" id="xp-title"></h3>
+      <p class="nb-q" id="xp-text"></p>
+      <div class="btns xp-ops" id="xp-ops"></div>
     </div>
   </div>
   <div id="fade"></div>

@@ -5,6 +5,10 @@ const ACH_KEY = 'odisea-razon.logros', STATS_KEY = 'odisea-razon.stats', ALIAS_K
 const ACH = [
   { id: 'primer', i: 'Α', n: 'Primer diálogo', d: 'Vence a tu primer filósofo en un duelo.' },
   { id: 'tabano', i: 'Σ', n: 'El tábano', d: 'Vence a Sócrates en su propio terreno.' },
+  { id: 'sisifo', i: '◓', n: 'Imaginar a Sísifo feliz', d: 'Empuja tres veces la roca de Sísifo y piensa con Camus.' },
+  { id: 'giges', i: '◯', n: 'El anillo de Giges', d: 'Ponte el anillo de la invisibilidad y decide qué haces cuando nadie te ve.' },
+  { id: 'teseo', i: '⛵', n: 'El barco de Teseo', d: 'Cambia todas las tablas del barco y decide cuál es el verdadero.' },
+  { id: 'cogito', i: '✶', n: 'Pienso, luego existo', d: 'Duda de todo en la habitación de Descartes hasta encontrar una certeza.' },
   { id: 'salida', i: '☀', n: 'Fuera de la caverna', d: 'Baja hasta los prisioneros de la caverna de Platón y vuelve a salir a la luz.' },
   { id: 'dialogo', i: '⇄', n: 'Diálogo socrático', d: 'Supera un diálogo dando buenas razones y respondiendo a una objeción.' },
   { id: 'cuaderno', i: '✎', n: 'Cuaderno del filósofo', d: 'Escribe tu primera respuesta en el cuaderno.' },
