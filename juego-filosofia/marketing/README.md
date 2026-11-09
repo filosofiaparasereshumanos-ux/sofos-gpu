@@ -1,5 +1,6 @@
 # Material para redes
 
+- **`trailer-completo.mp4`** (nuevo, 85 s, 1080x1920): tráiler II, «el primer juego educativo completo de filosofía, ciencia e historia». Abre con Sócrates en la prisión y después es todo juego real grabado fotograma a fotograma: el menú con el botón JUGAR, la elección de época desde Sumer, los 21 mundos en orden cronológico con su nombre y sus pensadores, un debate ganado, un diálogo socrático, la bajada a la caverna de Platón, Sísifo, el anillo de Giges, las dudas de Descartes, el sueño de la mariposa de Zhuangzi, un libro que se abre, el mapa filosófico, el modo aula para docentes, un cartón de cifras y la llamada a sumarse con reto. Cierra con el logo de Filosofía para Seres Humanos. Audio a −14 LUFS. Se hizo con `herramientas/captura-v2.cjs` (tomas) y `herramientas/montaje-v2.py` (edición).
 - **`trailer-vertical.mp4`**: tráiler de 67 s, 1080x1920 (9:16), para TikTok, Instagram Reels y YouTube Shorts. Escenas de cine realistas con voz en off de narrador, filósofos que hablan con sus propios labios, subtítulos palabra a palabra, música épica con golpes imágenes reales del juego (recorriendo los mundos, abriendo un libro, conversando y ganando un debate) un cierre con llamada a sumarse y reto para comentar, y la firma de Filosofía para Seres Humanos con el logo y filosofiaparasereshumanos.com. Audio normalizado a −14 LUFS.
 - **`portada.jpg`** (Sócrates en la prisión) y **`portada-titulo.jpg`** (cartón final): miniaturas.
 - **`logo-filosofia-para-seres-humanos.png`**: logo recortado con fondo transparente.
@@ -32,3 +33,26 @@ Imágenes con nano-banana, escenas con voz con Veo 3 fast y música con Suno, to
 > 🏆 RETO: vence a Sócrates en un debate y comenta tu puntaje.
 >
 > #filosofía #sócrates #hipatia #sorjuana #nietzsche #videojuegos #educación #profesores #historia #aprendeentiktok
+
+## Tráiler II (`trailer-completo.mp4`)
+
+| Tiempo | Imagen | Texto en pantalla |
+|---|---|---|
+| 0–7,7 | Sócrates en la prisión (escena de cine) | Voz: «Lo condenaron a muerte por hacer preguntas.» |
+| 7,7–13 | Menú del juego con el botón JUGAR | «El primer juego educativo completo · de filosofía, ciencia e historia» |
+| 13–16 | Pantalla «¿Por dónde empiezas?» | «Empieza en Sumer, hace 4.500 años · o viaja a la época que quieras» |
+| 16–40 | Los 21 mundos, de Sumer a la ciencia, cada uno con su número, nombre y pensadores | «21 épocas» · «De Bagdad a Tenochtitlan» · «96 pensadoras y pensadores» |
+| 40–64 | Debate con Sócrates, diálogo con Platón, caverna, Sísifo, Giges, Descartes, mariposa, libro | Un rótulo por cada experiencia |
+| 64–70 | Mapa filosófico y mapa de la clase | «Tu mapa filosófico» · «Para docentes» |
+| 70–75 | Cifras | «21 épocas · 96 pensadoras y pensadores · 15 diálogos socráticos · 9 experimentos filosóficos · Gratis, en tu celular» |
+| 75–85 | Llamada y firma | «Únete a la odisea · RETO: sal de la caverna de Platón y comenta tu mapa filosófico ↓» y logo |
+
+### Texto sugerido
+
+> El primer juego educativo completo de filosofía, ciencia e historia. 🏛️🔭
+> 21 épocas, de Sumer a nuestros días: debate con Sócrates, baja a la caverna de Platón, empuja la roca de Sísifo, duda con Descartes, sueña con Zhuangzi… y descubre tu propio mapa filosófico.
+> 96 pensadoras y pensadores de Grecia, China, India, África, el islam, los mexicas, los incas, los mapuche y más. Con modo aula para docentes.
+> Gratis, en el celular, sin descargar nada. Link en la bio.
+> 🏆 RETO: sal de la caverna de Platón y comenta tu mapa filosófico.
+>
+> #filosofía #historia #ciencia #educación #videojuegoseducativos #profesores #sócrates #platón #aprendeentiktok

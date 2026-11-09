@@ -6,7 +6,9 @@ const OUT = process.argv[2]; const ONLY = (process.argv[3] || '').split(',').fil
 const ALL = [...Array(21).keys()];
 // ---------- las tomas
 const SHOTS = [];
-SHOTS.push({ name: 'title', n: 60, title: true });
+SHOTS.push({ name: 'title', n: 24, title: true });
+SHOTS.push({ name: 'chooser', n: 64, title: true, setup: `document.getElementById('b-play').click();`,
+  frame: `const sc = [...document.querySelectorAll('#travel, #travel *')].find((n) => n.scrollHeight > n.clientHeight + 80 && getComputedStyle(n).overflowY !== 'visible') || document.getElementById('travel'); const k2 = Math.max(0, (k - 0.25) / 0.75); sc.scrollTop = (sc.scrollHeight - sc.clientHeight) * 0.55 * k2 * k2 * (3 - 2 * k2);` });
 for (const e of ALL) SHOTS.push({ name: 'w' + String(e).padStart(2, '0'), era: e, n: 42,
   frame: `const s = ${e % 2 ? 1 : -1}; d.player.pos.set(1.0 - 0.6 * e_, 0, 33 - 15 * e_); d.player.yaw = s * (0.28 - 0.5 * e_); d.player.pitch = 0.05;` });
 SHOTS.push({ name: 'duel', era: 1, n: 75, setup: `const s = d.sages.find((x) => x.data.id === 'socrates'); d.player.pos.set(s.pos.x + (s.pos.x < 0 ? 3 : -3), 0, s.pos.z + 1); d.player.yaw = Math.atan2(-(s.pos.x - d.player.pos.x), -(s.pos.z - d.player.pos.z)); d.Duel.start(s);`,
@@ -25,14 +27,14 @@ SHOTS.push({ name: 'desc', era: 5, zone: 'descartes', n: 170, setup: `d.player.p
   at: Object.fromEntries([[18, 'El palo en el agua'], [55, 'La cama'], [92, 'El espejo'], [132, 'La vela']].map(([f, l]) => [f, `const sp = d.world.spots.find((s) => s.label === '${l}'); sp.act(); document.querySelector('#xp-ops button').click(); d.player.pos.set(90, 0, 12.6); d.player.yaw = 0;`])),
   frame: `d.player.pos.set(90, 0, 12.6 - 1.5 * e_); d.player.yaw = 0; d.player.pitch = -0.04;` });
 SHOTS.push({ name: 'mariposa', era: 12, zone: 'mariposa', n: 80, setup: ``,
-  frame: `const Z = d.ZONES.find((z) => z.id === 'mariposa'); const P = Z.s.pads; const t = Math.min(P.length - 1.001, e_ * (P.length - 1)); const i = Math.floor(t), u = t - i; const a = P[i], b = P[i + 1]; d.player.pos.set(a.x + (b.x - a.x) * u, a.top + (b.top - a.top) * u, a.z + (b.z - a.z) * u + 1.5); d.player.yaw = 0.2 - 0.5 * e_; d.player.pitch = 0.08;` });
-SHOTS.push({ name: 'book', era: 18, n: 40, setup: `const b = d.world.books[0]; window.__bk = b; d.player.pos.set(b.at[0] - 6, 0, b.at[1] + 2);`, frame: `const b = window.__bk; d.player.pos.set(b.at[0] - 6 + 3.5 * e_, 0, b.at[1] + 2 - 0.8 * e_); d.player.yaw = Math.atan2(-(b.at[0] - d.player.pos.x), -(b.at[1] - d.player.pos.z)); d.player.pitch = -0.05;`,
+  frame: `const Z = d.ZONES.find((z) => z.id === 'mariposa'); const P = Z.s.pads; const t = Math.min(P.length - 1.001, e_ * (P.length - 1)); const i = Math.floor(t), u = t - i; const a = P[i], b = P[i + 1]; d.player.pos.set(a.x + (b.x - a.x) * u + 1.5, a.top + (b.top - a.top) * u + 1.4, a.z + (b.z - a.z) * u + 5); d.player.vel.set(0, 0, 0); d.player.yaw = 0.15; d.player.pitch = -0.22;` });
+SHOTS.push({ name: 'book', era: 18, n: 40, setup: `const b = d.world.books[0]; window.__bk = b; d.player.pos.set(b.at[0] - 6, 0, b.at[1] + 2);`, frame: `const b = window.__bk; d.player.pos.set(b.at[0] - 6 + 4.6 * e_, 0, b.at[1] + 2 - 1.6 * e_); d.player.yaw = Math.atan2(-(b.at[0] - d.player.pos.x), -(b.at[1] - d.player.pos.z)); d.player.pitch = -0.05;`,
   extra: 55, interactEnd: true });
 // ---------- captura
 (async () => {
   const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
   const ctx = await browser.newContext({ viewport: { width: 432, height: 768 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
-  const page = await ctx.newPage(); page.on('pageerror', (e) => console.log('ERROR', e.message));
+  const page = await ctx.newPage(); page.setDefaultTimeout(180000); page.on('pageerror', (e) => console.log('ERROR', e.message));
   await page.addInitScript(() => {
     const rNow = performance.now.bind(performance), rRAF = window.requestAnimationFrame.bind(window);
     let virt = false, vt = 0, q = [];
@@ -55,7 +57,7 @@ SHOTS.push({ name: 'book', era: 18, n: 40, setup: `const b = d.world.books[0]; w
       await page.evaluate(() => window.__step(50));
       await page.evaluate(() => { const d = window.__dbg; for (const c of d.citizens) if (c.npc.greeter) c.group.visible = false; d.G.state = 'play'; });
     }
-    if (sh.zone) { await page.evaluate((id) => { const d = window.__dbg; const Z = d.ZONES.find((z) => z.id === id); d.G.state = 'play'; d.player.pos.set(Z.mouth.x, 0, Z.mouth.z); }, sh.zone); await page.evaluate(() => window.__step(4)); }
+    if (sh.zone) { await page.evaluate((id) => { const d = window.__dbg; const Z = d.ZONES.find((z) => z.id === id); d.G.state = 'play'; d.player.pos.set(Z.mouth.x, 0, Z.mouth.z); }, sh.zone); await page.evaluate((id) => { const d = window.__dbg; const Z = d.ZONES.find((z) => z.id === id); for (let i = 0; i < 60 && d.world.zoneIn !== Z; i++) { d.G.state = 'play'; d.player.pos.set(Z.mouth.x, 0, Z.mouth.z); window.__step(1); } }, sh.zone); }
     await page.evaluate((title) => { document.getElementById('hud').hidden = true; document.getElementById('touch').hidden = true; if (!title) document.getElementById('toasts').innerHTML = ''; }, !!sh.title);
     if (sh.setup) await run(sh.setup);
     const N = sh.n + (sh.extra || 0);
@@ -64,7 +66,7 @@ SHOTS.push({ name: 'book', era: 18, n: 40, setup: `const b = d.world.books[0]; w
       if (sh.at && sh.at[f]) await run(sh.at[f], k, e, f);
       if (sh.interactEnd && f === sh.n) await page.evaluate(() => window.__dbg.tryInteract());
       if (sh.frame && f < sh.n) await run(sh.frame, k, e, f);
-      await page.evaluate(() => { document.getElementById('toasts').style.display = 'none'; window.__step(1); });
+      await page.evaluate((title) => { document.getElementById('toasts').style.display = 'none'; if (!title) { document.getElementById('hud').hidden = true; document.getElementById('touch').hidden = true; } window.__step(1); }, !!sh.title);
       await page.screenshot({ path: `${dir}${String(f).padStart(4, '0')}.png` });
     }
     if (sh.after) await run(sh.after);
