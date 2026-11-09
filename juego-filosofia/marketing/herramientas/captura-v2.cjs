@@ -30,6 +30,21 @@ SHOTS.push({ name: 'mariposa', era: 12, zone: 'mariposa', n: 80, setup: ``,
   frame: `const Z = d.ZONES.find((z) => z.id === 'mariposa'); const P = Z.s.pads; const t = Math.min(P.length - 1.001, e_ * (P.length - 1)); const i = Math.floor(t), u = t - i; const a = P[i], b = P[i + 1]; d.player.pos.set(a.x + (b.x - a.x) * u + 1.5, a.top + (b.top - a.top) * u + 1.4, a.z + (b.z - a.z) * u + 5); d.player.vel.set(0, 0, 0); d.player.yaw = 0.15; d.player.pitch = -0.22;` });
 SHOTS.push({ name: 'book', era: 18, n: 40, setup: `const b = d.world.books[0]; window.__bk = b; d.player.pos.set(b.at[0] - 6, 0, b.at[1] + 2);`, frame: `const b = window.__bk; d.player.pos.set(b.at[0] - 6 + 4.6 * e_, 0, b.at[1] + 2 - 1.6 * e_); d.player.yaw = Math.atan2(-(b.at[0] - d.player.pos.x), -(b.at[1] - d.player.pos.z)); d.player.pitch = -0.05;`,
   extra: 55, interactEnd: true });
+
+// enfrentamientos: te acercas al avatar del pensador, debate y lo vences (estallido de luz sobre el avatar)
+for (const [id, era, boss] of [['socrates', 1], ['hipatia', 2], ['laozi', 12], ['sorjuana', 8], ['enheduanna', 15], ['pachacutec', 10, true]]) {
+  const A = 34 + (boss ? 86 : 0);
+  SHOTS.push({ name: 'vs_' + id, era, n: 34, extra: A - 34 + 44 + 62,
+    setup: `const s = d.sages.find((x) => x.data.id === '${id}'); window.__s = s; window.__side = s.pos.x < -0.5 ? 1 : s.pos.x > 0.5 ? -1 : 0;`,
+    frame: `const s = window.__s, sd = window.__side; const D = 11 - ${boss ? 5.2 : 7.2} * e_; const px = s.pos.x + (sd ? sd * D : 0.8), pz = s.pos.z + (sd ? 0.9 : D); d.player.pos.set(px, 0, pz); d.player.yaw = Math.atan2(-(s.pos.x - px), -(s.pos.z - pz)); d.player.pitch = 0.07 + 0.06 * e_;`,
+    at: { 34: `d.Duel.start(window.__s);`, [A + 22]: `const D = d.Duel; D.answer(D.opts.findIndex((o) => o.ok));`, [A + 44]: `window.__s.conv = 0; d.Duel.next();` },
+    after: `document.getElementById('concept').hidden = true; d.Duel.close(); d.G.state = 'play';` });
+}
+// cruzar el arco-portal y pasar a la siguiente época
+SHOTS.push({ name: 'portal', era: 1, n: 64, extra: 90,
+  setup: `const P = d.world.portal; P.open = true; P.k = 1; window.__P = P.group.position.clone(); d.player.pos.set(window.__P.x, 0, window.__P.z + 15); d.player.yaw = 0; d.player.pitch = 0.16;`,
+  frame: `if (d.G.state === 'play' && d.world.idx === 1) { const P = window.__P; d.player.pos.set(P.x + 0.4 * Math.sin(k * 3), 0, P.z + 15 - 14.2 * e_); d.player.yaw = 0; d.player.pitch = 0.16 - 0.08 * e_; }`,
+  at: { 140: `if (d.G.state === 'intro') d.enterEra();` } });
 // ---------- captura
 (async () => {
   const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
