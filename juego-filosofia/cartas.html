@@ -2179,7 +2179,7 @@ const Duel = {
     on('#r-retry', () => Duel.start(this.i));
     on('#r-lesson', () => Lesson.open(s, () => go('result', false)));
     on('#r-map', () => go('map'));
-    on('#r-share', () => shareText(`He completado la Odisea de la Razón: de Tales a Kant con ${P.totalStars()} ★ y ${P.data.cards.length} ideas coleccionadas. ¿Te atreves? https://claude.ai/artifact/5C4Rz4jpDYiEaEYcdbUJew`));
+    on('#r-share', () => shareText(`He completado la Odisea de la Razón: de Tales a Kant con ${P.totalStars()} ★ y ${P.data.cards.length} ideas coleccionadas. ¿Te atreves? https://filosofiaparasereshumanos-ux.github.io/sofos-gpu/`));
     go('result'); R.scrollTop = 0;
     if (win) setTimeout(() => Voice.say(s.defeat, s), 600);
   },
@@ -2439,7 +2439,7 @@ const Oracle = {
     $('#oe-eye').textContent = this.practice ? 'Práctica · no cuenta para el ranking' : 'El oráculo ha hablado · ' + this.label(ds);
     $('#oe-title').textContent = title; $('#oe-grid').textContent = grid; $('#oe-msg').textContent = msg;
     $('#oe-stats').innerHTML = `<div><b>${c}/10</b><span>Aciertos</span></div><div><b>${fmt(this.score)}</b><span>Sabiduría</span></div><div><b>${this.best}</b><span>Mejor racha</span></div>`;
-    $('#o-share').value = `Odisea de la Razón · Oráculo de Delfos\n${this.label(ds)}\n${grid}\n${c}/10 · ${fmt(this.score)} de sabiduría · «${title}»\n¿Puedes superarme? https://claude.ai/artifact/5C4Rz4jpDYiEaEYcdbUJew`;
+    $('#o-share').value = `Odisea de la Razón · Oráculo de Delfos\n${this.label(ds)}\n${grid}\n${c}/10 · ${fmt(this.score)} de sabiduría · «${title}»\n¿Puedes superarme? https://filosofiaparasereshumanos-ux.github.io/sofos-gpu/`;
     go('oend');
   },
 };

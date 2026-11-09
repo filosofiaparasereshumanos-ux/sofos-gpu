@@ -134,7 +134,7 @@ const AULA = {
     const all = store.get(this.KEY_CLASSES, {}); const c = all[k]; const d = c && this.decode(c.code); if (!d) return;
     $('#au-classbox').hidden = false; $('#au-ctitle').textContent = c.title; $('#au-ccode').textContent = c.code;
     $('#au-cinfo').textContent = `${d.items.length} pensadores: ${d.items.map((x) => x.s.short).join(', ')}. Cuenta: ${this.tasksOf(d).map((t) => t.short.toLowerCase()).join(', ')}.`;
-    $('#au-invite').value = `Tarea de filosofía: ${c.title}\n1. Entra en Odisea de la Razón: https://claude.ai/artifact/5C4Rz4jpDYiEaEYcdbUJew\n2. Toca «Modo aula» → «Soy estudiante».\n3. Escribe el código de clase: ${c.code}\n4. Al terminar, toca «Entregar mi tarea» y envíame el texto.`;
+    $('#au-invite').value = `Tarea de filosofía: ${c.title}\n1. Entra en Odisea de la Razón: ${GAME_URL}\n2. Toca «Modo aula» → «Soy estudiante».\n3. Escribe el código de clase: ${c.code}\n4. Al terminar, toca «Entregar mi tarea» y envíame el texto.`;
     this.renderSubs(k);
   },
   parseSubs(text, k) {

@@ -274,7 +274,7 @@ const Oracle = {
     $('#oe-stats').innerHTML = `<div><b>${this.correct}/10</b><span>Aciertos</span></div><div><b>${this.score.toLocaleString('es-ES')}</b><span>Sabiduría</span></div><div><b>${this.best}</b><span>Mejor racha</span></div>`;
     const sd = this.streakDays();
     $('#oe-streak').textContent = this.practice ? '' : `🔥 Racha de ${sd} ${sd === 1 ? 'día' : 'días'} · Esta semana: ${this.weekScore().toLocaleString('es-ES')} de sabiduría`;
-    $('#oe-share').value = `Oráculo de Delfos n.º ${this.number(ds)} · ${this.correct}/10${sd > 1 && !this.practice ? ` · 🔥${sd}` : ''}\n${gridStr}\n«${title}» · ${this.score.toLocaleString('es-ES')} de sabiduría\nOdisea de la Razón: ¿puedes superarme?\nhttps://claude.ai/artifact/5C4Rz4jpDYiEaEYcdbUJew`;
+    $('#oe-share').value = `Oráculo de Delfos n.º ${this.number(ds)} · ${this.correct}/10${sd > 1 && !this.practice ? ` · 🔥${sd}` : ''}\n${gridStr}\n«${title}» · ${this.score.toLocaleString('es-ES')} de sabiduría\nOdisea de la Razón: ¿puedes superarme?\n${GAME_URL}`;
     $('#b-oshare').textContent = navigator.share ? 'Compartir mi resultado' : 'Copiar resultado para compartir';
     G.prevScreen = 'title'; show('oracle-end'); refreshTitleExtras();
   },

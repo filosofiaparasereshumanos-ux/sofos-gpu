@@ -1,3 +1,6 @@
+// Dirección pública del juego: se usa en todos los textos para compartir.
+const GAME_URL = 'https://filosofiaparasereshumanos-ux.github.io/sofos-gpu/';
+
 // ============================================================================
 //  ARTE: retratos al óleo de los pensadores e ilustraciones de cada época
 //  (generados con kie.ai e incluidos en img/). Si una imagen no carga, se

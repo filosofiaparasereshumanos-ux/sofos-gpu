@@ -119,7 +119,7 @@ const QD = {
   done() {
     const L = this.last; if (!L) return;
     const cut = (t) => { t = String(t || '').replace(/\s+/g, ' '); return t.length > 150 ? t.slice(0, 147).replace(/\s\S*$/, '') + '…' : t; };
-    $('#qd-sharetext').value = `¿Qué dirían los filósofos? «${L.q}»\n\n` + L.picks.map((p) => `${p.s.short}: «${cut(L.answers[p.s.id])}»`).join('\n\n') + `\n\nPregúntales tú en Odisea de la Razón:\nhttps://claude.ai/artifact/5C4Rz4jpDYiEaEYcdbUJew`;
+    $('#qd-sharetext').value = `¿Qué dirían los filósofos? «${L.q}»\n\n` + L.picks.map((p) => `${p.s.short}: «${cut(L.answers[p.s.id])}»`).join('\n\n') + `\n\nPregúntales tú en Odisea de la Razón:\n${GAME_URL}`;
     $('#qd-share').hidden = false; $('#qd-sharebtn').textContent = navigator.share ? 'Compartir estas respuestas' : 'Copiar para compartir';
   },
   stop() { if (this.ctl) this.ctl.abort(); },
