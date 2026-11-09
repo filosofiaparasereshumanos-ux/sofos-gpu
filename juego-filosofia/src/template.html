@@ -451,6 +451,10 @@ input[type=range] { width: 100%; accent-color: var(--gold); }
 /* ---------- título: botones secundarios ---------- */
 .brand-by { display: block; margin-top: 16px; font-size: 13px; color: rgba(244,234,214,.6); text-decoration: none; letter-spacing: .3px; }
 .brand-by b { color: #e9c77a; font-weight: 500; }
+.brand-by { display: inline-flex; align-items: center; gap: 10px; }
+.brand-logo { width: 44px; height: auto; filter: drop-shadow(0 2px 6px rgba(0,0,0,.6)); }
+.load-logo { width: 86px; height: auto; margin-bottom: 14px; opacity: .92; filter: drop-shadow(0 2px 10px rgba(0,0,0,.6)); animation: logoPulse 2.4s ease-in-out infinite; }
+@keyframes logoPulse { 50% { opacity: .65; transform: scale(.97); } }
 .install-b { border-color: rgba(233,199,122,.7) !important; color: #e9c77a !important; }
 .cuenta .ct-txt { text-align: center; margin: 6px 0 12px; line-height: 1.45; }
 .cuenta .ct-or { text-align: center; opacity: .7; font-style: italic; margin: 14px 0 6px; font-size: 15px; }
@@ -649,7 +653,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="mini-b login-b" id="b-login" hidden>Mi cuenta</button>
         <button class="mini-b install-b" id="b-install" hidden>Instalar app</button>
       </div>
-      <a class="brand-by" href="https://filosofiaparasereshumanos.com" target="_blank" rel="noopener">Una propuesta de <b>Filosofía para Seres Humanos</b></a>
+      <a class="brand-by" href="https://filosofiaparasereshumanos.com" target="_blank" rel="noopener"><img class="brand-logo" src="img/logo-fpsh.png" alt="" width="44" height="62">Una propuesta de <b>Filosofía para Seres Humanos</b></a>
 
     </div>
   </section>
@@ -1049,7 +1053,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
   </section>
 
   <div id="fade"></div>
-  <div id="loading"><div>PREPARANDO EL ÁGORA…<div class="err" id="load-err"></div></div></div>
+  <div id="loading"><div><img class="load-logo" src="img/logo-fpsh.png" alt="Filosofía para Seres Humanos" width="86" height="122"><br>PREPARANDO EL ÁGORA…<div class="err" id="load-err"></div></div></div>
 </div>
 
 <script type="importmap">
