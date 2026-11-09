@@ -1531,6 +1531,10 @@ function setEraBackdrop(el, i) {
   const im = new Image(); im.onload = () => { el.style.setProperty('--era-img', `url("${im.src}")`); el.classList.add('has-art'); }; im.src = ART.era(i);
 }
 
+// ---- src/00d-place-art.js ----
+// Pinturas de los lugares agrupadas por época (lo genera tools/place-sheets.py): id -> [época, fila, filas]
+const PLACE_ART = {"mileto":[0,0,5],"dorico":[0,1,5],"mitos":[0,2,5],"didima":[0,3,5],"polis_jonia":[0,4,5],"partenon":[1,0,12],"agora":[1,1,12],"stoa":[1,2,12],"democracia":[1,3,12],"polis":[1,4,12],"teatro":[1,5,12],"gimnasio":[1,6,12],"banquete":[1,7,12],"esparta":[1,8,12],"olimpia":[1,9,12],"akademos":[1,10,12],"delfos":[1,11,12],"alejandro":[2,0,7],"alejandria":[2,1,7],"jardin":[2,2,7],"arco":[2,3,7],"tinaja":[2,4,7],"corinto":[2,5,7],"faro":[2,6,7],"roseton":[3,0,5],"gotico":[3,1,5],"universidad":[3,2,5],"toledo":[3,3,5],"scriptorium":[3,4,5],"cupula":[4,0,6],"perspectiva":[4,1,6],"ospedale":[4,2,6],"imprenta":[4,3,6],"copernico":[4,4,6],"taller":[4,5,6],"newton":[5,0,5],"enciclopedia":[5,1,5],"telescopio":[5,2,5],"derechos":[5,3,5],"salon":[5,4,5],"fabrica":[6,0,6],"ferrocarril":[6,1,6],"cristal":[6,2,6],"caminante":[6,3,6],"darwin":[6,4,6],"barricadas":[6,5,6],"relatividad":[7,0,6],"guerras":[7,1,6],"luna":[7,2,6],"flore":[7,3,6],"derechos48":[7,4,6],"internet":[7,5,6],"tenochtitlan":[8,0,6],"machupicchu":[8,1,6],"valladolid":[8,2,6],"independencias":[8,3,6],"muralismo":[8,4,6],"mistral":[8,5,6],"templomayor":[9,0,5],"calmecac":[9,1,5],"piedrasol":[9,2,5],"chinampas":[9,3,5],"tlatelolco":[9,4,5],"cusco":[10,0,5],"qhapaqnan":[10,1,5],"sacsayhuaman":[10,2,5],"moray":[10,3,5],"quipus":[10,4,5],"ruka":[11,0,5],"rewe":[11,1,5],"pewen":[11,2,5],"wetripantu":[11,3,5],"quilin":[11,4,5],"muralla":[12,0,5],"seda":[12,1,5],"inventos":[12,2,5],"examenes":[12,3,5],"jardinletrado":[12,4,5],"indo":[13,0,5],"nalanda":[13,1,5],"cero":[13,2,5],"ashoka":[13,3,5],"ganges":[13,4,5],"guiza":[14,0,5],"tombuctu":[14,1,5],"aksum":[14,2,5],"zimbabue":[14,3,5],"robben":[14,4,5],"zigurat":[15,0,5],"edubba":[15,1,5],"liraur":[15,2,5],"murallas":[15,3,5],"estela":[15,4,5],"casasabiduria":[16,0,3],"algebra":[16,1,3],"milnoches":[16,2,3]};
+
 // ---- src/01-data.js ----
 // ============================================================================
 //  DATOS: etapas, filósofos, preguntas y conceptos
@@ -10088,8 +10092,15 @@ const Places = {
     $('#pl-era').textContent = `${ERAS[world.idx].num} · ${ERAS[world.idx].name}`;
     $('#pl-name').textContent = poi.name; $('#pl-text').textContent = poi.text; $('#pl-fact').textContent = poi.fact;
     // pintura del lugar (si existe): se muestra solo cuando ha cargado
-    { const art = $('#pl-art'); art.hidden = true; art.dataset.pid = poi.id; const im = new Image();
-      im.onload = () => { if (art.dataset.pid !== poi.id) return; art.style.backgroundImage = `url(${im.src})`; art.hidden = false; }; im.src = ART.place ? ART.place(poi.id) : 'img/l-' + poi.id + '.jpg'; }
+    { const art = $('#pl-art'); art.hidden = true; art.dataset.pid = poi.id; const at = typeof PLACE_ART !== 'undefined' && PLACE_ART[poi.id];
+      if (at) { const im = new Image(); const [era, row, rows] = at;
+        im.onload = () => {
+          if (art.dataset.pid !== poi.id) return; art.style.backgroundImage = `url(${im.src})`; art.hidden = false;
+          // una fila de la hoja (16:9) llena el recuadro como «cover», sin deformarse
+          const bw = art.clientWidth, bh = art.clientHeight; const tw = Math.max(bw, (bh * 16) / 9), th = (tw * 9) / 16;
+          art.style.backgroundSize = `${tw}px ${th * rows}px`; art.style.backgroundPosition = `${(bw - tw) / 2}px ${-row * th + (bh - th) / 2}px`;
+        };
+        im.src = 'img/lugares-' + era + '.jpg'; } }
     const first = !this.found().has(poi.id);
     $('#pl-rew').textContent = first ? '+1 fragmento de sabiduría · +50 de sabiduría' : 'Ya lo habías descubierto';
     $('#place').hidden = false; Lesson.duck && Lesson.duck(true); Voice.say(poi.name + '. ' + poi.text, null);

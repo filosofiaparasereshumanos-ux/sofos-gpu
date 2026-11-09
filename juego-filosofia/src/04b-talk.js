@@ -206,8 +206,15 @@ const Places = {
     $('#pl-era').textContent = `${ERAS[world.idx].num} · ${ERAS[world.idx].name}`;
     $('#pl-name').textContent = poi.name; $('#pl-text').textContent = poi.text; $('#pl-fact').textContent = poi.fact;
     // pintura del lugar (si existe): se muestra solo cuando ha cargado
-    { const art = $('#pl-art'); art.hidden = true; art.dataset.pid = poi.id; const im = new Image();
-      im.onload = () => { if (art.dataset.pid !== poi.id) return; art.style.backgroundImage = `url(${im.src})`; art.hidden = false; }; im.src = ART.place ? ART.place(poi.id) : 'img/l-' + poi.id + '.jpg'; }
+    { const art = $('#pl-art'); art.hidden = true; art.dataset.pid = poi.id; const at = typeof PLACE_ART !== 'undefined' && PLACE_ART[poi.id];
+      if (at) { const im = new Image(); const [era, row, rows] = at;
+        im.onload = () => {
+          if (art.dataset.pid !== poi.id) return; art.style.backgroundImage = `url(${im.src})`; art.hidden = false;
+          // una fila de la hoja (16:9) llena el recuadro como «cover», sin deformarse
+          const bw = art.clientWidth, bh = art.clientHeight; const tw = Math.max(bw, (bh * 16) / 9), th = (tw * 9) / 16;
+          art.style.backgroundSize = `${tw}px ${th * rows}px`; art.style.backgroundPosition = `${(bw - tw) / 2}px ${-row * th + (bh - th) / 2}px`;
+        };
+        im.src = 'img/lugares-' + era + '.jpg'; } }
     const first = !this.found().has(poi.id);
     $('#pl-rew').textContent = first ? '+1 fragmento de sabiduría · +50 de sabiduría' : 'Ya lo habías descubierto';
     $('#place').hidden = false; Lesson.duck && Lesson.duck(true); Voice.say(poi.name + '. ' + poi.text, null);
