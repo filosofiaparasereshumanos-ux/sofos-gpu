@@ -240,6 +240,20 @@ kbd { font-family: var(--display); font-size: 0.78em; border: 1px solid var(--li
 .nb-checks input { margin-right: 8px; accent-color: #d6a84a; }
 .nb-msg { color: #ffb0a0; min-height: 1.2em; margin: 6px 0 0; font-size: 0.95rem; }
 .cu-list { display: grid; gap: 10px; max-height: 52vh; overflow: auto; text-align: left; }
+.cu-list-in { display: grid; gap: 10px; }
+.mp { border: 1px solid var(--gold); border-radius: 12px; padding: 12px 14px; background: rgba(214,168,74,0.08); }
+.mp-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+.mp-head b { font-family: var(--display); font-weight: normal; color: var(--gold); letter-spacing: 0.06em; }
+.mp-head span { font-size: 0.85rem; opacity: 0.75; }
+.mp-row { margin: 10px 0 0; }
+.mp-row.off { opacity: 0.55; }
+.mp-q { font-size: 0.98rem; margin-bottom: 4px; }
+.mp-bar { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 8px; align-items: center; font-size: 0.78rem; line-height: 1.15; }
+.mp-l { text-align: right; opacity: 0.85; } .mp-r { text-align: left; opacity: 0.85; }
+.mp-track { position: relative; height: 6px; border-radius: 3px; background: linear-gradient(90deg, #6aa8d8, #e8d8b0 50%, #d88a5a); }
+.mp-track i { position: absolute; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #fff6dc; box-shadow: 0 0 0 2px var(--gold), 0 0 10px rgba(255,211,106,0.7); }
+.mp-hint { font-size: 0.8rem; opacity: 0.8; margin-top: 3px; font-style: italic; }
+.mp-af { margin: 12px 0 0; font-size: 0.98rem; color: #ffe0a0; line-height: 1.4; }
 .cu-item { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: rgba(214,168,74,0.05); }
 .cu-item b { font-family: var(--display); letter-spacing: 0.06em; color: var(--gold); font-weight: normal; }
 .cu-item p { margin: 4px 0 0; line-height: 1.4; }
@@ -709,7 +723,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <div class="tip"><b>Impulso</b><kbd>C</kbd> o <kbd>Ctrl</kbd>: un salto rápido en la dirección en que te mueves. Durante un instante eres invulnerable: úsalo para esquivar embestidas y proyectiles.</div>
         <div class="tip"><b>Descubrir</b>Los rombos dorados marcan lugares: el Partenón, el ágora, la Biblioteca de Alejandría… Cada uno te cuenta su historia y te da un fragmento de sabiduría.</div>
         <div class="tip"><b>Debates</b>Desafía a un filósofo desde la conversación. Responde con clic o con <kbd>1</kbd>–<kbd>4</kbd>. Acertar quiebra su convicción; fallar daña tu razón.</div>
-        <div class="tip"><b>Diálogos y cuaderno</b>En Atenas, Protágoras, Sócrates y Platón te proponen una idea: toma postura, da tu mejor razón y responde a su objeción. No hay una respuesta única: cuenta la calidad de tus razones. Y en el <em>Cuaderno</em> puedes escribir tu respuesta a la pregunta de cada pensador.</div>
+        <div class="tip"><b>Diálogos y cuaderno</b>En Atenas, Protágoras, Sócrates y Platón te proponen una idea: toma postura, da tu mejor razón y responde a su objeción. No hay una respuesta única: cuenta la calidad de tus razones. Y en el <em>Cuaderno</em> puedes escribir tu respuesta a la pregunta de cada pensador, y ver tu <em>mapa filosófico</em>: dónde te sitúas en seis grandes preguntas y con qué pensadores coincides.</div>
         <div class="tip"><b>Experimentos mentales</b>Busca las puertas que brillan junto a algunos pensadores: la caverna de Platón, el anillo de Giges y el barco de Teseo en Atenas, la habitación de Descartes, la roca de Sísifo, el río de Heráclito, el sueño de la mariposa de Zhuangzi y la escalera de Wittgenstein. Dentro, acércate a lo que brilla y pulsa <em>E</em> (o toca la pantalla) para decidir qué harías.</div>
         <div class="tip"><b>Comodines</b>Los fragmentos que ganas descubriendo lugares sirven en los debates: <em>Mayéutica</em> elimina dos respuestas falsas; <em>Clepsidra</em> añade diez segundos.</div>
         <div class="tip"><b>El camino</b>Cada época es una vía recta: los pensadores te esperan uno tras otro, en orden. Al vencer a cada uno se abre la puerta de luz hacia el siguiente. El marcador dorado y la barra de arriba te guían; tócalo (o pulsa <kbd>E</kbd>) para caminar solo hasta él.</div>
@@ -846,7 +860,10 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <h2 class="era-name">✎ El cuaderno del filósofo</h2>
       <p class="era-meta">Tus posturas en los diálogos y tus respuestas a las preguntas de cada pensador.</p>
       <hr class="rule">
-      <div id="cu-list" class="cu-list"></div>
+      <div class="cu-list">
+        <div id="cu-mapa" class="mp"></div>
+        <div id="cu-list" class="cu-list-in"></div>
+      </div>
       <div class="btns">
         <button class="btn primary" id="cu-copy">Copiar para enviar a mi docente</button>
         <button class="btn" id="cu-dl">Descargar (.txt)</button>

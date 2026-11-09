@@ -41,6 +41,7 @@ const Cuaderno = {
   text() {
     const name = (typeof Fame !== 'undefined' && Fame.alias()) || (typeof Cuenta !== 'undefined' && Cuenta.ses && Cuenta.ses.usuario) || '';
     const out = [`CUADERNO DEL FILÓSOFO · Odisea de la Razón${name ? ' · ' + name : ''}`, new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }), ''];
+    if (typeof Mapa !== 'undefined') out.push(Mapa.text());
     const ps = Object.values(this.posturas());
     if (ps.length) { out.push('— DIÁLOGOS —'); for (const p of ps) out.push(`${p.who}: «${p.tesis}»`, `  Mi postura: ${p.postura}`, `  Mi razón (${this.qual(p.rk)}): ${p.razon}`, `  Ante la objeción respondí (${this.qual(p.xk)}): ${p.resp}`, ''); }
     const xs = Object.values(this.experiencias());
@@ -51,6 +52,7 @@ const Cuaderno = {
     return out.join('\n');
   },
   render() {
+    if (typeof Mapa !== 'undefined') Mapa.render($('#cu-mapa'));
     const box = $('#cu-list'); box.innerHTML = '';
     const ps = Object.values(this.posturas()); const es = Object.values(this.all()).sort((a, b) => b.at - a.at);
     $('#cu-count').textContent = `${es.length} ${es.length === 1 ? 'respuesta' : 'respuestas'} · ${ps.length} ${ps.length === 1 ? 'diálogo' : 'diálogos'}`;

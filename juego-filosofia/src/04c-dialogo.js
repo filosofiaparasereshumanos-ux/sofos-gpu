@@ -55,6 +55,7 @@ Object.assign(Talk, {
     const g = this.dlg; const all = store.get(POSTURA_KEY, {}) || {}; const prev = all[this.data.id];
     all[this.data.id] = { who: this.data.name, tesis: g.D.tesis, postura: g.p.t, eje: g.p.eje, razon: g.razon.t, rk: g.razon.k, rf: g.razon.f || '', resp: g.resp.t, xk: g.resp.k, xf: g.resp.f || '', pts: g.pts, ok, t: Date.now(), n: (prev ? prev.n : 0) + 1 };
     store.set(POSTURA_KEY, all);
+    if (typeof MAPA_DIALOGO !== 'undefined' && MAPA_DIALOGO[this.data.id]) mapaAviso(MAPA_DIALOGO[this.data.id].eje);
   },
   dlgWin() {
     const s = this.sage; const g = this.dlg; this.close(true); $('#tk-quest').innerHTML = '';

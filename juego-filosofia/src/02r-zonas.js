@@ -10,6 +10,7 @@ const ZONES = [];
 function xpRecord(id, who, eleccion) {
   const all = store.get(XP_KEY, {}) || {}; const e = all[id] || { who, el: [] };
   e.el = [...(e.el || []), eleccion].slice(-10); e.at = Date.now(); all[id] = e; store.set(XP_KEY, all);
+  if (typeof MAPA_REGLAS !== 'undefined') { const r = MAPA_REGLAS.find(([rid, pre]) => rid === id && String(eleccion).startsWith(pre)); if (r) mapaAviso(r[2]); }
 }
 // ---------- tarjeta de decisión
 const XP = {

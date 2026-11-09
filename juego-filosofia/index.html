@@ -259,6 +259,20 @@ kbd { font-family: var(--display); font-size: 0.78em; border: 1px solid var(--li
 .nb-checks input { margin-right: 8px; accent-color: #d6a84a; }
 .nb-msg { color: #ffb0a0; min-height: 1.2em; margin: 6px 0 0; font-size: 0.95rem; }
 .cu-list { display: grid; gap: 10px; max-height: 52vh; overflow: auto; text-align: left; }
+.cu-list-in { display: grid; gap: 10px; }
+.mp { border: 1px solid var(--gold); border-radius: 12px; padding: 12px 14px; background: rgba(214,168,74,0.08); }
+.mp-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+.mp-head b { font-family: var(--display); font-weight: normal; color: var(--gold); letter-spacing: 0.06em; }
+.mp-head span { font-size: 0.85rem; opacity: 0.75; }
+.mp-row { margin: 10px 0 0; }
+.mp-row.off { opacity: 0.55; }
+.mp-q { font-size: 0.98rem; margin-bottom: 4px; }
+.mp-bar { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 8px; align-items: center; font-size: 0.78rem; line-height: 1.15; }
+.mp-l { text-align: right; opacity: 0.85; } .mp-r { text-align: left; opacity: 0.85; }
+.mp-track { position: relative; height: 6px; border-radius: 3px; background: linear-gradient(90deg, #6aa8d8, #e8d8b0 50%, #d88a5a); }
+.mp-track i { position: absolute; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #fff6dc; box-shadow: 0 0 0 2px var(--gold), 0 0 10px rgba(255,211,106,0.7); }
+.mp-hint { font-size: 0.8rem; opacity: 0.8; margin-top: 3px; font-style: italic; }
+.mp-af { margin: 12px 0 0; font-size: 0.98rem; color: #ffe0a0; line-height: 1.4; }
 .cu-item { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: rgba(214,168,74,0.05); }
 .cu-item b { font-family: var(--display); letter-spacing: 0.06em; color: var(--gold); font-weight: normal; }
 .cu-item p { margin: 4px 0 0; line-height: 1.4; }
@@ -730,7 +744,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <div class="tip"><b>Impulso</b><kbd>C</kbd> o <kbd>Ctrl</kbd>: un salto rápido en la dirección en que te mueves. Durante un instante eres invulnerable: úsalo para esquivar embestidas y proyectiles.</div>
         <div class="tip"><b>Descubrir</b>Los rombos dorados marcan lugares: el Partenón, el ágora, la Biblioteca de Alejandría… Cada uno te cuenta su historia y te da un fragmento de sabiduría.</div>
         <div class="tip"><b>Debates</b>Desafía a un filósofo desde la conversación. Responde con clic o con <kbd>1</kbd>–<kbd>4</kbd>. Acertar quiebra su convicción; fallar daña tu razón.</div>
-        <div class="tip"><b>Diálogos y cuaderno</b>En Atenas, Protágoras, Sócrates y Platón te proponen una idea: toma postura, da tu mejor razón y responde a su objeción. No hay una respuesta única: cuenta la calidad de tus razones. Y en el <em>Cuaderno</em> puedes escribir tu respuesta a la pregunta de cada pensador.</div>
+        <div class="tip"><b>Diálogos y cuaderno</b>En Atenas, Protágoras, Sócrates y Platón te proponen una idea: toma postura, da tu mejor razón y responde a su objeción. No hay una respuesta única: cuenta la calidad de tus razones. Y en el <em>Cuaderno</em> puedes escribir tu respuesta a la pregunta de cada pensador, y ver tu <em>mapa filosófico</em>: dónde te sitúas en seis grandes preguntas y con qué pensadores coincides.</div>
         <div class="tip"><b>Experimentos mentales</b>Busca las puertas que brillan junto a algunos pensadores: la caverna de Platón, el anillo de Giges y el barco de Teseo en Atenas, la habitación de Descartes, la roca de Sísifo, el río de Heráclito, el sueño de la mariposa de Zhuangzi y la escalera de Wittgenstein. Dentro, acércate a lo que brilla y pulsa <em>E</em> (o toca la pantalla) para decidir qué harías.</div>
         <div class="tip"><b>Comodines</b>Los fragmentos que ganas descubriendo lugares sirven en los debates: <em>Mayéutica</em> elimina dos respuestas falsas; <em>Clepsidra</em> añade diez segundos.</div>
         <div class="tip"><b>El camino</b>Cada época es una vía recta: los pensadores te esperan uno tras otro, en orden. Al vencer a cada uno se abre la puerta de luz hacia el siguiente. El marcador dorado y la barra de arriba te guían; tócalo (o pulsa <kbd>E</kbd>) para caminar solo hasta él.</div>
@@ -867,7 +881,10 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <h2 class="era-name">✎ El cuaderno del filósofo</h2>
       <p class="era-meta">Tus posturas en los diálogos y tus respuestas a las preguntas de cada pensador.</p>
       <hr class="rule">
-      <div id="cu-list" class="cu-list"></div>
+      <div class="cu-list">
+        <div id="cu-mapa" class="mp"></div>
+        <div id="cu-list" class="cu-list-in"></div>
+      </div>
       <div class="btns">
         <button class="btn primary" id="cu-copy">Copiar para enviar a mi docente</button>
         <button class="btn" id="cu-dl">Descargar (.txt)</button>
@@ -8606,6 +8623,7 @@ const ZONES = [];
 function xpRecord(id, who, eleccion) {
   const all = store.get(XP_KEY, {}) || {}; const e = all[id] || { who, el: [] };
   e.el = [...(e.el || []), eleccion].slice(-10); e.at = Date.now(); all[id] = e; store.set(XP_KEY, all);
+  if (typeof MAPA_REGLAS !== 'undefined') { const r = MAPA_REGLAS.find(([rid, pre]) => rid === id && String(eleccion).startsWith(pre)); if (r) mapaAviso(r[2]); }
 }
 // ---------- tarjeta de decisión
 const XP = {
@@ -11747,6 +11765,7 @@ Object.assign(Talk, {
     const g = this.dlg; const all = store.get(POSTURA_KEY, {}) || {}; const prev = all[this.data.id];
     all[this.data.id] = { who: this.data.name, tesis: g.D.tesis, postura: g.p.t, eje: g.p.eje, razon: g.razon.t, rk: g.razon.k, rf: g.razon.f || '', resp: g.resp.t, xk: g.resp.k, xf: g.resp.f || '', pts: g.pts, ok, t: Date.now(), n: (prev ? prev.n : 0) + 1 };
     store.set(POSTURA_KEY, all);
+    if (typeof MAPA_DIALOGO !== 'undefined' && MAPA_DIALOGO[this.data.id]) mapaAviso(MAPA_DIALOGO[this.data.id].eje);
   },
   dlgWin() {
     const s = this.sage; const g = this.dlg; this.close(true); $('#tk-quest').innerHTML = '';
@@ -12884,6 +12903,7 @@ const Cuaderno = {
   text() {
     const name = (typeof Fame !== 'undefined' && Fame.alias()) || (typeof Cuenta !== 'undefined' && Cuenta.ses && Cuenta.ses.usuario) || '';
     const out = [`CUADERNO DEL FILÓSOFO · Odisea de la Razón${name ? ' · ' + name : ''}`, new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }), ''];
+    if (typeof Mapa !== 'undefined') out.push(Mapa.text());
     const ps = Object.values(this.posturas());
     if (ps.length) { out.push('— DIÁLOGOS —'); for (const p of ps) out.push(`${p.who}: «${p.tesis}»`, `  Mi postura: ${p.postura}`, `  Mi razón (${this.qual(p.rk)}): ${p.razon}`, `  Ante la objeción respondí (${this.qual(p.xk)}): ${p.resp}`, ''); }
     const xs = Object.values(this.experiencias());
@@ -12894,6 +12914,7 @@ const Cuaderno = {
     return out.join('\n');
   },
   render() {
+    if (typeof Mapa !== 'undefined') Mapa.render($('#cu-mapa'));
     const box = $('#cu-list'); box.innerHTML = '';
     const ps = Object.values(this.posturas()); const es = Object.values(this.all()).sort((a, b) => b.at - a.at);
     $('#cu-count').textContent = `${es.length} ${es.length === 1 ? 'respuesta' : 'respuestas'} · ${ps.length} ${ps.length === 1 ? 'diálogo' : 'diálogos'}`;
@@ -12914,6 +12935,81 @@ $('#nb-t').addEventListener('keydown', (e) => e.stopPropagation());
 on('#b-cuaderno', () => { openSub('cuaderno'); Cuaderno.render(); });
 on('#cu-copy', () => shareOrCopy(Cuaderno.text(), $('#cu-copy')));
 on('#cu-dl', () => Cuaderno.download());
+
+// ---- src/06h-mapa.js ----
+// ============================================================================
+//  MAPA FILOSÓFICO: con las posturas de los diálogos y las elecciones de los
+//  experimentos, el jugador ve dónde se sitúa en seis grandes preguntas y con
+//  qué pensadores coincide o discute. No hay posturas correctas.
+// ============================================================================
+const MAPA_EJES = [
+  { id: 'verdad', q: '¿Hay verdades para todos?', neg: 'Cada uno tiene su verdad', pos: 'Hay verdades para todos', a: ['protagoras', 'nietzsche'], b: ['platon', 'kant'], hint: 'Dialoga con Protágoras en Atenas' },
+  { id: 'conocer', q: '¿Cómo conocemos?', neg: 'Por los sentidos y la experiencia', pos: 'Por la razón', a: ['aristoteles', 'hume', 'locke'], b: ['platon', 'descartes', 'spinoza'], hint: 'Dialoga con Platón o entra en la habitación de Descartes' },
+  { id: 'cambio', q: '¿Todo cambia?', neg: 'Todo fluye', pos: 'Algo permanece', a: ['heraclito', 'zhuangzi', 'buda'], b: ['parmenides', 'aristoteles', 'platon'], hint: 'Entra en el río de Heráclito o en el barco de Teseo' },
+  { id: 'justicia', q: '¿Por qué ser justos?', neg: 'Por miedo o conveniencia', pos: 'Porque vale por sí misma', a: ['maquiavelo', 'epicuro'], b: ['socrates', 'platon', 'kant'], hint: 'Ponte el anillo de Giges en Atenas' },
+  { id: 'mal', q: '¿De dónde nace el mal?', neg: 'De la ignorancia', pos: 'De la voluntad', a: ['socrates', 'buda'], b: ['agustin', 'aristoteles', 'arendt'], hint: 'Dialoga con Sócrates en Atenas' },
+  { id: 'sentido', q: '¿Dónde está el sentido de la vida?', neg: 'Hay que encontrarlo fuera', pos: 'Lo creamos al vivir', a: ['platon', 'agustin', 'tomas'], b: ['camus', 'sartre', 'beauvoir'], hint: 'Empuja la roca de Sísifo' },
+];
+// [experiencia, comienzo de la elección registrada, eje, valor]
+const MAPA_REGLAS = [
+  ['rio', 'No: el agua siempre es otra', 'cambio', -1], ['rio', 'Sí: el cauce', 'cambio', 1], ['rio', 'Tampoco yo', 'cambio', -1],
+  ['teseo', '¿Cuál es el verdadero? El de tablas nuevas', 'cambio', 1], ['teseo', '¿Cuál es el verdadero? El de tablas viejas', 'cambio', 1], ['teseo', '¿Cuál es el verdadero? Los dos', 'cambio', -0.5],
+  ['mariposa', 'Todas las cosas se transforman', 'cambio', -1], ['mariposa', 'Soy Zhuangzi', 'conocer', 0.5], ['mariposa', 'Soy una mariposa', 'conocer', -0.5],
+  ['descartes', 'Llegué al cogito', 'conocer', 1],
+  ['giges', 'La bolsa: Tomarla', 'justicia', -1], ['giges', 'La bolsa: Dejarla', 'justicia', 1], ['giges', 'La bolsa: Avisar', 'justicia', 1],
+  ['giges', 'El palacio: Gobernar', 'justicia', -0.5], ['giges', 'El palacio: No entrar', 'justicia', 0.5],
+  ['sisifo', 'No: un trabajo sin sentido', 'sentido', -1], ['sisifo', 'Sí, si acepta', 'sentido', 1], ['sisifo', 'Solo si se rebela', 'sentido', 1],
+  ['escalera', 'Hay cosas que solo se muestran', 'sentido', -0.5],
+];
+const MAPA_DIALOGO = { protagoras: { eje: 'verdad', relativo: -1, universal: 1, matiz: 0 }, platon: { eje: 'conocer', experiencia: -1, razon: 1, matiz: 0 }, socrates: { eje: 'mal', saber: -1, voluntad: 1, matiz: 0 } };
+const Mapa = {
+  calc() {
+    const acc = {}; const add = (e, v) => { (acc[e] = acc[e] || []).push(v); };
+    const ps = store.get(POSTURA_KEY, {}) || {};
+    for (const [id, p] of Object.entries(ps)) { const m = MAPA_DIALOGO[id]; if (m && p.eje in m) add(m.eje, m[p.eje]); }
+    const xs = store.get(XP_KEY, {}) || {};
+    for (const [id, x] of Object.entries(xs)) for (const el of x.el || []) for (const [rid, pre, e, v] of MAPA_REGLAS) if (rid === id && String(el).startsWith(pre)) add(e, v);
+    return MAPA_EJES.map((e) => { const v = acc[e.id]; return { ...e, n: v ? v.length : 0, v: v ? Math.max(-1, Math.min(1, v.reduce((a, b) => a + b, 0) / v.length)) : null }; });
+  },
+  sages() { const m = {}; for (const e of ERAS) for (const s of e.sages) m[s.id] = s; return m; },
+  afinidades(ejes) {
+    const sc = {};
+    for (const e of ejes) { if (e.v === null || Math.abs(e.v) < 0.35) continue; const [mine, other] = e.v < 0 ? [e.a, e.b] : [e.b, e.a];
+      for (const id of mine) sc[id] = (sc[id] || 0) + Math.abs(e.v); for (const id of other) sc[id] = (sc[id] || 0) - Math.abs(e.v); }
+    const S = this.sages(); const list = Object.entries(sc).filter(([id]) => S[id]).sort((a, b) => b[1] - a[1]);
+    return { con: list.filter(([, v]) => v > 0).slice(0, 3).map(([id]) => S[id]), contra: list.filter(([, v]) => v < 0).slice(-3).reverse().map(([id]) => S[id]) };
+  },
+  render(box) {
+    const ejes = this.calc(); const done = ejes.filter((e) => e.v !== null).length;
+    box.innerHTML = '';
+    const h = document.createElement('div'); h.className = 'mp-head'; h.innerHTML = `<b>Tu mapa filosófico</b><span>${done} de ${ejes.length} preguntas</span>`; box.appendChild(h);
+    for (const e of ejes) {
+      const row = document.createElement('div'); row.className = 'mp-row' + (e.v === null ? ' off' : '');
+      const q = document.createElement('div'); q.className = 'mp-q'; q.textContent = e.q; row.appendChild(q);
+      const bar = document.createElement('div'); bar.className = 'mp-bar';
+      const l = document.createElement('span'); l.className = 'mp-l'; l.textContent = e.neg; const r = document.createElement('span'); r.className = 'mp-r'; r.textContent = e.pos;
+      const track = document.createElement('div'); track.className = 'mp-track';
+      if (e.v !== null) { const dot = document.createElement('i'); dot.style.left = `${6 + ((e.v + 1) / 2) * 88}%`; track.appendChild(dot); }
+      bar.append(l, track, r); row.appendChild(bar);
+      if (e.v === null) { const hn = document.createElement('div'); hn.className = 'mp-hint'; hn.textContent = 'Aún sin postura · ' + e.hint; row.appendChild(hn); }
+      box.appendChild(row);
+    }
+    const af = this.afinidades(ejes);
+    const p = document.createElement('p'); p.className = 'mp-af';
+    if (af.con.length) p.textContent = `Piensas parecido a ${af.con.map((s) => s.short).join(', ')}.${af.contra.length ? ` Te desafían ${af.contra.map((s) => s.short).join(', ')}: vale la pena escucharlos.` : ''}`;
+    else p.textContent = 'Toma postura en los diálogos de Atenas y en los experimentos jugables para descubrir con qué pensadores coincides.';
+    box.appendChild(p);
+  },
+  text() {
+    const ejes = this.calc(); const out = ['— MI MAPA FILOSÓFICO —'];
+    for (const e of ejes) out.push(`${e.q} ${e.v === null ? '(sin postura)' : e.v < -0.3 ? e.neg : e.v > 0.3 ? e.pos : 'En un punto intermedio'}`);
+    const af = this.afinidades(ejes); if (af.con.length) out.push(`Pienso parecido a: ${af.con.map((s) => s.short).join(', ')}`); if (af.contra.length) out.push(`Me desafían: ${af.contra.map((s) => s.short).join(', ')}`);
+    return out.join('\n') + '\n';
+  },
+};
+// aviso discreto cuando una decisión mueve el mapa (una vez por eje y sesión)
+const MAPA_AVISO = new Set();
+function mapaAviso(eje) { if (!eje || MAPA_AVISO.has(eje)) return; MAPA_AVISO.add(eje); const e = MAPA_EJES.find((x) => x.id === eje); if (e && typeof toast === 'function') setTimeout(() => toast(`🧭 Tu mapa filosófico cambió: «${e.q}». Míralo en el Cuaderno.`), 1200); }
 
 </script>
 </body>
