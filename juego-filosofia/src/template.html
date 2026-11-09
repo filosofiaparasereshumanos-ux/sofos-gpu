@@ -468,6 +468,10 @@ input[type=range] { width: 100%; accent-color: var(--gold); }
 .mini-b { font-family: var(--display); letter-spacing: 0.12em; font-size: 0.78rem; text-transform: uppercase; padding: 8px 12px; background: rgba(13,12,18,0.45); border: 1px solid rgba(214,168,74,0.22); color: var(--parchment); cursor: pointer; }
 .mini-b:hover { border-color: var(--gold); }
 .oracle-btn { position: relative; }
+.rt-label { display: block; margin: 14px 0 6px; font-size: 0.9rem; opacity: 0.8; }
+.rt-name { width: 100%; box-sizing: border-box; padding: 11px 14px; border-radius: 10px; border: 1px solid rgba(233,199,122,0.45); background: rgba(0,0,0,0.35); color: inherit; font: inherit; font-size: 1.05rem; }
+.rt-list { list-style: none; margin: 6px 0 0; padding: 0; font-size: 0.95rem; opacity: 0.9; text-align: center; }
+.rt-list li { padding: 2px 0; }
 .oracle-btn.fresh::after { content: "Nuevo"; position: absolute; top: -9px; right: -8px; font-family: var(--body); font-size: 0.72rem; letter-spacing: 0.04em; text-transform: none; background: var(--wrong); color: #fff; padding: 2px 8px; border-radius: 10px; animation: pulse 1.4s infinite; }
 /* ---------- oráculo ---------- */
 .grid-emoji { font-size: clamp(1.6rem, 7vw, 2.3rem); letter-spacing: 0.08em; margin: 14px 0 0; line-height: 1.2; }
@@ -638,6 +642,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <div class="timeline" id="t-timeline"></div>
       <div class="btns">
         <button class="btn primary oracle-btn" id="b-oracle">Oráculo de hoy<small id="b-oracle-s">10 preguntas · las mismas para todos</small></button>
+        <button class="btn reto-btn" id="b-reto">Reta a un amigo<small>Las mismas 10 preguntas · gana quien sepa más</small></button>
         <button class="btn" id="b-continue" hidden>Continuar la odisea<small id="b-continue-s"></small></button>
         <button class="btn" id="b-new">Nueva odisea<small>Nueve épocas · 44 pensadoras y pensadores</small></button>
         <button class="btn qd-btn" id="b-qd" hidden>¿Qué diría…?<small>Pregunta lo que quieras a varios pensadores a la vez</small></button>
@@ -800,6 +805,22 @@ body.touch .gm.boss { width: 30px; height: 30px; }
     </div>
   </section>
 
+  <section id="reto" class="screen dim" hidden>
+    <div class="panel">
+      <div class="eyebrow" id="rt-eye">Reto entre amigos</div>
+      <h2 class="era-name" id="rt-title">Reta a un amigo</h2>
+      <hr class="rule">
+      <p class="story" id="rt-text"></p>
+      <label class="rt-label" for="rt-name">Tu nombre en el reto</label>
+      <input id="rt-name" class="rt-name" maxlength="22" autocomplete="nickname" placeholder="Escribe tu nombre o apodo">
+      <div id="rt-hist" hidden></div>
+      <div class="btns">
+        <button class="btn primary" id="b-rtgo">Empezar mi reto</button>
+        <button class="btn ghost" data-back>Volver</button>
+      </div>
+    </div>
+  </section>
+
   <section id="oracle-end" class="screen dim" hidden>
     <div class="panel">
       <div class="eyebrow" id="oe-eye">El oráculo ha hablado</div>
@@ -812,6 +833,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <div class="btns">
         <button class="btn primary" id="b-oshare">Copiar resultado para compartir</button>
         <button class="btn" id="b-oqd" hidden>¿Qué dirían los filósofos de la pregunta de hoy?</button>
+        <button class="btn" id="b-oreto" hidden>Crear un reto nuevo</button>
         <button class="btn" id="b-ofame2">Salón de la Fama</button>
         <button class="btn ghost" id="b-omenu">Volver al menú</button>
       </div>

@@ -1113,7 +1113,7 @@ function updateEpojeHud() {
 // ============================================================================
 //  FLUJO DE PANTALLAS
 // ============================================================================
-const SCREENS = ['cuenta', 'aula', 'qd', 'travel', 'title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept', 'oracle', 'oracle-end', 'fame', 'logros'];
+const SCREENS = ['reto', 'cuenta', 'aula', 'qd', 'travel', 'title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept', 'oracle', 'oracle-end', 'fame', 'logros'];
 function show(id) { SCREENS.forEach((s) => ($('#' + s).hidden = s !== id)); if (id) { const b = $('#' + id).querySelector('.btn.primary, .btn'); if (b && !IS_TOUCH) setTimeout(() => b.focus({ preventScroll: true }), 30); } }
 function hideAll() { SCREENS.forEach((s) => ($('#' + s).hidden = true)); }
 
@@ -1349,6 +1349,7 @@ const MOTES = [
   { c: 0xffe0b0, up: 0.05, g: 0, i: 1.3, s: 0.11 },
   { c: 0xffd890, up: 0.04, g: 0, i: 1.6, s: 0.1 },
   { c: 0xffc0d8, up: 0, g: 0.18, i: 1.3, s: 0.13 }, { c: 0xd8f0ff, up: 0.06, g: 0, i: 1.8, s: 0.09 },
+  { c: 0xffb8cc, up: 0, g: 0.22, i: 1.4, s: 0.15 },
 ];
 let moteAcc = 0;
 function ambientMotes(dt) {

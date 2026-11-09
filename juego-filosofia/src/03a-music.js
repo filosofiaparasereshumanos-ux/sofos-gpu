@@ -43,6 +43,8 @@ const SONGS = [
   { bpm: 72, root: 53, scale: [0, 2, 4, 6, 7, 9, 11], prog: [0, 3, 5, 4], pad: 'warm', arp: 'lyre', arpPat: [0, 2, 4, 2, 1, 3, 2, 1], lead: 'flute', kit: 'none', seed: 201 },
   // XIX · Taller de los científicos: pulso de clave, curioso
   { bpm: 96, root: 48, scale: [0, 2, 4, 5, 7, 9, 11], prog: [0, 4, 5, 3], pad: 'organ', arp: 'lute', arpPat: [0, 1, 2, 3, 2, 1, 0, 1], lead: 'flute', kit: 'frame', seed: 211 },
+  // XX · Japón del zen: koto y shakuhachi, escala in
+  { bpm: 66, root: 50, scale: [0, 1, 5, 7, 8, 12, 13], prog: [0, 3, 4, 0], pad: 'warm', arp: 'lyre', arpPat: [0, 2, 4, 2, 1, 3, 4, 2], lead: 'flute', kit: 'none', seed: 221 },
 ];
 // volumen de cada capa según el modo
 const MIX = {

@@ -199,7 +199,7 @@ const Oracle = {
     this.qs = picks.map(({ s, ei }) => { const q = s.q[Math.floor(r() * s.q.length)]; const opts = shuffle(q.a.map((t, k) => ({ t, ok: k === 0 })), r); return { s, ei, q, opts }; });
   },
   open() {
-    G.prevScreen = 'title'; const ds = this.today(); const done = store.get(DAILY_KEY, {})[ds];
+    this.duel = null; G.prevScreen = 'title'; const ds = this.today(); const done = store.get(DAILY_KEY, {})[ds];
     $('#o-date').textContent = `Oráculo n.º ${this.number(ds)} · ${this.label(ds)}`;
     const sd = this.streakDays();
     $('#o-week').innerHTML = this.last7().map(({ ds: d, r }) => `<span class="${r ? 'on' : ''}${d === ds ? ' today' : ''}" title="${d}"><i>${r ? (r.correct >= 8 ? '★' : '✓') : ''}</i><small>${['L', 'M', 'X', 'J', 'V', 'S', 'D'][(new Date(d.replace(/-/g, '/')).getDay() + 6) % 7]}</small></span>`).join('');
@@ -215,8 +215,8 @@ const Oracle = {
     show('oracle');
   },
   start() {
-    const ds = this.today(); this.practice = !!store.get(DAILY_KEY, {})[ds];
-    this.build(ds); this.i = 0; this.score = 0; this.streak = 0; this.best = 0; this.grid = []; this.correct = 0;
+    const ds = this.today(); this.practice = !!this.duel || !!store.get(DAILY_KEY, {})[ds];
+    this.build(this.duel ? 'reto-' + this.duel.s : ds); this.i = 0; this.score = 0; this.streak = 0; this.best = 0; this.grid = []; this.correct = 0;
     hideAll(); G.state = 'oracle'; Audio.mode = 'duel';
     const d = $('#duel'); d.classList.add('oracle'); d.hidden = false;
     $('#duel .conv .lbl').textContent = 'Oráculo';
@@ -288,6 +288,8 @@ const Oracle = {
     const ds = this.today(); const gridStr = this.grid.join('');
     $('#duel').hidden = true; $('#duel').classList.remove('oracle'); $('#duel .conv .lbl').textContent = 'Convicción';
     G.state = 'title'; Audio.mode = 'calm'; Audio.victory(); Music.sting('victory');
+    if (this.duel && typeof Reto !== 'undefined') { Reto.finish({ correct: this.correct, score: this.score, grid: gridStr, best: this.best }); refreshTitleExtras(); return; }
+    $('#b-oreto').hidden = true;
     const [title, msg] = this.verdict();
     const res = { date: ds, score: this.score, correct: this.correct, grid: gridStr, streak: this.best };
     if (!this.practice) { const all = store.get(DAILY_KEY, {}); all[ds] = res; store.set(DAILY_KEY, all); Fame.submitDaily(res); Stats.add('oracles'); }
@@ -330,4 +332,4 @@ on('#b-logros', () => { openSub('logros'); renderLogros(); });
 // ============================================================================
 //  ARRANQUE
 // ============================================================================
-boot().then(() => { refreshTitleExtras(); Fame.init(); });
+boot().then(() => { refreshTitleExtras(); Fame.init(); if (typeof Reto !== 'undefined') Reto.boot(); });
