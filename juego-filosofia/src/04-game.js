@@ -1127,7 +1127,7 @@ function updateEpojeHud() {
 // ============================================================================
 //  FLUJO DE PANTALLAS
 // ============================================================================
-const SCREENS = ['reto', 'cuenta', 'aula', 'qd', 'travel', 'title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept', 'oracle', 'oracle-end', 'fame', 'logros'];
+const SCREENS = ['cuaderno', 'reto', 'cuenta', 'aula', 'qd', 'travel', 'title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept', 'oracle', 'oracle-end', 'fame', 'logros'];
 function show(id) { SCREENS.forEach((s) => ($('#' + s).hidden = s !== id)); if (id) { const b = $('#' + id).querySelector('.btn.primary, .btn'); if (b && !IS_TOUCH) setTimeout(() => b.focus({ preventScroll: true }), 30); } }
 function hideAll() { SCREENS.forEach((s) => ($('#' + s).hidden = true)); }
 

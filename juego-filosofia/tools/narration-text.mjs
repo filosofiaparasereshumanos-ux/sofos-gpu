@@ -5,11 +5,11 @@ import vm from 'node:vm';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const files = ['src/01-data.js', 'src/01a-lessons.js', 'src/01c-contemporanea.js', 'src/01d-pensadoras.js', 'src/01e-latinoamerica.js', 'src/01f-mundo.js', 'src/01g-sumer.js', 'src/01h-islam.js', 'src/01i-poetas.js', 'src/01j-ciencia.js', 'src/01k-japon.js', 'src/01l-vikingos.js', 'src/02b-places.js', 'src/02c-polis.js', 'src/02d-narration.js', 'src/02e-books.js', 'src/02f-contemporanea.js', 'src/02g-latinoamerica.js', 'src/02h-mundo.js', 'src/02i-sumer.js', 'src/02j-islam.js', 'src/02k-poetas.js', 'src/02l-ciencia.js', 'src/02n-japon.js', 'src/02o-vikingos.js', 'src/02z-guia.js'];
+const files = ['src/01-data.js', 'src/01a-lessons.js', 'src/01c-contemporanea.js', 'src/01d-pensadoras.js', 'src/01e-latinoamerica.js', 'src/01f-mundo.js', 'src/01g-sumer.js', 'src/01h-islam.js', 'src/01i-poetas.js', 'src/01j-ciencia.js', 'src/01k-japon.js', 'src/01l-vikingos.js', 'src/02b-places.js', 'src/02c-polis.js', 'src/02d-narration.js', 'src/02e-books.js', 'src/02f-contemporanea.js', 'src/02g-latinoamerica.js', 'src/02h-mundo.js', 'src/02i-sumer.js', 'src/02j-islam.js', 'src/02k-poetas.js', 'src/02l-ciencia.js', 'src/02n-japon.js', 'src/02o-vikingos.js', 'src/02p-dialogos.js', 'src/02z-guia.js'];
 const code = files.map((f) => readFileSync(join(root, f), 'utf8')).join('\n') +
-  '\n;globalThis.__out = { ERAS, LESSONS, POIS, NPCS, sageSpeech, NPC_GENERIC, NARR_GENERIC, narrSplit, narrHash, SAGE_VOICE, BOOKS, bookPartText };';
+  '\n;globalThis.__out = { ERAS, LESSONS, POIS, NPCS, sageSpeech, NPC_GENERIC, NARR_GENERIC, narrSplit, narrHash, SAGE_VOICE, BOOKS, bookPartText, DIALOGOS };';
 const ctx = { console }; vm.createContext(ctx); vm.runInContext(code, ctx);
-const { ERAS, LESSONS, POIS, NPCS, sageSpeech, NPC_GENERIC, NARR_GENERIC, narrSplit, SAGE_VOICE, BOOKS, bookPartText } = ctx.__out;
+const { ERAS, LESSONS, POIS, NPCS, sageSpeech, NPC_GENERIC, NARR_GENERIC, narrSplit, SAGE_VOICE, BOOKS, bookPartText, DIALOGOS } = ctx.__out;
 const packs = [];
 const pack = (name, voice, pitch, speaker, texts) => {
   const seen = new Set(); const sentences = [];
@@ -22,6 +22,12 @@ ERAS.forEach((era) => era.sages.forEach((d) => {
   const lesson = new Set((LESSONS[d.id] || []).flatMap(narrSplit));
   pack('p-' + d.id, v.voice, v.pitch, d.id, sageSpeech(d).flatMap(narrSplit).filter((s) => !lesson.has(s)));
 }));
+// diálogos socráticos (frases fijas: deben coincidir con src/04c-dialogo.js)
+const DLG_FIXED = ['Te propongo una idea, para que la examinemos juntos.', 'Interesante. ¿Por qué lo piensas? Dame tu mejor razón.', 'Has dialogado de verdad: has tomado postura, has dado razones y has respondido a la objeción.', 'Pero todavía no me has dado razones firmes. Pensémoslo otra vez, sin prisa.'];
+for (const [id, D] of Object.entries(DIALOGOS)) {
+  const d = ERAS.flatMap((e) => e.sages).find((x) => x.id === id); const v = SAGE_VOICE(d);
+  pack('d-' + id, v.voice, v.pitch, id, [...DLG_FIXED, `${DLG_FIXED[0]} «${D.tesis}» ¿Qué piensas tú?`, ...D.posturas.flatMap((p) => [p.objecion, p.cierre])]);
+}
 POIS.forEach((list, i) => pack('n-' + i, 'carlfm', 1, 'narr', [...list.flatMap((p) => [p.name + '. ' + p.text, p.text + ' ' + p.fact]), ...(i === 0 ? NARR_GENERIC : [])]));
 NPCS.forEach((list, i) => list.forEach((n) => {
   const v = n.id.startsWith('guia') ? { voice: 'carlfm', pitch: 0.93 } : n.female ? { voice: 'carlfm', pitch: 1.12 } : { voice: 'carlfm', pitch: [1.08, 0.97, 1.14, 1.02][n.id.length % 4] };

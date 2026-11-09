@@ -5,6 +5,8 @@ const ACH_KEY = 'odisea-razon.logros', STATS_KEY = 'odisea-razon.stats', ALIAS_K
 const ACH = [
   { id: 'primer', i: 'Α', n: 'Primer diálogo', d: 'Vence a tu primer filósofo en un duelo.' },
   { id: 'tabano', i: 'Σ', n: 'El tábano', d: 'Vence a Sócrates en su propio terreno.' },
+  { id: 'dialogo', i: '⇄', n: 'Diálogo socrático', d: 'Supera un diálogo dando buenas razones y respondiendo a una objeción.' },
+  { id: 'cuaderno', i: '✎', n: 'Cuaderno del filósofo', d: 'Escribe tu primera respuesta en el cuaderno.' },
   { id: 'caverna', i: 'Π', n: 'Fuera de la caverna', d: 'Vence a Platón y mira el sol.' },
   { id: 'perfecto', i: 'Μ', n: 'Mayéutica perfecta', d: 'Gana un duelo sin fallar ninguna pregunta.' },
   { id: 'veloz', i: 'Ν', n: 'Intuición intelectual', d: 'Acierta una pregunta en menos de 3 segundos.' },

@@ -226,6 +226,24 @@ kbd { font-family: var(--display); font-size: 0.78em; border: 1px solid var(--li
 .tk-quest { list-style: none; margin: 10px 0 0; padding: 10px 12px; border: 1px dashed rgba(240,184,90,0.5); border-radius: 10px; font-size: 0.95rem; color: var(--parchment-dim); }
 .tk-quest li { margin: 3px 0; }
 .tk-quest li.ok { color: #bfe6a8; }
+.tk-quest li.bad { color: #ffb0a0; }
+.tk-quest li.meh { color: #e8d8b0; }
+.tk-op.dlg { text-align: left; border-radius: 12px; width: 100%; }
+.nb { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; padding: 16px; background: rgba(8,6,4,0.72); }
+.nb-card { width: min(620px, 100%); max-height: calc(100vh - 32px); overflow: auto; background: #1a140c; border: 1px solid var(--gold); border-radius: 14px; padding: 18px 18px 14px; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+.nb-q { font-size: 1.15rem; margin: 10px 0 12px; color: var(--parchment); line-height: 1.4; }
+#nb-t { width: 100%; box-sizing: border-box; min-height: 140px; padding: 12px; border-radius: 10px; border: 1px solid rgba(233,199,122,0.45); background: rgba(0,0,0,0.35); color: inherit; font: inherit; font-size: 1.05rem; line-height: 1.45; resize: vertical; }
+.nb-checks { display: grid; gap: 6px; margin: 10px 0 0; font-size: 0.98rem; }
+.nb-checks input { margin-right: 8px; accent-color: #d6a84a; }
+.nb-msg { color: #ffb0a0; min-height: 1.2em; margin: 6px 0 0; font-size: 0.95rem; }
+.cu-list { display: grid; gap: 10px; max-height: 52vh; overflow: auto; text-align: left; }
+.cu-item { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: rgba(214,168,74,0.05); }
+.cu-item b { font-family: var(--display); letter-spacing: 0.06em; color: var(--gold); font-weight: normal; }
+.cu-item p { margin: 4px 0 0; line-height: 1.4; }
+.cu-item p.cq { font-style: italic; opacity: 0.85; }
+.cu-item p.ctxt { white-space: pre-wrap; }
+.cu-item p.cchk { font-size: 0.88rem; opacity: 0.75; }
+.cu-item p.cok { color: #bfe6a8; } .cu-item p.cbad { color: #ffb0a0; } .cu-item p.cmeh { color: #e8d8b0; }
 .tk-quest li b { color: var(--gold-bright); font-weight: 600; }
 #lesson.quiz .ls-text, #lesson.quiz .ls-bar { display: none; }
 #lesson .lesson-card { max-height: 100%; overflow-y: auto; }
@@ -664,6 +682,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="mini-b" id="b-fame">Salón de la Fama</button>
         <button class="mini-b" id="b-logros">Logros <span id="b-logros-n"></span></button>
         <button class="mini-b" id="b-codex">Códice</button>
+        <button class="mini-b" id="b-cuaderno">Cuaderno</button>
         <button class="mini-b" id="b-howto">Cómo jugar</button>
         <button class="mini-b" id="b-settings">Ajustes</button>
         <button class="mini-b" id="b-fs" hidden>Pantalla completa</button>
@@ -687,6 +706,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <div class="tip"><b>Impulso</b><kbd>C</kbd> o <kbd>Ctrl</kbd>: un salto rápido en la dirección en que te mueves. Durante un instante eres invulnerable: úsalo para esquivar embestidas y proyectiles.</div>
         <div class="tip"><b>Descubrir</b>Los rombos dorados marcan lugares: el Partenón, el ágora, la Biblioteca de Alejandría… Cada uno te cuenta su historia y te da un fragmento de sabiduría.</div>
         <div class="tip"><b>Debates</b>Desafía a un filósofo desde la conversación. Responde con clic o con <kbd>1</kbd>–<kbd>4</kbd>. Acertar quiebra su convicción; fallar daña tu razón.</div>
+        <div class="tip"><b>Diálogos y cuaderno</b>En Atenas, Protágoras, Sócrates y Platón te proponen una idea: toma postura, da tu mejor razón y responde a su objeción. No hay una respuesta única: cuenta la calidad de tus razones. Y en el <em>Cuaderno</em> puedes escribir tu respuesta a la pregunta de cada pensador.</div>
         <div class="tip"><b>Comodines</b>Los fragmentos que ganas descubriendo lugares sirven en los debates: <em>Mayéutica</em> elimina dos respuestas falsas; <em>Clepsidra</em> añade diez segundos.</div>
         <div class="tip"><b>El camino</b>Cada época es una vía recta: los pensadores te esperan uno tras otro, en orden. Al vencer a cada uno se abre la puerta de luz hacia el siguiente. El marcador dorado y la barra de arriba te guían; tócalo (o pulsa <kbd>E</kbd>) para caminar solo hasta él.</div>
       </div>
@@ -811,6 +831,21 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <div class="btns">
         <button class="btn primary" id="b-ostart">Consultar al oráculo</button>
         <button class="btn" id="b-ofame">Ver el Salón de la Fama</button>
+        <button class="btn ghost" data-back>Volver</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="cuaderno" class="screen dim" hidden>
+    <div class="panel" style="width:min(680px,100%)">
+      <div class="eyebrow" id="cu-count"></div>
+      <h2 class="era-name">✎ El cuaderno del filósofo</h2>
+      <p class="era-meta">Tus posturas en los diálogos y tus respuestas a las preguntas de cada pensador.</p>
+      <hr class="rule">
+      <div id="cu-list" class="cu-list"></div>
+      <div class="btns">
+        <button class="btn primary" id="cu-copy">Copiar para enviar a mi docente</button>
+        <button class="btn" id="cu-dl">Descargar (.txt)</button>
         <button class="btn ghost" data-back>Volver</button>
       </div>
     </div>
@@ -1087,6 +1122,20 @@ body.touch .gm.boss { width: 30px; height: 30px; }
     </div>
   </section>
 
+  <div id="nb" class="nb" hidden>
+    <div class="nb-card">
+      <div class="eyebrow">📓 Cuaderno del filósofo · <span id="nb-who"></span></div>
+      <p class="nb-q" id="nb-q"></p>
+      <textarea id="nb-t" rows="6" maxlength="3000" placeholder="Escribe tu respuesta con tus palabras. No hay respuestas correctas: lo que importa son tus razones."></textarea>
+      <div class="nb-checks">
+        <label><input type="checkbox" id="nb-r"> Di al menos una razón</label>
+        <label><input type="checkbox" id="nb-e"> Puse un ejemplo</label>
+        <label><input type="checkbox" id="nb-o"> Pensé en una objeción a mi idea</label>
+      </div>
+      <p class="nb-msg" id="nb-msg"></p>
+      <div class="btns"><button class="btn primary" id="nb-save">Guardar en mi cuaderno</button><button class="btn ghost" id="nb-cancel">Cancelar</button></div>
+    </div>
+  </div>
   <div id="fade"></div>
   <div id="loading"><div><img class="load-logo" src="img/logo-fpsh.png" alt="Filosofía para Seres Humanos" width="86" height="122"><br>PREPARANDO EL ÁGORA…<div class="err" id="load-err"></div></div></div>
 </div>

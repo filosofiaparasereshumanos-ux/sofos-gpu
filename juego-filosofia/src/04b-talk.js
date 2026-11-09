@@ -93,6 +93,7 @@ const Talk = {
     const q = this.quest(); const qDone = !q || questDone(d.id);
     if (s.state === 'idle' && q && !qDone) ops.push(['Tu encargo', () => this.showQuest(), 'quest']);
     // el debate está siempre a mano: es el corazón del juego (el encargo es opcional y da puntos)
+    if (this.hasDialogo && this.hasDialogo() && s.state !== 'sealed') ops.push([s.state === 'idle' ? 'Dialoguemos: ¿qué piensas tú?' : 'Volvamos a dialogar', () => this.dialogo(), 'duel']);
     if (s.state === 'idle') ops.push([s.boss ? 'Te desafío: soy digno de ti' : 'Te desafío a un debate', () => { this.close(true); Duel.start(s); }, 'duel']);
     else if (s.state === 'sealed') ops.push(['Te desafío a un debate', () => this.say(`Aún no, viajero. Debate primero con los demás pensadores de esta época; cuando los hayas convencido a todos, te estaré esperando.`), 'duel']);
     ops.push(['¿Quién eres?', () => this.say(parts[0] || d.intro)]);
@@ -100,6 +101,7 @@ const Talk = {
     ops.push([this.part < parts.length ? 'Cuéntame más' : 'Vuelve a empezar', () => { if (this.part >= parts.length) this.part = 1; this.say(parts[this.part++] || ''); this.options(); }]);
     if (an.length) ops.push(['Una anécdota', () => { this.say(an[this.anec++ % an.length]); }]);
     ops.push(['Escuchar tu lección completa', () => { this.close(true); Lesson.open(d, s); }]);
+    if (typeof Cuaderno !== 'undefined') ops.push(['📓 Escribir en mi cuaderno', () => Cuaderno.open(d)]);
     if (AI.fn !== null && AI.ok) ops.push(['Preguntarte lo que quiera', () => this.openAsk(), 'ai']);
     ops.push(['Adiós', () => this.close(), 'bye']);
     this.renderOps(ops);
