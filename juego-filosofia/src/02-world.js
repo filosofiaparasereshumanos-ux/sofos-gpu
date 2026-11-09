@@ -77,6 +77,11 @@ const THEMES = [
     hemi: [0xffd8b0, 0x7a5a3a, 0.72], fog: [0xe8b080, 0.0078], exposure: 1.12, stars: false,
     accent: 0xffb020, enemy: { col: 0xffb020, core: 0x201404, shell: 'cube' }, lampCol: 0xffc070,
   },
+  { // XVI · Sumer: atardecer de polvo dorado entre dos ríos
+    sky: [0x2a3a6a, 0xffc890, 0x8a6a4a], sunDir: [0.45, 0.18, -0.85], sunCol: 0xffc070, sunInt: 2.5, sunDisk: 0xffa850,
+    hemi: [0xffe0b8, 0x8a6a48, 0.74], fog: [0xe8c098, 0.0072], exposure: 1.1, stars: false,
+    accent: 0x4aa8d8, enemy: { col: 0x4aa8d8, core: 0x081a28, shell: 'cube' }, lampCol: 0xffc878,
+  },
 ];
 
 const ARENA = { x0: -24, x1: 24, z0: -47, z1: 37 };
@@ -1068,6 +1073,52 @@ const ERA_BUILDERS = [
     const pyr = std(0xd8b080, { roughness: 1, flat: true });
     for (const [x, z, s] of [[-60, -170, 40], [-20, -190, 48], [20, -175, 30]]) { const p = mesh(new THREE.ConeGeometry(s, s * 1.2, 4), pyr, x, s * 0.6 - 4, z, false, false); p.rotation.y = Math.PI / 4; W.group.add(p); }
     { const k = new THREE.Group(); k.position.set(120, -4, -200); k.add(mesh(new THREE.ConeGeometry(90, 70, 9), std(0x6a5a5a, { roughness: 1, flat: true }), 0, 35, 0, false, false)); k.add(mesh(new THREE.CylinderGeometry(15, 30, 12, 9), std(0xf4f0f8, { roughness: 0.8, flat: true }), 0, 66, 0, false, false)); W.group.add(k); }
+    brazier(W, -4, -34, 0xff8a30); brazier(W, 4, -34, 0xff8a30);
+  },
+  // ------------------------------------------------------------------ XVI · Sumer
+  function (W) {
+    const fl = texTiles('xvi', 0xc8a070, 0x8a6a48, 6, 0.22); fl.repeat.set(14, 22);
+    ground(W, fl, [80, 120], 0.95);
+    const r = mulberry32(116);
+    const brick = std(0xffffff, { map: texTiles('xvib', 0xb88a5a, 0x7a5a3a, 8, 0.25), roughness: 1 });
+    const mud = std(0xb8905e, { roughness: 1 }); const blueGlaze = std(0x2a6ab0, { roughness: 0.4, metalness: 0.1 });
+    const water = new THREE.MeshStandardMaterial({ color: 0x3a7a8a, roughness: 0.08, metalness: 0.45, emissive: 0x0a3040, emissiveIntensity: 0.35 });
+    const reed = std(0x9a9a4a, { roughness: 0.9, flat: true }); const trunk = std(0x7a5a3a, { roughness: 1 }); const frond = std(0x5a8a3a, { roughness: 0.85, flat: true });
+    const palm = (x, z, h) => { const g = new THREE.Group(); g.position.set(x, 0, z);
+      for (let k = 0; k < 6; k++) g.add(mesh(new THREE.CylinderGeometry(0.22 - k * 0.015, 0.26 - k * 0.015, h / 6, 7), trunk, Math.sin(k * 0.5) * 0.15, h / 12 + (k * h) / 6, 0, false, false));
+      for (let k = 0; k < 8; k++) { const a = (k / 8) * TAU; const f = mesh(new THREE.ConeGeometry(0.35, 3.2, 4), frond, Math.cos(a) * 1.2, h + 0.2, Math.sin(a) * 1.2, false, false); f.rotation.set(Math.sin(a) * 1.2, 0, -Math.cos(a) * 1.2); f.scale.set(1, 1, 0.25); g.add(f); }
+      g.add(mesh(new THREE.SphereGeometry(0.35, 8, 6), std(0xa8602a, { roughness: 0.8 }), 0, h - 0.2, 0, false, false)); W.group.add(g); W.colliders.push({ t: 1, x, z, r: 0.35, h }); };
+    // canales del Éufrates con juncos y palmeras datileras
+    for (const side of [-1, 1]) {
+      const wt = mesh(new THREE.PlaneGeometry(3.4, 84), water, side * 20.6, 0.05, -5, false, true); wt.rotation.x = -Math.PI / 2; W.group.add(wt);
+      W.colliders.push({ t: 0, x0: side > 0 ? 18.9 : -22.3, x1: side > 0 ? 22.3 : -18.9, z0: -47, z1: 37, h: 3 });
+      for (let z = -44; z < 36; z += 1.6) for (let k = 0; k < 2; k++) { const x = side * (18.7 + r() * 0.5 + k * 3.3); if (r() < 0.35) continue; const c = mesh(new THREE.ConeGeometry(0.06, 1.4 + r() * 1.2, 4), reed, x, 0.7, z + r(), false, false); c.rotation.z = (r() - 0.5) * 0.3; W.group.add(c); }
+      for (let z = -40; z < 34; z += 9) { const x = side * (16.4 + r() * 0.8), zz = z + r() * 3; if (!W._near(x, zz, 1.5)) palm(x, zz, 5 + r() * 2.5); }
+      // muros de adobe con contrafuertes y franja de ladrillo vidriado
+      W.group.add(mesh(new THREE.BoxGeometry(1.6, 6.5, 84), brick, side * 24, 3.25, -5)); W.colliders.push({ t: 0, x0: side * 24 - 0.9, x1: side * 24 + 0.9, z0: -47, z1: 37, h: 7 });
+      W.group.add(mesh(new THREE.BoxGeometry(1.7, 0.6, 84), blueGlaze, side * 24, 5.2, -5, false, false));
+      for (let z = -44; z < 36; z += 3.5) W.group.add(mesh(new THREE.BoxGeometry(0.9, 7, 1.2), brick, side * 23.3, 3.5, z, false, false));
+    }
+    // casas de junco en arco (mudhif) entre las palmeras
+    const mat = std(0xc8b07a, { roughness: 1 });
+    for (const [x, z] of [[-11, 33], [11, 33], [-12, -36], [12, -36]]) { if (W._near(x, z, 2.5)) continue; const g = new THREE.Group(); g.position.set(x, 0, z);
+      const hut = mesh(new THREE.CylinderGeometry(2, 2, 6, 14, 1, false, 0, Math.PI), mat, 0, 0, 0); hut.rotation.set(0, 0, Math.PI / 2); hut.rotation.y = Math.PI / 2; g.add(hut);
+      for (let k = -2; k <= 2; k++) { const a = mesh(new THREE.TorusGeometry(2.05, 0.12, 6, 16, Math.PI), trunk, 0, 0, k * 1.4, false, false); g.add(a); }
+      W.group.add(g); W.colliders.push({ t: 0, x0: x - 3, x1: x + 3, z0: z - 2.2, z1: z + 2.2, h: 2.2 }); }
+    // el gran zigurat al fondo, con escalera central y templo azul en lo alto
+    { const zg = new THREE.Group(); zg.position.set(0, 0, -95);
+      for (let k = 0; k < 3; k++) { const w2 = 64 - k * 18, d = 46 - k * 13, h = 9 - k; zg.add(mesh(new THREE.BoxGeometry(w2, h, d), brick, 0, k * 9 + h / 2, 0, false, false)); for (let j = -3; j <= 3; j++) zg.add(mesh(new THREE.BoxGeometry(1.4, h, 1), mud, j * (w2 / 7), k * 9 + h / 2, d / 2 + 0.3, false, false)); }
+      zg.add(mesh(new THREE.BoxGeometry(12, 6, 10), blueGlaze, 0, 29, 0, false, false)); zg.add(mesh(new THREE.BoxGeometry(13, 0.8, 11), std(0xd8b070), 0, 32.4, 0, false, false));
+      { const st = new THREE.Group(); st.position.set(0, 0, 23); // escalera central de tres tramos
+        for (let k = 0; k < 18; k++) st.add(mesh(new THREE.BoxGeometry(10, 1, 1.6), std(0xc89a68, { roughness: 1 }), 0, k + 0.5, 14 - k * 0.8, false, false));
+        for (const sx of [-5.6, 5.6]) for (let k = 0; k < 18; k += 3) st.add(mesh(new THREE.BoxGeometry(1.2, 3.2, 2.4), mud, sx, k + 1.6, 14 - k * 0.8, false, false));
+        zg.add(st); }
+      W.group.add(zg); }
+    // llanura y montañas lejanas de Zagros
+    const mtn = std(0x8a6a5a, { roughness: 1, flat: true });
+    for (const [x, z, h, s] of [[-150, -230, 60, 70], [-60, -260, 45, 60], [90, -250, 55, 80], [180, -220, 40, 60]]) W.group.add(mesh(new THREE.ConeGeometry(s, h, 7), mtn, x, h / 2 - 3, z, false, false));
+    // braseros en la vía procesional
+    for (const [x, z] of [[-5, 24], [5, 24], [-5, -6], [5, -6]]) { if (!W._near(x, z, 0.3)) brazier(W, x, z, 0xff9a40, false); }
     brazier(W, -4, -34, 0xff8a30); brazier(W, 4, -34, 0xff8a30);
   },
 ];
