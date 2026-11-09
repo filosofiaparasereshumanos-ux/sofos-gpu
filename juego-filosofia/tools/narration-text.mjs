@@ -5,7 +5,7 @@ import vm from 'node:vm';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const files = ['src/01-data.js', 'src/01a-lessons.js', 'src/01c-contemporanea.js', 'src/01d-pensadoras.js', 'src/01e-latinoamerica.js', 'src/01f-mundo.js', 'src/02b-places.js', 'src/02c-polis.js', 'src/02d-narration.js', 'src/02e-books.js', 'src/02f-contemporanea.js', 'src/02g-latinoamerica.js', 'src/02h-mundo.js'];
+const files = ['src/01-data.js', 'src/01a-lessons.js', 'src/01c-contemporanea.js', 'src/01d-pensadoras.js', 'src/01e-latinoamerica.js', 'src/01f-mundo.js', 'src/02b-places.js', 'src/02c-polis.js', 'src/02d-narration.js', 'src/02e-books.js', 'src/02f-contemporanea.js', 'src/02g-latinoamerica.js', 'src/02h-mundo.js', 'src/02i-guia.js'];
 const code = files.map((f) => readFileSync(join(root, f), 'utf8')).join('\n') +
   '\n;globalThis.__out = { ERAS, LESSONS, POIS, NPCS, sageSpeech, NPC_GENERIC, NARR_GENERIC, narrSplit, narrHash, SAGE_VOICE, BOOKS, bookPartText };';
 const ctx = { console }; vm.createContext(ctx); vm.runInContext(code, ctx);
@@ -24,7 +24,7 @@ ERAS.forEach((era) => era.sages.forEach((d) => {
 }));
 POIS.forEach((list, i) => pack('n-' + i, 'carlfm', 1, 'narr', [...list.flatMap((p) => [p.name + '. ' + p.text, p.text + ' ' + p.fact]), ...(i === 0 ? NARR_GENERIC : [])]));
 NPCS.forEach((list, i) => list.forEach((n) => {
-  const v = n.female ? { voice: 'carlfm', pitch: 1.12 } : { voice: 'carlfm', pitch: [1.08, 0.97, 1.14, 1.02][n.id.length % 4] };
+  const v = n.id.startsWith('guia') ? { voice: 'carlfm', pitch: 0.93 } : n.female ? { voice: 'carlfm', pitch: 1.12 } : { voice: 'carlfm', pitch: [1.08, 0.97, 1.14, 1.02][n.id.length % 4] };
   pack('c-' + n.id, v.voice, v.pitch, n.id, [...n.lines, ...NPC_GENERIC]);
 }));
 BOOKS.flat().forEach((b) => pack('b-' + b.id, 'carlfm', 1, 'narr', [...b.parts.map(bookPartText), 'Una cita para recordar. ' + b.quote]));

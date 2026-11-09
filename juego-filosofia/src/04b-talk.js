@@ -44,7 +44,7 @@ const Talk = {
   openNpc(c) {
     this.npc = c; this.data = null;
     this.begin(c);
-    const n = c.npc; setMedal($('#tk-medal'), n.portrait ? n.id : null, n.name[0]); $('#tk-name').textContent = n.name; $('#tk-meta').textContent = `${n.role[0].toUpperCase() + n.role.slice(1)} · ${ERAS[world.idx].name}`;
+    const n = c.npc; setMedal($('#tk-medal'), n.portrait === true ? n.id : n.portrait || null, n.name[0]); $('#tk-name').textContent = n.name; $('#tk-meta').textContent = `${n.role[0].toUpperCase() + n.role.slice(1)} · ${ERAS[world.idx].name}`;
     this.line = Math.min(npcHeard(n.id), n.lines.length) % n.lines.length;
     this.npcLine();
   },
@@ -92,13 +92,15 @@ const Talk = {
     const ops = [];
     const q = this.quest(); const qDone = !q || questDone(d.id);
     if (s.state === 'idle' && q && !qDone) ops.push(['Tu encargo', () => this.showQuest(), 'quest']);
+    // el debate está siempre a mano: es el corazón del juego (el encargo es opcional y da puntos)
+    if (s.state === 'idle') ops.push([s.boss ? 'Te desafío: soy digno de ti' : 'Te desafío a un debate', () => { this.close(true); Duel.start(s); }, 'duel']);
+    else if (s.state === 'sealed') ops.push(['Te desafío a un debate', () => this.say(`Aún no, viajero. Debate primero con los demás pensadores de esta época; cuando los hayas convencido a todos, te estaré esperando.`), 'duel']);
     ops.push(['¿Quién eres?', () => this.say(parts[0] || d.intro)]);
     ops.push(['¿Cuál es tu gran idea?', () => this.say(sageConceptLine(d))]);
     ops.push([this.part < parts.length ? 'Cuéntame más' : 'Vuelve a empezar', () => { if (this.part >= parts.length) this.part = 1; this.say(parts[this.part++] || ''); this.options(); }]);
     if (an.length) ops.push(['Una anécdota', () => { this.say(an[this.anec++ % an.length]); }]);
     ops.push(['Escuchar tu lección completa', () => { this.close(true); Lesson.open(d, s); }]);
     if (AI.fn !== null && AI.ok) ops.push(['Preguntarte lo que quiera', () => this.openAsk(), 'ai']);
-    if (s.state === 'idle' && qDone) ops.push([s.boss ? 'Te desafío: soy digno de ti' : 'Te desafío a un debate', () => { this.close(true); Duel.start(s); }, 'duel']);
     ops.push(['Adiós', () => this.close(), 'bye']);
     this.renderOps(ops);
   },

@@ -74,21 +74,15 @@ function buildFigure(look, accent) {
   const head = new THREE.Group(); head.position.y = 1.78; g.add(head);
   head.add(mesh(new THREE.CylinderGeometry(0.09, 0.11, 0.2, 10), skin, 0, -0.18, 0));
   const skull = mesh(new THREE.SphereGeometry(0.2, 22, 16), skin, 0, 0, 0); skull.scale.set(0.92, 1.08, 1); head.add(skull);
-  if (look.face) {
-    // cara real: una foto frontal envuelve la parte delantera de la cabeza (sustituye ojos, nariz y cejas dibujados)
-    const tex = new THREE.TextureLoader().load(look.face); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
-    const fm = new THREE.MeshStandardMaterial({ map: tex, transparent: true, roughness: 0.75, metalness: 0, depthWrite: false });
-    const fc = new THREE.Mesh(new THREE.SphereGeometry(0.207, 40, 32, Math.PI / 2 - 1.0, 2.0, 0.22, 2.54), fm);
-    fc.scale.set(0.92, 1.08, 1); fc.renderOrder = 2; head.add(fc);
-  } else {
-    put(head, mesh(new THREE.ConeGeometry(0.035, 0.1, 6), skin, 0, -0.01, 0.2)).rotation.x = Math.PI / 2;
-    const eyeM = std(0x1a1410, { roughness: 0.3 });
-    head.add(mesh(new THREE.SphereGeometry(0.022, 8, 6), eyeM, -0.07, 0.04, 0.175, false)); head.add(mesh(new THREE.SphereGeometry(0.022, 8, 6), eyeM, 0.07, 0.04, 0.175, false));
-    head.add(mesh(new THREE.BoxGeometry(0.07, 0.015, 0.02), hair, -0.07, 0.085, 0.18, false)); head.add(mesh(new THREE.BoxGeometry(0.07, 0.015, 0.02), hair, 0.07, 0.085, 0.18, false));
-  }
+  put(head, mesh(new THREE.ConeGeometry(0.035, 0.1, 6), skin, 0, -0.01, 0.2)).rotation.x = Math.PI / 2;
+  const eyeM = std(look.eyes || 0x1a1410, { roughness: 0.3 });
+  head.add(mesh(new THREE.SphereGeometry(0.022, 8, 6), eyeM, -0.07, 0.04, 0.175, false)); head.add(mesh(new THREE.SphereGeometry(0.022, 8, 6), eyeM, 0.07, 0.04, 0.175, false));
+  head.add(mesh(new THREE.BoxGeometry(0.07, 0.015, 0.02), hair, -0.07, 0.085, 0.18, false)); head.add(mesh(new THREE.BoxGeometry(0.07, 0.015, 0.02), hair, 0.07, 0.085, 0.18, false));
   if (look.beard) {
-    const b = mesh(new THREE.SphereGeometry(0.17, 16, 12, 0, TAU, Math.PI * 0.42, Math.PI * 0.58), std(look.beard, { roughness: 1 }), 0, look.face ? -0.05 : -0.02, look.face ? 0.0 : 0.05); b.scale.set(1.05, 1.5, look.face ? 1.08 : 1); head.add(b);
-    if (!look.face) head.add(mesh(new THREE.BoxGeometry(0.12, 0.025, 0.03), std(look.beard, { roughness: 1 }), 0, -0.06, 0.19, false));
+    const bt = look.beardTop || 0.42, bl = look.beardLen || 1;
+    const b = mesh(new THREE.SphereGeometry(0.17, 16, 12, 0, TAU, Math.PI * bt, Math.PI * (1 - bt)), std(look.beard, { roughness: 1 }), 0, -0.02 - (bl - 1) * 0.06, 0.05); b.scale.set(1.05, 1.5 * bl, 1); head.add(b);
+    head.add(mesh(new THREE.BoxGeometry(0.12, 0.025, 0.03), std(look.beard, { roughness: 1 }), 0, -0.06, 0.19, false));
+    if (look.beardGrey) for (const [x, y] of [[-0.06, -0.2], [0.05, -0.26], [0, -0.33], [-0.03, -0.12], [0.08, -0.15]]) head.add(mesh(new THREE.BoxGeometry(0.012, 0.09, 0.01), std(look.beardGrey, { roughness: 1 }), x, y * (look.beardLen || 1), 0.205 - Math.abs(y) * 0.25, false)); // canas
   }
   const cap = (geo, m, y = 0.04, z = -0.01) => { const c = mesh(geo, m, 0, y, z); head.add(c); return c; };
   switch (look.hat) {
@@ -107,12 +101,16 @@ function buildFigure(look, accent) {
     case 'wig': cap(new THREE.SphereGeometry(0.22, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01);
       for (const s of [-1, 1]) for (let i = 0; i < 2; i++) put(head, mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.12, 12), hair, s * 0.19, -0.02 - i * 0.1, -0.03)).rotation.z = Math.PI / 2;
       break;
-    case 'braids': // rapado a los lados, pelo arriba y trenza atrás
-      if (look.face) { const sh = mesh(new THREE.SphereGeometry(0.203, 24, 14, 0, TAU, 0, 1.3), hair, 0, 0, 0); sh.scale.set(0.95, 1.08, 1.0); head.add(sh); } // pelo bajo la foto
-      else cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.3), hair, 0.01, -0.01);
-      { const top = mesh(new THREE.SphereGeometry(0.2, 16, 10, Math.PI, Math.PI, 0, Math.PI * 0.55), hair, 0, 0.02, -0.012); top.scale.set(0.6, 1.08, 1.03); head.add(top); }
-      for (let i = 0; i < 4; i++) head.add(mesh(new THREE.SphereGeometry(0.055 - i * 0.006, 10, 8), hair, 0, 0.08 - i * 0.1, -0.2 - i * 0.015));
-      break;
+    case 'braids': { // rapado a los lados, pelo hacia atrás arriba y trenza vikinga
+      const stub = mesh(new THREE.SphereGeometry(0.205, 24, 12, Math.PI / 2 + 0.95, TAU - 1.9, 0, 1.45), std(look.stubble || 0x6a5648, { roughness: 1 }), 0, 0.005, -0.005); stub.scale.set(0.93, 1.08, 1); head.add(stub);
+      const top = mesh(new THREE.SphereGeometry(0.214, 20, 12, 0, TAU, 0, 0.95), hair, 0, 0.02, -0.012); top.scale.set(0.6, 1.08, 1.0); head.add(top);
+      const ring = std(0xb8b2a6, { metalness: 0.85, roughness: 0.3 });
+      for (let i = 0; i < 10; i++) { // trenza gruesa que baja desde la coronilla por la espalda
+        const y = 0.14 - i * 0.08, z = -0.21 - i * 0.034; // cae por fuera de la espalda
+        const s = mesh(new THREE.SphereGeometry(0.064 - i * 0.003, 10, 8), hair, (i % 2 ? 0.02 : -0.02), y, z); s.scale.set(1, 1.3, 0.9); s.rotation.x = -0.35; head.add(s);
+        if (i === 3 || i === 6) { const r = mesh(new THREE.TorusGeometry(0.055 - i * 0.002, 0.014, 6, 14), ring, 0, y - 0.04, z - 0.012); r.rotation.x = Math.PI / 2 - 0.35; head.add(r); }
+      }
+      break; }
     case 'longhair': cap(new THREE.SphereGeometry(0.215, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01);
       for (const s of [-1, 1]) { const l = mesh(new THREE.BoxGeometry(0.09, 0.42, 0.2), hair, s * 0.17, -0.14, -0.05); head.add(l); }
       break;
