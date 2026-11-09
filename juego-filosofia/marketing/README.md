@@ -1,7 +1,8 @@
 # Material para redes
 
-- **`trailer-vertical.mp4`**: tráiler de 62 s, 1080x1920 (9:16), para TikTok, Instagram Reels y YouTube Shorts. Escenas de cine realistas con voz en off de narrador, filósofos que hablan con sus propios labios, subtítulos palabra a palabra, música épica con golpes imágenes reales del juego (recorriendo los mundos, abriendo un libro, conversando y ganando un debate) y un cierre con llamada a sumarse y reto para comentar. Audio normalizado a −14 LUFS.
+- **`trailer-vertical.mp4`**: tráiler de 67 s, 1080x1920 (9:16), para TikTok, Instagram Reels y YouTube Shorts. Escenas de cine realistas con voz en off de narrador, filósofos que hablan con sus propios labios, subtítulos palabra a palabra, música épica con golpes imágenes reales del juego (recorriendo los mundos, abriendo un libro, conversando y ganando un debate) un cierre con llamada a sumarse y reto para comentar, y la firma de Filosofía para Seres Humanos con el logo y filosofiaparasereshumanos.com. Audio normalizado a −14 LUFS.
 - **`portada.jpg`** (Sócrates en la prisión) y **`portada-titulo.jpg`** (cartón final): miniaturas.
+- **`logo-filosofia-para-seres-humanos.png`**: logo recortado con fondo transparente.
 - **`escenas/`**: las siete escenas originales de 8 s con su sonido (720x1280), para recortes y publicaciones sueltas.
 - **`herramientas/`**: guiones con los que se hizo: `imgs.py` (fotogramas 9:16 con nano-banana), `veo.py` (escenas con voz con Veo 3 fast), `ui.cjs` (capturas reales del juego con Playwright) y `captura-juego.cjs` + `captura-plan.json` (graba el juego real fotograma a fotograma con un reloj virtual, a 30 fps fluidos) y `montaje.py` (edición, mezcla con *ducking*, subtítulos sincronizados con Whisper y cartón final). Las rutas apuntan a la carpeta de trabajo donde se generó: es una referencia, no un paso de compilación.
 
@@ -19,6 +20,7 @@
 | 49,9–53,5 | Ráfaga de mundos del juego (Alejandría, catedral, China, India, Atenas, ciudad) | Solo música: «15 MUNDOS · 68 PENSADORES · 1 ODISEA» |
 | 53,5–55 | Sócrates mira a cámara | «¿Te atreves a pensar?» |
 | 55–62,6 | Cartón final con botón «Únete a la odisea» y reto | «¡Odisea de la Razón! Gratis, en tu celular. Únete a la odisea.» — en pantalla: «RETO: vence a Sócrates en un debate y comenta tu puntaje ↓» |
+| 62,6–67,6 | Polvo dorado sobre negro; aparecen el logo, «Filosofía para Seres Humanos» y filosofiaparasereshumanos.com | «Una más de… Filosofía para Seres Humanos.» |
 
 Imágenes con nano-banana, escenas con voz con Veo 3 fast y música con Suno, todo en kie.ai.
 

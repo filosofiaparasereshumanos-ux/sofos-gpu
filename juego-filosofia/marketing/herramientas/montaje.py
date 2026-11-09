@@ -46,6 +46,9 @@ SCENES = [
                   (1.8, 2.4, 'gp:g6_india:16'), (2.4, 3.0, 'gp:g1_athens:26'), (3.0, 3.6, 'gp:g3_city:22')], None, 0, 0),
     ('final', 1.5, [(0, 1.5, 'vid:final')], 'final', 0, 0),
     ('endcard', 7.7, [(0, 7.7, 'end')], 'final2', 1.0, 0.95),
+    # firma: «Una más de… Filosofía para Seres Humanos» (se acorta la pausa empalmando el audio)
+    ('outro1', 1.6, [(0, 1.6, 'vidx:outro:0.55:1')], 'outro', 0.55, 0),
+    ('outro2', 3.4, [(0, 3.4, 'vidx:outro:2.15:1')], 'outro', 3.45, 0),
 ]
 GP_START = json.load(open(os.path.join(D, 'gp_start.json'))) if os.path.exists(os.path.join(D, 'gp_start.json')) else {}
 T0 = {}; t = 0.0
@@ -295,6 +298,30 @@ def end_layers():
     return L
 
 
+def outro_layers():
+    L = {}
+    im = Image.new('RGBA', (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    spaced(d, (W / 2, 330), 'UNA MÁS DE', font(F_CAPS, 44), GOLD + (255,), 14)
+    L['una'] = im
+    logo = Image.open(os.path.join(D, 'img', 'logo.png')).convert('RGBA')
+    lh = 760; logo = logo.resize((int(logo.width * lh / logo.height), lh), Image.LANCZOS)
+    glow = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    gl = Image.new('RGBA', logo.size, GOLD + (0,)); gl.putalpha(logo.getchannel('A').point(lambda v: int(v * 0.55)))
+    glow.alpha_composite(gl, ((W - logo.width) // 2, 420)); glow = glow.filter(ImageFilter.GaussianBlur(22))
+    glow.alpha_composite(logo, ((W - logo.width) // 2, 420)); L['logo'] = glow
+    im = Image.new('RGBA', (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    d.text((W / 2, 1290), 'Filosofía para Seres Humanos', font=font(F_SERIF_B, 76), fill=CREAM + (255,), anchor='mm')
+    L['name'] = im
+    im = Image.new('RGBA', (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    d.line([(W / 2 - 150, 1365), (W / 2 + 150, 1365)], fill=GOLD + (200,), width=2)
+    d.text((W / 2, 1430), 'filosofiaparasereshumanos.com', font=font(F_CAP, 50), fill=GOLD + (255,), anchor='mm')
+    L['url'] = im
+    for k in ('una', 'name', 'url'):
+        sh = L[k].getchannel('A').filter(ImageFilter.GaussianBlur(10))
+        L[k] = Image.alpha_composite(Image.merge('RGBA', (*Image.new('RGB', (W, H), (0, 0, 0)).split(), sh)), L[k])
+    return L
+
+
 def fade(t, a, b, fi=0.18, fo=0.18):
     if t < a or t > b: return 0.0
     return max(0.0, min(1.0, (t - a) / fi if fi else 1, (b - t) / fo if fo else 1))
@@ -315,8 +342,9 @@ def graphics_pass(base, audio):
     cards = [(T0[s] + a, T0[s] + b, p, n) for s, a, b, p, n in CARDS]
     E = end_layers(); tEnd = T0['endcard']; tTitle = tEnd + 0.95; tFree = tEnd + 0.95 + 2.4; tCta = tEnd + 0.95 + 4.5; tReto = tCta + 0.9
     flashes = [T0['nietzsche'] + 2.05, T0['montage'] + 0.95, T0['fly'], tEnd]
+    OL = outro_layers()
     dec = subprocess.Popen(['ffmpeg', '-loglevel', 'error', '-i', base, '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-'], stdout=subprocess.PIPE)
-    out = os.path.join(D, 'odisea-trailer-iii.mp4')
+    out = os.path.join(D, 'odisea-trailer-iv.mp4')
     enc = subprocess.Popen(['ffmpeg', '-loglevel', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{W}x{H}', '-r', str(FPS), '-i', '-',
                             '-i', audio, '-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'slow', '-crf', '21', '-maxrate', '14M', '-bufsize', '28M', '-pix_fmt', 'yuv420p',
                             '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart', '-shortest', out], stdin=subprocess.PIPE)
@@ -338,6 +366,13 @@ def graphics_pass(base, audio):
                     ui = any(a <= t < b for a, b in UI_SPANS); fly = T0['fly'] <= t < T0['final']
                     paste(fr, caption_img(ci, c, act), 30 if ui else (640 if fly else 1150), 1.0, pop)
                     break
+        elif t >= T0['outro1']:
+            to = T0['outro1']; t2 = T0['outro2']
+            paste(fr, OL['una'], 0, fade(t, to + 0.1, 99, 0.3, 1))
+            al = fade(t, t2 + 0.05, 99, 0.35, 1)
+            if al: paste(fr, OL['logo'], 0, al, 1.0 + 0.1 * max(0, 1 - (t - t2) / 0.5))
+            paste(fr, OL['name'], 0, fade(t, t2 + 0.6, 99, 0.3, 1))
+            paste(fr, OL['url'], 0, fade(t, t2 + 1.4, 99, 0.3, 1))
         else:
             al = fade(t, tTitle, 99, 0.35, 1); sc = 1.0 + 0.06 * (1 - min(1, (t - tTitle) / 0.6)) if t >= tTitle else 1
             if al: paste(fr, E['title'], 0, al, sc)
@@ -360,7 +395,7 @@ if __name__ == '__main__':
     if '--dry' in sys.argv: sys.exit()
     if '--graphics' in sys.argv: base, audio = os.path.join(OUT, 'base.mp4'), os.path.join(OUT, 'mix.wav')
     else: base = build_video(); audio = build_audio()
-    spans = json.dumps([[T0[sc[0]], T0[sc[0]] + sc[1]] for sc in SCENES if sc[3] and sc[0] != 'endcard'])
+    spans = json.dumps([[T0[sc[0]], T0[sc[0]] + sc[1]] for sc in SCENES if sc[3] and T0[sc[0]] < T0['endcard']])
     subprocess.run([os.path.join(D, '..', 'fw', 'bin', 'python'), os.path.join(D, '..', 'trseg.py'), audio, os.path.join(D, 'words_mix.json'), spans],
                    env={**os.environ, 'HF_HUB_DISABLE_XET': '1'}, stderr=subprocess.DEVNULL)
     for c in caption_chunks(): print(round(c[0][1], 2), round(c[-1], 2), ' '.join(w[0] for w in c[:-1]))
