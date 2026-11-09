@@ -218,7 +218,10 @@ const AULA = {
       const bar = document.createElement('div'); bar.className = 'mp-bar';
       const l = document.createElement('span'); l.className = 'mp-l'; l.textContent = e.neg; const r = document.createElement('span'); r.className = 'mp-r'; r.textContent = e.pos;
       const track = document.createElement('div'); track.className = 'mp-track'; const seen = {};
-      for (const p of pts) { const k = Math.round((p.v + 1) * 4); seen[k] = (seen[k] || 0) + 1; const dot = document.createElement('i'); dot.className = 'sm'; dot.title = p.n; dot.style.left = `${6 + ((p.v + 1) / 2) * 88}%`; dot.style.marginTop = `${-6 - (seen[k] - 1) * 9}px`; dot.addEventListener('click', () => toast(p.n)); track.appendChild(dot); }
+      for (const p of pts) { const k = Math.round((p.v + 1) * 4); (seen[k] = seen[k] || []).push(p.n); }
+      for (const [k, names] of Object.entries(seen)) { const n = names.length, sz = Math.round(14 + 7 * Math.sqrt(n - 1)); const dot = document.createElement('i'); dot.className = 'grp';
+        dot.style.left = `${6 + (k / 8) * 88}%`; dot.style.width = dot.style.height = sz + 'px'; dot.style.margin = `${-sz / 2}px 0 0 ${-sz / 2}px`; if (n > 1) dot.textContent = n;
+        dot.title = names.join(', '); dot.addEventListener('click', () => toast(names.join(', '))); track.appendChild(dot); }
       bar.append(l, track, r); row.appendChild(bar);
       const neg = pts.filter((p) => p.v < -0.3).length, pos = pts.filter((p) => p.v > 0.3).length, mid = pts.length - neg - pos;
       const sm = document.createElement('div'); sm.className = 'mp-hint'; sm.textContent = pts.length ? `${neg} · ${e.neg}  |  ${mid} · intermedio  |  ${pos} · ${e.pos}` : 'Nadie ha tomado postura todavía'; row.appendChild(sm);

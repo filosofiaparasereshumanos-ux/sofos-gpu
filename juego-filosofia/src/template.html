@@ -252,9 +252,10 @@ kbd { font-family: var(--display); font-size: 0.78em; border: 1px solid var(--li
 .mp-l { text-align: right; opacity: 0.85; } .mp-r { text-align: left; opacity: 0.85; }
 .mp-track { position: relative; height: 6px; border-radius: 3px; background: linear-gradient(90deg, #6aa8d8, #e8d8b0 50%, #d88a5a); }
 .mp-track i { position: absolute; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #fff6dc; box-shadow: 0 0 0 2px var(--gold), 0 0 10px rgba(255,211,106,0.7); }
-.mp-track i.sm { width: 11px; height: 11px; margin-left: -5px; box-shadow: 0 0 0 1.5px var(--gold); }
+.mp-track i.grp { display: grid; place-items: center; font-style: normal; font-size: 0.72rem; font-weight: 700; color: #3a2a10; cursor: pointer; }
+.au-mp { max-width: min(100%, calc(100vw - 40px)); box-sizing: border-box; overflow: hidden; }
 .au-mp { margin-top: 14px; text-align: left; }
-.au-mp .mp-row { margin-top: 18px; }
+.au-mp .mp-row { margin-top: 14px; }
 .mp-hint { font-size: 0.8rem; opacity: 0.8; margin-top: 3px; font-style: italic; }
 .mp-af { margin: 12px 0 0; font-size: 0.98rem; color: #ffe0a0; line-height: 1.4; }
 .cu-item { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: rgba(214,168,74,0.05); }
@@ -487,6 +488,70 @@ input[type=range] { width: 100%; accent-color: var(--gold); }
   body.touch #joyzone { top: 30%; }
 }
 
+
+/* ---------- portada ordenada: un gran botón «Jugar» ---------- */
+.title-panel { display: flex; flex-direction: column; align-items: center; }
+.play-btn { position: relative; display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto; column-gap: 14px; align-items: center; justify-content: center;
+  width: min(420px, 100%); margin: 22px auto 0; padding: 18px 26px 16px; font-family: var(--display); font-size: 2rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: #1a1206; background: linear-gradient(180deg, #ffe9a8, #e2b04e 55%, #b8822c); border: 0; border-radius: 18px;
+  box-shadow: 0 0 0 2px rgba(255,236,180,0.9), 0 10px 40px rgba(226,176,78,0.55), inset 0 2px 0 rgba(255,255,255,0.6); animation: playPulse 2.2s ease-in-out infinite; cursor: pointer; }
+.play-btn .play-ico { grid-row: 1 / 3; font-size: 1.7rem; width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; background: rgba(26,18,6,0.9); color: #ffe39a; letter-spacing: 0; padding-left: 4px; }
+.play-btn .play-t { text-align: left; line-height: 1; }
+.play-btn small { grid-column: 2; display: block; text-align: left; font-family: var(--body); font-size: 0.82rem; letter-spacing: 0.02em; text-transform: none; color: #3a2a10; margin-top: 4px; }
+.play-btn:hover, .play-btn:focus-visible { filter: brightness(1.08); transform: translateY(-1px); }
+@keyframes playPulse { 50% { box-shadow: 0 0 0 2px rgba(255,236,180,0.9), 0 10px 60px rgba(226,176,78,0.85), inset 0 2px 0 rgba(255,255,255,0.6); } }
+.cont-btn { width: min(420px, 100%); margin: 12px auto 0; border-color: var(--gold) !important; color: var(--gold-bright) !important; }
+.title-panel.has-save .play-btn { font-size: 1.15rem; padding: 12px 20px 10px; animation: none; }
+.title-panel > * { order: 9; }
+.title-panel > .eyebrow { order: 1; } .title-panel > .logo { order: 2; } .title-panel > .subtitle { order: 3; } .title-panel > .cont-btn { order: 4; } .title-panel > .play-btn { order: 5; }
+.title-panel.has-save .cont-btn { margin-top: 22px; padding: 16px 22px 14px; font-family: var(--display); font-size: 1.45rem; letter-spacing: 0.1em; text-transform: uppercase; color: #0e2412 !important;
+  background: linear-gradient(180deg, #e2ffe6, #8ad89a 60%, #5aa86a); border: 0 !important; border-radius: 18px; box-shadow: 0 0 0 2px rgba(220,255,226,0.9), 0 10px 40px rgba(122,200,138,0.5); animation: playPulse 2.2s ease-in-out infinite; }
+.title-panel.has-save .cont-btn small { color: #1e3a22; font-family: var(--body); font-size: 0.85rem; letter-spacing: 0.02em; text-transform: none; }
+.title-panel.has-save .play-btn { margin-top: 12px; background: rgba(20,16,10,0.6); color: var(--gold-bright); box-shadow: 0 0 0 1.5px var(--gold); }
+.title-panel.has-save .play-btn .play-ico { width: 40px; height: 40px; font-size: 1.2rem; background: rgba(214,168,74,0.2); }
+.title-panel.has-save .play-btn small { color: var(--parchment-dim); }
+.quick { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: min(420px, 100%); margin: 18px auto 0; }
+.qk { position: relative; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 12px 6px 10px; border: 1px solid var(--line); border-radius: 14px;
+  background: rgba(20,16,10,0.55); color: var(--parchment); font-family: var(--body); cursor: pointer; }
+.qk b { font-size: 1.4rem; color: var(--gold); font-weight: normal; line-height: 1.1; }
+.qk span { font-size: 0.92rem; line-height: 1.15; }
+.qk small { font-size: 0.72rem; opacity: 0.7; line-height: 1.2; text-align: center; }
+.qk:hover { border-color: var(--gold); background: rgba(214,168,74,0.12); }
+.more-b { margin: 16px auto 0; background: none; border: 0; color: var(--parchment-dim); font-family: var(--body); font-size: 0.95rem; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+#t-more { margin-top: 10px; }
+.title-panel .brand-by { margin-top: 18px; }
+
+/* ---------- elegir el viaje ---------- */
+.tv-wrap { width: min(720px, 100%); }
+.tv-wrap h2 { text-align: center; }
+.tv-hero { display: grid; gap: 12px; margin: 14px 0 6px; }
+.tv-big { position: relative; display: block; width: 100%; min-height: 190px; padding: 0; border: 1px solid var(--gold); border-radius: 18px; overflow: hidden; cursor: pointer; text-align: left;
+  background: #1a140c center / cover no-repeat; color: var(--parchment); box-shadow: 0 10px 30px rgba(0,0,0,0.45); }
+.tv-big::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,8,5,0.05) 0%, rgba(10,8,5,0.55) 45%, rgba(10,8,5,0.92) 100%); }
+.tv-big .in { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 190px; padding: 16px 18px; gap: 4px; }
+.tv-big .k { font-family: var(--display); letter-spacing: 0.16em; font-size: 0.78rem; color: var(--gold-bright); text-transform: uppercase; }
+.tv-big .t { font-family: var(--display); font-size: 1.6rem; line-height: 1.1; }
+.tv-big .d { font-size: 0.98rem; opacity: 0.9; line-height: 1.3; }
+.tv-big .go { align-self: flex-start; margin-top: 8px; padding: 9px 18px; border-radius: 999px; font-family: var(--display); letter-spacing: 0.12em; font-size: 0.9rem; color: #1a1206; background: linear-gradient(180deg, #ffe9a8, #d8a648); }
+.tv-big:hover { box-shadow: 0 0 0 2px var(--gold), 0 10px 30px rgba(0,0,0,0.45); }
+.tv-big.cont { border-color: #8fe0a0; } .tv-big.cont .go { background: linear-gradient(180deg, #d8ffe0, #7ac88a); }
+.tv-line { position: relative; display: grid; gap: 10px; margin: 8px 0 14px; padding-left: 22px; }
+.tv-line::before { content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(180deg, var(--gold), rgba(214,168,74,0.15)); }
+.tv-it { position: relative; display: grid; grid-template-columns: 92px 1fr; gap: 12px; align-items: stretch; width: 100%; padding: 0; border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+  background: rgba(20,16,10,0.7); color: var(--parchment); text-align: left; cursor: pointer; font-family: var(--body); }
+.tv-it::before { content: ''; position: absolute; left: -21px; top: 50%; width: 12px; height: 12px; margin-top: -6px; border-radius: 50%; background: #2a2010; box-shadow: 0 0 0 2px var(--gold); }
+.tv-it.done::before { background: var(--gold); }
+.tv-it.here::before { background: #8fe0a0; box-shadow: 0 0 0 2px #8fe0a0, 0 0 12px #8fe0a0; }
+.tv-it .ph { background: #1a140c center / cover no-repeat; min-height: 92px; }
+.tv-it .tx { padding: 9px 10px 9px 0; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.tv-it .yr { font-size: 0.74rem; letter-spacing: 0.06em; color: var(--gold); text-transform: uppercase; }
+.tv-it .nm { font-family: var(--display); font-size: 1.08rem; line-height: 1.15; }
+.tv-it .hk { font-size: 0.86rem; opacity: 0.85; line-height: 1.25; }
+.tv-it .st { font-size: 0.74rem; opacity: 0.75; }
+.tv-it .st.ok { color: #bfe6a8; opacity: 1; } .tv-it.here .st { color: #8fe0a0; opacity: 1; }
+.tv-it:hover { border-color: var(--gold); background: rgba(214,168,74,0.1); }
+.tv-it.theme { border-style: dashed; }
+
 /* ---------- título: botones secundarios ---------- */
 .brand-by { display: block; margin-top: 16px; font-size: 13px; color: rgba(244,234,214,.6); text-decoration: none; letter-spacing: .3px; }
 .brand-by b { color: #e9c77a; font-weight: 500; }
@@ -684,33 +749,34 @@ body.touch .gm.boss { width: 30px; height: 30px; }
   <div id="flash"></div>
 
   <section id="title" class="screen" hidden>
-    <div class="panel">
-      <div class="eyebrow">Un viaje de veintiséis siglos</div>
+    <div class="panel title-panel">
+      <div class="eyebrow">Un viaje de 4.500 años</div>
       <h1 class="logo"><span class="alpha">O</span>DISEA</h1>
-      <p class="subtitle">de la Razón · de Tales a nuestros días</p>
-      <div class="timeline" id="t-timeline"></div>
-      <div class="btns">
-        <button class="btn primary oracle-btn" id="b-oracle">Oráculo de hoy<small id="b-oracle-s">10 preguntas · las mismas para todos</small></button>
-        <button class="btn reto-btn" id="b-reto">Reta a un amigo<small>Las mismas 10 preguntas · gana quien sepa más</small></button>
-        <button class="btn" id="b-continue" hidden>Continuar la odisea<small id="b-continue-s"></small></button>
-        <button class="btn" id="b-new">Nueva odisea<small>Nueve épocas · 44 pensadoras y pensadores</small></button>
-        <button class="btn qd-btn" id="b-qd" hidden>¿Qué diría…?<small>Pregunta lo que quieras a varios pensadores a la vez</small></button>
-        <button class="btn aula-btn" id="b-aula">Modo aula<small id="b-aula-s">Para docentes y estudiantes</small></button>
-        <button class="btn" id="b-travel">Viajar por las épocas<small>Y descubre las sabidurías del mundo</small></button>
+      <p class="subtitle">de la Razón · filosofía, ciencia e historia</p>
+      <div class="timeline" id="t-timeline" hidden></div>
+      <button class="btn play-btn" id="b-play"><span class="play-ico" aria-hidden="true">▶</span><span class="play-t">Jugar</span><small id="b-play-s">21 épocas · 96 pensadoras y pensadores</small></button>
+      <button class="btn cont-btn" id="b-continue" hidden>Continuar mi odisea<small id="b-continue-s"></small></button>
+      <div class="quick">
+        <button class="qk oracle-btn" id="b-oracle"><b>☀</b><span>Oráculo de hoy</span><small id="b-oracle-s">10 preguntas</small></button>
+        <button class="qk reto-btn" id="b-reto"><b>⚔</b><span>Reta a un amigo</span><small>Mismas preguntas</small></button>
+        <button class="qk aula-btn" id="b-aula"><b>✎</b><span>Modo aula</span><small id="b-aula-s">Docentes</small></button>
       </div>
-      <div class="minis">
+      <button class="more-b" id="b-more" aria-expanded="false">Más opciones ▾</button>
+      <div class="minis" id="t-more" hidden>
+        <button class="mini-b" id="b-cuaderno">Cuaderno y mapa</button>
+        <button class="mini-b" id="b-codex">Códice</button>
         <button class="mini-b" id="b-fame">Salón de la Fama</button>
         <button class="mini-b" id="b-logros">Logros <span id="b-logros-n"></span></button>
-        <button class="mini-b" id="b-codex">Códice</button>
-        <button class="mini-b" id="b-cuaderno">Cuaderno</button>
         <button class="mini-b" id="b-howto">Cómo jugar</button>
         <button class="mini-b" id="b-settings">Ajustes</button>
         <button class="mini-b" id="b-fs" hidden>Pantalla completa</button>
         <button class="mini-b login-b" id="b-login" hidden>Mi cuenta</button>
         <button class="mini-b install-b" id="b-install" hidden>Instalar app</button>
+        <button class="mini-b" id="b-qd" hidden>¿Qué diría…?</button>
+        <button class="mini-b" id="b-travel" hidden>Viajar</button>
+        <button class="mini-b" id="b-new" hidden>Nueva odisea</button>
       </div>
       <a class="brand-by" href="https://filosofiaparasereshumanos.com" target="_blank" rel="noopener"><img class="brand-logo" src="img/logo-fpsh.png" alt="" width="44" height="62">Una propuesta de <b>Filosofía para Seres Humanos</b></a>
-
     </div>
   </section>
 
@@ -1058,11 +1124,12 @@ body.touch .gm.boss { width: 30px; height: 30px; }
   </section>
 
   <section id="travel" class="screen dim" hidden>
-    <div class="codex-wrap">
-      <div class="eyebrow" style="text-align:center">Modo explorador</div>
-      <h2>Viajar por las épocas</h2>
-      <p class="codex-count">Elige una época para pasear, conversar, leer y descubrir lugares sin tener que superar las anteriores. Tu odisea guardada no se pierde.</p>
-      <div class="codex-grid tv-grid" id="tv-grid"></div>
+    <div class="codex-wrap tv-wrap">
+      <div class="eyebrow" style="text-align:center">Tu viaje</div>
+      <h2>¿Por dónde empiezas?</h2>
+      <div id="tv-hero" class="tv-hero"></div>
+      <h3 class="tv-sec">O elige una época de la línea del tiempo</h3>
+      <div class="tv-line" id="tv-grid"></div>
       <div class="btns"><button class="btn" id="tv-back">Volver</button></div>
     </div>
   </section>
@@ -1133,7 +1200,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
     <div class="panel">
       <div class="eyebrow">Has completado la odisea</div>
       <h2 class="logo" style="font-size:clamp(2.6rem,11vw,5.5rem)">Nadie se educa solo</h2>
-      <p class="subtitle">Has recorrido veintiséis siglos de pensamiento, de Tales a Paulo Freire. Ahora te toca enseñar aprendiendo y transformar el mundo con los demás.</p>
+      <p class="subtitle">Has recorrido 4.500 años de pensamiento, de Sumer a nuestros días. Ahora te toca enseñar aprendiendo y transformar el mundo con los demás.</p>
       <p class="rank" id="e-rank"></p>
       <p class="story" id="e-rtext"></p>
       <div class="final-stats" id="e-stats"></div>

@@ -1161,10 +1161,11 @@ function titleScreen() {
   $('#hud').hidden = true; $('#touch').hidden = true; $('#duel').hidden = true;
   const sv = store.get(SAVE_KEY, null);
   const bc = $('#b-continue');
-  if (sv && (sv.eraIdx > 0 || (sv.beaten && sv.beaten.length) || sv.score > 0)) { bc.hidden = false; $('#b-continue-s').textContent = `Etapa ${ERAS[sv.eraIdx].num} · ${ERAS[sv.eraIdx].name}`; } else bc.hidden = true;
+  const hasSave = !!(sv && (sv.eraIdx !== CHRONO[0] || (sv.beaten && sv.beaten.length) || sv.score > 0));
+  if (hasSave) { bc.hidden = false; bc.firstChild.textContent = '▶ Continuar mi odisea'; $('#b-continue-s').textContent = `Época ${ERAS[sv.eraIdx].num} · ${ERAS[sv.eraIdx].name}`; } else bc.hidden = true;
+  document.querySelector('.title-panel').classList.toggle('has-save', hasSave); $('#b-play').querySelector('.play-t').textContent = hasSave ? 'Elegir otra época' : 'Jugar';
   const reached = sv ? sv.eraIdx : -1;
-  $('#t-timeline').innerHTML = ERAS.slice(0, CAMPAIGN).map((e, i) => `<span data-i="${i}" title="Viajar a ${e.name}" class="${i < reached || G.codex.has(e.sages.find((s) => s.boss).id) ? 'done' : ''}">${e.num}</span>`).join('');
-  const bg = clamp(reached, 0, 5);
+  const bg = reached >= 0 ? reached : 1;
   if (!world || world.idx !== bg) loadWorld(bg);
   Audio.startMusic(bg);
   show('title');
@@ -1177,7 +1178,7 @@ function startEra(idx, fresh) {
   saveProgress();
   loadWorld(idx); Audio.startMusic(idx);
   const e = ERAS[idx];
-  $('#i-eyebrow').textContent = e.world ? `Sabidurías del mundo · ${e.years}` : G.explore ? `Modo explorador · ${e.years}` : `Etapa ${idx + 1} de ${CAMPAIGN} · ${e.years}`;
+  $('#i-eyebrow').textContent = `Época ${e.pos + 1} de ${CHRONO.length} · ${e.years}`;
   setEraBackdrop($('#intro'), idx); $('#i-num').textContent = e.num; $('#i-name').textContent = e.name; $('#i-meta').textContent = e.place;
   $('#i-story').textContent = e.story;
   $('#i-quote').innerHTML = ''; $('#i-quote').append(document.createTextNode('«' + e.quote.t + '»')); const c = document.createElement('cite'); c.textContent = e.quote.a; $('#i-quote').append(c);
@@ -1189,8 +1190,8 @@ function enterEra() {
   if (G.state !== 'intro') return;
   hideAll(); G.state = 'play'; $('#hud').hidden = false; if (IS_TOUCH) $('#touch').hidden = false;
   input.keys = {}; lockPointer(); updateHud(); keepAwake();
-  if (G.eraIdx === 0) {
-    toast(IS_TOUCH ? 'Mueve el joystick o toca el suelo para caminar.' : 'Camina con WASD y mira con el ratón.');
+  if (!G.tipsShown) {
+    G.tipsShown = true; toast(IS_TOUCH ? 'Mueve el joystick o toca el suelo para caminar.' : 'Camina con WASD y mira con el ratón.');
     toast(IS_TOUCH ? 'Acércate a un filósofo y toca «Hablar». Los rombos dorados son lugares para descubrir.' : 'Acércate a un filósofo y pulsa E para hablar. Los rombos dorados son lugares para descubrir.');
   } else toast(`Llegas a ${ERAS[G.eraIdx].place}.`);
 }
@@ -1213,8 +1214,9 @@ function enterPortal() {
   if (G.diedEra !== G.eraIdx) achieve('logos'); G.diedEra = -1;
   const f = $('#fade'); f.classList.add('on');
   setTimeout(() => {
-    if (G.eraIdx === CAMPAIGN - 1 || G.eraIdx >= ERAS.length - 1) { f.classList.remove('on'); if (G.explore) { $('#hud').hidden = true; $('#touch').hidden = true; G.state = 'title'; openTravel('title'); } else showEnding(); return; }
-    startEra(G.eraIdx + 1, false); f.classList.remove('on');
+    const nx = nextEra(G.eraIdx);
+    if (G.explore || nx < 0) { f.classList.remove('on'); if (G.explore) { $('#hud').hidden = true; $('#touch').hidden = true; G.state = 'title'; openTravel('title'); } else showEnding(); return; }
+    startEra(nx, false); f.classList.remove('on');
   }, 900);
 }
 function showEnding() {
@@ -1232,7 +1234,7 @@ function showEnding() {
 function renderCodex() {
   const body = $('#cx-body'); body.innerHTML = '';
   let have = 0, total = 0;
-  ERAS.forEach((e) => {
+  CHRONO.map((i) => ERAS[i]).forEach((e) => {
     const sec = document.createElement('div'); sec.className = 'codex-era';
     const h = document.createElement('h3'); h.textContent = `${e.num} · ${e.name} · ${e.years}`; sec.appendChild(h);
     if (typeof Diploma !== 'undefined' && e.sages.every((s) => G.codex.has(s.id))) { const db = document.createElement('button'); db.className = 'mini-b dip-b'; db.textContent = '🎓 Diploma'; const ei = ERAS.indexOf(e); db.addEventListener('click', () => Diploma.era(ei)); h.appendChild(db); }
@@ -1310,9 +1312,9 @@ const on = (id, fn) => $(id).addEventListener('click', () => { Audio.init(); Aud
 on('#b-new', () => {
   const sv = store.get(SAVE_KEY, null);
   if (sv && (sv.eraIdx > 0 || (sv.beaten && sv.beaten.length)) && !confirm(`Ya tienes una odisea en curso (etapa ${ERAS[sv.eraIdx].num} · ${ERAS[sv.eraIdx].name}). ¿Quieres empezar de nuevo desde el principio? Tu códice y tus logros se conservan.`)) return;
-  G.explore = false; G.codexRun = new Set(); G.guideMet = new Set(); startEra(0, true);
+  G.explore = false; G.codexRun = new Set(); G.guideMet = new Set(); startEra(CHRONO[0], true);
 });
-on('#b-continue', () => { G.explore = false; const sv = store.get(SAVE_KEY, null); if (!sv) return startEra(0, true); G.score = sv.score || 0; G.frags = sv.frags || 0; G.stats = sv.stats || { correct: 0, wrong: 0, kills: 0, time: 0 }; G.beatenRestore = sv.beaten || []; G.guideMet = G.guideMet || new Set(); if ((sv.beaten || []).length) G.guideMet.add(sv.eraIdx); startEra(sv.eraIdx, false); restoreBeaten(G.beatenRestore); if (sv.hp) G.hp = sv.hp; G.beatenRestore = null; saveProgress(); });
+on('#b-continue', () => { G.explore = false; const sv = store.get(SAVE_KEY, null); if (!sv) return startEra(CHRONO[0], true); G.score = sv.score || 0; G.frags = sv.frags || 0; G.stats = sv.stats || { correct: 0, wrong: 0, kills: 0, time: 0 }; G.beatenRestore = sv.beaten || []; G.guideMet = G.guideMet || new Set(); if ((sv.beaten || []).length) G.guideMet.add(sv.eraIdx); startEra(sv.eraIdx, false); restoreBeaten(G.beatenRestore); if (sv.hp) G.hp = sv.hp; G.beatenRestore = null; saveProgress(); });
 on('#b-howto', () => openSub('howto'));
 on('#b-fs', () => toggleFS());
 on('#b-codex', () => openSub('codex'));
@@ -1322,18 +1324,36 @@ on('#b-resume', () => resumeGame());
 // ---------- viajar libremente por las épocas
 function openTravel(from) { G.travelFrom = from; renderTravel(); show('travel'); }
 function renderTravel() {
-  const found = new Set(store.get('odisea-razon.lugares', [])), studied = new Set(store.get(BOOK_KEY, []));
+  const sv = store.get(SAVE_KEY, null); const hero = $('#tv-hero'); hero.innerHTML = '';
+  const big = (cls, i, k, t, d, go, fn) => { const b = document.createElement('button'); b.className = 'tv-big ' + cls; b.style.backgroundImage = `url('${ART.era(i)}')`;
+    b.innerHTML = '<div class="in"><span class="k"></span><span class="t"></span><span class="d"></span><span class="go"></span></div>';
+    b.querySelector('.k').textContent = k; b.querySelector('.t').textContent = t; b.querySelector('.d').textContent = d; b.querySelector('.go').textContent = go;
+    b.addEventListener('click', () => { Audio.init(); Audio.click(); fn(); }); hero.appendChild(b); };
+  const hasSave = !!(sv && (sv.eraIdx !== CHRONO[0] || (sv.beaten && sv.beaten.length) || sv.score > 0));
+  if (hasSave && G.travelFrom !== 'pause') { const e = ERAS[sv.eraIdx]; big('cont', sv.eraIdx, `Tu odisea · época ${e.pos + 1} de ${CHRONO.length}`, e.name, ERA_HOOK[e.id] || e.place, 'Continuar ▶', () => $('#b-continue').click()); }
+  const s0 = ERAS[CHRONO[0]];
+  big('start', CHRONO[0], 'Empieza por el principio', `${s0.name} · hace 4.500 años`, ERA_HOOK[s0.id], hasSave ? 'Empezar de nuevo desde aquí ▶' : 'Comenzar la odisea ▶', () => startOdyssey(CHRONO[0]));
   const grid = $('#tv-grid'); grid.innerHTML = '';
-  ERAS.forEach((e, i) => {
-    if (i === 0 || i === CAMPAIGN) { const h = document.createElement('h3'); h.className = 'tv-sec'; h.textContent = i === 0 ? 'La odisea: de Tales a nuestros días' : 'Sabidurías del mundo'; grid.appendChild(h); if (i === CAMPAIGN) { const p = document.createElement('p'); p.className = 'tv-note'; p.textContent = 'Pueblos y tradiciones de todo el planeta. Donde no se conservan autores con nombre, hablan portavoces de su tradición.'; grid.appendChild(p); } }
-    const b = document.createElement('button'); b.className = 'cc tv-card' + (e.world ? ' world' : '') + (G.travelFrom === 'pause' && i === G.eraIdx ? ' here' : '');
-    const pf = POIS[i].filter((p) => found.has(p.id)).length, bs = BOOKS[i].filter((x) => studied.has(x.id)).length;
-    b.innerHTML = `<div class="tv-art" style="background-image:url('${ART.era(i)}')"></div><span class="tv-num">${e.num}</span><h4></h4><div class="by"></div><p></p><span class="tv-prog">Lugares ${pf}/${POIS[i].length} · ${BOOKS[i].length ? `Libros ${bs}/${BOOKS[i].length} · ` : ""}${NPCS[i].length} ciudadanos</span>`;
-    b.querySelector('h4').textContent = e.name; b.querySelector('.by').textContent = `${e.years} · ${e.place}`;
-    b.querySelector('p').textContent = e.sages.map((s) => s.short).join(', ');
-    b.addEventListener('click', () => { Audio.init(); Audio.click(); travelTo(i); });
+  const here = sv ? sv.eraIdx : -1;
+  CHRONO.forEach((i) => {
+    const e = ERAS[i]; const boss = e.sages.find((x) => x.boss); const done = boss && G.codex.has(boss.id);
+    const b = document.createElement('button'); b.className = 'tv-it' + (done ? ' done' : '') + (i === here ? ' here' : '') + (e.id === 'poetas' || e.id === 'ciencia' ? ' theme' : '');
+    b.innerHTML = '<div class="ph"></div><div class="tx"><span class="yr"></span><span class="nm"></span><span class="hk"></span><span class="st"></span></div>';
+    b.querySelector('.ph').style.backgroundImage = `url('${ART.era(i)}')`;
+    b.querySelector('.yr').textContent = `${e.num} · ${e.years}`; b.querySelector('.nm').textContent = e.name;
+    b.querySelector('.hk').textContent = ERA_HOOK[e.id] || e.sages.map((x) => x.short).join(', ');
+    const st = b.querySelector('.st'); st.textContent = i === here ? '● Aquí vas' : done ? '✓ Completada' : e.sages.map((x) => x.short).join(' · '); if (done && i !== here) st.classList.add('ok');
+    b.addEventListener('click', () => { Audio.init(); Audio.click(); startOdyssey(i); });
     grid.appendChild(b);
   });
+}
+// empezar (o cambiar) la odisea en una época: desde ahí se sigue la línea del tiempo
+function startOdyssey(idx) {
+  const sv = store.get(SAVE_KEY, null);
+  if (sv && sv.eraIdx !== idx && ((sv.beaten && sv.beaten.length) || sv.score > 0) && !confirm(`Tienes una odisea en curso en «${ERAS[sv.eraIdx].name}». ¿Quieres viajar ahora a «${ERAS[idx].name}»? Tu códice, tu cuaderno y tus logros se conservan.`)) return;
+  G.explore = false; G.codexRun = new Set(); G.guideMet = G.guideMet || new Set();
+  const f = $('#fade'); f.classList.add('on'); hideAll();
+  setTimeout(() => { startEra(idx, true); f.classList.remove('on'); }, 350);
 }
 function travelTo(idx) {
   if (!G.explore) { if (G.travelFrom === 'pause') saveProgress(); G.explore = true; startEra(idx, true); return; }
@@ -1341,7 +1361,8 @@ function travelTo(idx) {
   setTimeout(() => { startEra(idx, false); f.classList.remove('on'); }, 400);
 }
 on('#b-travel', () => openTravel('title'));
-$('#t-timeline').addEventListener('click', (e) => { const sp = e.target.closest('span[data-i]'); if (!sp || G.state !== 'title') return; Audio.init(); Audio.click(); G.travelFrom = 'title'; travelTo(+sp.dataset.i); });
+on('#b-play', () => openTravel('title'));
+on('#b-more', () => { const m = $('#t-more'); m.hidden = !m.hidden; $('#b-more').textContent = m.hidden ? 'Más opciones ▾' : 'Menos opciones ▴'; $('#b-more').setAttribute('aria-expanded', String(!m.hidden)); });
 on('#b-ptravel', () => openTravel('pause'));
 on('#tv-back', () => show(G.travelFrom === 'pause' ? 'pause' : 'title'));
 on('#b-pcodex', () => openSub('codex'));

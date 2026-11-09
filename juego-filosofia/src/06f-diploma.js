@@ -58,7 +58,7 @@ const Diploma = {
   },
   // diploma de toda la odisea (pantalla final)
   odyssey() {
-    this.make({ slug: 'completa', text: 'por haber completado la Odisea de la Razón, recorriendo veintiséis siglos de pensamiento y debatiendo con los grandes filósofos y filósofas de la historia.',
+    this.make({ slug: 'completa', text: 'por haber completado la Odisea de la Razón, recorriendo 4.500 años de pensamiento, de Sumer a nuestros días, y debatiendo con los grandes filósofos y filósofas de la historia.',
       rank: $('#e-rank').textContent, stats: [...$('#e-stats').children].map((d) => d.querySelector('b').textContent + ' ' + d.querySelector('span').textContent.toLowerCase()).join(' · ') });
   },
   // diploma de una época o cultura completa (desde el códice)
