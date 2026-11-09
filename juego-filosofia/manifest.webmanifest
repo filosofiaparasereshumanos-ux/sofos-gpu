@@ -1,7 +1,7 @@
 {
   "name": "Odisea de la Razón",
   "short_name": "Odisea",
-  "description": "Conversa con Sócrates, Hipatia, Sor Juana y 65 pensadores más. Debate y viaja por 15 mundos, de Tales a nuestros días. Una propuesta de Filosofía para Seres Humanos.",
+  "description": "Conversa con Sócrates, Hipatia, Sor Juana, Bashō y 87 pensadores más. Debate, reta a tus amigos y viaja por 20 mundos, de Tales a nuestros días. Una propuesta de Filosofía para Seres Humanos.",
   "lang": "es",
   "start_url": "./index.html",
   "scope": "./",
@@ -9,10 +9,59 @@
   "orientation": "any",
   "background_color": "#120d07",
   "theme_color": "#120d07",
-  "categories": ["education", "games"],
+  "categories": [
+    "education",
+    "games"
+  ],
   "icons": [
-    { "src": "img/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "img/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "img/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "id": "./index.html",
+  "screenshots": [
+    {
+      "src": "marketing/play/1-inicio.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Menú principal"
+    },
+    {
+      "src": "marketing/play/2-mundo-japon.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "El Japón del zen"
+    },
+    {
+      "src": "marketing/play/4-debate.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Debate con Murasaki Shikibu"
+    },
+    {
+      "src": "marketing/play/5-reto.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Reta a un amigo"
+    }
   ]
 }

@@ -1211,6 +1211,7 @@ function renderCodex() {
   ERAS.forEach((e) => {
     const sec = document.createElement('div'); sec.className = 'codex-era';
     const h = document.createElement('h3'); h.textContent = `${e.num} · ${e.name} · ${e.years}`; sec.appendChild(h);
+    if (typeof Diploma !== 'undefined' && e.sages.every((s) => G.codex.has(s.id))) { const db = document.createElement('button'); db.className = 'mini-b dip-b'; db.textContent = '🎓 Diploma'; const ei = ERAS.indexOf(e); db.addEventListener('click', () => Diploma.era(ei)); h.appendChild(db); }
     const grid = document.createElement('div'); grid.className = 'codex-grid';
     e.sages.forEach((s) => {
       total++; const ok = G.codex.has(s.id); if (ok) have++;

@@ -468,6 +468,7 @@ input[type=range] { width: 100%; accent-color: var(--gold); }
 .mini-b { font-family: var(--display); letter-spacing: 0.12em; font-size: 0.78rem; text-transform: uppercase; padding: 8px 12px; background: rgba(13,12,18,0.45); border: 1px solid rgba(214,168,74,0.22); color: var(--parchment); cursor: pointer; }
 .mini-b:hover { border-color: var(--gold); }
 .oracle-btn { position: relative; }
+.codex-era h3 .dip-b { margin-left: 10px; font-size: 0.8rem; vertical-align: middle; }
 .rt-label { display: block; margin: 14px 0 6px; font-size: 0.9rem; opacity: 0.8; }
 .rt-name { width: 100%; box-sizing: border-box; padding: 11px 14px; border-radius: 10px; border: 1px solid rgba(233,199,122,0.45); background: rgba(0,0,0,0.35); color: inherit; font: inherit; font-size: 1.05rem; }
 .rt-list { list-style: none; margin: 6px 0 0; padding: 0; font-size: 0.95rem; opacity: 0.9; text-align: center; }
@@ -584,6 +585,16 @@ body.touch .gm.boss { width: 30px; height: 30px; }
   .say { display: none; }
   .qtext { margin: 6px 0 8px; font-size: 1.05rem; }
   .ans { padding: 6px 10px; }
+}
+/* móvil en vertical: la cabecera del HUD en dos columnas que no se pisan */
+@media (max-width: 520px) and (orientation: portrait) {
+  .hud-tl { max-width: calc(100% - 150px); }
+  .hud-era { font-size: 0.7rem; letter-spacing: 0.12em; }
+  .hud-obj { font-size: 0.84rem; line-height: 1.25; }
+  body.touch .hud-tr, .hud-tr { top: calc(66px + var(--sat)); right: calc(14px + var(--sar)); gap: 10px; }
+  .stat .k { font-size: 0.56rem; letter-spacing: 0.08em; }
+  .stat .v { font-size: 1.05rem; }
+  #path { top: calc(128px + var(--sat)); }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
@@ -1069,7 +1080,8 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <div class="final-stats" id="e-stats"></div>
       <p class="story" style="font-size:1rem">El viaje no termina aquí: la filosofía sigue viva en cada pregunta que te hagas. La conversación continúa contigo.</p>
       <div class="btns">
-        <button class="btn primary" id="b-again">Jugar de nuevo</button>
+        <button class="btn primary" id="b-diploma">🎓 Descargar mi diploma</button>
+        <button class="btn" id="b-again">Jugar de nuevo</button>
         <button class="btn" id="b-ecodex">Ver el códice</button>
       </div>
     </div>
