@@ -245,6 +245,8 @@ kbd { font-family: var(--display); font-size: 0.78em; border: 1px solid var(--li
 .tk-row input { flex: 1; min-width: 0; background: rgba(0,0,0,0.4); border: 1px solid var(--line); color: var(--parchment); font: inherit; font-size: 1rem; padding: 10px 12px; user-select: text; -webkit-user-select: text; }
 .tk-row .btn { min-width: 0; padding: 10px 16px; font-size: 0.85rem; }
 .place-card { border-top-color: var(--gold-bright); }
+.pl-art { width: 100%; height: min(28vh, 44vw); border-radius: 12px; margin: 0 0 10px; background: #1a120a center / cover no-repeat; box-shadow: inset 0 0 0 1px rgba(233,199,122,.35), 0 6px 18px rgba(0,0,0,.35); animation: plArt .6s ease both; }
+@keyframes plArt { from { opacity: 0; transform: scale(1.03); } to { opacity: 1; transform: none; } }
 .pl-name { font-family: var(--display); font-weight: 400; font-size: clamp(1.5rem, 5vw, 2.1rem); margin: 4px 0 0; color: var(--gold-bright); }
 .pl-text { font-size: clamp(1.05rem, 3.2vw, 1.22rem); line-height: 1.55; margin: 10px 0 0; max-height: 34vh; overflow-y: auto; }
 .pl-fact { margin-top: 12px; padding: 10px 12px; background: rgba(214,168,74,0.08); border-left: 2px solid var(--gold); line-height: 1.45; }
@@ -731,6 +733,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
 
   <section id="place" hidden>
     <div class="lesson-card place-card" role="dialog" aria-label="Lugar">
+      <div class="pl-art" id="pl-art" hidden></div>
       <div class="eyebrow" id="pl-era"></div>
       <h2 class="pl-name" id="pl-name"></h2>
       <p class="pl-text" id="pl-text"></p>

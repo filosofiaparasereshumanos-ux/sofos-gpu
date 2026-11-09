@@ -9,6 +9,7 @@ const GAME_URL = 'https://filosofiaparasereshumanos-ux.github.io/sofos-gpu/';
 const ART = {
   portrait(id) { return 'img/p-' + id + '.jpg'; },
   era(i) { return 'img/e-' + i + '.jpg'; },
+  place(id) { return 'img/l-' + id + '.jpg'; },
 };
 function setMedal(el, id, letter) {
   if (!el) return;
