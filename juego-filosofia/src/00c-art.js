@@ -16,7 +16,7 @@ function setMedal(el, id, letter) {
   el.textContent = letter || ''; el.classList.remove('portrait'); el.style.backgroundImage = ''; el.dataset.pid = id || '';
   el.classList.remove('sprite'); el.style.backgroundSize = ''; el.style.backgroundPosition = '';
   if (!id) return;
-  const sp = typeof SPRITES !== 'undefined' && SPRITES[id];
+  const sp = typeof SPRITES !== 'undefined' && (SPRITES[id] || SPRITES['p-' + id]);
   if (sp) {
     const [src, c, r, cols, rows] = sp; const im = new Image();
     im.onload = () => { if (el.dataset.pid !== id) return; el.style.backgroundImage = `url("${src}")`;
