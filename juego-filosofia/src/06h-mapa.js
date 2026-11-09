@@ -29,6 +29,10 @@ const MAPA_DIALOGO = {
   maquiavelo: { eje: 'justicia', conveniencia: -1, valor: 1, matiz: 0 },
   socrates: { eje: 'mal', saber: -1, voluntad: 1, matiz: 0 }, agustin: { eje: 'mal', ignorancia: -1, voluntad: 1, matiz: 0 },
   camus: { eje: 'sentido', fuera: -1, crear: 1, matiz: 0 },
+  kant: { eje: 'justicia', deber: 1, consecuencias: -0.5, matiz: 0 },
+  hume: { eje: 'conocer', experiencia: -1, razon: 1, matiz: 0 },
+  buda: { eje: 'mal', apego: -1, fuera: 0, matiz: 0 },
+  beauvoir: { eje: 'sentido', construido: 1, natural: -0.5, matiz: 0 },
 };
 const Mapa = {
   calc() {

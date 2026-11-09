@@ -25,6 +25,9 @@ ERAS.forEach((era) => era.sages.forEach((d) => {
   const lesson = new Set((LESSONS[d.id] || []).flatMap(narrSplit));
   pack('p-' + d.id, v.voice, v.pitch, d.id, [...sageSpeech(d).flatMap(narrSplit).filter((s) => !lesson.has(s)), ...dlgTexts(DIALOGOS[d.id])]);
 }));
+// textos de las tarjetas de los experimentos jugables (cadenas largas de esos archivos), con la voz del narrador
+const zoneTexts = ['src/02r-zonas.js', 'src/02s-zonas2.js'].flatMap((f) => [...readFileSync(join(root, f), 'utf8').matchAll(/'([«¿¡A-ZÁÉÍÓÚÑ](?:[^'\\\n]|\\.){59,})'/g)].map((m) => m[1].replace(/\\'/g, "'")).filter((t) => !/[;{}=$]|=>/.test(t)));
+pack('x-zonas', 'carlfm', 1, 'narr', zoneTexts);
 POIS.forEach((list, i) => pack('n-' + i, 'carlfm', 1, 'narr', [...list.flatMap((p) => [p.name + '. ' + p.text, p.text + ' ' + p.fact]), ...(i === 0 ? NARR_GENERIC : [])]));
 NPCS.forEach((list, i) => list.forEach((n) => {
   const v = n.id.startsWith('guia') ? { voice: 'carlfm', pitch: 0.93 } : n.female ? { voice: 'carlfm', pitch: 1.12 } : { voice: 'carlfm', pitch: [1.08, 0.97, 1.14, 1.02][n.id.length % 4] };

@@ -19,9 +19,10 @@ const XP = {
     $('#xp-eye').textContent = eye; $('#xp-title').textContent = title; $('#xp-text').textContent = text;
     const box = $('#xp-ops'); box.innerHTML = '';
     ops.forEach(([label, fn, cls], i) => { const b = document.createElement('button'); b.className = 'btn' + (cls ? ' ' + cls : i === 0 ? ' primary' : ''); b.textContent = label; b.addEventListener('click', () => { Audio.click(); this.close(); if (fn) fn(); }); box.appendChild(b); });
-    $('#xp').hidden = false; if (!IS_TOUCH) setTimeout(() => { const b = box.querySelector('button'); if (b) b.focus({ preventScroll: true }); }, 40);
+    $('#xp').hidden = false; Voice.stop(); Voice.say(text);
+    if (!IS_TOUCH) setTimeout(() => { const b = box.querySelector('button'); if (b) b.focus({ preventScroll: true }); }, 40);
   },
-  close() { $('#xp').hidden = true; if (G.state === 'place') { G.state = 'play'; $('#hud').hidden = false; if (IS_TOUCH) $('#touch').hidden = false; lockPointer(); } },
+  close() { Voice.stop(); $('#xp').hidden = true; if (G.state === 'place') { G.state = 'play'; $('#hud').hidden = false; if (IS_TOUCH) $('#touch').hidden = false; lockPointer(); } },
   note(id, name, q) { return ['📓 Escribir en mi cuaderno', () => Cuaderno.open({ id, name, short: name, q })]; },
 };
 // ---------- utilidades de construcción
