@@ -4,7 +4,7 @@
 //  Solo en la versión web (dominio propio); en Claude el botón no aparece.
 // ============================================================================
 const CUENTA_CFG = {
-  url: '', // p. ej. https://xxxx.supabase.co
+  url: 'https://xmslbqzmztcaoddchzsz.supabase.co',
   key: '', // clave pública «anon» del proyecto (es pública: la protegen las reglas RLS)
 };
 const Cuenta = {
