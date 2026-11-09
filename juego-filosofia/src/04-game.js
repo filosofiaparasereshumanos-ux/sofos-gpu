@@ -1019,7 +1019,7 @@ const Duel = {
     achieve('primer'); if (s.data.id === 'socrates') achieve('tabano'); if (s.data.id === 'platon') achieve('caverna');
     if (!s._wrongs) achieve('perfecto'); if (s.boss && !this.aidsUsed) achieve('sincomodin');
     const bonus = s.boss ? 500 : 250; addScore(bonus); G.frags += 2; const heal = Math.min(25, G.maxHp - G.hp); G.hp += heal;
-    G.codex.add(s.data.id); store.set(CODEX_KEY, [...G.codex]); if (['teano', 'hipatia', 'hildegarda', 'pizan', 'sorjuana', 'castellanos', 'beauvoir', 'arendt'].filter((id) => G.codex.has(id)).length >= 4) achieve('pensadoras'); if (['nezahualcoyotl', 'sorjuana', 'marti', 'castellanos', 'freire'].every((id) => G.codex.has(id))) achieve('nuestra'); if (['tlacaelel', 'pachacutec', 'lautaro', 'confucio', 'buda', 'tutu'].some((id) => G.codex.has(id))) achieve('mundo1'); if (['tlacaelel', 'pachacutec', 'lautaro', 'confucio', 'buda', 'tutu'].every((id) => G.codex.has(id))) achieve('mundo'); if (G.codex.size >= ERAS.flatMap((e) => e.sages).length) achieve('erudito');
+    G.codex.add(s.data.id); store.set(CODEX_KEY, [...G.codex]); saveProgress(); if (['teano', 'hipatia', 'hildegarda', 'pizan', 'sorjuana', 'castellanos', 'beauvoir', 'arendt'].filter((id) => G.codex.has(id)).length >= 4) achieve('pensadoras'); if (['nezahualcoyotl', 'sorjuana', 'marti', 'castellanos', 'freire'].every((id) => G.codex.has(id))) achieve('nuestra'); if (['tlacaelel', 'pachacutec', 'lautaro', 'confucio', 'buda', 'tutu'].some((id) => G.codex.has(id))) achieve('mundo1'); if (['tlacaelel', 'pachacutec', 'lautaro', 'confucio', 'buda', 'tutu'].every((id) => G.codex.has(id))) achieve('mundo'); if (G.codex.size >= ERAS.flatMap((e) => e.sages).length) achieve('erudito');
     particles.emit(_v1.copy(s.pos).setY(2.5), 160, { color: 0xffd36a, speed: 9, life: 1.6, size: 0.55, intensity: 3, gravity: 2 });
     particles.emit(_v1.copy(s.pos).setY(1.2), 80, { color: 0xffffff, speed: 6, life: 1.2, size: 0.4, intensity: 2, flat: true });
     $('#duel').hidden = true; Voice.say(s.data.defeat, s);
@@ -1117,14 +1117,27 @@ const SCREENS = ['aula', 'qd', 'travel', 'title', 'howto', 'intro', 'pause', 'co
 function show(id) { SCREENS.forEach((s) => ($('#' + s).hidden = s !== id)); if (id) { const b = $('#' + id).querySelector('.btn.primary, .btn'); if (b && !IS_TOUCH) setTimeout(() => b.focus({ preventScroll: true }), 30); } }
 function hideAll() { SCREENS.forEach((s) => ($('#' + s).hidden = true)); }
 
-function saveProgress() { if (G.explore) return; store.set(SAVE_KEY, { eraIdx: G.eraIdx, score: G.score, frags: G.frags, stats: G.stats }); }
+function saveProgress() {
+  if (G.explore) return;
+  // también se guarda lo hecho dentro de la época: a quién has vencido y si el portal quedó abierto
+  const beaten = world && world.idx === G.eraIdx ? sages.filter((s) => s.state === 'defeated').map((s) => s.data.id) : (G.beatenRestore || []);
+  store.set(SAVE_KEY, { eraIdx: G.eraIdx, score: G.score, frags: G.frags, stats: G.stats, hp: G.hp, beaten, at: Date.now() });
+}
+// al continuar: los pensadores ya vencidos de la época siguen vencidos
+function restoreBeaten(ids) {
+  if (!ids || !ids.length) return;
+  for (const s of sages) if (ids.includes(s.data.id) && s.state !== 'defeated') s.defeat();
+  const boss = sages.find((s) => s.boss);
+  if (boss && boss.state === 'defeated') { if (world.portal) world.portal.open = true; }
+  else if (boss && boss.state === 'sealed' && regularsLeft() === 0) boss.state = 'idle';
+}
 function titleScreen() {
   G.state = 'title'; unlockPointer(); Duel.close(); Voice.stop();
   $('#b-fs').hidden = !(FS_OK && IS_TOUCH); if (typeof refreshTitleExtras === 'function') refreshTitleExtras();
   $('#hud').hidden = true; $('#touch').hidden = true; $('#duel').hidden = true;
   const sv = store.get(SAVE_KEY, null);
   const bc = $('#b-continue');
-  if (sv && sv.eraIdx > 0) { bc.hidden = false; $('#b-continue-s').textContent = `Etapa ${ERAS[sv.eraIdx].num} · ${ERAS[sv.eraIdx].name}`; } else bc.hidden = true;
+  if (sv && (sv.eraIdx > 0 || (sv.beaten && sv.beaten.length) || sv.score > 0)) { bc.hidden = false; $('#b-continue-s').textContent = `Etapa ${ERAS[sv.eraIdx].num} · ${ERAS[sv.eraIdx].name}`; } else bc.hidden = true;
   const reached = sv ? sv.eraIdx : -1;
   $('#t-timeline').innerHTML = ERAS.slice(0, CAMPAIGN).map((e, i) => `<span data-i="${i}" title="Viajar a ${e.name}" class="${i < reached || G.codex.has(e.sages.find((s) => s.boss).id) ? 'done' : ''}">${e.num}</span>`).join('');
   const bg = clamp(reached, 0, 5);
@@ -1269,8 +1282,12 @@ document.querySelectorAll('#s-quality button').forEach((b) => b.addEventListener
 document.querySelectorAll('#s-invert button').forEach((b) => b.addEventListener('click', () => { G.settings.invertY = b.dataset.v === '1'; saveSettings(); syncSettings(); }));
 
 const on = (id, fn) => $(id).addEventListener('click', () => { Audio.init(); Audio.click(); fn(); });
-on('#b-new', () => { G.explore = false; G.codexRun = new Set(); G.guideMet = new Set(); startEra(0, true); });
-on('#b-continue', () => { G.explore = false; const sv = store.get(SAVE_KEY, null); if (!sv) return startEra(0, true); G.score = sv.score || 0; G.frags = sv.frags || 0; G.stats = sv.stats || { correct: 0, wrong: 0, kills: 0, time: 0 }; startEra(sv.eraIdx, false); });
+on('#b-new', () => {
+  const sv = store.get(SAVE_KEY, null);
+  if (sv && (sv.eraIdx > 0 || (sv.beaten && sv.beaten.length)) && !confirm(`Ya tienes una odisea en curso (etapa ${ERAS[sv.eraIdx].num} · ${ERAS[sv.eraIdx].name}). ¿Quieres empezar de nuevo desde el principio? Tu códice y tus logros se conservan.`)) return;
+  G.explore = false; G.codexRun = new Set(); G.guideMet = new Set(); startEra(0, true);
+});
+on('#b-continue', () => { G.explore = false; const sv = store.get(SAVE_KEY, null); if (!sv) return startEra(0, true); G.score = sv.score || 0; G.frags = sv.frags || 0; G.stats = sv.stats || { correct: 0, wrong: 0, kills: 0, time: 0 }; G.beatenRestore = sv.beaten || []; G.guideMet = G.guideMet || new Set(); if ((sv.beaten || []).length) G.guideMet.add(sv.eraIdx); startEra(sv.eraIdx, false); restoreBeaten(G.beatenRestore); if (sv.hp) G.hp = sv.hp; G.beatenRestore = null; saveProgress(); });
 on('#b-howto', () => openSub('howto'));
 on('#b-fs', () => toggleFS());
 on('#b-codex', () => openSub('codex'));
