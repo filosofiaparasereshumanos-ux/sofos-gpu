@@ -98,7 +98,7 @@ const NPCS = [
   [ // I · Mileto
     // el filósofo guía de Filosofía para Seres Humanos: lo primero que encuentra quien empieza la odisea
     { id: 'guia', name: 'El guía', role: 'Filosofía para Seres Humanos', portrait: true, greeter: true, at: [0, 25], path: [0, 0.01],
-      look: { robe: 0xefe4cc, robe2: 0x4a2352, skin: 0xd9ab8a, hair: 0x221a14, beard: 0x2a221c, hat: 'braids', acc: 'lamp' },
+      look: { robe: 0xefe4cc, robe2: 0x4a2352, skin: 0xdf9f86, hair: 0x221a14, beard: 0x2b2622, hat: 'braids', acc: 'lamp', face: 'img/face-guia.png' },
       lines: ['Bienvenido, bienvenida, al camino del filósofo. Recuerda: la filosofía es la luz que ilumina cuando todo parece oscuro… pero también es la oscuridad, cuando todo parece demasiado claro.',
         'Te invito a estudiar filosofía conmigo. ¡Comienza tu odisea!'] },
     { id: 'pescador', name: 'Damón', role: 'pescador de Mileto', at: [-17, 16], path: [0, 6], look: { robe: 0x8a7a5a, robe2: 0x3e6d8f, skin: 0xa8754f, hair: 0x3a2a20, beard: 0x3a2a20, hat: 'none', acc: 'staff' },
