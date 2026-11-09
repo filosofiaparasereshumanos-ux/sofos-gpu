@@ -36,9 +36,11 @@ const GUIDE_LINES = [
     'Ptahhotep, Zera Yacob, Maathai y Tutu te enseñarán el ubuntu: yo soy porque nosotros somos.'],
   ['Bienvenido a Sumer, entre el Tigris y el Éufrates, donde empezó la historia escrita. Aquí nacieron las primeras ciudades, la escritura en barro y las primeras leyes.',
     'Enheduanna, la primera autora con nombre, Shuruppak, Hammurabi y el rey Gilgamesh te esperan. Gilgamesh buscó vencer a la muerte; pregúntate con él qué hace valiosa una vida que se acaba.'],
+  ['Bienvenido a Bagdad, la ciudad redonda, en los siglos del islam clásico. En la Casa de la Sabiduría, sabios de muchos pueblos y religiones tradujeron a los griegos y los hicieron crecer.',
+    'Al-Kindi, Rabia de Basora, Al-Farabi y Avicena te esperan. Recuerda lo que decía Al-Kindi: la verdad hay que aceptarla venga de donde venga.'],
 ];
 // dónde espera en cada época (junto al punto de llegada, en z = 31)
-const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5] };
+const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5] };
 GUIDE_LINES.forEach((lines, i) => {
   if (!NPCS[i]) NPCS[i] = [];
   NPCS[i].unshift({ id: i === 0 ? 'guia' : 'guia-' + ERAS[i].id, name: 'El guía', role: 'Filosofía para Seres Humanos', portrait: 'guia', greeter: true,

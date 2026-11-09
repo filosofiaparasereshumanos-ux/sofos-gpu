@@ -82,6 +82,11 @@ const THEMES = [
     hemi: [0xffe0b8, 0x8a6a48, 0.74], fog: [0xe8c098, 0.0072], exposure: 1.1, stars: false,
     accent: 0x4aa8d8, enemy: { col: 0x4aa8d8, core: 0x081a28, shell: 'cube' }, lampCol: 0xffc878,
   },
+  { // XVII · Bagdad: anochecer azul con estrellas y faroles
+    sky: [0x0a1238, 0x3a4a8a, 0x8a5a4a], sunDir: [-0.3, 0.12, -0.9], sunCol: 0xa8b8ff, sunInt: 1.2, sunDisk: 0xffe8c0,
+    hemi: [0x8a9ad8, 0x4a3a30, 0.62], fog: [0x2a3060, 0.0085], exposure: 1.18, stars: true,
+    accent: 0x3ad8b0, enemy: { col: 0x3ad8b0, core: 0x04201a, shell: 'cube' }, lampCol: 0xffc070, indoor: false,
+  },
 ];
 
 const ARENA = { x0: -24, x1: 24, z0: -47, z1: 37 };
@@ -1120,6 +1125,40 @@ const ERA_BUILDERS = [
     // braseros en la vía procesional
     for (const [x, z] of [[-5, 24], [5, 24], [-5, -6], [5, -6]]) { if (!W._near(x, z, 0.3)) brazier(W, x, z, 0xff9a40, false); }
     brazier(W, -4, -34, 0xff8a30); brazier(W, 4, -34, 0xff8a30);
+  },
+  // ------------------------------------------------------------------ XVII · Bagdad
+  function (W) {
+    const fl = texTiles('xvii', 0xe8e0d0, 0x2a6a8a, 8, 0.1); fl.repeat.set(12, 20);
+    ground(W, fl, [80, 120], 0.6);
+    const r = mulberry32(117);
+    const stucco = std(0xe8d8b8, { roughness: 0.85 }); const tile = std(0x2a7a9a, { roughness: 0.35, metalness: 0.1 }); const gold = std(0xd8b048, { metalness: 0.7, roughness: 0.35 });
+    const trunk = std(0x7a5a3a, { roughness: 1 }); const frond = std(0x3a6a3a, { roughness: 0.85, flat: true });
+    // galerías de arcos apuntados a ambos lados, con faroles
+    for (const side of [-1, 1]) {
+      W.group.add(mesh(new THREE.BoxGeometry(1.2, 7, 84), stucco, side * 24, 3.5, -5)); W.colliders.push({ t: 0, x0: side * 24 - 0.7, x1: side * 24 + 0.7, z0: -47, z1: 37, h: 7 });
+      W.group.add(mesh(new THREE.BoxGeometry(5.6, 0.6, 84), stucco, side * 21.6, 6.2, -5, false, false));
+      W.group.add(mesh(new THREE.BoxGeometry(5.7, 0.25, 84), tile, side * 21.6, 5.8, -5, false, false));
+      for (let z = -44; z < 36; z += 4) {
+        W.group.add(mesh(new THREE.CylinderGeometry(0.28, 0.32, 5.6, 10), stucco, side * 19, 2.8, z)); W.colliders.push({ t: 1, x: side * 19, z, r: 0.35, h: 6 });
+        const arch = mesh(new THREE.TorusGeometry(1.75, 0.22, 6, 18, Math.PI), stucco, side * 19, 5.1, z + 2, false, false); arch.rotation.y = Math.PI / 2; arch.scale.set(1, 1.35, 1); W.group.add(arch);
+        if ((z + 44) % 8 === 0) { const l = mesh(new THREE.SphereGeometry(0.22, 10, 8), glow(0xffc070, 3), side * 19, 4.3, z + 2, false, false); W.group.add(l); }
+      }
+    }
+    // palmeras y fuente con cuatro canales (jardín)
+    const palm = (x, z, h) => { const g = new THREE.Group(); g.position.set(x, 0, z);
+      for (let k = 0; k < 6; k++) g.add(mesh(new THREE.CylinderGeometry(0.2 - k * 0.012, 0.24 - k * 0.012, h / 6, 7), trunk, Math.sin(k * 0.6) * 0.12, h / 12 + (k * h) / 6, 0, false, false));
+      for (let k = 0; k < 8; k++) { const a = (k / 8) * TAU; const f = mesh(new THREE.ConeGeometry(0.32, 3, 4), frond, Math.cos(a) * 1.1, h + 0.2, Math.sin(a) * 1.1, false, false); f.rotation.set(Math.sin(a) * 1.2, 0, -Math.cos(a) * 1.2); f.scale.set(1, 1, 0.25); g.add(f); }
+      W.group.add(g); W.colliders.push({ t: 1, x, z, r: 0.32, h }); };
+    for (let i = 0; i < 14; i++) { const x = (r() < 0.5 ? -1 : 1) * (14.5 + r() * 2.5), z = -42 + r() * 74; if (!W._near(x, z, 2.2)) palm(x, z, 5 + r() * 2); }
+    if (!W._near(0, 9, 3.5)) { W.group.add(mesh(new THREE.CylinderGeometry(2.6, 2.8, 0.7, 8), tile, 0, 0.35, 9)); W.group.add(mesh(new THREE.CylinderGeometry(2.2, 2.2, 0.1, 8), new THREE.MeshStandardMaterial({ color: 0x3a8aaa, roughness: 0.05, metalness: 0.5, emissive: 0x0a3040, emissiveIntensity: 0.4 }), 0, 0.72, 9, false, false)); W.colliders.push({ t: 1, x: 0, z: 9, r: 2.8, h: 0.8 }); W.emitters.push({ x: 0, y: 1.6, z: 9, col: 0xbfeaff, rate: 18, acc: 0, kind: 'water' }); }
+    // cúpulas y alminar al fondo: la ciudad redonda
+    { const g = new THREE.Group(); g.position.set(0, 0, -92);
+      for (const [x, z, s] of [[0, 0, 14], [-22, 8, 8], [22, 8, 8]]) { g.add(mesh(new THREE.CylinderGeometry(s, s, s * 0.9, 16), stucco, x, s * 0.45, z, false, false)); g.add(mesh(new THREE.SphereGeometry(s, 20, 12, 0, TAU, 0, Math.PI / 2), tile, x, s * 0.9, z, false, false)); g.add(mesh(new THREE.ConeGeometry(0.6, 3, 8), gold, x, s * 1.9 + 1.5, z, false, false)); }
+      g.add(mesh(new THREE.CylinderGeometry(1.6, 2.2, 34, 12), stucco, 32, 17, -6, false, false)); g.add(mesh(new THREE.CylinderGeometry(2.6, 2.6, 1, 12), tile, 32, 30, -6, false, false)); g.add(mesh(new THREE.ConeGeometry(1.8, 5, 12), gold, 32, 36.5, -6, false, false));
+      W.group.add(g); }
+    // faroles en la vía central
+    for (const [x, z] of [[-5, 24], [5, 24], [-5, -6], [5, -6]]) { if (!W._near(x, z, 0.3)) brazier(W, x, z, 0xffb050, false); }
+    brazier(W, -4, -34, 0xffb050); brazier(W, 4, -34, 0xffb050);
   },
 ];
 

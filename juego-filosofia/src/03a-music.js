@@ -37,6 +37,8 @@ const SONGS = [
   { bpm: 104, root: 45, scale: [0, 2, 4, 7, 9, 12, 14], prog: [0, 3, 4, 3], pad: 'warm', arp: 'lyre', arpPat: [0, 2, 1, 2, 3, 2, 1, 2], lead: 'flute', kit: 'frame', seed: 171 },
   // XVI · Sumer: la lira de Ur y el tambor de marco, modo frigio
   { bpm: 80, root: 48, scale: [0, 1, 3, 5, 7, 8, 10], prog: [0, 6, 5, 6], pad: 'warm', arp: 'lyre', arpPat: [0, 2, 1, 3, 0, 2, 3, 1], lead: 'aulos', kit: 'frame', seed: 181 },
+  // XVII · Bagdad: laúd y ney, maqam hiyaz
+  { bpm: 88, root: 50, scale: [0, 1, 4, 5, 7, 8, 10], prog: [0, 5, 6, 0], pad: 'warm', arp: 'lute', arpPat: [0, 1, 2, 1, 3, 2, 1, 2], lead: 'aulos', kit: 'tambourine', seed: 191 },
 ];
 // volumen de cada capa según el modo
 const MIX = {
@@ -217,6 +219,7 @@ const Music = {
 // La música nueva sustituye a la antigua
 // ---- banda sonora grabada de cada época (Suno, en audio/m-<época>.mp3)
 // Suena en la exploración y el menú; en los debates baja y entra la música de tensión.
+const TRACK_PAIRS = new Set([0, 1, 2, 3, 4, 5]); // épocas con segunda canción (audio/m-<i>b.mp3)
 const Track = {
   el: null, idx: -1, ready: false, vol: 0, lastT: 0,
   play(idx) {
@@ -226,7 +229,11 @@ const Track = {
     const el = document.createElement('audio'); el.loop = true; el.preload = 'auto'; el.volume = 0; this.vol = 0; this.el = el;
     el.addEventListener('playing', () => { if (this.el === el) this.ready = true; });
     el.addEventListener('error', () => { if (this.el === el) { this.ready = false; this.el = null; } });
-    el.src = 'audio/m-' + idx + '.mp3';
+    // las épocas con dos canciones las alternan: al terminar una, empieza la otra
+    const pair = TRACK_PAIRS.has(idx) ? ['audio/m-' + idx + '.mp3', 'audio/m-' + idx + 'b.mp3'] : null;
+    if (pair) { el.loop = false; let k = Math.random() < 0.5 ? 0 : 1; el.src = pair[k];
+      el.addEventListener('ended', () => { if (this.el !== el) return; k = 1 - k; el.src = pair[k]; this.resume(); }); }
+    else el.src = 'audio/m-' + idx + '.mp3';
     // en iOS el volumen del elemento es fijo: lo controlamos con una ganancia de WebAudio
     this.gain = null; const c = Audio.ctx;
     if (c && location.protocol !== 'file:') { try { const src = c.createMediaElementSource(el); const g = c.createGain(); g.gain.value = 0; src.connect(g); g.connect(Audio.master || c.destination); this.gain = g; } catch (e) { this.gain = null; } }
