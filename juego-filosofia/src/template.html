@@ -447,6 +447,9 @@ input[type=range] { width: 100%; accent-color: var(--gold); }
 }
 
 /* ---------- título: botones secundarios ---------- */
+.brand-by { display: block; margin-top: 16px; font-size: 13px; color: rgba(244,234,214,.6); text-decoration: none; letter-spacing: .3px; }
+.brand-by b { color: #e9c77a; font-weight: 500; }
+.install-b { border-color: rgba(233,199,122,.7) !important; color: #e9c77a !important; }
 .minis { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 4px; margin-top: 18px; }
 .mini-b { font-family: var(--display); letter-spacing: 0.12em; font-size: 0.78rem; text-transform: uppercase; padding: 8px 12px; background: rgba(13,12,18,0.45); border: 1px solid rgba(214,168,74,0.22); color: var(--parchment); cursor: pointer; }
 .mini-b:hover { border-color: var(--gold); }
@@ -634,7 +637,9 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="mini-b" id="b-howto">Cómo jugar</button>
         <button class="mini-b" id="b-settings">Ajustes</button>
         <button class="mini-b" id="b-fs" hidden>Pantalla completa</button>
+        <button class="mini-b install-b" id="b-install" hidden>Instalar app</button>
       </div>
+      <a class="brand-by" href="https://filosofiaparasereshumanos.com" target="_blank" rel="noopener">Una propuesta de <b>Filosofía para Seres Humanos</b></a>
 
     </div>
   </section>

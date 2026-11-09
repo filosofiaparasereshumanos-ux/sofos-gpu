@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 const here = dirname(fileURLToPath(import.meta.url));
 const read = (p) => readFileSync(join(here, p), 'utf8');
 
-function page(template, code, description) {
+function page(template, code, description, extraHead = '') {
   const fragment = template.replace('/*__GAME__*/', () => code);
   const cut = fragment.search(/<canvas id="bg"|<div id="app">/);
   const head = fragment.slice(0, cut), body = fragment.slice(cut);
@@ -18,7 +18,7 @@ function page(template, code, description) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="${description}">
-${head}</head>
+${extraHead}${head}</head>
 <body>
 ${body}</body>
 </html>
@@ -36,7 +36,22 @@ console.log(`cartas.html (duelo de cartas): ${(c.full.length / 1024).toFixed(0)}
 // --- Aventura 3D (versión anterior)
 const parts3d = readdirSync(join(here, 'src')).filter((f) => /^\d\d[a-z]?-.*\.js$/.test(f)).sort().map((f) => 'src/' + f);
 let narr = '{}'; try { narr = read('audio/index.json'); } catch (e) { console.log('(sin audio/index.json: solo voz del sistema)'); }
-const a = page(read('src/template.html'), `const NARR_INDEX = ${narr};\n` + join_(parts3d), 'Aventura 3D de filosofía en primera persona: de los presocráticos a Kant.');
+// Cabecera de la versión web: app instalable y vista previa al compartir el enlace
+const APP_HEAD = `<meta name="theme-color" content="#120d07">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Odisea">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Odisea de la Razón · ¿Te atreves a pensar?">
+<meta property="og:description" content="Conversa con Sócrates, Hipatia, Sor Juana y 65 pensadores más, desafíalos a un debate y viaja por 15 mundos, de Tales a nuestros días. Gratis, en el navegador.">
+<meta property="og:image" content="https://filosofiaparasereshumanos-ux.github.io/sofos-gpu/juego-filosofia/marketing/portada-titulo.jpg">
+<meta name="twitter:card" content="summary_large_image">
+`;
+const a = page(read('src/template.html'), `const NARR_INDEX = ${narr};\n` + join_(parts3d), 'Conversa con Sócrates, Hipatia, Sor Juana y 65 pensadores más, desafíalos a un debate y viaja por 15 mundos, de Tales a nuestros días. Gratis, en el navegador.', APP_HEAD);
 writeFileSync(join(here, 'index.html'), a.full);
 console.log(`index.html (viaje 3D): ${(a.full.length / 1024).toFixed(0)} KB`);
 

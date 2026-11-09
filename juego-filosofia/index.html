@@ -3,7 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Aventura 3D de filosofía en primera persona: de los presocráticos a Kant.">
+<meta name="description" content="Conversa con Sócrates, Hipatia, Sor Juana y 65 pensadores más, desafíalos a un debate y viaja por 15 mundos, de Tales a nuestros días. Gratis, en el navegador.">
+<meta name="theme-color" content="#120d07">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Odisea">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Odisea de la Razón · ¿Te atreves a pensar?">
+<meta property="og:description" content="Conversa con Sócrates, Hipatia, Sor Juana y 65 pensadores más, desafíalos a un debate y viaja por 15 mundos, de Tales a nuestros días. Gratis, en el navegador.">
+<meta property="og:image" content="https://filosofiaparasereshumanos-ux.github.io/sofos-gpu/juego-filosofia/marketing/portada-titulo.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <title>Odisea de la Razón</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -453,6 +466,9 @@ input[type=range] { width: 100%; accent-color: var(--gold); }
 }
 
 /* ---------- título: botones secundarios ---------- */
+.brand-by { display: block; margin-top: 16px; font-size: 13px; color: rgba(244,234,214,.6); text-decoration: none; letter-spacing: .3px; }
+.brand-by b { color: #e9c77a; font-weight: 500; }
+.install-b { border-color: rgba(233,199,122,.7) !important; color: #e9c77a !important; }
 .minis { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 4px; margin-top: 18px; }
 .mini-b { font-family: var(--display); letter-spacing: 0.12em; font-size: 0.78rem; text-transform: uppercase; padding: 8px 12px; background: rgba(13,12,18,0.45); border: 1px solid rgba(214,168,74,0.22); color: var(--parchment); cursor: pointer; }
 .mini-b:hover { border-color: var(--gold); }
@@ -642,7 +658,9 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="mini-b" id="b-howto">Cómo jugar</button>
         <button class="mini-b" id="b-settings">Ajustes</button>
         <button class="mini-b" id="b-fs" hidden>Pantalla completa</button>
+        <button class="mini-b install-b" id="b-install" hidden>Instalar app</button>
       </div>
+      <a class="brand-by" href="https://filosofiaparasereshumanos.com" target="_blank" rel="noopener">Una propuesta de <b>Filosofía para Seres Humanos</b></a>
 
     </div>
   </section>
@@ -9727,6 +9745,26 @@ on('#ps-copy', () => copyText($('#au-sheettext').value, $('#ps-copy'), $('#au-sh
 on('#ps-close', () => { $('#print-wrap').hidden = true; });
 ['#au-code', '#au-name', '#au-title', '#au-subs'].forEach((s) => $(s).addEventListener('keydown', (e) => e.stopPropagation()));
 refreshAulaButton();
+
+// ---- src/06b-app.js ----
+// ============================================================================
+//  APP INSTALABLE (solo en la versión web publicada en un dominio propio)
+// ============================================================================
+const AppInstall = {
+  evt: null,
+  web: (location.protocol === 'https:' || location.hostname === 'localhost') && window.top === window.self && !/claude/i.test(location.hostname),
+  ios: /iPhone|iPad|iPod/i.test(navigator.userAgent) && !navigator.standalone,
+};
+if (AppInstall.web) {
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+  window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); AppInstall.evt = e; $('#b-install').hidden = false; });
+  window.addEventListener('appinstalled', () => { $('#b-install').hidden = true; });
+  if (AppInstall.ios) $('#b-install').hidden = false;
+}
+on('#b-install', async () => {
+  if (AppInstall.evt) { AppInstall.evt.prompt(); await AppInstall.evt.userChoice.catch(() => {}); AppInstall.evt = null; $('#b-install').hidden = true; return; }
+  if (AppInstall.ios) toast('En iPhone: toca el botón Compartir y luego «Agregar a inicio».');
+});
 
 </script>
 </body>
