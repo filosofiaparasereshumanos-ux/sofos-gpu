@@ -370,6 +370,55 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .au-tbl td.pct { font-weight: 700; color: #ffb36a; }
 .au-tbl td.pct.mid { color: var(--gold-bright); }
 .au-tbl td.pct.full { color: #8fe08a; }
+.quick.q4 { grid-template-columns: repeat(4, 1fr); width: min(480px, 100%); gap: 8px; }
+.quick.q4 .qk span { font-size: 0.84rem; } .quick.q4 .qk small { font-size: 0.66rem; }
+@media (max-width: 360px) { .quick.q4 { grid-template-columns: repeat(2, 1fr); } }
+#sala .sl-wrap { width: min(560px, 100%); margin: 0 auto; padding: 16px; }
+#sala.sl-big .sl-wrap { width: min(1200px, 100%); }
+.sl-card { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; margin: 12px 0; background: rgba(255,255,255,0.03); }
+.sl-card h3 { font-family: var(--display); font-weight: normal; color: var(--gold); margin: 0 0 8px; letter-spacing: 0.05em; }
+#sl-code { text-transform: uppercase; letter-spacing: 0.3em; font-size: 1.3rem; text-align: center; }
+.sl-net { text-align: center; background: rgba(200,80,60,0.25); border-radius: 10px; padding: 6px; }
+.sl-how { text-align: center; font-size: clamp(1rem, 2vw, 1.5rem); margin-top: 3vh; }
+.sl-how b { color: var(--gold); font-weight: normal; }
+.sl-bigcode { text-align: center; font-family: var(--display); font-size: clamp(4rem, 14vw, 10rem); letter-spacing: 0.18em; color: #fff3d0; text-shadow: 0 0 40px rgba(255,211,106,0.5); line-height: 1.1; }
+.sl-pcount { text-align: center; font-size: 1.2rem; opacity: 0.85; }
+.sl-players { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 10px 0 18px; }
+.sl-chip { border: 1px solid var(--gold); background: rgba(214,168,74,0.12); color: inherit; border-radius: 999px; padding: 6px 14px; font: inherit; font-size: 1.05rem; animation: sl-pop 0.35s ease-out; cursor: pointer; }
+@keyframes sl-pop { from { transform: scale(0.4); opacity: 0; } }
+.sl-qtop { display: flex; justify-content: space-between; gap: 10px; font-size: 1.05rem; opacity: 0.9; flex-wrap: wrap; }
+.sl-tnum { font-family: var(--display); font-size: 1.8rem; color: var(--gold); }
+.sl-tbar { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.1); overflow: hidden; margin: 6px 0 12px; }
+.sl-tbar i { display: block; height: 100%; background: linear-gradient(90deg, #b8924a, #ffd36a); transform-origin: left; }
+.sl-q { font-family: var(--display); font-weight: normal; text-align: center; font-size: clamp(1.4rem, 3.4vw, 2.8rem); line-height: 1.2; margin: 10px 0 18px; }
+.sl-ans { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.sl-a { position: relative; display: flex; align-items: center; gap: 12px; padding: 16px 18px; border-radius: 14px; background: var(--c); color: #fff; font-size: clamp(1rem, 2.2vw, 1.6rem); min-height: 70px; transition: opacity 0.3s, transform 0.3s; }
+.sl-a b { font-family: var(--display); font-size: 1.6em; opacity: 0.9; }
+.sl-a i { margin-left: auto; font-style: normal; font-size: 1.4em; font-weight: 700; }
+.sl-a.no { opacity: 0.28; } .sl-a.ok { box-shadow: 0 0 0 4px #fff, 0 0 30px rgba(255,255,255,0.5); transform: scale(1.03); }
+.sl-count { text-align: center; opacity: 0.8; margin-top: 10px; }
+.sl-top { margin: 12px auto 0; max-width: 520px; }
+.sl-top h3 { font-family: var(--display); font-weight: normal; color: var(--gold); text-align: center; margin: 0 0 6px; }
+.sl-top div, .sl-rest div { display: grid; grid-template-columns: 2.2em 1fr auto; gap: 8px; padding: 6px 10px; border-bottom: 1px solid var(--line); font-size: 1.15rem; }
+.sl-top b, .sl-rest b { color: var(--gold); font-weight: normal; } .sl-top em, .sl-rest em { font-style: normal; color: #ffe0a0; }
+.sl-podium { display: flex; justify-content: center; align-items: flex-end; gap: 12px; margin: 20px 0; }
+.sl-pod { width: min(30%, 220px); text-align: center; animation: sl-pop 0.6s ease-out; }
+.sl-pod span { display: block; font-size: clamp(1rem, 2.4vw, 1.8rem); } .sl-pod em { display: block; font-style: normal; color: #ffe0a0; margin-bottom: 6px; }
+.sl-pod b { display: block; border-radius: 12px 12px 0 0; font-family: var(--display); font-weight: normal; font-size: 3rem; color: #2a1a08; padding-top: 10px; }
+.sl-pod.p1 b { height: 180px; background: linear-gradient(#ffe08a, #c8962a); } .sl-pod.p2 b { height: 130px; background: linear-gradient(#e8e8f0, #9a9aa8); } .sl-pod.p3 b { height: 95px; background: linear-gradient(#e8b08a, #a8683a); }
+.sl-rest { max-width: 520px; margin: 0 auto 10px; }
+.sl-me { text-align: center; font-family: var(--display); font-size: 2.4rem; color: var(--gold); margin-top: 18vh; }
+.sl-pnum { text-align: center; opacity: 0.8; margin: 4px 0; }
+.sl-pq { text-align: center; font-size: 1.15rem; line-height: 1.35; margin: 8px 0 14px; }
+.sl-pans { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.sl-pa { display: flex; align-items: center; gap: 12px; text-align: left; border: 0; border-radius: 14px; background: var(--c); color: #fff; font: inherit; font-size: 1.05rem; padding: 14px 16px; min-height: 62px; cursor: pointer; transition: opacity 0.2s, transform 0.2s; }
+.sl-pa b { font-family: var(--display); font-size: 1.5em; }
+.sl-pa.dim { opacity: 0.3; } .sl-pa.pick { box-shadow: 0 0 0 3px #fff; transform: scale(1.02); }
+.sl-pstate { text-align: center; margin-top: 12px; color: #ffe0a0; }
+.sl-pres { text-align: center; margin-top: 16vh; padding: 26px 16px; border-radius: 18px; }
+.sl-pres.ok { background: rgba(58,168,96,0.22); box-shadow: inset 0 0 0 2px #3aa860; } .sl-pres.no { background: rgba(216,80,74,0.2); box-shadow: inset 0 0 0 2px #d8504a; }
+.sl-pres b { display: block; font-family: var(--display); font-weight: normal; font-size: 2.2rem; }
+.sl-pres span { display: block; font-size: 1.3rem; margin-top: 8px; } .sl-pres em { display: block; font-style: normal; opacity: 0.85; margin-top: 10px; }
 #pmap { position: absolute; inset: 0; z-index: 41; background: radial-gradient(ellipse at top, #2a2030, #0d0c12); display: flex; flex-direction: column; padding: max(14px, var(--sat)) max(22px, var(--sar)) max(14px, var(--sab)) max(22px, var(--sal)); gap: 14px; overflow-y: auto; font-size: clamp(16px, 1.6vw, 26px); }
 .pm-top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .pm-top > b { font-family: var(--display); font-weight: normal; color: var(--gold); font-size: 1.4em; flex: 1 1 260px; }
@@ -808,9 +857,10 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <div class="timeline" id="t-timeline" hidden></div>
       <button class="btn play-btn" id="b-play"><span class="play-ico" aria-hidden="true">▶</span><span class="play-t">Jugar</span><small id="b-play-s">21 épocas · 96 pensadoras y pensadores</small></button>
       <button class="btn cont-btn" id="b-continue" hidden>Continuar mi odisea<small id="b-continue-s"></small></button>
-      <div class="quick">
+      <div class="quick q4">
         <button class="qk oracle-btn" id="b-oracle"><b>☀</b><span>Oráculo de hoy</span><small id="b-oracle-s">10 preguntas</small></button>
         <button class="qk reto-btn" id="b-reto"><b>⚔</b><span>Reta a un amigo</span><small>Mismas preguntas</small></button>
+        <button class="qk sala-btn" id="b-sala"><b>◉</b><span>En vivo</span><small>Toda la clase</small></button>
         <button class="qk aula-btn" id="b-aula"><b>✎</b><span>Modo aula</span><small id="b-aula-s">Docentes</small></button>
       </div>
       <button class="more-b" id="b-more" aria-expanded="false">Más opciones ▾</button>
@@ -989,6 +1039,77 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="btn primary" id="cu-copy">Copiar para enviar a mi docente</button>
         <button class="btn" id="cu-dl">Descargar (.txt)</button>
         <button class="btn ghost" data-back>Volver</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="sala" class="screen dim" hidden>
+    <div class="sl-wrap">
+      <p class="sl-net" id="sl-net" hidden></p>
+      <div data-sv="home">
+        <div class="eyebrow" style="text-align:center">Trivia filosófica en vivo</div>
+        <h2 class="era-name" style="text-align:center">En vivo</h2>
+        <p class="story" id="sl-off" hidden>El juego en vivo funciona en la versión web: filosofiaparasereshumanos-ux.github.io/sofos-gpu</p>
+        <div id="sl-home">
+          <div class="sl-card">
+            <h3>Unirme a una sala</h3>
+            <div class="au-form"><input id="sl-code" maxlength="4" placeholder="Código (4 letras)" autocomplete="off" autocapitalize="characters" aria-label="Código de la sala">
+            <input id="sl-name" maxlength="16" placeholder="Tu apodo" autocomplete="off" aria-label="Tu apodo"></div>
+            <div class="btns"><button class="btn primary" id="sl-join">Entrar a la sala</button></div>
+          </div>
+          <div class="sl-card">
+            <h3>Crear una sala</h3>
+            <p class="qd-note">Para docentes o para jugar con amigos: proyecta esta pantalla y que cada uno se una desde su celular. Solo se usan apodos: no hay chat ni se guardan datos.</p>
+            <div class="au-form au-inline"><label>Preguntas de <select id="sl-era"></select></label></div>
+            <div class="au-form au-inline"><label>Preguntas <select id="sl-n"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></label><label>Segundos <select id="sl-t"><option>15</option><option selected>20</option><option>30</option></select></label></div>
+            <div class="btns"><button class="btn primary" id="sl-host">Crear sala</button></div>
+          </div>
+        </div>
+        <div class="btns"><button class="btn ghost sl-leave">Volver</button></div>
+      </div>
+      <div data-sv="lobby" hidden>
+        <p class="sl-how">Entra en <b id="sl-link"></b> o toca «En vivo» en el juego y escribe el código:</p>
+        <div class="sl-bigcode" id="sl-bigcode"></div>
+        <p class="sl-pcount" id="sl-pcount"></p>
+        <div class="sl-players" id="sl-players"></div>
+        <div class="btns"><button class="btn primary" id="sl-start" disabled>Empezar el juego</button><button class="btn ghost sl-leave">Cerrar la sala</button></div>
+        <p class="qd-note" style="text-align:center">Toca un apodo para sacar a alguien de la sala.</p>
+      </div>
+      <div data-sv="q" hidden>
+        <div class="sl-qtop"><span id="sl-qnum"></span><span id="sl-qwho"></span><span class="sl-tnum" id="sl-tnum"></span></div>
+        <div class="sl-tbar"><i id="sl-tbar"></i></div>
+        <h2 class="sl-q" id="sl-q"></h2>
+        <div class="sl-ans" id="sl-ans"></div>
+        <p class="sl-count" id="sl-count"></p>
+        <p class="pj-exp" id="sl-exp" hidden></p>
+        <div class="sl-top" id="sl-top" hidden></div>
+        <div class="btns"><button class="btn primary" id="sl-reveal">Mostrar la respuesta</button><button class="btn primary" id="sl-next" hidden>Siguiente pregunta</button></div>
+      </div>
+      <div data-sv="end" hidden>
+        <h2 class="era-name" style="text-align:center">¡Podio!</h2>
+        <div class="sl-podium" id="sl-podium"></div>
+        <div class="sl-rest" id="sl-rest"></div>
+        <div class="btns"><button class="btn primary" id="sl-again">Jugar otra vez</button><button class="btn ghost sl-leave">Cerrar la sala</button></div>
+      </div>
+      <div data-sv="wait" hidden>
+        <div class="sl-me" id="sl-wme"></div>
+        <p class="story" id="sl-wmsg" style="text-align:center"></p>
+        <div class="btns"><button class="btn ghost sl-leave">Salir</button></div>
+      </div>
+      <div data-sv="pq" hidden>
+        <p class="sl-pnum" id="sl-pnum"></p>
+        <div class="sl-tbar"><i id="sl-ptbar"></i></div>
+        <p class="sl-pq" id="sl-pq"></p>
+        <div class="sl-pans" id="sl-pans"></div>
+        <p class="sl-pstate" id="sl-pstate"></p>
+      </div>
+      <div data-sv="prev" hidden>
+        <div class="sl-pres" id="sl-pres"><b></b><span></span><em></em></div>
+        <p class="qd-note" style="text-align:center">Espera la siguiente pregunta…</p>
+      </div>
+      <div data-sv="pend" hidden>
+        <div class="sl-pres ok"><b id="sl-fpos"></b><span id="sl-fpts"></span><em id="sl-ftop"></em></div>
+        <div class="btns"><button class="btn ghost sl-leave">Salir</button></div>
       </div>
     </div>
   </section>
@@ -12292,7 +12413,7 @@ function updateEpojeHud() {
 // ============================================================================
 //  FLUJO DE PANTALLAS
 // ============================================================================
-const SCREENS = ['cuaderno', 'reto', 'cuenta', 'aula', 'qd', 'travel', 'title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept', 'oracle', 'oracle-end', 'fame', 'logros'];
+const SCREENS = ['sala', 'cuaderno', 'reto', 'cuenta', 'aula', 'qd', 'travel', 'title', 'howto', 'intro', 'pause', 'codex', 'settings', 'gameover', 'ending', 'concept', 'oracle', 'oracle-end', 'fame', 'logros'];
 function show(id) { SCREENS.forEach((s) => ($('#' + s).hidden = s !== id)); if (id) { const b = $('#' + id).querySelector('.btn.primary, .btn'); if (b && !IS_TOUCH) setTimeout(() => b.focus({ preventScroll: true }), 30); } }
 function hideAll() { SCREENS.forEach((s) => ($('#' + s).hidden = true)); }
 
@@ -13105,6 +13226,7 @@ const ACH = [
   { id: 'tranvia', i: '⇄', n: 'El dilema del tranvía', d: 'Decide en la palanca y en el puente, y descubre qué principio usas.' },
   { id: 'china', i: '字', n: 'La habitación china', d: 'Responde tres tarjetas en chino sin saber chino.' },
   { id: 'maquina', i: '◎', n: 'La máquina de experiencias', d: 'Decide si te conectarías a la vida perfecta.' },
+  { id: 'envivo', i: '◉', n: 'Campeón en vivo', d: 'Gana una partida en vivo con tu clase o tus amigos.' },
   { id: 'escalera', i: '⌇', n: 'Tirar la escalera', d: 'Sube la escalera de Wittgenstein y tírala al llegar arriba.' },
   { id: 'salida', i: '☀', n: 'Fuera de la caverna', d: 'Baja hasta los prisioneros de la caverna de Platón y vuelve a salir a la luz.' },
   { id: 'dialogo', i: '⇄', n: 'Diálogo socrático', d: 'Supera un diálogo dando buenas razones y respondiendo a una objeción.' },
@@ -13436,7 +13558,7 @@ on('#b-logros', () => { openSub('logros'); renderLogros(); });
 // ============================================================================
 //  ARRANQUE
 // ============================================================================
-boot().then(() => { refreshTitleExtras(); Fame.init(); if (typeof Reto !== 'undefined') Reto.boot(); });
+boot().then(() => { refreshTitleExtras(); Fame.init(); if (typeof Reto !== 'undefined') Reto.boot(); if (typeof Sala !== 'undefined') Sala.boot(); });
 
 // ---- src/05b-quediria.js ----
 // ============================================================================
@@ -14462,6 +14584,214 @@ window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') PMAPA.close(); else if (e.key === 'ArrowRight') PMAPA.go(1); else if (e.key === 'ArrowLeft') PMAPA.go(-1); else return;
   e.preventDefault(); e.stopPropagation();
 }, true);
+
+// ---- src/06j-sala.js ----
+// ============================================================================
+//  EN VIVO: trivia filosófica para toda la clase (o un grupo de amigos).
+//  Quien crea la sala la proyecta; los demás se unen desde su celular con un
+//  código de 4 letras y un apodo. Sin chat, sin cuentas y sin datos personales:
+//  los mensajes viajan por un canal de Supabase Realtime y no se guardan.
+// ============================================================================
+const RT = {
+  ws: null, topic: '', ref: 0, hb: null, handlers: {}, joined: false, want: false, tries: 0, onStatus: null,
+  connect(room, handlers, onStatus) {
+    this.close(); this.topic = 'realtime:odisea-sala-' + room; this.handlers = handlers; this.onStatus = onStatus; this.want = true; this.tries = 0; this.open();
+  },
+  open() {
+    const K = CUENTA_CFG.key; let ws;
+    try { ws = new WebSocket(CUENTA_CFG.url.replace(/^http/, 'ws') + '/realtime/v1/websocket?apikey=' + K + '&vsn=1.0.0'); } catch (e) { this.status('error'); return; }
+    this.ws = ws; this.joined = false;
+    ws.onopen = () => { this.push('phx_join', { config: { broadcast: { self: false, ack: false }, presence: { key: '' } }, access_token: K }, this.topic); };
+    ws.onmessage = (m) => {
+      let j; try { j = JSON.parse(m.data); } catch (e) { return; }
+      if (j.event === 'phx_reply' && j.topic === this.topic && !this.joined) { if (j.payload && j.payload.status === 'ok') { this.joined = true; this.tries = 0; this.status('ok'); } else this.status('error'); return; }
+      if (j.event === 'broadcast' && j.payload) { const f = this.handlers[j.payload.event]; if (f) try { f(j.payload.payload || {}); } catch (e) { console.warn(e); } }
+    };
+    ws.onclose = () => { clearInterval(this.hb); this.joined = false; if (!this.want) return; this.status('reconnect'); if (this.tries++ < 8) setTimeout(() => this.want && this.open(), 1200 * this.tries); else this.status('error'); };
+    ws.onerror = () => {};
+    clearInterval(this.hb); this.hb = setInterval(() => this.push('heartbeat', {}, 'phoenix'), 25000);
+  },
+  status(s) { if (this.onStatus) this.onStatus(s); },
+  push(event, payload, topic = this.topic) { if (this.ws && this.ws.readyState === 1) this.ws.send(JSON.stringify({ topic, event, payload, ref: String(++this.ref) })); },
+  send(event, payload) { if (!this.joined) return false; this.push('broadcast', { type: 'broadcast', event, payload }); return true; },
+  close() { this.want = false; clearInterval(this.hb); if (this.ws) try { this.ws.close(); } catch (e) { /* nada */ } this.ws = null; this.joined = false; },
+};
+
+const SALA_COLORS = ['#d8504a', '#3a8ad8', '#e0b030', '#3aa860'];
+const SALA_BAD = /\b(puta|puto|mierda|verga|culo|weon|huevon|pene|sexo|concha|idiota|estupid[oa]|maric[oó]n|pendej[oa]|imbecil|tont[oa])\b/;
+const Sala = {
+  role: null, code: '', id: '', name: '', view: '', P: new Map(), qs: [], i: -1, cur: null, timer: null, left: 0, T: 20,
+  ok() { return typeof AppInstall !== 'undefined' && AppInstall.web && typeof WebSocket !== 'undefined'; },
+  rid(n, abc = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789') { const r = new Uint32Array(n); crypto.getRandomValues(r); return [...r].map((x) => abc[x % abc.length]).join(''); },
+  clean(n) {
+    let v = String(n || '').replace(/[^\p{L}\p{N} ]/gu, '').replace(/\s+/g, ' ').trim().slice(0, 16);
+    const plain = v.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    if (v.length < 2 || SALA_BAD.test(plain)) v = '';
+    return v;
+  },
+  // ---------------------------------------------------------------- pantallas
+  open(code) {
+    G.prevScreen = 'title'; show('sala'); this.role = null;
+    $('#sl-off').hidden = this.ok(); $('#sl-home').hidden = !this.ok(); this.setView('home');
+    const al = (typeof Fame !== 'undefined' && Fame.alias()) || ''; if (al && !$('#sl-name').value) $('#sl-name').value = this.clean(al);
+    if (code) $('#sl-code').value = code;
+    const sel = $('#sl-era'); if (!sel.options.length) { sel.add(new Option('Toda la odisea (mezcla)', '-1')); CHRONO.forEach((ei) => sel.add(new Option(`${ERAS[ei].num} · ${ERAS[ei].name}`, String(ei)))); }
+  },
+  setView(v) {
+    this.view = v; document.querySelectorAll('#sala [data-sv]').forEach((el) => (el.hidden = el.dataset.sv !== v));
+    $('#sala').classList.toggle('sl-big', this.role === 'host' && v !== 'home');
+  },
+  leave() {
+    clearInterval(this.timer); if (this.role === 'host') RT.send('cerrada', {}); RT.close(); this.role = null; this.P.clear();
+    try { if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(() => {}); } catch (e) { /* nada */ }
+    show('title');
+  },
+  net(s) { const el = $('#sl-net'); el.hidden = s === 'ok'; el.textContent = s === 'reconnect' ? 'Reconectando…' : s === 'error' ? 'Sin conexión con la sala. Revisa internet e inténtalo otra vez.' : ''; },
+  // ---------------------------------------------------------------- anfitrión
+  host() {
+    this.role = 'host'; this.code = this.rid(4); this.P.clear(); this.i = -1;
+    RT.connect(this.code, { hola: (d) => this.hHola(d), resp: (d) => this.hResp(d) }, (s) => this.net(s));
+    $('#sl-bigcode').textContent = this.code; $('#sl-link').textContent = GAME_URL.replace(/^https?:\/\//, '') + '?sala=' + this.code;
+    this.setView('lobby'); this.paintLobby();
+    try { if (document.documentElement.requestFullscreen && !document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {}); } catch (e) { /* nada */ }
+  },
+  ranking() { return [...this.P.entries()].sort((a, b) => b[1].pts - a[1].pts || a[1].name.localeCompare(b[1].name, 'es')); },
+  roster() { return [...this.P.values()].map((p) => p.name); },
+  hHola(d) {
+    const id = String(d.id || '').slice(0, 12); if (!/^[A-Za-z0-9]{6,12}$/.test(id)) return;
+    let p = this.P.get(id);
+    if (!p) {
+      if (this.P.size >= 60) return; let name = this.clean(d.name) || 'Jugador ' + (this.P.size + 1);
+      const taken = new Set(this.roster().map((n) => n.toLowerCase())); let k = 2; const base = name; while (taken.has(name.toLowerCase())) name = base.slice(0, 13) + ' ' + k++;
+      p = { name, pts: 0, streak: 0 }; this.P.set(id, p); Audio.pickup && Audio.pickup();
+    }
+    RT.send('bien', { id, name: p.name, n: this.P.size });
+    if (this.cur && this.view === 'q') RT.send('q', { ...this.qPayload(), solo: id });
+    if (this.view === 'lobby') this.paintLobby(); else this.paintCount();
+  },
+  paintLobby() {
+    const box = $('#sl-players'); box.innerHTML = '';
+    for (const [id, p] of this.P) { const b = document.createElement('button'); b.className = 'sl-chip'; b.textContent = p.name; b.title = 'Tocar para sacar de la sala';
+      b.addEventListener('click', () => { if (!confirm(`¿Sacar a «${p.name}» de la sala?`)) return; this.P.delete(id); RT.send('fuera', { id }); this.paintLobby(); }); box.appendChild(b); }
+    $('#sl-pcount').textContent = this.P.size ? `${this.P.size} ${this.P.size === 1 ? 'jugador' : 'jugadores'} en la sala` : 'Esperando jugadores…';
+    $('#sl-start').disabled = !this.P.size;
+  },
+  pool(era) {
+    const eras = era >= 0 ? [ERAS[era]] : ERAS; const out = [];
+    for (const e of eras) for (const s of e.sages) for (const q of s.q || []) if (q && q.q && q.a && q.a.length === 4) out.push({ q: q.q, a: q.a, e: q.e || '', who: s.short, era: e.name });
+    return out;
+  },
+  start() {
+    const era = +$('#sl-era').value, n = +$('#sl-n').value; this.T = +$('#sl-t').value;
+    this.qs = shuffle(this.pool(era)).slice(0, n); if (!this.qs.length) return toast('No hay preguntas para esa época.');
+    for (const p of this.P.values()) { p.pts = 0; p.streak = 0; }
+    this.i = -1; Audio.gong && Audio.gong(); this.next();
+  },
+  qPayload() { const c = this.cur; return { i: this.i, n: this.qs.length, q: c.q.q, a: c.opts.map((o) => o.t), who: c.q.who, t: Math.max(1, Math.ceil(this.left)) }; },
+  next() {
+    if (this.i + 1 >= this.qs.length) return this.end();
+    this.i++; const q = this.qs[this.i]; const opts = shuffle(q.a.map((t, k) => ({ t, ok: k === 0 })));
+    this.cur = { q, opts, ans: new Map(), t0: performance.now() }; this.left = this.T;
+    $('#sl-qnum').textContent = `Pregunta ${this.i + 1} de ${this.qs.length}`; $('#sl-qwho').textContent = q.who + ' · ' + q.era; $('#sl-q').textContent = q.q;
+    const box = $('#sl-ans'); box.innerHTML = '';
+    opts.forEach((o, k) => { const d = document.createElement('div'); d.className = 'sl-a'; d.style.setProperty('--c', SALA_COLORS[k]); d.innerHTML = `<b>${'ABCD'[k]}</b><span></span><i></i>`; d.querySelector('span').textContent = o.t; box.appendChild(d); });
+    $('#sl-exp').hidden = true; $('#sl-top').hidden = true; $('#sl-next').hidden = true; $('#sl-reveal').hidden = false;
+    this.setView('q'); this.paintCount(); RT.send('q', this.qPayload());
+    clearInterval(this.timer); const t0 = performance.now();
+    this.timer = setInterval(() => {
+      this.left = this.T - (performance.now() - t0) / 1000; const k = Math.max(0, this.left / this.T);
+      $('#sl-tbar').style.transform = `scaleX(${k})`; $('#sl-tnum').textContent = Math.max(0, Math.ceil(this.left));
+      if (this.left <= 5 && this.left > 0 && Math.ceil(this.left) !== this._tick) { this._tick = Math.ceil(this.left); Audio.tick && Audio.tick(); }
+      if (this.left <= 0) this.reveal();
+    }, 100);
+  },
+  paintCount() { if (this.cur) $('#sl-count').textContent = `${this.cur.ans.size} de ${this.P.size} respondieron`; },
+  hResp(d) {
+    const c = this.cur; if (!c || this.view !== 'q' || c.done || d.i !== this.i) return; const p = this.P.get(d.id); if (!p || c.ans.has(d.id)) return;
+    const k = d.k | 0; if (k < 0 || k > 3) return; c.ans.set(d.id, { k, at: performance.now() - c.t0 }); this.paintCount();
+    if (c.ans.size >= this.P.size) setTimeout(() => this.reveal(), 400);
+  },
+  reveal() {
+    const c = this.cur; if (!c || c.done) return; c.done = true; clearInterval(this.timer);
+    const okK = c.opts.findIndex((o) => o.ok); const dist = [0, 0, 0, 0]; const res = {};
+    for (const [id, p] of this.P) {
+      const a = c.ans.get(id); let got = 0;
+      if (a) { dist[a.k]++; if (a.k === okK) { p.streak++; got = Math.round(500 + 500 * Math.max(0, 1 - a.at / (this.T * 1000))) + (p.streak >= 3 ? 100 : 0); p.pts += got; } else p.streak = 0; } else p.streak = 0;
+      res[id] = [a ? (a.k === okK ? 1 : 0) : -1, got, p.pts, 0];
+    }
+    const rank = this.ranking(); rank.forEach(([id], k) => { if (res[id]) res[id][3] = k + 1; });
+    [...$('#sl-ans').children].forEach((el, k) => { el.classList.add(k === okK ? 'ok' : 'no'); el.querySelector('i').textContent = dist[k]; });
+    const ex = $('#sl-exp'); ex.hidden = !c.q.e; ex.textContent = c.q.e;
+    const top = $('#sl-top'); top.innerHTML = '<h3>Posiciones</h3>' + rank.slice(0, 5).map(([, p], k) => `<div><b>${k + 1}</b><span></span><em>${p.pts}</em></div>`).join('');
+    [...top.querySelectorAll('span')].forEach((s, k) => (s.textContent = rank[k][1].name)); top.hidden = !rank.length;
+    $('#sl-reveal').hidden = true; $('#sl-next').hidden = false; $('#sl-next').textContent = this.i + 1 >= this.qs.length ? 'Ver el podio' : 'Siguiente pregunta';
+    Audio.correct && Audio.correct();
+    RT.send('rev', { i: this.i, ok: okK, okT: c.opts[okK].t, e: c.q.e, res });
+  },
+  end() {
+    clearInterval(this.timer); this.cur = null; const rank = this.ranking(); const res = {};
+    rank.forEach(([id, p], k) => (res[id] = [k + 1, p.pts]));
+    const pod = $('#sl-podium'); pod.innerHTML = '';
+    [1, 0, 2].forEach((k) => { const r = rank[k]; const d = document.createElement('div'); d.className = 'sl-pod p' + (k + 1); d.innerHTML = `<span></span><em></em><b>${k + 1}</b>`; if (r) { d.querySelector('span').textContent = r[1].name; d.querySelector('em').textContent = r[1].pts + ' pts'; } else d.style.visibility = 'hidden'; pod.appendChild(d); });
+    const rest = $('#sl-rest'); rest.innerHTML = ''; rank.slice(3, 12).forEach(([, p], k) => { const d = document.createElement('div'); d.innerHTML = `<b>${k + 4}</b><span></span><em>${p.pts}</em>`; d.querySelector('span').textContent = p.name; rest.appendChild(d); });
+    this.setView('end'); Audio.victory && Audio.victory();
+    RT.send('fin', { res, top: rank.slice(0, 3).map(([, p]) => [p.name, p.pts]) });
+  },
+  // ---------------------------------------------------------------- jugador
+  join() {
+    const code = ($('#sl-code').value || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 4); const name = this.clean($('#sl-name').value);
+    if (code.length !== 4) return toast('El código de la sala tiene 4 letras o números.');
+    if (!name) return toast('Escribe un apodo de 2 a 16 letras (sin palabras ofensivas).');
+    this.role = 'player'; this.code = code; this.name = name; this.got = false;
+    try { this.id = sessionStorage.getItem('odisea-sala-' + code) || this.rid(8); sessionStorage.setItem('odisea-sala-' + code, this.id); } catch (e) { this.id = this.rid(8); }
+    $('#sl-wmsg').textContent = 'Buscando la sala ' + code + '…'; $('#sl-wme').textContent = ''; this.setView('wait');
+    let tries = 0; clearInterval(this.timer);
+    const hello = () => { if (this.got) return; if (tries++ > 6) { clearInterval(this.timer); $('#sl-wmsg').textContent = 'No encontramos la sala ' + code + '. Revisa el código y que la pantalla del docente siga abierta.'; return; } RT.send('hola', { id: this.id, name: this.name }); };
+    RT.connect(code, {
+      bien: (d) => { if (d.id !== this.id) return; if (!this.got) Audio.correct && Audio.correct(); this.got = true; this.name = d.name; clearInterval(this.timer); if (this.view === 'wait' || this.view === 'pend') { $('#sl-wmsg').textContent = '¡Estás dentro! Mira la pantalla de la sala: el juego empezará pronto.'; $('#sl-wme').textContent = d.name; } },
+      q: (d) => { if (d.solo && d.solo !== this.id) return; this.pQ(d); },
+      rev: (d) => this.pRev(d), fin: (d) => this.pFin(d),
+      fuera: (d) => { if (d.id !== this.id) return; RT.close(); $('#sl-wmsg').textContent = 'Quien creó la sala te sacó del juego.'; $('#sl-wme').textContent = ''; this.setView('wait'); },
+      cerrada: () => { RT.close(); $('#sl-wmsg').textContent = 'La sala se cerró. ¡Gracias por jugar!'; this.setView('wait'); },
+    }, (s) => { this.net(s); if (s === 'ok') { hello(); clearInterval(this.timer); this.timer = setInterval(hello, 2000); } });
+  },
+  pQ(d) {
+    this.pq = d; this.sent = false; $('#sl-pnum').textContent = `Pregunta ${d.i + 1} de ${d.n} · ${d.who}`; $('#sl-pq').textContent = d.q;
+    const box = $('#sl-pans'); box.innerHTML = '';
+    d.a.forEach((t, k) => { const b = document.createElement('button'); b.className = 'sl-pa'; b.style.setProperty('--c', SALA_COLORS[k]); b.innerHTML = `<b>${'ABCD'[k]}</b><span></span>`; b.querySelector('span').textContent = t;
+      b.addEventListener('click', () => { if (this.sent) return; this.sent = true; Audio.click(); buzz && buzz(15); RT.send('resp', { id: this.id, i: d.i, k }); [...box.children].forEach((x, j) => x.classList.add(j === k ? 'pick' : 'dim')); $('#sl-pstate').textContent = 'Respuesta enviada. ¡Mira la pantalla!'; }); box.appendChild(b); });
+    $('#sl-pstate').textContent = ''; this.setView('pq');
+    const end = performance.now() + d.t * 1000; clearInterval(this.timer);
+    this.timer = setInterval(() => { const l = (end - performance.now()) / 1000; $('#sl-ptbar').style.transform = `scaleX(${Math.max(0, l / d.t)})`; if (l <= 0) { clearInterval(this.timer); if (!this.sent) { this.sent = true; $('#sl-pstate').textContent = 'Se acabó el tiempo.'; } } }, 100);
+  },
+  pRev(d) {
+    clearInterval(this.timer); const r = (d.res || {})[this.id]; if (!r) return;
+    const [ok, got, tot, pos] = r; const el = $('#sl-pres');
+    el.className = 'sl-pres ' + (ok === 1 ? 'ok' : 'no');
+    el.querySelector('b').textContent = ok === 1 ? '✓ ¡Correcto!' : ok === 0 ? '✗ No era esa' : '⏱ Sin respuesta';
+    el.querySelector('span').textContent = ok === 1 ? `+${got} puntos` : `Era: ${d.okT}`;
+    el.querySelector('em').textContent = `${tot} puntos · vas en el puesto ${pos}`;
+    (ok === 1 ? Audio.correct : Audio.wrong) && (ok === 1 ? Audio.correct() : Audio.wrong()); this.setView('prev');
+  },
+  pFin(d) {
+    clearInterval(this.timer); const r = (d.res || {})[this.id]; const pos = r ? r[0] : 0;
+    $('#sl-fpos').textContent = pos ? (pos <= 3 ? ['🥇', '🥈', '🥉'][pos - 1] + ' ' : '') + `Puesto ${pos}` : 'Fin del juego';
+    $('#sl-fpts').textContent = r ? `${r[1]} puntos` : '';
+    $('#sl-ftop').textContent = (d.top || []).map((x, k) => `${k + 1}. ${x[0]} (${x[1]})`).join('   ');
+    if (pos === 1) achieve && achieve('envivo'); Audio.victory && Audio.victory(); this.setView('pend');
+  },
+  boot() { const c = new URLSearchParams(location.search).get('sala'); if (!c) return; try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) { /* nada */ } this.open(c.toUpperCase().slice(0, 4)); },
+};
+on('#b-sala', () => Sala.open());
+on('#sl-host', () => Sala.host());
+on('#sl-join', () => Sala.join());
+on('#sl-start', () => Sala.start());
+on('#sl-reveal', () => Sala.reveal());
+on('#sl-next', () => Sala.next());
+on('#sl-again', () => { Sala.setView('lobby'); Sala.paintLobby(); });
+document.querySelectorAll('#sala .sl-leave').forEach((b) => b.addEventListener('click', () => { Audio.click(); Sala.leave(); }));
+$('#sl-code').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('#sl-name').focus(); });
+$('#sl-name').addEventListener('keydown', (e) => { if (e.key === 'Enter') Sala.join(); });
 
 </script>
 </body>

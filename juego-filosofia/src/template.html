@@ -351,6 +351,55 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .au-tbl td.pct { font-weight: 700; color: #ffb36a; }
 .au-tbl td.pct.mid { color: var(--gold-bright); }
 .au-tbl td.pct.full { color: #8fe08a; }
+.quick.q4 { grid-template-columns: repeat(4, 1fr); width: min(480px, 100%); gap: 8px; }
+.quick.q4 .qk span { font-size: 0.84rem; } .quick.q4 .qk small { font-size: 0.66rem; }
+@media (max-width: 360px) { .quick.q4 { grid-template-columns: repeat(2, 1fr); } }
+#sala .sl-wrap { width: min(560px, 100%); margin: 0 auto; padding: 16px; }
+#sala.sl-big .sl-wrap { width: min(1200px, 100%); }
+.sl-card { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; margin: 12px 0; background: rgba(255,255,255,0.03); }
+.sl-card h3 { font-family: var(--display); font-weight: normal; color: var(--gold); margin: 0 0 8px; letter-spacing: 0.05em; }
+#sl-code { text-transform: uppercase; letter-spacing: 0.3em; font-size: 1.3rem; text-align: center; }
+.sl-net { text-align: center; background: rgba(200,80,60,0.25); border-radius: 10px; padding: 6px; }
+.sl-how { text-align: center; font-size: clamp(1rem, 2vw, 1.5rem); margin-top: 3vh; }
+.sl-how b { color: var(--gold); font-weight: normal; }
+.sl-bigcode { text-align: center; font-family: var(--display); font-size: clamp(4rem, 14vw, 10rem); letter-spacing: 0.18em; color: #fff3d0; text-shadow: 0 0 40px rgba(255,211,106,0.5); line-height: 1.1; }
+.sl-pcount { text-align: center; font-size: 1.2rem; opacity: 0.85; }
+.sl-players { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 10px 0 18px; }
+.sl-chip { border: 1px solid var(--gold); background: rgba(214,168,74,0.12); color: inherit; border-radius: 999px; padding: 6px 14px; font: inherit; font-size: 1.05rem; animation: sl-pop 0.35s ease-out; cursor: pointer; }
+@keyframes sl-pop { from { transform: scale(0.4); opacity: 0; } }
+.sl-qtop { display: flex; justify-content: space-between; gap: 10px; font-size: 1.05rem; opacity: 0.9; flex-wrap: wrap; }
+.sl-tnum { font-family: var(--display); font-size: 1.8rem; color: var(--gold); }
+.sl-tbar { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.1); overflow: hidden; margin: 6px 0 12px; }
+.sl-tbar i { display: block; height: 100%; background: linear-gradient(90deg, #b8924a, #ffd36a); transform-origin: left; }
+.sl-q { font-family: var(--display); font-weight: normal; text-align: center; font-size: clamp(1.4rem, 3.4vw, 2.8rem); line-height: 1.2; margin: 10px 0 18px; }
+.sl-ans { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.sl-a { position: relative; display: flex; align-items: center; gap: 12px; padding: 16px 18px; border-radius: 14px; background: var(--c); color: #fff; font-size: clamp(1rem, 2.2vw, 1.6rem); min-height: 70px; transition: opacity 0.3s, transform 0.3s; }
+.sl-a b { font-family: var(--display); font-size: 1.6em; opacity: 0.9; }
+.sl-a i { margin-left: auto; font-style: normal; font-size: 1.4em; font-weight: 700; }
+.sl-a.no { opacity: 0.28; } .sl-a.ok { box-shadow: 0 0 0 4px #fff, 0 0 30px rgba(255,255,255,0.5); transform: scale(1.03); }
+.sl-count { text-align: center; opacity: 0.8; margin-top: 10px; }
+.sl-top { margin: 12px auto 0; max-width: 520px; }
+.sl-top h3 { font-family: var(--display); font-weight: normal; color: var(--gold); text-align: center; margin: 0 0 6px; }
+.sl-top div, .sl-rest div { display: grid; grid-template-columns: 2.2em 1fr auto; gap: 8px; padding: 6px 10px; border-bottom: 1px solid var(--line); font-size: 1.15rem; }
+.sl-top b, .sl-rest b { color: var(--gold); font-weight: normal; } .sl-top em, .sl-rest em { font-style: normal; color: #ffe0a0; }
+.sl-podium { display: flex; justify-content: center; align-items: flex-end; gap: 12px; margin: 20px 0; }
+.sl-pod { width: min(30%, 220px); text-align: center; animation: sl-pop 0.6s ease-out; }
+.sl-pod span { display: block; font-size: clamp(1rem, 2.4vw, 1.8rem); } .sl-pod em { display: block; font-style: normal; color: #ffe0a0; margin-bottom: 6px; }
+.sl-pod b { display: block; border-radius: 12px 12px 0 0; font-family: var(--display); font-weight: normal; font-size: 3rem; color: #2a1a08; padding-top: 10px; }
+.sl-pod.p1 b { height: 180px; background: linear-gradient(#ffe08a, #c8962a); } .sl-pod.p2 b { height: 130px; background: linear-gradient(#e8e8f0, #9a9aa8); } .sl-pod.p3 b { height: 95px; background: linear-gradient(#e8b08a, #a8683a); }
+.sl-rest { max-width: 520px; margin: 0 auto 10px; }
+.sl-me { text-align: center; font-family: var(--display); font-size: 2.4rem; color: var(--gold); margin-top: 18vh; }
+.sl-pnum { text-align: center; opacity: 0.8; margin: 4px 0; }
+.sl-pq { text-align: center; font-size: 1.15rem; line-height: 1.35; margin: 8px 0 14px; }
+.sl-pans { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.sl-pa { display: flex; align-items: center; gap: 12px; text-align: left; border: 0; border-radius: 14px; background: var(--c); color: #fff; font: inherit; font-size: 1.05rem; padding: 14px 16px; min-height: 62px; cursor: pointer; transition: opacity 0.2s, transform 0.2s; }
+.sl-pa b { font-family: var(--display); font-size: 1.5em; }
+.sl-pa.dim { opacity: 0.3; } .sl-pa.pick { box-shadow: 0 0 0 3px #fff; transform: scale(1.02); }
+.sl-pstate { text-align: center; margin-top: 12px; color: #ffe0a0; }
+.sl-pres { text-align: center; margin-top: 16vh; padding: 26px 16px; border-radius: 18px; }
+.sl-pres.ok { background: rgba(58,168,96,0.22); box-shadow: inset 0 0 0 2px #3aa860; } .sl-pres.no { background: rgba(216,80,74,0.2); box-shadow: inset 0 0 0 2px #d8504a; }
+.sl-pres b { display: block; font-family: var(--display); font-weight: normal; font-size: 2.2rem; }
+.sl-pres span { display: block; font-size: 1.3rem; margin-top: 8px; } .sl-pres em { display: block; font-style: normal; opacity: 0.85; margin-top: 10px; }
 #pmap { position: absolute; inset: 0; z-index: 41; background: radial-gradient(ellipse at top, #2a2030, #0d0c12); display: flex; flex-direction: column; padding: max(14px, var(--sat)) max(22px, var(--sar)) max(14px, var(--sab)) max(22px, var(--sal)); gap: 14px; overflow-y: auto; font-size: clamp(16px, 1.6vw, 26px); }
 .pm-top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .pm-top > b { font-family: var(--display); font-weight: normal; color: var(--gold); font-size: 1.4em; flex: 1 1 260px; }
@@ -787,9 +836,10 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <div class="timeline" id="t-timeline" hidden></div>
       <button class="btn play-btn" id="b-play"><span class="play-ico" aria-hidden="true">▶</span><span class="play-t">Jugar</span><small id="b-play-s">21 épocas · 96 pensadoras y pensadores</small></button>
       <button class="btn cont-btn" id="b-continue" hidden>Continuar mi odisea<small id="b-continue-s"></small></button>
-      <div class="quick">
+      <div class="quick q4">
         <button class="qk oracle-btn" id="b-oracle"><b>☀</b><span>Oráculo de hoy</span><small id="b-oracle-s">10 preguntas</small></button>
         <button class="qk reto-btn" id="b-reto"><b>⚔</b><span>Reta a un amigo</span><small>Mismas preguntas</small></button>
+        <button class="qk sala-btn" id="b-sala"><b>◉</b><span>En vivo</span><small>Toda la clase</small></button>
         <button class="qk aula-btn" id="b-aula"><b>✎</b><span>Modo aula</span><small id="b-aula-s">Docentes</small></button>
       </div>
       <button class="more-b" id="b-more" aria-expanded="false">Más opciones ▾</button>
@@ -968,6 +1018,77 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="btn primary" id="cu-copy">Copiar para enviar a mi docente</button>
         <button class="btn" id="cu-dl">Descargar (.txt)</button>
         <button class="btn ghost" data-back>Volver</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="sala" class="screen dim" hidden>
+    <div class="sl-wrap">
+      <p class="sl-net" id="sl-net" hidden></p>
+      <div data-sv="home">
+        <div class="eyebrow" style="text-align:center">Trivia filosófica en vivo</div>
+        <h2 class="era-name" style="text-align:center">En vivo</h2>
+        <p class="story" id="sl-off" hidden>El juego en vivo funciona en la versión web: filosofiaparasereshumanos-ux.github.io/sofos-gpu</p>
+        <div id="sl-home">
+          <div class="sl-card">
+            <h3>Unirme a una sala</h3>
+            <div class="au-form"><input id="sl-code" maxlength="4" placeholder="Código (4 letras)" autocomplete="off" autocapitalize="characters" aria-label="Código de la sala">
+            <input id="sl-name" maxlength="16" placeholder="Tu apodo" autocomplete="off" aria-label="Tu apodo"></div>
+            <div class="btns"><button class="btn primary" id="sl-join">Entrar a la sala</button></div>
+          </div>
+          <div class="sl-card">
+            <h3>Crear una sala</h3>
+            <p class="qd-note">Para docentes o para jugar con amigos: proyecta esta pantalla y que cada uno se una desde su celular. Solo se usan apodos: no hay chat ni se guardan datos.</p>
+            <div class="au-form au-inline"><label>Preguntas de <select id="sl-era"></select></label></div>
+            <div class="au-form au-inline"><label>Preguntas <select id="sl-n"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></label><label>Segundos <select id="sl-t"><option>15</option><option selected>20</option><option>30</option></select></label></div>
+            <div class="btns"><button class="btn primary" id="sl-host">Crear sala</button></div>
+          </div>
+        </div>
+        <div class="btns"><button class="btn ghost sl-leave">Volver</button></div>
+      </div>
+      <div data-sv="lobby" hidden>
+        <p class="sl-how">Entra en <b id="sl-link"></b> o toca «En vivo» en el juego y escribe el código:</p>
+        <div class="sl-bigcode" id="sl-bigcode"></div>
+        <p class="sl-pcount" id="sl-pcount"></p>
+        <div class="sl-players" id="sl-players"></div>
+        <div class="btns"><button class="btn primary" id="sl-start" disabled>Empezar el juego</button><button class="btn ghost sl-leave">Cerrar la sala</button></div>
+        <p class="qd-note" style="text-align:center">Toca un apodo para sacar a alguien de la sala.</p>
+      </div>
+      <div data-sv="q" hidden>
+        <div class="sl-qtop"><span id="sl-qnum"></span><span id="sl-qwho"></span><span class="sl-tnum" id="sl-tnum"></span></div>
+        <div class="sl-tbar"><i id="sl-tbar"></i></div>
+        <h2 class="sl-q" id="sl-q"></h2>
+        <div class="sl-ans" id="sl-ans"></div>
+        <p class="sl-count" id="sl-count"></p>
+        <p class="pj-exp" id="sl-exp" hidden></p>
+        <div class="sl-top" id="sl-top" hidden></div>
+        <div class="btns"><button class="btn primary" id="sl-reveal">Mostrar la respuesta</button><button class="btn primary" id="sl-next" hidden>Siguiente pregunta</button></div>
+      </div>
+      <div data-sv="end" hidden>
+        <h2 class="era-name" style="text-align:center">¡Podio!</h2>
+        <div class="sl-podium" id="sl-podium"></div>
+        <div class="sl-rest" id="sl-rest"></div>
+        <div class="btns"><button class="btn primary" id="sl-again">Jugar otra vez</button><button class="btn ghost sl-leave">Cerrar la sala</button></div>
+      </div>
+      <div data-sv="wait" hidden>
+        <div class="sl-me" id="sl-wme"></div>
+        <p class="story" id="sl-wmsg" style="text-align:center"></p>
+        <div class="btns"><button class="btn ghost sl-leave">Salir</button></div>
+      </div>
+      <div data-sv="pq" hidden>
+        <p class="sl-pnum" id="sl-pnum"></p>
+        <div class="sl-tbar"><i id="sl-ptbar"></i></div>
+        <p class="sl-pq" id="sl-pq"></p>
+        <div class="sl-pans" id="sl-pans"></div>
+        <p class="sl-pstate" id="sl-pstate"></p>
+      </div>
+      <div data-sv="prev" hidden>
+        <div class="sl-pres" id="sl-pres"><b></b><span></span><em></em></div>
+        <p class="qd-note" style="text-align:center">Espera la siguiente pregunta…</p>
+      </div>
+      <div data-sv="pend" hidden>
+        <div class="sl-pres ok"><b id="sl-fpos"></b><span id="sl-fpts"></span><em id="sl-ftop"></em></div>
+        <div class="btns"><button class="btn ghost sl-leave">Salir</button></div>
       </div>
     </div>
   </section>
