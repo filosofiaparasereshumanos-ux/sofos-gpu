@@ -18,6 +18,7 @@ const ACH = [
   { id: 'agora', i: '🏛', n: 'Voz en el ágora', d: 'Vota en la pregunta del día de una época.' },
   { id: 'perfil', i: '🧭', n: 'Conócete a ti mismo', d: 'Comparte tu perfil filosófico desde el Cuaderno.' },
   { id: 'foto', i: '📷', n: 'Recuerdo del viaje', d: 'Sácate una foto con un pensador.' },
+  { id: 'escuchar', i: '📖', n: 'Como en la Academia', d: 'Escucha la lección de un pensador junto a otro viajero y comparen qué eligió cada uno.' },
   { id: 'juntos', i: '👥', n: 'Duelo entre viajeros', d: 'Explora en grupo y gana un duelo a otro jugador.' },
   { id: 'escalera', i: '⌇', n: 'Tirar la escalera', d: 'Sube la escalera de Wittgenstein y tírala al llegar arriba.' },
   { id: 'salida', i: '☀', n: 'Fuera de la caverna', d: 'Baja hasta los prisioneros de la caverna de Platón y vuelve a salir a la luz.' },

@@ -41,7 +41,7 @@ const Juntos = {
     MRT.connect(chan, {
       pos: (d) => this.rPos(d), adios: (d) => this.drop(d.id), emo: (d) => this.rEmo(d),
       reto: (d) => this.rReto(d), acepta: (d) => this.rAcepta(d), rechaza: (d) => { if (d.to === this.id && this.duel && this.duel.wait) { this.duel = null; this.paintMeet(); toast(`${d.name} no quiso esta vez.`); } },
-      dres: (d) => this.rRes(d),
+      dres: (d) => this.rRes(d), lec: (d) => { if (typeof Escucha !== 'undefined') Escucha.rLec(d); },
     }, (s) => { this.net = s; this.paintBadge(); if (s === 'ok') this.sendT = 0; });
     this.net = 'connecting'; this.paintBadge();
   },
@@ -88,7 +88,7 @@ const Juntos = {
     let r = this.R.get(id); const name = Sala.clean(d.n) || 'Viajero'; const ls = String(d.l || '0,2,0,0').slice(0, 16);
     if (r && (r.ls !== ls || r.name !== name)) { this.drop(id); r = null; }
     if (!r) { if (this.R.size >= 60) return; r = { ...this.avatar(id, name, ls), name, ls, x: d.x, y: d.y, z: d.z, yaw: d.r, tx: d.x, ty: d.y, tz: d.z, tyaw: d.r }; this.R.set(id, r); if (d.e === G.eraIdx && G.state === 'play') toast(`👋 ${name} ha llegado a esta época.`); }
-    const wasHere = r.e === G.eraIdx; r.e = d.e; r.v = d.v > 0 ? 1 : d.v < 0 ? -1 : 0; r.zone = d.zn || ''; r.tx = +d.x || 0; r.ty = +d.y || 0; r.tz = +d.z || 0; r.tyaw = +d.r || 0; r.seen = performance.now(); r.st = d.s;
+    const wasHere = r.e === G.eraIdx; r.e = d.e; r.v = d.v > 0 ? 1 : d.v < 0 ? -1 : 0; r.lec = /^[a-z0-9_-]{2,24}$/.test(String(d.ls || '')) ? d.ls : ''; r.zone = d.zn || ''; r.tx = +d.x || 0; r.ty = +d.y || 0; r.tz = +d.z || 0; r.tyaw = +d.r || 0; r.seen = performance.now(); r.st = d.s;
     if (!wasHere && r.e === G.eraIdx) { r.x = r.tx; r.y = r.ty; r.z = r.tz; }
     this.paintBadge();
   },
@@ -114,7 +114,7 @@ const Juntos = {
     this.sendT -= dt; const p = player.pos; const moved = !this.last || Math.hypot(p.x - this.last[0], p.z - this.last[1]) > 0.15 || Math.abs(player.yaw - this.last[2]) > 0.12;
     if (MRT.joined && this.sendT <= 0 && (moved || this.sendT < -4)) {
       this.name = this.myName();
-      MRT.send('pos', { id: this.myId(), n: this.name, l: this.lookStr(), e: G.eraIdx, x: +p.x.toFixed(2), y: +p.y.toFixed(2), z: +p.z.toFixed(2), r: +player.yaw.toFixed(2), zn: world && world.zoneIn ? world.zoneIn.id : world && world.cave && world.cave.in ? 'cueva' : '', s: playing ? 1 : 0, v: typeof Agora !== 'undefined' ? Agora.mine(G.eraIdx) : 0 });
+      MRT.send('pos', { id: this.myId(), n: this.name, l: this.lookStr(), e: G.eraIdx, x: +p.x.toFixed(2), y: +p.y.toFixed(2), z: +p.z.toFixed(2), r: +player.yaw.toFixed(2), zn: world && world.zoneIn ? world.zoneIn.id : world && world.cave && world.cave.in ? 'cueva' : '', s: playing ? 1 : 0, v: typeof Agora !== 'undefined' ? Agora.mine(G.eraIdx) : 0, ls: typeof Escucha !== 'undefined' ? Escucha.mine() : '' });
       this.sendT = 0.33; this.last = [p.x, p.z, player.yaw];
     }
     const now = performance.now(); let best = null, bd = 3.2; const myZone = world && world.zoneIn ? world.zoneIn.id : world && world.cave && world.cave.in ? 'cueva' : '';

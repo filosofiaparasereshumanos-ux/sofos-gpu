@@ -360,6 +360,9 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 #mp-meet-t { width: 100%; text-align: center; color: #ffe0a0; font-size: 0.95rem; }
 #mp-meet button { border: 0; border-radius: 999px; padding: 10px 16px; font: inherit; font-size: 0.95rem; color: #2a1a08; background: linear-gradient(#ffe08a, #d8a83a); cursor: pointer; }
 #mp-emo { position: absolute; right: max(12px, var(--sar, 0px)); top: calc(max(8px, var(--sat)) + 44px); z-index: 31; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold); background: rgba(10,8,5,0.75); font-size: 1.4rem; cursor: pointer; }
+.ls-with { text-align: center; color: #ffe0a0; font-size: 0.9rem; margin: 4px 0 0; }
+.lj { margin-top: 10px; } .lj-res { margin-top: 8px; text-align: left; } .lj-row { margin: 4px 0; font-size: 0.95rem; } .lj-row b { color: var(--gold); font-weight: normal; }
+.lj-note { font-style: italic; font-size: 0.85rem; opacity: 0.8; margin: 6px 0 0; }
 #b-foto { position: absolute; left: max(12px, var(--sal, 0px)); top: calc(max(8px, var(--sat)) + 96px); z-index: 31; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold); background: rgba(10,8,5,0.75); font-size: 1.3rem; cursor: pointer; }
 .foto-card { text-align: center; } .foto-card img { max-width: 100%; max-height: 62vh; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.6); }
 .av-chip.lock { opacity: 0.55; font-size: 0.75rem; color: #fff; }
@@ -992,6 +995,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       </header>
       <div class="ls-bar"><div class="ls-dots" id="ls-dots"></div><span id="ls-count"></span></div>
       <p class="ls-text" id="ls-text" aria-live="polite"></p>
+      <p class="ls-with" id="ls-with" hidden></p>
       <p class="ls-note" id="ls-note" hidden></p>
       <div class="ls-reward" id="ls-reward" hidden></div>
       <footer class="ls-foot">

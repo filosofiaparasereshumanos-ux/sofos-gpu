@@ -379,6 +379,9 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 #mp-meet-t { width: 100%; text-align: center; color: #ffe0a0; font-size: 0.95rem; }
 #mp-meet button { border: 0; border-radius: 999px; padding: 10px 16px; font: inherit; font-size: 0.95rem; color: #2a1a08; background: linear-gradient(#ffe08a, #d8a83a); cursor: pointer; }
 #mp-emo { position: absolute; right: max(12px, var(--sar, 0px)); top: calc(max(8px, var(--sat)) + 44px); z-index: 31; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold); background: rgba(10,8,5,0.75); font-size: 1.4rem; cursor: pointer; }
+.ls-with { text-align: center; color: #ffe0a0; font-size: 0.9rem; margin: 4px 0 0; }
+.lj { margin-top: 10px; } .lj-res { margin-top: 8px; text-align: left; } .lj-row { margin: 4px 0; font-size: 0.95rem; } .lj-row b { color: var(--gold); font-weight: normal; }
+.lj-note { font-style: italic; font-size: 0.85rem; opacity: 0.8; margin: 6px 0 0; }
 #b-foto { position: absolute; left: max(12px, var(--sal, 0px)); top: calc(max(8px, var(--sat)) + 96px); z-index: 31; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold); background: rgba(10,8,5,0.75); font-size: 1.3rem; cursor: pointer; }
 .foto-card { text-align: center; } .foto-card img { max-width: 100%; max-height: 62vh; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.6); }
 .av-chip.lock { opacity: 0.55; font-size: 0.75rem; color: #fff; }
@@ -1013,6 +1016,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       </header>
       <div class="ls-bar"><div class="ls-dots" id="ls-dots"></div><span id="ls-count"></span></div>
       <p class="ls-text" id="ls-text" aria-live="polite"></p>
+      <p class="ls-with" id="ls-with" hidden></p>
       <p class="ls-note" id="ls-note" hidden></p>
       <div class="ls-reward" id="ls-reward" hidden></div>
       <footer class="ls-foot">
@@ -14424,7 +14428,7 @@ async function boot() {
 }
 
 // Gancho de pruebas automáticas (solo con #debug en la URL)
-if (location.hash === '#debug') window.__dbg = { get AULA() { return AULA; }, ga: (x, z, y) => groundAt(world, x, z, y), get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, get Agora() { return Agora; }, get Foto() { return Foto; }, get Perfil() { return Perfil; }, get ERAS() { return ERAS; } };
+if (location.hash === '#debug') window.__dbg = { get AULA() { return AULA; }, ga: (x, z, y) => groundAt(world, x, z, y), get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, get Agora() { return Agora; }, get Foto() { return Foto; }, get Escucha() { return Escucha; }, get Perfil() { return Perfil; }, get ERAS() { return ERAS; } };
 
 // ---- src/04a-lesson.js ----
 // ============================================================================
@@ -14917,6 +14921,7 @@ const ACH = [
   { id: 'agora', i: '🏛', n: 'Voz en el ágora', d: 'Vota en la pregunta del día de una época.' },
   { id: 'perfil', i: '🧭', n: 'Conócete a ti mismo', d: 'Comparte tu perfil filosófico desde el Cuaderno.' },
   { id: 'foto', i: '📷', n: 'Recuerdo del viaje', d: 'Sácate una foto con un pensador.' },
+  { id: 'escuchar', i: '📖', n: 'Como en la Academia', d: 'Escucha la lección de un pensador junto a otro viajero y comparen qué eligió cada uno.' },
   { id: 'juntos', i: '👥', n: 'Duelo entre viajeros', d: 'Explora en grupo y gana un duelo a otro jugador.' },
   { id: 'escalera', i: '⌇', n: 'Tirar la escalera', d: 'Sube la escalera de Wittgenstein y tírala al llegar arriba.' },
   { id: 'salida', i: '☀', n: 'Fuera de la caverna', d: 'Baja hasta los prisioneros de la caverna de Platón y vuelve a salir a la luz.' },
@@ -16536,7 +16541,7 @@ const Juntos = {
     MRT.connect(chan, {
       pos: (d) => this.rPos(d), adios: (d) => this.drop(d.id), emo: (d) => this.rEmo(d),
       reto: (d) => this.rReto(d), acepta: (d) => this.rAcepta(d), rechaza: (d) => { if (d.to === this.id && this.duel && this.duel.wait) { this.duel = null; this.paintMeet(); toast(`${d.name} no quiso esta vez.`); } },
-      dres: (d) => this.rRes(d),
+      dres: (d) => this.rRes(d), lec: (d) => { if (typeof Escucha !== 'undefined') Escucha.rLec(d); },
     }, (s) => { this.net = s; this.paintBadge(); if (s === 'ok') this.sendT = 0; });
     this.net = 'connecting'; this.paintBadge();
   },
@@ -16583,7 +16588,7 @@ const Juntos = {
     let r = this.R.get(id); const name = Sala.clean(d.n) || 'Viajero'; const ls = String(d.l || '0,2,0,0').slice(0, 16);
     if (r && (r.ls !== ls || r.name !== name)) { this.drop(id); r = null; }
     if (!r) { if (this.R.size >= 60) return; r = { ...this.avatar(id, name, ls), name, ls, x: d.x, y: d.y, z: d.z, yaw: d.r, tx: d.x, ty: d.y, tz: d.z, tyaw: d.r }; this.R.set(id, r); if (d.e === G.eraIdx && G.state === 'play') toast(`👋 ${name} ha llegado a esta época.`); }
-    const wasHere = r.e === G.eraIdx; r.e = d.e; r.v = d.v > 0 ? 1 : d.v < 0 ? -1 : 0; r.zone = d.zn || ''; r.tx = +d.x || 0; r.ty = +d.y || 0; r.tz = +d.z || 0; r.tyaw = +d.r || 0; r.seen = performance.now(); r.st = d.s;
+    const wasHere = r.e === G.eraIdx; r.e = d.e; r.v = d.v > 0 ? 1 : d.v < 0 ? -1 : 0; r.lec = /^[a-z0-9_-]{2,24}$/.test(String(d.ls || '')) ? d.ls : ''; r.zone = d.zn || ''; r.tx = +d.x || 0; r.ty = +d.y || 0; r.tz = +d.z || 0; r.tyaw = +d.r || 0; r.seen = performance.now(); r.st = d.s;
     if (!wasHere && r.e === G.eraIdx) { r.x = r.tx; r.y = r.ty; r.z = r.tz; }
     this.paintBadge();
   },
@@ -16609,7 +16614,7 @@ const Juntos = {
     this.sendT -= dt; const p = player.pos; const moved = !this.last || Math.hypot(p.x - this.last[0], p.z - this.last[1]) > 0.15 || Math.abs(player.yaw - this.last[2]) > 0.12;
     if (MRT.joined && this.sendT <= 0 && (moved || this.sendT < -4)) {
       this.name = this.myName();
-      MRT.send('pos', { id: this.myId(), n: this.name, l: this.lookStr(), e: G.eraIdx, x: +p.x.toFixed(2), y: +p.y.toFixed(2), z: +p.z.toFixed(2), r: +player.yaw.toFixed(2), zn: world && world.zoneIn ? world.zoneIn.id : world && world.cave && world.cave.in ? 'cueva' : '', s: playing ? 1 : 0, v: typeof Agora !== 'undefined' ? Agora.mine(G.eraIdx) : 0 });
+      MRT.send('pos', { id: this.myId(), n: this.name, l: this.lookStr(), e: G.eraIdx, x: +p.x.toFixed(2), y: +p.y.toFixed(2), z: +p.z.toFixed(2), r: +player.yaw.toFixed(2), zn: world && world.zoneIn ? world.zoneIn.id : world && world.cave && world.cave.in ? 'cueva' : '', s: playing ? 1 : 0, v: typeof Agora !== 'undefined' ? Agora.mine(G.eraIdx) : 0, ls: typeof Escucha !== 'undefined' ? Escucha.mine() : '' });
       this.sendT = 0.33; this.last = [p.x, p.z, player.yaw];
     }
     const now = performance.now(); let best = null, bd = 3.2; const myZone = world && world.zoneIn ? world.zoneIn.id : world && world.cave && world.cave.in ? 'cueva' : '';
@@ -17006,6 +17011,86 @@ on('#foto-share', () => Foto.share());
 on('#foto-close', () => Foto.close());
 window.addEventListener('keydown', (e) => { if (e.code === 'KeyP' && G.state === 'play' && !e.repeat && !/INPUT|TEXTAREA/.test((e.target && e.target.tagName) || '')) Foto.take(); });
 setInterval(() => { const b = $('#b-foto'); if (b) { const show = G.state === 'play'; if (b.hidden === show) b.hidden = !show; } }, 400);
+
+// ---- src/06m-escuchar.js ----
+// ============================================================================
+//  ESCUCHAR JUNTOS: cuando un viajero escucha la lección de un pensador, los
+//  demás lo ven sentado frente a él, como en la Academia. Quien se acerca puede
+//  sentarse también. Al terminar, cada uno elige qué le deja la lección y ve qué
+//  eligieron los demás.
+// ============================================================================
+const Escucha = {
+  votes: {}, told: new Set(), lastLs: '',
+  // el pensador cuya lección estoy escuchando en el mundo
+  mine() { return G.state === 'lesson' && Lesson.from === 'world' && Lesson.sage && !Lesson.book ? Lesson.data.id : ''; },
+  sage(id) { return typeof sages !== 'undefined' && sages.find((s) => s.data.id === id); },
+  // viajeros (visibles) que escuchan a ese pensador ahora
+  listeners(id) { const out = []; for (const [rid, r] of Juntos.R) if (r.lec === id && r.e === G.eraIdx) out.push([rid, r]); return out.sort((a, b) => (a[0] < b[0] ? -1 : 1)); },
+  // asiento k de n en un semicírculo frente al pensador
+  seat(s, k, n) {
+    const yaw = s.baseYaw || 0, a = yaw + (n === 1 ? 0.45 : -0.95 + (1.9 * k) / (n - 1)); const R = s.boss ? 3.6 : 2.7;
+    return [s.pos.x + Math.sin(a) * R, s.pos.z + Math.cos(a) * R];
+  },
+  before() {
+    if (!Juntos.on) return;
+    const ls = this.mine(); if (ls !== this.lastLs) { this.lastLs = ls; Juntos.sendT = 0; Juntos.last = null; }
+    const by = {}; for (const [rid, r] of Juntos.R) if (r.lec && r.e === G.eraIdx) (by[r.lec] = by[r.lec] || []).push(rid);
+    for (const id of Object.keys(by)) {
+      const s = this.sage(id); if (!s) continue; const ids = by[id].sort(); const n = Math.min(ids.length, 8);
+      ids.forEach((rid, k) => { const r = Juntos.R.get(rid); const [x, z] = this.seat(s, k % n, n); r.tx = x; r.tz = z; r.ty = s.pos.y || 0; r.tyaw = Math.atan2(-(s.pos.x - x), -(s.pos.z - z)); r.sit = true;
+        const key = rid + id; if (!this.told.has(key) && G.state === 'play') { this.told.add(key); toast(`📖 ${r.name} se sentó a escuchar a ${s.data.short}. Acércate y elige «Lección» para escuchar juntos.`); } });
+    }
+  },
+  after() {
+    for (const r of Juntos.R.values()) {
+      const lab = r.lab || (r.lab = r.g.children.find((o) => o.isSprite && o !== r.bub));
+      if (r.lec && r.sit && r.g.visible) { r.fig.group.position.y = -0.46; r.fig.armL.rotation.x = -0.5; r.fig.armR.rotation.x = -0.5; }
+      if (!r.lec) r.sit = false;
+      // el apodo de quien está sentado justo delante no debe tapar la vista
+      if (lab) lab.visible = !(r.sit && Math.hypot(r.x - camera.position.x, r.z - camera.position.z) < 3.4);
+    }
+    // en mi lección: quién escucha conmigo
+    const el = $('#ls-with'); if (!el) return; const id = this.mine(); const L = id ? this.listeners(id) : [];
+    const txt = L.length ? `👥 Escuchan contigo: ${L.map(([, r]) => r.name).join(', ')}` : ''; if (el.textContent !== txt) { el.textContent = txt; el.hidden = !txt; }
+  },
+  // -------- al terminar la lección: ¿qué te deja?
+  options(d) {
+    const D = typeof DIALOGOS !== 'undefined' && DIALOGOS[d.id];
+    if (D && D.posturas && D.posturas.length >= 2) return { q: `${d.short} sostiene: «${D.tesis}» ¿Qué piensas tú?`, ops: D.posturas.map((p) => p.t) };
+    return { q: `¿Qué te deja la lección de ${d.short}?`, ops: ['Me convence: pienso parecido', 'No me convence: lo veo de otro modo', 'Me deja con dudas: quiero pensarlo más'] };
+  },
+  ask() {
+    const d = Lesson.data; const o = this.options(d); const rew = $('#ls-reward');
+    const wrap = document.createElement('div'); wrap.className = 'lj'; rew.appendChild(wrap);
+    const p = document.createElement('p'); p.className = 'bq-q'; p.textContent = o.q; wrap.appendChild(p);
+    const box = document.createElement('div'); box.className = 'bq-ops'; wrap.appendChild(box);
+    const res = document.createElement('div'); res.className = 'lj-res'; wrap.appendChild(res); this.panel = { id: d.id, res, o };
+    o.ops.forEach((t, k) => { const b = document.createElement('button'); b.className = 'tk-op ans'; b.textContent = t; box.appendChild(b);
+      b.addEventListener('click', () => { if (box.dataset.done) return; box.dataset.done = '1'; [...box.children].forEach((x, j) => { x.disabled = true; x.classList.toggle('good', j === k); });
+        Audio.correct(); this.choose(d, k); }); });
+  },
+  choose(d, k) {
+    const v = (this.votes[d.id] = this.votes[d.id] || {}); v[Juntos.myId()] = { n: 'Tú', k, t: Date.now(), me: true };
+    if (Juntos.on) MRT.send('lec', { id: Juntos.myId(), n: Juntos.myName(), sg: d.id, k });
+    this.paint();
+  },
+  rLec(d) {
+    const id = String(d.id || ''); const r = Juntos.R.get(id); if (!r || id === Juntos.id) return; const sg = String(d.sg || '').slice(0, 24); const k = d.k | 0; if (k < 0 || k > 3) return;
+    (this.votes[sg] = this.votes[sg] || {})[id] = { n: r.name, k, t: Date.now() }; this.paint();
+    const mine = this.votes[sg][Juntos.myId()]; if (mine && Date.now() - mine.t < 900000) { achieve('escuchar'); if (!mine.paid) { mine.paid = true; addScore(30); popup('+30<small>escucharon juntos</small>', 'up'); } }
+  },
+  paint() {
+    const P = this.panel; if (!P || !P.res.isConnected) return; const v = this.votes[P.id] || {}; const now = Date.now(); P.res.innerHTML = '';
+    const list = Object.values(v).filter((x) => now - x.t < 900000); if (!list.some((x) => x.me)) return;
+    const others = list.filter((x) => !x.me);
+    P.o.ops.forEach((t, k) => { const who = list.filter((x) => x.k === k); if (!who.length) return; const row = document.createElement('p'); row.className = 'lj-row'; const b = document.createElement('b'); b.textContent = who.map((x) => x.n).join(', ') + ': '; row.appendChild(b); row.appendChild(document.createTextNode(t)); P.res.appendChild(row); });
+    const note = document.createElement('p'); note.className = 'lj-note';
+    note.textContent = others.length ? 'No hay respuesta correcta. ¿Por qué eligieron distinto? Búscalos y rétalos a un debate.' : Juntos.on ? 'Cuando otros viajeros terminen esta lección, aquí verás qué eligieron.' : 'Si escuchas esta lección junto a otros viajeros, aquí verás qué eligió cada uno.';
+    P.res.appendChild(note);
+  },
+};
+{ const f0 = Juntos.frame; Juntos.frame = function (dt) { try { Escucha.before(); } catch (e) { /* nada */ } f0.call(this, dt); try { Escucha.after(); } catch (e) { /* nada */ } }; }
+{ const fin0 = Lesson.finish; Lesson.finish = function () { fin0.call(this); if (!this.book && this.done) { try { Escucha.ask(); } catch (e) { console.warn(e); } } }; }
 
 </script>
 </body>
