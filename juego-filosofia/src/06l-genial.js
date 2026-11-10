@@ -10,6 +10,13 @@ const Share = {
   logo: null,
   async loadLogo() { if (!this.logo) this.logo = await this.img('img/logo-fpsh.png'); return this.logo; },
   img(src) { return new Promise((res) => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = src; }); },
+  // retrato de un pensador: su archivo propio o, si no está, el recorte de la hoja de retratos
+  async portrait(id) {
+    const im = await this.img(`img/p-${id}.jpg`); if (im) return im;
+    const sp = typeof SPRITES !== 'undefined' && (SPRITES['p-' + id] || SPRITES[id]); if (!sp) return null;
+    const [src, c, r, cols, rows] = sp; const sheet = await this.img(src); if (!sheet) return null;
+    const w = sheet.width / cols, h = sheet.height / rows; const cv = document.createElement('canvas'); cv.width = w; cv.height = h; cv.getContext('2d').drawImage(sheet, c * w, r * h, w, h, 0, 0, w, h); return cv;
+  },
   url() { return GAME_URL.replace(/^https?:\/\//, '').replace(/\/$/, ''); },
   async send(canvas, fname, text, okMsg) {
     const blob = await new Promise((r) => canvas.toBlob(r, 'image/jpeg', 0.9));
@@ -43,7 +50,7 @@ const Perfil = {
     x.fillStyle = 'rgba(243,230,196,0.8)'; x.font = `italic 34px ${body}`; x.fillText(top.epithet || '', W / 2, 250, W - 160);
     // retratos de los pensadores afines
     const n = af.con.length; const R = n === 1 ? 150 : 118; const gap = 300; const x0 = W / 2 - ((n - 1) * gap) / 2; const cy = 430;
-    const ims = await Promise.all(af.con.map((s) => Share.img(`img/p-${s.id}.jpg`)));
+    const ims = await Promise.all(af.con.map((s) => Share.portrait(s.id)));
     af.con.forEach((s, i) => {
       const cx = x0 + i * gap, r = i === 0 && n > 1 ? R + 14 : R;
       x.save(); x.beginPath(); x.arc(cx, cy, r, 0, Math.PI * 2); x.closePath(); x.fillStyle = '#2a2438'; x.fill(); x.clip();
