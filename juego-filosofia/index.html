@@ -4660,7 +4660,7 @@ const THEMES = [
   },
   { // IV · Edad Media: catedral nocturna
     sky: [0x05060c, 0x141a30, 0x050508], sunDir: [-0.5, 0.6, 0.3], sunCol: 0x9fb4ff, sunInt: 1.1, sunDisk: 0x000000,
-    hemi: [0x5a6aa0, 0x1a1410, 0.35], fog: [0x0e1020, 0.02], exposure: 1.35, stars: true, indoor: true,
+    hemi: [0x6a7ab0, 0x3a2c20, 0.55], fog: [0x0e1020, 0.02], exposure: 1.45, stars: true, indoor: true,
     accent: 0xffcf6a, enemy: { col: 0xd4a017, core: 0x14100a, shell: 'cross' }, lampCol: 0xffb060,
   },
   { // V · Renacimiento: mañana toscana
@@ -4670,7 +4670,7 @@ const THEMES = [
   },
   { // VI · Modernidad: biblioteca-observatorio bajo las estrellas
     sky: [0x03051a, 0x1a2350, 0x05050a], sunDir: [0.3, 0.7, -0.4], sunCol: 0x8fa8ff, sunInt: 0.9, sunDisk: 0x000000,
-    hemi: [0x7a86c0, 0x5a3a20, 0.95], fog: [0x0c1230, 0.012], exposure: 1.45, stars: true, moon: true,
+    hemi: [0x8a96cc, 0x8a6a48, 1.2], fog: [0x0c1230, 0.012], exposure: 1.5, stars: true, moon: true,
     accent: 0x9ab8ff, enemy: { col: 0x8a5cff, core: 0x05030f, shell: 'eye' }, lampCol: 0xffc070,
   },
   { // VII · Siglo XIX: atardecer dorado entre hierro, vidrio y montañas
@@ -4802,6 +4802,9 @@ function flutedCylinder(rt, rb, h, flutes = 20, depth = 0.05) {
   }
   g.computeVertexNormals(); return g;
 }
+// material para montañas lejanas: sin niebla, pero con su color ya mezclado con el del cielo (perspectiva aérea),
+// para que la roca y la nieve se lean en lugar de volverse una mancha blanca
+function farStd(W, hex, k, o = {}) { const c = new THREE.Color(hex).lerp(new THREE.Color(W.theme.fog[0]), k); const m = std(c.getHex(), { roughness: 1, flat: true, ...o }); m.fog = false; return m; }
 function column(style, h, mat, cap) {
   cap = cap || mat; const g = new THREE.Group(); const r = 0.55;
   if (style === 'doric') {
@@ -5490,7 +5493,7 @@ const ERA_BUILDERS = [
       const rails = std(0x5a5a5a, { metalness: 0.7, roughness: 0.4 }); for (const s of [-0.75, 0.75]) W.group.add(mesh(new THREE.BoxGeometry(0.12, 0.1, 80), rails, -21.6 + s, 0.05, -5, false, true));
     }
     // montañas nevadas al fondo (los Alpes de Nietzsche) y mar de niebla
-    const mtn = std(0x6a6a80, { roughness: 1, flat: true }); const snow = std(0xf4f0f8, { roughness: 0.8, flat: true });
+    const mtn = farStd(W, 0x5a5a72, 0.4); const snow = farStd(W, 0xf4f0f8, 0.12, { roughness: 0.8 });
     for (let i = 0; i < 14; i++) {
       const x = -150 + i * 23 + (r() - 0.5) * 12, z = -150 - r() * 60, h = 45 + r() * 50, w = 30 + r() * 25;
       const m = new THREE.Group(); m.position.set(x, -4, z);
@@ -5629,7 +5632,7 @@ const ERA_BUILDERS = [
       py.add(mesh(new THREE.BoxGeometry(6, 4.5, 6), std(0xc8b498), 0, 23.8, 0, false, false));
       py.add(mesh(new THREE.BoxGeometry(6.6, 0.8, 6.6), std(0x8a3a2a), 0, 26.4, 0, false, false));
       W.group.add(py); }
-    const mtn = std(0x4a6a5a, { roughness: 1, flat: true }); const snow = std(0xf4f0f8, { roughness: 0.8, flat: true });
+    const mtn = farStd(W, 0x3e5a4c, 0.4); const snow = farStd(W, 0xf4f0f8, 0.12, { roughness: 0.8 });
     for (let i = 0; i < 16; i++) {
       const x = -170 + i * 23 + (r() - 0.5) * 12, z = -170 - r() * 70, h = 55 + r() * 55, w = 32 + r() * 25;
       const m = new THREE.Group(); m.position.set(x, -4, z);
@@ -5668,7 +5671,7 @@ const ERA_BUILDERS = [
       const stair = mesh(new THREE.BoxGeometry(12, 1, 26), std(0xc8b898), 0, 10, 13, false, false); stair.rotation.x = -0.65; tm.add(stair);
       W.group.add(tm); }
     // volcanes: Popocatépetl e Iztaccíhuatl
-    const mtn = std(0x5a6a7a, { roughness: 1, flat: true }); const snow = std(0xf4f0f8, { roughness: 0.8, flat: true });
+    const mtn = farStd(W, 0x4a5a6a, 0.4); const snow = farStd(W, 0xf4f0f8, 0.12, { roughness: 0.8 });
     for (const [x, z, h, w, smoke] of [[-90, -180, 95, 55, true], [70, -190, 75, 70, false], [-30, -220, 60, 50, false], [140, -170, 55, 45, false]]) {
       const m = new THREE.Group(); m.position.set(x, -4, z); m.add(mesh(new THREE.ConeGeometry(w, h, 8), mtn, 0, h / 2, 0, false, false)); m.add(mesh(new THREE.ConeGeometry(w * 0.33, h * 0.33, 8), snow, 0, h - h * 0.165 + 0.3, 0, false, false)); W.group.add(m);
       if (smoke) W.emitters.push({ x, y: h - 2, z, col: 0xd8d0c8, rate: 2, acc: 0, kind: 'smoke' });
@@ -5705,9 +5708,9 @@ const ERA_BUILDERS = [
       for (const s of [-1, 1]) g.add(mesh(new THREE.ConeGeometry(0.05, 0.2, 4), m, s * 0.09, 2.37, 0.62));
       W.group.add(g); W.colliders.push({ t: 1, x, z, r: 0.7, h: 2 }); W.anim.push((t) => { g.children[2].rotation.x = Math.sin(t * 0.7 + i) * 0.15; }); }
     // picos andinos: un Huayna Picchu verde y la cordillera nevada
-    const green = std(0x3a5a3a, { roughness: 1, flat: true }); const snow = std(0xf4f0f8, { roughness: 0.8, flat: true }); const rock = std(0x6a6a7a, { roughness: 1, flat: true });
+    const green = farStd(W, 0x34523a, 0.3); const snow = farStd(W, 0xffffff, 0.05, { roughness: 0.8, emissive: 0x303540 }); const rock = farStd(W, 0x7a7a88, 0.5);
     { const hp = mesh(new THREE.ConeGeometry(22, 85, 7), green, 0, 38, -105, false, false); hp.scale.x = 0.7; W.group.add(hp); }
-    for (let i = 0; i < 14; i++) { const x = -170 + i * 26 + (r() - 0.5) * 12, z = -180 - r() * 60, h = 70 + r() * 60, w = 30 + r() * 25; const m = new THREE.Group(); m.position.set(x, -4, z); m.add(mesh(new THREE.ConeGeometry(w, h, 7), rock, 0, h / 2, 0, false, false)); m.add(mesh(new THREE.ConeGeometry(w * 0.36, h * 0.36, 7), snow, 0, h - h * 0.18 + 0.3, 0, false, false)); W.group.add(m); }
+    for (let i = 0; i < 14; i++) { const x = -170 + i * 26 + (r() - 0.5) * 12, z = -180 - r() * 60, h = 70 + r() * 60, w = 30 + r() * 25; const m = new THREE.Group(); m.position.set(x, -4, z); m.add(mesh(new THREE.ConeGeometry(w, h, 7), rock, 0, h / 2, 0, false, false)); m.add(mesh(new THREE.ConeGeometry(w * 0.42, h * 0.42, 7), snow, 0, h - h * 0.21 + 0.3, 0, false, false)); W.group.add(m); }
     brazier(W, -4, -34, 0xffb040); brazier(W, 4, -34, 0xffb040);
   },
   // ------------------------------------------------------------------ XII · Mapuche
@@ -5731,7 +5734,7 @@ const ERA_BUILDERS = [
       const door = mesh(new THREE.PlaneGeometry(1, 1.6), wood, 0, 0.8, 0, false, false); door.position.set(-Math.sign(x) * 3.1, 0.8, 0); door.rotation.y = -Math.sign(x) * Math.PI / 2; g.add(door);
       W.group.add(g); W.colliders.push({ t: 1, x, z, r: 3.3, h: 3 }); W.emitters.push({ x, y: 3.4, z, col: 0xb8b0a8, rate: 1.2, acc: 0, kind: 'smoke' }); }
     // volcán nevado humeante (el Rukapillan) y montañas
-    const mtn = std(0x4a5a5a, { roughness: 1, flat: true }); const snow = std(0xf4f0f8, { roughness: 0.8, flat: true });
+    const mtn = farStd(W, 0x3e4a4a, 0.4); const snow = farStd(W, 0xf4f0f8, 0.12, { roughness: 0.8 });
     { const v = new THREE.Group(); v.position.set(-10, -4, -170); v.add(mesh(new THREE.ConeGeometry(70, 110, 10), mtn, 0, 55, 0, false, false)); v.add(mesh(new THREE.ConeGeometry(30, 47, 10), snow, 0, 87, 0, false, false)); W.group.add(v); W.emitters.push({ x: -10, y: 104, z: -170, col: 0xe0dcd8, rate: 3, acc: 0, kind: 'smoke' }); }
     for (let i = 0; i < 10; i++) { const x = -180 + i * 40 + (r() - 0.5) * 20, z = -200 - r() * 40, h = 50 + r() * 40, w = 40 + r() * 20; const m = new THREE.Group(); m.position.set(x, -4, z); m.add(mesh(new THREE.ConeGeometry(w, h, 7), mtn, 0, h / 2, 0, false, false)); W.group.add(m); }
     // un estero de agua a un costado
@@ -5762,7 +5765,7 @@ const ERA_BUILDERS = [
       for (let k = 0; k < 7; k++) { const w = 12 - k * 1.3, y = k * 5; pg.add(mesh(new THREE.BoxGeometry(w * 0.7, 4, w * 0.7), red, 0, y + 2, 0, false, false)); const rf = mesh(new THREE.CylinderGeometry(0.2, w * 0.75, 1.5, 4), roofM, 0, y + 4.6, 0, false, false); rf.rotation.y = Math.PI / 4; pg.add(rf); }
       pg.add(mesh(new THREE.CylinderGeometry(0.1, 0.3, 5, 8), gold, 0, 38, 0, false, false)); W.group.add(pg); }
     // montañas kársticas en la niebla
-    const karst = std(0x2c4436, { roughness: 1, flat: true }), karst2 = std(0x3a5a44, { roughness: 1, flat: true });
+    const karst = farStd(W, 0x2c4436, 0.45), karst2 = farStd(W, 0x3a5a44, 0.45);
     for (let i = 0; i < 14; i++) { // picos irregulares, más oscuros que la niebla para que se lean como montañas
       const x = -160 + i * 25 + (r() - 0.5) * 14, z = -95 - r() * 40, h = 28 + r() * 34, w = 8 + r() * 7;
       const k = mesh(new THREE.CylinderGeometry(w * (0.35 + r() * 0.2), w, h, 7, 3), i % 2 ? karst : karst2, x, h / 2 - 3, z, false, false);
@@ -6045,8 +6048,8 @@ const ERA_BUILDERS = [
       for (let k = 0; k < 7; k++) for (const sd of [-1, 1]) g.add(mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.1, 14), k % 2 ? std(0xc8a050, { metalness: 0.6, roughness: 0.4 }) : std(0x2a4a7a), sd * 3.3, 2.6, -8 + k * 2.6, false, false).rotateZ(Math.PI / 2));
       W.group.add(g); }
     // montañas nevadas al fondo
-    for (let k = 0; k < 7; k++) { const m = mesh(new THREE.ConeGeometry(18 + r() * 10, 30 + r() * 20, 7), std(0x5a6a7a, { roughness: 1, flat: true }), -60 + k * 20, 12, -110 - r() * 20, false, false); W.group.add(m);
-      W.group.add(mesh(new THREE.ConeGeometry(7, 10, 7), snow, m.position.x, m.position.y + m.geometry.parameters.height / 2 - 4, m.position.z, false, false)); }
+    for (let k = 0; k < 7; k++) { const m = mesh(new THREE.ConeGeometry(18 + r() * 10, 30 + r() * 20, 7), farStd(W, 0x4a5a6a, 0.35), -60 + k * 20, 12, -110 - r() * 20, false, false); W.group.add(m);
+      W.group.add(mesh(new THREE.ConeGeometry(7, 10, 7), farStd(W, 0xeef2f6, 0.1), m.position.x, m.position.y + m.geometry.parameters.height / 2 - 4, m.position.z, false, false)); }
     // aurora boreal: cortinas de luz que ondulan en el cielo
     { const c = document.createElement('canvas'); c.width = 128; c.height = 128; const x = c.getContext('2d'); const gr = x.createLinearGradient(0, 0, 0, 128); gr.addColorStop(0, 'rgba(120,255,200,0)'); gr.addColorStop(0.35, 'rgba(120,255,190,0.55)'); gr.addColorStop(0.75, 'rgba(80,200,255,0.25)'); gr.addColorStop(1, 'rgba(60,120,255,0)'); x.fillStyle = gr; x.fillRect(0, 0, 128, 128);
       x.globalCompositeOperation = 'destination-in'; const gh = x.createLinearGradient(0, 0, 128, 0); gh.addColorStop(0, 'rgba(0,0,0,0)'); gh.addColorStop(0.3, 'rgba(0,0,0,1)'); gh.addColorStop(0.7, 'rgba(0,0,0,1)'); gh.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = gh; x.fillRect(0, 0, 128, 128);
