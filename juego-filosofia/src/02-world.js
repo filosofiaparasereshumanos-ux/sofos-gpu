@@ -319,7 +319,8 @@ function newWorld(idx) {
 function stationPositions(n) {
   // los pensadores esperan repartidos por la plaza, cada uno junto a su escenario
   if (n === 3) return [[-12, 16], [12, 2], [-12, -12]];
-  if (n >= 5) return [[-12, 22], [12, 12], [-12, 2], [12, -8], [-12, -18]].slice(0, n);
+  if (n === 5) return [[-12, 22], [12, 12], [-12, 2], [12, -8], [-12, -18]];
+  if (n >= 6) return [[-12, 24], [12, 16], [-12, 7], [12, -2], [-12, -11], [12, -20]].slice(0, n);
   return [[-12, 20], [12, 8], [-12, -4], [12, -16]];
 }
 function addBounds(W) {

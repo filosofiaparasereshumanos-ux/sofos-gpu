@@ -203,7 +203,7 @@ piece(vs('pachacutec', boss=True), [big('Vence al maestro'), name_label('Pachac�
 piece(kenburns(os.path.join(WK, 'mapa.png'), 40, 1.0, 1.08), [big('Descubre', 'cómo piensas tú')])
 piece(kenburns(os.path.join(WK, 'aula.png'), 36, 1.0, 1.06, bg=Image.open(os.path.join(WK, 'mapa.png'))), [big('Y en clase', 'para docentes')])
 bgc = os.path.join(FR, 'w15', sorted(os.listdir(os.path.join(FR, 'w15')))[20])
-piece(card([('El primer juego educativo completo', 'b'), ('de filosofía, ciencia e historia', 'm'), ('22 épocas · 102 pensadores', 'm')], 84, bgc), boom=True)
+piece(card([('El primer juego educativo completo', 'b'), ('de filosofía, ciencia e historia', 'm'), ('22 épocas · 107 pensadores', 'm')], 84, bgc), boom=True)
 piece(old_frames(53.4, 54.9), voice=(VID('final'), 0.0 - 0.05 + 0.05))                        # «¿Te atreves a pensar?»
 piece(card([('Únete a la odisea', 'b'), ('Gratis · link en la bio', 'm'), ('RETO: sal de la caverna de Platón y comenta tu mapa filosófico ↓', 'm')], 96,
            os.path.join(FR, 'cave2', sorted(os.listdir(os.path.join(FR, 'cave2')))[60])), boom=True)

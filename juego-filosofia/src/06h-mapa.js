@@ -45,6 +45,8 @@ const MAPA_DIALOGO = {
   nezahualcoyotl: { eje: 'cambio', fluye: -1, permanece: 1, matiz: 0 }, zerayacob: { eje: 'conocer', razon: 1, confianza: -0.3, matiz: 0.3 },
   montaigne: { eje: 'verdad', relativo: -1, universal: 1, matiz: 0 },
   heidegger: { eje: 'sentido', autentico: 1, comunidad: -0.5, matiz: 0.3 },
+  democrito: { eje: 'conocer', razon: 1, experiencia: -1, matiz: 0 }, seneca: { eje: 'sentido', crear: 1, fuera: -0.5, matiz: 0.5 },
+  hobbes: { eje: 'justicia', miedo: -1, valor: 1, matiz: 0 },
 };
 const Mapa = {
   calc() {
