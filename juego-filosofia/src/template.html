@@ -358,6 +358,7 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 #mpd { position: absolute; inset: 0; z-index: 42; background: rgba(8,6,10,0.88); display: grid; place-items: center; padding: 16px; }
 .mpd-box { width: min(460px, 100%); }
 .mpd-box .eyebrow { text-align: center; }
+.au-guide a { color: var(--gold); }
 .quick.q4 { grid-template-columns: repeat(4, 1fr); width: min(480px, 100%); gap: 8px; }
 .quick.q4 .qk span { font-size: 0.84rem; } .quick.q4 .qk small { font-size: 0.66rem; }
 @media (max-width: 360px) { .quick.q4 { grid-template-columns: repeat(2, 1fr); } }
@@ -1229,6 +1230,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       </div>
 
       <div id="au-teacher" hidden>
+        <p class="qd-note au-guide">¿Primera vez? <a href="guia-docentes.pdf" target="_blank" rel="noopener">📄 Descarga la guía para docentes (PDF)</a>: seis maneras de usar el juego en clase, una clase de 45 minutos y todos los diálogos y experimentos.</p>
         <h3 class="tv-sec">1. Crea una tarea</h3>
         <div class="au-form"><input id="au-title" maxlength="60" placeholder="Nombre de la tarea, p. ej. Los presocráticos · 3.º B" autocomplete="off" aria-label="Nombre de la tarea"></div>
         <p class="qd-note">Elige los pensadores (toca una época para elegirla entera):</p>
@@ -1262,6 +1264,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <p class="qd-note">Proyecta las preguntas en la pizarra. Los equipos responden en voz alta o con tarjetas A, B, C y D, y tú das los puntos.</p>
         <div class="au-form au-inline"><label>Equipos <select id="au-teams"><option>2</option><option>3</option><option selected>4</option></select></label><label>Preguntas <select id="au-nq"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></label></div>
         <div class="btns"><button class="btn primary" id="au-proj">Empezar el debate en el proyector</button></div>
+        <p class="qd-note au-guide"><a href="guia-docentes.pdf" target="_blank" rel="noopener">📄 Guía para docentes (PDF)</a> · <a href="guia-docentes.html" target="_blank" rel="noopener">ver en línea</a></p>
         <h3 class="tv-sec">Fichas para imprimir</h3>
         <p class="qd-note">Una ficha por pensador: idea central, tres preguntas, una pregunta para debatir y el solucionario al final.</p>
         <div class="btns"><button class="btn" id="au-sheet">Preparar la ficha</button></div>
