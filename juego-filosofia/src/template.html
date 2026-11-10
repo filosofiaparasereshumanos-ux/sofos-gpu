@@ -356,6 +356,7 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 #mp-badge { position: absolute; top: max(8px, var(--sat)); left: 50%; transform: translateX(-50%); z-index: 30; border: 1px solid var(--gold); background: rgba(10,8,5,0.75); color: #ffe0a0; border-radius: 999px; padding: 4px 12px; font: inherit; font-size: 0.8rem; cursor: pointer; white-space: nowrap; }
 #mp-meet { position: absolute; bottom: calc(max(16px, var(--sab)) + 150px); left: 50%; transform: translateX(-50%); z-index: 30; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; width: max-content; max-width: calc(100% - 32px); border-radius: 18px; padding: 10px 12px; background: rgba(14,11,8,0.88); border: 1px solid var(--gold); box-shadow: 0 6px 24px rgba(0,0,0,0.5); animation: sl-pop 0.3s ease-out; }
 #mp-meet[hidden] { display: none; }
+#mp-meet button.mute { background: rgba(255,255,255,0.1); color: #ffe0a0; font-size: 0.85rem; padding: 8px 12px; }
 #mp-meet-t { width: 100%; text-align: center; color: #ffe0a0; font-size: 0.95rem; }
 #mp-meet button { border: 0; border-radius: 999px; padding: 10px 16px; font: inherit; font-size: 0.95rem; color: #2a1a08; background: linear-gradient(#ffe08a, #d8a83a); cursor: pointer; }
 #mp-emo { position: absolute; right: max(12px, var(--sar, 0px)); top: calc(max(8px, var(--sat)) + 44px); z-index: 31; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold); background: rgba(10,8,5,0.75); font-size: 1.4rem; cursor: pointer; }
@@ -1050,7 +1051,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
   </section>
 
   <button id="mp-badge" hidden></button>
-  <div id="mp-meet" hidden><span id="mp-meet-t"></span><button id="mp-meet-q">❓ Duelo de preguntas</button><button id="mp-meet-d">💬 Debate filosófico</button></div>
+  <div id="mp-meet" hidden><span id="mp-meet-t"></span><button id="mp-meet-q">❓ Duelo de preguntas</button><button id="mp-meet-d">💬 Debate filosófico</button><button id="mp-meet-m" class="mute" aria-label="Silenciar a este viajero">🔇 Silenciar</button></div>
   <button id="mp-emo" hidden aria-label="Gestos">😀</button>
   <div id="mp-emobar" hidden></div>
   <div id="mp-inv" hidden><p id="mp-inv-t"></p><div class="btns"><button class="btn primary" id="mp-yes">¡Acepto!</button><button class="btn ghost" id="mp-no">Ahora no</button></div></div>
@@ -1087,10 +1088,11 @@ body.touch .gm.boss { width: 30px; height: 30px; }
           </div>
           <div class="sl-card">
             <h3>Mundo abierto</h3>
-            <p class="qd-note">Cuando entras a una época, ves a los demás viajeros que están ahí en ese momento. Acércate a alguien para saludar con gestos, retarlo a un duelo de preguntas o a un debate filosófico. No hay chat libre: solo apodos y gestos.</p>
+            <p class="qd-note">Cuando entras a una época, ves a los demás viajeros que están ahí en ese momento. Acércate a alguien para saludar con gestos, retarlo a un duelo de preguntas o a un debate filosófico. No hay chat libre: solo apodos y gestos. Si alguien te molesta, acércate y toca «🔇 Silenciar».</p>
             <div class="btns"><button class="btn" id="sl-mundo">Mundo abierto</button></div>
             <div id="av-opts"></div>
             <div class="au-form au-inline"><input id="av-name" maxlength="16" placeholder="Tu apodo" autocomplete="off" aria-label="Apodo de tu avatar"><button class="btn primary" id="av-save">Guardar avatar</button></div>
+            <div class="btns"><button class="btn ghost" id="av-unmute" hidden></button></div>
           </div>
           <div class="sl-card">
             <h3>Grupo privado</h3>

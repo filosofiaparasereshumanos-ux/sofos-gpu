@@ -13,6 +13,7 @@ const AV_SKINS = [0xf0d0b0, 0xe0b090, 0xc49372, 0xa0704a, 0x8a5a3a, 0x5a3820];
 const AV_HAIRS = [0x1a1410, 0x4a2a1a, 0x8a5a2a, 0xd8b070, 0xb83a2a, 0xe8e8e8, 0x3a5ab8];
 const AV_HATS = [['none', 'Sin nada'], ['longhair', 'Pelo largo'], ['braids', 'Trenzas'], ['cap', 'Gorro'], ['turban', 'Turbante'], ['laurel', 'Laurel'], ['hood', 'Capucha'], ['beret', 'Boina']];
 const EMOTES = ['👋', '👍', '❓', '💡', '😂', '👏'];
+const MUTE_KEY = 'odisea-razon.silenciados';
 const Juntos = {
   on: false, mode: '', code: '', chan: '', id: '', name: '', R: new Map(), sendT: 0, last: null, near: null, duel: null, inv: null, emoT: 0, wantT: 0,
   hash(s) { let h = 7; for (const c of s) h = (Math.imul(h, 31) + c.charCodeAt(0)) >>> 0; return h; },
@@ -20,7 +21,17 @@ const Juntos = {
   look() { const d = { r: this.hash(this.myId()) % AV_ROBES.length, s: 2, h: 0, t: 0, n: '' }; try { return { ...d, ...(JSON.parse(localStorage.getItem(AVATAR_KEY) || 'null') || {}) }; } catch (e) { return d; } },
   myName() { const l = this.look(); return Sala.clean(l.n) || Sala.clean((typeof Fame !== 'undefined' && Fame.alias()) || '') || 'Viajero ' + (this.hash(this.myId()) % 9000 + 1000); },
   lookStr(l = this.look()) { return [l.r, l.s, l.h, l.t].join(','); },
-  publicOn() { return Sala.ok() && G.settings.mundo !== false; },
+  publicOn() { return Sala.ok() && G.settings.mundo === true; },
+  // silenciar: no vuelves a ver ni recibir nada de ese viajero en este aparato
+  muted() { if (!this._mu) { try { this._mu = new Set(JSON.parse(localStorage.getItem(MUTE_KEY) || '[]')); } catch (e) { this._mu = new Set(); } } return this._mu; },
+  mute(id) { const m = this.muted(); m.add(id); try { localStorage.setItem(MUTE_KEY, JSON.stringify([...m].slice(-200))); } catch (e) { /* nada */ } const r = this.R.get(id); this.drop(id); this.near = null; this.paintMeet(); toast(`🔇 Silenciaste a ${r ? r.name : 'ese viajero'}: ya no lo verás ni recibirás sus gestos o retos.`); },
+  unmuteAll() { this._mu = new Set(); try { localStorage.removeItem(MUTE_KEY); } catch (e) { /* nada */ } this.paintAvatar(); toast('Ya no tienes viajeros silenciados.'); },
+  // la primera vez se pregunta antes de entrar al mundo público
+  askMundo() {
+    if (this.inv || this.asked) return; this.asked = true; this.inv = { ask: true };
+    $('#mp-inv-t').textContent = '🌍 ¿Quieres entrar al mundo abierto? Verás a otros viajeros que estén en esta época (solo su apodo y su avatar) y ellos te verán a ti. Podrán saludarse con gestos y retarse a duelos o debates. No hay chat. Puedes cambiarlo cuando quieras en Ajustes.';
+    $('#mp-yes').textContent = 'Sí, entrar'; $('#mp-no').textContent = 'Ahora no'; $('#mp-inv').hidden = false;
+  },
   // ---------------------------------------------------------------- conexión: grupo privado o mundo público de la época
   connect(chan) {
     for (const id of [...this.R.keys()]) this.drop(id);
@@ -45,6 +56,7 @@ const Juntos = {
   autoPublic(dt) {
     if (this.mode === 'grupo') return;
     const inEra = !!world && world.idx === G.eraIdx && ['play', 'talk', 'place', 'lesson', 'duel', 'victory', 'concept', 'paused'].includes(G.state);
+    if (inEra && G.state === 'play' && G.settings.mundo === undefined && Sala.ok()) this.askMundo();
     const want = this.publicOn() && inEra ? 'mundo-pub-' + ERAS[G.eraIdx].id : '';
     if (want === this.chan) { this.wantT = 0; return; }
     this.wantT += dt; if (this.wantT < (want ? 1 : 6)) return; this.wantT = 0;
@@ -70,7 +82,7 @@ const Juntos = {
     scene.add(g); return { g, fig };
   },
   rPos(d) {
-    const id = String(d.id || ''); if (!/^[A-Za-z0-9]{6,12}$/.test(id) || id === this.id) return;
+    const id = String(d.id || ''); if (!/^[A-Za-z0-9]{6,12}$/.test(id) || id === this.id || this.muted().has(id)) return;
     let r = this.R.get(id); const name = Sala.clean(d.n) || 'Viajero'; const ls = String(d.l || '0,2,0,0').slice(0, 16);
     if (r && (r.ls !== ls || r.name !== name)) { this.drop(id); r = null; }
     if (!r) { if (this.R.size >= 60) return; r = { ...this.avatar(id, name, ls), name, ls, x: d.x, y: d.y, z: d.z, yaw: d.r, tx: d.x, ty: d.y, tz: d.z, tyaw: d.r }; this.R.set(id, r); if (d.e === G.eraIdx && G.state === 'play') toast(`👋 ${name} ha llegado a esta época.`); }
@@ -141,7 +153,9 @@ const Juntos = {
     setTimeout(() => { if (this.duel && this.duel.wait && this.duel.seed === seed) { this.duel = null; this.near = null; this.paintMeet(); toast(`${r.name} no respondió.`); } }, 15000);
   },
   rReto(d) {
-    if (d.to !== this.id) return; if (this.duel || G.state !== 'play' || d.e !== G.eraIdx) { MRT.send('rechaza', { from: this.id, to: d.from, name: this.name }); return; }
+    if (d.to !== this.id) return;
+    const from = String(d.from || ''); const now = performance.now(); const log = (this.retoLog = this.retoLog || new Map()); const t = (log.get(from) || []).filter((x) => now - x < 120000); t.push(now); log.set(from, t);
+    if (this.muted().has(from) || t.length > 3) { MRT.send('rechaza', { from: this.id, to: d.from, name: this.name }); return; } // silenciado o demasiado insistente if (this.duel || this.inv || G.state !== 'play' || d.e !== G.eraIdx) { MRT.send('rechaza', { from: this.id, to: d.from, name: this.name }); return; }
     this.inv = d; const who = Sala.clean(d.name) || 'Alguien';
     $('#mp-inv-t').textContent = d.kind === 'd' ? `${who} te invita a un debate filosófico: los dos tomarán postura sobre una tesis y darán su mejor razón.` : `${who} te desafía a un duelo de tres preguntas sobre esta época.`;
     $('#mp-inv').hidden = false; Audio.gong && Audio.gong(); buzz([20, 40, 20]);
@@ -149,6 +163,7 @@ const Juntos = {
   },
   answerInv(yes) {
     const d = this.inv; if (!d) return; this.inv = null; $('#mp-inv').hidden = true; clearTimeout(this.invT);
+    if (d.ask) { $('#mp-yes').textContent = '¡Acepto!'; $('#mp-no').textContent = 'Ahora no'; G.settings.mundo = !!yes; saveSettings(); syncSettings(); this.welcomed = !yes; if (!yes) toast('Puedes entrar al mundo abierto cuando quieras desde Ajustes.'); return; }
     if (!yes || G.state !== 'play') { MRT.send('rechaza', { from: this.id, to: d.from, name: this.name }); return; }
     MRT.send('acepta', { from: this.id, to: d.from, seed: d.seed }); this.begin(d.from, Sala.clean(d.name) || 'Rival', d.seed, d.kind === 'd' ? 'd' : 'q');
   },
@@ -233,7 +248,8 @@ const Juntos = {
     const sw = (b, v) => { b.style.background = '#' + v.toString(16).padStart(6, '0'); };
     row('Túnica', AV_ROBES, 'r', sw); row('Piel', AV_SKINS, 's', sw); row('Pelo', AV_HAIRS, 'h', sw); row('Cabeza', AV_HATS, 't', (b, v) => { b.textContent = v[1]; b.classList.add('txt'); });
     $('#av-name').value = l.n || ''; $('#av-name').placeholder = this.myName();
-    $('#sl-mundo').textContent = G.settings.mundo === false ? 'Mundo abierto: desactivado (toca para activar)' : 'Mundo abierto: activado (toca para desactivar)';
+    $('#sl-mundo').textContent = G.settings.mundo === true ? 'Mundo abierto: activado (toca para desactivar)' : 'Mundo abierto: desactivado (toca para activar)';
+    const n = this.muted().size; $('#av-unmute').hidden = !n; $('#av-unmute').textContent = `Quitar el silencio a ${n} ${n === 1 ? 'viajero' : 'viajeros'}`;
   },
   saveLook(n) { try { localStorage.setItem(AVATAR_KEY, JSON.stringify(n)); } catch (e) { /* nada */ } this.last = null; this.sendT = 0; this.paintAvatar(); Audio.click(); },
   // ---------------------------------------------------------------- grupos privados desde la pantalla «En vivo»
@@ -253,6 +269,8 @@ const Juntos = {
 { let t0 = performance.now(); const loop = () => { const t = performance.now(); const dt = Math.min(0.1, (t - t0) / 1000); t0 = t; try { Juntos.frame(dt); } catch (e) { console.warn(e); } requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
 on('#mp-meet-q', () => Juntos.challenge('q'));
 on('#mp-meet-d', () => Juntos.challenge('d'));
+on('#mp-meet-m', () => { const r = Juntos.near && Juntos.R.get(Juntos.near); if (r && confirm(`¿Silenciar a ${r.name}? Dejarás de verlo y no recibirás sus gestos ni sus retos.`)) Juntos.mute(Juntos.near); });
+on('#av-unmute', () => Juntos.unmuteAll());
 on('#mp-yes', () => Juntos.answerInv(true));
 on('#mp-no', () => Juntos.answerInv(false));
 on('#mp-emo', () => { $('#mp-emobar').hidden = !$('#mp-emobar').hidden; });
@@ -261,7 +279,7 @@ on('#mp-badge', () => { if (Juntos.mode === 'grupo') { if (confirm(`¿Salir del 
 on('#sl-jnew', () => Juntos.create());
 on('#sl-jjoin', () => Juntos.join());
 on('#sl-jgo', () => openTravel('title'));
-on('#sl-mundo', () => { G.settings.mundo = G.settings.mundo === false; saveSettings(); syncSettings(); Juntos.paintAvatar(); });
+on('#sl-mundo', () => { G.settings.mundo = G.settings.mundo !== true; saveSettings(); syncSettings(); Juntos.paintAvatar(); });
 on('#av-save', () => { const n = Sala.clean($('#av-name').value); if ($('#av-name').value && !n) return toast('Elige un apodo de 2 a 16 letras, sin palabras ofensivas.'); Juntos.saveLook({ ...Juntos.look(), n }); toast('Avatar guardado.'); });
 $('#b-sala').addEventListener('click', () => setTimeout(() => Juntos.paintAvatar(), 50));
 window.addEventListener('pagehide', () => { if (Juntos.on) MRT.send('adios', { id: Juntos.id }); });

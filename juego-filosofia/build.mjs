@@ -49,11 +49,11 @@ const APP_HEAD = `<meta name="theme-color" content="#120d07">
 <meta name="apple-mobile-web-app-title" content="Odisea">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Odisea de la Razón · ¿Te atreves a pensar?">
-<meta property="og:description" content="Conversa con Sócrates, Hipatia, Sor Juana y 65 pensadores más, desafíalos a un debate y viaja por 15 mundos, de Tales a nuestros días. Gratis, en el navegador.">
+<meta property="og:description" content="Conversa y debate con Sócrates, Hipatia, Sor Juana y 104 pensadores más en 22 épocas, de Sumer a nuestros días. Explora el mundo junto a otros viajeros y debate con ellos. Gratis, en el navegador.">
 <meta property="og:image" content="https://filosofiaparasereshumanos-ux.github.io/sofos-gpu/juego-filosofia/marketing/portada-titulo.jpg">
 <meta name="twitter:card" content="summary_large_image">
 `;
-const a = page(read('src/template.html'), `const NARR_INDEX = ${narr};\n` + join_(parts3d), 'El primer juego educativo completo de filosofía, ciencia e historia: conversa y debate con 101 pensadoras y pensadores en 22 épocas, de Sumer a nuestros días. Gratis, en el navegador.', APP_HEAD);
+const a = page(read('src/template.html'), `const NARR_INDEX = ${narr};\n` + join_(parts3d), 'El primer juego educativo completo de filosofía, ciencia e historia: conversa y debate con 107 pensadoras y pensadores en 22 épocas, de Sumer a nuestros días. Gratis, en el navegador.', APP_HEAD);
 writeFileSync(join(here, 'index.html'), a.full);
 console.log(`index.html (viaje 3D): ${(a.full.length / 1024).toFixed(0)} KB`);
 

@@ -12,7 +12,7 @@ sola, sin subir una versión nueva a Play.
 | App web con manifiesto, service worker e íconos | `manifest.webmanifest`, `sw.js`, `img/icon-*.png` |
 | Ícono 512×512 | `img/icon-512.png` |
 | Gráfico destacado 1024×500 | `marketing/play/grafico-destacado.png` |
-| Capturas de teléfono 1080×1920 | `marketing/play/1-inicio.png` … `5-reto.png` |
+| Capturas de teléfono 1080×1920 | `marketing/play/1-inicio.png` … `8-experimento.png` (Persia, mundo abierto y el dilema del tranvía incluidos) |
 | Política de privacidad (URL pública) | https://filosofiaparasereshumanos-ux.github.io/sofos-gpu/juego-filosofia/privacidad.html |
 
 ## Pasos (unos 30 minutos)
@@ -45,7 +45,13 @@ sola, sin subir una versión nueva a Play.
      menores de 13, Google pide cumplir la política de Familias.
    - *Seguridad de los datos:* recopila «nombre de usuario» (opcional, para la
      cuenta) y «progreso del juego»; no se comparte con terceros; se puede pedir
-     el borrado.
+     el borrado. Para el multijugador declara también «Otro contenido generado por
+     el usuario» (apodo y avatar) e «Interacciones en la app» (posición, gestos y
+     respuestas), marcados como **transmitidos de forma efímera, no almacenados**,
+     cifrados en tránsito y opcionales.
+   - *Clasificación de contenido:* en «Interacción entre usuarios» responde que
+     **sí** hay interacción, **sin** chat libre, sin compartir ubicación real ni
+     datos personales, con opción de silenciar a otros jugadores.
 
 4. **Subir el `.aab`:** *Pruebas → Prueba interna* (o directamente *Producción*) →
    *Crear versión* → sube el archivo. Las cuentas personales nuevas deben hacer
@@ -66,19 +72,21 @@ sola, sin subir una versión nueva a Play.
 ## Descripción para la ficha
 
 **Breve (80 caracteres):**
-Debate con 96 filósofas y filósofos en 21 mundos, de Sócrates a Bashō.
+Debate con 107 filósofas y filósofos en 22 épocas, de Sumer a hoy.
 
 **Completa:**
 Odisea de la Razón es un viaje en 3D por la historia del pensamiento. Camina por la
-Atenas de Sócrates, la Bagdad de la Casa de la Sabiduría, la Tenochtitlan de los
-poetas nahuas o el Japón del zen, y debate con 91 pensadoras y pensadores: Hipatia,
-Sor Juana, Confucio, Avicena, Simone de Beauvoir, Paulo Freire, Marie Curie y muchos más.
+Atenas de Sócrates, la Persia de Zaratustra, la Bagdad de la Casa de la Sabiduría, la
+Tenochtitlan de los poetas nahuas o el Japón del zen, y debate con 107 pensadoras y
+pensadores: Hipatia, Sor Juana, Confucio, Avicena, Simone de Beauvoir, Paulo Freire,
+Marie Curie y muchos más.
 
 • Escucha sus lecciones narradas y descubre lugares, libros y personajes de cada época.
-• Vence en debates de preguntas para comprender sus ideas y completar tu códice.
+• Vence en debates de preguntas y en 41 diálogos socráticos: toma postura, da razones y aprende a detectar falacias.
+• Vive 11 experimentos filosóficos: la caverna de Platón, el tranvía, la habitación china, la máquina de experiencias…
+• Mundo abierto: encuentra a otros viajeros en la misma época, salúdalos con gestos y rétalos a un duelo o a un debate. Sin chat libre.
 • Consulta cada día al Oráculo de Delfos y compite en el ranking mundial.
 • Reta a tus amigos con un enlace: las mismas diez preguntas, gana quien sepa más.
-• Consigue diplomas al terminar cada mundo.
-• Modo aula para docentes: crea una clase y sigue el progreso de tus estudiantes.
+• Para docentes: modo aula con seguimiento del curso, trivia en vivo para proyectar, grupos privados y guía didáctica.
 
 Gratis, sin anuncios. Una propuesta de Filosofía para Seres Humanos.

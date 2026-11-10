@@ -6,7 +6,7 @@ const G = {
   state: 'loading', prevScreen: null, eraIdx: 0, score: 0, frags: 0, hp: 100, maxHp: 100,
   stats: { correct: 0, wrong: 0, kills: 0, time: 0 }, eraStart: null,
   codex: new Set(store.get(CODEX_KEY, [])),
-  settings: Object.assign({ sens: 1, music: 0.7, sfx: 0.85, quality: IS_TOUCH ? 'mid' : 'high', invertY: false, voices: true, autofire: true, vibrate: true, mundo: true, trialDiff: 'facil' }, store.get(SET_KEY, {})),
+  settings: Object.assign({ sens: 1, music: 0.7, sfx: 0.85, quality: IS_TOUCH ? 'mid' : 'high', invertY: false, voices: true, autofire: true, vibrate: true, trialDiff: 'facil' }, store.get(SET_KEY, {})),
   streak: 0, bestStreak: 0,
   noLock: false, intentionalUnlock: false,
 };
