@@ -48,7 +48,7 @@ Imágenes con nano-banana, escenas con voz con Veo 3 fast y música con Suno, to
 | 16–40 | Los 21 mundos, de Sumer a la ciencia, cada uno con su número, nombre y pensadores | «21 épocas» · «De Bagdad a Tenochtitlan» · «96 pensadoras y pensadores» |
 | 40–64 | Debate con Sócrates, diálogo con Platón, caverna, Sísifo, Giges, Descartes, mariposa, libro | Un rótulo por cada experiencia |
 | 64–70 | Mapa filosófico y mapa de la clase | «Tu mapa filosófico» · «Para docentes» |
-| 70–75 | Cifras | «21 épocas · 96 pensadoras y pensadores · 15 diálogos socráticos · 9 experimentos filosóficos · Gratis, en tu celular» |
+| 70–75 | Cifras | «21 épocas · 96 pensadoras y pensadores · 25 diálogos socráticos · 11 experimentos mentales · Gratis, en tu celular» |
 | 75–85 | Llamada y firma | «Únete a la odisea · RETO: sal de la caverna de Platón y comenta tu mapa filosófico ↓» y logo |
 
 ### Texto sugerido

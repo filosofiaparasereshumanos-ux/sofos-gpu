@@ -163,7 +163,7 @@ add(frames_of('book', take=95), 'Ciencia, historia y grandes libros', 'de Arquí
 add(kenburns(os.path.join(WK, 'mapa.png'), 96), 'Descubre cómo piensas tú', 'tu mapa filosófico', 'bottom')
 add(kenburns(os.path.join(WK, 'aula.png'), 96, bg=Image.open(os.path.join(WK, 'mapa.png'))), 'Para docentes', 'toda tu clase en un mapa, lista para debatir', 'top', size=86)
 bgc = sorted(os.listdir(os.path.join(FR, 'w15')))[20]
-add(card([('21 épocas', 'b'), ('96 pensadoras y pensadores', 'm'), ('15 diálogos socráticos', 'm'), ('9 experimentos filosóficos', 'm'), ('Gratis · en tu celular', 'b')], 120, os.path.join(FR, 'w15', bgc)))
+add(card([('21 épocas', 'b'), ('96 pensadoras y pensadores', 'm'), ('25 diálogos socráticos', 'm'), ('11 experimentos mentales', 'm'), ('Gratis · en tu celular', 'b')], 120, os.path.join(FR, 'w15', bgc)))
 
 # ---------------------------------------------------------------- render de la parte central
 mid = os.path.join(TMP, 'mid3.mp4')
