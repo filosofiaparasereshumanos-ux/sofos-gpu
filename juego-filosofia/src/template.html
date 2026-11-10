@@ -351,6 +351,37 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .au-tbl td.pct { font-weight: 700; color: #ffb36a; }
 .au-tbl td.pct.mid { color: var(--gold-bright); }
 .au-tbl td.pct.full { color: #8fe08a; }
+#pmap { position: absolute; inset: 0; z-index: 41; background: radial-gradient(ellipse at top, #2a2030, #0d0c12); display: flex; flex-direction: column; padding: max(14px, var(--sat)) max(22px, var(--sar)) max(14px, var(--sab)) max(22px, var(--sal)); gap: 14px; overflow-y: auto; font-size: clamp(16px, 1.6vw, 26px); }
+.pm-top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.pm-top > b { font-family: var(--display); font-weight: normal; color: var(--gold); font-size: 1.4em; flex: 1 1 260px; }
+.pm-top .tabs { margin: 0; } .pm-top .tabs button { font-size: 0.8em; }
+#pm-body { flex: 1; }
+.pm-empty { text-align: center; font-size: 1.2em; opacity: 0.8; margin-top: 12vh; }
+.pm-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+.pm-stats div { text-align: center; border: 1px solid var(--gold); border-radius: 14px; padding: 10px; background: rgba(214,168,74,0.08); }
+.pm-stats b { display: block; font-family: var(--display); font-weight: normal; font-size: 2.4em; color: var(--gold); line-height: 1.1; }
+.pm-stats span { opacity: 0.8; }
+.pm-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 28px; }
+@media (max-width: 760px) { .pm-grid { grid-template-columns: 1fr; } }
+.pm-col h3 { font-family: var(--display); font-weight: normal; color: var(--gold); margin: 0 0 8px; letter-spacing: 0.06em; }
+.pm-row { display: grid; grid-template-columns: minmax(7em, 34%) 1fr 4em; gap: 10px; align-items: center; margin: 6px 0; }
+.pm-n { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pm-bar { height: 0.8em; border-radius: 0.4em; background: rgba(255,255,255,0.1); overflow: hidden; }
+.pm-bar i { display: block; height: 100%; background: linear-gradient(90deg, #b8924a, #ffd36a); border-radius: inherit; }
+.pm-bar.th i { background: linear-gradient(90deg, #4a8ab8, #8ad0ff); }
+.pm-row b { text-align: right; font-weight: normal; color: #ffe0a0; }
+#pmap .au-mp { max-width: none; font-size: 1em; padding: 18px 24px; }
+#pmap .mp-q { font-size: 1.15em; } #pmap .mp-bar { font-size: 0.85em; } #pmap .mp-hint { font-size: 0.85em; }
+#pmap .mp-track { height: 10px; border-radius: 5px; } #pmap .mp-track i.grp { transform: scale(1.6); font-size: 0.6rem; } #pmap .mp-row { margin-top: 18px; }
+.pm-deb { text-align: center; max-width: 1100px; margin: 4vh auto 0; }
+.pm-deb small { text-transform: uppercase; letter-spacing: 0.18em; color: var(--gold); }
+.pm-deb h2 { font-family: var(--display); font-weight: normal; font-size: 2.6em; margin: 10px 0 24px; }
+.pm-sides { display: grid; grid-template-columns: 1fr 0.7fr 1fr; gap: 14px; }
+.pm-sides div { border-radius: 16px; padding: 16px; background: rgba(255,255,255,0.06); }
+.pm-sides .a { box-shadow: inset 0 0 0 2px #6aa8d8; } .pm-sides .z { box-shadow: inset 0 0 0 2px #d88a5a; } .pm-sides .m { opacity: 0.8; }
+.pm-sides b { display: block; font-family: var(--display); font-weight: normal; font-size: 3em; line-height: 1.1; }
+.pm-deb ol { text-align: left; display: inline-block; margin: 26px auto 0; line-height: 1.6; }
+.pm-nav { display: flex; justify-content: center; align-items: center; gap: 16px; opacity: 0.8; font-size: 0.8em; }
 #proj { position: absolute; inset: 0; z-index: 40; background: radial-gradient(ellipse at top, #2a2030, #0d0c12); display: flex; flex-direction: column; padding: max(16px, var(--sat)) max(20px, var(--sar)) max(16px, var(--sab)) max(20px, var(--sal)); gap: 12px; overflow-y: auto; }
 .pj-top { display: flex; align-items: center; gap: 16px; color: var(--parchment-dim); font-size: 1.1rem; }
 .pj-top #pj-who { flex: 1; color: var(--gold); }
@@ -1065,7 +1096,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
           <div class="btns"><button class="btn primary" id="au-addsubs">Añadir entregas</button></div>
           <div id="au-table"></div>
           <div id="au-csv" hidden><textarea id="au-csvtext" readonly rows="3" aria-label="Tabla para hoja de cálculo"></textarea>
-            <div class="btns"><button class="btn" id="au-csvbtn">Copiar tabla para hoja de cálculo</button><button class="btn ghost" id="au-del">Borrar esta tarea</button></div></div>
+            <div class="btns"><button class="btn primary" id="au-pmap">📽 Proyectar en clase</button><button class="btn" id="au-csvbtn">Copiar tabla para hoja de cálculo</button><button class="btn ghost" id="au-del">Borrar esta tarea</button></div></div>
           <p class="qd-note">Las tareas y entregas se guardan en este dispositivo.</p>
         </div>
       </div>
@@ -1092,6 +1123,12 @@ body.touch .gm.boss { width: 30px; height: 30px; }
     <p class="pj-exp" id="pj-exp" hidden></p>
     <div class="btns"><button class="btn primary" id="pj-reveal">Mostrar la respuesta</button><button class="btn primary" id="pj-next" hidden>Siguiente pregunta</button></div>
     <div class="pj-teams" id="pj-teams"></div>
+  </section>
+
+  <section id="pmap" hidden>
+    <div class="pm-top"><b id="pm-title"></b><div class="seg tabs" id="pm-tabs"><button data-v="avance">Avance</button><button data-v="mapa">Mapa filosófico</button><button data-v="debate">Debate</button></div><button class="btn ghost" id="pm-names"></button><button class="ls-x" id="pm-x" aria-label="Cerrar">✕</button></div>
+    <div id="pm-body"></div>
+    <div class="pm-nav"><button class="btn ghost" id="pm-prev">◀</button><span>Usa las flechas ◀ ▶ para cambiar de vista</span><button class="btn ghost" id="pm-next">▶</button></div>
   </section>
 
   <div id="print-wrap" hidden>

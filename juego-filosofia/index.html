@@ -370,6 +370,37 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .au-tbl td.pct { font-weight: 700; color: #ffb36a; }
 .au-tbl td.pct.mid { color: var(--gold-bright); }
 .au-tbl td.pct.full { color: #8fe08a; }
+#pmap { position: absolute; inset: 0; z-index: 41; background: radial-gradient(ellipse at top, #2a2030, #0d0c12); display: flex; flex-direction: column; padding: max(14px, var(--sat)) max(22px, var(--sar)) max(14px, var(--sab)) max(22px, var(--sal)); gap: 14px; overflow-y: auto; font-size: clamp(16px, 1.6vw, 26px); }
+.pm-top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.pm-top > b { font-family: var(--display); font-weight: normal; color: var(--gold); font-size: 1.4em; flex: 1 1 260px; }
+.pm-top .tabs { margin: 0; } .pm-top .tabs button { font-size: 0.8em; }
+#pm-body { flex: 1; }
+.pm-empty { text-align: center; font-size: 1.2em; opacity: 0.8; margin-top: 12vh; }
+.pm-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+.pm-stats div { text-align: center; border: 1px solid var(--gold); border-radius: 14px; padding: 10px; background: rgba(214,168,74,0.08); }
+.pm-stats b { display: block; font-family: var(--display); font-weight: normal; font-size: 2.4em; color: var(--gold); line-height: 1.1; }
+.pm-stats span { opacity: 0.8; }
+.pm-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 28px; }
+@media (max-width: 760px) { .pm-grid { grid-template-columns: 1fr; } }
+.pm-col h3 { font-family: var(--display); font-weight: normal; color: var(--gold); margin: 0 0 8px; letter-spacing: 0.06em; }
+.pm-row { display: grid; grid-template-columns: minmax(7em, 34%) 1fr 4em; gap: 10px; align-items: center; margin: 6px 0; }
+.pm-n { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pm-bar { height: 0.8em; border-radius: 0.4em; background: rgba(255,255,255,0.1); overflow: hidden; }
+.pm-bar i { display: block; height: 100%; background: linear-gradient(90deg, #b8924a, #ffd36a); border-radius: inherit; }
+.pm-bar.th i { background: linear-gradient(90deg, #4a8ab8, #8ad0ff); }
+.pm-row b { text-align: right; font-weight: normal; color: #ffe0a0; }
+#pmap .au-mp { max-width: none; font-size: 1em; padding: 18px 24px; }
+#pmap .mp-q { font-size: 1.15em; } #pmap .mp-bar { font-size: 0.85em; } #pmap .mp-hint { font-size: 0.85em; }
+#pmap .mp-track { height: 10px; border-radius: 5px; } #pmap .mp-track i.grp { transform: scale(1.6); font-size: 0.6rem; } #pmap .mp-row { margin-top: 18px; }
+.pm-deb { text-align: center; max-width: 1100px; margin: 4vh auto 0; }
+.pm-deb small { text-transform: uppercase; letter-spacing: 0.18em; color: var(--gold); }
+.pm-deb h2 { font-family: var(--display); font-weight: normal; font-size: 2.6em; margin: 10px 0 24px; }
+.pm-sides { display: grid; grid-template-columns: 1fr 0.7fr 1fr; gap: 14px; }
+.pm-sides div { border-radius: 16px; padding: 16px; background: rgba(255,255,255,0.06); }
+.pm-sides .a { box-shadow: inset 0 0 0 2px #6aa8d8; } .pm-sides .z { box-shadow: inset 0 0 0 2px #d88a5a; } .pm-sides .m { opacity: 0.8; }
+.pm-sides b { display: block; font-family: var(--display); font-weight: normal; font-size: 3em; line-height: 1.1; }
+.pm-deb ol { text-align: left; display: inline-block; margin: 26px auto 0; line-height: 1.6; }
+.pm-nav { display: flex; justify-content: center; align-items: center; gap: 16px; opacity: 0.8; font-size: 0.8em; }
 #proj { position: absolute; inset: 0; z-index: 40; background: radial-gradient(ellipse at top, #2a2030, #0d0c12); display: flex; flex-direction: column; padding: max(16px, var(--sat)) max(20px, var(--sar)) max(16px, var(--sab)) max(20px, var(--sal)); gap: 12px; overflow-y: auto; }
 .pj-top { display: flex; align-items: center; gap: 16px; color: var(--parchment-dim); font-size: 1.1rem; }
 .pj-top #pj-who { flex: 1; color: var(--gold); }
@@ -1086,7 +1117,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
           <div class="btns"><button class="btn primary" id="au-addsubs">Añadir entregas</button></div>
           <div id="au-table"></div>
           <div id="au-csv" hidden><textarea id="au-csvtext" readonly rows="3" aria-label="Tabla para hoja de cálculo"></textarea>
-            <div class="btns"><button class="btn" id="au-csvbtn">Copiar tabla para hoja de cálculo</button><button class="btn ghost" id="au-del">Borrar esta tarea</button></div></div>
+            <div class="btns"><button class="btn primary" id="au-pmap">📽 Proyectar en clase</button><button class="btn" id="au-csvbtn">Copiar tabla para hoja de cálculo</button><button class="btn ghost" id="au-del">Borrar esta tarea</button></div></div>
           <p class="qd-note">Las tareas y entregas se guardan en este dispositivo.</p>
         </div>
       </div>
@@ -1113,6 +1144,12 @@ body.touch .gm.boss { width: 30px; height: 30px; }
     <p class="pj-exp" id="pj-exp" hidden></p>
     <div class="btns"><button class="btn primary" id="pj-reveal">Mostrar la respuesta</button><button class="btn primary" id="pj-next" hidden>Siguiente pregunta</button></div>
     <div class="pj-teams" id="pj-teams"></div>
+  </section>
+
+  <section id="pmap" hidden>
+    <div class="pm-top"><b id="pm-title"></b><div class="seg tabs" id="pm-tabs"><button data-v="avance">Avance</button><button data-v="mapa">Mapa filosófico</button><button data-v="debate">Debate</button></div><button class="btn ghost" id="pm-names"></button><button class="ls-x" id="pm-x" aria-label="Cerrar">✕</button></div>
+    <div id="pm-body"></div>
+    <div class="pm-nav"><button class="btn ghost" id="pm-prev">◀</button><span>Usa las flechas ◀ ▶ para cambiar de vista</span><button class="btn ghost" id="pm-next">▶</button></div>
   </section>
 
   <div id="print-wrap" hidden>
@@ -14098,6 +14135,93 @@ const Mapa = {
 // aviso discreto cuando una decisión mueve el mapa (una vez por eje y sesión)
 const MAPA_AVISO = new Set();
 function mapaAviso(eje) { if (!eje || MAPA_AVISO.has(eje)) return; MAPA_AVISO.add(eje); const e = MAPA_EJES.find((x) => x.id === eje); if (e && typeof toast === 'function') setTimeout(() => toast(`🧭 Tu mapa filosófico cambió: «${e.q}». Míralo en el Cuaderno.`), 1200); }
+
+// ---- src/06i-proyector.js ----
+// ============================================================================
+//  MODO PROYECTOR DEL AULA: el avance de la clase, su mapa filosófico y la
+//  pregunta que más la divide, en grande, para la pizarra o el proyector.
+// ============================================================================
+const PMAPA = {
+  k: null, tab: 'avance', initials: false,
+  data() {
+    const all = store.get(AULA.KEY_CLASSES, {}); const c = all[this.k]; const d = c && AULA.decode(c.code); if (!d) return null;
+    const tasks = AULA.tasksOf(d); const cols = d.items.map((x) => ({ x, ts: tasks.filter((t) => AULA.applies(x, t)) }));
+    const subs = Object.values(c.subs || {}).map((s) => {
+      let p = 0; const per = cols.map((c2) => { const seg = s.bits.slice(p, p + c2.ts.length); p += c2.ts.length; return [...seg].filter((b) => b === '1').length; });
+      const ok = [...s.bits].filter((b) => b === '1').length; return { ...s, per, pct: s.bits.length ? Math.round((ok / s.bits.length) * 100) : 0 };
+    });
+    return { c, d, cols, subs };
+  },
+  who(n) { return this.initials ? n.split(/\s+/).map((w) => w[0] || '').join('').toUpperCase() + '.' : n; },
+  open(k) {
+    this.k = k; this.tab = 'avance'; $('#pmap').hidden = false; Audio.click();
+    try { if (document.documentElement.requestFullscreen && !document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {}); } catch (e) { /* nada */ }
+    this.render();
+  },
+  close() { $('#pmap').hidden = true; try { if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(() => {}); } catch (e) { /* nada */ } },
+  go(dir) { const T = ['avance', 'mapa', 'debate']; this.tab = T[(T.indexOf(this.tab) + dir + T.length) % T.length]; Audio.click(); this.render(); },
+  render() {
+    const D = this.data(); if (!D) return this.close();
+    $('#pm-title').textContent = D.c.title;
+    document.querySelectorAll('#pm-tabs button').forEach((b) => b.classList.toggle('on', b.dataset.v === this.tab));
+    $('#pm-names').textContent = this.initials ? 'Nombres: solo iniciales' : 'Nombres: completos';
+    const box = $('#pm-body'); box.innerHTML = '';
+    if (!D.subs.length) { box.innerHTML = '<p class="pm-empty">Todavía no hay entregas en esta tarea.</p>'; return; }
+    if (this.tab === 'avance') this.avance(D, box); else if (this.tab === 'mapa') this.mapa(D, box); else this.debate(D, box);
+  },
+  avance(D, box) {
+    const avg = Math.round(D.subs.reduce((a, s) => a + s.pct, 0) / D.subs.length); const full = D.subs.filter((s) => s.pct === 100).length;
+    const top = document.createElement('div'); top.className = 'pm-stats';
+    top.innerHTML = `<div><b>${D.subs.length}</b><span>estudiantes</span></div><div><b>${avg} %</b><span>avance medio</span></div><div><b>${full}</b><span>terminaron</span></div>`;
+    box.appendChild(top);
+    const grid = document.createElement('div'); grid.className = 'pm-grid';
+    const row = (label, pct, cls) => {
+      const r = document.createElement('div'); r.className = 'pm-row';
+      const n = document.createElement('span'); n.className = 'pm-n'; n.textContent = label;
+      const bar = document.createElement('span'); bar.className = 'pm-bar' + (cls ? ' ' + cls : ''); bar.innerHTML = `<i style="width:${pct}%"></i>`;
+      const p = document.createElement('b'); p.textContent = pct + ' %'; r.append(n, bar, p); return r;
+    };
+    const L = document.createElement('div'); L.className = 'pm-col'; L.innerHTML = '<h3>La clase</h3>';
+    [...D.subs].sort((a, b) => b.pct - a.pct || a.name.localeCompare(b.name, 'es'))
+      .forEach((s, i) => L.appendChild(row((i < 3 && s.pct > 0 ? ['🥇 ', '🥈 ', '🥉 '][i] : '') + this.who(s.name), s.pct)));
+    const R = document.createElement('div'); R.className = 'pm-col'; R.innerHTML = '<h3>Pensadores</h3>';
+    D.cols.forEach((c2, j) => {
+      if (!c2.ts.length) return;
+      R.appendChild(row(c2.x.s.short, Math.round((D.subs.reduce((a, s) => a + s.per[j], 0) / (D.subs.length * c2.ts.length)) * 100), 'th'));
+    });
+    grid.append(L, R); box.appendChild(grid);
+  },
+  mapa(D, box) {
+    const subs = this.initials ? D.subs.map((s) => ({ ...s, name: this.who(s.name) })) : D.subs;
+    if (!subs.some((s) => s.map && /[0-8]/.test(s.map))) { box.innerHTML = '<p class="pm-empty">Las entregas todavía no traen el mapa filosófico. Pide a tus estudiantes que dialoguen con los pensadores y vuelvan a entregar.</p>'; return; }
+    AULA.renderClassMap(subs, box); const af = box.querySelector('.mp-af'); if (af) af.remove();
+  },
+  debate(D, box) {
+    const withMap = D.subs.filter((s) => s.map && /[0-8]/.test(s.map)); let best = null;
+    MAPA_EJES.forEach((e, i) => {
+      const v = withMap.map((s) => s.map[i]).filter((c) => c && c !== '-').map((c) => +c / 4 - 1);
+      const neg = v.filter((x) => x < -0.3).length, pos = v.filter((x) => x > 0.3).length, split = Math.min(neg, pos);
+      if (v.length && (!best || split > best.split || (split === best.split && v.length > best.n))) best = { e, neg, pos, mid: v.length - neg - pos, split, n: v.length };
+    });
+    if (!best) { box.innerHTML = '<p class="pm-empty">Cuando las entregas traigan el mapa filosófico, aquí aparecerá la pregunta que más divide a la clase.</p>'; return; }
+    const w = document.createElement('div'); w.className = 'pm-deb';
+    w.innerHTML = `<small>${best.split ? 'La pregunta que más divide a la clase' : 'Pregunta para debatir'}</small><h2></h2>
+      <div class="pm-sides"><div class="a"><b>${best.neg}</b><span></span></div><div class="m"><b>${best.mid}</b><span>intermedio</span></div><div class="z"><b>${best.pos}</b><span></span></div></div>
+      <ol><li>Cada grupo prepara su mejor razón (2 minutos).</li><li>Un grupo la expone; el otro responde con una objeción.</li><li>¿Alguien cambió de opinión? ¿Por qué?</li></ol>`;
+    w.querySelector('h2').textContent = best.e.q; w.querySelector('.a span').textContent = best.e.neg; w.querySelector('.z span').textContent = best.e.pos;
+    box.appendChild(w);
+  },
+};
+on('#au-pmap', () => { if (AULA.current) PMAPA.open(AULA.current); });
+on('#pm-x', () => PMAPA.close());
+on('#pm-prev', () => PMAPA.go(-1)); on('#pm-next', () => PMAPA.go(1));
+on('#pm-names', () => { PMAPA.initials = !PMAPA.initials; PMAPA.render(); });
+document.querySelectorAll('#pm-tabs button').forEach((b) => b.addEventListener('click', () => { PMAPA.tab = b.dataset.v; Audio.click(); PMAPA.render(); }));
+window.addEventListener('keydown', (e) => {
+  if ($('#pmap').hidden) return;
+  if (e.key === 'Escape') PMAPA.close(); else if (e.key === 'ArrowRight') PMAPA.go(1); else if (e.key === 'ArrowLeft') PMAPA.go(-1); else return;
+  e.preventDefault(); e.stopPropagation();
+}, true);
 
 </script>
 </body>
