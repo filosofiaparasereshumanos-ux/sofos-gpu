@@ -15,6 +15,7 @@ const ACH = [
   { id: 'china', i: '字', n: 'La habitación china', d: 'Responde tres tarjetas en chino sin saber chino.' },
   { id: 'maquina', i: '◎', n: 'La máquina de experiencias', d: 'Decide si te conectarías a la vida perfecta.' },
   { id: 'envivo', i: '◉', n: 'Campeón en vivo', d: 'Gana una partida en vivo con tu clase o tus amigos.' },
+  { id: 'juntos', i: '👥', n: 'Duelo entre viajeros', d: 'Explora en grupo y gana un duelo a otro jugador.' },
   { id: 'escalera', i: '⌇', n: 'Tirar la escalera', d: 'Sube la escalera de Wittgenstein y tírala al llegar arriba.' },
   { id: 'salida', i: '☀', n: 'Fuera de la caverna', d: 'Baja hasta los prisioneros de la caverna de Platón y vuelve a salir a la luz.' },
   { id: 'dialogo', i: '⇄', n: 'Diálogo socrático', d: 'Supera un diálogo dando buenas razones y respondiendo a una objeción.' },

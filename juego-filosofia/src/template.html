@@ -351,6 +351,13 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .au-tbl td.pct { font-weight: 700; color: #ffb36a; }
 .au-tbl td.pct.mid { color: var(--gold-bright); }
 .au-tbl td.pct.full { color: #8fe08a; }
+#mp-badge { position: absolute; top: max(8px, var(--sat)); left: 50%; transform: translateX(-50%); z-index: 30; border: 1px solid var(--gold); background: rgba(10,8,5,0.75); color: #ffe0a0; border-radius: 999px; padding: 4px 12px; font: inherit; font-size: 0.8rem; cursor: pointer; white-space: nowrap; }
+#mp-meet { position: absolute; bottom: calc(max(16px, var(--sab)) + 150px); left: 50%; transform: translateX(-50%); z-index: 30; border: 0; border-radius: 999px; padding: 12px 20px; font: inherit; font-size: 1rem; color: #2a1a08; background: linear-gradient(#ffe08a, #d8a83a); box-shadow: 0 6px 24px rgba(0,0,0,0.5); cursor: pointer; animation: sl-pop 0.3s ease-out; }
+#mp-inv { position: absolute; left: 50%; top: 22%; transform: translateX(-50%); z-index: 45; width: min(380px, calc(100% - 32px)); border: 1px solid var(--gold); border-radius: 16px; background: rgba(14,11,8,0.94); padding: 16px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.6); animation: sl-pop 0.3s ease-out; }
+#mp-inv p { font-size: 1.1rem; margin: 0 0 6px; }
+#mpd { position: absolute; inset: 0; z-index: 42; background: rgba(8,6,10,0.88); display: grid; place-items: center; padding: 16px; }
+.mpd-box { width: min(460px, 100%); }
+.mpd-box .eyebrow { text-align: center; }
 .quick.q4 { grid-template-columns: repeat(4, 1fr); width: min(480px, 100%); gap: 8px; }
 .quick.q4 .qk span { font-size: 0.84rem; } .quick.q4 .qk small { font-size: 0.66rem; }
 @media (max-width: 360px) { .quick.q4 { grid-template-columns: repeat(2, 1fr); } }
@@ -1022,6 +1029,19 @@ body.touch .gm.boss { width: 30px; height: 30px; }
     </div>
   </section>
 
+  <button id="mp-badge" hidden></button>
+  <button id="mp-meet" hidden></button>
+  <div id="mp-inv" hidden><p id="mp-inv-t"></p><div class="btns"><button class="btn primary" id="mp-yes">¡Acepto!</button><button class="btn ghost" id="mp-no">Ahora no</button></div></div>
+  <section id="mpd" hidden>
+    <div class="mpd-box">
+      <div class="eyebrow" id="mpd-vs"></div>
+      <div class="sl-tbar"><i id="mpd-bar"></i></div>
+      <p class="sl-pnum" id="mpd-n"></p>
+      <p class="sl-pq" id="mpd-q"></p>
+      <div class="sl-pans" id="mpd-a"></div>
+      <p class="sl-pstate" id="mpd-msg"></p>
+    </div>
+  </section>
   <section id="sala" class="screen dim" hidden>
     <div class="sl-wrap">
       <p class="sl-net" id="sl-net" hidden></p>
@@ -1042,6 +1062,11 @@ body.touch .gm.boss { width: 30px; height: 30px; }
             <div class="au-form au-inline"><label>Preguntas de <select id="sl-era"></select></label></div>
             <div class="au-form au-inline"><label>Preguntas <select id="sl-n"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></label><label>Segundos <select id="sl-t"><option>15</option><option selected>20</option><option>30</option></select></label></div>
             <div class="btns"><button class="btn primary" id="sl-host">Crear sala</button></div>
+          </div>
+          <div class="sl-card">
+            <h3>Explorar juntos</h3>
+            <p class="qd-note">Crea un grupo y comparte el código. Cuando estén en la misma época, verán sus avatares en el mundo y podrán desafiarse a duelos de tres preguntas. Usa el apodo de arriba (y el código de arriba para unirte).</p>
+            <div class="btns"><button class="btn primary" id="sl-jnew">Crear grupo</button><button class="btn" id="sl-jjoin">Unirme al grupo</button></div>
           </div>
         </div>
         <div class="btns"><button class="btn ghost sl-leave">Volver</button></div>
@@ -1069,6 +1094,12 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <div class="sl-podium" id="sl-podium"></div>
         <div class="sl-rest" id="sl-rest"></div>
         <div class="btns"><button class="btn primary" id="sl-again">Jugar otra vez</button><button class="btn ghost sl-leave">Cerrar la sala</button></div>
+      </div>
+      <div data-sv="jready" hidden>
+        <div class="eyebrow" style="text-align:center">Explorar juntos · código del grupo</div>
+        <div class="sl-bigcode" id="sl-jcode"></div>
+        <p class="story" id="sl-jmsg" style="text-align:center"></p>
+        <div class="btns"><button class="btn primary" id="sl-jgo">Elegir época y explorar</button><button class="btn ghost sl-leave">Volver al menú</button></div>
       </div>
       <div data-sv="wait" hidden>
         <div class="sl-me" id="sl-wme"></div>
