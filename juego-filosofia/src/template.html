@@ -363,6 +363,23 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .ls-with { text-align: center; color: #ffe0a0; font-size: 0.9rem; margin: 4px 0 0; }
 .lj { margin-top: 10px; } .lj-res { margin-top: 8px; text-align: left; } .lj-row { margin: 4px 0; font-size: 0.95rem; } .lj-row b { color: var(--gold); font-weight: normal; }
 .lj-note { font-style: italic; font-size: 0.85rem; opacity: 0.8; margin: 6px 0 0; }
+.on-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: min(480px, 100%); margin: 10px auto 0; }
+.on-av, .on-sw { position: relative; display: grid; grid-template-columns: auto 1fr; align-items: center; column-gap: 8px; text-align: left; padding: 9px 12px; border: 1px solid var(--line); border-radius: 14px; background: rgba(20,16,10,0.55); color: var(--parchment); font: inherit; cursor: pointer; }
+.on-av b { grid-row: span 2; font-size: 1.5rem; } .on-av span, .on-sw span { font-family: var(--display); font-size: 0.86rem; letter-spacing: 0.04em; color: var(--gold-bright); }
+.on-av small, .on-sw small { font-size: 0.72rem; color: var(--parchment-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.on-sw { grid-template-columns: 1fr auto; } .on-sw small { grid-column: 1; }
+.on-sw i { grid-column: 2; grid-row: 1 / span 2; width: 44px; height: 24px; border-radius: 999px; background: rgba(255,255,255,0.16); position: relative; transition: background 0.2s; }
+.on-sw i::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #d8cdb4; transition: transform 0.2s; }
+.on-sw.on { border-color: #7fd08a; } .on-sw.on i { background: #4fae62; } .on-sw.on i::after { transform: translateX(20px); background: #fff; }
+.on-sw.big { width: 100%; margin: 12px 0 4px; padding: 12px 14px; } .on-sw.big span { font-size: 1rem; } .on-sw.big small { font-size: 0.82rem; white-space: normal; }
+.av-card { width: min(520px, 100%); } .av-h { font-family: var(--display); font-weight: normal; color: var(--gold); margin: 0 0 8px; text-align: center; letter-spacing: 0.08em; }
+.av-top { display: flex; gap: 12px; align-items: center; } #app #av-prev { position: static !important; inset: auto; flex: 0 0 42%; width: 42% !important; max-width: 200px; aspect-ratio: 11 / 13; height: auto !important; border-radius: 14px; background: radial-gradient(circle at 50% 40%, rgba(216,178,90,0.25), rgba(0,0,0,0.25)); }
+.av-side { flex: 1; min-width: 0; } #av-name { width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.3); color: var(--parchment); border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; font-family: var(--body); font-size: 1rem; margin-bottom: 6px; }
+.av-card .av-row { display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; gap: 6px; margin: 5px 0; }
+.av-arrow { height: 40px; border-radius: 10px; border: 1px solid var(--line); background: rgba(255,255,255,0.06); color: var(--gold-bright); font-size: 1rem; cursor: pointer; }
+.av-mid { text-align: center; line-height: 1.15; } .av-mid b { display: block; font-family: var(--display); font-weight: normal; font-size: 0.72rem; letter-spacing: 0.1em; color: var(--gold); text-transform: uppercase; }
+.av-mid span { font-size: 0.92rem; } .av-mid span i { display: inline-block; width: 14px; height: 14px; border-radius: 50%; margin-right: 6px; vertical-align: -2px; border: 1px solid rgba(255,255,255,0.4); }
+.av-mid small { display: block; font-size: 0.68rem; color: #ffb36a; } .av-mid.lock span { opacity: 0.7; } .av-rand { width: 100%; margin-top: 4px; padding: 8px; }
 #b-foto { position: absolute; left: max(12px, var(--sal, 0px)); top: calc(max(8px, var(--sat)) + 96px); z-index: 31; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold); background: rgba(10,8,5,0.75); font-size: 1.3rem; cursor: pointer; }
 .foto-card { text-align: center; } .foto-card img { max-width: 100%; max-height: 62vh; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.6); }
 .av-chip.lock { opacity: 0.55; font-size: 0.75rem; color: #fff; }
@@ -876,6 +893,10 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="qk sala-btn" id="b-sala"><b>◉</b><span>En vivo</span><small>Toda la clase</small></button>
         <button class="qk aula-btn" id="b-aula"><b>✎</b><span>Modo aula</span><small id="b-aula-s">Docentes</small></button>
       </div>
+      <div class="on-bar">
+        <button class="on-av" id="b-avatar"><b>🧙</b><span>Mi avatar</span><small id="b-avatar-s"></small></button>
+        <button class="on-sw" id="b-online" role="switch" aria-checked="false"><span>🌍 Jugar en línea</span><small id="b-online-s">Desactivado</small><i></i></button>
+      </div>
       <button class="more-b" id="b-more" aria-expanded="false">Más opciones ▾</button>
       <div class="minis" id="t-more" hidden>
         <button class="mini-b" id="b-cuaderno">Cuaderno y mapa</button>
@@ -1060,6 +1081,13 @@ body.touch .gm.boss { width: 30px; height: 30px; }
 
   <button id="mp-badge" hidden></button>
   <div id="mp-meet" hidden><span id="mp-meet-t"></span><button id="mp-meet-q">❓ Duelo de preguntas</button><button id="mp-meet-d">💬 Debate filosófico</button><button id="mp-meet-m" class="mute" aria-label="Silenciar a este viajero">🔇 Silenciar</button></div>
+  <div id="av" class="nb" hidden><div class="nb-card av-card" role="dialog" aria-label="Mi avatar">
+    <h3 class="av-h">Mi avatar</h3>
+    <div class="av-top"><canvas id="av-prev" width="220" height="260"></canvas>
+      <div class="av-side"><input id="av-name" maxlength="16" placeholder="Tu apodo" autocomplete="off" aria-label="Apodo de tu avatar"><div id="av-opts"></div><button class="btn ghost av-rand" id="av-rand">🎲 Sorpréndeme</button></div></div>
+    <button class="on-sw big" id="av-online" role="switch" aria-checked="false"><span>🌍 Jugar en línea</span><small id="av-online-s"></small><i></i></button>
+    <div class="btns"><button class="btn ghost" id="av-group" hidden>Salir del grupo privado</button><button class="btn ghost" id="av-unmute" hidden></button><button class="btn primary" id="av-ok">Listo</button></div>
+  </div></div>
   <button id="mp-emo" hidden aria-label="Gestos">😀</button>
   <button id="b-foto" hidden aria-label="Sacar una foto">📷</button>
   <div id="foto" class="nb" hidden><div class="nb-card foto-card"><img id="foto-img" alt="Tu foto del viaje"><div class="btns"><button class="btn primary" id="foto-share">Compartir o guardar</button><button class="btn ghost" id="foto-close">Seguir explorando</button></div></div></div>
@@ -1097,12 +1125,9 @@ body.touch .gm.boss { width: 30px; height: 30px; }
             <div class="btns"><button class="btn primary" id="sl-host">Crear sala</button></div>
           </div>
           <div class="sl-card">
-            <h3>Mundo abierto</h3>
-            <p class="qd-note">Cuando entras a una época, ves a los demás viajeros que están ahí en ese momento. Acércate a alguien para saludar con gestos, retarlo a un duelo de preguntas o a un debate filosófico. No hay chat libre: solo apodos y gestos. Si alguien te molesta, acércate y toca «🔇 Silenciar».</p>
-            <div class="btns"><button class="btn" id="sl-mundo">Mundo abierto</button></div>
-            <div id="av-opts"></div>
-            <div class="au-form au-inline"><input id="av-name" maxlength="16" placeholder="Tu apodo" autocomplete="off" aria-label="Apodo de tu avatar"><button class="btn primary" id="av-save">Guardar avatar</button></div>
-            <div class="btns"><button class="btn ghost" id="av-unmute" hidden></button></div>
+            <h3>Mundo en línea</h3>
+            <p class="qd-note">Al entrar a una época ves a los demás viajeros que están ahí. Salúdalos con gestos y rétalos a un duelo o a un debate. Sin chat.</p>
+            <div class="btns"><button class="btn primary" id="sl-avatar">Mi avatar y mundo en línea</button></div>
           </div>
           <div class="sl-card">
             <h3>Grupo privado</h3>

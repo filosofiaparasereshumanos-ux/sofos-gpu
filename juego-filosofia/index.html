@@ -382,6 +382,23 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .ls-with { text-align: center; color: #ffe0a0; font-size: 0.9rem; margin: 4px 0 0; }
 .lj { margin-top: 10px; } .lj-res { margin-top: 8px; text-align: left; } .lj-row { margin: 4px 0; font-size: 0.95rem; } .lj-row b { color: var(--gold); font-weight: normal; }
 .lj-note { font-style: italic; font-size: 0.85rem; opacity: 0.8; margin: 6px 0 0; }
+.on-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: min(480px, 100%); margin: 10px auto 0; }
+.on-av, .on-sw { position: relative; display: grid; grid-template-columns: auto 1fr; align-items: center; column-gap: 8px; text-align: left; padding: 9px 12px; border: 1px solid var(--line); border-radius: 14px; background: rgba(20,16,10,0.55); color: var(--parchment); font: inherit; cursor: pointer; }
+.on-av b { grid-row: span 2; font-size: 1.5rem; } .on-av span, .on-sw span { font-family: var(--display); font-size: 0.86rem; letter-spacing: 0.04em; color: var(--gold-bright); }
+.on-av small, .on-sw small { font-size: 0.72rem; color: var(--parchment-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.on-sw { grid-template-columns: 1fr auto; } .on-sw small { grid-column: 1; }
+.on-sw i { grid-column: 2; grid-row: 1 / span 2; width: 44px; height: 24px; border-radius: 999px; background: rgba(255,255,255,0.16); position: relative; transition: background 0.2s; }
+.on-sw i::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #d8cdb4; transition: transform 0.2s; }
+.on-sw.on { border-color: #7fd08a; } .on-sw.on i { background: #4fae62; } .on-sw.on i::after { transform: translateX(20px); background: #fff; }
+.on-sw.big { width: 100%; margin: 12px 0 4px; padding: 12px 14px; } .on-sw.big span { font-size: 1rem; } .on-sw.big small { font-size: 0.82rem; white-space: normal; }
+.av-card { width: min(520px, 100%); } .av-h { font-family: var(--display); font-weight: normal; color: var(--gold); margin: 0 0 8px; text-align: center; letter-spacing: 0.08em; }
+.av-top { display: flex; gap: 12px; align-items: center; } #app #av-prev { position: static !important; inset: auto; flex: 0 0 42%; width: 42% !important; max-width: 200px; aspect-ratio: 11 / 13; height: auto !important; border-radius: 14px; background: radial-gradient(circle at 50% 40%, rgba(216,178,90,0.25), rgba(0,0,0,0.25)); }
+.av-side { flex: 1; min-width: 0; } #av-name { width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.3); color: var(--parchment); border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; font-family: var(--body); font-size: 1rem; margin-bottom: 6px; }
+.av-card .av-row { display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; gap: 6px; margin: 5px 0; }
+.av-arrow { height: 40px; border-radius: 10px; border: 1px solid var(--line); background: rgba(255,255,255,0.06); color: var(--gold-bright); font-size: 1rem; cursor: pointer; }
+.av-mid { text-align: center; line-height: 1.15; } .av-mid b { display: block; font-family: var(--display); font-weight: normal; font-size: 0.72rem; letter-spacing: 0.1em; color: var(--gold); text-transform: uppercase; }
+.av-mid span { font-size: 0.92rem; } .av-mid span i { display: inline-block; width: 14px; height: 14px; border-radius: 50%; margin-right: 6px; vertical-align: -2px; border: 1px solid rgba(255,255,255,0.4); }
+.av-mid small { display: block; font-size: 0.68rem; color: #ffb36a; } .av-mid.lock span { opacity: 0.7; } .av-rand { width: 100%; margin-top: 4px; padding: 8px; }
 #b-foto { position: absolute; left: max(12px, var(--sal, 0px)); top: calc(max(8px, var(--sat)) + 96px); z-index: 31; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold); background: rgba(10,8,5,0.75); font-size: 1.3rem; cursor: pointer; }
 .foto-card { text-align: center; } .foto-card img { max-width: 100%; max-height: 62vh; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.6); }
 .av-chip.lock { opacity: 0.55; font-size: 0.75rem; color: #fff; }
@@ -897,6 +914,10 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="qk sala-btn" id="b-sala"><b>◉</b><span>En vivo</span><small>Toda la clase</small></button>
         <button class="qk aula-btn" id="b-aula"><b>✎</b><span>Modo aula</span><small id="b-aula-s">Docentes</small></button>
       </div>
+      <div class="on-bar">
+        <button class="on-av" id="b-avatar"><b>🧙</b><span>Mi avatar</span><small id="b-avatar-s"></small></button>
+        <button class="on-sw" id="b-online" role="switch" aria-checked="false"><span>🌍 Jugar en línea</span><small id="b-online-s">Desactivado</small><i></i></button>
+      </div>
       <button class="more-b" id="b-more" aria-expanded="false">Más opciones ▾</button>
       <div class="minis" id="t-more" hidden>
         <button class="mini-b" id="b-cuaderno">Cuaderno y mapa</button>
@@ -1081,6 +1102,13 @@ body.touch .gm.boss { width: 30px; height: 30px; }
 
   <button id="mp-badge" hidden></button>
   <div id="mp-meet" hidden><span id="mp-meet-t"></span><button id="mp-meet-q">❓ Duelo de preguntas</button><button id="mp-meet-d">💬 Debate filosófico</button><button id="mp-meet-m" class="mute" aria-label="Silenciar a este viajero">🔇 Silenciar</button></div>
+  <div id="av" class="nb" hidden><div class="nb-card av-card" role="dialog" aria-label="Mi avatar">
+    <h3 class="av-h">Mi avatar</h3>
+    <div class="av-top"><canvas id="av-prev" width="220" height="260"></canvas>
+      <div class="av-side"><input id="av-name" maxlength="16" placeholder="Tu apodo" autocomplete="off" aria-label="Apodo de tu avatar"><div id="av-opts"></div><button class="btn ghost av-rand" id="av-rand">🎲 Sorpréndeme</button></div></div>
+    <button class="on-sw big" id="av-online" role="switch" aria-checked="false"><span>🌍 Jugar en línea</span><small id="av-online-s"></small><i></i></button>
+    <div class="btns"><button class="btn ghost" id="av-group" hidden>Salir del grupo privado</button><button class="btn ghost" id="av-unmute" hidden></button><button class="btn primary" id="av-ok">Listo</button></div>
+  </div></div>
   <button id="mp-emo" hidden aria-label="Gestos">😀</button>
   <button id="b-foto" hidden aria-label="Sacar una foto">📷</button>
   <div id="foto" class="nb" hidden><div class="nb-card foto-card"><img id="foto-img" alt="Tu foto del viaje"><div class="btns"><button class="btn primary" id="foto-share">Compartir o guardar</button><button class="btn ghost" id="foto-close">Seguir explorando</button></div></div></div>
@@ -1118,12 +1146,9 @@ body.touch .gm.boss { width: 30px; height: 30px; }
             <div class="btns"><button class="btn primary" id="sl-host">Crear sala</button></div>
           </div>
           <div class="sl-card">
-            <h3>Mundo abierto</h3>
-            <p class="qd-note">Cuando entras a una época, ves a los demás viajeros que están ahí en ese momento. Acércate a alguien para saludar con gestos, retarlo a un duelo de preguntas o a un debate filosófico. No hay chat libre: solo apodos y gestos. Si alguien te molesta, acércate y toca «🔇 Silenciar».</p>
-            <div class="btns"><button class="btn" id="sl-mundo">Mundo abierto</button></div>
-            <div id="av-opts"></div>
-            <div class="au-form au-inline"><input id="av-name" maxlength="16" placeholder="Tu apodo" autocomplete="off" aria-label="Apodo de tu avatar"><button class="btn primary" id="av-save">Guardar avatar</button></div>
-            <div class="btns"><button class="btn ghost" id="av-unmute" hidden></button></div>
+            <h3>Mundo en línea</h3>
+            <p class="qd-note">Al entrar a una época ves a los demás viajeros que están ahí. Salúdalos con gestos y rétalos a un duelo o a un debate. Sin chat.</p>
+            <div class="btns"><button class="btn primary" id="sl-avatar">Mi avatar y mundo en línea</button></div>
           </div>
           <div class="sl-card">
             <h3>Grupo privado</h3>
@@ -14428,7 +14453,7 @@ async function boot() {
 }
 
 // Gancho de pruebas automáticas (solo con #debug en la URL)
-if (location.hash === '#debug') window.__dbg = { get AULA() { return AULA; }, ga: (x, z, y) => groundAt(world, x, z, y), get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, get Agora() { return Agora; }, get Foto() { return Foto; }, get Escucha() { return Escucha; }, get Perfil() { return Perfil; }, get ERAS() { return ERAS; } };
+if (location.hash === '#debug') window.__dbg = { get AULA() { return AULA; }, ga: (x, z, y) => groundAt(world, x, z, y), get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, get Agora() { return Agora; }, get Foto() { return Foto; }, get Avatar() { return Avatar; }, get Escucha() { return Escucha; }, get Perfil() { return Perfil; }, get ERAS() { return ERAS; } };
 
 // ---- src/04a-lesson.js ----
 // ============================================================================
@@ -16531,8 +16556,8 @@ const Juntos = {
   // la primera vez se pregunta antes de entrar al mundo público
   askMundo() {
     if (this.inv || this.asked) return; this.asked = true; this.inv = { ask: true };
-    $('#mp-inv-t').textContent = '🌍 ¿Quieres entrar al mundo abierto? Verás a otros viajeros que estén en esta época (solo su apodo y su avatar) y ellos te verán a ti. Podrán saludarse con gestos y retarse a duelos o debates. No hay chat. Puedes cambiarlo cuando quieras en Ajustes.';
-    $('#mp-yes').textContent = 'Sí, entrar'; $('#mp-no').textContent = 'Ahora no'; $('#mp-inv').hidden = false;
+    $('#mp-inv-t').textContent = '🌍 ¿Jugar en línea? Verás a otros viajeros en esta época y ellos a ti. Sin chat: solo gestos, duelos y debates.';
+    $('#mp-yes').textContent = 'Sí, en línea'; $('#mp-no').textContent = 'Jugar solo'; $('#mp-inv').hidden = false;
   },
   // ---------------------------------------------------------------- conexión: grupo privado o mundo público de la época
   connect(chan) {
@@ -16564,7 +16589,7 @@ const Juntos = {
     this.wantT += dt; if (this.wantT < (want ? 1 : 6)) return; this.wantT = 0;
     if (!want) { this.stop(); return; }
     this.mode = 'publico'; this.connect(want);
-    if (!this.welcomed) { this.welcomed = true; setTimeout(() => toast('🌍 Estás en el mundo abierto: verás a otros viajeros de esta época. Puedes cambiar tu avatar en «En vivo» o desactivarlo en Ajustes.'), 1500); }
+    if (!this.welcomed) { this.welcomed = true; setTimeout(() => toast('🌍 Estás en línea: verás a otros viajeros de esta época. Toca el letrero de arriba para cambiar tu avatar.'), 1500); }
   },
   paintBadge() {
     const b = $('#mp-badge'); b.hidden = !this.on; if (!this.on) return;
@@ -16608,7 +16633,8 @@ const Juntos = {
   },
   frame(dt) {
     this.autoPublic(dt);
-    if (!this.on) return;
+    if (!this.on) { // sin conexión: el letrero invita a jugar en línea
+      const b = $('#mp-badge'); const show = G.state === 'play' && Sala.ok(); if (b.hidden === show) b.hidden = !show; if (show && b.textContent !== '🌍 Jugar en línea') b.textContent = '🌍 Jugar en línea'; return; }
     const playing = G.state === 'play' && world && world.idx === G.eraIdx;
     // mi posición: 3 veces por segundo al moverme, cada 4 s si estoy quieto
     this.sendT -= dt; const p = player.pos; const moved = !this.last || Math.hypot(p.x - this.last[0], p.z - this.last[1]) > 0.15 || Math.abs(player.yaw - this.last[2]) > 0.12;
@@ -16665,7 +16691,7 @@ const Juntos = {
   },
   answerInv(yes) {
     const d = this.inv; if (!d) return; this.inv = null; $('#mp-inv').hidden = true; clearTimeout(this.invT);
-    if (d.ask) { $('#mp-yes').textContent = '¡Acepto!'; $('#mp-no').textContent = 'Ahora no'; G.settings.mundo = !!yes; saveSettings(); syncSettings(); this.welcomed = !yes; if (!yes) toast('Puedes entrar al mundo abierto cuando quieras desde Ajustes.'); return; }
+    if (d.ask) { $('#mp-yes').textContent = '¡Acepto!'; $('#mp-no').textContent = 'Ahora no'; G.settings.mundo = !!yes; saveSettings(); syncSettings(); this.welcomed = !yes; if (!yes) toast('Puedes jugar en línea cuando quieras: toca el letrero 🌍 de arriba.'); if (typeof Avatar !== 'undefined') Avatar.paintTitle(); return; }
     if (!yes || G.state !== 'play') { MRT.send('rechaza', { from: this.id, to: d.from, name: this.name }); return; }
     MRT.send('acepta', { from: this.id, to: d.from, seed: d.seed }); this.begin(d.from, Sala.clean(d.name) || 'Rival', d.seed, d.kind === 'd' ? 'd' : 'q');
   },
@@ -16743,17 +16769,7 @@ const Juntos = {
     if (G.state === 'place') { G.state = 'play'; $('#hud').hidden = false; if (IS_TOUCH) $('#touch').hidden = false; lockPointer(); updateHud(); }
   },
   // ---------------------------------------------------------------- mi avatar
-  paintAvatar() {
-    const l = this.look(); const box = $('#av-opts'); if (!box) return; box.innerHTML = ''; const got = new Set(store.get(ACH_KEY, []));
-    const row = (label, list, key, render) => { const r = document.createElement('div'); r.className = 'av-row'; const t = document.createElement('span'); t.textContent = label; r.appendChild(t);
-      list.forEach((v, i) => { const need = key === 't' ? v[2] : key === 'r' ? AV_ROBE_LOCK[i] : null; const locked = need && !got.has(need); const b = document.createElement('button'); b.className = 'av-chip' + (l[key] === i ? ' on' : '') + (locked ? ' lock' : ''); render(b, v); if (locked) { b.textContent = (key === 't' ? v[1] + ' ' : '') + '🔒'; b.setAttribute('aria-label', 'Bloqueado'); }
-        b.addEventListener('click', () => { if (locked) { const a = ACH.find((x) => x.id === need); return toast(`🔒 Se desbloquea con el logro «${a ? a.n : need}»: ${a ? a.d : ''}`); } const n = this.look(); n[key] = i; this.saveLook(n); }); r.appendChild(b); }); box.appendChild(r); };
-    const sw = (b, v) => { b.style.background = '#' + v.toString(16).padStart(6, '0'); };
-    row('Túnica', AV_ROBES, 'r', sw); row('Piel', AV_SKINS, 's', sw); row('Pelo', AV_HAIRS, 'h', sw); row('Cabeza', AV_HATS, 't', (b, v) => { b.textContent = v[1]; b.classList.add('txt'); });
-    $('#av-name').value = l.n || ''; $('#av-name').placeholder = this.myName();
-    $('#sl-mundo').textContent = G.settings.mundo === true ? 'Mundo abierto: activado (toca para desactivar)' : 'Mundo abierto: desactivado (toca para activar)';
-    const n = this.muted().size; $('#av-unmute').hidden = !n; $('#av-unmute').textContent = `Quitar el silencio a ${n} ${n === 1 ? 'viajero' : 'viajeros'}`;
-  },
+  paintAvatar() { if (typeof Avatar !== 'undefined') { if (!$('#av').hidden) Avatar.paint(); Avatar.paintTitle(); } },
   saveLook(n) { try { localStorage.setItem(AVATAR_KEY, JSON.stringify(n)); } catch (e) { /* nada */ } this.last = null; this.sendT = 0; this.paintAvatar(); Audio.click(); },
   // ---------------------------------------------------------------- grupos privados desde la pantalla «En vivo»
   create() { const name = Sala.clean($('#sl-name').value); if (name) this.saveLook({ ...this.look(), n: name }); this.enter(Sala.rid(4), true); },
@@ -16778,12 +16794,10 @@ on('#mp-yes', () => Juntos.answerInv(true));
 on('#mp-no', () => Juntos.answerInv(false));
 on('#mp-emo', () => { $('#mp-emobar').hidden = !$('#mp-emobar').hidden; });
 EMOTES.forEach((e, k) => { const b = document.createElement('button'); b.textContent = e; b.setAttribute('aria-label', 'Gesto ' + e); b.addEventListener('click', (ev) => { ev.stopPropagation(); Juntos.emote(k); }); $('#mp-emobar').appendChild(b); });
-on('#mp-badge', () => { if (Juntos.mode === 'grupo') { if (confirm(`¿Salir del grupo ${Juntos.code} y volver al mundo abierto?`)) { Juntos.stop(); toast('Saliste del grupo.'); } } else if (confirm('¿Desactivar el mundo abierto? Dejarás de ver a otros viajeros (puedes volver a activarlo en Ajustes).')) { G.settings.mundo = false; saveSettings(); syncSettings(); Juntos.stop(); } });
+on('#mp-badge', () => Avatar.open());
 on('#sl-jnew', () => Juntos.create());
 on('#sl-jjoin', () => Juntos.join());
 on('#sl-jgo', () => openTravel('title'));
-on('#sl-mundo', () => { G.settings.mundo = G.settings.mundo !== true; saveSettings(); syncSettings(); Juntos.paintAvatar(); });
-on('#av-save', () => { const n = Sala.clean($('#av-name').value); if ($('#av-name').value && !n) return toast('Elige un apodo de 2 a 16 letras, sin palabras ofensivas.'); Juntos.saveLook({ ...Juntos.look(), n }); toast('Avatar guardado.'); });
 $('#b-sala').addEventListener('click', () => setTimeout(() => Juntos.paintAvatar(), 50));
 window.addEventListener('pagehide', () => { if (Juntos.on) MRT.send('adios', { id: Juntos.id }); });
 setTimeout(() => Juntos.resume(), 1500);
@@ -17091,6 +17105,98 @@ const Escucha = {
 };
 { const f0 = Juntos.frame; Juntos.frame = function (dt) { try { Escucha.before(); } catch (e) { /* nada */ } f0.call(this, dt); try { Escucha.after(); } catch (e) { /* nada */ } }; }
 { const fin0 = Lesson.finish; Lesson.finish = function () { fin0.call(this); if (!this.book && this.done) { try { Escucha.ask(); } catch (e) { console.warn(e); } } }; }
+
+// ---- src/06n-avatar.js ----
+// ============================================================================
+//  MI AVATAR Y MUNDO EN LÍNEA: un solo panel sencillo, con el avatar girando,
+//  flechas para cambiar cada parte y un interruptor para jugar en línea.
+//  Se abre desde la portada, desde el letrero de arriba mientras juegas y desde
+//  la pantalla «En vivo».
+// ============================================================================
+const Avatar = {
+  draft: null, pv: null, fromPlay: false,
+  PARTS: [['r', 'Túnica', () => AV_ROBES], ['s', 'Piel', () => AV_SKINS], ['h', 'Pelo', () => AV_HAIRS], ['t', 'Cabeza', () => AV_HATS]],
+  got() { return new Set(store.get(ACH_KEY, [])); },
+  need(key, i) { return key === 't' ? AV_HATS[i][2] : key === 'r' ? AV_ROBE_LOCK[i] : null; },
+  locked(key, i) { const n = this.need(key, i); return n && !this.got().has(n) ? n : null; },
+  online() { return G.settings.mundo === true; },
+  open() {
+    if (!$('#av').hidden) return;
+    this.draft = { ...Juntos.look() }; $('#av-name').value = this.draft.n || ''; $('#av-name').placeholder = Juntos.myName();
+    this.fromPlay = G.state === 'play';
+    if (this.fromPlay) { G.state = 'place'; unlockPointer(); input.keys = {}; input.walk = null; input.auto = false; $('#hud').hidden = true; $('#touch').hidden = true; }
+    $('#av').hidden = false; this.paint(); this.preview();
+  },
+  close() {
+    this.commit(); $('#av').hidden = true; this.stopPreview(); this.paintTitle();
+    if (this.fromPlay && G.state === 'place') { this.fromPlay = false; G.state = 'play'; $('#hud').hidden = false; if (IS_TOUCH) $('#touch').hidden = false; lockPointer(); updateHud(); }
+  },
+  // se guarda solo lo desbloqueado; lo bloqueado se puede mirar, pero no llevar
+  commit() {
+    if (!this.draft) return; const cur = Juntos.look(); const n = { ...cur };
+    for (const [key] of this.PARTS) if (!this.locked(key, this.draft[key])) n[key] = this.draft[key];
+    const raw = $('#av-name').value.trim(); const name = Sala.clean(raw); if (raw && !name) toast('Ese apodo no sirve: usa de 2 a 16 letras, sin palabras ofensivas.'); else n.n = name;
+    try { localStorage.setItem(AVATAR_KEY, JSON.stringify(n)); } catch (e) { /* nada */ } Juntos.last = null; Juntos.sendT = 0;
+  },
+  step(key, d) { const list = this.PARTS.find((p) => p[0] === key)[2](); this.draft[key] = (this.draft[key] + d + list.length) % list.length; Audio.click(); this.paint(); this.figure(); this.commit(); },
+  random() { for (const [key, , list] of this.PARTS) { const ok = list().map((_, i) => i).filter((i) => !this.locked(key, i)); this.draft[key] = ok[Math.floor(Math.random() * ok.length)]; } Audio.click(); this.paint(); this.figure(); this.commit(); },
+  setOnline(v) {
+    G.settings.mundo = !!v; saveSettings(); syncSettings(); Juntos.asked = true;
+    if (!v && Juntos.mode !== 'grupo') Juntos.stop();
+    if (v) { Juntos.welcomed = true; toast(Sala.ok() ? '🌍 Mundo en línea activado: al entrar a una época verás a otros viajeros.' : 'El mundo en línea funciona en la versión web del juego.'); }
+    this.paint(); this.paintTitle();
+  },
+  paint() {
+    const box = $('#av-opts'); box.innerHTML = '';
+    for (const [key, label, list] of this.PARTS) {
+      const L = list(), i = this.draft[key], lock = this.locked(key, i); const row = document.createElement('div'); row.className = 'av-row';
+      const prev = document.createElement('button'); prev.className = 'av-arrow'; prev.textContent = '◀'; prev.setAttribute('aria-label', label + ' anterior'); prev.addEventListener('click', () => this.step(key, -1));
+      const next = document.createElement('button'); next.className = 'av-arrow'; next.textContent = '▶'; next.setAttribute('aria-label', label + ' siguiente'); next.addEventListener('click', () => this.step(key, 1));
+      const mid = document.createElement('div'); mid.className = 'av-mid' + (lock ? ' lock' : '');
+      const t = document.createElement('b'); t.textContent = label; mid.appendChild(t);
+      const v = document.createElement('span');
+      if (key === 't') v.textContent = (lock ? '🔒 ' : '') + L[i][1]; else { const sw = document.createElement('i'); sw.style.background = '#' + L[i].toString(16).padStart(6, '0'); v.appendChild(sw); v.appendChild(document.createTextNode(`${lock ? '🔒 ' : ''}${i + 1} de ${L.length}`)); }
+      mid.appendChild(v);
+      if (lock) { const a = ACH.find((x) => x.id === lock); const h = document.createElement('small'); h.textContent = `Se gana con el logro «${a ? a.n : lock}»`; mid.appendChild(h); }
+      row.append(prev, mid, next); box.appendChild(row);
+    }
+    const sw = $('#av-online'); sw.classList.toggle('on', this.online()); sw.setAttribute('aria-checked', this.online() ? 'true' : 'false');
+    $('#av-online-s').textContent = Juntos.mode === 'grupo' ? `Estás en el grupo privado ${Juntos.code}: solo se ven quienes tienen el código.` : this.online() ? 'Activado: verás a otros viajeros en cada época. Sin chat, solo gestos.' : 'Desactivado: juegas solo. Actívalo para encontrarte con otros viajeros.';
+    $('#av-group').hidden = Juntos.mode !== 'grupo';
+    const n = Juntos.muted().size; $('#av-unmute').hidden = !n; $('#av-unmute').textContent = `Quitar el silencio a ${n} ${n === 1 ? 'viajero' : 'viajeros'}`;
+  },
+  paintTitle() {
+    const s = $('#b-avatar-s'); if (s) s.textContent = Juntos.myName();
+    const b = $('#b-online'); if (b) { b.classList.toggle('on', this.online()); b.setAttribute('aria-checked', this.online() ? 'true' : 'false'); $('#b-online-s').textContent = this.online() ? 'Activado' : 'Desactivado'; }
+  },
+  // -------- vista previa en 3D (un lienzo pequeño aparte del juego)
+  preview() {
+    try {
+      const c = $('#av-prev'); const r = new THREE.WebGLRenderer({ canvas: c, alpha: true, antialias: true }); r.setPixelRatio(Math.min(2, window.devicePixelRatio || 1)); r.setSize(c.clientWidth || 220, c.clientHeight || 260, false);
+      const sc = new THREE.Scene(); sc.add(new THREE.HemisphereLight(0xfff4e0, 0x40342a, 1.6)); const d = new THREE.DirectionalLight(0xffffff, 2.2); d.position.set(2, 4, 3); sc.add(d);
+      const cam = new THREE.PerspectiveCamera(32, (c.clientWidth || 220) / (c.clientHeight || 260), 0.1, 30); cam.position.set(0, 1.4, 4.1); cam.lookAt(0, 1.2, 0);
+      this.pv = { r, sc, cam, fig: null, t0: performance.now() }; this.figure();
+      const loop = () => { const P = this.pv; if (!P || P.r !== r) return; const t = (performance.now() - P.t0) / 1000; if (P.fig) { P.fig.group.rotation.y = Math.sin(t * 0.7) * 0.9; P.fig.group.position.y = Math.sin(t * 2) * 0.015; } r.render(sc, cam); requestAnimationFrame(loop); };
+      requestAnimationFrame(loop);
+    } catch (e) { this.pv = null; $('#av-prev').hidden = true; }
+  },
+  figure() {
+    const P = this.pv; if (!P) return; if (P.fig) { P.sc.remove(P.fig.group); P.fig.group.traverse((o) => { if (o.geometry) o.geometry.dispose(); }); }
+    const l = this.draft; const fig = buildFigure({ robe: AV_ROBES[l.r] ?? AV_ROBES[0], robe2: 0x2a2620, skin: AV_SKINS[l.s] ?? AV_SKINS[2], hair: AV_HAIRS[l.h] ?? AV_HAIRS[0], beard: false, hat: (AV_HATS[l.t] || AV_HATS[0])[0], acc: 'none' }, 0xffffff);
+    fig.halo.visible = false; P.sc.add(fig.group); P.fig = fig;
+  },
+  stopPreview() { const P = this.pv; this.pv = null; if (!P) return; try { if (P.fig) P.fig.group.traverse((o) => { if (o.geometry) o.geometry.dispose(); }); P.r.dispose(); } catch (e) { /* nada */ } },
+};
+on('#av-ok', () => Avatar.close());
+on('#av-rand', () => Avatar.random());
+on('#av-online', () => Avatar.setOnline(!Avatar.online()));
+on('#av-group', () => { if (confirm(`¿Salir del grupo ${Juntos.code}?`)) { Juntos.stop(); toast('Saliste del grupo.'); Avatar.paint(); } });
+on('#b-avatar', () => Avatar.open());
+on('#b-online', () => Avatar.setOnline(!Avatar.online()));
+on('#sl-avatar', () => Avatar.open());
+$('#av').addEventListener('click', (e) => { if (e.target === $('#av')) Avatar.close(); });
+window.addEventListener('keydown', (e) => { if (e.code === 'Escape' && !$('#av').hidden) { e.stopPropagation(); Avatar.close(); } }, true);
+setTimeout(() => Avatar.paintTitle(), 600);
 
 </script>
 </body>
