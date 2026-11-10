@@ -26,7 +26,7 @@ ERAS.forEach((era) => era.sages.forEach((d) => {
   pack('p-' + d.id, v.voice, v.pitch, d.id, [...sageSpeech(d).flatMap(narrSplit).filter((s) => !lesson.has(s)), ...dlgTexts(DIALOGOS[d.id])]);
 }));
 // textos de las tarjetas de los experimentos jugables (cadenas largas de esos archivos), con la voz del narrador
-const zoneTexts = ['src/02r-zonas.js', 'src/02s-zonas2.js'].flatMap((f) => [...readFileSync(join(root, f), 'utf8').matchAll(/'([«¿¡A-ZÁÉÍÓÚÑ](?:[^'\\\n]|\\.){59,})'/g)].map((m) => m[1].replace(/\\'/g, "'")).filter((t) => !/[;{}=$]|=>/.test(t)));
+const zoneTexts = ['src/02r-zonas.js', 'src/02s-zonas2.js', 'src/02u-zonas3.js'].flatMap((f) => [...readFileSync(join(root, f), 'utf8').matchAll(/'([«¿¡A-ZÁÉÍÓÚÑ](?:[^'\\\n]|\\.){59,})'/g)].map((m) => m[1].replace(/\\'/g, "'")).filter((t) => !/[{}=$]|=>/.test(t)));
 pack('x-zonas', 'carlfm', 1, 'narr', zoneTexts);
 POIS.forEach((list, i) => pack('n-' + i, 'carlfm', 1, 'narr', [...list.flatMap((p) => [p.name + '. ' + p.text, p.text + ' ' + p.fact]), ...(i === 0 ? NARR_GENERIC : [])]));
 NPCS.forEach((list, i) => list.forEach((n) => {
