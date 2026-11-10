@@ -389,12 +389,14 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .sl-top h3 { font-family: var(--display); font-weight: normal; color: var(--gold); text-align: center; margin: 0 0 6px; }
 .sl-top div, .sl-rest div { display: grid; grid-template-columns: 2.2em 1fr auto; gap: 8px; padding: 6px 10px; border-bottom: 1px solid var(--line); font-size: 1.15rem; }
 .sl-top b, .sl-rest b { color: var(--gold); font-weight: normal; } .sl-top em, .sl-rest em { font-style: normal; color: #ffe0a0; }
-.sl-podium { display: flex; justify-content: center; align-items: flex-end; gap: 12px; margin: 20px 0; }
+.sl-podium { display: flex; justify-content: center; align-items: flex-end; gap: 12px; margin: 8px 0 14px; }
 .sl-pod { width: min(30%, 220px); text-align: center; animation: sl-pop 0.6s ease-out; }
 .sl-pod span { display: block; font-size: clamp(1rem, 2.4vw, 1.8rem); } .sl-pod em { display: block; font-style: normal; color: #ffe0a0; margin-bottom: 6px; }
-.sl-pod b { display: block; border-radius: 12px 12px 0 0; font-family: var(--display); font-weight: normal; font-size: 3rem; color: #2a1a08; padding-top: 10px; }
-.sl-pod.p1 b { height: 180px; background: linear-gradient(#ffe08a, #c8962a); } .sl-pod.p2 b { height: 130px; background: linear-gradient(#e8e8f0, #9a9aa8); } .sl-pod.p3 b { height: 95px; background: linear-gradient(#e8b08a, #a8683a); }
+.sl-pod b { display: block; border-radius: 12px 12px 0 0; font-family: var(--display); font-weight: normal; font-size: clamp(2rem, 5vh, 3rem); color: #2a1a08; padding-top: 10px; }
+.sl-pod.p1 b { height: min(180px, 20vh); background: linear-gradient(#ffe08a, #c8962a); } .sl-pod.p2 b { height: min(130px, 14vh); background: linear-gradient(#e8e8f0, #9a9aa8); } .sl-pod.p3 b { height: min(95px, 10vh); background: linear-gradient(#e8b08a, #a8683a); }
 .sl-rest { max-width: 520px; margin: 0 auto 10px; }
+#sala.sl-big .sl-rest { max-width: 900px; display: grid; grid-template-columns: 1fr 1fr; column-gap: 24px; }
+#sala.sl-big [data-sv="end"] .era-name { margin: 0; }
 .sl-me { text-align: center; font-family: var(--display); font-size: 2.4rem; color: var(--gold); margin-top: 18vh; }
 .sl-pnum { text-align: center; opacity: 0.8; margin: 4px 0; }
 .sl-pq { text-align: center; font-size: 1.15rem; line-height: 1.35; margin: 8px 0 14px; }

@@ -181,7 +181,7 @@ const Sala = {
     const [ok, got, tot, pos] = r; const el = $('#sl-pres');
     el.className = 'sl-pres ' + (ok === 1 ? 'ok' : 'no');
     el.querySelector('b').textContent = ok === 1 ? '✓ ¡Correcto!' : ok === 0 ? '✗ No era esa' : '⏱ Sin respuesta';
-    el.querySelector('span').textContent = ok === 1 ? `+${got} puntos` : `Era: ${d.okT}`;
+    el.querySelector('span').textContent = ok === 1 ? `+${got} puntos` : `La respuesta era: ${d.okT}`;
     el.querySelector('em').textContent = `${tot} puntos · vas en el puesto ${pos}`;
     (ok === 1 ? Audio.correct : Audio.wrong) && (ok === 1 ? Audio.correct() : Audio.wrong()); this.setView('prev');
   },
