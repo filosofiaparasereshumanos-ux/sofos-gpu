@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Conversa con Sócrates, Hipatia, Sor Juana y 65 pensadores más, desafíalos a un debate y viaja por 15 mundos, de Tales a nuestros días. Gratis, en el navegador.">
+<meta name="description" content="El primer juego educativo completo de filosofía, ciencia e historia: conversa y debate con 96 pensadoras y pensadores en 21 épocas, de Sumer a nuestros días. Gratis, en el navegador.">
 <meta name="theme-color" content="#120d07">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="img/favicon.png">
@@ -11554,11 +11554,12 @@ const Track = {
     if (this.el) { try { this.el.pause(); } catch (e) { /* nada */ } this.el.removeAttribute('src'); }
     const el = document.createElement('audio'); el.loop = true; el.preload = 'auto'; el.volume = 0; this.vol = 0; this.el = el;
     el.addEventListener('playing', () => { if (this.el === el) this.ready = true; });
-    el.addEventListener('error', () => { if (this.el === el) { this.ready = false; this.el = null; } });
     // las épocas con dos canciones las alternan: al terminar una, empieza la otra
-    const pair = TRACK_PAIRS.has(idx) ? ['audio/m-' + idx + '.mp3', 'audio/m-' + idx + 'b.mp3'] : null;
+    let pair = TRACK_PAIRS.has(idx) ? ['audio/m-' + idx + '.mp3', 'audio/m-' + idx + 'b.mp3'] : null;
+    // si falta la segunda canción (por ejemplo, en la versión dentro de Claude), suena solo la primera
+    el.addEventListener('error', () => { if (this.el !== el) return; if (pair && !el._fb) { el._fb = true; pair = null; el.loop = true; el.src = 'audio/m-' + idx + '.mp3'; this.resume(); return; } this.ready = false; this.el = null; });
     if (pair) { el.loop = false; let k = Math.random() < 0.5 ? 0 : 1; el.src = pair[k];
-      el.addEventListener('ended', () => { if (this.el !== el) return; k = 1 - k; el.src = pair[k]; this.resume(); }); }
+      el.addEventListener('ended', () => { if (this.el !== el || !pair) return; k = 1 - k; el.src = pair[k]; this.resume(); }); }
     else el.src = 'audio/m-' + idx + '.mp3';
     // en iOS el volumen del elemento es fijo: lo controlamos con una ganancia de WebAudio
     this.gain = null; const c = Audio.ctx;
