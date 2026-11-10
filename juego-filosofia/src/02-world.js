@@ -107,6 +107,11 @@ const THEMES = [
     hemi: [0x9ac8d8, 0x3a3a30, 0.66], fog: [0x3a4a58, 0.0095], exposure: 1.16, stars: true,
     accent: 0x5affb0, enemy: { col: 0x5affb0, core: 0x04201a, shell: 'cube' }, lampCol: 0xffb060,
   },
+  { // XXII · La antigua Persia: tarde dorada sobre Persépolis, cielo turquesa
+    sky: [0x3a8ab8, 0xffe0b0, 0xc89a6a], sunDir: [0.45, 0.32, -0.83], sunCol: 0xffe2b8, sunInt: 2.4, sunDisk: 0xfff0d0,
+    hemi: [0xffe8c8, 0x8a6a48, 0.74], fog: [0xf0d0a8, 0.0075], exposure: 1.1, stars: false,
+    accent: 0x3ad8d0, enemy: { col: 0x3ad8d0, core: 0x062420, shell: 'octa' }, lampCol: 0xffc070,
+  },
 ];
 
 const ARENA = { x0: -24, x1: 24, z0: -47, z1: 37 };
@@ -1418,6 +1423,56 @@ const ERA_BUILDERS = [
         const base = geo.attributes.position.array.slice(); W.anim && W.anim.push((t) => { const p = geo.attributes.position.array; for (let i = 0; i < p.length; i += 3) p[i + 2] = base[i + 2] + Math.sin(base[i] * 0.04 + t * 0.6 + k) * 10; geo.attributes.position.needsUpdate = true; }); } }
     for (const [x, z] of [[-5, 24], [5, 24], [-5, -6], [5, -6]]) { if (!W._near(x, z, 0.3)) brazier(W, x, z, 0xffa040, false); }
     brazier(W, -4, -34, 0xffa040); brazier(W, 4, -34, 0xffa040);
+  },
+  // ------------------------------------------------------------------ XXII · La antigua Persia
+  function (W) {
+    const sand = texTiles('xxii', 0xd8b88a, 0xb89868, 10, 0.18); sand.repeat.set(16, 24); ground(W, sand, [80, 120], 1);
+    const r = mulberry32(131);
+    const lime = std(0xe8d8b8, { roughness: 0.85 }); const stone = std(0xc8b08a, { roughness: 0.9 }); const dark = std(0x5a4a3a, { roughness: 0.9 });
+    const tile = std(0x2a9ab0, { roughness: 0.35, metalness: 0.1 }); const tile2 = std(0x1a4a8a, { roughness: 0.35 }); const gold = std(0xd8b048, { metalness: 0.7, roughness: 0.35 });
+    const water = new THREE.MeshStandardMaterial({ color: 0x3aa8c0, roughness: 0.05, metalness: 0.35, emissive: 0x0a3a48, emissiveIntensity: 0.35 });
+    // el jardín cuatripartito (chahar bagh): canal central a lo largo del camino y canal transversal
+    { const ch = mesh(new THREE.BoxGeometry(1.4, 0.12, 70), water, 0, 0.06, -6, false, true); W.group.add(ch);
+      for (const sd of [-1, 1]) W.group.add(mesh(new THREE.BoxGeometry(0.3, 0.25, 70), tile, sd * 0.85, 0.12, -6, false, false));
+      if (!W._near(0, 4, 2)) { W.group.add(mesh(new THREE.BoxGeometry(30, 0.12, 1.4), water, 0, 0.06, 4, false, true)); W.group.add(mesh(new THREE.CylinderGeometry(1.6, 1.8, 0.5, 8), tile, 0, 0.25, 4)); W.group.add(mesh(new THREE.CylinderGeometry(0.25, 0.3, 1.4, 8), lime, 0, 0.9, 4));
+        W.emitters.push({ x: 0, y: 1.6, z: 4, col: 0xbfe8ff, rate: 6, acc: 0, kind: 'water' }); W.colliders.push({ t: 1, x: 0, z: 4, r: 1.8, h: 0.6 }); } }
+    // cipreses y rosales a lo largo de los canales
+    const cypress = (x, z) => { const h = 4 + r() * 2; const c = mesh(new THREE.ConeGeometry(0.5, h, 8), std(0x3a6a3a, { roughness: 1, flat: true }), x, h / 2, z); c.scale.set(1, 1, 1); W.group.add(c); W.colliders.push({ t: 1, x, z, r: 0.45, h }); };
+    const roses = [std(0xd83a4a, { roughness: 0.8, flat: true }), std(0xff8aa0, { roughness: 0.8, flat: true }), std(0xf0e0a0, { roughness: 0.8, flat: true })];
+    for (const sd of [-1, 1]) for (let z = -40; z < 32; z += 6) { const x = sd * (5.2 + r() * 0.6); if (!W._near(x, z, 1.2)) cypress(x, z);
+      if (!W._near(sd * 3, z + 3, 1)) for (let k = 0; k < 3; k++) { W.group.add(mesh(new THREE.IcosahedronGeometry(0.45, 0), std(0x3a6a3a, { flat: true }), sd * (2.6 + r() * 0.8), 0.4, z + 3 + (r() - 0.5) * 1.5, false, false)); W.group.add(mesh(new THREE.IcosahedronGeometry(0.14, 0), roses[k], sd * (2.6 + r() * 0.8), 0.85, z + 3 + (r() - 0.5) * 1.5, false, false)); } }
+    // granados con frutos rojos
+    for (const [x, z] of [[-12, 20], [12, 14], [-13, -8], [13, -22], [-11, -30]]) { if (W._near(x, z, 2)) continue; const g = new THREE.Group(); g.position.set(x, 0, z);
+      g.add(mesh(new THREE.CylinderGeometry(0.15, 0.25, 1.8, 7), std(0x5a3a28, { roughness: 1 }), 0, 0.9, 0)); g.add(mesh(new THREE.IcosahedronGeometry(1.4, 0), std(0x4a7a3a, { roughness: 1, flat: true }), 0, 2.4, 0, false, false));
+      for (let k = 0; k < 7; k++) g.add(mesh(new THREE.SphereGeometry(0.14, 8, 6), std(0xc8202a, { roughness: 0.5 }), (r() - 0.5) * 2, 2 + r() * 1.2, (r() - 0.5) * 2, false, false));
+      W.group.add(g); W.colliders.push({ t: 1, x, z, r: 0.5, h: 3 }); }
+    // pórticos con columnas esbeltas y capiteles de toros a ambos lados (la Apadana de Persépolis)
+    for (const side of [-1, 1]) {
+      for (let z = -44; z <= 34; z += 4.5) { const x = side * 19.5; const g = new THREE.Group(); g.position.set(x, 0, z);
+        g.add(mesh(new THREE.CylinderGeometry(0.75, 0.9, 0.5, 14), stone, 0, 0.25, 0)); g.add(mesh(flutedCylinder(0.34, 0.38, 7.2, 20, 0.04), lime, 0, 4.1, 0));
+        g.add(mesh(new THREE.CylinderGeometry(0.5, 0.36, 0.6, 12), stone, 0, 8, 0));
+        for (const sd of [-1, 1]) { const bull = mesh(new THREE.BoxGeometry(0.55, 0.6, 1.1), dark, 0, 8.65, sd * 0.5, false, false); g.add(bull); g.add(mesh(new THREE.BoxGeometry(0.4, 0.4, 0.35), dark, 0, 8.75, sd * 1.15, false, false)); }
+        W.group.add(g); W.colliders.push({ t: 1, x, z, r: 0.55, h: 9 }); }
+      W.group.add(mesh(new THREE.BoxGeometry(2.6, 0.6, 82), stone, side * 20.2, 9.3, -5, false, false));
+      W.group.add(mesh(new THREE.BoxGeometry(0.6, 9.6, 82), lime, side * 23.4, 4.8, -5, false, false)); W.colliders.push({ t: 0, x0: side * 23.4 - 0.4, x1: side * 23.4 + 0.4, z0: -47, z1: 37, h: 9 });
+      // friso de azulejos en el muro y relieves de las delegaciones
+      W.group.add(mesh(new THREE.BoxGeometry(0.1, 0.7, 82), tile, side * 23.05, 6.4, -5, false, false));
+      for (let z = -40; z <= 30; z += 3.5) W.group.add(mesh(new THREE.BoxGeometry(0.12, 1.6, 0.5), std(0xb8a07a, { roughness: 0.9 }), side * 23.05, 2.4, z + (r() - 0.5) * 0.3, false, false));
+    }
+    // altar del fuego zoroastriano
+    if (!W._near(-8, -14, 2)) { W.group.add(mesh(new THREE.BoxGeometry(1.3, 1.2, 1.3), stone, -8, 0.6, -14)); W.group.add(mesh(new THREE.BoxGeometry(1.7, 0.3, 1.7), stone, -8, 1.35, -14)); brazier(W, -8, -14, 0xff9a40); W.colliders.push({ t: 1, x: -8, z: -14, r: 1, h: 1.5 }); }
+    // gran iwán de azulejos turquesa al fondo, con cúpula
+    { const g = new THREE.Group(); g.position.set(0, 0, -60);
+      g.add(mesh(new THREE.BoxGeometry(22, 16, 4), lime, 0, 8, 0, false, false));
+      g.add(mesh(new THREE.BoxGeometry(9, 12, 0.3), tile2, 0, 6, 2.05, false, false)); const arch = mesh(new THREE.CylinderGeometry(4.5, 4.5, 0.32, 24, 1, false, 0, Math.PI), tile2, 0, 12, 2.06, false, false); arch.rotation.set(Math.PI / 2, 0, Math.PI / 2); g.add(arch);
+      for (const sd of [-1, 1]) { g.add(mesh(new THREE.BoxGeometry(2.2, 16.2, 0.4), tile, sd * 5.6, 8, 2.1, false, false)); g.add(mesh(new THREE.CylinderGeometry(1, 1.1, 22, 14), tile, sd * 12, 11, 0, false, false)); g.add(mesh(new THREE.ConeGeometry(1.3, 2.6, 14), gold, sd * 12, 23.3, 0, false, false)); }
+      const dome = mesh(new THREE.SphereGeometry(7, 28, 16, 0, TAU, 0, Math.PI / 2), tile, 0, 16, -3, false, false); dome.scale.set(1, 1.25, 1); g.add(dome); g.add(mesh(new THREE.ConeGeometry(0.5, 2.5, 10), gold, 0, 26, -3, false, false));
+      W.group.add(g); }
+    // montes Zagros al fondo
+    const mtn = farStd(W, 0x9a7a5a, 0.45);
+    for (let k = 0; k < 10; k++) { const x = -150 + k * 33 + (r() - 0.5) * 12, z = -140 - r() * 50, h = 16 + r() * 18, w = 45 + r() * 25; const m = mesh(new THREE.ConeGeometry(w, h, 7), mtn, x, h / 2 - 4, z, false, false); m.scale.z = 0.6; W.group.add(m); }
+    for (const [x, z] of [[-5, 24], [5, 24], [-5, -6], [5, -6]]) { if (!W._near(x, z, 0.3)) brazier(W, x, z, 0xffc070, false); }
+    brazier(W, -4, -34, 0xffc070); brazier(W, 4, -34, 0xffc070);
   },
 ];
 

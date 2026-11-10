@@ -1,13 +1,15 @@
 // ============================================================================
-//  LA LÍNEA DEL TIEMPO: un solo viaje por las 21 épocas, en orden cronológico,
+//  LA LÍNEA DEL TIEMPO: un solo viaje por todas las épocas, en orden cronológico,
 //  desde Sumer hasta nuestros días (y al final los dos mundos temáticos que
 //  atraviesan todos los tiempos: los poetas y los científicos).
 //  Los números romanos de cada época se reasignan según este orden.
 // ============================================================================
-const CHRONO = ['sumer', 'africa', 'india', 'presocraticos', 'china', 'atenas', 'helenismo', 'medieval', 'islam', 'vikingos', 'japon',
+const CHRONO = ['sumer', 'africa', 'india', 'persia', 'presocraticos', 'china', 'atenas', 'helenismo', 'medieval', 'islam', 'vikingos', 'japon',
   'mexicas', 'incas', 'renacimiento', 'mapuche', 'modernidad', 'xix', 'latinoamerica', 'contemporanea', 'poetas', 'ciencia']
   .map((id) => ERAS.findIndex((e) => e.id === id)).filter((i) => i >= 0);
 ERAS.forEach((e, i) => { if (!CHRONO.includes(i)) CHRONO.push(i); });
+// el botón principal dice cuántas épocas y pensadores hay (se calcula, para que no quede viejo)
+if (typeof document !== 'undefined') { const f = () => { const el = document.getElementById('b-play-s'); if (el) el.textContent = `${ERAS.length} épocas · ${ERAS.reduce((a, e) => a + e.sages.length, 0)} pensadoras y pensadores`; }; if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', f); else f(); }
 const ROMANO = (n) => [[10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']].reduce((acc, [v, s]) => { while (n >= v) { acc += s; n -= v; } return acc; }, '');
 CHRONO.forEach((ei, k) => { ERAS[ei].num = ROMANO(k + 1); ERAS[ei].pos = k; });
 // lema corto de cada época para la pantalla de elección
@@ -15,6 +17,7 @@ const ERA_HOOK = {
   sumer: 'Donde nació la escritura y la primera autora de la historia.',
   africa: 'La sabiduría de Egipto, de los griots y del ubuntu.',
   india: 'El Buda, las Upanishads y la pregunta por el yo.',
+  persia: 'Zaratustra, Ciro y el jardín que dio nombre al paraíso.',
   presocraticos: '¿De qué está hecho todo? Nace la filosofía griega.',
   china: 'Confucio, Laozi y el arte de vivir en armonía.',
   atenas: 'Sócrates, Platón y Aristóteles en el ágora.',

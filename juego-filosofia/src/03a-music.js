@@ -47,6 +47,8 @@ const SONGS = [
   { bpm: 66, root: 50, scale: [0, 1, 5, 7, 8, 12, 13], prog: [0, 3, 4, 0], pad: 'warm', arp: 'lyre', arpPat: [0, 2, 4, 2, 1, 3, 4, 2], lead: 'flute', kit: 'none', seed: 221 },
   // XXI · El Norte vikingo: tambor y lira nórdica, modo dórico
   { bpm: 84, root: 45, scale: [0, 2, 3, 5, 7, 9, 10], prog: [0, 6, 3, 4], pad: 'warm', arp: 'lyre', arpPat: [0, 2, 4, 2, 0, 3, 2, 1], lead: 'flute', kit: 'frame', seed: 231 },
+  // XXII · Persia: modo con segunda aumentada, santur y tombak
+  { bpm: 80, root: 50, scale: [0, 1, 4, 5, 7, 8, 11], prog: [0, 3, 4, 0], pad: 'warm', arp: 'lute', arpPat: [0, 2, 1, 3, 2, 1, 0, 2], lead: 'flute', kit: 'frame', seed: 241 },
 ];
 // volumen de cada capa según el modo
 const MIX = {
@@ -227,7 +229,7 @@ const Music = {
 // La música nueva sustituye a la antigua
 // ---- banda sonora grabada de cada época (Suno, en audio/m-<época>.mp3)
 // Suena en la exploración y el menú; en los debates baja y entra la música de tensión.
-const TRACK_PAIRS = new Set([...Array(21).keys()]); // épocas con segunda canción (audio/m-<i>b.mp3)
+const TRACK_PAIRS = new Set([...Array(ERAS.length).keys()]); // épocas con segunda canción (audio/m-<i>b.mp3)
 const Track = {
   el: null, idx: -1, ready: false, vol: 0, lastT: 0,
   play(idx) {

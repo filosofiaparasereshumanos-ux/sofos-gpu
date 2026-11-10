@@ -53,7 +53,7 @@ const APP_HEAD = `<meta name="theme-color" content="#120d07">
 <meta property="og:image" content="https://filosofiaparasereshumanos-ux.github.io/sofos-gpu/juego-filosofia/marketing/portada-titulo.jpg">
 <meta name="twitter:card" content="summary_large_image">
 `;
-const a = page(read('src/template.html'), `const NARR_INDEX = ${narr};\n` + join_(parts3d), 'El primer juego educativo completo de filosofía, ciencia e historia: conversa y debate con 96 pensadoras y pensadores en 21 épocas, de Sumer a nuestros días. Gratis, en el navegador.', APP_HEAD);
+const a = page(read('src/template.html'), `const NARR_INDEX = ${narr};\n` + join_(parts3d), 'El primer juego educativo completo de filosofía, ciencia e historia: conversa y debate con 101 pensadoras y pensadores en 22 épocas, de Sumer a nuestros días. Gratis, en el navegador.', APP_HEAD);
 writeFileSync(join(here, 'index.html'), a.full);
 console.log(`index.html (viaje 3D): ${(a.full.length / 1024).toFixed(0)} KB`);
 

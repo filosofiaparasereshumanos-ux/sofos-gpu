@@ -46,9 +46,11 @@ const GUIDE_LINES = [
     'Murasaki Shikibu, Dōgen, Sen no Rikyū, Bashō y Kitarō Nishida te esperan. Camina despacio: la prisa es la única sombra que no se vence corriendo.'],
   ['Bienvenido al Norte de los vikingos. No solo hubo guerreros: hubo poetas, sabias, navegantes y una asamblea donde la ley se hacía entre todos.',
     'La vidente de la Völuspá, Egill, Aud la Sabia, Thorgeir y Snorri Sturluson te esperan. Recuerda lo que dice el Hávamál: un ser humano es la alegría de otro ser humano.'],
+  ['Bienvenido a la antigua Persia, el primer gran imperio de muchos pueblos. Aquí se aprendió que se puede gobernar respetando las diferencias, y que cada persona elige entre la verdad y la mentira.',
+    'Zaratustra, Ciro el Grande, Mani, Burzoe y Ferdousí te esperan. Pasea por el jardín: de su nombre persa viene nuestra palabra paraíso.'],
 ];
 // dónde espera en cada época (junto al punto de llegada, en z = 31)
-const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5], 17: [2.8, 24.5], 18: [2.8, 24.5], 19: [2.8, 24.5], 20: [2.8, 24.5] };
+const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5], 17: [2.8, 24.5], 18: [2.8, 24.5], 19: [2.8, 24.5], 20: [2.8, 24.5], 21: [2.8, 24.5] };
 GUIDE_LINES.forEach((lines, i) => {
   if (!NPCS[i]) NPCS[i] = [];
   NPCS[i].unshift({ id: i === 0 ? 'guia' : 'guia-' + ERAS[i].id, name: 'El guía', role: 'Filosofía para Seres Humanos', portrait: 'guia', greeter: true,
