@@ -233,6 +233,7 @@ kbd { font-family: var(--display); font-size: 0.78em; border: 1px solid var(--li
 .nb-card { width: min(620px, 100%); max-height: calc(100vh - 32px); overflow: auto; background: #1a140c; border: 1px solid var(--gold); border-radius: 14px; padding: 18px 18px 14px; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
 .nb-q { font-size: 1.15rem; margin: 10px 0 12px; color: var(--parchment); line-height: 1.4; }
 #nb-t { width: 100%; box-sizing: border-box; min-height: 140px; padding: 12px; border-radius: 10px; border: 1px solid rgba(233,199,122,0.45); background: rgba(0,0,0,0.35); color: inherit; font: inherit; font-size: 1.05rem; line-height: 1.45; resize: vertical; }
+.xp-art { height: min(22vh, 40vw); background-repeat: no-repeat; }
 .xp-title { font-family: var(--display); font-weight: normal; color: var(--gold); font-size: 1.5rem; margin: 8px 0 0; letter-spacing: 0.04em; }
 .xp-ops { flex-direction: column; align-items: stretch; }
 .xp-ops .btn { white-space: normal; text-align: center; }
@@ -1423,6 +1424,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
   </div>
   <div id="xp" class="nb" hidden>
     <div class="nb-card xp-card">
+      <div class="pl-art xp-art" id="xp-art" hidden></div>
       <div class="eyebrow" id="xp-eye"></div>
       <h3 class="xp-title" id="xp-title"></h3>
       <p class="nb-q" id="xp-text"></p>

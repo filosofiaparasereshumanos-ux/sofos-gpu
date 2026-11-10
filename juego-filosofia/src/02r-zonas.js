@@ -17,6 +17,12 @@ const XP = {
   open(eye, title, text, ops) {
     G.state = 'place'; unlockPointer(); input.keys = {}; input.walk = null; input.auto = false; $('#hud').hidden = true; $('#touch').hidden = true;
     $('#xp-eye').textContent = eye; $('#xp-title').textContent = title; $('#xp-text').textContent = text;
+    { // pintura del experimento en el que estás (si existe), recortada de la hoja como «cover»
+      const art = $('#xp-art'); const id = world && world.zoneIn ? world.zoneIn.id : ''; const row = typeof XP_ART !== 'undefined' ? XP_ART[id] : undefined;
+      art.hidden = row === undefined;
+      if (row !== undefined) requestAnimationFrame(() => { const bw = art.clientWidth, bh = art.clientHeight; const tw = Math.max(bw, (bh * 16) / 9), th = (tw * 9) / 16;
+        art.style.backgroundImage = 'url(img/experimentos.jpg)'; art.style.backgroundSize = `${tw}px ${th * XP_ART_ROWS}px`; art.style.backgroundPosition = `${(bw - tw) / 2}px ${-row * th + (bh - th) / 2}px`; });
+    }
     const box = $('#xp-ops'); box.innerHTML = '';
     ops.forEach(([label, fn, cls], i) => { const b = document.createElement('button'); b.className = 'btn' + (cls ? ' ' + cls : i === 0 ? ' primary' : ''); b.textContent = label; b.addEventListener('click', () => { Audio.click(); this.close(); if (fn) fn(); }); box.appendChild(b); });
     $('#xp').hidden = false; Voice.stop(); Voice.say(text);

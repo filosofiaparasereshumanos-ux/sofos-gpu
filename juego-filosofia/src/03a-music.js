@@ -227,7 +227,7 @@ const Music = {
 // La música nueva sustituye a la antigua
 // ---- banda sonora grabada de cada época (Suno, en audio/m-<época>.mp3)
 // Suena en la exploración y el menú; en los debates baja y entra la música de tensión.
-const TRACK_PAIRS = new Set([0, 1, 2, 3, 4, 5]); // épocas con segunda canción (audio/m-<i>b.mp3)
+const TRACK_PAIRS = new Set([...Array(21).keys()]); // épocas con segunda canción (audio/m-<i>b.mp3)
 const Track = {
   el: null, idx: -1, ready: false, vol: 0, lastT: 0,
   play(idx) {
