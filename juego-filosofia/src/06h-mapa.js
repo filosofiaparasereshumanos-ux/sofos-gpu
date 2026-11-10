@@ -9,7 +9,7 @@ const MAPA_EJES = [
   { id: 'cambio', q: '¿Todo cambia?', neg: 'Todo fluye', pos: 'Algo permanece', a: ['heraclito', 'zhuangzi', 'buda', 'laozi'], b: ['parmenides', 'aristoteles', 'platon'], hint: 'Dialoga con Heráclito o entra en su río o en el barco de Teseo' },
   { id: 'justicia', q: '¿Por qué ser justos?', neg: 'Por miedo o conveniencia', pos: 'Porque vale por sí misma', a: ['maquiavelo', 'epicuro'], b: ['socrates', 'platon', 'kant'], hint: 'Ponte el anillo de Giges o dialoga con Maquiavelo' },
   { id: 'mal', q: '¿De dónde nace el mal?', neg: 'De la ignorancia', pos: 'De la voluntad', a: ['socrates', 'buda', 'arendt'], b: ['agustin', 'aristoteles'], hint: 'Dialoga con Sócrates o con Agustín' },
-  { id: 'sentido', q: '¿Dónde está el sentido de la vida?', neg: 'Hay que encontrarlo fuera', pos: 'Lo creamos al vivir', a: ['platon', 'agustin', 'tomas', 'aristoteles'], b: ['camus', 'sartre', 'beauvoir'], hint: 'Dialoga con Camus o empuja la roca de Sísifo' },
+  { id: 'sentido', q: '¿Dónde está el sentido de la vida?', neg: 'Hay que encontrarlo fuera', pos: 'Lo creamos al vivir', a: ['platon', 'agustin', 'tomas', 'aristoteles'], b: ['kierkegaard', 'camus', 'sartre', 'beauvoir'], hint: 'Dialoga con Camus o empuja la roca de Sísifo' },
 ];
 // [experiencia, comienzo de la elección registrada, eje, valor]
 const MAPA_REGLAS = [
@@ -39,6 +39,8 @@ const MAPA_DIALOGO = {
   sorjuana: { eje: 'conocer', experiencia: -1, razon: 1, matiz: 0 }, hipatia: { eje: 'conocer', experiencia: -0.5, razon: 1, matiz: 0.3 },
   laozi: { eje: 'cambio', fluye: -1, permanece: 1, matiz: 0 }, aristoteles: { eje: 'sentido', fuera: -1, crear: 1, matiz: 0 },
   arendt: { eje: 'mal', ignorancia: -1, voluntad: 1, matiz: 0 },
+  epicuro: { eje: 'justicia', pacto: -1, valor: 1, matiz: 0 }, kierkegaard: { eje: 'sentido', crear: 1, fuera: -1, matiz: 0 },
+  galileo: { eje: 'conocer', observar: -1, autoridad: 0.3, matiz: -0.3 },
 };
 const Mapa = {
   calc() {
