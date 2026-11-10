@@ -8,10 +8,12 @@
 // ============================================================================
 const MRT = Object.assign(Object.create(RT), { ws: null, hb: null, handlers: {}, joined: false, want: false, tries: 0, ref: 0, topic: '' });
 const JUNTOS_KEY = 'odisea-juntos', AVATAR_KEY = 'odisea-razon.avatar';
-const AV_ROBES = [0x3a6ab8, 0xb83a4a, 0x3a9a5a, 0xc8962a, 0x7a4ab8, 0x2a9aa8, 0xd86a2a, 0xa83a8a, 0xe8e0d0, 0x2a2a2a];
+const AV_ROBES = [0x3a6ab8, 0xb83a4a, 0x3a9a5a, 0xc8962a, 0x7a4ab8, 0x2a9aa8, 0xd86a2a, 0xa83a8a, 0xe8e0d0, 0x2a2a2a, 0xf0c848, 0x8a1a2a];
 const AV_SKINS = [0xf0d0b0, 0xe0b090, 0xc49372, 0xa0704a, 0x8a5a3a, 0x5a3820];
 const AV_HAIRS = [0x1a1410, 0x4a2a1a, 0x8a5a2a, 0xd8b070, 0xb83a2a, 0xe8e8e8, 0x3a5ab8];
-const AV_HATS = [['none', 'Sin nada'], ['longhair', 'Pelo largo'], ['braids', 'Trenzas'], ['cap', 'Gorro'], ['turban', 'Turbante'], ['laurel', 'Laurel'], ['hood', 'Capucha'], ['beret', 'Boina']];
+// [forma, nombre, logro que lo desbloquea]
+const AV_HATS = [['none', 'Sin nada'], ['longhair', 'Pelo largo'], ['braids', 'Trenzas'], ['cap', 'Gorro'], ['turban', 'Turbante', 'explorador'], ['laurel', 'Laurel', 'tabano'], ['hood', 'Capucha', 'salida'], ['beret', 'Boina', 'dialogo'], ['wig', 'Peluca', 'cogito'], ['mitre', 'Mitra', 'lector']];
+const AV_ROBE_LOCK = { 10: 'agora', 11: 'juntos' }; // túnicas especiales
 const EMOTES = ['👋', '👍', '❓', '💡', '😂', '👏'];
 const MUTE_KEY = 'odisea-razon.silenciados';
 const Juntos = {
@@ -86,7 +88,7 @@ const Juntos = {
     let r = this.R.get(id); const name = Sala.clean(d.n) || 'Viajero'; const ls = String(d.l || '0,2,0,0').slice(0, 16);
     if (r && (r.ls !== ls || r.name !== name)) { this.drop(id); r = null; }
     if (!r) { if (this.R.size >= 60) return; r = { ...this.avatar(id, name, ls), name, ls, x: d.x, y: d.y, z: d.z, yaw: d.r, tx: d.x, ty: d.y, tz: d.z, tyaw: d.r }; this.R.set(id, r); if (d.e === G.eraIdx && G.state === 'play') toast(`👋 ${name} ha llegado a esta época.`); }
-    const wasHere = r.e === G.eraIdx; r.e = d.e; r.zone = d.zn || ''; r.tx = +d.x || 0; r.ty = +d.y || 0; r.tz = +d.z || 0; r.tyaw = +d.r || 0; r.seen = performance.now(); r.st = d.s;
+    const wasHere = r.e === G.eraIdx; r.e = d.e; r.v = d.v > 0 ? 1 : d.v < 0 ? -1 : 0; r.zone = d.zn || ''; r.tx = +d.x || 0; r.ty = +d.y || 0; r.tz = +d.z || 0; r.tyaw = +d.r || 0; r.seen = performance.now(); r.st = d.s;
     if (!wasHere && r.e === G.eraIdx) { r.x = r.tx; r.y = r.ty; r.z = r.tz; }
     this.paintBadge();
   },
@@ -112,7 +114,7 @@ const Juntos = {
     this.sendT -= dt; const p = player.pos; const moved = !this.last || Math.hypot(p.x - this.last[0], p.z - this.last[1]) > 0.15 || Math.abs(player.yaw - this.last[2]) > 0.12;
     if (MRT.joined && this.sendT <= 0 && (moved || this.sendT < -4)) {
       this.name = this.myName();
-      MRT.send('pos', { id: this.myId(), n: this.name, l: this.lookStr(), e: G.eraIdx, x: +p.x.toFixed(2), y: +p.y.toFixed(2), z: +p.z.toFixed(2), r: +player.yaw.toFixed(2), zn: world && world.zoneIn ? world.zoneIn.id : world && world.cave && world.cave.in ? 'cueva' : '', s: playing ? 1 : 0 });
+      MRT.send('pos', { id: this.myId(), n: this.name, l: this.lookStr(), e: G.eraIdx, x: +p.x.toFixed(2), y: +p.y.toFixed(2), z: +p.z.toFixed(2), r: +player.yaw.toFixed(2), zn: world && world.zoneIn ? world.zoneIn.id : world && world.cave && world.cave.in ? 'cueva' : '', s: playing ? 1 : 0, v: typeof Agora !== 'undefined' ? Agora.mine(G.eraIdx) : 0 });
       this.sendT = 0.33; this.last = [p.x, p.z, player.yaw];
     }
     const now = performance.now(); let best = null, bd = 3.2; const myZone = world && world.zoneIn ? world.zoneIn.id : world && world.cave && world.cave.in ? 'cueva' : '';
@@ -242,9 +244,10 @@ const Juntos = {
   },
   // ---------------------------------------------------------------- mi avatar
   paintAvatar() {
-    const l = this.look(); const box = $('#av-opts'); if (!box) return; box.innerHTML = '';
+    const l = this.look(); const box = $('#av-opts'); if (!box) return; box.innerHTML = ''; const got = new Set(store.get(ACH_KEY, []));
     const row = (label, list, key, render) => { const r = document.createElement('div'); r.className = 'av-row'; const t = document.createElement('span'); t.textContent = label; r.appendChild(t);
-      list.forEach((v, i) => { const b = document.createElement('button'); b.className = 'av-chip' + (l[key] === i ? ' on' : ''); render(b, v); b.addEventListener('click', () => { const n = this.look(); n[key] = i; this.saveLook(n); }); r.appendChild(b); }); box.appendChild(r); };
+      list.forEach((v, i) => { const need = key === 't' ? v[2] : key === 'r' ? AV_ROBE_LOCK[i] : null; const locked = need && !got.has(need); const b = document.createElement('button'); b.className = 'av-chip' + (l[key] === i ? ' on' : '') + (locked ? ' lock' : ''); render(b, v); if (locked) { b.textContent = (key === 't' ? v[1] + ' ' : '') + '🔒'; b.setAttribute('aria-label', 'Bloqueado'); }
+        b.addEventListener('click', () => { if (locked) { const a = ACH.find((x) => x.id === need); return toast(`🔒 Se desbloquea con el logro «${a ? a.n : need}»: ${a ? a.d : ''}`); } const n = this.look(); n[key] = i; this.saveLook(n); }); r.appendChild(b); }); box.appendChild(r); };
     const sw = (b, v) => { b.style.background = '#' + v.toString(16).padStart(6, '0'); };
     row('Túnica', AV_ROBES, 'r', sw); row('Piel', AV_SKINS, 's', sw); row('Pelo', AV_HAIRS, 'h', sw); row('Cabeza', AV_HATS, 't', (b, v) => { b.textContent = v[1]; b.classList.add('txt'); });
     $('#av-name').value = l.n || ''; $('#av-name').placeholder = this.myName();

@@ -18,3 +18,6 @@ En **Table Editor → odisea_viajeros** ves los usuarios, su sabiduría y cuánd
 
 ## Límite actual
 No hay recuperación de contraseña (no se pide correo). Si alguien la olvida, se puede crear otra cuenta.
+
+## Ágora: los votos de la pregunta del día
+Para que los votos de «la pregunta del día» se guarden durante el día y aparezcan las siluetas de quienes pasaron antes, pega una vez `tools/cuentas3.sql` en **SQL Editor → Run**. Crea la tabla `odisea_agora` y las funciones `odisea_agora_ver` y `odisea_agora_votar`. Sin este paso el ágora funciona igual, pero solo cuenta a los viajeros conectados en ese momento. Los votos de más de 3 días se borran solos.

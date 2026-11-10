@@ -84,6 +84,9 @@ Marie Curie y muchos más.
 • Escucha sus lecciones narradas y descubre lugares, libros y personajes de cada época.
 • Vence en debates de preguntas y en 41 diálogos socráticos: toma postura, da razones y aprende a detectar falacias.
 • Vive 11 experimentos filosóficos: la caverna de Platón, el tranvía, la habitación china, la máquina de experiencias…
+• Vota en la pregunta del día de cada época y descubre cuántos viajeros piensan como tú.
+• Comparte tu perfil filosófico («Pienso como Descartes») y sácate fotos con los pensadores.
+• Gana accesorios para tu avatar con tus logros.
 • Mundo abierto: encuentra a otros viajeros en la misma época, salúdalos con gestos y rétalos a un duelo o a un debate. Sin chat libre.
 • Consulta cada día al Oráculo de Delfos y compite en el ranking mundial.
 • Reta a tus amigos con un enlace: las mismas diez preguntas, gana quien sepa más.

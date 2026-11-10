@@ -1510,6 +1510,7 @@ function buildWorld(idx) {
   for (const st of W.stations) buildStation(W, st);
   if (typeof buildCave === 'function' && idx === CAVE_ERA) buildCave(W);
   if (typeof buildZones === 'function') buildZones(W);
+  if (typeof Agora !== 'undefined') { try { Agora.build(W); } catch (e) { console.warn('ágora', e); } }
 
   buildPortal(W);
   // puntos de aparición de enemigos

@@ -360,6 +360,9 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 #mp-meet-t { width: 100%; text-align: center; color: #ffe0a0; font-size: 0.95rem; }
 #mp-meet button { border: 0; border-radius: 999px; padding: 10px 16px; font: inherit; font-size: 0.95rem; color: #2a1a08; background: linear-gradient(#ffe08a, #d8a83a); cursor: pointer; }
 #mp-emo { position: absolute; right: max(12px, var(--sar, 0px)); top: calc(max(8px, var(--sat)) + 44px); z-index: 31; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold); background: rgba(10,8,5,0.75); font-size: 1.4rem; cursor: pointer; }
+#b-foto { position: absolute; left: max(12px, var(--sal, 0px)); top: calc(max(8px, var(--sat)) + 96px); z-index: 31; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold); background: rgba(10,8,5,0.75); font-size: 1.3rem; cursor: pointer; }
+.foto-card { text-align: center; } .foto-card img { max-width: 100%; max-height: 62vh; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.6); }
+.av-chip.lock { opacity: 0.55; font-size: 0.75rem; color: #fff; }
 #mp-emobar { position: absolute; right: max(12px, var(--sar, 0px)); top: calc(max(8px, var(--sat)) + 94px); z-index: 31; display: flex; flex-direction: column; gap: 6px; padding: 6px; border-radius: 999px; background: rgba(10,8,5,0.8); border: 1px solid var(--line); }
 #mp-emobar[hidden] { display: none; }
 #mp-emobar button { width: 40px; height: 40px; border: 0; border-radius: 50%; background: rgba(255,255,255,0.08); font-size: 1.3rem; cursor: pointer; }
@@ -1043,7 +1046,8 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <div id="cu-list" class="cu-list-in"></div>
       </div>
       <div class="btns">
-        <button class="btn primary" id="cu-copy">Copiar para enviar a mi docente</button>
+        <button class="btn primary" id="cu-share">🧭 Compartir mi perfil filosófico</button>
+        <button class="btn" id="cu-copy">Copiar para enviar a mi docente</button>
         <button class="btn" id="cu-dl">Descargar (.txt)</button>
         <button class="btn ghost" data-back>Volver</button>
       </div>
@@ -1053,6 +1057,8 @@ body.touch .gm.boss { width: 30px; height: 30px; }
   <button id="mp-badge" hidden></button>
   <div id="mp-meet" hidden><span id="mp-meet-t"></span><button id="mp-meet-q">❓ Duelo de preguntas</button><button id="mp-meet-d">💬 Debate filosófico</button><button id="mp-meet-m" class="mute" aria-label="Silenciar a este viajero">🔇 Silenciar</button></div>
   <button id="mp-emo" hidden aria-label="Gestos">😀</button>
+  <button id="b-foto" hidden aria-label="Sacar una foto">📷</button>
+  <div id="foto" class="nb" hidden><div class="nb-card foto-card"><img id="foto-img" alt="Tu foto del viaje"><div class="btns"><button class="btn primary" id="foto-share">Compartir o guardar</button><button class="btn ghost" id="foto-close">Seguir explorando</button></div></div></div>
   <div id="mp-emobar" hidden></div>
   <div id="mp-inv" hidden><p id="mp-inv-t"></p><div class="btns"><button class="btn primary" id="mp-yes">¡Acepto!</button><button class="btn ghost" id="mp-no">Ahora no</button></div></div>
   <section id="mpd" hidden>
