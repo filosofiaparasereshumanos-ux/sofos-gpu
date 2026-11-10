@@ -194,7 +194,7 @@ for idx, a, b, sub, gold in [(13, 2.2, 3.66, 'en la India,', 'India'), (12, 3.66
 piece(india, voice=(VID('india'), 0.0))
 piece(old_frames(34.85, 42.0), voice=(VID('phone'), 0.0))                                     # «Hoy puedes hablar con ellos…»
 # ráfaga de juego solo con música
-piece(frames_of('portal', take=40, start=14, step=1.25) + frames_of('portal', take=24, start=66, step=1.4), [big('21 épocas', 'de Sumer a nuestros días')], boom=True)
+piece(frames_of('portal', take=40, start=14, step=1.25) + frames_of('portal', take=24, start=66, step=1.4), [big('22 épocas', 'de Sumer a nuestros días')], boom=True)
 piece(frames_of('cave2', take=30, start=20, step=1.6), [big('Baja a la caverna', 'de Platón')])
 piece(frames_of('sisifo', take=30, step=1.8), [big('Empuja la roca', 'con Sísifo')])
 piece(frames_of('giges', take=30, start=10, step=1.6), [big('¿Serías justo', 'si nadie te viera?')])
@@ -203,7 +203,7 @@ piece(vs('pachacutec', boss=True), [big('Vence al maestro'), name_label('Pachac�
 piece(kenburns(os.path.join(WK, 'mapa.png'), 40, 1.0, 1.08), [big('Descubre', 'cómo piensas tú')])
 piece(kenburns(os.path.join(WK, 'aula.png'), 36, 1.0, 1.06, bg=Image.open(os.path.join(WK, 'mapa.png'))), [big('Y en clase', 'para docentes')])
 bgc = os.path.join(FR, 'w15', sorted(os.listdir(os.path.join(FR, 'w15')))[20])
-piece(card([('El primer juego educativo completo', 'b'), ('de filosofía, ciencia e historia', 'm'), ('21 épocas · 96 pensadores', 'm')], 84, bgc), boom=True)
+piece(card([('El primer juego educativo completo', 'b'), ('de filosofía, ciencia e historia', 'm'), ('22 épocas · 101 pensadores', 'm')], 84, bgc), boom=True)
 piece(old_frames(53.4, 54.9), voice=(VID('final'), 0.0 - 0.05 + 0.05))                        # «¿Te atreves a pensar?»
 piece(card([('Únete a la odisea', 'b'), ('Gratis · link en la bio', 'm'), ('RETO: sal de la caverna de Platón y comenta tu mapa filosófico ↓', 'm')], 96,
            os.path.join(FR, 'cave2', sorted(os.listdir(os.path.join(FR, 'cave2')))[60])), boom=True)

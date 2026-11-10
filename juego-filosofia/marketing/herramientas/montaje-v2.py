@@ -125,7 +125,7 @@ def add(frames, head=None, sub=None, pos='top', label=None, size=92):
 
 add(frames_of('title') + [frames_of('title')[-1]] * 66, 'El primer juego educativo completo', 'de filosofía, ciencia e historia', 'bottom', size=80)
 add(frames_of('chooser') + [frames_of('chooser')[-1]] * 30, 'Empieza en Sumer, hace 4.500 años', 'o viaja a la época que quieras', 'top', size=80)
-groups = [('21 épocas', 'una sola odisea por la historia'), ('De Bagdad a Tenochtitlan', 'de Kioto a los Andes'), ('96 pensadoras y pensadores', 'te esperan para dialogar')]
+groups = [('22 épocas', 'una sola odisea por la historia'), ('De Bagdad a Tenochtitlan', 'de Kioto a los Andes'), ('101 pensadoras y pensadores', 'te esperan para dialogar')]
 for k, e in enumerate(ERAS):
     g = groups[min(2, k // 7)]
     add(frames_of('w%02d' % e['idx'], take=34, start=6), g[0], g[1], 'top', label=world_label(e), size=88)
@@ -140,7 +140,7 @@ add(frames_of('book', take=95), 'Ciencia, historia y grandes libros', 'de Arquí
 add(kenburns(os.path.join(WK, 'mapa.png'), 96), 'Descubre cómo piensas tú', 'tu mapa filosófico', 'bottom')
 add(kenburns(os.path.join(WK, 'aula.png'), 96, bg=Image.open(os.path.join(WK, 'mapa.png'))), 'Para docentes', 'toda tu clase en un mapa, lista para debatir', 'top', size=86)
 bgc = sorted(os.listdir(os.path.join(FR, 'w15')))[20]
-add(card([('21 épocas', 'b'), ('96 pensadoras y pensadores', 'm'), ('25 diálogos socráticos', 'm'), ('11 experimentos mentales', 'm'), ('Gratis · en tu celular', 'b')], 120, os.path.join(FR, 'w15', bgc)))
+add(card([('22 épocas', 'b'), ('101 pensadoras y pensadores', 'm'), ('25 diálogos socráticos', 'm'), ('11 experimentos mentales', 'm'), ('Gratis · en tu celular', 'b')], 120, os.path.join(FR, 'w15', bgc)))
 add(card([('Únete a la odisea', 'b'), ('Odisea de la Razón', 'm'), ('Link en la bio', 'm'), ('RETO: sal de la caverna de Platón y comenta tu mapa filosófico ↓', 'm')], 120, os.path.join(FR, 'cave2', sorted(os.listdir(os.path.join(FR, 'cave2')))[60])))
 
 # ---------------------------------------------------------------- render de la parte central

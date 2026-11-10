@@ -3,7 +3,7 @@
 const { chromium } = require('playwright'); const fs = require('fs');
 const NM = '/tmp/claude-0/-home-user-sofos-gpu/0d6e0aee-100c-5a3a-a348-9b7bd95f50c2/scratchpad/npmtest/node_modules/three/';
 const OUT = process.argv[2]; const ONLY = (process.argv[3] || '').split(',').filter(Boolean);
-const ALL = [...Array(21).keys()];
+const ALL = [...Array(22).keys()];
 // ---------- las tomas
 const SHOTS = [];
 SHOTS.push({ name: 'title', n: 24, title: true });
@@ -62,13 +62,13 @@ SHOTS.push({ name: 'portal', era: 1, n: 64, extra: 90,
   await page.goto('http://localhost:8765/index.html#debug');
   await page.waitForFunction(() => document.getElementById('loading').style.display === 'none', null, { timeout: 120000 });
   await page.waitForTimeout(1500);
-  await page.evaluate(() => { const d = window.__dbg; d.G.settings.quality = 'high'; d.G.guideMet = new Set([...Array(21).keys()]); window.__virt(); });
+  await page.evaluate(() => { const d = window.__dbg; d.G.settings.quality = 'high'; d.G.guideMet = new Set([...Array(30).keys()]); window.__virt(); });
   const run = (code, k = 0, e = 0, f = 0) => page.evaluate(([code, k, e, f]) => { const d = window.__dbg; new Function('d', 'k', 'e_', 'f', code)(d, k, e, f); }, [code, k, e, f]);
   for (const sh of SHOTS) {
     if (ONLY.length && !ONLY.includes(sh.name)) continue;
     const dir = `${OUT}/${sh.name}/`; fs.mkdirSync(dir, { recursive: true }); console.log('toma', sh.name);
     if (sh.era !== undefined) {
-      await page.evaluate((e) => { const d = window.__dbg; d.G.guideMet = new Set([...Array(21).keys()]); d.startEra(e, true); d.enterEra(); }, sh.era);
+      await page.evaluate((e) => { const d = window.__dbg; d.G.guideMet = new Set([...Array(30).keys()]); d.startEra(e, true); d.enterEra(); }, sh.era);
       await page.evaluate(() => window.__step(50));
       await page.evaluate(() => { const d = window.__dbg; for (const c of d.citizens) if (c.npc.greeter) c.group.visible = false; d.G.state = 'play'; });
     }
