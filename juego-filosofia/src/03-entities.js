@@ -60,6 +60,22 @@ class Particles {
 // ============================================================================
 //  FIGURA DE FILÓSOFO
 // ============================================================================
+// relieve de pliegues para las túnicas (mapa de normales procedural, compartido)
+let ROBE_NORMAL = null;
+function robeNormal() {
+  if (ROBE_NORMAL) return ROBE_NORMAL;
+  const N = 256, c = document.createElement('canvas'); c.width = c.height = N; const x = c.getContext('2d'); const img = x.createImageData(N, N);
+  const r = mulberry32(5); const ph = [...Array(5)].map(() => r() * 6.28);
+  // altura: pliegues verticales que se ensanchan hacia el ruedo, con un poco de ondulación
+  const hgt = (u, v) => { const w = 0.55 + 0.45 * v; let h = 0; for (let k = 0; k < 3; k++) h += Math.sin((u * (7 + k * 4) + Math.sin(v * 3 + ph[k]) * 0.15 * (k + 1)) * 6.283 + ph[k + 1]) / (k + 1.4); return h * w; };
+  for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
+    const u = i / N, v = 1 - j / N, e = 1 / N;
+    const dx = (hgt(u + e, v) - hgt(u - e, v)) * 3.2, dy = (hgt(u, v + e) - hgt(u, v - e)) * 1.2;
+    const nx = -dx, ny = -dy, nz = 1; const l = Math.hypot(nx, ny, nz); const o = (j * N + i) * 4;
+    img.data[o] = (nx / l * 0.5 + 0.5) * 255; img.data[o + 1] = (ny / l * 0.5 + 0.5) * 255; img.data[o + 2] = (nz / l * 0.5 + 0.5) * 255; img.data[o + 3] = 255;
+  }
+  x.putImageData(img, 0, 0); const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; ROBE_NORMAL = t; return t;
+}
 // textura de la cara (una por combinación de colores): ojos, cejas, mejillas y boca
 const FACE_CACHE = {};
 function faceTexture(look) {
@@ -101,7 +117,7 @@ function faceTexture(look) {
 }
 function buildFigure(look, accent) {
   const g = new THREE.Group(); const body = new THREE.Group(); g.add(body);
-  const robe = std(look.robe, { roughness: look.plain ? 0.86 : 0.85 }); const robe2 = std(look.robe2, { roughness: look.plain ? 0.71 : 0.7 }); if (!look.plain) { robe.userData.robe = true; robe2.userData.robe = true; }
+  const robe = std(look.robe, { roughness: look.plain ? 0.86 : 0.85 }); const robe2 = std(look.robe2, { roughness: look.plain ? 0.71 : 0.7 }); if (!look.plain) { robe.userData.robe = true; robe2.userData.robe = true; } robe.normalMap = robeNormal(); robe.normalScale.set(0.9, 0.9);
   const skin = std(look.skin, { roughness: 0.6 }); const hair = std(look.hair, { roughness: 0.9 });
   const prof = [[0, 0], [0.6, 0], [0.57, 0.2], [0.49, 0.65], [0.41, 1.05], [0.39, 1.28], [0.45, 1.4], [0.34, 1.5], [0.15, 1.56], [0, 1.57]];
   body.add(mesh(new THREE.LatheGeometry(prof.map((p) => new THREE.Vector2(p[0], p[1])), 24), robe));
