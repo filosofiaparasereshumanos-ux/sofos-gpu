@@ -1103,12 +1103,14 @@ const ERA_BUILDERS = [
     const fl = texTiles('xiii', 0x9a9890, 0x5a5850, 4, 0.12); fl.repeat.set(14, 22);
     ground(W, fl, [80, 120], 0.6);
     const r = mulberry32(113);
-    const red = std(0xb02a20, { roughness: 0.6 }); const roofM = std(0x2a4a4a, { roughness: 0.7, flat: true }); const gold = std(0xd8b048, { metalness: 0.6, roughness: 0.4 });
+    const red = std(0xb02a20, { roughness: 0.6 }); const roofM = std(0x3a6a62, { roughness: 0.55, flat: true }); const gold = std(0xd8b048, { metalness: 0.6, roughness: 0.4 });
     // galerías de columnas rojas con tejados curvos
     for (const side of [-1, 1]) {
       for (let z = -44; z <= 34; z += 5) { W.group.add(mesh(new THREE.CylinderGeometry(0.28, 0.3, 4.5, 12), red, side * 20, 2.25, z)); W.colliders.push({ t: 1, x: side * 20, z, r: 0.4, h: 5 }); }
       W.group.add(mesh(new THREE.BoxGeometry(1.2, 0.5, 82), red, side * 20, 4.7, -5));
-      const roof = mesh(new THREE.CylinderGeometry(0.1, 4.2, 1.6, 4, 1, false), roofM, side * 21.5, 5.6, -5, true, false); roof.scale.set(1, 1, 19.5); roof.rotation.y = Math.PI / 4; W.group.add(roof);
+      { // tejado a cuatro aguas a lo largo de la galería (primero se gira el cono y luego se estira el grupo)
+        const rg = new THREE.Group(); rg.position.set(side * 20.6, 5.65, -5); rg.scale.set(1, 1, 13.9); W.group.add(rg);
+        const roof = mesh(new THREE.CylinderGeometry(0.1, 3.4, 1.5, 4, 1, false), roofM, 0, 0, 0, true, false); roof.rotation.y = Math.PI / 4; rg.add(roof); }
       for (let z = -44; z <= 34; z += 10) { const tip = mesh(new THREE.ConeGeometry(0.15, 0.6, 5), gold, side * 18.3, 5.2, z, false, false); tip.rotation.z = side * 0.9; W.group.add(tip); }
       // bambú y faroles rojos
       for (let z = -42; z < 34; z += 5) { if (W._near(side * 16.5, z, 0.8)) continue; for (let k = 0; k < 5; k++) { const h = 4 + r() * 3; W.group.add(mesh(new THREE.CylinderGeometry(0.07, 0.08, h, 6), std(0x6a9a3a, { roughness: 0.6 }), side * (16.5 + (r() - 0.5) * 1.2), h / 2, z + (r() - 0.5) * 1.2)); } W.colliders.push({ t: 1, x: side * 16.5, z, r: 0.8, h: 5 }); }
@@ -1119,8 +1121,13 @@ const ERA_BUILDERS = [
       for (let k = 0; k < 7; k++) { const w = 12 - k * 1.3, y = k * 5; pg.add(mesh(new THREE.BoxGeometry(w * 0.7, 4, w * 0.7), red, 0, y + 2, 0, false, false)); const rf = mesh(new THREE.CylinderGeometry(0.2, w * 0.75, 1.5, 4), roofM, 0, y + 4.6, 0, false, false); rf.rotation.y = Math.PI / 4; pg.add(rf); }
       pg.add(mesh(new THREE.CylinderGeometry(0.1, 0.3, 5, 8), gold, 0, 38, 0, false, false)); W.group.add(pg); }
     // montañas kársticas en la niebla
-    const karst = std(0x5a7a6a, { roughness: 1 });
-    for (let i = 0; i < 18; i++) { const x = -190 + i * 22 + (r() - 0.5) * 12, z = -150 - r() * 80, h = 50 + r() * 50, w = 9 + r() * 8; const k = mesh(new THREE.CapsuleGeometry(w, h, 6, 10), karst, x, h / 2 - 5, z, false, false); W.group.add(k); }
+    const karst = std(0x2c4436, { roughness: 1, flat: true }), karst2 = std(0x3a5a44, { roughness: 1, flat: true });
+    for (let i = 0; i < 14; i++) { // picos irregulares, más oscuros que la niebla para que se lean como montañas
+      const x = -160 + i * 25 + (r() - 0.5) * 14, z = -95 - r() * 40, h = 28 + r() * 34, w = 8 + r() * 7;
+      const k = mesh(new THREE.CylinderGeometry(w * (0.35 + r() * 0.2), w, h, 7, 3), i % 2 ? karst : karst2, x, h / 2 - 3, z, false, false);
+      const pos = k.geometry.attributes.position; for (let v = 0; v < pos.count; v++) { const y = pos.getY(v); if (y > -h / 2 + 0.1) { pos.setX(v, pos.getX(v) * (0.85 + r() * 0.3)); pos.setZ(v, pos.getZ(v) * (0.85 + r() * 0.3)); } } k.geometry.computeVertexNormals();
+      W.group.add(k); const cap = mesh(new THREE.SphereGeometry(w * 0.45, 7, 5), karst2, x, h - 3, z, false, false); cap.scale.set(1, 0.6, 1); W.group.add(cap);
+    }
     brazier(W, -4, -34, 0xff6a30); brazier(W, 4, -34, 0xff6a30);
   },
   // ------------------------------------------------------------------ XIV · India

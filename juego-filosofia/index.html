@@ -5744,12 +5744,14 @@ const ERA_BUILDERS = [
     const fl = texTiles('xiii', 0x9a9890, 0x5a5850, 4, 0.12); fl.repeat.set(14, 22);
     ground(W, fl, [80, 120], 0.6);
     const r = mulberry32(113);
-    const red = std(0xb02a20, { roughness: 0.6 }); const roofM = std(0x2a4a4a, { roughness: 0.7, flat: true }); const gold = std(0xd8b048, { metalness: 0.6, roughness: 0.4 });
+    const red = std(0xb02a20, { roughness: 0.6 }); const roofM = std(0x3a6a62, { roughness: 0.55, flat: true }); const gold = std(0xd8b048, { metalness: 0.6, roughness: 0.4 });
     // galerías de columnas rojas con tejados curvos
     for (const side of [-1, 1]) {
       for (let z = -44; z <= 34; z += 5) { W.group.add(mesh(new THREE.CylinderGeometry(0.28, 0.3, 4.5, 12), red, side * 20, 2.25, z)); W.colliders.push({ t: 1, x: side * 20, z, r: 0.4, h: 5 }); }
       W.group.add(mesh(new THREE.BoxGeometry(1.2, 0.5, 82), red, side * 20, 4.7, -5));
-      const roof = mesh(new THREE.CylinderGeometry(0.1, 4.2, 1.6, 4, 1, false), roofM, side * 21.5, 5.6, -5, true, false); roof.scale.set(1, 1, 19.5); roof.rotation.y = Math.PI / 4; W.group.add(roof);
+      { // tejado a cuatro aguas a lo largo de la galería (primero se gira el cono y luego se estira el grupo)
+        const rg = new THREE.Group(); rg.position.set(side * 20.6, 5.65, -5); rg.scale.set(1, 1, 13.9); W.group.add(rg);
+        const roof = mesh(new THREE.CylinderGeometry(0.1, 3.4, 1.5, 4, 1, false), roofM, 0, 0, 0, true, false); roof.rotation.y = Math.PI / 4; rg.add(roof); }
       for (let z = -44; z <= 34; z += 10) { const tip = mesh(new THREE.ConeGeometry(0.15, 0.6, 5), gold, side * 18.3, 5.2, z, false, false); tip.rotation.z = side * 0.9; W.group.add(tip); }
       // bambú y faroles rojos
       for (let z = -42; z < 34; z += 5) { if (W._near(side * 16.5, z, 0.8)) continue; for (let k = 0; k < 5; k++) { const h = 4 + r() * 3; W.group.add(mesh(new THREE.CylinderGeometry(0.07, 0.08, h, 6), std(0x6a9a3a, { roughness: 0.6 }), side * (16.5 + (r() - 0.5) * 1.2), h / 2, z + (r() - 0.5) * 1.2)); } W.colliders.push({ t: 1, x: side * 16.5, z, r: 0.8, h: 5 }); }
@@ -5760,8 +5762,13 @@ const ERA_BUILDERS = [
       for (let k = 0; k < 7; k++) { const w = 12 - k * 1.3, y = k * 5; pg.add(mesh(new THREE.BoxGeometry(w * 0.7, 4, w * 0.7), red, 0, y + 2, 0, false, false)); const rf = mesh(new THREE.CylinderGeometry(0.2, w * 0.75, 1.5, 4), roofM, 0, y + 4.6, 0, false, false); rf.rotation.y = Math.PI / 4; pg.add(rf); }
       pg.add(mesh(new THREE.CylinderGeometry(0.1, 0.3, 5, 8), gold, 0, 38, 0, false, false)); W.group.add(pg); }
     // montañas kársticas en la niebla
-    const karst = std(0x5a7a6a, { roughness: 1 });
-    for (let i = 0; i < 18; i++) { const x = -190 + i * 22 + (r() - 0.5) * 12, z = -150 - r() * 80, h = 50 + r() * 50, w = 9 + r() * 8; const k = mesh(new THREE.CapsuleGeometry(w, h, 6, 10), karst, x, h / 2 - 5, z, false, false); W.group.add(k); }
+    const karst = std(0x2c4436, { roughness: 1, flat: true }), karst2 = std(0x3a5a44, { roughness: 1, flat: true });
+    for (let i = 0; i < 14; i++) { // picos irregulares, más oscuros que la niebla para que se lean como montañas
+      const x = -160 + i * 25 + (r() - 0.5) * 14, z = -95 - r() * 40, h = 28 + r() * 34, w = 8 + r() * 7;
+      const k = mesh(new THREE.CylinderGeometry(w * (0.35 + r() * 0.2), w, h, 7, 3), i % 2 ? karst : karst2, x, h / 2 - 3, z, false, false);
+      const pos = k.geometry.attributes.position; for (let v = 0; v < pos.count; v++) { const y = pos.getY(v); if (y > -h / 2 + 0.1) { pos.setX(v, pos.getX(v) * (0.85 + r() * 0.3)); pos.setZ(v, pos.getZ(v) * (0.85 + r() * 0.3)); } } k.geometry.computeVertexNormals();
+      W.group.add(k); const cap = mesh(new THREE.SphereGeometry(w * 0.45, 7, 5), karst2, x, h - 3, z, false, false); cap.scale.set(1, 0.6, 1); W.group.add(cap);
+    }
     brazier(W, -4, -34, 0xff6a30); brazier(W, 4, -34, 0xff6a30);
   },
   // ------------------------------------------------------------------ XIV · India
@@ -10948,6 +10955,45 @@ class Particles {
 // ============================================================================
 //  FIGURA DE FILÓSOFO
 // ============================================================================
+// textura de la cara (una por combinación de colores): ojos, cejas, mejillas y boca
+const FACE_CACHE = {};
+function faceTexture(look) {
+  const key = [look.skin, look.hair, look.eyes, look.beard ? 1 : 0, look.brows].join(','); if (FACE_CACHE[key]) return FACE_CACHE[key];
+  const c = document.createElement('canvas'); c.width = c.height = 256; const x = c.getContext('2d');
+  const col = (h, k = 1) => { const v = new THREE.Color(h); return `rgb(${Math.round(v.r * 255 * k)},${Math.round(v.g * 255 * k)},${Math.round(v.b * 255 * k)})`; };
+  const skin = new THREE.Color(look.skin || 0xc49372); const lum = skin.r * 0.3 + skin.g * 0.59 + skin.b * 0.11;
+  // el casquete cubre ~109° de ancho y ~90° de alto: los ojos van algo por encima del centro
+  const ey = 88, ex = 50, cx = 128;
+  // mejillas
+  for (const s of [-1, 1]) { const g = x.createRadialGradient(cx + s * 68, 140, 4, cx + s * 68, 140, 32); g.addColorStop(0, `rgba(225,110,100,${lum > 0.5 ? 0.32 : 0.2})`); g.addColorStop(1, 'rgba(225,110,100,0)'); x.fillStyle = g; x.fillRect(cx + s * 68 - 40, 100, 80, 80); }
+  // sombra suave de las cuencas
+  for (const s of [-1, 1]) { const g = x.createRadialGradient(cx + s * ex, ey - 4, 6, cx + s * ex, ey - 4, 30); g.addColorStop(0, `rgba(60,30,20,${0.18})`); g.addColorStop(1, 'rgba(60,30,20,0)'); x.fillStyle = g; x.fillRect(cx + s * ex - 34, ey - 38, 68, 64); }
+  for (const s of [-1, 1]) {
+    const px = cx + s * ex;
+    // blanco del ojo
+    x.fillStyle = '#f7f1e8'; x.beginPath(); x.ellipse(px, ey, 24, 16, 0, 0, Math.PI * 2); x.fill();
+    // iris, pupila y brillo
+    x.save(); x.beginPath(); x.ellipse(px, ey, 24, 16, 0, 0, Math.PI * 2); x.clip();
+    x.fillStyle = col(look.eyes || 0x4a3020); x.beginPath(); x.arc(px + s * 2, ey + 1, 13, 0, Math.PI * 2); x.fill();
+    x.fillStyle = 'rgba(0,0,0,0.25)'; x.beginPath(); x.arc(px + s * 2, ey + 1, 11.5, Math.PI * 1.05, Math.PI * 1.95); x.lineWidth = 5; x.strokeStyle = 'rgba(0,0,0,0.25)'; x.stroke();
+    x.fillStyle = '#100a08'; x.beginPath(); x.arc(px + s * 2, ey + 1, 5.5, 0, Math.PI * 2); x.fill();
+    x.fillStyle = '#ffffff'; x.beginPath(); x.arc(px + s * 2 - 4, ey - 4, 3.2, 0, Math.PI * 2); x.fill();
+    // párpado superior
+    x.fillStyle = col(look.skin || 0xc49372, 0.82); x.beginPath(); x.ellipse(px, ey - 14, 26, 9, 0, Math.PI, 0); x.fill();
+    x.restore();
+    x.strokeStyle = '#2a1a12'; x.lineWidth = 3.4; x.lineCap = 'round'; x.beginPath(); x.ellipse(px, ey, 24, 16, 0, Math.PI * 1.08, Math.PI * 1.92); x.stroke();
+    x.lineWidth = 1.6; x.strokeStyle = 'rgba(42,26,18,0.5)'; x.beginPath(); x.ellipse(px, ey, 24, 16, 0, Math.PI * 0.15, Math.PI * 0.85); x.stroke();
+    // ceja
+    x.strokeStyle = col(look.brows || look.hair || 0x2a1a10, 0.85); x.lineWidth = 7; x.beginPath(); x.moveTo(px - s * 24, ey - 25); x.quadraticCurveTo(px + s * 2, ey - 37, px + s * 25, ey - 28); x.stroke();
+  }
+  // boca: una sonrisa serena (bajo la barba queda tapada)
+  if (!look.beard) {
+    x.strokeStyle = `rgba(${Math.round(150 * Math.min(1, lum + 0.3))},60,55,0.85)`; x.lineWidth = 5; x.lineCap = 'round';
+    x.beginPath(); x.moveTo(cx - 19, 176); x.quadraticCurveTo(cx, 188, cx + 19, 176); x.stroke();
+    x.fillStyle = 'rgba(160,70,60,0.25)'; x.beginPath(); x.ellipse(cx, 184, 13, 4, 0, 0, Math.PI * 2); x.fill();
+  }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; FACE_CACHE[key] = t; return t;
+}
 function buildFigure(look, accent) {
   const g = new THREE.Group(); const body = new THREE.Group(); g.add(body);
   const robe = std(look.robe, { roughness: look.plain ? 0.86 : 0.85 }); const robe2 = std(look.robe2, { roughness: look.plain ? 0.71 : 0.7 }); if (!look.plain) { robe.userData.robe = true; robe2.userData.robe = true; }
@@ -10963,12 +11009,12 @@ function buildFigure(look, accent) {
   head.add(mesh(new THREE.CylinderGeometry(0.09, 0.11, 0.2, 10), skin, 0, -0.18, 0));
   const skull = mesh(new THREE.SphereGeometry(0.2, 22, 16), skin, 0, 0, 0); skull.scale.set(0.92, 1.08, 1); head.add(skull);
   put(head, mesh(new THREE.ConeGeometry(0.035, 0.1, 6), skin, 0, -0.01, 0.2)).rotation.x = Math.PI / 2;
-  const eyeM = std(look.eyes || 0x1a1410, { roughness: 0.3 });
-  head.add(mesh(new THREE.SphereGeometry(0.022, 8, 6), eyeM, -0.07, 0.04, 0.175, false)); head.add(mesh(new THREE.SphereGeometry(0.022, 8, 6), eyeM, 0.07, 0.04, 0.175, false));
-  head.add(mesh(new THREE.BoxGeometry(0.07, 0.015, 0.02), hair, -0.07, 0.085, 0.18, false)); head.add(mesh(new THREE.BoxGeometry(0.07, 0.015, 0.02), hair, 0.07, 0.085, 0.18, false));
+  // cara pintada: ojos con iris y brillo, cejas, mejillas y boca, sobre un casquete delante del cráneo
+  { const fm = new THREE.MeshStandardMaterial({ map: faceTexture(look), emissive: 0xffffff, emissiveMap: faceTexture(look), emissiveIntensity: 0.22, transparent: true, alphaTest: 0.04, roughness: 0.55, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -8 });
+    const face = new THREE.Mesh(new THREE.SphereGeometry(0.2035, 28, 20, Math.PI / 2 - 0.95, 1.9, Math.PI * 0.26, Math.PI * 0.5), fm); face.scale.copy(skull.scale); face.renderOrder = 2; head.add(face); }
   if (look.beard) {
     const bt = look.beardTop || 0.42, bl = look.beardLen || 1;
-    const b = mesh(new THREE.SphereGeometry(0.17, 16, 12, 0, TAU, Math.PI * bt, Math.PI * (1 - bt)), std(look.beard, { roughness: 1 }), 0, -0.02 - (bl - 1) * 0.06, 0.05); b.scale.set(1.05, 1.5 * bl, 1); head.add(b);
+    const b = mesh(new THREE.SphereGeometry(0.17, 16, 12, 0, TAU, Math.PI * bt, Math.PI * (1 - bt)), std(look.beard, { roughness: 1 }), 0, -0.05 - (bl - 1) * 0.06, 0.05); b.scale.set(1.05, 1.5 * bl, 1); head.add(b);
     head.add(mesh(new THREE.BoxGeometry(0.12, 0.025, 0.03), std(look.beard, { roughness: 1 }), 0, -0.06, 0.19, false));
     if (look.beardGrey) for (const [x, y] of [[-0.06, -0.2], [0.05, -0.26], [0, -0.33], [-0.03, -0.12], [0.08, -0.15]]) head.add(mesh(new THREE.BoxGeometry(0.012, 0.09, 0.01), std(look.beardGrey, { roughness: 1 }), x, y * (look.beardLen || 1), 0.205 - Math.abs(y) * 0.25, false)); // canas
   }

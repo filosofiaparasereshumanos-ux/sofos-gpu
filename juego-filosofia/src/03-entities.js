@@ -60,6 +60,45 @@ class Particles {
 // ============================================================================
 //  FIGURA DE FILÓSOFO
 // ============================================================================
+// textura de la cara (una por combinación de colores): ojos, cejas, mejillas y boca
+const FACE_CACHE = {};
+function faceTexture(look) {
+  const key = [look.skin, look.hair, look.eyes, look.beard ? 1 : 0, look.brows].join(','); if (FACE_CACHE[key]) return FACE_CACHE[key];
+  const c = document.createElement('canvas'); c.width = c.height = 256; const x = c.getContext('2d');
+  const col = (h, k = 1) => { const v = new THREE.Color(h); return `rgb(${Math.round(v.r * 255 * k)},${Math.round(v.g * 255 * k)},${Math.round(v.b * 255 * k)})`; };
+  const skin = new THREE.Color(look.skin || 0xc49372); const lum = skin.r * 0.3 + skin.g * 0.59 + skin.b * 0.11;
+  // el casquete cubre ~109° de ancho y ~90° de alto: los ojos van algo por encima del centro
+  const ey = 88, ex = 50, cx = 128;
+  // mejillas
+  for (const s of [-1, 1]) { const g = x.createRadialGradient(cx + s * 68, 140, 4, cx + s * 68, 140, 32); g.addColorStop(0, `rgba(225,110,100,${lum > 0.5 ? 0.32 : 0.2})`); g.addColorStop(1, 'rgba(225,110,100,0)'); x.fillStyle = g; x.fillRect(cx + s * 68 - 40, 100, 80, 80); }
+  // sombra suave de las cuencas
+  for (const s of [-1, 1]) { const g = x.createRadialGradient(cx + s * ex, ey - 4, 6, cx + s * ex, ey - 4, 30); g.addColorStop(0, `rgba(60,30,20,${0.18})`); g.addColorStop(1, 'rgba(60,30,20,0)'); x.fillStyle = g; x.fillRect(cx + s * ex - 34, ey - 38, 68, 64); }
+  for (const s of [-1, 1]) {
+    const px = cx + s * ex;
+    // blanco del ojo
+    x.fillStyle = '#f7f1e8'; x.beginPath(); x.ellipse(px, ey, 24, 16, 0, 0, Math.PI * 2); x.fill();
+    // iris, pupila y brillo
+    x.save(); x.beginPath(); x.ellipse(px, ey, 24, 16, 0, 0, Math.PI * 2); x.clip();
+    x.fillStyle = col(look.eyes || 0x4a3020); x.beginPath(); x.arc(px + s * 2, ey + 1, 13, 0, Math.PI * 2); x.fill();
+    x.fillStyle = 'rgba(0,0,0,0.25)'; x.beginPath(); x.arc(px + s * 2, ey + 1, 11.5, Math.PI * 1.05, Math.PI * 1.95); x.lineWidth = 5; x.strokeStyle = 'rgba(0,0,0,0.25)'; x.stroke();
+    x.fillStyle = '#100a08'; x.beginPath(); x.arc(px + s * 2, ey + 1, 5.5, 0, Math.PI * 2); x.fill();
+    x.fillStyle = '#ffffff'; x.beginPath(); x.arc(px + s * 2 - 4, ey - 4, 3.2, 0, Math.PI * 2); x.fill();
+    // párpado superior
+    x.fillStyle = col(look.skin || 0xc49372, 0.82); x.beginPath(); x.ellipse(px, ey - 14, 26, 9, 0, Math.PI, 0); x.fill();
+    x.restore();
+    x.strokeStyle = '#2a1a12'; x.lineWidth = 3.4; x.lineCap = 'round'; x.beginPath(); x.ellipse(px, ey, 24, 16, 0, Math.PI * 1.08, Math.PI * 1.92); x.stroke();
+    x.lineWidth = 1.6; x.strokeStyle = 'rgba(42,26,18,0.5)'; x.beginPath(); x.ellipse(px, ey, 24, 16, 0, Math.PI * 0.15, Math.PI * 0.85); x.stroke();
+    // ceja
+    x.strokeStyle = col(look.brows || look.hair || 0x2a1a10, 0.85); x.lineWidth = 7; x.beginPath(); x.moveTo(px - s * 24, ey - 25); x.quadraticCurveTo(px + s * 2, ey - 37, px + s * 25, ey - 28); x.stroke();
+  }
+  // boca: una sonrisa serena (bajo la barba queda tapada)
+  if (!look.beard) {
+    x.strokeStyle = `rgba(${Math.round(150 * Math.min(1, lum + 0.3))},60,55,0.85)`; x.lineWidth = 5; x.lineCap = 'round';
+    x.beginPath(); x.moveTo(cx - 19, 176); x.quadraticCurveTo(cx, 188, cx + 19, 176); x.stroke();
+    x.fillStyle = 'rgba(160,70,60,0.25)'; x.beginPath(); x.ellipse(cx, 184, 13, 4, 0, 0, Math.PI * 2); x.fill();
+  }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; FACE_CACHE[key] = t; return t;
+}
 function buildFigure(look, accent) {
   const g = new THREE.Group(); const body = new THREE.Group(); g.add(body);
   const robe = std(look.robe, { roughness: look.plain ? 0.86 : 0.85 }); const robe2 = std(look.robe2, { roughness: look.plain ? 0.71 : 0.7 }); if (!look.plain) { robe.userData.robe = true; robe2.userData.robe = true; }
@@ -75,12 +114,12 @@ function buildFigure(look, accent) {
   head.add(mesh(new THREE.CylinderGeometry(0.09, 0.11, 0.2, 10), skin, 0, -0.18, 0));
   const skull = mesh(new THREE.SphereGeometry(0.2, 22, 16), skin, 0, 0, 0); skull.scale.set(0.92, 1.08, 1); head.add(skull);
   put(head, mesh(new THREE.ConeGeometry(0.035, 0.1, 6), skin, 0, -0.01, 0.2)).rotation.x = Math.PI / 2;
-  const eyeM = std(look.eyes || 0x1a1410, { roughness: 0.3 });
-  head.add(mesh(new THREE.SphereGeometry(0.022, 8, 6), eyeM, -0.07, 0.04, 0.175, false)); head.add(mesh(new THREE.SphereGeometry(0.022, 8, 6), eyeM, 0.07, 0.04, 0.175, false));
-  head.add(mesh(new THREE.BoxGeometry(0.07, 0.015, 0.02), hair, -0.07, 0.085, 0.18, false)); head.add(mesh(new THREE.BoxGeometry(0.07, 0.015, 0.02), hair, 0.07, 0.085, 0.18, false));
+  // cara pintada: ojos con iris y brillo, cejas, mejillas y boca, sobre un casquete delante del cráneo
+  { const fm = new THREE.MeshStandardMaterial({ map: faceTexture(look), emissive: 0xffffff, emissiveMap: faceTexture(look), emissiveIntensity: 0.22, transparent: true, alphaTest: 0.04, roughness: 0.55, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -8 });
+    const face = new THREE.Mesh(new THREE.SphereGeometry(0.2035, 28, 20, Math.PI / 2 - 0.95, 1.9, Math.PI * 0.26, Math.PI * 0.5), fm); face.scale.copy(skull.scale); face.renderOrder = 2; head.add(face); }
   if (look.beard) {
     const bt = look.beardTop || 0.42, bl = look.beardLen || 1;
-    const b = mesh(new THREE.SphereGeometry(0.17, 16, 12, 0, TAU, Math.PI * bt, Math.PI * (1 - bt)), std(look.beard, { roughness: 1 }), 0, -0.02 - (bl - 1) * 0.06, 0.05); b.scale.set(1.05, 1.5 * bl, 1); head.add(b);
+    const b = mesh(new THREE.SphereGeometry(0.17, 16, 12, 0, TAU, Math.PI * bt, Math.PI * (1 - bt)), std(look.beard, { roughness: 1 }), 0, -0.05 - (bl - 1) * 0.06, 0.05); b.scale.set(1.05, 1.5 * bl, 1); head.add(b);
     head.add(mesh(new THREE.BoxGeometry(0.12, 0.025, 0.03), std(look.beard, { roughness: 1 }), 0, -0.06, 0.19, false));
     if (look.beardGrey) for (const [x, y] of [[-0.06, -0.2], [0.05, -0.26], [0, -0.33], [-0.03, -0.12], [0.08, -0.15]]) head.add(mesh(new THREE.BoxGeometry(0.012, 0.09, 0.01), std(look.beardGrey, { roughness: 1 }), x, y * (look.beardLen || 1), 0.205 - Math.abs(y) * 0.25, false)); // canas
   }
