@@ -5,11 +5,11 @@
 // ============================================================================
 const MAPA_EJES = [
   { id: 'verdad', q: '¿Hay verdades para todos?', neg: 'Cada uno tiene su verdad', pos: 'Hay verdades para todos', a: ['protagoras', 'nietzsche'], b: ['platon', 'kant'], hint: 'Dialoga con Protágoras (Atenas) o con Nietzsche (siglo XIX)' },
-  { id: 'conocer', q: '¿Cómo conocemos?', neg: 'Por los sentidos y la experiencia', pos: 'Por la razón', a: ['aristoteles', 'hume', 'locke'], b: ['platon', 'descartes', 'spinoza'], hint: 'Dialoga con Platón o Descartes, o entra en la habitación de Descartes' },
-  { id: 'cambio', q: '¿Todo cambia?', neg: 'Todo fluye', pos: 'Algo permanece', a: ['heraclito', 'zhuangzi', 'buda'], b: ['parmenides', 'aristoteles', 'platon'], hint: 'Dialoga con Heráclito o entra en su río o en el barco de Teseo' },
+  { id: 'conocer', q: '¿Cómo conocemos?', neg: 'Por los sentidos y la experiencia', pos: 'Por la razón', a: ['aristoteles', 'hume', 'locke', 'sorjuana'], b: ['platon', 'descartes', 'spinoza', 'hipatia'], hint: 'Dialoga con Platón o Descartes, o entra en la habitación de Descartes' },
+  { id: 'cambio', q: '¿Todo cambia?', neg: 'Todo fluye', pos: 'Algo permanece', a: ['heraclito', 'zhuangzi', 'buda', 'laozi'], b: ['parmenides', 'aristoteles', 'platon'], hint: 'Dialoga con Heráclito o entra en su río o en el barco de Teseo' },
   { id: 'justicia', q: '¿Por qué ser justos?', neg: 'Por miedo o conveniencia', pos: 'Porque vale por sí misma', a: ['maquiavelo', 'epicuro'], b: ['socrates', 'platon', 'kant'], hint: 'Ponte el anillo de Giges o dialoga con Maquiavelo' },
-  { id: 'mal', q: '¿De dónde nace el mal?', neg: 'De la ignorancia', pos: 'De la voluntad', a: ['socrates', 'buda'], b: ['agustin', 'aristoteles', 'arendt'], hint: 'Dialoga con Sócrates o con Agustín' },
-  { id: 'sentido', q: '¿Dónde está el sentido de la vida?', neg: 'Hay que encontrarlo fuera', pos: 'Lo creamos al vivir', a: ['platon', 'agustin', 'tomas'], b: ['camus', 'sartre', 'beauvoir'], hint: 'Dialoga con Camus o empuja la roca de Sísifo' },
+  { id: 'mal', q: '¿De dónde nace el mal?', neg: 'De la ignorancia', pos: 'De la voluntad', a: ['socrates', 'buda', 'arendt'], b: ['agustin', 'aristoteles'], hint: 'Dialoga con Sócrates o con Agustín' },
+  { id: 'sentido', q: '¿Dónde está el sentido de la vida?', neg: 'Hay que encontrarlo fuera', pos: 'Lo creamos al vivir', a: ['platon', 'agustin', 'tomas', 'aristoteles'], b: ['camus', 'sartre', 'beauvoir'], hint: 'Dialoga con Camus o empuja la roca de Sísifo' },
 ];
 // [experiencia, comienzo de la elección registrada, eje, valor]
 const MAPA_REGLAS = [
@@ -33,6 +33,9 @@ const MAPA_DIALOGO = {
   hume: { eje: 'conocer', experiencia: -1, razon: 1, matiz: 0 },
   buda: { eje: 'mal', apego: -1, fuera: 0, matiz: 0 },
   beauvoir: { eje: 'sentido', construido: 1, natural: -0.5, matiz: 0 },
+  sorjuana: { eje: 'conocer', experiencia: -1, razon: 1, matiz: 0 }, hipatia: { eje: 'conocer', experiencia: -0.5, razon: 1, matiz: 0.3 },
+  laozi: { eje: 'cambio', fluye: -1, permanece: 1, matiz: 0 }, aristoteles: { eje: 'sentido', fuera: -1, crear: 1, matiz: 0 },
+  arendt: { eje: 'mal', ignorancia: -1, voluntad: 1, matiz: 0 },
 };
 const Mapa = {
   calc() {
