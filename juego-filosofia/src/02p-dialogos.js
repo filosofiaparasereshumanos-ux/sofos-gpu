@@ -1789,3 +1789,58 @@ Object.assign(DIALOGOS, {
     ],
   },
 });
+// ----------------------------------------------------------------------------
+//  Heidegger, maestro de la época contemporánea
+// ----------------------------------------------------------------------------
+Object.assign(DIALOGOS, {
+  heidegger: {
+    tesis: 'Casi siempre vivimos distraídos, haciendo lo que «se» hace. Solo quien asume que va a morir puede vivir una vida verdaderamente propia.',
+    posturas: [
+      { t: 'Estoy de acuerdo: recordar que somos finitos nos despierta.', eje: 'autentico',
+        razones: [
+          DR('Muchas veces hago cosas solo porque todos las hacen, sin preguntarme si las quiero de verdad.', 'b', 'Buena razón: describes el «se» con tu propia experiencia.'),
+          DR('Las personas que han estado cerca de la muerte suelen decir que empezaron a vivir de otra manera.', 'b', 'Buena razón: un ejemplo de cómo la finitud cambia la vida.'),
+          DR('Porque Heidegger es el filósofo más importante del siglo XX.', 'f', 'Que sea influyente no prueba que tenga razón.', 'falacia de autoridad'),
+          DR('Porque pensar en la muerte es interesante.', 'd', 'Es cierto, pero no explica la relación con la vida propia.'),
+        ],
+        objecion: 'Pero pensar en la muerte puede llenar de miedo y tristeza. ¿No es mejor no pensar en ella y disfrutar?',
+        respuestas: [
+          DR('No se trata de vivir con miedo, sino de no desperdiciar la vida: saber que el tiempo es poco hace valioso cada día.', 'b', 'Excelente: la finitud como lucidez, no como terror.'),
+          DR('La angustia es incómoda, lo concedo, pero huir de ella nos deja viviendo una vida que no elegimos.', 'b', 'Buena respuesta: es la idea de Heidegger.'),
+          DR('Sí, mejor no pensar en nada.', 'd', 'Eso abandona tu propia postura.'),
+          DR('Quien piensa en la muerte está deprimido.', 'f', 'Descalificas en lugar de responder.', 'falacia ad hominem'),
+        ],
+        cierre: 'El ser-para-la-muerte no es una invitación a la tristeza, sino a la autenticidad: a que tu vida sea tuya.' },
+      { t: 'No estoy de acuerdo: vivimos con otros, y eso está bien.', eje: 'comunidad',
+        razones: [
+          DR('Hacer lo que hace mi comunidad, como celebrar fiestas o cuidar a los mayores, no es vivir distraído: es pertenecer.', 'b', 'Buena razón: defiendes el valor de lo compartido.'),
+          DR('El sentido de mi vida lo encuentro sobre todo en las personas que quiero, no en pensar en mi muerte.', 'b', 'Buena razón: pones el sentido en los vínculos.'),
+          DR('Porque Heidegger fue nazi, así que su idea es falsa.', 'f', 'Su conducta fue grave, pero una idea se refuta con razones, no con la biografía de su autor.', 'falacia ad hominem'),
+          DR('Porque es más fácil hacer lo que hacen todos.', 'd', 'Que sea fácil no lo justifica.'),
+        ],
+        objecion: 'Muchas personas que hicieron un gran mal solo hacían lo que «se» hacía en su época. ¿No muestra eso el peligro de dejarse llevar?',
+        respuestas: [
+          DR('Sí, lo concedo: una cosa es pertenecer a una comunidad y otra es dejar de pensar por uno mismo dentro de ella.', 'b', 'Excelente: distingues pertenencia y conformismo, como Arendt.'),
+          DR('Es un peligro real; por eso la comunidad también necesita personas que se atrevan a decir que no.', 'b', 'Buena respuesta: unes comunidad y pensamiento propio.'),
+          DR('No muestra nada.', 'd', 'La objeción señalaba algo importante.'),
+          DR('Si todos lo hacen, no puede ser malo.', 'f', 'La historia muestra lo contrario.', 'falacia de popularidad'),
+        ],
+        cierre: 'Defiendes la vida compartida. Y con razón: Arendt, alumna de Heidegger, diría que solo somos plenamente humanos actuando junto a otros.' },
+      { t: 'Depende: hay que vivir con otros, pero pensando por uno mismo.', eje: 'matiz',
+        razones: [
+          DR('Puedo seguir muchas costumbres y, aun así, elegir yo lo más importante de mi vida.', 'b', 'Buena razón: unes lo común y lo propio.'),
+          DR('Recordar que el tiempo se acaba me ayuda a elegir, y las personas que quiero me ayudan a saber qué elegir.', 'b', 'Buena razón: combinas finitud y vínculos.'),
+          DT.f(),
+          DR('Porque las dos cosas son buenas.', 'd', 'Es posible, pero no explicas cómo se relacionan.'),
+        ],
+        objecion: 'Heidegger pensó con enorme profundidad sobre la vida auténtica y, sin embargo, apoyó a un régimen criminal. ¿Qué aprendes de eso?',
+        respuestas: [
+          DR('Que pensar profundo no basta: también hace falta juicio moral y valor para decir que no. Se puede aprender de su obra sin justificar su vida.', 'b', 'Excelente: separas el análisis de la obra y la condena de los actos.'),
+          DR('Que hay que leer a los grandes pensadores con espíritu crítico, también sus errores.', 'b', 'Buena respuesta: lectura crítica.'),
+          DR('Que no hay que leer a nadie.', 'd', 'Es una conclusión exagerada.'),
+          DR('Que si alguien se equivoca en algo, todo lo que dijo es falso.', 'f', 'Generalizas desde un error, aunque sea grave.', 'generalización apresurada'),
+        ],
+        cierre: 'Has llegado a una de las preguntas más difíciles de la filosofía: ¿qué hacemos con la obra de quien se equivocó gravemente? Pensarlo es ya un acto de responsabilidad.' },
+    ],
+  },
+});

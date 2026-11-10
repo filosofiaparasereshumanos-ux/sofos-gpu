@@ -19,7 +19,7 @@ const GUIDE_LINES = [
   ['Has llegado al siglo diecinueve: fábricas, trenes y revoluciones. La historia se mueve deprisa, y la filosofía intenta entender hacia dónde va.',
     'Hegel, Kierkegaard, Marx, Mill y Nietzsche no se pondrán de acuerdo en casi nada. Escúchalos a todos y decide tú.'],
   ['Bienvenido a la época contemporánea, nuestro propio tiempo. Entre guerras mundiales y grandes cambios, los filósofos pensaron el lenguaje, la libertad y el absurdo.',
-    'Wittgenstein, Sartre, Beauvoir, Camus y Arendt te preguntarán quién eres y qué haces con tu libertad. Responde con honestidad.'],
+    'Wittgenstein, Sartre, Beauvoir, Camus y Arendt te preguntarán quién eres y qué haces con tu libertad; al final te espera Heidegger, con la pregunta por el ser y por el tiempo. Responde con honestidad.'],
   ['Bienvenido a América Latina, nuestra casa. Aquí la filosofía habló en náhuatl, en los versos de una monja, en la voz de un poeta libertador y en el aula de un maestro.',
     'Nezahualcóyotl, Sor Juana, Martí, Castellanos y Freire te enseñarán que pensar también es liberarse.'],
   ['Bienvenido a Tenochtitlan, la ciudad sobre el lago. Los sabios mexicas, los tlamatinime, se preguntaban si en la tierra hay algo verdadero, algo que permanezca.',
