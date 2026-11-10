@@ -13,6 +13,9 @@ const MAPA_EJES = [
 ];
 // [experiencia, comienzo de la elección registrada, eje, valor]
 const MAPA_REGLAS = [
+  ['tranvia', 'La palanca: mover', 'justicia', -0.5], ['tranvia', 'La palanca: no mover', 'justicia', 0.5], ['tranvia', 'El puente: empujar', 'justicia', -0.5], ['tranvia', 'El puente: no empujar', 'justicia', 1],
+  ['china', 'No: solo sigo reglas', 'conocer', 0.5], ['china', 'Si respondo bien, entiendo', 'conocer', -0.5],
+  ['maquina', 'Me conecto para siempre', 'sentido', -0.5], ['maquina', 'No me conecto', 'sentido', 1], ['maquina', 'Al despertar: sí importa', 'sentido', 1], ['maquina', 'Al despertar: no importa', 'sentido', -0.5],
   ['rio', 'No: el agua siempre es otra', 'cambio', -1], ['rio', 'Sí: el cauce', 'cambio', 1], ['rio', 'Tampoco yo', 'cambio', -1],
   ['teseo', '¿Cuál es el verdadero? El de tablas nuevas', 'cambio', 1], ['teseo', '¿Cuál es el verdadero? El de tablas viejas', 'cambio', 1], ['teseo', '¿Cuál es el verdadero? Los dos', 'cambio', -0.5],
   ['mariposa', 'Todas las cosas se transforman', 'cambio', -1], ['mariposa', 'Soy Zhuangzi', 'conocer', 0.5], ['mariposa', 'Soy una mariposa', 'conocer', -0.5],
