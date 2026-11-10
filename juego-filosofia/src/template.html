@@ -324,7 +324,8 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .aula-btn small { color: #a8e0ff; }
 .au-form { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
 .au-form input, .au-form select, #au-subs, #au-invite, #au-deltext, #au-csvtext { flex: 1 1 220px; box-sizing: border-box; width: 100%; background: rgba(0,0,0,0.3); color: var(--parchment); border: 1px solid var(--line); border-radius: 10px; padding: 11px 12px; font-family: var(--body); font-size: 1.05rem; }
-.au-inline label { display: flex; gap: 8px; align-items: center; color: var(--parchment-dim); }
+.au-inline label { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; max-width: 100%; color: var(--parchment-dim); }
+.au-inline select { max-width: 100%; min-width: 0; }
 .au-inline select { flex: 0 0 auto; width: auto; }
 .au-who { text-align: center; color: var(--gold-bright); font-size: 1.1rem; margin: 6px 0; }
 .au-prog { display: flex; align-items: center; gap: 10px; margin: 6px 0 12px; }
@@ -353,7 +354,21 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .au-tbl td.pct.mid { color: var(--gold-bright); }
 .au-tbl td.pct.full { color: #8fe08a; }
 #mp-badge { position: absolute; top: max(8px, var(--sat)); left: 50%; transform: translateX(-50%); z-index: 30; border: 1px solid var(--gold); background: rgba(10,8,5,0.75); color: #ffe0a0; border-radius: 999px; padding: 4px 12px; font: inherit; font-size: 0.8rem; cursor: pointer; white-space: nowrap; }
-#mp-meet { position: absolute; bottom: calc(max(16px, var(--sab)) + 150px); left: 50%; transform: translateX(-50%); z-index: 30; border: 0; border-radius: 999px; padding: 12px 20px; font: inherit; font-size: 1rem; color: #2a1a08; background: linear-gradient(#ffe08a, #d8a83a); box-shadow: 0 6px 24px rgba(0,0,0,0.5); cursor: pointer; animation: sl-pop 0.3s ease-out; }
+#mp-meet { position: absolute; bottom: calc(max(16px, var(--sab)) + 150px); left: 50%; transform: translateX(-50%); z-index: 30; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; width: max-content; max-width: calc(100% - 32px); border-radius: 18px; padding: 10px 12px; background: rgba(14,11,8,0.88); border: 1px solid var(--gold); box-shadow: 0 6px 24px rgba(0,0,0,0.5); animation: sl-pop 0.3s ease-out; }
+#mp-meet[hidden] { display: none; }
+#mp-meet-t { width: 100%; text-align: center; color: #ffe0a0; font-size: 0.95rem; }
+#mp-meet button { border: 0; border-radius: 999px; padding: 10px 16px; font: inherit; font-size: 0.95rem; color: #2a1a08; background: linear-gradient(#ffe08a, #d8a83a); cursor: pointer; }
+#mp-emo { position: absolute; right: max(12px, var(--sar, 0px)); top: calc(max(8px, var(--sat)) + 44px); z-index: 31; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold); background: rgba(10,8,5,0.75); font-size: 1.4rem; cursor: pointer; }
+#mp-emobar { position: absolute; right: max(12px, var(--sar, 0px)); top: calc(max(8px, var(--sat)) + 94px); z-index: 31; display: flex; flex-direction: column; gap: 6px; padding: 6px; border-radius: 999px; background: rgba(10,8,5,0.8); border: 1px solid var(--line); }
+#mp-emobar[hidden] { display: none; }
+#mp-emobar button { width: 40px; height: 40px; border: 0; border-radius: 50%; background: rgba(255,255,255,0.08); font-size: 1.3rem; cursor: pointer; }
+.mpd-card { text-align: left; border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px; margin: 8px 0; background: rgba(255,255,255,0.04); }
+.mpd-card b { color: var(--gold); } .mpd-card p { margin: 4px 0; font-size: 0.92rem; } .mpd-card .p { font-style: italic; }
+.av-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 6px 0; }
+.av-row > span { width: 64px; font-size: 0.85rem; color: var(--gold); }
+.av-chip { width: 30px; height: 30px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; padding: 0; }
+.av-chip.txt { width: auto; height: auto; border-radius: 999px; padding: 4px 10px; font: inherit; font-size: 0.8rem; color: inherit; background: rgba(255,255,255,0.06); }
+.av-chip.on { border-color: var(--gold-bright, #ffd36a); box-shadow: 0 0 0 2px rgba(255,211,106,0.35); }
 #mp-inv { position: absolute; left: 50%; top: 22%; transform: translateX(-50%); z-index: 45; width: min(380px, calc(100% - 32px)); border: 1px solid var(--gold); border-radius: 16px; background: rgba(14,11,8,0.94); padding: 16px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.6); animation: sl-pop 0.3s ease-out; }
 #mp-inv p { font-size: 1.1rem; margin: 0 0 6px; }
 #mpd { position: absolute; inset: 0; z-index: 42; background: rgba(8,6,10,0.88); display: grid; place-items: center; padding: 16px; }
@@ -363,7 +378,8 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .quick.q4 { grid-template-columns: repeat(4, 1fr); width: min(480px, 100%); gap: 8px; }
 .quick.q4 .qk span { font-size: 0.84rem; } .quick.q4 .qk small { font-size: 0.66rem; }
 @media (max-width: 360px) { .quick.q4 { grid-template-columns: repeat(2, 1fr); } }
-#sala .sl-wrap { width: min(560px, 100%); margin: 0 auto; padding: 16px; }
+#sala { grid-template-columns: minmax(0, 1fr); }
+#sala .sl-wrap { width: min(560px, 100%); box-sizing: border-box; margin: 0 auto; padding: 16px; }
 #sala.sl-big .sl-wrap { width: min(1200px, 100%); }
 .sl-card { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; margin: 12px 0; background: rgba(255,255,255,0.03); }
 .sl-card h3 { font-family: var(--display); font-weight: normal; color: var(--gold); margin: 0 0 8px; letter-spacing: 0.05em; }
@@ -1034,7 +1050,9 @@ body.touch .gm.boss { width: 30px; height: 30px; }
   </section>
 
   <button id="mp-badge" hidden></button>
-  <button id="mp-meet" hidden></button>
+  <div id="mp-meet" hidden><span id="mp-meet-t"></span><button id="mp-meet-q">❓ Duelo de preguntas</button><button id="mp-meet-d">💬 Debate filosófico</button></div>
+  <button id="mp-emo" hidden aria-label="Gestos">😀</button>
+  <div id="mp-emobar" hidden></div>
   <div id="mp-inv" hidden><p id="mp-inv-t"></p><div class="btns"><button class="btn primary" id="mp-yes">¡Acepto!</button><button class="btn ghost" id="mp-no">Ahora no</button></div></div>
   <section id="mpd" hidden>
     <div class="mpd-box">
@@ -1068,8 +1086,15 @@ body.touch .gm.boss { width: 30px; height: 30px; }
             <div class="btns"><button class="btn primary" id="sl-host">Crear sala</button></div>
           </div>
           <div class="sl-card">
-            <h3>Explorar juntos</h3>
-            <p class="qd-note">Crea un grupo y comparte el código. Cuando estén en la misma época, verán sus avatares en el mundo y podrán desafiarse a duelos de tres preguntas. Usa el apodo de arriba (y el código de arriba para unirte).</p>
+            <h3>Mundo abierto</h3>
+            <p class="qd-note">Cuando entras a una época, ves a los demás viajeros que están ahí en ese momento. Acércate a alguien para saludar con gestos, retarlo a un duelo de preguntas o a un debate filosófico. No hay chat libre: solo apodos y gestos.</p>
+            <div class="btns"><button class="btn" id="sl-mundo">Mundo abierto</button></div>
+            <div id="av-opts"></div>
+            <div class="au-form au-inline"><input id="av-name" maxlength="16" placeholder="Tu apodo" autocomplete="off" aria-label="Apodo de tu avatar"><button class="btn primary" id="av-save">Guardar avatar</button></div>
+          </div>
+          <div class="sl-card">
+            <h3>Grupo privado</h3>
+            <p class="qd-note">¿Solo con tu clase o tus amigos? Crea un grupo y comparte el código: se verán solo entre ustedes, en cualquier época. Usa el apodo y el código de arriba.</p>
             <div class="btns"><button class="btn primary" id="sl-jnew">Crear grupo</button><button class="btn" id="sl-jjoin">Unirme al grupo</button></div>
           </div>
         </div>
@@ -1373,6 +1398,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <div class="row"><label>Voces</label><div class="seg" id="s-voices"><button data-v="0">No</button><button data-v="1">Sí</button></div></div>
       <div class="row"><label>Disparo automático</label><div class="seg" id="s-auto"><button data-v="0">No</button><button data-v="1">Sí</button></div></div>
       <div class="row"><label>Vibración</label><div class="seg" id="s-vib"><button data-v="0">No</button><button data-v="1">Sí</button></div></div>
+      <div class="row"><label>Mundo abierto</label><div class="seg" id="s-mundo"><button data-v="0">No</button><button data-v="1">Sí</button></div></div>
       <div class="row"><label>Invertir eje Y</label><div class="seg" id="s-invert"><button data-v="0">No</button><button data-v="1">Sí</button></div></div>
       <div class="btns"><button class="btn" data-back>Volver</button></div>
     </div>
