@@ -199,7 +199,7 @@ piece(kenburns(C('iphone-pregunta.png'), 48, 1.0, 1.05), [big('Cada uno responde
 piece(wide(C('respuesta.png'), 48), [big('Puntos y ranking', 'en tiempo real')])
 piece(clip_frames(V('aula2'), 0, 7.6), voice=(V('aula2'), 0.0))
 piece(wide(C('podio.png'), 48), [big('¡Podio!', 'hasta 25 o más jugadores')], boom=True)
-piece(frames_of('vs_socrates', take=30, start=12, step=1.4), [big('35 diálogos socráticos', 'aprende a argumentar')])
+piece(frames_of('vs_socrates', take=30, start=12, step=1.4), [big('36 diálogos socráticos', 'aprende a argumentar')])
 piece(kenburns(C('xp-tranvia.png'), 42, 1.0, 1.05), [big('11 experimentos mentales', 'de la caverna al tranvía')])
 piece(wide(C('mapa-clase.png'), 48), [big('El mapa filosófico', 'de toda tu clase')])
 piece(kenburns(C('guia.png'), 42, 1.0, 1.04, bg=Image.open(C('guia.png'))), [big('Guía para docentes', 'gratis, en PDF')])

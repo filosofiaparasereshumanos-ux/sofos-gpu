@@ -140,7 +140,7 @@ VS = [('socrates', 'Sócrates', 'Atenas · siglo V a. C.', False), ('hipatia', '
       ('laozi', 'Laozi', 'China · siglo VI a. C.', False), ('sorjuana', 'Sor Juana', 'Nueva España · siglo XVII', False),
       ('enheduanna', 'Enheduanna', 'Sumer · siglo XXIII a. C.', False), ('pachacutec', 'Pachacútec', 'Maestro de los Incas', True)]
 VCAP = [('Enfréntate a ellos', 'cara a cara'), ('Enfréntate a ellos', 'cara a cara'), ('Gana el debate', 'con argumentos, no con fuerza'),
-        ('Gana el debate', 'con argumentos, no con fuerza'), ('101 pensadoras y pensadores', 'te esperan'), ('Vence al maestro de la época', 'y se abre el portal')]
+        ('Gana el debate', 'con argumentos, no con fuerza'), ('102 pensadoras y pensadores', 'te esperan'), ('Vence al maestro de la época', 'y se abre el portal')]
 for k, (sid, nm, sub, boss) in enumerate(VS):
     A = 34 + (86 if boss else 0)
     fr = frames_of('vs_' + sid, take=30, start=4)                       # acercamiento al avatar
@@ -163,7 +163,7 @@ add(frames_of('book', take=95), 'Ciencia, historia y grandes libros', 'de Arquí
 add(kenburns(os.path.join(WK, 'mapa.png'), 96), 'Descubre cómo piensas tú', 'tu mapa filosófico', 'bottom')
 add(kenburns(os.path.join(WK, 'aula.png'), 96, bg=Image.open(os.path.join(WK, 'mapa.png'))), 'Para docentes', 'toda tu clase en un mapa, lista para debatir', 'top', size=86)
 bgc = sorted(os.listdir(os.path.join(FR, 'w15')))[20]
-add(card([('22 épocas', 'b'), ('101 pensadoras y pensadores', 'm'), ('35 diálogos socráticos', 'm'), ('11 experimentos mentales', 'm'), ('Gratis · en tu celular', 'b')], 120, os.path.join(FR, 'w15', bgc)))
+add(card([('22 épocas', 'b'), ('102 pensadoras y pensadores', 'm'), ('36 diálogos socráticos', 'm'), ('11 experimentos mentales', 'm'), ('Gratis · en tu celular', 'b')], 120, os.path.join(FR, 'w15', bgc)))
 
 # ---------------------------------------------------------------- render de la parte central
 mid = os.path.join(TMP, 'mid3.mp4')
