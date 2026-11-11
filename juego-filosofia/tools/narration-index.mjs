@@ -7,7 +7,8 @@ import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const ctx = {}; vm.createContext(ctx); vm.runInContext(readFileSync(join(root, 'src/02d-narration.js'), 'utf8').split('// reproductor')[0] + ';globalThis.h = narrHash;', ctx);
 const jobs = JSON.parse(readFileSync(process.argv[2], 'utf8')), tm = JSON.parse(readFileSync(process.argv[3], 'utf8'));
-const have = new Set(readdirSync(join(root, 'audio')).filter((f) => f.endsWith('.mp3')).map((f) => f.slice(0, -4)));
+const EN = process.env.LANG_GAME === 'en'; const AD = join(root, 'audio', EN ? 'en' : '');
+const have = new Set(readdirSync(AD).filter((f) => f.endsWith('.mp3')).map((f) => (EN ? 'en/' : '') + f.slice(0, -4)));
 const idx = { spk: {}, p: {} };
 for (const j of jobs) {
   const t = tm[j.name]; if (!t || !have.has(j.name)) { console.error('falta', j.name); continue; }
@@ -15,5 +16,5 @@ for (const j of jobs) {
   const m = {}; j.sentences.forEach((s, k) => { m[ctx.h(s)] = [Math.round(t[k][0] * 100), Math.round(t[k][1] * 100)]; });
   idx.p[j.name] = m; (idx.spk[j.speaker] = idx.spk[j.speaker] || []).push(j.name);
 }
-writeFileSync(join(root, 'audio/index.json'), JSON.stringify(idx));
+writeFileSync(join(AD, 'index.json'), JSON.stringify(idx));
 console.log('paquetes:', Object.keys(idx.p).length, 'bytes:', JSON.stringify(idx).length);

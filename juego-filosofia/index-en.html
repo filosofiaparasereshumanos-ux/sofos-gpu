@@ -975,7 +975,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <hr class="rule">
       <div class="tips">
         <div class="tip"><b>Move and jump</b><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> to walk, mouse to look, <kbd>Shift</kbd> to run and <kbd>Space</kbd> to jump. You jump farther when running.</div>
-        <div class="tip"><b>The trials</b>Before each thinker there is a proof of his philosophy: the river of Tales, the fire of Heraclitus, the harmonic staircase of Pythagoras... If you fall, you go back to the last mainland with a little less reason.</div>
+        <div class="tip"><b>The trials</b>Before each thinker there is a proof of his philosophy: the river of Thales, the fire of Heraclitus, the harmonic staircase of Pythagoras... If you fall, you go back to the last mainland with a little less reason.</div>
         <div class="tip"><b>Talk</b>Walk up to a philosopher and press <kbd>E</kbd> (or “Speak”): ask him who he is, what his great idea is, listen to his lesson, or ask him your own questions.</div>
         <div class="tip"><b>Dash</b><kbd>C</kbd> o <kbd>Ctrl</kbd>: a quick jump in the direction you move. For a moment you are invulnerable: use it to dodge assaults and projectiles.</div>
         <div class="tip"><b>Discover</b>The golden rhombus marks places: the Parthenon, the Agora, the Library of Alexandria... Everyone tells you their story and gives you a fragment of wisdom.</div>
@@ -2065,25 +2065,25 @@ const ERAS = [
   {
     id: 'presocraticos', num: 'I', name: 'The Presocratics',
     place: 'Miletus, Samos, Ephesus and Elea', years: 'Centuries VII – V BC',
-    quote: { t: 'Everything is full of gods.', a: 'Tales of Mileto' },
+    quote: { t: 'Everything is full of gods.', a: 'Thales of Miletus' },
     enemy: { one: 'Chimera del Mito', many: 'Chimeras del Mito' },
     story: 'Myths explained the world with capricious gods. On the coast of Jonia, a few dared to seek the beginning of everything with reason alone.',
     sages: [
       {
-        id: 'tales', name: 'Tales of Mileto', short: 'Such', dates: 'c. 624 – 546 a.C.', epithet: 'The first philosopher',
+        id: 'tales', name: 'Thales of Miletus', short: 'Such', dates: 'c. 624 – 546 a.C.', epithet: 'The first philosopher',
         look: { robe: 0xe8e0cf, robe2: 0x3e6d8f, skin: 0xc99b78, hair: 0xd8d4cc, beard: 0xd8d4cc, hat: 'none', acc: 'staff' },
         prop: 'water',
         intro: 'They say I fell into a well for looking at the stars. Let\'s see if you know where you\'re stepping.',
         defeat: 'Your thinking flows like water. Come on in, looker of the arch.',
-        concept: { name: 'Arjé', text: 'The original principle from which everything proceeds and to which everything returns. For Tales, that principle was water: this is how the philosophical question for nature (physis) is born.' },
+        concept: { name: 'Arjé', text: 'The original principle from which everything proceeds and to which everything returns. For Thales, that principle was water: this is how the philosophical question for nature (physis) is born.' },
         q: [
-          { q: 'What element did Tales consider the arch of all things?', a: ['Water', 'The fire', 'The air', 'It\'s apeiron.'], e: 'Maybe because everything alive needs moisture and the seeds are wet.' },
-          { q: 'What phenomenon is it said that Tales predicted?', a: ['An eclipse of the sun', 'The appearance of a comet', 'A great flood', 'A meteor shower'], e: 'Herodotus recounts that he predicted the eclipse of 585 BC, which stopped a battle between lydes and Medes.' },
-          { q: 'What city was Tales from?', a: ['Mileto', 'Ephesus', 'Athens', 'Sparta'], e: 'Mileto, on the coast of Asia Minor, was the cradle of the first philosophical school.' },
+          { q: 'What element did Thales consider the arch of all things?', a: ['Water', 'The fire', 'The air', 'It\'s apeiron.'], e: 'Maybe because everything alive needs moisture and the seeds are wet.' },
+          { q: 'What phenomenon is it said that Thales predicted?', a: ['An eclipse of the sun', 'The appearance of a comet', 'A great flood', 'A meteor shower'], e: 'Herodotus recounts that he predicted the eclipse of 585 BC, which stopped a battle between lydes and Medes.' },
+          { q: 'What city was Thales from?', a: ['Miletus', 'Ephesus', 'Athens', 'Sparta'], e: 'Miletus, on the coast of Asia Minor, was the cradle of the first philosophical school.' },
           { q: 'What Greek word designates the original principle sought by the early philosophers?', a: ['Arjé', 'Telos', 'Agape', 'Polys'], e: 'Arjé means both “origin” and “principle governing”.' },
-          { q: 'According to Aristotle, how did Tales prove that a philosopher could enrich himself?', a: ['Renting oil presses before a big harvest', 'Charged for teaching rhetoric', 'Selling Star Maps', 'Discovering a silver mine'], e: 'He foresaw a great harvest of olives and rented all the presses: the first "monopoly" in history.' },
+          { q: 'According to Aristotle, how did Thales prove that a philosopher could enrich himself?', a: ['Renting oil presses before a big harvest', 'Charged for teaching rhetoric', 'Selling Star Maps', 'Discovering a silver mine'], e: 'He foresaw a great harvest of olives and rented all the presses: the first "monopoly" in history.' },
           { q: 'What transit symbolically marks the birth of philosophy in Miletus?', a: ['From myth to logos', 'From monarchy to democracy', 'From polytheism to monotheism', 'From Writing to Orality'], e: 'It goes from explaining the world with divine accounts to explaining it with reason.' },
-          { q: 'Which disciple of Tales claimed that the beginning was the apeiron, the indefinite?', a: ['Anaximander', 'Anaximens', 'Heraclitus', 'Democritus'], e: 'Anaximander thought that the principle could not be a concrete element, but something limitless.' },
+          { q: 'Which disciple of Thales claimed that the beginning was the apeiron, the indefinite?', a: ['Anaximander', 'Anaximens', 'Heraclitus', 'Democritus'], e: 'Anaximander thought that the principle could not be a concrete element, but something limitless.' },
         ],
       },
       {
@@ -2131,12 +2131,12 @@ const ERAS = [
           { q: 'According to Parmenides, what is the only thing that exists?', a: ['The Being: One, eternal and motionless', 'Continuous change', 'The four elements', 'The infinite void'], e: 'If something were to change, it would have to go from non-being to being, and non-being is not.' },
           { q: 'What principle does Parmenides formulate?', a: ['The Self is and the non-being is', 'Everything flows.', 'It\'s all number.', 'Man is the measure'], e: 'It is the first great logical-metaphysical principle of the West.' },
           { q: 'What two ways does Parmenides distinguish?', a: ['That of truth and opinion', 'The pleasure and the pain', 'The myth and the rite', 'The body and the soul'], e: 'The path of truth (alétheia) versus that of mortal opinion (doxa).' },
-          { q: 'Which disciple of Parmenides devised the paradox of Achilles and the turtle?', a: ['Zenón de Elea', 'Democritus', 'Empédocles', 'Anaximens'], e: 'Zeno wanted to show that the movement leads to contradictions.' },
+          { q: 'Which disciple of Parmenides devised the paradox of Achilles and the turtle?', a: ['Zeno de Elea', 'Democritus', 'Empedocles', 'Anaximens'], e: 'Zeno wanted to show that the movement leads to contradictions.' },
           { q: 'In what way did Parmenides write his work?', a: ['A poem in hexameters', 'A dialog', 'A treaty in prose', 'A collection of letters'], e: 'His poem relates the journey of the thinker to a goddess who reveals the truth to him.' },
           { q: 'What figure does Parmenides compare to Being?', a: ['A well-rounded area', 'A cube', 'A pyramid', 'An infinite line'], e: 'The sphere is the same in all directions: complete, without holes or edges.' },
           { q: 'For Parmenides, what are we fooled by making us believe in change?', a: ['The senses', 'The reason', 'The Gods', 'Numbers'], e: 'Only reason reaches the truth; the senses show appearances.' },
-          { q: 'Which philosopher proposed four roots moved by Love and Hate?', a: ['Empédocles', 'Anaximander', 'Such', 'Zeno'], e: 'Water, air, earth and fire are united by Love and separated by Hate.' },
-          { q: 'Which philosophers claimed that everything is made of atoms and emptiness?', a: ['Leucipo and Democritus', 'Such and Anaximens', 'Socrates and Plato', 'Zeno and Meliso'], e: 'Atom means "individual".' },
+          { q: 'Which philosopher proposed four roots moved by Love and Hate?', a: ['Empedocles', 'Anaximander', 'Such', 'Zeno'], e: 'Water, air, earth and fire are united by Love and separated by Hate.' },
+          { q: 'Which philosophers claimed that everything is made of atoms and emptiness?', a: ['Leucippus and Democritus', 'Such and Anaximens', 'Socrates and Plato', 'Zeno and Meliso'], e: 'Atom means "individual".' },
         ],
       },
     ],
@@ -2175,7 +2175,7 @@ const ERAS = [
         concept: { name: 'Maieutics', text: 'The art of “giving birth” ideas through questions. Socrates, as his midwife mother, does not give the truth: it helps the other to discover it.' },
         q: [
           { q: 'What is called the Socratic method of "bringing forth" the truth through questions?', a: ['Maieutics', 'Methodical doubt', 'Epoché', 'Baconian induction'], e: 'From the Greek maieutiké, the art of midwife.' },
-          { q: 'What trade did Socrates\' mother have?', a: ['Midwife', 'Weaver', 'Priestess', 'Sculptor'], e: 'Fenáreta was a midwife, and Socrates presented himself as a “partner of souls”.' },
+          { q: 'What trade did Socrates\' mother have?', a: ['Midwife', 'Weaver', 'Priestess', 'Sculptor'], e: 'Phaenarete was a midwife, and Socrates presented himself as a “partner of souls”.' },
           { q: 'How did Socrates die?', a: ['Drinking hemlock after being convicted', 'In a battle', 'Exiled in Sicily', 'Old age in your home'], e: 'He was able to flee, but preferred to obey the laws of Athens.' },
           { q: 'What inscription of the Temple of Delphi did Socrates make his own?', a: ['«Know thyself»', '"Dare to Know"', '‘Living Hiddenly’', '‘Everything flows’'], e: 'Gnothi seauton: knowledge begins by examining oneself.' },
           { q: 'What works did Socrates write?', a: ['None: we know him by Plato and Xenophon', 'The Republic', 'The Laws', 'Nicomachean Ethics'], e: 'Socrates preferred living dialogue to writing.' },
@@ -2287,16 +2287,16 @@ const ERAS = [
         ],
       },
       {
-        id: 'marcoaurelio', name: 'Marco Aurelio', short: 'Marco Aurelio', dates: '121 – 180 d.C.', epithet: 'The Emperor philosopher', boss: true,
+        id: 'marcoaurelio', name: 'Marcus Aurelius', short: 'Marcus Aurelius', dates: '121 – 180 d.C.', epithet: 'The Emperor philosopher', boss: true,
         look: { robe: 0x7d1f2b, robe2: 0xd9b44a, skin: 0xc49372, hair: 0x5a4636, beard: 0x5a4636, hat: 'laurel', acc: 'scroll' },
         prop: 'throne',
         intro: 'I rule an empire, but I only own my trials. Let\'s see if you master yours.',
         defeat: 'You\'ve distinguished what\'s up to you and what\'s not. You\'re free, even if the world burns.',
         concept: { name: 'Control dicotomy', text: 'Distinguish what depends on us (judgments, desires, actions) from what is not (health, fame, fortune). Living according to reason and nature is the only virtue.' },
         q: [
-          { q: 'How is the work that Marco Aurelio wrote for himself entitled?', a: ['Meditations', 'Letters to Lucilio', 'Enquiry', 'The brevity of life'], e: 'Greek notes written during his military campaigns.' },
-          { q: 'Which school did Marco Aurelio belong to?', a: ['Stoicism', 'Epicureanism', 'Cinism', 'Skepticism'], e: 'He is one of the three great Roman Stoics, with Seneca and Epictetus.' },
-          { q: 'Who founded the Stoic School?', a: ['Zeno de Citio', 'Zenón de Elea', 'Crisipo', 'Seneca'], e: 'Around 300 BC, in Athens.' },
+          { q: 'How is the work that Marcus Aurelius wrote for himself entitled?', a: ['Meditations', 'Letters to Lucilio', 'Enquiry', 'The brevity of life'], e: 'Greek notes written during his military campaigns.' },
+          { q: 'Which school did Marcus Aurelius belong to?', a: ['Stoicism', 'Epicureanism', 'Cinism', 'Skepticism'], e: 'He is one of the three great Roman Stoics, with Seneca and Epictetus.' },
+          { q: 'Who founded the Stoic School?', a: ['Zeno de Citio', 'Zeno de Elea', 'Crisipo', 'Seneca'], e: 'Around 300 BC, in Athens.' },
           { q: 'Where does the name “stoicism” come from?', a: ['From the Stoa Poikile, a portico painted from Athens', 'From a Greek River', 'From the name of its founder', 'From the word “pain”'], e: 'Zeno taught under that porch.' },
           { q: 'Which Stoic philosopher was a slave before he was a teacher?', a: ['Epictetus', 'Seneca', 'Cicero', 'Crisipo'], e: 'Its name means "acquired".' },
           { q: 'What stoic was Emperor Nero\'s preceptor?', a: ['Seneca', 'Epictetus', 'Plotin', 'Lucretius'], e: 'Nero ended up ordering him to commit suicide in 65 A.D.' },
@@ -2602,7 +2602,7 @@ const LINES = {
 // ============================================================================
 const LESSONS = {
   tales: [
-    'I am Tales, of Mileto, a Greek city on the coast of Asia Minor. I lived about twenty-six centuries ago and many say I was the first philosopher.',
+    'I am Thales, of Miletus, a Greek city on the coast of Asia Minor. I lived about twenty-six centuries ago and many say I was the first philosopher.',
     'Before me, the world was explained with myths: the lightning was the wrath of Zeus and the storm, Poseidon\'s whim. I asked myself another question: what is everything made of? What is the beginning, the arch, from which everything is born?',
     'My answer was water. I noticed that everything alive needs moisture and that the seeds are wet. I saw that water can be ice, liquid, or steam. If it changes shape so many times, it may all be transformed water.',
     'The important thing was not so much my answer as the method: to look for a natural explanation, with reasons that others could discuss and correct. Thus was born philosophy: the passage from myth to logos.',
@@ -2610,7 +2610,7 @@ const LESSONS = {
     'My disciples did not conform to my answer. Anaximander proposed the limitless, the apeiron, and Anaximens, the air. That\'s what I expect from you: don\'t accept my answer without examining it. Always ask about the beginning of things.',
   ],
   pitagoras: [
-    'I am Pythagoras, born on Samos Island. In Crotona, in southern Italy, I founded a community of men and women who lived together to study, purify themselves and seek harmony.',
+    'I am Pythagoras, born on Samos Island. In Croton, in southern Italy, I founded a community of men and women who lived together to study, purify themselves and seek harmony.',
     'For us, the principle of all things is the number. Not water or air, but proportion and measure, which shape everything that exists.',
     'I found out listening. If you press a rope and then its half, you hear an octave: a two-to-one reason. The fifth is three to two and the fourth is four to three. The beauty of sound is mathematical.',
     'If music is a number, the cosmos is a number. The stars rotate according to proportions and produce a music of the spheres that we do not hear because it sounds since we were born. That\'s why I called the kosmos universe, which means order.',
@@ -2630,7 +2630,7 @@ const LESSONS = {
     'The goddess showed me two ways. One is the way of truth: being is and not being is not. The other is the way of opinion, where double-headed mortals walk, who believe that things are and are not at once.',
     'Think hard about it. Of no being can not be said or thought anything. If something were to change, it would have to happen from not being to being, or being to not being. But not being is not. Change is therefore impossible.',
     'Thus, the Self is one, eternal, motionless, indivisible, and complete. It is similar to a well round sphere, equal in all directions. He\'s not missing anything and he\'s got nothing left.',
-    'And what do your eyes see: movement, plurality, birth and death? They\'re appearances. The senses deceive; only reason reaches the truth. My disciple Zenón defended him with paradoxes such as Achilles and the turtle.',
+    'And what do your eyes see: movement, plurality, birth and death? They\'re appearances. The senses deceive; only reason reaches the truth. My disciple Zeno defended him with paradoxes such as Achilles and the turtle.',
     'After me, everyone had to answer me. Empedocles and atomists sought eternal elements that combine, and Plato separated the intelligible world from the sensitive. With my poem begins metaphysics: the question of being.',
   ],
   protagoras: [
@@ -2658,7 +2658,7 @@ const LESSONS = {
     'In the Republic I proposed that philosophers rule, because only those who have seen Good can order the city with justice. It has been said that all Western philosophy is a series of footnotes to my dialogues. Get out of the cave: Dare to look at the light.',
   ],
   aristoteles: [
-    'I\'m Aristotle, born in Estagira. I studied twenty years at Plato\'s Academy, tutored Alexander the Great, and founded my own school in Athens, the Lyceum, where I taught walking.',
+    'I\'m Aristotle, born in Stagira. I studied twenty years at Plato\'s Academy, tutored Alexander the Great, and founded my own school in Athens, the Lyceum, where I taught walking.',
     'I wanted my teacher, but more to the truth. For me there is no separate world of Ideas: the way is in things themselves. Each being is a union of matter and form, like marble and the figure of a statue.',
     'To explain the change I distinguished the power and the act. The seed is a potential tree; when it grows, it becomes a tree in action. And to understand something you have to know its four causes: the material, the formal, the efficient and the final.',
     'Every movement refers to a first cause that moves without being moved: the First Motor, pure act, which attracts the cosmos as an object of love and desire.',
@@ -2691,7 +2691,7 @@ const LESSONS = {
   ],
   marcoaurelio: [
     'I am Marcus Aurelius, emperor of Rome in the second century. I spent years in military campaigns and epidemics, and at night I wrote notes for myself, in Greek. Today you call them Meditations.',
-    'I was stoic. The school was founded by Zenón de Citio in Athens, under a painted porch. Before I taught Seneca, preceptor of Nero, and Epictetus, who had been a slave.',
+    'I was stoic. The school was founded by Zeno de Citio in Athens, under a painted porch. Before I taught Seneca, preceptor of Nero, and Epictetus, who had been a slave.',
     'The cosmos is governed by a reason that orders everything, the Logos. To live well is to live according to nature and reason, accepting our place in the whole.',
     'The key is to distinguish what\'s up to us and what\'s not. My judgments, my desires and my actions depend on me. Health, fame, wealth, and what others do are not dependent on me. As Epictetus taught, we are not disturbed by things, but by our opinions about them.',
     'That is why the wise one seeks to free himself from the disturbing passions. Virtue is the only true good. And remember that you will die: not to grieve, but to waste not the day.',
@@ -3141,21 +3141,21 @@ Object.assign(LESSONS, {
 // ============================================================================
 const PENSADORAS = [
   { era: 0, after: 'pitagoras', d: {
-    id: 'teano', name: 'Crotona\'s teat', short: 'Tearo', dates: 'siglo VI a.C.', epithet: 'The Pythagorean Philosopher',
+    id: 'teano', name: 'Croton\'s teat', short: 'Tearo', dates: 'siglo VI a.C.', epithet: 'The Pythagorean Philosopher',
     look: { robe: 0xf2ece0, robe2: 0x3e6d8f, skin: 0xd8ad8a, hair: 0x3a2418, beard: false, hat: 'longhair', acc: 'scroll' },
     prop: 'lyre',
     intro: 'At the Pythagoras school, men and women studied number and harmony together. Will you be able to refine your answers?',
     defeat: 'Your soul has found its measure, like a well-tempered lira. Keep looking for harmony.',
     concept: { name: 'Harmony and Measurement', text: 'For the Pythagoreans, the cosmos is harmony: proportion between parts, as in music. A good life is a temperate life, where every part of the soul takes its place and nothing is overflowing.' },
     q: [
-      { q: 'What philosophical school did Teano form part of?', a: ['The Pythagorean School', 'Plato\'s Academy', 'The Garden of Epicurus', 'La Stoa'], e: 'A community in Crotona, in southern Italy.' },
+      { q: 'What philosophical school did Teano form part of?', a: ['The Pythagorean School', 'Plato\'s Academy', 'The Garden of Epicurus', 'La Stoa'], e: 'A community in Croton, in southern Italy.' },
       { q: 'What was special about the Pythagorean community with regard to women?', a: ['Admitted to women as students and teachers', 'I was driving them out of town.', 'I just let them cook.', 'Forbade them from talking about numbers.'], e: 'The names of several Pythagorean philosophers are known.' },
       { q: 'What principle guided the Pythagorean ethics taught by Teano?', a: ['Harmony and moderation', 'The pleasure without limits', 'The doubt above all', 'Blind obedience to the king'], e: 'The soul, like a lira, must be well tuned.' },
-      { q: 'According to tradition, who did Teano marry?', a: ['With Pythagoras', 'With Socrates', 'With Tales', 'With Heraclitus'], e: 'After his death, he is said to have run the school with his children.' },
-      { q: 'In which region was Crotona, the city of the Pythagoreans?', a: ['In the Magna Greece, southern Italy', 'In Jonia', 'In Egypt', 'In Attica'], e: 'The Greek colonies of southern Italy were called Magna Greece.' },
+      { q: 'According to tradition, who did Teano marry?', a: ['With Pythagoras', 'With Socrates', 'With Thales', 'With Heraclitus'], e: 'After his death, he is said to have run the school with his children.' },
+      { q: 'In which region was Croton, the city of the Pythagoreans?', a: ['In the Magna Greece, southern Italy', 'In Jonia', 'In Egypt', 'In Attica'], e: 'The Greek colonies of southern Italy were called Magna Greece.' },
       { q: 'What did Teano write, according to ancient sources, about numbers?', a: ['That things aren\'t numbers, but they exist according to the number', 'That numbers don\'t exist', 'That there is only number one', 'That numbers are gods'], e: 'A precision on the doctrine of Pythagoras.' },
       { q: 'What relationship did the Pythagoreans see between music and mathematics?', a: ['Harmonious notes respond to numerical proportions', 'None', 'Music was a slave thing', 'Maths were sung'], e: 'The eighth is the ratio 2 to 1.' },
-      { q: 'What other Pythagorean philosopher wrote about harmony in the family and the city?', a: ['Perictíone', 'Hypatia', 'Safo', 'Aspasia'], e: 'Several Pythagoreans wrote treatises on good life.' },
+      { q: 'What other Pythagorean philosopher wrote about harmony in the family and the city?', a: ['Perictione', 'Hypatia', 'Safo', 'Aspasia'], e: 'Several Pythagoreans wrote treatises on good life.' },
     ] } },
   { era: 2, after: 'pirron', d: {
     id: 'hipatia', name: 'Hypothia of Alexandria', short: 'Hypatia', dates: 'c. 355 – 415', epithet: 'The Mathematics of Alexandria',
@@ -3216,7 +3216,7 @@ for (const p of PENSADORAS) {
 
 Object.assign(LESSONS, {
   teano: [
-    'I\'m Teano from Crotona in southern Italy. I was a disciple of Pythagoras and, according to them, his wife. In our school, something rare in Greece, men and women studied together mathematics, music, astronomy and the art of living well.',
+    'I\'m Teano from Croton in southern Italy. I was a disciple of Pythagoras and, according to them, his wife. In our school, something rare in Greece, men and women studied together mathematics, music, astronomy and the art of living well.',
     'The Pythagoreans lived in community: we shared the goods, kept silence for years to learn to listen, and every night we went through the day asking ourselves: what have I done right, what have I done wrong, what have I stopped doing?',
     'We believe that the cosmos is harmony. A string that sounds gives a note; half of that string gives the same sharpest note. Everything in the universe responds to proportions like this, from planets to human soul.',
     'Some simplify and say that for Pythagoras everything is number. I explained it: things are not numbers, but they exist according to the number. The number is your order, your measure, not your matter.',
@@ -3399,7 +3399,7 @@ Object.assign(LESSONS, {
     'By learning to read the word, they learned to read the world: to wonder why they were poor, who decided their wages, how they could change their situation. That\'s what I called awareness. That is why the military coup of 1964 imprisoned me and sent me into exile for sixteen years.',
     'In Chile I wrote Pedagogy of the oppressed. I criticized banking education, in which the teacher places knowledge in passive students, as in an empty account. I proposed a problematizing education: dialogue, questions, real problems that teachers and students investigate together.',
     'No one educates anyone, no one educates himself: human beings educate each other, mediated by the world. The teacher also learns from his students. And teaching requires love, humility, hope, and respect for the knowledge of simple people.',
-    'I returned to Brazil in 1980 and was Secretary of Education of São Paulo. I died in 1997. You have traveled from Tales to today, from question to question. Don\'t keep this trip as a deposit in a bank: take it to the world, dialogue, ask and transform. Philosophy begins now with you.',
+    'I returned to Brazil in 1980 and was Secretary of Education of São Paulo. I died in 1997. You have traveled from Thales to today, from question to question. Don\'t keep this trip as a deposit in a bank: take it to the world, dialogue, ask and transform. Philosophy begins now with you.',
   ],
 });
 
@@ -4822,20 +4822,20 @@ ERAS.push({
         { q: 'What was Gundishapur Academy in Persia?', a: ['A great center of medicine and translation of knowledge', 'A military barracks', 'A port', 'A Temple of Fire'], e: 'Greek, Persian, Indian and Syrian sages gathered there.' },
         { q: 'What does the trip of the Panchatantra from India to Castile show?', a: ['That ideas travel between cultures and become rich when translated', 'That every culture lives in isolation', 'Which translate does not work', 'That books do not change anything'], e: 'Translating is a way to share wisdom.' },
       ] },
-    { id: 'ferdousi', name: 'Ferdousí', short: 'Ferdousí', dates: '940 – 1020', epithet: 'The poet who saved a language', boss: true,
+    { id: 'ferdousi', name: 'Ferdowsi', short: 'Ferdowsi', dates: '940 – 1020', epithet: 'The poet who saved a language', boss: true,
       look: lk(0x2a5a3a, 0xc8a050, 0xc8946a, 0xd8d8d8, { beard: 0xd8d8d8, hat: 'turban', acc: 'quill' }), prop: 'stars',
       intro: 'For thirty years I wrote the story of my people in verse, so that their tongue would not die. Do you know how much a tongue is worth?',
       defeat: 'You\'ve reached the end of Persia. As long as someone tells the stories in their own language, a people is still alive.',
-      concept: { name: 'The memory of a tongue', text: 'Ferdousí dedicated about thirty years to writing the Shahnameh, the Book of Kings: about fifty thousand verses telling the story of Iran from the creation of the world to the Arab conquest, with heroes like Rostam. He wrote it almost without Arabic words, in Persian, when that language ran the risk of being relegated. Thanks to him, Iranians today can read a poem from a thousand years ago almost without a dictionary.' },
+      concept: { name: 'The memory of a tongue', text: 'Ferdowsi dedicated about thirty years to writing the Shahnameh, the Book of Kings: about fifty thousand verses telling the story of Iran from the creation of the world to the Arab conquest, with heroes like Rostam. He wrote it almost without Arabic words, in Persian, when that language ran the risk of being relegated. Thanks to him, Iranians today can read a poem from a thousand years ago almost without a dictionary.' },
       q: [
-        { q: 'What work did Ferdousí write?', a: ['The Shahnameh, the Book of Kings', 'A thousand and one nights', 'The Masnavi', 'The Eneida'], e: 'It is the great epic of Iran.' },
-        { q: 'How many years did it take Ferdousí to write the Shahnameh?', a: ['About 30 years', 'One week', 'Two years', 'One hundred years'], e: 'He finished it around 1010.' },
+        { q: 'What work did Ferdowsi write?', a: ['The Shahnameh, the Book of Kings', 'A thousand and one nights', 'The Masnavi', 'The Eneida'], e: 'It is the great epic of Iran.' },
+        { q: 'How many years did it take Ferdowsi to write the Shahnameh?', a: ['About 30 years', 'One week', 'Two years', 'One hundred years'], e: 'He finished it around 1010.' },
         { q: 'Who is the great hero of the Shahnameh?', a: ['Rostam', 'Achilles', 'Gilgamesh', 'Rolando'], e: 'A very strong hero, riding his horse Rakhsh.' },
-        { q: 'Why did Ferdousí write almost without Arab words?', a: ['To preserve the Persian language', 'Because I didn\'t know Arabic.', 'Because it was forbidden.', 'By chance.'], e: 'His poem is a monument to his tongue.' },
+        { q: 'Why did Ferdowsi write almost without Arab words?', a: ['To preserve the Persian language', 'Because I didn\'t know Arabic.', 'Because it was forbidden.', 'By chance.'], e: 'His poem is a monument to his tongue.' },
         { q: 'What does the Shahnameh say?', a: ['The history of Iran from the creation of the world to the Arab conquest', 'The Life of Buddha', 'A Journey to the Moon', 'The history of Rome'], e: 'Myths, legends and history in verse.' },
-        { q: 'What does the legend say about the payment Ferdousí received?', a: ['That the Sultan paid him in silver instead of gold, and he divided it with contempt.', 'Who became king', 'He didn\'t want to collect.', 'They gave him a crystal palace'], e: 'When the gold came, legend says, he was already dead.' },
-        { q: 'What can Iranians do today thanks to Ferdousí?', a: ['Read a poem a thousand years ago almost without dictionary', 'Speak Latin', 'Writing with Runes', 'Nothing special'], e: 'The Persian has changed little since then.' },
-        { q: 'What does Ferdousí\'s work teach?', a: ['That a language keeps the memory and identity of a people', 'That languages don\'t matter', 'That only war matters', 'That we have to forget the past'], e: '"With the Persian I gave life to Iran," he wrote.' },
+        { q: 'What does the legend say about the payment Ferdowsi received?', a: ['That the Sultan paid him in silver instead of gold, and he divided it with contempt.', 'Who became king', 'He didn\'t want to collect.', 'They gave him a crystal palace'], e: 'When the gold came, legend says, he was already dead.' },
+        { q: 'What can Iranians do today thanks to Ferdowsi?', a: ['Read a poem a thousand years ago almost without dictionary', 'Speak Latin', 'Writing with Runes', 'Nothing special'], e: 'The Persian has changed little since then.' },
+        { q: 'What does Ferdowsi\'s work teach?', a: ['That a language keeps the memory and identity of a people', 'That languages don\'t matter', 'That only war matters', 'That we have to forget the past'], e: '"With the Persian I gave life to Iran," he wrote.' },
       ] },
   ],
 });
@@ -4870,7 +4870,7 @@ Object.assign(LESSONS, {
     'In their fables, animals teach to choose good friends, to distrust flatterers, and to think before acting. My question to you: what story taught you something that no lesson had ever taught you?',
   ],
   ferdousi: [
-    'I\'m Abolqasem Ferdousí. I was born around 940 near Tus, in northeastern Iran, in a family of landlords who loved the old stories of kings and heroes.',
+    'I\'m Abolqasem Ferdowsi. I was born around 940 near Tus, in northeastern Iran, in a family of landlords who loved the old stories of kings and heroes.',
     'In my time, the language of the wise and the court was Arabic, and the Persian ran the risk of remaining as the language of the kitchen. I thought, if no one writes our stories in our language, they\'ll both be lost.',
     'I dedicated about thirty years to writing the Shahnameh, the Book of Kings: about fifty thousand verses, from the creation of the world to the fall of the last Sassanid king, with heroes like Rostam and his horse Rakhsh.',
     'I wrote it almost without Arab words. At the end, I said: I have suffered a lot in these thirty years, but with the Persian I have given life to Iran. Today any Iranian can read my verses almost without a dictionary.',
@@ -4898,7 +4898,7 @@ Object.assign(LESSONS, {
     q: [
       { q: 'What does the Greek word "atom" mean?', a: ['What can\'t be cut', 'The very bright', 'What moves', 'What weighs heavily'], e: 'A-tomos: no division.' },
       { q: 'What is everything made of, according to Democritus?', a: ['Of atoms and voids', 'Of water', 'Fire', 'Of numbers'], e: 'The atoms move in the vacuum and combine.' },
-      { q: 'Who was the master of Democritus, initiator of atomism?', a: ['Leucipo', 'Socrates', 'Pythagoras', 'Plato'], e: 'Together they founded atomic theory.' },
+      { q: 'Who was the master of Democritus, initiator of atomism?', a: ['Leucippus', 'Socrates', 'Pythagoras', 'Plato'], e: 'Together they founded atomic theory.' },
       { q: 'What did Democritus say about flavors and colors?', a: ['Which are effects of atoms on our senses, not things in themselves.', 'Who are gods', 'That they don\'t exist in the senses', 'Who are eternal'], e: '«By convention the sweet; in reality atoms and emptiness.»' },
       { q: 'Why did they call Democritus "the philosopher who laughs"?', a: ['Because he laughed at human madness and sought serene joy', 'Because I used to tell jokes at the theater.', 'Because he was an actor.', 'Because I never meant it.'], e: 'For him, good courage (euthymia) was the goal of life.' },
       { q: 'What city was Democritus from?', a: ['De Abdera, in Thrace', 'From Athens', 'From Rome', 'From Alexandria'], e: 'Northern Greece.' },
@@ -4914,7 +4914,7 @@ Object.assign(LESSONS, {
     q: [
       { q: 'What does Seneca say in “On the brevity of life”?', a: ['That life is not short: we make it short by wasting it', 'That life lasts little and nothing can be done', 'That we have to live forever', 'That time does not exist'], e: '«We do not receive a short life, but make it short.»' },
       { q: 'What city was Seneca born in?', a: ['In Córdoba, in Roman Hispania', 'In Athens', 'In Alexandria', 'In Carthage'], e: 'He is one of the great thinkers born in present-day Spain.' },
-      { q: 'What philosophical school was Seneca from?', a: ['Stoica', 'Epicurean', 'Cynic', 'Skeptical'], e: 'Like Marco Aurelio and Epictetus.' },
+      { q: 'What philosophical school was Seneca from?', a: ['Stoica', 'Epicurean', 'Cynic', 'Skeptical'], e: 'Like Marcus Aurelius and Epictetus.' },
       { q: 'Which emperor was Seneca\'s teacher and advisor?', a: ['Of Nero', 'From Augusto', 'From Trajan', 'From Constantine'], e: 'He tried to moderate it, without success.' },
       { q: 'What passion did Seneca teach to dominate in a famous book?', a: ['Anger', 'Joy', 'Curiosity', 'Friendship'], e: 'In "On anger" he explains that it is a brief madness.' },
       { q: 'What are the letters in which Seneca advises his friend Lucilio?', a: ['Letters to Lucilio', 'Meditations', 'Confessions', 'Plato\'s Dialogues'], e: 'One hundred and twenty-four letters on how to live.' },
@@ -4974,7 +4974,7 @@ Object.assign(LESSONS, {
 Object.assign(LESSONS, {
   democrito: [
     'I am Democritus, of Abdera, a city in northern Greece. I inherited a fortune and spent it traveling: they say I was in Egypt, in Persia and even in India, learning from all.',
-    'My teacher Leucipo taught me an amazing idea: if you cut a stone in half, and then again, and again, in the end you will come to something that can no longer be cut. We call it an atom, "what is not divided."',
+    'My teacher Leucippus taught me an amazing idea: if you cut a stone in half, and then again, and again, in the end you will come to something that can no longer be cut. We call it an atom, "what is not divided."',
     'Everything is made of atoms that move in the void. They are different in shape and size: some smooth, others with hooks. By colliding and hooking, they form the water, the iron, the flowers and you.',
     'Colors and flavors are not in things, but in how their atoms touch our senses. That is why I say: by convention the sweet, by convention the bitter; in reality, atoms and emptiness.',
     'They call me the philosopher who laughs, because I laugh at human madness. I thought the goal of life was good spirits, cheerful serenity. My question to you: what thing that seems complicated could be explained by something very simple?',
@@ -5025,16 +5025,16 @@ Object.assign(LESSONS, {
 
   // ---------------------------------------------------------------- Atenas
   add('atenas', {
-    id: 'hipocrates', name: 'Hippocrates de Cos', short: 'Hippocrates', dates: 'c. 460 – 370 a. C.', epithet: 'The Father of Medicine',
+    id: 'hipocrates', name: 'Hippocrates de Kos', short: 'Hippocrates', dates: 'c. 460 – 370 a. C.', epithet: 'The Father of Medicine',
     look: lk(0xf0ece0, 0x3a6a8a, 0xd0a07a, 0xd8d8d8, { beard: 0xd8d8d8, hat: 'bald', acc: 'scroll' }), prop: 'water',
     intro: 'Before me, people believed that diseases were punishments of the gods. I preferred to observe the sick, listen to him and look for causes in nature. What would you do?',
     defeat: 'You have thought as a doctor: observe calmly, look for real causes and, above all, do no harm.',
-    concept: { name: 'Observe and not damage', text: 'Hippocrates, born on the island of Cos, separated medicine from magic: he taught that diseases have natural causes that can be observed, such as food, climate or water. His disciples carefully noted the symptoms and evolution of each patient. To his school is attributed the Hippocratic oath, which still inspires doctors, and the principle “first, do not harm”. He also taught that "life is short and art is long".' },
+    concept: { name: 'Observe and not damage', text: 'Hippocrates, born on the island of Kos, separated medicine from magic: he taught that diseases have natural causes that can be observed, such as food, climate or water. His disciples carefully noted the symptoms and evolution of each patient. To his school is attributed the Hippocratic oath, which still inspires doctors, and the principle “first, do not harm”. He also taught that "life is short and art is long".' },
     q: [
       Q('Why is Hippocrates called the father of medicine?', 'Because he explained diseases due to natural causes, not divine punishments.', 'He separated the medicine from magic and superstition.', 'Because he invented vaccines.', 'Because he was the first heart surgeon', 'Because he discovered the viruses.'),
       Q('What principle is associated with the tradition of Hippocrates?', 'First, don\'t hurt', 'Before healing, the doctor should avoid harm.', 'The end justifies the means', 'Everything flows.', 'I think, therefore I am'),
       Q('What is called the ethical promise that many doctors still make?', 'The Hippocratic Oath', 'It\'s attributed to your school.', 'The Olympic oath', 'The Golden Rule', 'The categorical imperative'),
-      Q('On which Greek island was Hippocrates born?', 'In Cos', 'There was a famous medical school there.', 'In Crete', 'In Samos', 'In Sicily'),
+      Q('On which Greek island was Hippocrates born?', 'In Kos', 'There was a famous medical school there.', 'In Crete', 'In Samos', 'In Sicily'),
       Q('What was Hippocrates school doing with every sick person?', 'Watched and carefully noted its symptoms and its evolution', 'Patient observation is the basis of scientific medicine.', 'He always took it to the temple.', 'He always gave her the same remedy.', 'I read him poems.'),
       Q('What famous phrase is attributed to Hippocrates?', '«Life is short and art is long»', 'Learning a trade, like medicine, takes a lifetime.', '«I know that I know nothing»', '«Know thyself»', '«Man is the measure of all things»'),
     ] }, 'platon');
@@ -5045,13 +5045,13 @@ Object.assign(LESSONS, {
     look: lk(0xb8a888, 0x5a4a3a, 0xc49372, 0x6a5a4a, { beard: 0x6a5a4a, acc: 'staff' }), prop: 'scales',
     intro: 'I was born a slave, and I was lame. But no one, nor my master, could take away from me the only thing that really is mine: what I think and how I respond. Can you tell what\'s up to you?',
     defeat: 'You have learned the great stoic lesson: take care of what is up to you and let go of what is not.',
-    concept: { name: 'What\'s up to me', text: 'Epictetus was a slave in Rome before becoming a great stoic teacher. His central teaching divides life into two: what depends on us (our judgments, desires, and actions) and what does not (the body, fame, what others do). We suffered, he said, not because of things, but because of the opinions we have about them. His disciple Arriano collected his lessons in the "Enquiridion", a pocket manual that Marco Aurelio read and which today inspires cognitive psychology.' },
+    concept: { name: 'What\'s up to me', text: 'Epictetus was a slave in Rome before becoming a great stoic teacher. His central teaching divides life into two: what depends on us (our judgments, desires, and actions) and what does not (the body, fame, what others do). We suffered, he said, not because of things, but because of the opinions we have about them. His disciple Arriano collected his lessons in the "Enquiridion", a pocket manual that Marcus Aurelius read and which today inspires cognitive psychology.' },
     q: [
       Q('What is Epictetus\'s central teaching?', 'Distinguishing what depends on us from what is not', 'Take care of your judgments and actions; accept the rest.', 'Always seek pleasure', 'Doubting everything', 'Always obey the strongest'),
       Q('What was Epictetus\'s condition in his youth?', 'He was a slave.', 'He was a slave in Rome and then a free man and a teacher.', 'He was emperor.', 'It was general.', 'He was a rich merchant.'),
       Q('According to Epictetus, what makes us suffer?', 'Not things, but the opinions we have about them.', 'Changing the judgment changes the emotion.', 'Only physical pain', 'The Gods', 'Bad luck.'),
       Q('What is the name of the manual that gathers his teachings?', 'Enquiry', 'It means \'what is at hand\': a pocket manual.', 'The Republic', 'The Prince', 'Meditations'),
-      Q('Which emperor philosopher admired and read Epictetus?', 'Marco Aurelio', 'He quotes him with gratitude in his Meditations.', 'Nero', 'Julius Caesar', 'Augusto'),
+      Q('Which emperor philosopher admired and read Epictetus?', 'Marcus Aurelius', 'He quotes him with gratitude in his Meditations.', 'Nero', 'Julius Caesar', 'Augusto'),
       Q('What current discipline is inspired by Epictetus?', 'Cognitive Psychology', 'It works with the idea that our thoughts influence our emotions.', 'Astronomy', 'Chemistry', 'Architecture'),
     ] }, 'hipatia');
 
@@ -5097,7 +5097,7 @@ Object.assign(LESSONS, {
       Q('What\'s the name of the theory that puts the Sun in the center?', 'Heliocentrism', 'Helios means Sun in Greek.', 'Geocentrism', 'Atomism', 'Stoicism'),
       Q('Where was Copernicus from?', 'From Poland', 'He worked at Frombork, near the Baltic Sea.', 'From Italy', 'From Greece', 'From Egypt'),
       Q('What movement of Earth explains day and night, according to Copernicus?', 'Rotation over itself', 'A complete lap every day.', 'The movement of the Sun', 'The translation', 'None'),
-      Q('Which scientists continued the idea of Copernicus?', 'Kepler, Galileo and Newton', 'Together they founded modern astronomy.', 'Plato and Aristotle', 'Tales and Pythagoras', 'Augustine and Thomas'),
+      Q('Which scientists continued the idea of Copernicus?', 'Kepler, Galileo and Newton', 'Together they founded modern astronomy.', 'Plato and Aristotle', 'Thales and Pythagoras', 'Augustine and Thomas'),
       Q('What does a “copernican turn” mean today?', 'A change of perspective that transforms everything', 'Kant used the expression for his own philosophy.', 'An ancient dance', 'A calculation error', 'A kind of clock'),
     ] }, 'maquiavelo');
 
@@ -5318,7 +5318,7 @@ Object.assign(LESSONS, {
 
 Object.assign(LESSONS, {
   hipocrates: [
-    'I\'m Hippocrates, from the island of Cos. My family was doctors, and I went through Greece healing the sick and teaching my disciples.',
+    'I\'m Hippocrates, from the island of Kos. My family was doctors, and I went through Greece healing the sick and teaching my disciples.',
     'In my time, many people thought that diseases were punishments of the gods, and were cured with amulets. I thought something else: diseases have natural causes.',
     'That is why I taught to observe: the water the sick person drinks, the air he breathes, what he eats, how he sleeps. We\'d write everything down, day after day, to learn from each case.',
     'I asked my disciples to swear to care for the sick, to keep their secrets and, above all, not to hurt him. That oath still inspires today\'s doctors.',
@@ -7990,15 +7990,15 @@ const Rhythm = {
 // ============================================================================
 const POIS = [
   [ // I · Jonia
-    { id: 'mileto', at: [-19, 26], name: 'The port of Mileto', text: 'Mileto was a rich commercial city of Jonia, on the coast of present-day Turkey, with several ports open to the Mediterranean. Their ships reached Egypt and Mesopotamia, and with the goods they also traveled knowledge of astronomy and geometry.', fact: 'Mileto founded dozens of colonies around the Black Sea. There was born the first school of philosophy: Tales, Anaximander and Anaximenes.' },
+    { id: 'mileto', at: [-19, 26], name: 'The port of Miletus', text: 'Miletus was a rich commercial city of Jonia, on the coast of present-day Turkey, with several ports open to the Mediterranean. Their ships reached Egypt and Mesopotamia, and with the goods they also traveled knowledge of astronomy and geometry.', fact: 'Miletus founded dozens of colonies around the Black Sea. There was born the first school of philosophy: Thales, Anaximander and Anaximenes.' },
     { id: 'dorico', at: [5, 22], name: 'The Doric Order', text: 'These columns follow the doric order, the oldest and most sober of Greek architecture: without base, with the striad stem and a simple capital formed by a cushion and a square slab.', fact: 'The Greeks slightly thickened the center of the columns, the entases, to correct the optical illusion that they look thinner in between.' },
-    { id: 'mitos', at: [16, -24], name: 'Before Philosophy: Myths', text: 'Before Tales, the Greeks explained the world with tales of gods. The Theogony of Hesiod recounted how the earth, Heaven, and gods were born of Chaos, and Homer\'s poems narrated the war of Troy.', fact: 'The word "myth" means story and "logos", reason or reasoned word. The passage from one to the other was gradual: the first philosophers still spoke of gods.' },
+    { id: 'mitos', at: [16, -24], name: 'Before Philosophy: Myths', text: 'Before Thales, the Greeks explained the world with tales of gods. The Theogony of Hesiod recounted how the earth, Heaven, and gods were born of Chaos, and Homer\'s poems narrated the war of Troy.', fact: 'The word "myth" means story and "logos", reason or reasoned word. The passage from one to the other was gradual: the first philosophers still spoke of gods.' },
     { id: 'didima', at: [-6, -40], name: 'The Temple of Apollo in Didima', text: 'Near Miletus was the sanctuary of Apollo in Didima, one of the great oracles of the Greek world. The pilgrims consulted the god about travel, wars and city foundations.', fact: 'The Temple of Didima was never finished: its construction lasted centuries and some of its columns are still standing.' },
   ],
   [ // II · Atenas
     { id: 'partenon', at: [6, -40], name: 'The Parthenon', text: 'Temple of Athena Parthenos, protector of the city, built in the Acropolis between 447 and 432 B.C. by order of Pericles. The sculptor Fidias directed his decoration and created a large statue of the goddess in gold and ivory.', fact: 'In the Parthenon there are almost no straight lines: the ground bends upwards and the columns lean a little inwards to look perfect in sight.' },
     { id: 'agora', at: [3, 21], name: 'The Agora', text: 'The agora was the heart of Athens: market, meeting place, courts and government buildings. Socrates here was talking to anyone who wanted to think with him.', fact: 'Archaeologists found in the agora the remains of a public prison that could be the one where Socrates drank the hemlock.' },
-    { id: 'stoa', at: [-17, 5.5], name: 'Stowaways', text: 'The stowaways were long porticoes with columns where people protected themselves from the sun, traded and argued. The Stoa Poikile, the painted portico, was decorated with great battle paintings.', fact: 'Zenón de Citio taught under the Stoa Poikile, and so his followers were called stoics: those of the portico.' },
+    { id: 'stoa', at: [-17, 5.5], name: 'Stowaways', text: 'The stowaways were long porticoes with columns where people protected themselves from the sun, traded and argued. The Stoa Poikile, the painted portico, was decorated with great battle paintings.', fact: 'Zeno de Citio taught under the Stoa Poikile, and so his followers were called stoics: those of the portico.' },
     { id: 'democracia', at: [9.5, -9], name: 'Athenian democracy', text: 'Since the reforms of Clysthenes, around 508 BC, male citizens decided at the assembly, which met on the hill of the Pnyx. Many charges were divided by lot so that anyone could rule.', fact: 'With ostracism, the Athenians could banish a politician for ten years by writing his name in pieces of ceramics called ostraka. Women, slaves and foreigners did not vote.' },
   ],
   [ // III · Helenismo y Roma
@@ -8179,7 +8179,7 @@ const MORE_POIS = [
 // ---------- preguntas sobre los lugares originales (para los debates de los maestros)
 const POI_Q = {
   akademos: { q: 'Where does the name of Plato\'s Academy come from?', a: ['From the sacred forest of the hero Akademos, where he was', 'From a king of Sparta', 'From the Greek word for “school”', 'From Plato\'s mother\'s name'], e: 'Plato taught in the gardens of Akademos, outside Athens.' },
-  mileto: { q: 'What region was Mileto in?', a: ['Jonia, in Asia Minor', 'The Peloponnese', 'Sicily', 'Egypt'], e: 'Jonia is on the coast of present-day Turkey.' },
+  mileto: { q: 'What region was Miletus in?', a: ['Jonia, in Asia Minor', 'The Peloponnese', 'Sicily', 'Egypt'], e: 'Jonia is on the coast of present-day Turkey.' },
   dorico: { q: 'What is the oldest and most sober Greek architectural order?', a: ['The Doric', 'The Corinthian', 'The Gothic', 'The Romanesque'], e: 'Without base and with a simple capital.' },
   mitos: { q: 'What work of Hesiod counted the origin of the gods?', a: ['The Theogony', 'The Iliad', 'The Republic', 'The Odyssey'], e: 'Theogony means "birth of the gods."' },
   didima: { q: 'To which god was the temple of Didima dedicated?', a: ['Apollo', 'Zeus', 'Poseidon', 'Hermes'], e: 'He was one of his great oracles.' },
@@ -8210,8 +8210,8 @@ const POI_Q = {
 // look como el de los filósofos · female: voz femenina · path: [dx, dz] de su paseo
 const NPCS = [
   [ // I · Mileto
-    { id: 'pescador', name: 'Damon', role: 'fisherman of Mileto', at: [-17, 16], path: [0, 6], look: { robe: 0x8a7a5a, robe2: 0x3e6d8f, skin: 0xa8754f, hair: 0x3a2a20, beard: 0x3a2a20, hat: 'none', acc: 'staff' },
-      lines: ['I go out to sea before dawn. Tales says that everything is water, and I believe him: the sea feeds us, takes us to Egypt and sometimes takes everything away from us.', 'The Phoenician sailors taught us how to guide us through the Lesser Bear. They say Tales advised the navigators to be guided by her.', 'In Mileto there are more boats than in any other city of Jonia. With commerce come stories, foreign gods and, now, those philosophers who ask everything.'] },
+    { id: 'pescador', name: 'Damon', role: 'fisherman of Miletus', at: [-17, 16], path: [0, 6], look: { robe: 0x8a7a5a, robe2: 0x3e6d8f, skin: 0xa8754f, hair: 0x3a2a20, beard: 0x3a2a20, hat: 'none', acc: 'staff' },
+      lines: ['I go out to sea before dawn. Thales says that everything is water, and I believe him: the sea feeds us, takes us to Egypt and sometimes takes everything away from us.', 'The Phoenician sailors taught us how to guide us through the Lesser Bear. They say Thales advised the navigators to be guided by her.', 'In Miletus there are more boats than in any other city of Jonia. With commerce come stories, foreign gods and, now, those philosophers who ask everything.'] },
     { id: 'rapsoda', name: 'Ione', role: 'rapsoda', female: true, at: [10, 28], path: [6, 0], look: { robe: 0xf2e6c8, robe2: 0x9c3d2e, skin: 0xd2a684, hair: 0x2a1a10, beard: false, hat: 'longhair', acc: 'scroll' },
       lines: ['I recite Homer\'s verses at the holidays: the anger of Achilles, the journey of Ulysses. For centuries, those poems were our school.', 'Philosophers criticize Homer because he paints lying and jealous gods. Jenophanes said that if the oxen painted gods, they would make them ox-shaped.', 'Before books existed, memory kept everything. I know thousands of verses by heart.'] },
     { id: 'mercader', name: 'Abibaal', role: 'mercader fenicio', at: [14, -10], path: [0, 8], look: { robe: 0x6a1f5a, robe2: 0xd9b44a, skin: 0x8f6446, hair: 0x1a1410, beard: 0x1a1410, hat: 'turban', acc: 'scroll' },
@@ -8219,7 +8219,7 @@ const NPCS = [
   ],
   [ // II · Atenas
     { id: 'aspasia', name: 'Aspasia', role: 'teacher of rhetoric', female: true, at: [-4, 14], path: [0, 6], look: { robe: 0xe8d8f0, robe2: 0x7b3f8c, skin: 0xd8ad8a, hair: 0x5a3a20, beard: false, hat: 'longhair', acc: 'scroll' },
-      lines: ['I\'m Aspasia de Mileto, a colleague of Pericles. They say I helped him write his speeches, and Socrates came to talk to me about rhetoric.', 'We Athenian women do not vote or speak in the assembly. Many live almost always at home, in gynecée. I, being a foreigner, had more freedom than they did.', 'They brought me to trial on charges of ungodliness, like Socrates. Pericles defended me crying in court.'] },
+      lines: ['I\'m Aspasia de Miletus, a colleague of Pericles. They say I helped him write his speeches, and Socrates came to talk to me about rhetoric.', 'We Athenian women do not vote or speak in the assembly. Many live almost always at home, in gynecée. I, being a foreigner, had more freedom than they did.', 'They brought me to trial on charges of ungodliness, like Socrates. Pericles defended me crying in court.'] },
     { id: 'cefalo', name: 'Cephalus', role: 'meteco, shield manufacturer', at: [9.5, 27.5], path: [5, 0], look: { robe: 0x8a5a3a, robe2: 0x3a2a20, skin: 0xbf9070, hair: 0xd8d4cc, beard: 0xd8d4cc, hat: 'none', acc: 'staff' },
       lines: ['I\'m a meteor, a foreigner who lives in Athens. I pay taxes and serve in the army, but I can\'t vote or have land.', 'In my house of Piraeus, Plato placed the beginning of the Republic. There Socrates asked me what justice is, and I said to him: tell the truth and return what is due.', 'My shield shop gives work to many slaves. It is the economy of Athens: many of those who work are not free.'] },
     { id: 'nicias', name: 'Nicias', role: 'hoplita', at: [-8, -20], path: [8, 0], look: { robe: 0x9c3d2e, robe2: 0xc8a050, skin: 0xb98563, hair: 0x2b211b, beard: 0x2b211b, hat: 'none', acc: 'staff' },
@@ -8266,8 +8266,8 @@ const NPCS = [
 // ---------- encargos de cada pensador antes de aceptar el debate
 // needs: { pois: [...], npcs: [...] } · riddle: pregunta que solo resuelve quien ha explorado y escuchado
 const QUESTS = {
-  tales: { text: 'Before you debate, go to Mileto Harbour and talk to Damon, the fisherman. Then tell me: why is water so important to our city?', needs: { pois: ['mileto'], npcs: ['pescador'] },
-    riddle: { q: 'Why is water so important to Mileto, according to what you have seen and heard?', a: ['For the sea gives us food, trade, and knowledge of other peoples', 'Because in Mileto it never rains', 'For the gods forbid to drink wine', 'For the water is heavier than the earth'] } },
+  tales: { text: 'Before you debate, go to Miletus Harbour and talk to Damon, the fisherman. Then tell me: why is water so important to our city?', needs: { pois: ['mileto'], npcs: ['pescador'] },
+    riddle: { q: 'Why is water so important to Miletus, according to what you have seen and heard?', a: ['For the sea gives us food, trade, and knowledge of other peoples', 'Because in Miletus it never rains', 'For the gods forbid to drink wine', 'For the water is heavier than the earth'] } },
   pitagoras: { text: 'Listen well, my friend: if a twelve-palm string gives a note, how long should the string sound a sharper octave?',
     riddle: { q: 'A 12-palm string gives a note. What rope does a sharper octave sound?', a: ['One of 6 spans: half', 'One of 24 palms: twice as many', 'One of 8 spans', 'One of 12 palms, more strained by fire'] } },
   heraclito: { text: 'Talk to Ione, the rapsoda, and discover the doric order of our columns. Then answer me to an enigma: can you bathe twice in the same river?', needs: { pois: ['dorico'], npcs: ['rapsoda'] },
@@ -8441,7 +8441,7 @@ const BOOKS = [
         { t: 'The Stairway of Love', x: 'Diotima describes an ascension: first we love a beautiful body, then the beauty of all bodies, then that of souls, laws and knowledges. In the end you contemplate Beauty itself, eternal and pure. Then Alcibiades breaks in, drunk, and praises Socrates, who remains serene until dawn.' },
       ],
       quote: 'Love is a desire to beget in beauty, both according to the body and according to the soul.',
-      q: { q: 'In The banquet, who taught Socrates what love is?', a: ['Diotima de Mantinea', 'Aspasia de Mileto', 'Aristophanes', 'The Pitia of Delphi'], e: 'Diotima explains that love is the desire for the beauty that is not possessed.' } },
+      q: { q: 'In The banquet, who taught Socrates what love is?', a: ['Diotima de Mantinea', 'Aspasia de Miletus', 'Aristophanes', 'The Pitia of Delphi'], e: 'Diotima explains that love is the desire for the beauty that is not possessed.' } },
     { id: 'fedon', author: 'platon', by: 'Plato', title: 'Fedon', year: 'towards 380 B.C.', kind: 'dialog', at: [14, 11],
       parts: [
         { t: 'The Last Day of Socrates', x: 'Fedon tells a friend how Socrates\' last day was in Athens prison. His disciples weep, but Socrates is calm and conversing with them. He asks them why a philosopher should fear death, if his whole life has been a preparation for it.' },
@@ -8489,7 +8489,7 @@ const BOOKS = [
       ],
       quote: 'La muerte no es nada para nosotros: cuando nosotros somos, ella no es; y cuando ella es, nosotros ya no somos.',
       q: { q: 'According to the Letter to Meneceus, what pleasure does the wise seek?', a: ['Do not suffer in the body or be disturbed in the soul', 'The most luxurious banquets', 'Fame and Honours', 'Power over others'], e: 'Ataraxia and apologetic: serenity of the soul and absence of pain.' } },
-    { id: 'meditaciones', author: 'marcoaurelio', by: 'Marco Aurelio', title: 'Meditations', year: 'towards 175 A.D.', kind: 'diario', at: [-14, -24],
+    { id: 'meditaciones', author: 'marcoaurelio', by: 'Marcus Aurelius', title: 'Meditations', year: 'towards 175 A.D.', kind: 'diario', at: [-14, -24],
       parts: [
         { t: 'A diary for himself', x: 'Marco Aurelius was emperor of Rome and wrote these notes in Greek at night during his military campaigns on the Danube. He did not intend to publish them: his original title is For himself. They are exercises to remember how to live like a stoic every day.' },
         { t: 'What\'s up to you', x: 'Many things do not depend on us: fame, health, what others do. The only thing that depends on you is your judgment. If something external troubles you, it\'s not the thing that bothers you, but your opinion of it, and that opinion you can change right now.' },
@@ -10956,10 +10956,10 @@ Object.assign(DIALOGOS, {
         respuestas: [
           DR('We must do both: fight against injustice, which depends partly on me, without letting hatred dominate me.', 'b', 'Excellent: you distinguish what depends and what doesn\'t, as a stoic.'),
           DR('Lo concedo: cambiar el juicio no basta ante una injusticia; pero ayuda a actuar con calma y no con rabia ciega.', 'b', 'Good answer: you nuance without abandoning the idea.'),
-          DR('No, we just have to hold on.', 'd', 'Marco Aurelio acted: he ruled and fought for years.'),
+          DR('No, we just have to hold on.', 'd', 'Marcus Aurelius acted: he ruled and fought for years.'),
           DR('Either you change your mind or you change the world, but not both.', 'f', 'You can do both.', 'falso dilema'),
         ],
-        cierre: 'Marco Aurelio wrote every night in his Meditations to train his gaze. The serenity is also practiced.' },
+        cierre: 'Marcus Aurelius wrote every night in his Meditations to train his gaze. The serenity is also practiced.' },
       { t: 'I disagree: some things are really bad.', eje: 'hechos',
         razones: [
           DR('Hunger or a serious illness make you suffer, think what you think of them.', 'b', 'Good reason: there are sufferings that do not depend only on judgment.'),
@@ -10989,7 +10989,7 @@ Object.assign(DIALOGOS, {
           DR('I\'m not worried about anything.', 'd', 'Surely there is something; the question asked to think about it.'),
           DR('Nothing\'s up to me.', 'f', 'You contradict your own position.', 'contradiction'),
         ],
-        cierre: 'Epictetus summed it up like this: on things, some depend on us and others don\'t. You just applied that distinction to your own life, like Marco Aurelio did every night.' },
+        cierre: 'Epictetus summed it up like this: on things, some depend on us and others don\'t. You just applied that distinction to your own life, like Marcus Aurelius did every night.' },
     ],
   },
   diogenes: {
@@ -11672,7 +11672,7 @@ const inCave = (x) => x > 60;
 // lugares para descubrir dentro de la caverna (cuentan como lugares de Atenas)
 POIS[CAVE_ERA].push(
   { id: 'cueva-salida', at: [93, 22], y: 6, name: 'The sunrise to the sun', text: 'Plato imagines that one of the prisoners is released and forced to climb a rough and steep road to the exit. At first the sunlight blinds him and hurts him. Little by little he sees the shadows, then the reflections in the water, then the things themselves and, in the end, the sun. The sun represents the Idea of Good, which makes everything else visible and understandable.',
-    fact: 'Plato tells the myth of the cave in the book VII of The Republic, as a dialogue between Socrates and Glaucón.',
+    fact: 'Plato tells the myth of the cave in the book VII of The Republic, as a dialogue between Socrates and Glaucon.',
     q: { q: 'What does the sun represent in the cave myth?', a: ['The Idea of Good, which makes everything else understandable', 'The fire of the kitchen', 'The power of the king', 'A God Who Punishes'], e: 'It is the goal of the path of knowledge.' } },
   { id: 'cueva-fuego', at: [86, 9], y: 3, name: 'The Fire of the Cave', text: 'Behind the prisoners, on high, a fire burns. Its light casts on the wall of the background the shadows of objects that pass through the front. If a released prisoner looked directly at the fire, his eyes would hurt and he would want to return to his shadows, which are more comfortable and familiar to him.',
     fact: 'For Plato, learning hurts a little: getting out of the familiar discomfort, and that is why many prefer to keep the shadows.',
@@ -12055,7 +12055,7 @@ ZONES.push({
     W.spots.push({ x: -90, z: 7.8, r: 1.9, verb: 'Take', label: 'The gold ring', on: () => W.zoneIn === Z && !s.has, act: () => XP.open('The Ring of Gyges', 'A ring that makes invisible', 'Plato tells La República that Pastor Gyges, after an earthquake, went down to a crack and found a hollow bronze horse. Inside was a dead giant with a gold ring. Gyges put it on, and discovered that when he turned the stone inward, no one could see it.', [['Put the ring on and turn it around.', () => { s.has = true; ring.visible = false; inv(true); toast('You have turned the ring: now no one can see you. Go through the market...'); }], ['Leave it where it is.', null]]) });
     const coinReply = (k, title, text) => () => { xpRecord('giges', 'The Ring of Gyges', 'The bag: ' + k); if (k.startsWith('Tomar')) bag.visible = false; XP.open('The Ring of Gyges', title, text, [['Follow', null]]); };
     W.spots.push({ x: -81.2, z: 0.3, r: 1.9, verb: 'Look', label: 'The merchant\'s bag', on: () => W.zoneIn === Z && s.inv && !s.coins, act: () => { s.coins = true; XP.open('No one sees you', 'The merchant\'s bag', 'The merchant has been distracted by talking to a client. His bag of coins is within your reach. No one sees you, and no one could ever accuse you.', [
-      ['Take it: no one will know', coinReply('Take it: no one will know', 'Glaucón would be right.', 'Glaucón, Plato\'s brother, says that with a ring like this no one would remain just: everyone would take the other, because we are only righteous for fear of being discovered. Socrates answers that the unjust, even if no one sees him, messes up his own soul and becomes a slave to his desires.')],
+      ['Take it: no one will know', coinReply('Take it: no one will know', 'Glaucon would be right.', 'Glaucon, Plato\'s brother, says that with a ring like this no one would remain just: everyone would take the other, because we are only righteous for fear of being discovered. Socrates answers that the unjust, even if no one sees him, messes up his own soul and becomes a slave to his desires.')],
       ['Leave her: she\'s not mine, even if no one sees me', coinReply('Leave her: she\'s not mine, even if no one sees me', 'Socrates would be with you.', 'For Socrates, justice is not a mask to look good before others, but the health of the soul. Who is just for fear of punishment, is not really fair.')],
       ['Warn the merchant to keep it', coinReply('Warn the merchant to keep it', 'Beyond not stealing', 'Not only do you not steal: you protect the other. For Socrates, the righteous seeks the common good. But... How do you tell if you\'re invisible? Maybe you\'ll have to take off the ring and face it.')],
     ]); } });
@@ -12065,7 +12065,7 @@ ZONES.push({
       ['Only to discover injustices and denounce them', palReply('Spying to denounce injustices', 'A noble end... but spying on others without them knowing it, is it fair even if your intention is good? It is the old question of whether the end justifies the means.')],
       ['Do Not Enter: Power Without Control Corrupts', palReply('Do not enter', 'It is the intuition of many thinkers, from Plato to Lord Acton: "Power tends to corrupt, and absolute power corrupts absolutely".')],
     ]); } });
-    W.spots.push({ x: -95, z: 14, r: 2.2, verb: 'Remove my ring', label: 'The source', on: () => W.zoneIn === Z && s.inv, act: () => { inv(false); achieve('giges'); XP.open('The Ring of Gyges', 'You\'re visible again', 'Glaucón challenged Socrates: «prove to me that justice is worth for itself, and not just for good fame». The whole Republic is the answer to that challenge. Now it\'s your turn to answer.', [XP.note('xp-giges', 'The Ring of Gyges', 'Would you be fair if no one could ever see you? Why?'), ['Put it back on.', () => inv(true)], ['Follow', null]]); } });
+    W.spots.push({ x: -95, z: 14, r: 2.2, verb: 'Remove my ring', label: 'The source', on: () => W.zoneIn === Z && s.inv, act: () => { inv(false); achieve('giges'); XP.open('The Ring of Gyges', 'You\'re visible again', 'Glaucon challenged Socrates: «prove to me that justice is worth for itself, and not just for good fame». The whole Republic is the answer to that challenge. Now it\'s your turn to answer.', [XP.note('xp-giges', 'The Ring of Gyges', 'Would you be fair if no one could ever see you? Why?'), ['Put it back on.', () => inv(true)], ['Follow', null]]); } });
   },
   onEnter(W, Z) { const s = Z.s; s.has = false; s.coins = false; s.palace = false; s.ring.visible = true; s.bag.visible = true; },
   onExit(W, Z) { if (Z.s.inv) Z.s.invFn(false); },
@@ -12409,12 +12409,12 @@ BOOKS.push([
     ],
     quote: 'Listen with your ears to the best; look with a clear mind, and let each one choose for himself.',
     q: { q: 'What does Zarathustra ask of those who listen to his hymns?', a: ['Let each one choose for himself, after thinking with a clear mind', 'Let them obey without asking', 'Let them forget their hymns.', 'Let them choose nothing.'], e: 'Free choice is at the centre of their teaching.' } },
-  { id: 'shahnameh', author: 'ferdousi', by: 'Ferdousí', title: 'Shahnameh, the Book of Kings', year: 'c. 1010', kind: 'epopeya', at: B2[1],
+  { id: 'shahnameh', author: 'ferdousi', by: 'Ferdowsi', title: 'Shahnameh, the Book of Kings', year: 'c. 1010', kind: 'epopeya', at: B2[1],
     parts: [
       { t: 'The history of a people', x: 'The Shahnameh tells in about 50,000 verses the story of Iran: from the first king of creation of the world to the fall of the Sassanid Empire in the seventh century.' },
       { t: 'Rostam and Rakhsh', x: 'The great hero is Rostam, strong as an elephant and loyal to his people, riding on Rakhsh, a horse that saves him more than once. Together they overcome seven tests on a journey full of dragons and demons.' },
-      { t: 'Rostam and Sohrab', x: 'The saddest story: Rostam fights against a young warrior without knowing that he is his son, Sohrab. When he finds out, it\'s too late. Ferdousí teaches that war and pride can destroy what we love most.' },
-      { t: 'A saved tongue', x: 'Ferdousí wrote almost without Arab words, in a clean Persian. At the end, he said he would not die, because he had sown the seed of his tongue. A thousand years later, Iranians continue to read it.' },
+      { t: 'Rostam and Sohrab', x: 'The saddest story: Rostam fights against a young warrior without knowing that he is his son, Sohrab. When he finds out, it\'s too late. Ferdowsi teaches that war and pride can destroy what we love most.' },
+      { t: 'A saved tongue', x: 'Ferdowsi wrote almost without Arab words, in a clean Persian. At the end, he said he would not die, because he had sown the seed of his tongue. A thousand years later, Iranians continue to read it.' },
     ],
     quote: 'I will not die, for I have sown the seed of the word.',
     q: { q: 'What story of Shahnameh shows that pride can destroy what we love?', a: ['Rostam fights his son Sohrab without knowing who he is', 'Rostam finds a treasure', 'Rakhsh learns how to fly', 'A king builds a bridge'], e: 'The great tragedy of the Persian epic.' } },
@@ -12660,7 +12660,7 @@ ZONES.push({
 //  Encargos y anécdotas de Demócrito, Séneca, Hobbes, Rousseau y Schopenhauer
 // ============================================================================
 Object.assign(QUESTS, {
-  democrito: { text: 'Visit Mileto, where it all began, and listen to the merchant who has traveled half the world. Then tell me what everything that exists is made of.', needs: { pois: ['mileto'], npcs: ['mercader'] },
+  democrito: { text: 'Visit Miletus, where it all began, and listen to the merchant who has traveled half the world. Then tell me what everything that exists is made of.', needs: { pois: ['mileto'], npcs: ['mercader'] },
     riddle: { q: 'According to Democritus, what is all that exists made of?', a: ['Of atoms and voids', 'Of water', 'Of four elements and love', 'Of numbers'] } },
   seneca: { text: 'He passes under the arch of triumph of Rome and listens to Calias. Then tell me if life is short or we make it short.', needs: { pois: ['arco'], npcs: ['calias'] },
     riddle: { q: 'According to Seneca, why do we think life is short?', a: ['Because we waste it: it\'s not short, we make it short', 'Because the gods want it.', 'Because it\'s impossible to live long', 'Because time doesn\'t exist.'] } },
@@ -12767,7 +12767,7 @@ const GUIDE_LINES = [
   ['Welcome to classical Athens, the city of agora, the Academy and the Lyceum. Here thinking became a dialogue: someone asks, someone answers, and the two discover that they knew less than they believed.',
     'Find Protagoras, Socrates, Plato, and finally Aristotle. Fear not to be mistaken: to recognize what you do not know is the beginning of wisdom.'],
   ['You\'ve reached Helenism and Rome. Empires became immense and people felt small; therefore philosophy became an art of living.',
-    'Diogenes, Epicurus, Pirron, Hippatia and Marco Aurelio will teach you to seek serenity. Ask them what\'s up to you and what\'s not.'],
+    'Diogenes, Epicurus, Pirron, Hippatia and Marcus Aurelius will teach you to seek serenity. Ask them what\'s up to you and what\'s not.'],
   ['Welcome to the Middle Ages: a thousand years when faith and reason talked in monasteries, mosques and universities. It was not a dark time: here the books of the Greeks were copied, translated and discussed.',
     'Augustine, Hildegarda, Averroes, Ockham and Thomas Aquinas will show you that believing and thinking can walk together.'],
   ['You come to the Renaissance and the scientific revolution. The human being looks again with amazement, and the Earth ceases to be the center of the universe.',
@@ -12805,7 +12805,7 @@ const GUIDE_LINES = [
   ['Welcome to the north of Vikings. There were not only warriors: there were poets, wise men, navigators and an assembly where the law was made among all.',
     'The visionary of the Völuspá, Egill, Aud la Sabia, Thorgeir and Snorri Sturluson await you. Remember what the Havamál says: one human being is the joy of another human being.'],
   ['Welcome to ancient Persia, the first great empire of many peoples. Here it was learned that one can govern with respect for differences, and that each person chooses between truth and lies.',
-    'Zarathustra, Cyrus the Great, Mani, Burzoe and Ferdousí await you. Walk in the garden: from his Persian name comes our word paradise.'],
+    'Zarathustra, Cyrus the Great, Mani, Burzoe and Ferdowsi await you. Walk in the garden: from his Persian name comes our word paradise.'],
 ];
 // dónde espera en cada época (junto al punto de llegada, en z = 31)
 const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5], 17: [2.8, 24.5], 18: [2.8, 24.5], 19: [2.8, 24.5], 20: [2.8, 24.5], 21: [2.8, 24.5] };

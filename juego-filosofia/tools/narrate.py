@@ -17,7 +17,7 @@ def voice(name):
 
 def run(job):
     v = voice(job['voice']); sr = v.config.sample_rate
-    cfg = SynthesisConfig(length_scale=1.2 if job['voice'] == 'carlfm' else 0.8, noise_scale=0.6, noise_w_scale=0.7)
+    cfg = SynthesisConfig(length_scale=1.2 if job['voice'] == 'carlfm' else 1.0 if job['voice'] in ('ryan', 'lessac', 'alan', 'joe', 'amy') else 0.8, noise_scale=0.6, noise_w_scale=0.7)
     pcm = bytearray(b'\0\0' * int(sr * 0.15)); spans = []
     for s in job['sentences']:
         start = len(pcm) // 2
@@ -27,7 +27,7 @@ def run(job):
     f = job['pitch']
     filt = f'asetrate={int(sr * f)},aresample={sr},atempo={1 / f:.5f},' if abs(f - 1) > 1e-3 else ''
     filt += 'highpass=f=70,acompressor=threshold=-18dB:ratio=3:attack=5:release=80,volume=1.6'
-    out = os.path.join(OUT, job['name'] + '.mp3')
+    out = os.path.join(OUT, job['name'] + '.mp3'); os.makedirs(os.path.dirname(out), exist_ok=True)
     subprocess.run(['ffmpeg', '-v', 'error', '-y', '-f', 's16le', '-ar', str(sr), '-ac', '1', '-i', '-', '-af', filt,
                     '-ar', '22050', '-ac', '1', '-b:a', '24k', '-codec:a', 'libmp3lame', out], input=bytes(pcm), check=True)
     return job['name'], spans
