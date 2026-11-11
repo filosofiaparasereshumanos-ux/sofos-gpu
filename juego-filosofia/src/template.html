@@ -403,6 +403,7 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .mpd-card.me { border-color: var(--gold); }
 #mpd .mpd-box { max-height: calc(100vh - 32px); overflow: auto; }
 .dif-pick { text-align: center; margin: 4px auto 14px; max-width: 520px; } .dif-pick > span { display: block; font-family: var(--display); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; } .dif-pick small { display: block; margin-top: 6px; color: var(--parchment-dim); font-size: 0.85rem; }
+.title-panel { position: relative; } .lang-pill { position: absolute; top: 6px; right: 6px; z-index: 3; padding: 5px 10px; border: 1px solid var(--gold); border-radius: 999px; font-family: var(--display); font-size: 0.78rem; letter-spacing: 0.1em; color: var(--gold-bright); text-decoration: none; background: rgba(20,16,10,0.6); }
 #b-foto { position: absolute; left: max(12px, var(--sal, 0px)); top: calc(max(8px, var(--sat)) + 96px); z-index: 31; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold); background: rgba(10,8,5,0.75); font-size: 1.3rem; cursor: pointer; }
 .foto-card { text-align: center; } .foto-card img { max-width: 100%; max-height: 62vh; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.6); }
 .av-chip.lock { opacity: 0.55; font-size: 0.75rem; color: #fff; }
@@ -904,6 +905,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
 
   <section id="title" class="screen" hidden>
     <div class="panel title-panel">
+      <a class="lang-pill" id="b-lang2" href="index-en.html" aria-label="English version">EN</a>
       <div class="eyebrow">Un viaje de 4.500 años</div>
       <h1 class="logo"><span class="alpha">O</span>DISEA</h1>
       <p class="subtitle">de la Razón · filosofía, ciencia e historia</p>
@@ -933,6 +935,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="mini-b" id="b-logros">Logros <span id="b-logros-n"></span></button>
         <button class="mini-b" id="b-howto">Cómo jugar</button>
         <button class="mini-b" id="b-settings">Ajustes</button>
+        <a class="mini-b" id="b-lang" href="index-en.html">English</a>
         <button class="mini-b" id="b-fs" hidden>Pantalla completa</button>
         <button class="mini-b login-b" id="b-login" hidden>Mi cuenta</button>
         <button class="mini-b install-b" id="b-install" hidden>Instalar app</button>
