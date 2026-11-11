@@ -6,7 +6,7 @@
 //  recibidos. Dos rondas y podio. Quien abre el torneo lleva la cuenta.
 // ============================================================================
 const TOR_MIN = 3, TOR_ROUNDS = 2;
-const TOR_ON = false; // en pruebas: todavía no se ofrece a los jugadores
+const TOR_ON = true; // en pruebas: todavía no se ofrece a los jugadores
 const Torneo = {
   T: null,
   me() { return Juntos.myId(); },
@@ -78,8 +78,9 @@ const Torneo = {
     if (d.t === 'open') return this.invite(d);
     if (!T || h !== T.host) return; const host = T.host === this.me(); T.rx = performance.now();
     if (host) {
-      const id = String(d.id || ''); if (!Juntos.R.has(id)) return;
-      if (d.t === 'join' && T.r < 0 && T.P.size < 12) { T.P.set(id, Juntos.R.get(id).name); this.send({ t: 'lobby', ns: [...T.P.values()] }); this.lobby(); }
+      const id = String(d.id || ''); if (!/^[A-Za-z0-9]{6,12}$/.test(id) || Juntos.muted().has(id)) return;
+      // a los inscritos se los cuenta aunque dejen de verse un momento en el mapa
+      if (d.t === 'join' && T.r < 0 && T.P.size < 12) { const r = Juntos.R.get(id); T.P.set(id, (r && r.name) || Sala.clean(d.n) || 'Viajero'); this.send({ t: 'lobby', ns: [...T.P.values()] }); this.lobby(); }
       else if (d.t === 'ans' && d.r === T.r && T.P.has(id)) { T.ans.set(id, { id, n: T.P.get(id), post: String(d.post || '').slice(0, 300), raz: String(d.raz || '').slice(0, 400), rk: String(d.rk || '').slice(0, 1), rf: String(d.rf || '').slice(0, 60) }); if (T.ans.size >= T.P.size) this.hostVote(T.r); }
       else if (d.t === 'pick' && d.r === T.r && T.P.has(id)) { T.picks.set(id, String(d.f || '')); if (T.picks.size >= T.P.size) this.hostRes(T.r); }
       return;
