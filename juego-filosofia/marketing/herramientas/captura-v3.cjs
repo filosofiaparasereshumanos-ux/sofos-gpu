@@ -24,15 +24,16 @@ SHOTS.push({ name: 'talk', era: 1, n: 50, extra: 190, setup: SOC + `d.player.pos
 SHOTS.push({ name: 'dialog2', era: 1, n: 170, setup: `const s = d.sages.find((x) => x.data.id === 'platon'); d.player.pos.set(s.pos.x + (s.pos.x < 0 ? 2.6 : -2.6), 0, s.pos.z); d.player.yaw = s.pos.x < 0 ? Math.PI / 2 : -Math.PI / 2; d.player.pitch = 0.08; d.G.state = 'play'; d.Talk.open(s); [...document.querySelectorAll('#tk-ops button')].find((x) => /Dialoguemos/.test(x.textContent)).click();`,
   at: { 55: `[...document.querySelectorAll('#tk-ops button')][1].click();`, 105: `const T = d.Talk; const w = T.dlg.p.razones.find((r) => r.k === 'b'); [...document.querySelectorAll('#tk-ops button')].find((x) => x.textContent === w.t).click();` },
   after: `d.Talk.close();` });
-// 5 · el ágora: la pregunta del día
+// 5 · el ágora: la pregunta del día (con votos de ejemplo)
+const AG = `const a = d.world.agora; window.__a = a; const era = d.ERAS[1].id; const ult = [['Camila', '6,0,4,2', 1], ['Diego', '4,3,1,3', 1], ['Sofía', '8,1,2,1', -1], ['Tomás', '5,2,0,0', 1], ['Antonia', '0,4,5,2', -1]].map(([apodo, aspecto, voto], i) => ({ jugador: 'Ghost00' + i, apodo, aspecto, voto })); d.Agora.data[era] = { si: 14, no: 9, ids: ult.map((u) => u.jugador), ult }; d.Agora.ghosts(d.world); a.key = ''; d.Agora.paint(d.world); d.Agora.fetch = () => Promise.resolve();`;
 SHOTS.push({ name: 'agora', era: 1, n: 70, extra: 130,
-  setup: `const a = d.world.agora; window.__a = a; const era = d.ERAS[1].id; const ult = [['Camila', '6,0,4,2', 1], ['Diego', '4,3,1,3', 1], ['Sofía', '8,1,2,1', -1], ['Tomás', '5,2,0,0', 1], ['Antonia', '0,4,5,2', -1]].map(([apodo, aspecto, voto], i) => ({ jugador: 'Ghost00' + i, apodo, aspecto, voto })); d.Agora.data[era] = { si: 14, no: 9, ids: ult.map((u) => u.jugador), ult }; d.Agora.ghosts(d.world); a.key = ''; d.Agora.paint(d.world); d.Agora.fetch = () => Promise.resolve();`,
+  setup: AG,
   frame: `const a = window.__a; d.player.pos.set(a.at[0] + 0.3 - 1.5 * (1 - e_), 0, a.at[1] + 9.5 - 6.9 * e_); d.player.yaw = 0.12 * (1 - e_); d.player.pitch = 0.05;`,
-  at: { 76: `d.G.state = 'play'; d.Agora.open(1);`, 150: `const b = document.querySelector('#xp-ops button'); if (b) b.click();` },
+  at: { 3: AG, 40: AG, 75: AG, 76: `d.G.state = 'play'; d.Agora.open(1);`, 150: `const b = document.querySelector('#xp-ops button'); if (b) b.click();` },
   after: `document.getElementById('xp').hidden = true; d.G.state = 'play';` });
 // 6 · en línea: viajeros sentados escuchando a Sócrates y uno que se acerca a retarte
-const FAKE = `const J = d.Juntos; J.on = true; J.mode = 'publico'; J.net = 'ok'; J.myId(); const s = window.__s;
-  [['MatiasX2', 'Matías', '3,4,0,4'], ['CamiZ003', 'Camila', '6,0,4,2'], ['DiegoQ04', 'Diego', '4,3,1,3'], ['SofiaQ05', 'Sofía', '8,1,2,1']].forEach(([id, n, l], i) => J.rPos({ id, n, l, e: 1, x: s.pos.x + window.__sd * 3, y: 0, z: s.pos.z + i - 1.5, r: 0, zn: '', s: 0, ls: s.data.id }));`;
+const FAKE = `const J = d.Juntos; J.on = true; J.mode = 'publico'; J.net = 'ok'; J.myId(); const S_ = window.__s;
+  [['MatiasX2', 'Matías', '3,4,0,4'], ['CamiZ003', 'Camila', '6,0,4,2'], ['DiegoQ04', 'Diego', '4,3,1,3'], ['SofiaQ05', 'Sofía', '8,1,2,1']].forEach(([id, n, l], i) => J.rPos({ id, n, l, e: 1, x: S_.pos.x + window.__sd * 3, y: 0, z: S_.pos.z + i - 1.5, r: 0, zn: '', s: 0, ls: S_.data.id }));`;
 SHOTS.push({ name: 'online', era: 1, n: 200, online: true, setup: SOC + FAKE + `window.__step(40);`,
   frame: `${FAKE} const s = window.__s, sd = window.__sd; const D = 13 - 5.5 * e_; const px = s.pos.x + sd * D, pz = s.pos.z + 3.2 - 2.4 * e_; d.player.pos.set(px, 0, pz); d.player.yaw = Math.atan2(-(s.pos.x + sd * 1.5 - px), -(s.pos.z - pz)); d.player.pitch = 0.03;`,
   at: { 70: `d.Juntos.rEmo({ id: 'CamiZ003', k: 3 });`, 120: `d.Juntos.rEmo({ id: 'MatiasX2', k: 0 });` } });
