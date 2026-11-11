@@ -130,7 +130,7 @@ const Agora = {
     // los dos lados: de acuerdo (verde, a la derecha) y en desacuerdo (ámbar, a la izquierda)
     for (const [sx, col] of [[1, 0x7fd08a], [-1, 0xf0a860]]) { const r = mesh(new THREE.RingGeometry(1.3, 1.45, 40), new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.7, side: THREE.DoubleSide, toneMapped: false }), sx * 2.6, 0.05, 1.2, false, false); r.rotation.x = -Math.PI / 2; g.add(r); }
     W.colliders.push({ t: 0, x0: at[0] - 0.8, x1: at[0] + 0.8, z0: at[1] - 0.5, z1: at[1] + 0.5, h: 3 });
-    const label = new THREE.Sprite(new THREE.SpriteMaterial({ transparent: true, depthWrite: false, toneMapped: false })); label.scale.set(3.4, 0.85, 1); label.position.set(0, 3.25, 0); g.add(label);
+    const label = new THREE.Sprite(new THREE.SpriteMaterial({ transparent: true, depthWrite: false, toneMapped: false })); label.scale.set(4.4, 1.1, 1); label.position.set(0, 3.4, 0); g.add(label);
     W.agora = { g, at, label, ghosts: [] };
     W.spots = W.spots || [];
     W.spots.push({ x: at[0], z: at[1] + 1.2, r: 2.6, verb: 'Votar', label: 'La pregunta del día', on: () => !W.zoneIn && !(W.cave && W.cave.in), act: () => this.open(idx) });
@@ -152,9 +152,9 @@ const Agora = {
       const v = u.voto > 0 ? 1 : -1; const k = cnt[v]++; if (k >= 5) continue;
       const [r, s, h, t] = String(u.aspecto || '').split(',').map((n) => n | 0);
       const fig = buildFigure({ robe: AV_ROBES[r] ?? AV_ROBES[0], robe2: 0x2a2620, skin: AV_SKINS[s] ?? AV_SKINS[2], hair: AV_HAIRS[h] ?? AV_HAIRS[0], beard: false, hat: (AV_HATS[t] || AV_HATS[0])[0], acc: 'none' }, 0xffffff);
-      fig.halo.visible = false; fig.group.traverse((o) => { if (o.material && !o.isSprite) { o.material = o.material.clone(); o.material.transparent = true; o.material.opacity = 0.38; o.material.depthWrite = false; o.castShadow = false; } });
+      fig.halo.visible = false; fig.group.traverse((o) => { if (o.material && !o.isSprite) { o.material = o.material.clone(); o.material.transparent = true; o.material.opacity = 0.62; o.castShadow = false; } });
       const g = new THREE.Group(); g.add(fig.group); const a = (k / 5) * Math.PI * 1.4 + 0.5; g.position.set(v * 2.6 + Math.cos(a) * 0.85 * v, 0, 1.2 + Math.sin(a) * 0.85); g.rotation.y = Math.atan2(-g.position.x, 1.4 - g.position.z);
-      const l = new THREE.Sprite(new THREE.SpriteMaterial({ map: labelTexture(Sala.clean(u.apodo) || 'Viajero', 'pasó hoy'), transparent: true, opacity: 0.75, depthWrite: false, toneMapped: false })); l.scale.set(1.7, 0.42, 1); l.position.y = 2.6; g.add(l);
+      const l = new THREE.Sprite(new THREE.SpriteMaterial({ map: labelTexture(Sala.clean(u.apodo) || 'Viajero', 'pasó hoy'), transparent: true, opacity: 0.9, depthWrite: false, toneMapped: false })); l.scale.set(1.7, 0.42, 1); l.position.y = 2.6; g.add(l);
       W.agora.g.add(g); W.agora.ghosts.push({ g, fig, ph: k * 1.7 });
     }
   },

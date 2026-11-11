@@ -12,7 +12,7 @@ sola, sin subir una versión nueva a Play.
 | App web con manifiesto, service worker e íconos | `manifest.webmanifest`, `sw.js`, `img/icon-*.png` |
 | Ícono 512×512 | `img/icon-512.png` |
 | Gráfico destacado 1024×500 | `marketing/play/grafico-destacado.png` |
-| Capturas de teléfono 1080×1920 | `marketing/play/1-inicio.png` … `8-experimento.png` (Persia, mundo abierto y el dilema del tranvía incluidos) |
+| Capturas de teléfono 1080×1920 | `marketing/play/1-inicio.png` … `8-experimento.png` (portada, Japón, pensadora, debate, avatar, ágora en Persia, escuchar juntos y el dilema del tranvía) |
 | Política de privacidad (URL pública) | https://filosofiaparasereshumanos-ux.github.io/sofos-gpu/juego-filosofia/privacidad.html |
 
 ## Pasos (unos 30 minutos)
