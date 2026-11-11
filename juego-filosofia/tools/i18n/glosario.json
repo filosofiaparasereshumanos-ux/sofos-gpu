@@ -1,0 +1,13 @@
+[
+ ["\\bTabanus\\b", "Gadfly"], ["\\btábano\\b", "gadfly"], ["\\bJenofonte\\b", "Xenophon"], ["Ethics to Nicomachus", "Nicomachean Ethics"], ["\\bNicomachus Ethics\\b", "Nicomachean Ethics"],
+ ["I just know I don't know anything", "I only know that I know nothing"], ["I only know I don't know anything", "I only know that I know nothing"], ["I just know that I don't know anything", "I only know that I know nothing"],
+ ["\\bMay[eé]utic(a|s)?\\b", "Maieutics"], ["\\bmay[eé]utic(a|s)?\\b", "maieutics"], ["\\bHipatia\\b", "Hypatia"], ["\\bS[oó]crates\\b", "Socrates"], ["\\bPlat[oó]n\\b", "Plato"], ["\\bArist[oó]teles\\b", "Aristotle"],
+ ["\\bHer[aá]clito\\b", "Heraclitus"], ["\\bPit[aá]goras\\b", "Pythagoras"], ["\\bDemócrito\\b", "Democritus"], ["\\bParménides\\b", "Parmenides"], ["\\bProtágoras\\b", "Protagoras"], ["\\bEpicuro\\b", "Epicurus"],
+ ["\\bDiógenes\\b", "Diogenes"], ["\\bSéneca\\b", "Seneca"], ["\\bEpicteto\\b", "Epictetus"], ["\\bTomás de Aquino\\b", "Thomas Aquinas"], ["\\bAgustín\\b", "Augustine"], ["\\bMaquiavelo\\b", "Machiavelli"],
+ ["\\bConfucio\\b", "Confucius"], ["\\bMencio\\b", "Mencius"], ["\\bAvicena\\b", "Avicenna"], ["\\bAlhacén\\b", "Alhazen"], ["\\bAl-Juarismi\\b", "Al-Khwarizmi"], ["\\bIbn Jaldún\\b", "Ibn Khaldun"],
+ ["\\bCopérnico\\b", "Copernicus"], ["\\bArquímedes\\b", "Archimedes"], ["\\bHipócrates\\b", "Hippocrates"], ["\\bZaratustra\\b", "Zarathustra"], ["\\bFerdousí\\b", "Ferdowsi"], ["\\bCiro\\b", "Cyrus"],
+ ["Difficulty of the discussions", "Debate difficulty"], [">Difficult<", ">Hard<"], ["\\bReason Odyssey\\b", "Odyssey of Reason"], ["\\bOdyssey of the Reason\\b", "Odyssey of Reason"],
+ ["\\bWisdom House\\b", "House of Wisdom"], ["\\bthe Cave of Plato\\b", "Plato's cave"], ["\\bPlato's Cavern\\b", "Plato's Cave"], ["\\bcavern\\b", "cave"], ["\\bCavern\\b", "Cave"],
+ ["\\bSisyphus Rock\\b", "Sisyphus's rock"], ["\\bGiges ring\\b", "ring of Gyges"], ["\\bGiges\\b", "Gyges"], ["\\bTeseo\\b", "Theseus"], ["\\bZhuangzi\\b", "Zhuangzi"],
+ ["\\bphilosophers? for human beings\\b", "Filosofía para Seres Humanos"], ["\\bPhilosophy for Human Beings\\b", "Filosofía para Seres Humanos"]
+]

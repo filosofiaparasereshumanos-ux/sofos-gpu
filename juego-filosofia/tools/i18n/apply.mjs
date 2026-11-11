@@ -6,7 +6,9 @@ import { ROOT, srcFiles, scan, scanHtml } from './common.mjs';
 const D = join(ROOT, 'tools', 'i18n'); const OUT = join(D, 'build-en');
 const EN = JSON.parse(readFileSync(join(D, 'en.json'), 'utf8'));
 const FIX = existsSync(join(D, 'en-fix.json')) ? JSON.parse(readFileSync(join(D, 'en-fix.json'), 'utf8')) : {};
-const tr = (s) => FIX[s] ?? EN[s];
+const GLOSS = JSON.parse(readFileSync(join(D, 'glosario.json'), 'utf8')).map(([a, b]) => [new RegExp(a, 'g'), b]);
+const gloss = (t) => (t == null ? t : GLOSS.reduce((x, [re, b]) => x.replace(re, b), t));
+const tr = (s) => (FIX[s] != null ? FIX[s] : gloss(EN[s]));
 let used = 0, kept = 0;
 const escLit = (s, q) => s.replace(/\\/g, '\\\\').replace(new RegExp(q, 'g'), '\\' + q).replace(/\n/g, '\\n').replace(/\r/g, '\\r');
 const escTpl = (s) => s.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${');
@@ -37,7 +39,8 @@ for (const f of srcFiles()) {
 }
 let html = readFileSync(join(ROOT, 'src', 'template.html'), 'utf8'); const hi = scanHtml(html);
 for (const it of hi.reverse()) { const t = tr(it.text); if (!t || t === it.text) { kept++; continue; } const v = it.kind === 'attr' ? t.replace(/"/g, '&quot;') : t.replace(/</g, '&lt;'); html = html.slice(0, it.start) + v + html.slice(it.end); used++; }
+html = html.replace('content: "Nuevo"', 'content: "New"');
 html = html.replace('id="b-lang" href="index-en.html">English<', 'id="b-lang" href="index.html">Español<');
 html = html.replace('id="b-lang2" href="index-en.html" aria-label="English version">EN<', 'id="b-lang2" href="index.html" aria-label="Versión en español">ES<');
-writeFileSync(join(OUT, 'template.html'), html);
+writeFileSync(join(OUT, 'src', 'template.html'), html);
 console.log('traducidos', used, 'sin traducir', kept);

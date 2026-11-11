@@ -13,6 +13,8 @@ const SPANISH = /[áéíóúñü¿¡«»]|\b(el|la|los|las|de|del|que|y|en|un|un
 export function isText(s) {
   const t = s.replace(/<[^>]+>/g, ' ').replace(/⟦\d+⟧/g, ' ').trim();
   if (!/[A-Za-zÁÉÍÓÚÑáéíóúñ]/.test(t) || t.length < 2) return false;
+  if (/\b(uniform|varying|attribute|vec[234]|mat[34]|gl_\w+|void\s+main|precision|texture2D|sampler2D)\b|;\s*\n|^\s*(float|int)\s/.test(s)) return false; // código GLSL
+  if (/[a-z-]+\s*:\s*[^;]+;/.test(s) && !/[.!?¿¡]\s/.test(s)) return false; // CSS en línea
   if (/^[#.\[]|^[a-z0-9_\-:\/.%]+$|https?:|\.(mp3|jpg|png|webp|js|json|html)\b|=>|\bfunction\b|rgba?\(|\d+px|^[a-z-]+:/.test(s)) return false;
   if (/^[A-Za-z0-9_-]+$/.test(t)) return /^[A-ZÁÉÍÓÚÑ¿¡]/.test(t) && t.length > 2; // una palabra: solo si empieza con mayúscula
   return SPANISH.test(t) || /^[A-ZÁÉÍÓÚÑ¿¡«]/.test(t);
