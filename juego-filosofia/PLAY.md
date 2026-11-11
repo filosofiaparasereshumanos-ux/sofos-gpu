@@ -88,6 +88,9 @@ Marie Curie y muchos más.
 • Comparte tu perfil filosófico («Pienso como Descartes») y sácate fotos con los pensadores.
 • Gana accesorios para tu avatar con tus logros.
 • Siéntate con otros viajeros a escuchar la lección de un pensador, como en la Academia, y comparen qué piensa cada uno.
+• Mira debatir a Platón con Aristóteles o a Hobbes con Rousseau, con sus voces, y decide quién te convence.
+• Misiones nuevas cada día y rachas con premios para tu avatar.
+• Línea de tiempo: descubre quién vivió a la vez en Grecia, China, la India o América.
 • Mundo abierto: encuentra a otros viajeros en la misma época, salúdalos con gestos y rétalos a un duelo o a un debate. Sin chat libre.
 • Consulta cada día al Oráculo de Delfos y compite en el ranking mundial.
 • Reta a tus amigos con un enlace: las mismas diez preguntas, gana quien sepa más.

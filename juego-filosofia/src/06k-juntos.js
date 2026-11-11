@@ -8,12 +8,12 @@
 // ============================================================================
 const MRT = Object.assign(Object.create(RT), { ws: null, hb: null, handlers: {}, joined: false, want: false, tries: 0, ref: 0, topic: '' });
 const JUNTOS_KEY = 'odisea-juntos', AVATAR_KEY = 'odisea-razon.avatar';
-const AV_ROBES = [0x3a6ab8, 0xb83a4a, 0x3a9a5a, 0xc8962a, 0x7a4ab8, 0x2a9aa8, 0xd86a2a, 0xa83a8a, 0xe8e0d0, 0x2a2a2a, 0xf0c848, 0x8a1a2a];
+const AV_ROBES = [0x3a6ab8, 0xb83a4a, 0x3a9a5a, 0xc8962a, 0x7a4ab8, 0x2a9aa8, 0xd86a2a, 0xa83a8a, 0xe8e0d0, 0x2a2a2a, 0xf0c848, 0x8a1a2a, 0x30c8c0];
 const AV_SKINS = [0xf0d0b0, 0xe0b090, 0xc49372, 0xa0704a, 0x8a5a3a, 0x5a3820];
 const AV_HAIRS = [0x1a1410, 0x4a2a1a, 0x8a5a2a, 0xd8b070, 0xb83a2a, 0xe8e8e8, 0x3a5ab8];
 // [forma, nombre, logro que lo desbloquea]
-const AV_HATS = [['none', 'Sin nada'], ['longhair', 'Pelo largo'], ['braids', 'Trenzas'], ['cap', 'Gorro'], ['turban', 'Turbante', 'explorador'], ['laurel', 'Laurel', 'tabano'], ['hood', 'Capucha', 'salida'], ['beret', 'Boina', 'dialogo'], ['wig', 'Peluca', 'cogito'], ['mitre', 'Mitra', 'lector']];
-const AV_ROBE_LOCK = { 10: 'agora', 11: 'juntos' }; // túnicas especiales
+const AV_HATS = [['none', 'Sin nada'], ['longhair', 'Pelo largo'], ['braids', 'Trenzas'], ['cap', 'Gorro'], ['turban', 'Turbante', 'explorador'], ['laurel', 'Laurel', 'tabano'], ['hood', 'Capucha', 'salida'], ['beret', 'Boina', 'dialogo'], ['wig', 'Peluca', 'cogito'], ['mitre', 'Mitra', 'lector'], ['ruff', 'Gorguera', 'racha7']];
+const AV_ROBE_LOCK = { 10: 'agora', 11: 'juntos', 12: 'racha3' }; // túnicas especiales
 const EMOTES = ['👋', '👍', '❓', '💡', '😂', '👏'];
 const MUTE_KEY = 'odisea-razon.silenciados';
 const Juntos = {

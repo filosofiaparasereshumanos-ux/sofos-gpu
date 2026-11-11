@@ -101,6 +101,7 @@ const Talk = {
     ops.push([this.part < parts.length ? 'Cuéntame más' : 'Vuelve a empezar', () => { if (this.part >= parts.length) this.part = 1; this.say(parts[this.part++] || ''); this.options(); }]);
     if (an.length) ops.push(['Una anécdota', () => { this.say(an[this.anec++ % an.length]); }]);
     ops.push(['Escuchar tu lección completa', () => { this.close(true); Lesson.open(d, s); }]);
+    if (typeof Versus !== 'undefined') { const v = Versus.of(d.id); if (v) { const o = ERAS.flatMap((e) => e.sages).find((x) => x.id === (v.a === d.id ? v.b : v.a)); ops.push([`⚔ Verte debatir con ${o.short}`, () => { this.close(true); Versus.play(v); }]); } }
     if (typeof Cuaderno !== 'undefined') ops.push(['📓 Escribir en mi cuaderno', () => Cuaderno.open(d)]);
     if (AI.fn !== null && AI.ok) ops.push(['Preguntarte lo que quiera', () => this.openAsk(), 'ai']);
     ops.push(['Adiós', () => this.close(), 'bye']);
@@ -222,7 +223,7 @@ const Places = {
     $('#place').hidden = false; Lesson.duck && Lesson.duck(true); Voice.say(poi.name + '. ' + poi.text, null);
     if (first) {
       const f = this.found(); f.add(poi.id); store.set(PLACES_KEY, [...f]);
-      G.frags++; addScore(50); Audio.pickup(); buzz([15, 30]);
+      G.frags++; addScore(50); Audio.pickup(); buzz([15, 30]); if (typeof Mision !== 'undefined') Mision.hit('lugar');
       if (f.size >= 8) achieve('explorador'); if (f.size >= POIS.flat().length) achieve('viajero');
     }
     markPoiFound(poi);

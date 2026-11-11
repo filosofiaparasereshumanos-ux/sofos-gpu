@@ -19,6 +19,12 @@ const ACH = [
   { id: 'perfil', i: '🧭', n: 'Conócete a ti mismo', d: 'Comparte tu perfil filosófico desde el Cuaderno.' },
   { id: 'foto', i: '📷', n: 'Recuerdo del viaje', d: 'Sácate una foto con un pensador.' },
   { id: 'escuchar', i: '📖', n: 'Como en la Academia', d: 'Escucha la lección de un pensador junto a otro viajero y comparen qué eligió cada uno.' },
+  { id: 'versus', i: '⚔', n: 'Juez del debate', d: 'Mira debatir a dos pensadores y decide quién te convence.' },
+  { id: 'versus8', i: '⚖', n: 'Oír a las dos partes', d: 'Mira todos los debates entre pensadores.' },
+  { id: 'mision', i: '🎯', n: 'Día completo', d: 'Cumple las tres misiones de un día.' },
+  { id: 'racha3', i: '🔥', n: 'Constancia', d: 'Cumple las misiones tres días seguidos.' },
+  { id: 'racha7', i: '☄', n: 'Hábito de filósofo', d: 'Cumple las misiones siete días seguidos.' },
+  { id: 'tiempo', i: '⏳', n: 'Contemporáneos', d: 'Descubre en la línea de tiempo quién vivió a la vez que otro pensador.' },
   { id: 'juntos', i: '👥', n: 'Duelo entre viajeros', d: 'Explora en grupo y gana un duelo a otro jugador.' },
   { id: 'escalera', i: '⌇', n: 'Tirar la escalera', d: 'Sube la escalera de Wittgenstein y tírala al llegar arriba.' },
   { id: 'salida', i: '☀', n: 'Fuera de la caverna', d: 'Baja hasta los prisioneros de la caverna de Platón y vuelve a salir a la luz.' },
@@ -320,7 +326,7 @@ const Oracle = {
     $('#oe-streak').textContent = this.practice ? '' : `🔥 Racha de ${sd} ${sd === 1 ? 'día' : 'días'} · Esta semana: ${this.weekScore().toLocaleString('es-ES')} de sabiduría`;
     $('#oe-share').value = `Oráculo de Delfos n.º ${this.number(ds)} · ${this.correct}/10${sd > 1 && !this.practice ? ` · 🔥${sd}` : ''}\n${gridStr}\n«${title}» · ${this.score.toLocaleString('es-ES')} de sabiduría\nOdisea de la Razón: ¿puedes superarme?\n${GAME_URL}`;
     $('#b-oshare').textContent = navigator.share ? 'Compartir mi resultado' : 'Copiar resultado para compartir';
-    G.prevScreen = 'title'; show('oracle-end'); refreshTitleExtras();
+    G.prevScreen = 'title'; show('oracle-end'); refreshTitleExtras(); if (typeof Mision !== 'undefined') Mision.hit('oraculo');
   },
 };
 function shareOrCopy(text, btn, ta) {

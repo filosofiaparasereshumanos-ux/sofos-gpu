@@ -380,6 +380,25 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .av-mid { text-align: center; line-height: 1.15; } .av-mid b { display: block; font-family: var(--display); font-weight: normal; font-size: 0.72rem; letter-spacing: 0.1em; color: var(--gold); text-transform: uppercase; }
 .av-mid span { font-size: 0.92rem; } .av-mid span i { display: inline-block; width: 14px; height: 14px; border-radius: 50%; margin-right: 6px; vertical-align: -2px; border: 1px solid rgba(255,255,255,0.4); }
 .av-mid small { display: block; font-size: 0.68rem; color: #ffb36a; } .av-mid.lock span { opacity: 0.7; } .av-rand { width: 100%; margin-top: 4px; padding: 8px; }
+.on-bar.tri { grid-template-columns: repeat(3, 1fr); margin-top: 8px; } .on-bar.tri .on-av { grid-template-columns: 1fr; text-align: center; padding: 8px 4px; row-gap: 1px; } .on-bar.tri .on-av b { grid-row: auto; font-size: 1.2rem; } .on-bar.tri .on-av small { white-space: normal; font-size: 0.66rem; }
+.nb-card { position: relative; } .pn-x { position: absolute; top: 8px; right: 8px; z-index: 2; }
+.vs-card { width: min(560px, 100%); } .vs-item { display: grid; grid-template-columns: 46px 1fr 46px; gap: 10px; align-items: center; width: 100%; margin: 6px 0; padding: 8px 10px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,0.04); color: var(--parchment); font: inherit; cursor: pointer; text-align: center; }
+.vs-item .medal { width: 46px; height: 46px; font-size: 1.1rem; } .vs-item b { display: block; font-family: var(--display); font-weight: normal; color: var(--gold-bright); letter-spacing: 0.04em; } .vs-item small { font-size: 0.82rem; color: var(--parchment-dim); }
+.vs-head { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 6px; } .vs-side { text-align: center; opacity: 0.5; transition: opacity 0.2s, transform 0.2s; } .vs-side.on { opacity: 1; transform: scale(1.12); }
+.vs-side .medal { width: 72px; height: 72px; margin: 0 auto 4px; } .vs-side b { font-family: var(--display); font-weight: normal; font-size: 0.85rem; color: var(--gold-bright); } .vs-x { font-size: 1.6rem; color: var(--gold); }
+.vs-q { text-align: center; font-family: var(--display); font-weight: normal; color: var(--gold); margin: 10px 0 8px; font-size: 1.05rem; }
+.vs-bubble { min-height: 150px; border: 1px solid var(--line); border-radius: 14px; padding: 10px 14px; background: rgba(0,0,0,0.25); } .vs-bubble b { color: var(--gold-bright); font-family: var(--display); font-weight: normal; } .vs-bubble p { margin: 4px 0; font-size: 1.05rem; line-height: 1.4; } .vs-bubble small { color: var(--parchment-dim); }
+#vs-vote { flex-direction: column; } #vs-vote .btn { width: 100%; }
+.mis-row { display: grid; grid-template-columns: 28px 1fr auto; gap: 8px; align-items: center; padding: 10px 12px; margin: 6px 0; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,0.04); }
+.mis-row i { font-style: normal; font-size: 1.2rem; color: var(--parchment-dim); } .mis-row.ok { border-color: #7fd08a; } .mis-row.ok i { color: #8fe08a; } .mis-row.ok span { text-decoration: line-through; opacity: 0.75; } .mis-row small { color: var(--gold-bright); }
+.tl-card { width: min(980px, 100%); } #tl-scroll { overflow: auto; max-height: 48vh; border: 1px solid var(--line); border-radius: 12px; background: rgba(0,0,0,0.25); -webkit-overflow-scrolling: touch; touch-action: pan-x pan-y; }
+#tl-body { position: relative; } .tl-axis { position: sticky; top: 0; height: 22px; background: #17120a; z-index: 5; border-bottom: 1px solid rgba(214,168,74,0.3); } .tl-axis span { position: absolute; top: 4px; transform: translateX(-50%); font-size: 0.68rem; color: var(--gold); white-space: nowrap; }
+.tl-line { position: absolute; top: 22px; bottom: 0; width: 1px; background: rgba(214,168,74,0.14); } .tl-row { position: relative; border-top: 1px solid rgba(214,168,74,0.25); }
+.tl-rname { position: sticky; left: 8px; display: inline-block; font-family: var(--display); font-weight: normal; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); padding: 3px 0; }
+.tl-chip { position: absolute; height: 26px; display: flex; align-items: center; gap: 5px; padding: 0 8px 0 2px; border: 1px solid var(--line); border-radius: 999px; background: #241c10; color: var(--parchment); font: inherit; font-size: 0.78rem; white-space: nowrap; cursor: pointer; overflow: hidden; }
+.tl-chip .medal { width: 22px; height: 22px; font-size: 0.7rem; flex: 0 0 auto; box-shadow: none; } .tl-chip.on { border-color: var(--gold-bright); background: #4a3a14; z-index: 3; } .tl-chip.same { border-color: #7fd08a; background: #1c3020; z-index: 2; } .tl-chip.dim { opacity: 0.45; }
+.tl-life { position: absolute; height: 2px; background: rgba(214,168,74,0.5); border-radius: 2px; }
+.tl-info { display: flex; gap: 10px; align-items: flex-start; margin-top: 10px; } .tl-info b { display: block; font-family: var(--display); font-weight: normal; color: var(--gold-bright); } .tl-info small { color: var(--parchment-dim); } .tl-info p { margin: 4px 0 0; font-size: 0.92rem; }
 #b-foto { position: absolute; left: max(12px, var(--sal, 0px)); top: calc(max(8px, var(--sat)) + 96px); z-index: 31; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold); background: rgba(10,8,5,0.75); font-size: 1.3rem; cursor: pointer; }
 .foto-card { text-align: center; } .foto-card img { max-width: 100%; max-height: 62vh; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.6); }
 .av-chip.lock { opacity: 0.55; font-size: 0.75rem; color: #fff; }
@@ -897,6 +916,11 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="on-av" id="b-avatar"><b>🧙</b><span>Mi avatar</span><small id="b-avatar-s"></small></button>
         <button class="on-sw" id="b-online" role="switch" aria-checked="false"><span>🌍 Jugar en línea</span><small id="b-online-s">Desactivado</small><i></i></button>
       </div>
+      <div class="on-bar tri">
+        <button class="on-av" id="b-mis"><b>🎯</b><span>Misiones</span><small id="b-mis-s">0 de 3 hoy</small></button>
+        <button class="on-av" id="b-versus"><b>⚔</b><span>Debates</span><small>Pensador contra pensador</small></button>
+        <button class="on-av" id="b-tiempo"><b>⏳</b><span>Línea de tiempo</span><small>¿Quién vivió a la vez?</small></button>
+      </div>
       <button class="more-b" id="b-more" aria-expanded="false">Más opciones ▾</button>
       <div class="minis" id="t-more" hidden>
         <button class="mini-b" id="b-cuaderno">Cuaderno y mapa</button>
@@ -1087,6 +1111,32 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <div class="av-side"><input id="av-name" maxlength="16" placeholder="Tu apodo" autocomplete="off" aria-label="Apodo de tu avatar"><div id="av-opts"></div><button class="btn ghost av-rand" id="av-rand">🎲 Sorpréndeme</button></div></div>
     <button class="on-sw big" id="av-online" role="switch" aria-checked="false"><span>🌍 Jugar en línea</span><small id="av-online-s"></small><i></i></button>
     <div class="btns"><button class="btn ghost" id="av-group" hidden>Salir del grupo privado</button><button class="btn ghost" id="av-unmute" hidden></button><button class="btn primary" id="av-ok">Listo</button></div>
+  </div></div>
+  <div id="vs" class="nb" hidden><div class="nb-card vs-card" role="dialog" aria-label="Debates entre pensadores">
+    <button class="ls-x pn-x" id="vs-x" aria-label="Cerrar">✕</button>
+    <div id="vs-list"><div class="eyebrow" style="text-align:center">Pensador contra pensador</div><h3 class="av-h">Debates</h3>
+      <p class="qd-note" style="text-align:center">Escucha a los dos y decide quién te convence. No hay respuesta correcta. <span id="vs-count"></span></p><div id="vs-items"></div></div>
+    <div id="vs-play" hidden>
+      <div class="vs-head"><div class="vs-side" id="vs-sa"><i class="medal" id="vs-ma"></i><b id="vs-na"></b></div><span class="vs-x">⚔</span><div class="vs-side" id="vs-sb"><i class="medal" id="vs-mb"></i><b id="vs-nb"></b></div></div>
+      <h3 class="vs-q" id="vs-q"></h3>
+      <div class="vs-bubble"><b id="vs-who"></b><p id="vs-text" aria-live="polite"></p><small id="vs-step"></small></div>
+      <div class="btns" id="vs-vote" hidden></div>
+      <div id="vs-end" hidden><p class="ls-reward" id="vs-end-t"></p><div class="btns"><button class="btn primary" id="vs-more">Otro debate</button><button class="btn ghost" id="vs-done">Cerrar</button></div></div>
+      <div class="btns"><button class="btn ghost" id="vs-back">Todos los debates</button><button class="btn primary" id="vs-next">Siguiente</button></div>
+    </div>
+  </div></div>
+  <div id="mis" class="nb" hidden><div class="nb-card av-card" role="dialog" aria-label="Misiones de hoy">
+    <button class="ls-x pn-x" id="mis-x" aria-label="Cerrar">✕</button>
+    <div class="eyebrow" style="text-align:center">Cambian cada día</div><h3 class="av-h">Misiones de hoy</h3>
+    <div id="mis-items"></div><p class="qd-note" id="mis-streak" style="text-align:center"></p>
+  </div></div>
+  <div id="tl" class="nb" hidden><div class="nb-card tl-card" role="dialog" aria-label="Línea de tiempo">
+    <button class="ls-x pn-x" id="tl-x" aria-label="Cerrar">✕</button>
+    <h3 class="av-h">Línea de tiempo</h3>
+    <p class="qd-note" style="text-align:center">Desliza hacia los lados y toca a un pensador para ver quién vivió al mismo tiempo en otros lugares.</p>
+    <div id="tl-scroll"><div id="tl-body"></div></div>
+    <div class="tl-info"><i class="medal sm" id="tl-medal"></i><div><b id="tl-name"></b><small id="tl-meta"></small><p id="tl-same"></p></div></div>
+    <div class="btns"><button class="btn" id="tl-lesson">Escuchar su lección</button></div>
   </div></div>
   <button id="mp-emo" hidden aria-label="Gestos">😀</button>
   <button id="b-foto" hidden aria-label="Sacar una foto">📷</button>

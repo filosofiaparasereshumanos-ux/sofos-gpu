@@ -5,11 +5,11 @@ import vm from 'node:vm';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const files = ['src/01-data.js', 'src/01a-lessons.js', 'src/01c-contemporanea.js', 'src/01d-pensadoras.js', 'src/01e-latinoamerica.js', 'src/01f-mundo.js', 'src/01g-sumer.js', 'src/01h-islam.js', 'src/01i-poetas.js', 'src/01j-ciencia.js', 'src/01k-japon.js', 'src/01l-vikingos.js', 'src/01m-persia.js', 'src/01n-mas-pensadores.js', 'src/02b-places.js', 'src/02c-polis.js', 'src/02d-narration.js', 'src/02e-books.js', 'src/02f-contemporanea.js', 'src/02g-latinoamerica.js', 'src/02h-mundo.js', 'src/02i-sumer.js', 'src/02j-islam.js', 'src/02k-poetas.js', 'src/02l-ciencia.js', 'src/02n-japon.js', 'src/02o-vikingos.js', 'src/02t-persia.js', 'src/02w-mas-pensadores.js', 'src/02p-dialogos.js', 'src/02q-caverna.js', 'src/02z-guia.js'];
+const files = ['src/01-data.js', 'src/01a-lessons.js', 'src/01c-contemporanea.js', 'src/01d-pensadoras.js', 'src/01e-latinoamerica.js', 'src/01f-mundo.js', 'src/01g-sumer.js', 'src/01h-islam.js', 'src/01i-poetas.js', 'src/01j-ciencia.js', 'src/01k-japon.js', 'src/01l-vikingos.js', 'src/01m-persia.js', 'src/01n-mas-pensadores.js', 'src/02b-places.js', 'src/02c-polis.js', 'src/02d-narration.js', 'src/02e-books.js', 'src/02f-contemporanea.js', 'src/02g-latinoamerica.js', 'src/02h-mundo.js', 'src/02i-sumer.js', 'src/02j-islam.js', 'src/02k-poetas.js', 'src/02l-ciencia.js', 'src/02n-japon.js', 'src/02o-vikingos.js', 'src/02t-persia.js', 'src/02w-mas-pensadores.js', 'src/02p-dialogos.js', 'src/02q-caverna.js', 'src/02z-guia.js', 'src/02x-versus.js'];
 const code = files.map((f) => readFileSync(join(root, f), 'utf8')).join('\n') +
-  '\n;globalThis.__out = { ERAS, LESSONS, POIS, NPCS, sageSpeech, NPC_GENERIC, NARR_GENERIC, narrSplit, narrHash, SAGE_VOICE, BOOKS, bookPartText, DIALOGOS };';
+  '\n;globalThis.__out = { ERAS, LESSONS, POIS, NPCS, sageSpeech, NPC_GENERIC, NARR_GENERIC, narrSplit, narrHash, SAGE_VOICE, BOOKS, bookPartText, DIALOGOS, VERSUS };';
 const ctx = { console }; vm.createContext(ctx); vm.runInContext(code, ctx);
-const { ERAS, LESSONS, POIS, NPCS, sageSpeech, NPC_GENERIC, NARR_GENERIC, narrSplit, SAGE_VOICE, BOOKS, bookPartText, DIALOGOS } = ctx.__out;
+const { ERAS, LESSONS, POIS, NPCS, sageSpeech, NPC_GENERIC, NARR_GENERIC, narrSplit, SAGE_VOICE, BOOKS, bookPartText, DIALOGOS, VERSUS } = ctx.__out;
 const packs = [];
 const pack = (name, voice, pitch, speaker, texts) => {
   const seen = new Set(); const sentences = [];
@@ -34,4 +34,8 @@ NPCS.forEach((list, i) => list.forEach((n) => {
   pack('c-' + n.id, v.voice, v.pitch, n.id, [...n.lines, ...NPC_GENERIC]);
 }));
 BOOKS.flat().forEach((b) => pack('b-' + b.id, 'carlfm', 1, 'narr', [...b.parts.map(bookPartText), 'Una cita para recordar. ' + b.quote]));
+// debates entre pensadores: los turnos de cada uno, con su voz
+{ const S = {}; for (const e of ERAS) for (const d of e.sages) S[d.id] = d; const by = {};
+  for (const v of VERSUS) for (const [who, t] of v.turns) (by[v[who]] = by[v[who]] || []).push(t);
+  for (const [id, texts] of Object.entries(by)) { const vo = SAGE_VOICE(S[id]); pack('v-' + id, vo.voice, vo.pitch, id, texts); } }
 process.stdout.write(JSON.stringify(packs));
