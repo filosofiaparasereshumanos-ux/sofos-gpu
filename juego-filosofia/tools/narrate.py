@@ -17,7 +17,7 @@ def voice(name):
 
 def run(job):
     v = voice(job['voice']); sr = v.config.sample_rate
-    cfg = SynthesisConfig(length_scale=1.2 if job['voice'] == 'carlfm' else 1.0 if job['voice'] in ('ryan', 'lessac', 'alan', 'joe', 'amy') else 0.8, noise_scale=0.6, noise_w_scale=0.7)
+    cfg = SynthesisConfig(length_scale=1.2 if job['voice'] == 'carlfm' else 1.0 if job['voice'] in ('ryan', 'lessac', 'ryanmed', 'lessacmed', 'alan', 'joe', 'amy') else 0.8, noise_scale=0.6, noise_w_scale=0.7)
     pcm = bytearray(b'\0\0' * int(sr * 0.15)); spans = []
     for s in job['sentences']:
         start = len(pcm) // 2
@@ -36,9 +36,11 @@ if __name__ == '__main__':
     jobs = json.load(open(JOBS)); os.makedirs(OUT, exist_ok=True)
     only = set(sys.argv[5].split(',')) if len(sys.argv) > 5 else None
     if only: jobs = [j for j in jobs if j['name'] in only]
-    res = {}
+    old = json.load(open(TIMINGS)) if os.path.exists(TIMINGS) else {}
+    if os.environ.get('RESUME'):  # retoma: salta lo ya grabado con sus tiempos
+        jobs = [j for j in jobs if not (j['name'] in old and len(old[j['name']]) == len(j['sentences']) and os.path.exists(os.path.join(OUT, j['name'] + '.mp3')))]
+        print('pendientes', len(jobs), flush=True)
     with ProcessPoolExecutor(max_workers=os.cpu_count()) as ex:
         for name, spans in ex.map(run, jobs):
-            res[name] = spans; print(name, len(spans), flush=True)
-    old = json.load(open(TIMINGS)) if os.path.exists(TIMINGS) else {}
-    old.update(res); json.dump(old, open(TIMINGS, 'w'))
+            old[name] = spans; print(name, len(spans), flush=True)
+            json.dump(old, open(TIMINGS, 'w'))  # se guarda tras cada paquete
