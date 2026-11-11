@@ -49,12 +49,16 @@ ring = Image.new('RGBA', (W, H), (0, 0, 0, 0)); ImageDraw.Draw(ring).rounded_rec
 
 
 def band(num, text):
-    im = Image.new('RGBA', (W, BAND), (0, 0, 0, 0)); d = ImageDraw.Draw(im); f = ImageFont.truetype(F_BLACK, 64); tw = d.textlength(text.upper(), font=f)
+    im = Image.new('RGBA', (W, BAND), (0, 0, 0, 0)); d = ImageDraw.Draw(im); size = 64
+    while True:
+        f = ImageFont.truetype(F_BLACK, size); tw = d.textlength(text.upper(), font=f)
+        if tw + (122 if num else 0) <= W - 70 or size <= 40: break
+        size -= 2
     cw = 96 if num else 0; x = (W - (tw + (cw + 26 if num else 0))) / 2; cy = BAND // 2 + 4
     if num:
         d.ellipse((x, cy - 48, x + 96, cy + 48), fill=GOLD + (255,)); fn = ImageFont.truetype(F_BLACK, 62); nw = d.textlength(num, font=fn)
         d.text((x + 48 - nw / 2, cy - 38), num, font=fn, fill=(40, 26, 8, 255)); x += cw + 26
-    d.text((x, cy - 36), text.upper(), font=f, fill=CREAM + (255,))
+    d.text((x, cy - int(size * 0.56)), text.upper(), font=f, fill=CREAM + (255,))
     return im
 
 
