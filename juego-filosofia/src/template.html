@@ -402,6 +402,7 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 #mp-tor { position: absolute; top: calc(max(8px, var(--sat)) + 34px); left: 50%; transform: translateX(-50%); z-index: 30; border: 0; border-radius: 999px; padding: 6px 14px; font: inherit; font-size: 0.82rem; color: #2a1a08; background: linear-gradient(#ffe08a, #d8a83a); box-shadow: 0 4px 16px rgba(0,0,0,0.45); cursor: pointer; white-space: nowrap; }
 .mpd-card.me { border-color: var(--gold); }
 #mpd .mpd-box { max-height: calc(100vh - 32px); overflow: auto; }
+.dif-pick { text-align: center; margin: 4px auto 14px; max-width: 520px; } .dif-pick > span { display: block; font-family: var(--display); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; } .dif-pick small { display: block; margin-top: 6px; color: var(--parchment-dim); font-size: 0.85rem; }
 #b-foto { position: absolute; left: max(12px, var(--sal, 0px)); top: calc(max(8px, var(--sat)) + 96px); z-index: 31; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold); background: rgba(10,8,5,0.75); font-size: 1.3rem; cursor: pointer; }
 .foto-card { text-align: center; } .foto-card img { max-width: 100%; max-height: 62vh; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.6); }
 .av-chip.lock { opacity: 0.55; font-size: 0.75rem; color: #fff; }
@@ -1485,7 +1486,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <div class="row"><label for="s-music">Música</label><input type="range" id="s-music" min="0" max="1" step="0.05"></div>
       <div class="row"><label for="s-sfx">Efectos</label><input type="range" id="s-sfx" min="0" max="1" step="0.05"></div>
       <div class="row"><label>Calidad</label><div class="seg" id="s-quality"><button data-v="low">Baja</button><button data-v="mid">Media</button><button data-v="high">Alta</button></div></div>
-      <div class="row"><label>Pruebas del camino</label><div class="seg" id="s-diff"><button data-v="facil">Fácil</button><button data-v="normal">Normal</button><button data-v="dificil">Difícil</button></div></div>
+      <div class="row"><label>Dificultad (debates y pruebas)</label><div class="seg" id="s-diff"><button data-v="facil">Fácil</button><button data-v="normal">Normal</button><button data-v="dificil">Difícil</button></div></div>
       <div class="row"><label>Voces</label><div class="seg" id="s-voices"><button data-v="0">No</button><button data-v="1">Sí</button></div></div>
       <div class="row"><label>Disparo automático</label><div class="seg" id="s-auto"><button data-v="0">No</button><button data-v="1">Sí</button></div></div>
       <div class="row"><label>Vibración</label><div class="seg" id="s-vib"><button data-v="0">No</button><button data-v="1">Sí</button></div></div>

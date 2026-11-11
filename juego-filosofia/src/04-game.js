@@ -6,7 +6,7 @@ const G = {
   state: 'loading', prevScreen: null, eraIdx: 0, score: 0, frags: 0, hp: 100, maxHp: 100,
   stats: { correct: 0, wrong: 0, kills: 0, time: 0 }, eraStart: null,
   codex: new Set(store.get(CODEX_KEY, [])),
-  settings: Object.assign({ sens: 1, music: 0.7, sfx: 0.85, quality: IS_TOUCH ? 'mid' : 'high', invertY: false, voices: true, autofire: true, vibrate: true, trialDiff: 'facil' }, store.get(SET_KEY, {})),
+  settings: Object.assign({ sens: 1, music: 0.7, sfx: 0.85, quality: IS_TOUCH ? 'mid' : 'high', invertY: false, voices: true, autofire: true, vibrate: true, trialDiff: 'normal' }, store.get(SET_KEY, {})),
   streak: 0, bestStreak: 0,
   noLock: false, intentionalUnlock: false,
 };
@@ -943,8 +943,7 @@ const Duel = {
     if (this.answered || this.used.fifty || (!free && G.frags < 2)) return;
     if (free) delete G.lessonFree[this.sage.data.id]; else G.frags -= 2;
     this.used.fifty = true; this.aidsUsed = true; Audio.pickup();
-    const wrong = this.opts.map((o, i) => (o.ok ? -1 : i)).filter((i) => i >= 0); shuffle(wrong);
-    const btns = $('#d-answers').children; wrong.slice(0, 2).forEach((i) => { btns[i].classList.add('gone'); btns[i].disabled = true; });
+    const btns = $('#d-answers').children; const wrong = this.opts.map((o, i) => (o.ok || btns[i].disabled ? -1 : i)).filter((i) => i >= 0); shuffle(wrong); wrong.slice(0, Math.min(2, wrong.length - 1)).forEach((i) => { btns[i].classList.add('gone'); btns[i].disabled = true; });
     this.say('Pregúntate bien, y lo verás tú mismo...'); this.updateAids(); updateHud();
   },
   moreTime() {
@@ -960,7 +959,7 @@ const Duel = {
     if (ok) {
       const fast = this.time > this.maxTime * 0.6;
       G.streak++; G.bestStreak = Math.max(G.bestStreak, G.streak); const mult = streakMult();
-      const pts = (100 + Math.ceil(this.time * 8) + (fast ? 50 : 0)) * mult;
+      const pts = Math.round((100 + Math.ceil(this.time * 8) + (fast ? 50 : 0)) * mult * (typeof Dif !== 'undefined' ? Dif.pts() : 1));
       s.conv--; G.stats.correct++; addScore(pts);
       popup(`+${pts}${mult > 1 ? `<small>racha ×${mult}</small>` : fast ? '<small>¡veloz!</small>' : ''}`, 'up');
       Audio.correct(); s.gesture = 1; buzz(25);
@@ -970,7 +969,7 @@ const Duel = {
       this.say(pick(fast ? LINES.fast : LINES.right));
       particles.emit(head, 50, { color: 0xffd36a, speed: 5, life: 0.9, size: 0.4, intensity: 2.5 });
     } else {
-      const dmg = Math.round((s.boss ? 17 : 13) + G.eraIdx * 1.5);
+      const dmg = Math.round(((s.boss ? 17 : 13) + G.eraIdx * 1.5) * (typeof Dif !== 'undefined' ? Dif.dmg() : 1));
       G.hp = Math.max(0, G.hp - dmg); G.stats.wrong++; Audio.wrong(); player.shake = 0.5; buzz([50, 40, 80]);
       s._wrongs++;
       popup(`−${dmg} razón${G.streak >= 3 ? '<small>racha perdida</small>' : ''}`, 'bad up'); G.streak = 0;
@@ -1294,7 +1293,7 @@ function syncSettings() {
   for (const [id, k] of TOGGLES) document.querySelectorAll(id + ' button').forEach((b) => b.classList.toggle('on', (b.dataset.v === '1') === !!G.settings[k]));
   document.querySelectorAll('#s-diff button').forEach((b) => b.classList.toggle('on', b.dataset.v === G.settings.trialDiff));
 }
-document.querySelectorAll('#s-diff button').forEach((b) => b.addEventListener('click', () => { G.settings.trialDiff = b.dataset.v; saveSettings(); syncSettings(); toast('La dificultad de las pruebas cambia desde la próxima etapa.'); }));
+document.querySelectorAll('#s-diff button').forEach((b) => b.addEventListener('click', () => { G.settings.trialDiff = b.dataset.v; saveSettings(); syncSettings(); toast('La dificultad cambia las preguntas de los debates y las pruebas del camino.'); }));
 const TOGGLES = [['#s-voices', 'voices'], ['#s-auto', 'autofire'], ['#s-vib', 'vibrate'], ['#s-mundo', 'mundo']];
 for (const [id, k] of TOGGLES) document.querySelectorAll(id + ' button').forEach((b) => b.addEventListener('click', () => {
   G.settings[k] = b.dataset.v === '1'; saveSettings(); syncSettings();
@@ -1463,4 +1462,4 @@ async function boot() {
 }
 
 // Gancho de pruebas automáticas (solo con #debug en la URL)
-if (location.hash === '#debug') window.__dbg = { get AULA() { return AULA; }, ga: (x, z, y) => groundAt(world, x, z, y), get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, get Agora() { return Agora; }, get Foto() { return Foto; }, get Avatar() { return Avatar; }, get Torneo() { return Torneo; }, get Versus() { return Versus; }, get Mision() { return Mision; }, get Tiempo() { return Tiempo; }, get Escucha() { return Escucha; }, get Perfil() { return Perfil; }, get ERAS() { return ERAS; } };
+if (location.hash === '#debug') window.__dbg = { get AULA() { return AULA; }, ga: (x, z, y) => groundAt(world, x, z, y), get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, get Agora() { return Agora; }, get Foto() { return Foto; }, get Avatar() { return Avatar; }, get Dif() { return Dif; }, get Torneo() { return Torneo; }, get Versus() { return Versus; }, get Mision() { return Mision; }, get Tiempo() { return Tiempo; }, get Escucha() { return Escucha; }, get Perfil() { return Perfil; }, get ERAS() { return ERAS; } };
