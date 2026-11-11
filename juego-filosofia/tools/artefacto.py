@@ -8,7 +8,7 @@ m = re.search(r'const NARR_INDEX = (\{.*?\});\n', html, re.S); idx = json.loads(
 def wav(src, dst): subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', src, '-ac', '1', '-ar', '22050', dst], check=True)
 merged = 0
 for k, packs in list(idx['spk'].items()):
-    if packs != ['l-' + k, 'p-' + k]: continue
+    if 'l-' + k not in packs or 'p-' + k not in packs: continue
     pw, lw, cw = f'{TMP}/p.wav', f'{TMP}/l.wav', f'{TMP}/c.wav'
     wav(f'{G}/audio/p-{k}.mp3', pw); wav(f'{G}/audio/l-{k}.mp3', lw)
     with wave.open(pw) as a, wave.open(lw) as b:
@@ -18,7 +18,7 @@ for k, packs in list(idx['spk'].items()):
     P = idx['p']['p-' + k]
     for h, (at, dur) in idx['p'].pop('l-' + k).items():
         if h not in P: P[h] = [at + off, dur]
-    idx['spk'][k] = ['p-' + k]; merged += 1
+    idx['spk'][k] = [x for x in packs if x != 'l-' + k]; merged += 1
 used = set(p for v in idx['spk'].values() for p in v)
 for f in sorted(os.listdir(G + '/audio')):
     if not f.endswith('.mp3'): continue

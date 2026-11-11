@@ -41,7 +41,7 @@ const Juntos = {
     MRT.connect(chan, {
       pos: (d) => this.rPos(d), adios: (d) => this.drop(d.id), emo: (d) => this.rEmo(d),
       reto: (d) => this.rReto(d), acepta: (d) => this.rAcepta(d), rechaza: (d) => { if (d.to === this.id && this.duel && this.duel.wait) { this.duel = null; this.paintMeet(); toast(`${d.name} no quiso esta vez.`); } },
-      dres: (d) => this.rRes(d), lec: (d) => { if (typeof Escucha !== 'undefined') Escucha.rLec(d); },
+      dres: (d) => this.rRes(d), lec: (d) => { if (typeof Escucha !== 'undefined') Escucha.rLec(d); }, tor: (d) => { if (typeof Torneo !== 'undefined') Torneo.rx(d); },
     }, (s) => { this.net = s; this.paintBadge(); if (s === 'ok') this.sendT = 0; });
     this.net = 'connecting'; this.paintBadge();
   },
@@ -166,6 +166,7 @@ const Juntos = {
   },
   answerInv(yes) {
     const d = this.inv; if (!d) return; this.inv = null; $('#mp-inv').hidden = true; clearTimeout(this.invT);
+    if (d.tor) { $('#mp-yes').textContent = '¡Acepto!'; $('#mp-no').textContent = 'Ahora no'; if (yes && G.state === 'play') Torneo.join(d); return; }
     if (d.ask) { $('#mp-yes').textContent = '¡Acepto!'; $('#mp-no').textContent = 'Ahora no'; G.settings.mundo = !!yes; saveSettings(); syncSettings(); this.welcomed = !yes; if (!yes) toast('Puedes jugar en línea cuando quieras: toca el letrero 🌍 de arriba.'); if (typeof Avatar !== 'undefined') Avatar.paintTitle(); return; }
     if (!yes || G.state !== 'play') { MRT.send('rechaza', { from: this.id, to: d.from, name: this.name }); return; }
     MRT.send('acepta', { from: this.id, to: d.from, seed: d.seed }); this.begin(d.from, Sala.clean(d.name) || 'Rival', d.seed, d.kind === 'd' ? 'd' : 'q');

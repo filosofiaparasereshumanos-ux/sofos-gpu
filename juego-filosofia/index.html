@@ -418,6 +418,9 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .tl-chip .medal { width: 22px; height: 22px; font-size: 0.7rem; flex: 0 0 auto; box-shadow: none; } .tl-chip.on { border-color: var(--gold-bright); background: #4a3a14; z-index: 3; } .tl-chip.same { border-color: #7fd08a; background: #1c3020; z-index: 2; } .tl-chip.dim { opacity: 0.45; }
 .tl-life { position: absolute; height: 2px; background: rgba(214,168,74,0.5); border-radius: 2px; }
 .tl-info { display: flex; gap: 10px; align-items: flex-start; margin-top: 10px; } .tl-info b { display: block; font-family: var(--display); font-weight: normal; color: var(--gold-bright); } .tl-info small { color: var(--parchment-dim); } .tl-info p { margin: 4px 0 0; font-size: 0.92rem; }
+#mp-tor { position: absolute; top: calc(max(8px, var(--sat)) + 34px); left: 50%; transform: translateX(-50%); z-index: 30; border: 0; border-radius: 999px; padding: 6px 14px; font: inherit; font-size: 0.82rem; color: #2a1a08; background: linear-gradient(#ffe08a, #d8a83a); box-shadow: 0 4px 16px rgba(0,0,0,0.45); cursor: pointer; white-space: nowrap; }
+.mpd-card.me { border-color: var(--gold); }
+#mpd .mpd-box { max-height: calc(100vh - 32px); overflow: auto; }
 #b-foto { position: absolute; left: max(12px, var(--sal, 0px)); top: calc(max(8px, var(--sat)) + 96px); z-index: 31; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold); background: rgba(10,8,5,0.75); font-size: 1.3rem; cursor: pointer; }
 .foto-card { text-align: center; } .foto-card img { max-width: 100%; max-height: 62vh; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.6); }
 .av-chip.lock { opacity: 0.55; font-size: 0.75rem; color: #fff; }
@@ -1159,6 +1162,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
     <div class="tl-info"><i class="medal sm" id="tl-medal"></i><div><b id="tl-name"></b><small id="tl-meta"></small><p id="tl-same"></p></div></div>
     <div class="btns"><button class="btn" id="tl-lesson">Escuchar su lección</button></div>
   </div></div>
+  <button id="mp-tor" hidden>🏆 Abrir torneo de debate</button>
   <button id="mp-emo" hidden aria-label="Gestos">😀</button>
   <button id="b-foto" hidden aria-label="Sacar una foto">📷</button>
   <div id="foto" class="nb" hidden><div class="nb-card foto-card"><img id="foto-img" alt="Tu foto del viaje"><div class="btns"><button class="btn primary" id="foto-share">Compartir o guardar</button><button class="btn ghost" id="foto-close">Seguir explorando</button></div></div></div>
@@ -14579,7 +14583,7 @@ async function boot() {
 }
 
 // Gancho de pruebas automáticas (solo con #debug en la URL)
-if (location.hash === '#debug') window.__dbg = { get AULA() { return AULA; }, ga: (x, z, y) => groundAt(world, x, z, y), get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, get Agora() { return Agora; }, get Foto() { return Foto; }, get Avatar() { return Avatar; }, get Versus() { return Versus; }, get Mision() { return Mision; }, get Tiempo() { return Tiempo; }, get Escucha() { return Escucha; }, get Perfil() { return Perfil; }, get ERAS() { return ERAS; } };
+if (location.hash === '#debug') window.__dbg = { get AULA() { return AULA; }, ga: (x, z, y) => groundAt(world, x, z, y), get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, get Agora() { return Agora; }, get Foto() { return Foto; }, get Avatar() { return Avatar; }, get Torneo() { return Torneo; }, get Versus() { return Versus; }, get Mision() { return Mision; }, get Tiempo() { return Tiempo; }, get Escucha() { return Escucha; }, get Perfil() { return Perfil; }, get ERAS() { return ERAS; } };
 
 // ---- src/04a-lesson.js ----
 // ============================================================================
@@ -15080,6 +15084,8 @@ const ACH = [
   { id: 'racha3', i: '🔥', n: 'Constancia', d: 'Cumple las misiones tres días seguidos.' },
   { id: 'racha7', i: '☄', n: 'Hábito de filósofo', d: 'Cumple las misiones siete días seguidos.' },
   { id: 'tiempo', i: '⏳', n: 'Contemporáneos', d: 'Descubre en la línea de tiempo quién vivió a la vez que otro pensador.' },
+  { id: 'torneo1', i: '🎙', n: 'A la arena', d: 'Participa en un torneo de debate con otros viajeros.' },
+  { id: 'torneo', i: '🏆', n: 'Campeón del ágora', d: 'Gana un torneo de debate relámpago.' },
   { id: 'juntos', i: '👥', n: 'Duelo entre viajeros', d: 'Explora en grupo y gana un duelo a otro jugador.' },
   { id: 'escalera', i: '⌇', n: 'Tirar la escalera', d: 'Sube la escalera de Wittgenstein y tírala al llegar arriba.' },
   { id: 'salida', i: '☀', n: 'Fuera de la caverna', d: 'Baja hasta los prisioneros de la caverna de Platón y vuelve a salir a la luz.' },
@@ -16699,7 +16705,7 @@ const Juntos = {
     MRT.connect(chan, {
       pos: (d) => this.rPos(d), adios: (d) => this.drop(d.id), emo: (d) => this.rEmo(d),
       reto: (d) => this.rReto(d), acepta: (d) => this.rAcepta(d), rechaza: (d) => { if (d.to === this.id && this.duel && this.duel.wait) { this.duel = null; this.paintMeet(); toast(`${d.name} no quiso esta vez.`); } },
-      dres: (d) => this.rRes(d), lec: (d) => { if (typeof Escucha !== 'undefined') Escucha.rLec(d); },
+      dres: (d) => this.rRes(d), lec: (d) => { if (typeof Escucha !== 'undefined') Escucha.rLec(d); }, tor: (d) => { if (typeof Torneo !== 'undefined') Torneo.rx(d); },
     }, (s) => { this.net = s; this.paintBadge(); if (s === 'ok') this.sendT = 0; });
     this.net = 'connecting'; this.paintBadge();
   },
@@ -16824,6 +16830,7 @@ const Juntos = {
   },
   answerInv(yes) {
     const d = this.inv; if (!d) return; this.inv = null; $('#mp-inv').hidden = true; clearTimeout(this.invT);
+    if (d.tor) { $('#mp-yes').textContent = '¡Acepto!'; $('#mp-no').textContent = 'Ahora no'; if (yes && G.state === 'play') Torneo.join(d); return; }
     if (d.ask) { $('#mp-yes').textContent = '¡Acepto!'; $('#mp-no').textContent = 'Ahora no'; G.settings.mundo = !!yes; saveSettings(); syncSettings(); this.welcomed = !yes; if (!yes) toast('Puedes jugar en línea cuando quieras: toca el letrero 🌍 de arriba.'); if (typeof Avatar !== 'undefined') Avatar.paintTitle(); return; }
     if (!yes || G.state !== 'play') { MRT.send('rechaza', { from: this.id, to: d.from, name: this.name }); return; }
     MRT.send('acepta', { from: this.id, to: d.from, seed: d.seed }); this.begin(d.from, Sala.clean(d.name) || 'Rival', d.seed, d.kind === 'd' ? 'd' : 'q');
@@ -17524,6 +17531,145 @@ on('#b-tiempo', () => Tiempo.open());
 on('#tl-x', () => Panel.close('tl'));
 on('#tl-lesson', () => Tiempo.lesson());
 for (const id of ['vs', 'mis', 'tl']) window.addEventListener('keydown', (e) => { if (e.code === 'Escape' && !$('#' + id).hidden) { e.stopPropagation(); if (id === 'vs') Versus.close(); else Panel.close(id); } }, true);
+
+// ---- src/06p-torneo.js ----
+// ============================================================================
+//  TORNEO DE DEBATE RELÁMPAGO: con tres o más viajeros en la misma época,
+//  cualquiera abre un torneo. En cada ronda todos reciben la misma tesis, toman
+//  postura y eligen su mejor razón; después cada uno vota la mejor razón de los
+//  demás (sin ver de quién es). Suman la calidad de la razón y los votos
+//  recibidos. Dos rondas y podio. Quien abre el torneo lleva la cuenta.
+// ============================================================================
+const TOR_MIN = 3, TOR_ROUNDS = 2;
+const TOR_ON = false; // en pruebas: todavía no se ofrece a los jugadores
+const Torneo = {
+  T: null,
+  me() { return Juntos.myId(); },
+  others() { let n = 0; for (const r of Juntos.R.values()) if (r.e === G.eraIdx && r.st) n++; return n; },
+  canOpen() { return TOR_ON && Juntos.on && MRT.joined && G.state === 'play' && !Juntos.duel && !Juntos.inv && this.others() >= TOR_MIN - 1; },
+  send(o) { MRT.send('tor', { ...o, h: this.T.host }); },
+  q(k) { return k === 'b' ? 2 : k === 'f' ? -1 : 0; },
+  tag(k, f) { return k === 'b' ? '✓ buena razón' : k === 'f' ? `✗ falacia${f ? ': ' + f : ''}` : k === 'd' ? '· razón débil' : '· sin razón'; },
+  thesis(T, r) { const here = ERAS[T.e].sages.filter((s) => DIALOGOS[s.id]); const all = ERAS.flatMap((e) => e.sages).filter((s) => DIALOGOS[s.id]); const list = here.length >= TOR_ROUNDS ? here : all; const s = list[(T.seed + r) % list.length]; return { s, D: DIALOGOS[s.id] }; },
+  enter() {
+    Juntos.duel = this.T; G.state = 'place'; unlockPointer(); input.keys = {}; input.walk = null; input.auto = false; $('#hud').hidden = true; $('#touch').hidden = true; $('#mp-meet').hidden = true; $('#mp-emobar').hidden = true; $('#mp-tor').hidden = true;
+    $('#mpd-vs').textContent = '🏆 Torneo de debate relámpago'; $('#mpd').hidden = false; Audio.mode = 'duel';
+  },
+  leave(msg) { const T = this.T; if (T) { clearInterval(T.timer); clearTimeout(T.t1); clearTimeout(T.t2); clearInterval(T.watch); } this.T = null; Juntos.close(); if (msg) toast(msg); },
+  wait(text) { $('#mpd-q').textContent = text; $('#mpd-a').innerHTML = ''; $('#mpd-msg').textContent = ''; $('#mpd-bar').style.transform = 'scaleX(0)'; clearInterval(this.T.timer); },
+  // -------- abrir y sumarse
+  open() {
+    if (!this.canOpen()) return toast(`Para un torneo hacen falta al menos ${TOR_MIN} viajeros en esta época.`);
+    const me = this.me(); this.T = { kind: 't', host: me, seed: (Math.random() * 1e6) | 0, e: G.eraIdx, P: new Map([[me, Juntos.name]]), r: -1, tot: {}, done: {} };
+    MRT.send('tor', { t: 'open', h: me, n: Juntos.name, seed: this.T.seed, e: this.T.e }); this.enter(); this.lobby();
+    this.T.t0s = performance.now(); this.T.t1 = setTimeout(() => this.start(), 22000);
+    this.T.timer = setInterval(() => { const T = this.T; if (!T || T.r >= 0) return; $('#mpd-bar').style.transform = `scaleX(${Math.max(0, 1 - (performance.now() - T.t0s) / 22000)})`; }, 200);
+  },
+  lobby() {
+    const T = this.T; const host = T.host === this.me(); $('#mpd-n').textContent = 'Reuniendo participantes';
+    $('#mpd-q').textContent = host ? `Tu torneo empieza en unos segundos. Participantes: ${[...T.P.values()].join(', ')}.` : `Te sumaste al torneo de ${T.hostName}. Empieza en unos segundos…`;
+    const box = $('#mpd-a'); box.innerHTML = ''; $('#mpd-msg').textContent = 'Dos rondas: postura, mejor razón y voto a la mejor razón de los demás.';
+    if (host) { const b = document.createElement('button'); b.className = 'btn primary'; b.textContent = T.P.size >= TOR_MIN ? 'Empezar ya' : `Esperando (mínimo ${TOR_MIN})`; b.disabled = T.P.size < TOR_MIN; b.addEventListener('click', () => this.start()); box.appendChild(b); }
+    const c = document.createElement('button'); c.className = 'btn ghost'; c.textContent = host ? 'Cancelar el torneo' : 'Salir'; c.addEventListener('click', () => { if (host) this.send({ t: 'cancel' }); this.leave(host ? 'Cancelaste el torneo.' : ''); }); box.appendChild(c);
+  },
+  invite(d) {
+    if (!TOR_ON || this.T || Juntos.duel || Juntos.inv || G.state !== 'play' || d.e !== G.eraIdx || Juntos.muted().has(String(d.h))) return;
+    Juntos.inv = { tor: true, h: String(d.h), n: Sala.clean(d.n) || 'Un viajero', seed: d.seed | 0, e: d.e };
+    $('#mp-inv-t').textContent = `🏆 ${Juntos.inv.n} abre un torneo de debate relámpago: dos rondas, todos con la misma tesis, y se vota la mejor razón. ¿Te sumas?`;
+    $('#mp-yes').textContent = 'Me sumo'; $('#mp-no').textContent = 'Ahora no'; $('#mp-inv').hidden = false; Audio.gong && Audio.gong(); buzz([20, 40, 20]);
+    clearTimeout(Juntos.invT); Juntos.invT = setTimeout(() => Juntos.answerInv(false), 15000);
+  },
+  join(d) {
+    this.T = { kind: 't', host: d.h, hostName: d.n, seed: d.seed, e: d.e, P: new Map(), r: -1, tot: {}, done: {}, rx: performance.now() };
+    this.send({ t: 'join', id: this.me(), n: Juntos.name }); this.enter(); this.lobby();
+    this.T.watch = setInterval(() => { const T = this.T; if (T && performance.now() - T.rx > 85000) this.leave('El torneo se interrumpió: quien lo abrió se desconectó.'); }, 5000);
+  },
+  start() {
+    const T = this.T; if (!T || T.host !== this.me() || T.r >= 0) return; clearTimeout(T.t1); clearInterval(T.timer);
+    if (T.P.size < TOR_MIN) { this.send({ t: 'cancel' }); return this.leave(`El torneo necesita al menos ${TOR_MIN} participantes. Inténtalo cuando haya más viajeros.`); }
+    this.hostRound(0);
+  },
+  // -------- quien abre el torneo marca los tiempos
+  hostRound(r) {
+    const T = this.T; if (!T) return; T.ans = new Map(); T.picks = new Map();
+    const m = { t: 'round', r, ids: [...T.P.keys()], ns: [...T.P.values()] }; this.send(m); this.onRound(m);
+    clearTimeout(T.t1); T.t1 = setTimeout(() => this.hostVote(r), 52000);
+  },
+  hostVote(r) {
+    const T = this.T; if (!T || T.done['v' + r]) return; T.done['v' + r] = true; clearTimeout(T.t1);
+    const list = [...T.P.keys()].map((id) => T.ans.get(id) || { id, n: T.P.get(id), post: '', raz: '', rk: '', rf: '' });
+    const m = { t: 'vote', r, list }; this.send(m); this.onVote(m); T.t1 = setTimeout(() => this.hostRes(r), 26000);
+  },
+  hostRes(r) {
+    const T = this.T; if (!T || T.done['r' + r]) return; T.done['r' + r] = true; clearTimeout(T.t1);
+    const votes = {}; for (const [from, to] of T.picks) if (from !== to && T.P.has(to)) votes[to] = (votes[to] || 0) + 1;
+    const rows = [...T.P.keys()].map((id) => { const a = T.ans.get(id) || { n: T.P.get(id), raz: '', rk: '', rf: '' }; const v = votes[id] || 0; const pts = this.q(a.rk) + v; T.tot[id] = (T.tot[id] || 0) + pts; return { id, n: T.P.get(id), raz: a.raz, rk: a.rk, rf: a.rf, v, pts, tot: T.tot[id] }; });
+    const last = r >= TOR_ROUNDS - 1; const m = { t: 'res', r, rows, last }; this.send(m); this.onRes(m);
+    if (!last) T.t1 = setTimeout(() => this.hostRound(r + 1), 12000);
+  },
+  // -------- mensajes
+  rx(d) {
+    const T = this.T; const h = String(d.h || '');
+    if (d.t === 'open') return this.invite(d);
+    if (!T || h !== T.host) return; const host = T.host === this.me(); T.rx = performance.now();
+    if (host) {
+      const id = String(d.id || ''); if (!Juntos.R.has(id)) return;
+      if (d.t === 'join' && T.r < 0 && T.P.size < 12) { T.P.set(id, Juntos.R.get(id).name); this.send({ t: 'lobby', ns: [...T.P.values()] }); this.lobby(); }
+      else if (d.t === 'ans' && d.r === T.r && T.P.has(id)) { T.ans.set(id, { id, n: T.P.get(id), post: String(d.post || '').slice(0, 300), raz: String(d.raz || '').slice(0, 400), rk: String(d.rk || '').slice(0, 1), rf: String(d.rf || '').slice(0, 60) }); if (T.ans.size >= T.P.size) this.hostVote(T.r); }
+      else if (d.t === 'pick' && d.r === T.r && T.P.has(id)) { T.picks.set(id, String(d.f || '')); if (T.picks.size >= T.P.size) this.hostRes(T.r); }
+      return;
+    }
+    if (d.t === 'cancel') return this.leave('El torneo se canceló: no se reunieron suficientes participantes.');
+    if (d.t === 'lobby' && T.r < 0) { $('#mpd-msg').textContent = `Participantes: ${(d.ns || []).map((n) => Sala.clean(n) || 'Viajero').join(', ')}.`; return; }
+    if (d.t === 'round') { if (!(d.ids || []).includes(this.me())) return this.leave('El torneo empezó sin ti. ¡Súmate al próximo!'); return this.onRound(d); }
+    if (d.t === 'vote' && d.r === T.r) return this.onVote(d);
+    if (d.t === 'res' && d.r === T.r) return this.onRes(d);
+  },
+  // -------- cada ronda, en la pantalla de cada participante
+  onRound(d) {
+    const T = this.T; T.r = d.r; T.n = (d.ids || []).length; const th = this.thesis(T, d.r); T.th = th; T.i = 0; T.post = 0; T.raz = null; this.step();
+  },
+  step() {
+    const T = this.T; const D = T.th.D; T.answered = false; $('#mpd-msg').textContent = `Ronda ${T.r + 1} de ${TOR_ROUNDS} · ${T.n} participantes`;
+    if (T.i === 0) { $('#mpd-n').textContent = `Tesis de ${T.th.s.short}`; $('#mpd-q').textContent = `«${D.tesis}» ¿Qué piensas tú?`; Juntos.buttons(D.posturas.map((p) => p.t), (k) => this.pickStep(k)); Juntos.timer(20, () => this.pickStep(-1)); }
+    else { const P = D.posturas[T.post]; T.rz = shuffle(P.razones.slice()); $('#mpd-n').textContent = 'Tu mejor razón'; $('#mpd-q').textContent = `Tu postura: ${P.t} ¿Por qué? Los demás votarán la mejor razón.`; Juntos.buttons(T.rz.map((x) => x.t), (k) => this.pickStep(k)); Juntos.timer(25, () => this.pickStep(-1)); }
+  },
+  pickStep(k) {
+    const T = this.T; if (!T || T.answered) return; T.answered = true; clearInterval(T.timer); Audio.click();
+    if (T.i === 0) { T.post = k < 0 ? 0 : k; T.i = 1; return this.step(); }
+    T.raz = k < 0 ? null : T.rz[k]; const P = T.th.D.posturas[T.post];
+    const m = { t: 'ans', r: T.r, id: this.me(), n: Juntos.name, post: P.t, raz: T.raz ? T.raz.t : '', rk: T.raz ? T.raz.k : '', rf: (T.raz && T.raz.f) || '' };
+    if (T.host === this.me()) { T.ans.set(m.id, m); if (T.ans.size >= T.P.size) return this.hostVote(T.r); } else this.send(m);
+    $('#mpd-n').textContent = 'Listo'; this.wait('Esperando las razones de los demás…');
+  },
+  onVote(d) {
+    const T = this.T; const me = this.me(); const list = shuffle((d.list || []).filter((a) => a.id !== me && a.raz));
+    $('#mpd-n').textContent = 'Vota la mejor razón'; $('#mpd-msg').textContent = 'No ves de quién es cada una: vota por la razón, no por la persona.';
+    const cast = (id) => { if (T.voted === T.r) return; T.voted = T.r; clearInterval(T.timer); Audio.click(); const m = { t: 'pick', r: T.r, id: me, f: id };
+      if (T.host === me) { T.picks.set(me, id); if (T.picks.size >= T.P.size) return this.hostRes(T.r); } else this.send(m);
+      $('#mpd-n').textContent = 'Voto enviado'; this.wait('Contando los votos…'); };
+    if (!list.length) { $('#mpd-q').textContent = 'Nadie más dio una razón en esta ronda.'; $('#mpd-a').innerHTML = ''; return cast(''); }
+    $('#mpd-q').textContent = '¿Cuál de estas razones te parece la mejor?';
+    Juntos.buttons(list.map((a) => `${a.post} — ${a.raz}`), (k) => cast(list[k].id)); Juntos.timer(22, () => cast(''));
+  },
+  onRes(d) {
+    const T = this.T; clearInterval(T.timer); const rows = (d.rows || []).slice().sort((a, b) => b.tot - a.tot); const me = this.me(); const top = rows.length ? rows[0].tot : 0;
+    $('#mpd-n').textContent = d.last ? 'Resultado final' : `Resultados de la ronda ${T.r + 1}`; $('#mpd-bar').style.transform = 'scaleX(0)';
+    const win = rows.filter((x) => x.tot === top); const iWon = d.last && win.some((x) => x.id === me);
+    $('#mpd-q').textContent = d.last ? (win.length > 1 ? `🏆 Empate entre ${win.map((x) => Sala.clean(x.n) || 'Viajero').join(' y ')}.` : `🏆 Gana ${win[0].id === me ? 'tú' : Sala.clean(win[0].n) || 'Viajero'} con ${top} puntos.`) : 'Así quedó la ronda. La siguiente empieza en unos segundos…';
+    $('#mpd-msg').textContent = 'Puntos: buena razón +2, falacia −1, y +1 por cada voto recibido.';
+    const box = $('#mpd-a'); box.innerHTML = '';
+    rows.forEach((x, i) => { const c = document.createElement('div'); c.className = 'mpd-card' + (x.id === me ? ' me' : ''); c.innerHTML = '<b></b><p class="p"></p><p></p>';
+      c.querySelector('b').textContent = `${i + 1}. ${x.id === me ? 'Tú' : Sala.clean(x.n) || 'Viajero'} · ${x.tot} ${x.tot === 1 ? 'punto' : 'puntos'}`; c.querySelector('.p').textContent = x.raz || 'No alcanzó a dar una razón.';
+      c.children[2].textContent = `${this.tag(x.rk, x.rf)} · ${x.v} ${x.v === 1 ? 'voto' : 'votos'} · ${x.pts >= 0 ? '+' : ''}${x.pts} en esta ronda`; box.appendChild(c); });
+    if (!d.last) return;
+    const pts = iWon ? 400 : 120; addScore(pts); popup(`+${pts}<small>torneo de debate</small>`, 'up'); achieve('torneo1'); if (iWon) { achieve('torneo'); Audio.victory && Audio.victory(); }
+    const b = document.createElement('button'); b.className = 'btn primary'; b.textContent = 'Seguir explorando'; b.addEventListener('click', () => this.leave('')); box.appendChild(b);
+    clearInterval(T.watch); clearTimeout(T.t1);
+  },
+};
+on('#mp-tor', () => Torneo.open());
+setInterval(() => { try { const b = $('#mp-tor'); const show = !Torneo.T && Torneo.canOpen(); if (b.hidden === show) b.hidden = !show; } catch (e) { /* nada */ } }, 700);
 
 </script>
 </body>

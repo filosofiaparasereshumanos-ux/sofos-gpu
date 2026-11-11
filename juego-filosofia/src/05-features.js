@@ -25,6 +25,8 @@ const ACH = [
   { id: 'racha3', i: '🔥', n: 'Constancia', d: 'Cumple las misiones tres días seguidos.' },
   { id: 'racha7', i: '☄', n: 'Hábito de filósofo', d: 'Cumple las misiones siete días seguidos.' },
   { id: 'tiempo', i: '⏳', n: 'Contemporáneos', d: 'Descubre en la línea de tiempo quién vivió a la vez que otro pensador.' },
+  { id: 'torneo1', i: '🎙', n: 'A la arena', d: 'Participa en un torneo de debate con otros viajeros.' },
+  { id: 'torneo', i: '🏆', n: 'Campeón del ágora', d: 'Gana un torneo de debate relámpago.' },
   { id: 'juntos', i: '👥', n: 'Duelo entre viajeros', d: 'Explora en grupo y gana un duelo a otro jugador.' },
   { id: 'escalera', i: '⌇', n: 'Tirar la escalera', d: 'Sube la escalera de Wittgenstein y tírala al llegar arriba.' },
   { id: 'salida', i: '☀', n: 'Fuera de la caverna', d: 'Baja hasta los prisioneros de la caverna de Platón y vuelve a salir a la luz.' },

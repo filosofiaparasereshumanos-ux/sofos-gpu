@@ -399,6 +399,9 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .tl-chip .medal { width: 22px; height: 22px; font-size: 0.7rem; flex: 0 0 auto; box-shadow: none; } .tl-chip.on { border-color: var(--gold-bright); background: #4a3a14; z-index: 3; } .tl-chip.same { border-color: #7fd08a; background: #1c3020; z-index: 2; } .tl-chip.dim { opacity: 0.45; }
 .tl-life { position: absolute; height: 2px; background: rgba(214,168,74,0.5); border-radius: 2px; }
 .tl-info { display: flex; gap: 10px; align-items: flex-start; margin-top: 10px; } .tl-info b { display: block; font-family: var(--display); font-weight: normal; color: var(--gold-bright); } .tl-info small { color: var(--parchment-dim); } .tl-info p { margin: 4px 0 0; font-size: 0.92rem; }
+#mp-tor { position: absolute; top: calc(max(8px, var(--sat)) + 34px); left: 50%; transform: translateX(-50%); z-index: 30; border: 0; border-radius: 999px; padding: 6px 14px; font: inherit; font-size: 0.82rem; color: #2a1a08; background: linear-gradient(#ffe08a, #d8a83a); box-shadow: 0 4px 16px rgba(0,0,0,0.45); cursor: pointer; white-space: nowrap; }
+.mpd-card.me { border-color: var(--gold); }
+#mpd .mpd-box { max-height: calc(100vh - 32px); overflow: auto; }
 #b-foto { position: absolute; left: max(12px, var(--sal, 0px)); top: calc(max(8px, var(--sat)) + 96px); z-index: 31; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold); background: rgba(10,8,5,0.75); font-size: 1.3rem; cursor: pointer; }
 .foto-card { text-align: center; } .foto-card img { max-width: 100%; max-height: 62vh; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.6); }
 .av-chip.lock { opacity: 0.55; font-size: 0.75rem; color: #fff; }
@@ -1138,6 +1141,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
     <div class="tl-info"><i class="medal sm" id="tl-medal"></i><div><b id="tl-name"></b><small id="tl-meta"></small><p id="tl-same"></p></div></div>
     <div class="btns"><button class="btn" id="tl-lesson">Escuchar su lección</button></div>
   </div></div>
+  <button id="mp-tor" hidden>🏆 Abrir torneo de debate</button>
   <button id="mp-emo" hidden aria-label="Gestos">😀</button>
   <button id="b-foto" hidden aria-label="Sacar una foto">📷</button>
   <div id="foto" class="nb" hidden><div class="nb-card foto-card"><img id="foto-img" alt="Tu foto del viaje"><div class="btns"><button class="btn primary" id="foto-share">Compartir o guardar</button><button class="btn ghost" id="foto-close">Seguir explorando</button></div></div></div>
