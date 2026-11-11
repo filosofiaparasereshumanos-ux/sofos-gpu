@@ -173,6 +173,12 @@ def vs(sid, boss=False, slow=False):
 # ---------------------------------------------------------------- guion
 # Cada pieza: (fotogramas, capas por fotograma o None, voz: (archivo, desde) o None, golpe al empezar)
 P = []
+def kbf(tag, *args, **kw):
+    """Como kenburns, pero deja los fotogramas en disco (ahorra memoria)."""
+    out = []
+    for i, im in enumerate(kenburns(*args, **kw)):
+        f = os.path.join(TMP, f'kb-{tag}-{i:03d}.jpg'); im.convert('RGB').save(f, quality=94); out.append(f)
+    return out
 def piece(frames, layers=None, voice=None, boom=False, flash=True):
     P.append(dict(frames=frames, layers=layers, voice=voice, boom=boom, flash=flash))
 VID = lambda n: os.path.join(T1, 'vid', n + '.mp4')
@@ -201,11 +207,11 @@ piece(frames_of('giges', take=30, start=10, step=1.6), [big('¿Serías justo', '
 piece(frames_of('mariposa', take=30, step=1.8), [big('¿Quién sueña', 'a quién?')])
 piece(vs('pachacutec', boss=True), [big('Vence al maestro'), name_label('Pachacútec', 'Los Incas')])
 # lo nuevo: mundo en línea, avatar y ágora (capturas fijas con movimiento suave)
-piece(kenburns(os.path.join(WK, 'juntos.png'), 42, 1.0, 1.09), [big('Juega en línea', 'encuéntrate con otros viajeros')], boom=True)
-piece(kenburns(os.path.join(WK, 'avatar.png'), 34, 1.0, 1.06), [big('Crea tu avatar', 'y gana accesorios')])
-piece(kenburns(os.path.join(WK, 'agora.png'), 36, 1.0, 1.08), [big('Vota en el ágora', 'la pregunta del día')])
-piece(kenburns(os.path.join(WK, 'mapa.png'), 40, 1.0, 1.08), [big('Descubre', 'cómo piensas tú')])
-piece(kenburns(os.path.join(WK, 'aula.png'), 36, 1.0, 1.06, bg=Image.open(os.path.join(WK, 'mapa.png'))), [big('Y en clase', 'para docentes')])
+piece(kbf('juntos', os.path.join(WK, 'juntos.png'), 42, 1.0, 1.09), [big('Juega en línea', 'encuéntrate con otros viajeros')], boom=True)
+piece(kbf('avatar', os.path.join(WK, 'avatar.png'), 34, 1.0, 1.06), [big('Crea tu avatar', 'y gana accesorios')])
+piece(kbf('agora', os.path.join(WK, 'agora.png'), 36, 1.0, 1.08), [big('Vota en el ágora', 'la pregunta del día')])
+piece(kbf('mapa', os.path.join(WK, 'mapa.png'), 40, 1.0, 1.08), [big('Descubre', 'cómo piensas tú')])
+piece(kbf('aula', os.path.join(WK, 'aula.png'), 36, 1.0, 1.06, bg=Image.open(os.path.join(WK, 'mapa.png'))), [big('Y en clase', 'para docentes')])
 bgc = os.path.join(FR, 'w15', sorted(os.listdir(os.path.join(FR, 'w15')))[20])
 piece(card([('El primer juego educativo completo', 'b'), ('de filosofía, ciencia e historia', 'm'), ('22 épocas · 107 pensadores', 'm')], 84, bgc), boom=True)
 piece(old_frames(53.4, 54.9), voice=(VID('final'), 0.0 - 0.05 + 0.05))                        # «¿Te atreves a pensar?»
