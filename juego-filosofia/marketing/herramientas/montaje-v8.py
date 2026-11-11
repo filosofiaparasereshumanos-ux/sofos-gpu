@@ -79,7 +79,9 @@ def band(num, text):
 def big(head, sub):
     """Rótulo grande para las tomas a pantalla completa, con sombra suave."""
     img = Image.new('RGBA', (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(img); sh = Image.new('RGBA', (W, H), (0, 0, 0, 0)); sd = ImageDraw.Draw(sh)
-    fh = ImageFont.truetype(F_BLACK, 104); fs = ImageFont.truetype(F_SERIF_B, 66); y = 300
+    size = 104
+    while d.textlength(head.upper(), font=ImageFont.truetype(F_BLACK, size)) > W - 90 and size > 56: size -= 4
+    fh = ImageFont.truetype(F_BLACK, size); fs = ImageFont.truetype(F_SERIF_B, 66); y = 300
     grad = Image.new('RGBA', (W, 620), (0, 0, 0, 0)); gd = ImageDraw.Draw(grad)
     for i in range(620): gd.line((0, i, W, i), fill=(6, 4, 2, int(170 * (1 - i / 620) ** 1.4)))
     img.alpha_composite(grad, (0, 0))
