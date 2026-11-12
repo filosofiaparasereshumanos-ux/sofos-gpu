@@ -25,7 +25,8 @@ if __name__ == '__main__':
         vname, lang = VOICES.get(job['voice'], (job['voice'], 'en-us'))
         sr = 24000; parts = [np.zeros(int(sr * 0.15), dtype=np.float32)]; pos = len(parts[0]); spans = []
         for s in job['sentences']:
-            a, sr = k.create(s, voice=vname, speed=job.get('speed', 1.0), lang=lang)
+            try: a, sr = k.create(s, voice=vname, speed=job.get('speed', 1.0), lang=lang)
+            except ValueError: a = np.zeros(int(sr * 0.2), dtype=np.float32)   # «frases» sin sonido (una comilla suelta)
             a = a.astype(np.float32); spans.append([pos / sr, len(a) / sr]); parts += [a, np.zeros(int(sr * GAP), dtype=np.float32)]; pos += len(a) + int(sr * GAP)
         pcm = (np.clip(np.concatenate(parts), -1, 1) * 32767).astype('<i2').tobytes()
         f = job.get('pitch', 1.0)
