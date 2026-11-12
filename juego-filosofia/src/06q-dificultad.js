@@ -49,12 +49,20 @@ const Dif = {
       const titles = uniq((typeof BOOKS !== 'undefined' ? BOOKS.flat() : []).filter((x) => x.author !== s.id).map((x) => x.title), [b.title]);
       out.push({ q: `¿Qué obra escribió ${s.short}?`, a: [b.title, ...this.pickWrong(titles, 3, [b.title])], e: `${b.title} (${b.year}), de ${b.by}.` });
     }
+    // una de sus frases célebres
+    out.push(...this.fraseQ(s));
     // quién vivió antes, comparándolo con alguien de otra época
     if (typeof Tiempo !== 'undefined') {
       const me = Tiempo.parse(s.dates || ''); const cand = others.filter((x) => x.ei !== ei).map((x) => ({ x, t: Tiempo.parse(x.s.dates || '') })).filter((y) => y.t && me && Math.abs(y.t[0] - me[0]) > 150);
       for (const y of shuffle(cand).slice(0, 1)) out.push({ q: `¿${s.short} vivió antes o después que ${y.x.s.short}?`, a: [y.t[0] > me[0] ? 'Antes' : 'Después', y.t[0] > me[0] ? 'Después' : 'Antes', 'En el mismo año', 'Nunca existió'], e: `${s.short}: ${s.dates}. ${y.x.s.short}: ${y.x.s.dates}.` });
     }
     return out;
+  },
+  fraseQ(s) {
+    if (typeof FRASES === 'undefined' || !FRASES[s.id]) return [];
+    const [t, o] = FRASES[s.id][Math.floor(Math.random() * FRASES[s.id].length)];
+    const otras = shuffle(Object.entries(FRASES).filter(([id]) => id !== s.id).map(([, L]) => L[0][0])).slice(0, 3);
+    return [{ q: `¿Qué frase se atribuye a ${s.short}?`, a: [t, ...otras], e: o ? `«${t}» (${o}).` : `«${t}».` }];
   },
   pool(sage) {
     const k = this.k(); if (sage._difK === k && sage._difQ) return sage._difQ;
@@ -64,7 +72,7 @@ const Dif = {
     let qs;
     if (k === 'facil') qs = [...core, ...this.gen(d, ei, 'facil')];
     else if (k === 'dificil') qs = [...detail, ...books, ...this.gen(d, ei, 'dificil')];
-    else qs = [...d.q, ...books];
+    else qs = [...d.q, ...books, ...this.fraseQ(d)];
     qs = qs.filter((q) => q && q.a && q.a.length >= 3 && new Set(q.a).size === q.a.length);
     sage._difK = k; sage._difQ = qs; sage._difOrder = shuffle([...qs.keys()]); sage._difPtr = 0;
     return qs;

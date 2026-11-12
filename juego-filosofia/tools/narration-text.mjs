@@ -10,11 +10,11 @@ const EN = process.env.LANG_GAME === 'en'; const SRC = EN ? join(root, 'tools', 
 const FEMALE = new Set(['teano', 'hipatia', 'hildegarda', 'pizan', 'sorjuana', 'castellanos', 'beauvoir', 'arendt', 'enheduanna', 'rabia', 'safo', 'mistral', 'curie', 'lovelace', 'murasaki', 'volva', 'aud', 'banzhao', 'gargi', 'maathai', 'macuilxochitzin', 'janequeo', 'machi', 'dickinson', 'ernestinerose', 'teresa', 'weil', 'chatelet', 'wollstonecraft', 'gouges', 'truth', 'tristan', 'stein', 'zambrano', 'mirabai', 'montessori', 'carson', 'caceres', 'noether', 'frida', 'liliuokalani', 'nightingale']);
 // en español, Kokoro: Santa para ellos, Dora para ellas; el tono de cada pensador varía un poco
 const ENV = (v, id, female) => (!EN ? { voice: female ? 'dora' : 'santa', pitch: +(1 + (v.pitch - 1) * 0.5).toFixed(3) } : { voice: female ? 'af_heart' : 'am_michael', pitch: +(1 + (v.pitch - 1) * 0.5).toFixed(3) });
-const files = ['src/01-data.js', 'src/01a-lessons.js', 'src/01c-contemporanea.js', 'src/01d-pensadoras.js', 'src/01e-latinoamerica.js', 'src/01f-mundo.js', 'src/01g-sumer.js', 'src/01h-islam.js', 'src/01i-poetas.js', 'src/01j-ciencia.js', 'src/01k-japon.js', 'src/01l-vikingos.js', 'src/01m-persia.js', 'src/01n-mas-pensadores.js', 'src/01o-sabios.js', 'src/01p-fe-y-duda.js', 'src/01q-tres-mundos.js', 'src/01r-mente-tierra-numeros.js', 'src/01s-belleza-pueblos-cuidado.js', 'src/02b-places.js', 'src/02c-polis.js', 'src/02d-narration.js', 'src/02e-books.js', 'src/02f-contemporanea.js', 'src/02g-latinoamerica.js', 'src/02h-mundo.js', 'src/02i-sumer.js', 'src/02j-islam.js', 'src/02k-poetas.js', 'src/02l-ciencia.js', 'src/02n-japon.js', 'src/02o-vikingos.js', 'src/02t-persia.js', 'src/02w-mas-pensadores.js', 'src/02y-fe-y-duda.js', 'src/02p-dialogos.js', 'src/02q-caverna.js', 'src/02z-guia.js', 'src/02x-versus.js'];
+const files = ['src/01-data.js', 'src/01a-lessons.js', 'src/01c-contemporanea.js', 'src/01d-pensadoras.js', 'src/01e-latinoamerica.js', 'src/01f-mundo.js', 'src/01g-sumer.js', 'src/01h-islam.js', 'src/01i-poetas.js', 'src/01j-ciencia.js', 'src/01k-japon.js', 'src/01l-vikingos.js', 'src/01m-persia.js', 'src/01n-mas-pensadores.js', 'src/01o-sabios.js', 'src/01p-fe-y-duda.js', 'src/01q-tres-mundos.js', 'src/01r-mente-tierra-numeros.js', 'src/01s-belleza-pueblos-cuidado.js', 'src/01t-frases.js', 'src/02b-places.js', 'src/02c-polis.js', 'src/02d-narration.js', 'src/02e-books.js', 'src/02f-contemporanea.js', 'src/02g-latinoamerica.js', 'src/02h-mundo.js', 'src/02i-sumer.js', 'src/02j-islam.js', 'src/02k-poetas.js', 'src/02l-ciencia.js', 'src/02n-japon.js', 'src/02o-vikingos.js', 'src/02t-persia.js', 'src/02w-mas-pensadores.js', 'src/02y-fe-y-duda.js', 'src/02p-dialogos.js', 'src/02q-caverna.js', 'src/02z-guia.js', 'src/02x-versus.js'];
 const code = files.map((f) => readFileSync(join(SRC, f), 'utf8')).join('\n') +
-  '\n;globalThis.__out = { ERAS, LESSONS, POIS, NPCS, sageSpeech, NPC_GENERIC, NARR_GENERIC, narrSplit, narrHash, SAGE_VOICE, BOOKS, bookPartText, DIALOGOS, VERSUS };';
+  '\n;globalThis.__out = { FRASES, ERAS, LESSONS, POIS, NPCS, sageSpeech, NPC_GENERIC, NARR_GENERIC, narrSplit, narrHash, SAGE_VOICE, BOOKS, bookPartText, DIALOGOS, VERSUS };';
 const ctx = { console }; vm.createContext(ctx); vm.runInContext(code, ctx);
-const { ERAS, LESSONS, POIS, NPCS, sageSpeech, NPC_GENERIC, NARR_GENERIC, narrSplit, SAGE_VOICE, BOOKS, bookPartText, DIALOGOS, VERSUS } = ctx.__out;
+const { FRASES, ERAS, LESSONS, POIS, NPCS, sageSpeech, NPC_GENERIC, NARR_GENERIC, narrSplit, SAGE_VOICE, BOOKS, bookPartText, DIALOGOS, VERSUS } = ctx.__out;
 const packs = [];
 const pack = (name, voice, pitch, speaker, texts) => {
   const seen = new Set(); const sentences = [];
@@ -28,6 +28,7 @@ ERAS.forEach((era) => era.sages.forEach((d) => {
   const v = ENV(SAGE_VOICE(d), d.id, FEMALE.has(d.id));
   pack('l-' + d.id, v.voice, v.pitch, d.id, LESSONS[d.id] || []);
   const lesson = new Set((LESSONS[d.id] || []).flatMap(narrSplit));
+  if (FRASES[d.id]) pack('f-' + d.id, v.voice, v.pitch, d.id, FRASES[d.id].map((f) => f[0]));
   pack('p-' + d.id, v.voice, v.pitch, d.id, [...sageSpeech(d).flatMap(narrSplit).filter((s) => !lesson.has(s)), ...dlgTexts(DIALOGOS[d.id])]);
 }));
 // textos de las tarjetas de los experimentos jugables (cadenas largas de esos archivos), con la voz del narrador

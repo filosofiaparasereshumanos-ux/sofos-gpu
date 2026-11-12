@@ -646,6 +646,15 @@ input[type=range] { width: 100%; accent-color: var(--gold); }
 .ls-art::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(10,8,6,0.55)); pointer-events: none; }
 #lesson.quiz .ls-art { display: none; }
 @keyframes lsKen { from { transform: scale(1) translate(0, 0); } to { transform: scale(1.1) translate(-2%, -1.5%); } }
+.fr-src { display: block; margin-top: 8px; font-size: 0.82rem; font-style: italic; color: var(--gold); }
+.frase-dia { display: block; width: min(440px, 92vw); margin: 10px auto 0; padding: 10px 14px; text-align: center; background: rgba(10,8,6,0.55); border: 1px solid var(--line); border-radius: 12px; color: var(--parchment); font-family: var(--body); cursor: pointer; }
+.frase-dia .fr-eye { display: block; font-family: var(--display); font-size: 0.66rem; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; }
+.frase-dia q { display: block; font-style: italic; font-size: 1.02rem; line-height: 1.35; margin: 4px 0 2px; }
+.frase-dia small { color: var(--gold-bright); font-size: 0.8rem; }
+.fr-card { width: min(620px, 100%); } .fr-g { margin: 12px 0; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: rgba(0,0,0,0.22); }
+.fr-h { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; } .fr-h b { font-family: var(--display); letter-spacing: 0.06em; color: var(--gold-bright); }
+.fr-it { padding: 8px 0; border-top: 1px dashed rgba(214,168,74,0.25); } .fr-it q { display: block; font-style: italic; font-size: 1.05rem; line-height: 1.4; }
+.fr-it small { display: block; color: var(--gold); font-size: 0.8rem; margin: 2px 0 4px; } .fr-it.off { color: rgba(243,230,196,0.45); font-size: 0.9rem; } .fr-it .aid { font-size: 0.72rem; padding: 4px 10px; }
 @keyframes pulseAct { 0%,100% { box-shadow: 0 0 0 4px rgba(0,0,0,0.6), 0 0 14px rgba(255,211,106,0.7); } 50% { box-shadow: 0 0 0 4px rgba(0,0,0,0.6), 0 0 38px rgba(255,211,106,1), 0 0 0 10px rgba(255,211,106,0.25); } }
 #prompt { background: rgba(10,9,14,0.88); border: 2px solid var(--gold); color: #fff3d6; text-shadow: 0 1px 2px #000; box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
 #prompt b { color: #ffd36a; }
@@ -926,6 +935,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <div class="timeline" id="t-timeline" hidden></div>
       <button class="btn play-btn" id="b-play"><span class="play-ico" aria-hidden="true">▶</span><span class="play-t">Jugar</span><small id="b-play-s">22 épocas · 101 pensadoras y pensadores</small></button>
       <button class="btn cont-btn" id="b-continue" hidden>Continuar mi odisea<small id="b-continue-s"></small></button>
+      <button class="frase-dia" id="fr-dia" hidden></button>
       <div class="quick q4">
         <button class="qk oracle-btn" id="b-oracle"><b>☀</b><span>Oráculo de hoy</span><small id="b-oracle-s">10 preguntas</small></button>
         <button class="qk reto-btn" id="b-reto"><b>⚔</b><span>Reta a un amigo</span><small>Mismas preguntas</small></button>
@@ -940,6 +950,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="on-av" id="b-mis"><b>🎯</b><span>Misiones</span><small id="b-mis-s">0 de 3 hoy</small></button>
         <button class="on-av" id="b-versus"><b>⚔</b><span>Debates</span><small>Pensador contra pensador</small></button>
         <button class="on-av" id="b-tiempo"><b>⏳</b><span>Línea de tiempo</span><small>¿Quién vivió a la vez?</small></button>
+        <button class="on-av" id="b-frases"><b>❝</b><span>Frases célebres</span><small>Tu colección</small></button>
       </div>
       <button class="more-b" id="b-more" aria-expanded="false">Más opciones ▾</button>
       <div class="minis" id="t-more" hidden>
@@ -1151,6 +1162,11 @@ body.touch .gm.boss { width: 30px; height: 30px; }
     <button class="ls-x pn-x" id="mis-x" aria-label="Cerrar">✕</button>
     <div class="eyebrow" style="text-align:center">Cambian cada día</div><h3 class="av-h">Misiones de hoy</h3>
     <div id="mis-items"></div><p class="qd-note" id="mis-streak" style="text-align:center"></p>
+  </div></div>
+  <div id="fr" class="nb" hidden><div class="nb-card fr-card" role="dialog" aria-label="Frases célebres">
+    <button class="ls-x pn-x" id="fr-x" aria-label="Cerrar">✕</button>
+    <div class="eyebrow" style="text-align:center">Habla con los pensadores para descubrirlas</div><h3 class="av-h">Frases célebres</h3>
+    <p class="qd-note" id="fr-count" style="text-align:center"></p><div id="fr-items"></div>
   </div></div>
   <div id="tl" class="nb" hidden><div class="nb-card tl-card" role="dialog" aria-label="Línea de tiempo">
     <button class="ls-x pn-x" id="tl-x" aria-label="Cerrar">✕</button>
