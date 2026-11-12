@@ -21545,10 +21545,11 @@ setInterval(() => { try { const b = $('#mp-tor'); const show = !Torneo.T && Torn
 //  · Fácil: las preguntas sobre la idea central de cada pensador, tres opciones,
 //    más tiempo, menos argumentos para convencerlo y menos daño al fallar.
 //  · Normal: todas las preguntas del pensador, cuatro opciones.
-//  · Difícil: los detalles de su vida y obra, más preguntas nuevas generadas con
-//    los datos del juego (quién escribió qué libro, quién vivió antes, de qué
-//    época es, cuál es la gran idea de otro pensador…), poco tiempo, más
-//    argumentos y más daño. Da más puntos.
+//  · Difícil: los detalles de su vida y obra, más preguntas nuevas sobre él
+//    generadas con los datos del juego (su gran idea, cómo se le conoce, cuándo
+//    vivió, qué obra escribió, si vivió antes o después que otro), poco tiempo,
+//    más argumentos y más daño. Da más puntos.
+//  Todas las preguntas de un debate son sobre el pensador con quien debates.
 //  El Oráculo, los retos con enlace y la trivia en vivo no cambian: todos deben
 //  responder las mismas preguntas para poder comparar.
 // ============================================================================
@@ -21572,39 +21573,39 @@ const Dif = {
   },
   all() { return ERAS.flatMap((e, ei) => e.sages.map((s) => ({ s, ei }))); },
   pickWrong(list, n, not) { return shuffle(list.filter((x) => !not.includes(x))).slice(0, n); },
-  // ---- preguntas nuevas, correctas por construcción, a partir de los datos del juego
+  // ---- preguntas nuevas, correctas por construcción, siempre sobre el pensador con quien debates
   gen(s, ei, kind) {
-    const A = this.all(), out = [], e = ERAS[ei];
-    const others = A.filter((x) => x.s.id !== s.id && x.s.concept);
-    if (kind === 'facil') {
-      if (s.concept) out.push({ q: `¿Cuál es la gran idea de ${s.short}?`, a: [s.concept.name, ...this.pickWrong(others.filter((x) => x.ei !== ei).map((x) => x.s.concept.name), 3, [s.concept.name])], e: s.concept.text.split('. ')[0] + '.' });
-      return out;
+    const A = this.all(), out = [];
+    const others = A.filter((x) => x.s.id !== s.id);
+    const uniq = (list, not) => [...new Set(list.filter((x) => x && !not.includes(x)))];
+    // su gran idea
+    if (s.concept) out.push({ q: `¿Cuál es la gran idea de ${s.short}?`, a: [s.concept.name, ...this.pickWrong(uniq(others.filter((x) => x.ei !== ei && x.s.concept).map((x) => x.s.concept.name), [s.concept.name]), kind === 'facil' ? 2 : 3, [s.concept.name])], e: s.concept.text.split('. ')[0] + '.' });
+    if (kind === 'facil') return out;
+    // cómo lo llaman
+    if (s.epithet) out.push({ q: `¿Cómo se conoce a ${s.short}?`, a: [s.epithet, ...this.pickWrong(uniq(others.map((x) => x.s.epithet), [s.epithet]), 3, [s.epithet])], e: `${s.name}: ${s.epithet}.` });
+    // cuándo vivió
+    if (s.dates) out.push({ q: `¿Cuándo vivió ${s.short}?`, a: [s.dates, ...this.pickWrong(uniq(others.map((x) => x.s.dates), [s.dates]), 3, [s.dates])], e: `${s.name} vivió ${s.dates}.` });
+    // sus libros
+    for (const b of (typeof BOOKS !== 'undefined' ? BOOKS.flat() : []).filter((b) => b.author === s.id).slice(0, 2)) {
+      const titles = uniq((typeof BOOKS !== 'undefined' ? BOOKS.flat() : []).filter((x) => x.author !== s.id).map((x) => x.title), [b.title]);
+      out.push({ q: `¿Qué obra escribió ${s.short}?`, a: [b.title, ...this.pickWrong(titles, 3, [b.title])], e: `${b.title} (${b.year}), de ${b.by}.` });
     }
-    // Difícil
-    const here = e.sages.filter((x) => x.id !== s.id);
-    for (const o of shuffle(here.slice()).slice(0, 2)) if (o.concept) out.push({ q: `¿Qué pensador de «${e.name}» se asocia con «${o.concept.name}»?`, a: [o.short, ...this.pickWrong(A.map((x) => x.s.short), 3, [o.short])], e: `${o.short}: ${o.concept.text.split('. ')[0]}.` });
-    for (const b of (typeof BOOKS !== 'undefined' ? BOOKS.flat() : []).filter((b) => b.author === s.id || here.some((x) => x.id === b.author)).slice(0, 3)) {
-      const au = A.find((x) => x.s.id === b.author); if (!au) continue;
-      out.push({ q: `¿Quién escribió «${b.title}»?`, a: [au.s.short, ...this.pickWrong(A.filter((x) => x.ei === ei || Math.random() < 0.3).map((x) => x.s.short), 3, [au.s.short])], e: `${b.title} (${b.year}), de ${b.by}.` });
-    }
+    // quién vivió antes, comparándolo con alguien de otra época
     if (typeof Tiempo !== 'undefined') {
-      const me = Tiempo.parse(s.dates || ''); const cand = A.filter((x) => x.ei !== ei).map((x) => ({ x, t: Tiempo.parse(x.s.dates || '') })).filter((y) => y.t && me && Math.abs(y.t[0] - me[0]) > 150);
-      for (const y of shuffle(cand).slice(0, 2)) {
-        const first = y.t[0] < me[0] ? y.x.s : s, second = first === s ? y.x.s : s;
-        out.push({ q: `¿Quién vivió antes: ${s.short} o ${y.x.s.short}?`, a: [first.short, second.short, 'Vivieron exactamente en el mismo año', 'No se sabe nada de ninguno'], e: `${s.short}: ${s.dates}. ${y.x.s.short}: ${y.x.s.dates}.` });
-      }
+      const me = Tiempo.parse(s.dates || ''); const cand = others.filter((x) => x.ei !== ei).map((x) => ({ x, t: Tiempo.parse(x.s.dates || '') })).filter((y) => y.t && me && Math.abs(y.t[0] - me[0]) > 150);
+      for (const y of shuffle(cand).slice(0, 1)) out.push({ q: `¿${s.short} vivió antes o después que ${y.x.s.short}?`, a: [y.t[0] > me[0] ? 'Antes' : 'Después', y.t[0] > me[0] ? 'Después' : 'Antes', 'En el mismo año', 'Nunca existió'], e: `${s.short}: ${s.dates}. ${y.x.s.short}: ${y.x.s.dates}.` });
     }
-    for (const y of shuffle(A.filter((x) => x.ei !== ei)).slice(0, 2)) out.push({ q: `¿En qué época o mundo del viaje encuentras a ${y.s.short}?`, a: [ERAS[y.ei].name, ...this.pickWrong(ERAS.map((x) => x.name), 3, [ERAS[y.ei].name])], e: `${y.s.name} (${y.s.dates}) está en «${ERAS[y.ei].name}».` });
     return out;
   },
   pool(sage) {
     const k = this.k(); if (sage._difK === k && sage._difQ) return sage._difQ;
     const d = sage.data, ei = Math.max(0, ERAS.findIndex((e) => e.sages.includes(d))); const { core, detail } = this.split(d.q || []);
-    const places = (POIS[ei] || []).filter((p) => p.q).map((p) => ({ ...p.q, place: p.name })), books = (BOOKS[ei] || []).map((b) => ({ ...b.q, place: b.title }));
+    // solo preguntas sobre este pensador: las suyas, las de sus libros y las que se generan con sus datos
+    const books = (typeof BOOKS !== 'undefined' ? BOOKS.flat() : []).filter((b) => b.author === d.id && b.q).map((b) => ({ ...b.q, place: b.title }));
     let qs;
     if (k === 'facil') qs = [...core, ...this.gen(d, ei, 'facil')];
-    else if (k === 'dificil') qs = [...detail, ...this.gen(d, ei, 'dificil'), ...(sage.boss ? [...places, ...books] : shuffle([...places, ...books]).slice(0, 2))];
-    else qs = sage.boss ? [...d.q, ...places, ...books] : [...d.q];
+    else if (k === 'dificil') qs = [...detail, ...books, ...this.gen(d, ei, 'dificil')];
+    else qs = [...d.q, ...books];
     qs = qs.filter((q) => q && q.a && q.a.length >= 3 && new Set(q.a).size === q.a.length);
     sage._difK = k; sage._difQ = qs; sage._difOrder = shuffle([...qs.keys()]); sage._difPtr = 0;
     return qs;

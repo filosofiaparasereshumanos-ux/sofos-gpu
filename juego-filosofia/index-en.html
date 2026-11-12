@@ -660,6 +660,11 @@ input[type=range] { width: 100%; accent-color: var(--gold); }
 .tb.act.go { background: rgba(10,9,14,0.86); color: #fff3d6; }
 .tb.act.ready { background: radial-gradient(circle at 50% 40%, #ffe9a8, #e0a83a 70%); color: #1a1206; text-shadow: none; font-weight: 600; border-color: #fff6d8;
   box-shadow: 0 0 0 4px rgba(0,0,0,0.6), 0 0 26px rgba(255,211,106,0.95); animation: pulseAct 1.1s ease-in-out infinite; }
+.ls-art { position: relative; height: clamp(110px, 24vh, 230px); margin: 10px 0 2px; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: #120e0a; }
+.ls-art i { position: absolute; inset: -6%; background-size: cover; background-position: center; animation: lsKen 26s ease-in-out infinite alternate; }
+.ls-art::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(10,8,6,0.55)); pointer-events: none; }
+#lesson.quiz .ls-art { display: none; }
+@keyframes lsKen { from { transform: scale(1) translate(0, 0); } to { transform: scale(1.1) translate(-2%, -1.5%); } }
 @keyframes pulseAct { 0%,100% { box-shadow: 0 0 0 4px rgba(0,0,0,0.6), 0 0 14px rgba(255,211,106,0.7); } 50% { box-shadow: 0 0 0 4px rgba(0,0,0,0.6), 0 0 38px rgba(255,211,106,1), 0 0 0 10px rgba(255,211,106,0.25); } }
 #prompt { background: rgba(10,9,14,0.88); border: 2px solid var(--gold); color: #fff3d6; text-shadow: 0 1px 2px #000; box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
 #prompt b { color: #ffd36a; }
@@ -1075,6 +1080,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <div class="who"><h2 id="ls-name"></h2><p id="ls-meta"></p></div>
         <button class="ls-x" id="ls-close" aria-label="Close the lesson">✕</button>
       </header>
+      <div class="ls-art" id="ls-art" hidden><i></i></div>
       <div class="ls-bar"><div class="ls-dots" id="ls-dots"></div><span id="ls-count"></span></div>
       <p class="ls-text" id="ls-text" aria-live="polite"></p>
       <p class="ls-with" id="ls-with" hidden></p>
@@ -2068,6 +2074,10 @@ const SPRITES = {"c-abuela":["img/ciudadanos.jpg",0,0,8,13],"c-aclla":["img/ciud
 // ---- src/00f-xp-art.js ----
 // Pinturas de los experimentos (lo genera tools/xp-sheet.py): id -> fila de img/experimentos.jpg
 const XP_ART = {"china": 0, "descartes": 1, "escalera": 2, "giges": 3, "maquina": 4, "mariposa": 5, "rio": 6, "sisifo": 7, "teseo": 8, "tranvia": 9}, XP_ART_ROWS = 10;
+
+// ---- src/00g-escenas.js ----
+// Pensadores con una ilustración de un momento de su vida para la lección (img/esc-<id>.jpg)
+const ESC_ART = new Set(["agustin", "arendt", "aristoteles", "arquimedes", "averroes", "avicena", "bacon", "beauvoir", "beethoven", "buda", "camus", "castellanos", "confucio", "copernico", "curie", "dante", "darwin", "democrito", "descartes", "diogenes", "einstein", "epicteto", "epicuro", "ferdousi", "frankl", "freire", "freud", "frida", "galileo", "gandhi", "gilgamesh", "hammurabi", "hegel", "heidegger", "heraclito", "hildegarda", "hipatia", "hipocrates", "hobbes", "hume", "kant", "kierkegaard", "king", "laozi", "lautaro", "leonardo", "locke", "lovelock", "mandela", "maquiavelo", "marcoaurelio", "marti", "marx", "mill", "mistral", "montaigne", "montessori", "neruda", "newton", "nezahualcoyotl", "nietzsche", "nishida", "ockham", "pachacutec", "pacificador", "parmenides", "pascal", "paz", "pico", "pirron", "pitagoras", "pizan", "platon", "protagoras", "rawls", "rousseau", "rumi", "russell", "sartre", "schiller", "schopenhauer", "schweitzer", "seneca", "shankara", "snorri", "socrates", "sorjuana", "spinoza", "tagore", "tales", "teano", "thoreau", "tlacaelel", "tomas", "turing", "tutu", "wittgenstein", "wjames", "zambrano", "zhuangzi"]);
 
 // ---- src/01-data.js ----
 // ============================================================================
@@ -16867,13 +16877,14 @@ const Track = {
     if (this.el) { try { this.el.pause(); } catch (e) { /* nada */ } this.el.removeAttribute('src'); }
     const el = document.createElement('audio'); el.loop = true; el.preload = 'auto'; el.volume = 0; this.vol = 0; this.el = el;
     el.addEventListener('playing', () => { if (this.el === el) this.ready = true; });
-    // las épocas con dos canciones las alternan: al terminar una, empieza la otra
-    let pair = TRACK_PAIRS.has(idx) ? ['audio/m-' + idx + '.mp3', 'audio/m-' + idx + 'b.mp3'] : null;
-    // si falta la segunda canción (por ejemplo, en la versión dentro de Claude), suena solo la primera
-    el.addEventListener('error', () => { if (this.el !== el) return; if (pair && !el._fb) { el._fb = true; pair = null; el.loop = true; el.src = 'audio/m-' + idx + '.mp3'; this.resume(); return; } this.ready = false; this.el = null; });
-    if (pair) { el.loop = false; let k = Math.random() < 0.5 ? 0 : 1; el.src = pair[k];
-      el.addEventListener('ended', () => { if (this.el !== el || !pair) return; k = 1 - k; el.src = pair[k]; this.resume(); }); }
-    else el.src = 'audio/m-' + idx + '.mp3';
+    // cada época tiene hasta cuatro canciones (m-<i>, m-<i>b, m-<i>c, m-<i>d): suenan seguidas en orden
+    // aleatorio; las que no existen (por ejemplo, en la versión dentro de Claude) se saltan solas
+    let list = TRACK_PAIRS.has(idx) ? shuffle(['', 'b', 'c', 'd'].map((x) => 'audio/m-' + idx + x + '.mp3')) : ['audio/m-' + idx + '.mp3'];
+    const first = 'audio/m-' + idx + '.mp3'; list = [first, ...list.filter((x) => x !== first)]; if (Math.random() < 0.5) list.push(list.shift());
+    let k = 0;
+    el.addEventListener('error', () => { if (this.el !== el) return; list.splice(k, 1); if (!list.length) { this.ready = false; this.el = null; return; } k %= list.length; el.src = list[k]; this.resume(); });
+    el.loop = list.length === 1; el.src = list[0];
+    el.addEventListener('ended', () => { if (this.el !== el) return; k = (k + 1) % list.length; el.loop = list.length === 1; el.src = list[k]; this.resume(); });
     // en iOS el volumen del elemento es fijo: lo controlamos con una ganancia de WebAudio
     this.gain = null; const c = Audio.ctx;
     if (c && location.protocol !== 'file:') { try { const src = c.createMediaElementSource(el); const g = c.createGain(); g.gain.value = 0; src.connect(g); g.connect(Audio.master || c.destination); this.gain = g; } catch (e) { this.gain = null; } }
@@ -18447,16 +18458,23 @@ const Lesson = {
   open(data, sage) {
     this.book = null; this.data = data; this.parts = LESSONS[data.id] || [];
     this.begin(sage ? 'world' : 'menu', sage);
+    this.art(data.id);
     setMedal($('#ls-medal'), data.id, data.short[0]); $('#ls-name').textContent = 'Lesson from ' + data.short; $('#ls-meta').textContent = `${data.epithet} · ${data.dates}`;
     this.show();
   },
   // abre un libro (BOOKS) para estudiarlo, junto a su atril o desde la biblioteca del códice
   openBook(b, inWorld) {
+    this.art(null);
     this.book = b; this.data = { id: b.author, short: b.by };
-    this.parts = [...b.parts.map(bookPartText), 'A date to remember. ' + b.quote];
+    this.parts = [...b.parts.map(bookPartText), 'A quote to remember. ' + b.quote];
     this.begin(inWorld ? 'world' : 'menu', null);
     setMedal($('#ls-medal'), 'b-' + b.id, '❦'); $('#ls-medal').classList.toggle('cover', !!(typeof SPRITES !== 'undefined' && SPRITES['b-' + b.id])); $('#ls-name').textContent = b.title; $('#ls-meta').textContent = `${b.by} · ${b.year} · ${b.kind}`;
     this.show();
+  },
+  // ilustración de un momento de su vida (img/esc-<id>.jpg), si la tiene
+  art(id) {
+    const box = $('#ls-art'); const on = !!(id && typeof ESC_ART !== 'undefined' && ESC_ART.has(id)); box.hidden = !on;
+    if (on) box.firstElementChild.style.backgroundImage = `url(img/esc-${id}.jpg)`;
   },
   begin(from, sage) {
     this.sage = sage || null; this.i = 0; this.s = 0; this.from = from; this.prevState = G.state; this.done = false;
@@ -21565,10 +21583,11 @@ setInterval(() => { try { const b = $('#mp-tor'); const show = !Torneo.T && Torn
 //  · Fácil: las preguntas sobre la idea central de cada pensador, tres opciones,
 //    más tiempo, menos argumentos para convencerlo y menos daño al fallar.
 //  · Normal: todas las preguntas del pensador, cuatro opciones.
-//  · Difícil: los detalles de su vida y obra, más preguntas nuevas generadas con
-//    los datos del juego (quién escribió qué libro, quién vivió antes, de qué
-//    época es, cuál es la gran idea de otro pensador…), poco tiempo, más
-//    argumentos y más daño. Da más puntos.
+//  · Difícil: los detalles de su vida y obra, más preguntas nuevas sobre él
+//    generadas con los datos del juego (su gran idea, cómo se le conoce, cuándo
+//    vivió, qué obra escribió, si vivió antes o después que otro), poco tiempo,
+//    más argumentos y más daño. Da más puntos.
+//  Todas las preguntas de un debate son sobre el pensador con quien debates.
 //  El Oráculo, los retos con enlace y la trivia en vivo no cambian: todos deben
 //  responder las mismas preguntas para poder comparar.
 // ============================================================================
@@ -21592,39 +21611,39 @@ const Dif = {
   },
   all() { return ERAS.flatMap((e, ei) => e.sages.map((s) => ({ s, ei }))); },
   pickWrong(list, n, not) { return shuffle(list.filter((x) => !not.includes(x))).slice(0, n); },
-  // ---- preguntas nuevas, correctas por construcción, a partir de los datos del juego
+  // ---- preguntas nuevas, correctas por construcción, siempre sobre el pensador con quien debates
   gen(s, ei, kind) {
-    const A = this.all(), out = [], e = ERAS[ei];
-    const others = A.filter((x) => x.s.id !== s.id && x.s.concept);
-    if (kind === 'facil') {
-      if (s.concept) out.push({ q: `What is the great idea of ${s.short}?`, a: [s.concept.name, ...this.pickWrong(others.filter((x) => x.ei !== ei).map((x) => x.s.concept.name), 3, [s.concept.name])], e: s.concept.text.split('. ')[0] + '.' });
-      return out;
+    const A = this.all(), out = [];
+    const others = A.filter((x) => x.s.id !== s.id);
+    const uniq = (list, not) => [...new Set(list.filter((x) => x && !not.includes(x)))];
+    // su gran idea
+    if (s.concept) out.push({ q: `What is the great idea of ${s.short}?`, a: [s.concept.name, ...this.pickWrong(uniq(others.filter((x) => x.ei !== ei && x.s.concept).map((x) => x.s.concept.name), [s.concept.name]), kind === 'facil' ? 2 : 3, [s.concept.name])], e: s.concept.text.split('. ')[0] + '.' });
+    if (kind === 'facil') return out;
+    // cómo lo llaman
+    if (s.epithet) out.push({ q: `How do you know ${s.short}?`, a: [s.epithet, ...this.pickWrong(uniq(others.map((x) => x.s.epithet), [s.epithet]), 3, [s.epithet])], e: `${s.name}: ${s.epithet}.` });
+    // cuándo vivió
+    if (s.dates) out.push({ q: `When did he live ${s.short}?`, a: [s.dates, ...this.pickWrong(uniq(others.map((x) => x.s.dates), [s.dates]), 3, [s.dates])], e: `${s.name} lived ${s.dates}.` });
+    // sus libros
+    for (const b of (typeof BOOKS !== 'undefined' ? BOOKS.flat() : []).filter((b) => b.author === s.id).slice(0, 2)) {
+      const titles = uniq((typeof BOOKS !== 'undefined' ? BOOKS.flat() : []).filter((x) => x.author !== s.id).map((x) => x.title), [b.title]);
+      out.push({ q: `What work did he write? ${s.short}?`, a: [b.title, ...this.pickWrong(titles, 3, [b.title])], e: `${b.title} (${b.year}), of ${b.by}.` });
     }
-    // Difícil
-    const here = e.sages.filter((x) => x.id !== s.id);
-    for (const o of shuffle(here.slice()).slice(0, 2)) if (o.concept) out.push({ q: `What thinker of «${e.name}» is associated with ‘${o.concept.name}»?`, a: [o.short, ...this.pickWrong(A.map((x) => x.s.short), 3, [o.short])], e: `${o.short}: ${o.concept.text.split('. ')[0]}.` });
-    for (const b of (typeof BOOKS !== 'undefined' ? BOOKS.flat() : []).filter((b) => b.author === s.id || here.some((x) => x.id === b.author)).slice(0, 3)) {
-      const au = A.find((x) => x.s.id === b.author); if (!au) continue;
-      out.push({ q: `Who wrote «${b.title}»?`, a: [au.s.short, ...this.pickWrong(A.filter((x) => x.ei === ei || Math.random() < 0.3).map((x) => x.s.short), 3, [au.s.short])], e: `${b.title} (${b.year}), of ${b.by}.` });
-    }
+    // quién vivió antes, comparándolo con alguien de otra época
     if (typeof Tiempo !== 'undefined') {
-      const me = Tiempo.parse(s.dates || ''); const cand = A.filter((x) => x.ei !== ei).map((x) => ({ x, t: Tiempo.parse(x.s.dates || '') })).filter((y) => y.t && me && Math.abs(y.t[0] - me[0]) > 150);
-      for (const y of shuffle(cand).slice(0, 2)) {
-        const first = y.t[0] < me[0] ? y.x.s : s, second = first === s ? y.x.s : s;
-        out.push({ q: `Who lived before: ${s.short} o ${y.x.s.short}?`, a: [first.short, second.short, 'They lived exactly in the same year.', 'Nothing is known about any of them.'], e: `${s.short}: ${s.dates}. ${y.x.s.short}: ${y.x.s.dates}.` });
-      }
+      const me = Tiempo.parse(s.dates || ''); const cand = others.filter((x) => x.ei !== ei).map((x) => ({ x, t: Tiempo.parse(x.s.dates || '') })).filter((y) => y.t && me && Math.abs(y.t[0] - me[0]) > 150);
+      for (const y of shuffle(cand).slice(0, 1)) out.push({ q: `¿${s.short} lived before or after ${y.x.s.short}?`, a: [y.t[0] > me[0] ? 'Before' : 'After', y.t[0] > me[0] ? 'After' : 'Before', 'The same year', 'It never existed.'], e: `${s.short}: ${s.dates}. ${y.x.s.short}: ${y.x.s.dates}.` });
     }
-    for (const y of shuffle(A.filter((x) => x.ei !== ei)).slice(0, 2)) out.push({ q: `In what time or world of the journey do you find ${y.s.short}?`, a: [ERAS[y.ei].name, ...this.pickWrong(ERAS.map((x) => x.name), 3, [ERAS[y.ei].name])], e: `${y.s.name} (${y.s.dates}) is in "${ERAS[y.ei].name}».` });
     return out;
   },
   pool(sage) {
     const k = this.k(); if (sage._difK === k && sage._difQ) return sage._difQ;
     const d = sage.data, ei = Math.max(0, ERAS.findIndex((e) => e.sages.includes(d))); const { core, detail } = this.split(d.q || []);
-    const places = (POIS[ei] || []).filter((p) => p.q).map((p) => ({ ...p.q, place: p.name })), books = (BOOKS[ei] || []).map((b) => ({ ...b.q, place: b.title }));
+    // solo preguntas sobre este pensador: las suyas, las de sus libros y las que se generan con sus datos
+    const books = (typeof BOOKS !== 'undefined' ? BOOKS.flat() : []).filter((b) => b.author === d.id && b.q).map((b) => ({ ...b.q, place: b.title }));
     let qs;
     if (k === 'facil') qs = [...core, ...this.gen(d, ei, 'facil')];
-    else if (k === 'dificil') qs = [...detail, ...this.gen(d, ei, 'dificil'), ...(sage.boss ? [...places, ...books] : shuffle([...places, ...books]).slice(0, 2))];
-    else qs = sage.boss ? [...d.q, ...places, ...books] : [...d.q];
+    else if (k === 'dificil') qs = [...detail, ...books, ...this.gen(d, ei, 'dificil')];
+    else qs = [...d.q, ...books];
     qs = qs.filter((q) => q && q.a && q.a.length >= 3 && new Set(q.a).size === q.a.length);
     sage._difK = k; sage._difQ = qs; sage._difOrder = shuffle([...qs.keys()]); sage._difPtr = 0;
     return qs;
