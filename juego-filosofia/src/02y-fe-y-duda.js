@@ -741,3 +741,284 @@
     );
   } catch (e) { /* herramientas sin debates */ }
 }
+
+// ============================================================================
+//  XXXI · EL TALLER DE LA BELLEZA, XXXII · LA GRAN ASAMBLEA DE LOS PUEBLOS y
+//  XXXIII · LA CASA DE LOS CUIDADOS: lugares, ciudadanos, encargos, anécdotas y libros
+// ============================================================================
+{
+  const PP = [[-17, 30], [17, 24], [17, 6], [-17, -2], [6, -40]];
+  const BB = [[16, -12], [-16, 16]];
+  const poi = (i, id, name, text, fact, q) => ({ id, at: PP[i], name, text, fact, q });
+  const book = (b, i) => ({ ...b, at: BB[i] });
+
+  // ---------------------------------------------------------------- XXXI · El taller de la belleza
+  POIS.push([
+    poi(0, 'cueva-chauvet', 'La cueva de Chauvet', 'En 1994, tres espeleólogos encontraron en el sur de Francia una cueva cerrada durante milenios. En sus paredes había cientos de animales pintados hace unos treinta y seis mil años: caballos, leones, rinocerontes, osos y mamuts, dibujados con carbón y ocre, aprovechando los relieves de la roca para dar volumen. Son de las pinturas más antiguas del mundo.',
+      'Los artistas de Chauvet pintaban a la luz de antorchas. Con la luz temblorosa, los animales parecían moverse: quizás era el primer cine de la humanidad.',
+      { q: '¿Hace cuánto tiempo se pintaron los animales de la cueva de Chauvet?', a: ['Unos treinta y seis mil años', 'Cien años', 'Mil años', 'Un millón de años'], e: 'Son de las pinturas más antiguas del mundo.' }),
+    poi(1, 'gran-ola', 'La gran ola', 'Hacia 1831, Hokusai publicó «La gran ola de Kanagawa». Es un grabado en madera: se tallaba un bloque para cada color y se imprimía a mano, de modo que se hacían miles de copias baratas que compraba la gente común. Usó un azul nuevo, el azul de Prusia, que acababa de llegar a Japón y hacía el mar más intenso.',
+      'Hoy es quizás la imagen japonesa más reproducida del mundo, y se dice que inspiró al músico Debussy para su obra «El mar».',
+      { q: '¿Qué técnica usó Hokusai para La gran ola?', a: ['Grabado en madera, con un bloque para cada color', 'Pintura al óleo', 'Fotografía', 'Mosaico'], e: 'Se hacían miles de copias baratas.' }),
+    poi(2, 'novena', 'El estreno de la Novena', 'El 7 de mayo de 1824, en el teatro de la Puerta de Carintia de Viena, se estrenó la Novena Sinfonía de Beethoven. Él estaba en el escenario marcando el ritmo, pero ya no oía nada. Cuando terminó la música, siguió de espaldas al público, mirando la partitura. Una joven cantante, Caroline Unger, lo tomó del brazo y lo hizo girar: el teatro entero aplaudía y agitaba sombreros y pañuelos para que él pudiera ver la ovación.',
+      'La partitura original de la Novena es hoy Patrimonio de la Humanidad de la Unesco.',
+      { q: '¿Cómo supo Beethoven que el público aplaudía su Novena?', a: ['Una cantante lo hizo girar para que viera la ovación', 'Lo escuchó con claridad', 'Se lo contaron al día siguiente', 'Nunca lo supo'], e: 'Agitaban sombreros y pañuelos.' }),
+    poi(3, 'casa-azul', 'La Casa Azul', 'En Coyoacán, en la Ciudad de México, hay una casa pintada de un azul intenso. Allí nació Frida Kahlo, allí vivió con Diego Rivera y allí murió. En el patio hay plantas, una pirámide con esculturas antiguas y, dentro, su caballete, su silla de ruedas, sus pinceles y los corsés que tuvo que usar por su columna, que ella también pintaba.',
+      'Desde 1958 es un museo. En la cocina, con las paredes de colores, todavía se ven escritos los nombres de Frida y Diego con pequeños jarritos de barro.',
+      { q: '¿Qué pintaba Frida también, además de lienzos?', a: ['Los corsés que usaba por su columna', 'Coches', 'Barcos', 'Nada más'], e: 'Convertía hasta su dolor en arte.' }),
+    poi(4, 'sinestesia', 'Los colores que suenan', 'Algunas personas tienen sinestesia: al oír música ven colores, o al leer una letra sienten un color. Kandinsky lo vivió escuchando la ópera «Lohengrin» de Wagner: «vi todos mis colores, estaban ante mis ojos», escribió. Desde entonces quiso pintar cuadros que fueran como sinfonías, y los tituló «Composiciones» e «Improvisaciones», como piezas musicales.',
+      'Se calcula que alrededor de una de cada veinte o treinta personas tiene algún tipo de sinestesia.',
+      { q: '¿Qué es la sinestesia?', a: ['Percibir un sentido a través de otro, como ver colores al oír música', 'Una enfermedad del estómago', 'Un tipo de pintura', 'Un instrumento musical'], e: 'Kandinsky la vivió con Wagner.' }),
+  ]);
+  NPCS.push([
+    wnpc(0, 'escultora', 'Camila', 'escultora', sk(0xe8e0d0, 0x8a6a4a, 0xf0d0b0, 0x5a3a2a, { hat: 'longhair', acc: 'none' }), [
+      'Miguel Ángel decía que la estatua ya está dentro del bloque de mármol: el escultor solo quita lo que sobra. Yo todavía estoy aprendiendo a ver qué sobra.',
+      'Me paso horas puliendo una curva que nadie notará. Pero yo sé que está ahí. Esa es la honradez del artista.',
+      'Toca esta piedra. Está fría, pero si la trabajas con paciencia, parece que respira.',
+    ], true),
+    wnpc(1, 'luthier', 'Antonio', 'constructor de violines', sk(0x6a4a2a, 0x3a2a1a, 0xe0c0a0, 0x8a8a8a, { beard: 0x8a8a8a, hat: 'cap', acc: 'none' }), [
+      'Un violín tiene más de setenta piezas de madera. La de arriba es de abeto; la de atrás, de arce. Cada una canta distinto.',
+      'Antes de pegar la tapa, la golpeo suavemente y escucho. La madera me dice si está lista. Hay que tener paciencia para escuchar a la madera.',
+      'Un buen violín mejora con los años si alguien lo toca. Como las personas: lo que no se usa, se apaga.',
+    ]),
+    wnpc(2, 'bailarina', 'Lola', 'bailarina', sk(0xc82a5a, 0x2a2a2a, 0xe0b090, 0x1a1410, { hat: 'braids', acc: 'none' }), [
+      'Antes de cada función me tiemblan las piernas. Luego empieza la música y el miedo se transforma en movimiento.',
+      'El baile es el arte más antiguo, creo: antes de pintar o escribir, los seres humanos ya bailaban alrededor del fuego.',
+      'Schiller tenía razón: cuando bailo, estoy jugando en serio. Y en ese momento me siento libre.',
+    ], true),
+  ]);
+  Object.assign(QUESTS, {
+    vitruvio: { text: 'Visita la cueva de Chauvet y escucha a Camila, la escultora. Luego dime qué tres cualidades debe tener un edificio.', needs: { pois: ['cueva-chauvet'], npcs: ['escultora'] },
+      riddle: { q: '¿Qué debe tener un edificio según Vitruvio?', a: ['Firmeza, utilidad y belleza', 'Oro, torres y altura', 'Solo tamaño', 'Nada'] } },
+    hokusai: { text: 'Mira de cerca La gran ola. Luego dime qué montaña aparece al fondo.', needs: { pois: ['gran-ola'], npcs: [] },
+      riddle: { q: '¿Qué montaña aparece en La gran ola?', a: ['El monte Fuji', 'El Everest', 'El Olimpo', 'El Chimborazo'] } },
+    beethoven: { text: 'Asiste al estreno de la Novena y escucha a Antonio, el constructor de violines. Luego dime con qué poema termina mi sinfonía.', needs: { pois: ['novena'], npcs: ['luthier'] },
+      riddle: { q: '¿Con qué poema termina la Novena?', a: ['La Oda a la alegría', 'La Odisea', 'Ninguno', 'El cuervo'] } },
+    tolstoi: { text: 'Escucha a Lola, la bailarina, y a Antonio, el luthier. Luego dime qué es el arte, según yo.', needs: { pois: [], npcs: ['bailarina', 'luthier'] },
+      riddle: { q: '¿Qué es el arte para Tolstói?', a: ['Un contagio de sentimientos que une a las personas', 'Un adorno', 'Un negocio', 'Nada'] } },
+    kandinsky: { text: 'Descubre los colores que suenan. Luego dime qué instrumento suena como el amarillo.', needs: { pois: ['sinestesia'], npcs: [] },
+      riddle: { q: '¿Cómo suena el amarillo para Kandinsky?', a: ['Como una trompeta', 'Como un tambor', 'Como el silencio', 'Como una campana rota'] } },
+    frida: { text: 'Visita la Casa Azul y escucha a Camila, la escultora. Luego dime qué pintaba yo más que nada.', needs: { pois: ['casa-azul'], npcs: ['escultora'] },
+      riddle: { q: '¿Qué pintaba Frida con más frecuencia?', a: ['Autorretratos', 'Batallas', 'Barcos', 'Coches'] } },
+  });
+  Object.assign(ANECDOTES, {
+    vitruvio: ['Conté la historia de Arquímedes y la corona del rey: cómo descubrió en la bañera que podía medir el volumen con el agua, y salió corriendo gritando «¡Eureka!». Gracias a mí la conoces.', 'Escribí que el arquitecto debe saber de todo: dibujo, geometría, historia, filosofía, música, medicina, derecho y astronomía. ¡Nada menos!'],
+    hokusai: ['Una vez, ante el gobernante de Japón, pinté una curva azul en un largo papel, mojé las patas de un gallo en pintura roja y lo dejé caminar encima. Dije: «hojas de arce flotando en un río».', 'Pinté en un festival un retrato enorme de un monje budista, de más de doscientos metros cuadrados, con escobas como pinceles. La gente lo miraba desde los tejados.'],
+    beethoven: ['Me mudé de casa en Viena más de sesenta veces. Los caseros se quejaban de mi desorden y de que tocaba el piano a cualquier hora.', 'Para seguir sintiendo la música ya sordo, apoyaba una varilla de madera entre los dientes y el piano: así sentía las vibraciones.'],
+    tolstoi: ['A los ochenta y dos años me escapé de casa en secreto, de noche, para vivir con sencillez. Me enfermé en el tren y morí en la casa del jefe de una pequeña estación.', 'Durante muchos años fui vegetariano y no permitía que se cazara en mi finca. Decía que mientras haya mataderos habrá campos de batalla.'],
+    kandinsky: ['Durante un tiempo vivía en Múnich con mis amigos pintores y hacíamos una revista llamada «El jinete azul». A mí me gustaban los caballos y a Franz Marc el azul.', 'En la Bauhaus hice una encuesta a todos: ¿qué color le corresponde al triángulo, al cuadrado y al círculo? La mayoría respondió: amarillo, rojo y azul.'],
+    frida: ['Para que mi padre no se preocupara, de niña escondía mi pierna más delgada con varias medias. Después, en mis cuadros, la mostré sin vergüenza.', 'En mi primera exposición en México, en 1953, estaba tan enferma que no podía levantarme. Me llevaron en mi cama, en una ambulancia, y recibí a todos acostada.'],
+    schiller: ['Mi amigo Goethe contó que una vez, en mi casa, sintió un olor terrible en mi escritorio: yo guardaba manzanas podridas en un cajón, porque su olor me ayudaba a escribir.', 'Mi obra Guillermo Tell, con el héroe que dispara a una manzana sobre la cabeza de su hijo, se convirtió en símbolo de la libertad de Suiza.'],
+  });
+  BOOKS.push([
+    book({ id: 'cartas-estetica', author: 'schiller', by: 'Friedrich Schiller', title: 'Cartas sobre la educación estética del hombre', year: '1795', kind: 'filosofía del arte',
+      parts: [
+        { t: 'Una época sin armonía', x: 'Schiller ve que en su tiempo las personas se han dividido: unos solo trabajan con las manos, otros solo piensan. Nadie desarrolla su humanidad entera.' },
+        { t: 'Dos impulsos', x: 'Tenemos un impulso sensible, que nos ata a lo que sentimos ahora, y uno formal, que busca leyes eternas. Si gana uno solo, nos volvemos salvajes o fríos.' },
+        { t: 'El impulso de juego', x: 'La belleza despierta un tercer impulso, el de juego, que une los dos. Por eso el ser humano solo es plenamente humano cuando juega.' },
+        { t: 'De la belleza a la libertad', x: 'Para construir una sociedad libre, dice, primero hay que formar personas armoniosas. Es por la belleza por donde se llega a la libertad.' },
+      ],
+      quote: 'Es por la belleza por donde se llega a la libertad.',
+      q: { q: '¿Qué une los impulsos sensible y formal según Schiller?', a: ['El impulso de juego, despertado por la belleza', 'El miedo', 'El dinero', 'La guerra'], e: 'Así somos plenamente humanos.' } }, 0),
+    book({ id: 'lo-espiritual', author: 'kandinsky', by: 'Vasili Kandinsky', title: 'De lo espiritual en el arte', year: '1911', kind: 'teoría del arte',
+      parts: [
+        { t: 'Más allá de la materia', x: 'Kandinsky critica un arte que solo copia el mundo exterior. El verdadero arte nace de una necesidad interior y habla al alma.' },
+        { t: 'El triángulo espiritual', x: 'Imagina la humanidad como un gran triángulo que sube lentamente. En la punta, solos, están los artistas que ven más allá, y que al principio nadie entiende.' },
+        { t: 'El lenguaje de los colores', x: 'El amarillo es cálido y se acerca al espectador, como una trompeta; el azul profundo se aleja, y llama a lo infinito. Los colores tienen efectos en el alma.' },
+        { t: 'La pintura como música', x: 'Como la música no necesita imitar ruidos de la naturaleza, la pintura puede usar colores y formas libremente para emocionar.' },
+      ],
+      quote: 'El color es la tecla, el ojo el martillo, el alma el piano de muchas cuerdas.',
+      q: { q: '¿De dónde nace el verdadero arte para Kandinsky?', a: ['De una necesidad interior', 'De copiar fotos', 'Del dinero', 'Del azar'], e: 'Y habla al alma.' } }, 1),
+  ]);
+  BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });
+
+  // ---------------------------------------------------------------- XXXII · La gran asamblea de los pueblos
+  POIS.push([
+    poi(0, 'arbol-paz', 'El Árbol de la Paz', 'Según la tradición haudenosaunee, cuando las cinco naciones aceptaron la Gran Ley de la Paz, arrancaron un gran pino blanco y arrojaron sus armas en el hueco, donde una corriente subterránea se las llevó. Volvieron a plantar el árbol encima. Sus raíces blancas se extienden hacia los cuatro puntos cardinales, para que cualquier pueblo que quiera la paz pueda seguirlas hasta allí.',
+      'En la copa del árbol vigila un águila, que avisa si se acerca un peligro. De ahí viene la expresión «enterrar el hacha de guerra».',
+      { q: '¿De dónde viene la expresión «enterrar el hacha de guerra»?', a: ['De las armas enterradas bajo el Árbol de la Paz', 'De un cuento de piratas', 'De Roma', 'De nada'], e: 'Una tradición haudenosaunee.' }),
+    poi(1, 'bisontes', 'Las grandes manadas', 'A principios del siglo XIX, decenas de millones de bisontes recorrían las praderas de Norteamérica. Los pueblos de las llanuras vivían de ellos y usaban casi todo el animal: carne, piel, huesos, tendones. En pocas décadas, la caza masiva por parte de colonos y comerciantes, a veces alentada para debilitar a los pueblos originarios, los dejó casi extinguidos: hacia 1890 quedaban menos de mil.',
+      'Gracias al trabajo de conservación, hoy vuelven a vivir en libertad varios cientos de miles de bisontes, y muchas naciones originarias los han traído de vuelta a sus tierras.',
+      { q: '¿Cuántos bisontes quedaban hacia 1890?', a: ['Menos de mil', 'Decenas de millones', 'Cien millones', 'Ninguno nunca existió'], e: 'Tras la caza masiva.' }),
+    poi(2, 'parihaka', 'Parihaka', 'En una colina al pie del monte Taranaki, en Nueva Zelanda, estaba la aldea de Parihaka. Cada mes, el día dieciocho, miles de maoríes se reunían para escuchar a Te Whiti y a Tohu. Llevaban una pluma blanca de albatros en el pelo, símbolo de paz. Cuando llegaron los soldados en 1881, encontraron a dos mil personas sentadas en silencio y a niños que cantaban y ofrecían pan.',
+      'Cada 5 de noviembre se recuerda la invasión de Parihaka. La pluma blanca sigue siendo un símbolo de resistencia pacífica en Nueva Zelanda.',
+      { q: '¿Qué símbolo de paz llevaban los habitantes de Parihaka?', a: ['Una pluma blanca de albatros', 'Una corona de oro', 'Una espada', 'Una bandera roja'], e: 'Todavía es símbolo de resistencia pacífica.' }),
+    poi(3, 'iolani', 'El palacio ʻIolani', 'En Honolulu se alza el palacio ʻIolani, el único palacio real en territorio de Estados Unidos. Tenía luz eléctrica y teléfono antes que la Casa Blanca. En 1895, la reina Liliʻuokalani estuvo encerrada casi ocho meses en una habitación del piso de arriba. Para pasar el tiempo, cosió una colcha con su historia y compuso canciones.',
+      'La colcha de la reina, con mensajes y fechas bordadas, todavía se conserva y se exhibe en el palacio.',
+      { q: '¿Qué tenía el palacio ʻIolani antes que la Casa Blanca?', a: ['Luz eléctrica y teléfono', 'Un zoológico', 'Un ascensor de oro', 'Nada'], e: 'Era un palacio muy moderno.' }),
+    poi(4, 'uluru', 'Uluru', 'En el centro de Australia se alza Uluru, una enorme roca de arenisca que cambia de color con la luz: rojo encendido al atardecer, morado al anochecer. Para el pueblo anangu es un lugar sagrado, lleno de historias del «Tiempo del Sueño», cuando los seres ancestrales crearon el mundo. En 1985 el gobierno devolvió la propiedad de Uluru a los anangu.',
+      'Desde 2019 está prohibido escalar la roca, por respeto a sus guardianes tradicionales.',
+      { q: '¿Qué pasó en 2019 en Uluru?', a: ['Se prohibió escalar la roca, por respeto a los anangu', 'Se construyó un hotel encima', 'Se pintó de azul', 'Nada'], e: 'Es un lugar sagrado.' }),
+  ]);
+  NPCS.push([
+    wnpc(0, 'tejedora-dine', 'Nizhoni', 'tejedora diné', sk(0xc84a2a, 0x2a2a3a, 0x9a6a4a, 0x1a1410, { hat: 'braids', acc: 'none' }), [
+      'Mi abuela me enseñó a tejer en el telar. Cada alfombra tiene un pequeño hilo que sale hasta el borde: el camino del espíritu, para que el alma de la tejedora no quede atrapada en la obra.',
+      'Tejer me enseña paciencia. Una alfombra grande puede llevar meses. Si te apuras, el dibujo se tuerce.',
+      'Decimos «hózhó»: vivir en belleza y en equilibrio con todo lo que te rodea. Es la palabra más importante que conozco.',
+    ], true),
+    wnpc(1, 'navegante', 'Kaimana', 'navegante polinesio', sk(0xe8b048, 0x2a5a7a, 0x8a5a3a, 0x1a1410, { hat: 'longhair', acc: 'none' }), [
+      'Mis antepasados cruzaron el océano Pacífico en canoas dobles, sin brújula ni mapas, mucho antes que los europeos. Se guiaban por las estrellas, las olas y los pájaros.',
+      'Aprendí a memorizar dónde sale y se pone cada estrella. Y a sentir con el cuerpo, acostado en la canoa, la dirección de las olas.',
+      'Si ves un ave que vuela al atardecer, síguela: va a dormir a tierra. El océano habla, si sabes escucharlo.',
+    ]),
+    wnpc(2, 'narradora', 'Winona', 'abuela narradora', sk(0x8a6a4a, 0x5a3a2a, 0x9a6a4a, 0xe8e8e8, { hat: 'braids', acc: 'staff' }), [
+      'Nuestras historias no se escribían: se contaban junto al fuego en las noches de invierno. Cada anciano que muere es como una biblioteca que se quema.',
+      'Mi abuela decía: no heredamos la tierra de nuestros padres, la tomamos prestada de nuestros hijos. Muchos pueblos dicen algo parecido.',
+      'En el círculo, cada uno habla cuando le llega el turno, y los demás escuchan sin interrumpir. Prueba hacerlo una vez en tu familia.',
+    ], true),
+  ]);
+  Object.assign(QUESTS, {
+    torosentado: { text: 'Visita las grandes manadas y escucha a Winona, la abuela narradora. Luego dime qué animal era la base de la vida de mi pueblo.', needs: { pois: ['bisontes'], npcs: ['narradora'] },
+      riddle: { q: '¿Qué animal era la base de la vida lakota?', a: ['El bisonte', 'El camello', 'El canguro', 'El elefante'] } },
+    joseph: { text: 'Escucha a Winona, la abuela narradora. Luego dime qué dije al rendirme.', needs: { pois: [], npcs: ['narradora'] },
+      riddle: { q: '¿Qué dijo el Jefe Joseph al rendirse?', a: ['No lucharé más para siempre', 'Volveré con un ejército', 'Nunca me rendiré', 'Nada'] } },
+    alcenegro: { text: 'Visita el Árbol de la Paz y escucha a Nizhoni, la tejedora. Luego dime cómo se mueve la vida, según yo.', needs: { pois: ['arbol-paz'], npcs: ['tejedora-dine'] },
+      riddle: { q: '¿Cómo se mueve la vida según Alce Negro?', a: ['En círculos', 'En línea recta', 'Al azar', 'No se mueve'] } },
+    tewhiti: { text: 'Visita Parihaka. Luego dime qué símbolo de paz llevábamos en el pelo.', needs: { pois: ['parihaka'], npcs: [] },
+      riddle: { q: '¿Qué llevaban en el pelo los habitantes de Parihaka?', a: ['Una pluma blanca de albatros', 'Una corona', 'Una flor roja', 'Nada'] } },
+    liliuokalani: { text: 'Visita el palacio ʻIolani y escucha a Kaimana, el navegante. Luego dime mi canción más famosa.', needs: { pois: ['iolani'], npcs: ['navegante'] },
+      riddle: { q: '¿Cuál es la canción más famosa de Liliʻuokalani?', a: ['Aloha ʻOe', 'Cielito lindo', 'La bamba', 'Ninguna'] } },
+    unaipon: { text: 'Visita Uluru y escucha a Kaimana, el navegante. Luego dime qué estudié para imaginar una máquina voladora.', needs: { pois: ['uluru'], npcs: ['navegante'] },
+      riddle: { q: '¿Qué estudió Unaipon para imaginar un helicóptero?', a: ['El vuelo del bumerán', 'Las nubes', 'Los cohetes', 'Las gallinas'] } },
+  });
+  Object.assign(ANECDOTES, {
+    torosentado: ['Durante un tiempo viajé con el espectáculo del Oeste de Buffalo Bill. Daba casi todo lo que ganaba a los niños pobres que se acercaban: no entendía cómo podía haber tanta pobreza entre tanta riqueza.', 'Me gustaba cantar. Muchas de mis canciones hablaban de los pájaros: decía que una alondra me había avisado de un peligro cuando era joven.'],
+    joseph: ['En Washington conocí al presidente y hablé en un gran salón lleno de gente importante. Les dije: las buenas palabras no le devuelven la salud a mi pueblo ni nos devuelven nuestra tierra.', 'Mi médico escribió que morí «de tristeza», lejos de mi valle de Wallowa.'],
+    alcenegro: ['En Inglaterra, la reina Victoria vino a ver nuestro espectáculo. Al final nos dio la mano y nos dijo que, si fuéramos suyos, no dejaría que nos llevaran por el mundo como en un circo.', 'Siendo anciano subí al pico más alto de las Colinas Negras y pedí, llorando, que el árbol sagrado de mi pueblo volviera a florecer. Cayó una lluvia suave sobre un cielo despejado.'],
+    tewhiti: ['Cuando los soldados vinieron a arrestarme, salí a recibirlos tranquilo y le dije a mi gente que no se resistiera. «Nos llevan a la cárcel, pero no pueden encerrar la paz», dije.', 'Mientras estaba preso, me pasearon por ciudades de la Isla Sur, esperando que me impresionara el poder de los colonos. Yo miraba sus fábricas en silencio.'],
+    liliuokalani: ['Mientras estuve presa, escribía música en un papel pautado que dibujaba yo misma. No me dejaban tener un piano, así que tarareaba las melodías para no olvidarlas.', 'Escribí la letra de Aloha ʻOe después de ver a dos enamorados despedirse durante un paseo a caballo. Ahora se canta en las despedidas de todo Hawái.'],
+    unaipon: ['Pasé años intentando inventar una máquina de movimiento perpetuo. Nunca lo logré, porque es imposible, pero aprendí muchísima física en el intento.', 'Cuando viajaba por Australia, a veces no me dejaban entrar en los hoteles por ser aborigen. Dormía donde podía y al día siguiente daba mi conferencia igual.'],
+    pacificador: ['Para demostrar que mi mensaje era verdadero, dicen que subí a lo alto de un árbol sobre una cascada y pedí que lo cortaran. Caí al agua. A la mañana siguiente me encontraron sentado junto al fuego, cocinando tranquilo.', 'Dicen que nunca quise que se dijera mi nombre en voz alta, salvo en ocasiones especiales. Por eso muchos me llaman simplemente el Pacificador.'],
+  });
+  BOOKS.push([
+    book({ id: 'gran-ley', author: 'pacificador', by: 'Tradición haudenosaunee', title: 'La Gran Ley de la Paz', year: 'tradición oral', kind: 'constitución tradicional',
+      parts: [
+        { t: 'Una ley que se recuerda', x: 'La Gran Ley de la Paz no se escribió en papel: se recuerda con cinturones de cuentas de concha, llamados wampum, cuyos dibujos ayudan a recitar sus partes.' },
+        { t: 'El gran consejo', x: 'Los jefes de las naciones se reúnen junto al fuego del consejo. Cada asunto pasa de un grupo a otro hasta que todos llegan a un acuerdo.' },
+        { t: 'Las madres de los clanes', x: 'Las madres de los clanes eligen a los jefes, y pueden quitarles el cargo si no cumplen con su deber. Las mujeres tienen un papel central.' },
+        { t: 'La piel de siete palmos', x: 'Se dice que los jefes deben tener una piel de siete palmos de grosor, para no ofenderse con las críticas, y pensar siempre en las generaciones que vendrán.' },
+      ],
+      quote: 'En cada deliberación, pensad en el bienestar de las siete generaciones futuras.',
+      q: { q: '¿Con qué se recordaba la Gran Ley de la Paz?', a: ['Con cinturones de cuentas de concha, llamados wampum', 'Con libros de papel', 'Con piedras talladas en latín', 'No se recordaba'], e: 'Sus dibujos ayudan a recitarla.' } }, 0),
+    book({ id: 'alce-negro-habla', author: 'alcenegro', by: 'Alce Negro y John Neihardt', title: 'Alce Negro habla', year: '1932', kind: 'testimonio y visión',
+      parts: [
+        { t: 'Para que no se pierda', x: 'Ya anciano, Alce Negro contó su vida al poeta John Neihardt, con su hijo como intérprete. Quería que su gran visión no se perdiera.' },
+        { t: 'La gran visión', x: 'A los nueve años, enfermo, fue llevado al cielo por dos hombres. Los Seis Abuelos le dieron poderes y le mostraron el aro de su pueblo y el árbol florido.' },
+        { t: 'El aro roto', x: 'El libro cuenta la llegada de los colonos, la desaparición de los bisontes y la masacre de Wounded Knee, donde, dice, murió un hermoso sueño.' },
+        { t: 'El círculo', x: 'Para Alce Negro, el mundo se mueve en círculos y todo está unido. El centro del mundo está en todas partes.' },
+      ],
+      quote: 'El centro del mundo está en todas partes.',
+      q: { q: '¿Dónde está el centro del mundo, según Alce Negro?', a: ['En todas partes', 'En una montaña de Europa', 'En el mar', 'En ningún lugar'], e: 'Todo está unido en el círculo.' } }, 1),
+  ]);
+  BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });
+
+  // ---------------------------------------------------------------- XXXIII · La casa de los cuidados
+  POIS.push([
+    poi(0, 'gladiadores', 'La escuela de gladiadores', 'En el siglo II, la ciudad de Pérgamo tenía un gran templo dedicado a Asclepio, dios de la medicina, y una escuela de gladiadores. El sumo sacerdote nombró médico de los gladiadores a un joven de veintiocho años: Galeno. Le dieron el puesto después de una prueba difícil: delante de otros médicos, Galeno abrió el vientre de un mono y desafió a sus rivales a curarlo; nadie se atrevió, y él lo hizo.',
+      'Según Galeno, en los años en que cuidó a los gladiadores murieron muchos menos que con el médico anterior: limpiaba bien las heridas y los alimentaba mejor.',
+      { q: '¿Por qué los gladiadores ayudaron a Galeno a conocer el cuerpo?', a: ['Por sus heridas profundas, que dejaban ver músculos y tendones', 'Porque eran médicos', 'Porque escribían libros', 'No ayudaron'], e: 'Fue su primera gran escuela.' }),
+    poi(1, 'teatro-anatomico', 'El teatro anatómico de Padua', 'En 1595 la Universidad de Padua construyó un teatro anatómico: una sala de madera en forma de embudo, con seis pisos de gradas ovaladas y estrechas, donde unos trescientos estudiantes podían mirar desde arriba, de pie, cómo un profesor estudiaba un cuerpo sobre una mesa en el centro. Es el teatro anatómico permanente más antiguo que se conserva.',
+      'Allí estudió anatomía William Harvey, que después descubrió la circulación de la sangre. Las clases se hacían en invierno, porque el frío conservaba mejor los cuerpos.',
+      { q: '¿Por qué las clases en el teatro anatómico se hacían en invierno?', a: ['Porque el frío conservaba mejor los cuerpos', 'Porque en verano había vacaciones', 'Por la nieve', 'Por nada'], e: 'No había refrigeradores.' }),
+    poi(2, 'lavado-manos', 'El lavabo de Viena', 'En 1847, en la entrada de la primera sala de partos del Hospital General de Viena, Semmelweis puso una palangana con agua de cloro. Todo médico o estudiante que llegara de las autopsias debía lavarse las manos hasta que no quedara olor. En pocos meses, la mortalidad de las madres en esa sala bajó de más de una de cada diez a muy pocas.',
+      'Hoy, el 5 de mayo es el Día Mundial de la Higiene de Manos. Lavarse bien las manos durante veinte segundos sigue salvando millones de vidas.',
+      { q: '¿Con qué se lavaban las manos en la sala de Semmelweis?', a: ['Con agua de cloro', 'Con vino', 'Con agua de mar', 'No se lavaban'], e: 'Hasta que no quedara olor.' }),
+    poi(3, 'escutari', 'El hospital de Escútari', 'En el cuartel de Escútari, frente a Estambul, se instaló un enorme hospital para los soldados británicos heridos en la guerra de Crimea. Cuando llegó Florence Nightingale, en 1854, los soldados dormían en el suelo, había ratas y piojos, faltaban vendas y las cloacas estaban rotas. Nightingale organizó la limpieza, la cocina, la lavandería y la ventilación, y recorría las salas de noche con su lámpara.',
+      'Con sus datos, Nightingale mostró en su diagrama de rosa que la mayoría de las muertes se debían a enfermedades evitables, no a las heridas de guerra.',
+      { q: '¿Qué mostró el diagrama de rosa de Nightingale?', a: ['Que la mayoría de las muertes eran por enfermedades evitables', 'Que había muchas flores', 'Que la guerra era buena', 'Nada'], e: 'Con datos y gráficos.' }),
+    poi(4, 'vacuna-rabia', 'El niño y la vacuna', 'El 6 de julio de 1885, una madre llegó al laboratorio de Pasteur en París con su hijo Joseph Meister, de nueve años, mordido catorce veces por un perro rabioso. La rabia era siempre mortal. Pasteur no era médico, y su vacuna solo se había probado en perros. Tras consultar con médicos, decidió intentarlo: durante diez días le inyectaron la vacuna. Joseph sobrevivió.',
+      'Meses después llegaron personas mordidas desde muchos países, incluso un grupo desde Rusia mordido por un lobo. Así nació el Instituto Pasteur.',
+      { q: '¿Quién fue el primer niño salvado con la vacuna de la rabia de Pasteur?', a: ['Joseph Meister', 'Louis Braille', 'Mozart', 'Nadie'], e: 'En 1885, con nueve años.' }),
+  ]);
+  NPCS.push([
+    wnpc(0, 'enfermera', 'Rosa', 'enfermera de noche', sk(0xe8e8f0, 0x3a5a8a, 0xf0d0b0, 0x5a3a2a, { hat: 'hood', acc: 'lamp' }), [
+      'Trabajo de noche, cuando el hospital está en silencio. Es cuando los enfermos tienen más miedo. A veces lo que más cura es sentarse un rato y escuchar.',
+      'Florence Nightingale escribió que la enfermera debe observar todo: el color de la piel, el apetito, el ánimo. Los detalles salvan vidas.',
+      'Cuidar no es solo dar medicinas. Es lavar, acomodar una almohada, abrir la ventana, sonreír. Todo eso también cura.',
+    ], true),
+    wnpc(1, 'boticario', 'Matías', 'boticario', sk(0x5a4a3a, 0x2a2a2a, 0xe0c0a0, 0x6a6a6a, { beard: 0x6a6a6a, hat: 'cap', acc: 'none' }), [
+      'Paracelso decía: todo es veneno, nada es veneno; solo la dosis hace el veneno. Una medicina en exceso daña, y un veneno en una pizca puede curar.',
+      'Muchas medicinas vienen de plantas: la aspirina, de la corteza del sauce; la quinina, de un árbol de los Andes que los pueblos originarios ya usaban.',
+      'Nunca tomes una medicina sin saber qué es y cuánto tomar. La farmacia es un lugar de ciencia, no de magia.',
+    ]),
+    wnpc(2, 'partera', 'Dolores', 'partera', sk(0x8a5a4a, 0xe8e0d0, 0xc49372, 0x3a2a1a, { hat: 'longhair', acc: 'none' }), [
+      'He ayudado a nacer a más de dos mil niños en este pueblo. Muchos de los que ahora son abuelos, los recibí yo en mis manos.',
+      'Mi abuela, que también era partera, ya decía que había que lavarse bien las manos con jabón antes de tocar a una madre. ¡Sabía más que muchos médicos de su tiempo!',
+      'Cada nacimiento es distinto, y cada uno me sigue emocionando como el primero.',
+    ], true),
+  ]);
+  Object.assign(QUESTS, {
+    galeno: { text: 'Visita la escuela de gladiadores y escucha a Matías, el boticario. Luego dime qué llevan las arterias, según demostré.', needs: { pois: ['gladiadores'], npcs: ['boticario'] },
+      riddle: { q: '¿Qué llevan las arterias según Galeno?', a: ['Sangre', 'Aire', 'Agua', 'Nada'] } },
+    vesalio: { text: 'Visita el teatro anatómico de Padua. Luego dime cómo se llama mi gran libro.', needs: { pois: ['teatro-anatomico'], npcs: [] },
+      riddle: { q: '¿Cómo se llama el gran libro de Vesalio?', a: ['De humani corporis fabrica', 'El canon', 'Cosmos', 'La República'] } },
+    semmelweis: { text: 'Visita el lavabo de Viena y escucha a Dolores, la partera. Luego dime qué gesto salvó a las madres.', needs: { pois: ['lavado-manos'], npcs: ['partera'] },
+      riddle: { q: '¿Qué gesto salvó a las madres de Viena?', a: ['Lavarse las manos', 'Rezar', 'Dormir más', 'Abrir ventanas'] } },
+    nightingale: { text: 'Visita el hospital de Escútari y escucha a Rosa, la enfermera de noche. Luego dime qué usé para convencer al gobierno.', needs: { pois: ['escutari'], npcs: ['enfermera'] },
+      riddle: { q: '¿Qué usó Nightingale para convencer al gobierno?', a: ['Datos y gráficos', 'Poemas', 'Amenazas', 'Nada'] } },
+    pasteur: { text: 'Conoce la historia del niño y la vacuna. Luego dime contra qué enfermedad era.', needs: { pois: ['vacuna-rabia'], npcs: [] },
+      riddle: { q: '¿Contra qué enfermedad fue la vacuna de 1885?', a: ['La rabia', 'La gripe', 'El resfriado', 'La varicela'] } },
+    cajal: { text: 'Escucha a Matías, el boticario, y a Rosa, la enfermera. Luego dime de qué células está formado el cerebro.', needs: { pois: [], npcs: ['boticario', 'enfermera'] },
+      riddle: { q: '¿De qué células independientes está formado el sistema nervioso?', a: ['Neuronas', 'Glóbulos rojos', 'Células de la piel', 'Ninguna'] } },
+  });
+  Object.assign(ANECDOTES, {
+    galeno: ['Era tan orgulloso que escribí un libro sobre cómo reconocer a los médicos charlatanes, y otro sobre mis propios libros, para que nadie me atribuyera obras falsas.', 'Cuando la peste llegó a Roma, en tiempos de Marco Aurelio, describí sus síntomas con tanto detalle que hoy los historiadores creen que fue viruela.'],
+    vesalio: ['Para estudiar un esqueleto completo, una noche saqué en secreto, hueso por hueso, el cuerpo de un ajusticiado colgado fuera de la ciudad de Lovaina. Luego dije que lo había traído de París.', 'Morí a los cincuenta años, al volver de una peregrinación a Jerusalén: mi barco sufrió una tormenta y llegué enfermo a la isla griega de Zante.'],
+    semmelweis: ['Escribí cartas furiosas a los médicos que me rechazaban, llamándolos asesinos. No me ayudó: tener razón no basta, también hay que saber convencer.', 'Hoy en Budapest hay una universidad de medicina con mi nombre, y mi cara aparece en sellos y monedas de Hungría.'],
+    nightingale: ['Tenía una lechuza mascota llamada Atenea, que había rescatado en Grecia. La llevaba a todas partes en el bolsillo.', 'Fui la primera mujer admitida en la Real Sociedad de Estadística británica. Decía que para entender los pensamientos de Dios hay que estudiar estadística.'],
+    pasteur: ['A los cuarenta y cinco años sufrí un derrame cerebral que me dejó medio cuerpo paralizado. Seguí trabajando, y mis mayores descubrimientos llegaron después.', 'Se dice que limpiaba los platos y los cubiertos con una servilleta antes de comer, por miedo a los microbios, incluso en las cenas elegantes.'],
+    cajal: ['También fui un gran fotógrafo: hice algunas de las primeras fotografías en color de España, y escribí un libro sobre fotografía.', 'Escribí cuentos de ciencia ficción, y un libro de consejos para jóvenes investigadores que todavía se lee: «Reglas y consejos sobre investigación científica».'],
+    schweitzer: ['En Lambaréné tenía un pelícano, cabras, perros y hasta un cerdo salvaje como compañeros. Dejaba a las hormigas cruzar su escritorio sin molestarlas.', 'Llevé a la selva un piano preparado para el clima húmedo, con pedales de órgano, para seguir practicando a Bach por las noches.'],
+  });
+  BOOKS.push([
+    book({ id: 'fabrica-vesalio', author: 'vesalio', by: 'Andrés Vesalio', title: 'De humani corporis fabrica', year: '1543', kind: 'anatomía',
+      parts: [
+        { t: 'Siete libros', x: 'La Fabrica tiene siete libros: huesos, músculos, venas y arterias, nervios, órganos del vientre, corazón y pulmones, y cerebro.' },
+        { t: 'Esqueletos en el paisaje', x: 'Sus grabados muestran esqueletos y cuerpos sin piel posando en paisajes de Italia, como si estuvieran vivos. Uno de ellos se apoya pensativo sobre una tumba.' },
+        { t: 'Corregir a Galeno', x: 'Vesalio señala más de doscientos errores de Galeno, como la existencia de un hueso que solo tienen los animales en la mandíbula.' },
+        { t: 'Mirar uno mismo', x: 'Su mensaje principal: el médico no debe confiar solo en los libros antiguos, sino abrir los ojos y comprobar con sus propias manos.' },
+      ],
+      quote: 'Me he propuesto describir el cuerpo humano tal como lo he visto, no como lo cuentan los libros.',
+      q: { q: '¿Cuál es el mensaje principal de la Fabrica?', a: ['Comprobar uno mismo en lugar de confiar solo en los libros antiguos', 'Obedecer a Galeno', 'No estudiar el cuerpo', 'Nada'], e: 'El comienzo de la anatomía moderna.' } }, 0),
+    book({ id: 'notas-enfermeria', author: 'nightingale', by: 'Florence Nightingale', title: 'Notas sobre enfermería', year: '1859', kind: 'manual de cuidados',
+      parts: [
+        { t: 'Para todas las mujeres', x: 'Nightingale escribió el libro para cualquier persona que cuidara a un enfermo en casa, no solo para enfermeras profesionales. Se vendieron miles de copias.' },
+        { t: 'Aire puro', x: 'Lo primero, dice, es mantener el aire de la habitación tan puro como el de afuera, sin enfriar al enfermo. La ventilación salva vidas.' },
+        { t: 'Ruido y luz', x: 'El ruido innecesario daña al enfermo, y la luz del sol lo ayuda. Hay que poner la cama donde pueda ver el cielo por la ventana.' },
+        { t: 'Observar', x: 'La lección más importante para una enfermera es aprender qué observar, cómo observar y qué síntomas indican mejoría o peligro.' },
+      ],
+      quote: 'Lo primero que debe hacer un hospital es no hacer daño a los enfermos.',
+      q: { q: '¿Qué es lo primero que pide Nightingale para la habitación de un enfermo?', a: ['Aire puro, como el de afuera', 'Oscuridad total', 'Mucho ruido', 'Cerrar las ventanas siempre'], e: 'La ventilación salva vidas.' } }, 1),
+  ]);
+  BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });
+
+  // ---------------------------------------------------------------- debates
+  try {
+    VERSUS.push(
+      { id: 'schiller-kant', a: 'schiller', b: 'kant', q: '¿Qué es la belleza?', eje: null, va: 0, vb: 0,
+        turns: [
+          ['b', 'Bello es lo que agrada universalmente sin concepto, y sin interés: no lo queremos poseer ni usar, solo contemplar. Es un libre juego de la imaginación y el entendimiento.'],
+          ['a', 'Maestro Kant, tomo su palabra «juego» y la llevo más lejos. La belleza no solo agrada: nos educa. Reconcilia lo que sentimos con lo que pensamos, y así nos hace libres.'],
+          ['b', 'Cuidado, Schiller: si la belleza tiene un fin, deja de ser pura. La rosa es bella aunque no sirva para nada.'],
+          ['a', 'Precisamente porque no sirve para nada, nos libera de la necesidad. Por eso el ser humano solo es plenamente humano cuando juega.'],
+        ],
+        cierre: 'Kant definió la belleza como un placer libre y desinteresado. Schiller vio en ese libre juego un camino para educar a la humanidad. Discípulo y maestro, juntos, dieron forma a la estética moderna.' },
+      { id: 'pacificador-hobbes', a: 'pacificador', b: 'hobbes', q: '¿Cómo se construye la paz?', eje: null, va: 0, vb: 0,
+        turns: [
+          ['b', 'Sin un poder que inspire miedo a todos, los seres humanos viven en guerra de todos contra todos. La paz necesita un soberano fuerte, con la espada en la mano.'],
+          ['a', 'Las cinco naciones vivían en esa guerra que describes. No las unió el miedo, sino la palabra: escuchamos, consolamos el dolor de cada uno y acordamos una ley común.'],
+          ['b', '¿Y si alguien rompe el acuerdo? Los pactos sin espada son solo palabras.'],
+          ['a', 'Por eso decidimos en consejo, buscando que todos acepten. Una flecha sola se rompe; cinco juntas no. La fuerza de la paz está en la unión, no en el miedo.'],
+        ],
+        cierre: 'Hobbes vio la paz como obra de un poder temido. La Gran Ley haudenosaunee la construyó con consejo, consenso y unión. Dos caminos que todavía discuten las sociedades.' },
+      { id: 'schweitzer-descartes', a: 'schweitzer', b: 'descartes', q: '¿Son máquinas los animales?', eje: null, va: 0, vb: 0,
+        turns: [
+          ['b', 'Los animales funcionan como relojes muy complejos: se mueven por resortes y engranajes de carne. No piensan, porque no hablan con sentido.'],
+          ['a', 'He visto a una madre hipopótamo defender a su cría, y a un pelícano esperarme cada mañana. Toda vida quiere vivir, igual que yo.'],
+          ['b', 'Que quieran vivir no prueba que piensen. El reloj también «quiere» dar la hora.'],
+          ['a', 'No necesito saber si piensan como nosotros para respetarlos. Basta saber que sienten y quieren vivir. Por eso la ética debe abarcar toda vida.'],
+        ],
+        cierre: 'Descartes separó el alma humana del cuerpo-máquina de los animales. Schweitzer propuso respetar toda vida. Hoy la ciencia sabe que muchos animales sienten, y la pregunta sigue abierta.' },
+    );
+  } catch (e) { /* herramientas sin debates */ }
+}

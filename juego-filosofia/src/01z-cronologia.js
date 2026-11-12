@@ -5,7 +5,7 @@
 //  Los números romanos de cada época se reasignan según este orden.
 // ============================================================================
 const CHRONO = ['sumer', 'africa', 'india', 'persia', 'presocraticos', 'china', 'atenas', 'helenismo', 'medieval', 'islam', 'vikingos', 'japon',
-  'mexicas', 'incas', 'renacimiento', 'mapuche', 'modernidad', 'xix', 'latinoamerica', 'contemporanea', 'poetas', 'ciencia', 'ateos', 'teistas', 'pensadoras', 'justicia', 'misticos', 'mente', 'tierra', 'numeros']
+  'mexicas', 'incas', 'renacimiento', 'mapuche', 'modernidad', 'xix', 'latinoamerica', 'contemporanea', 'poetas', 'ciencia', 'ateos', 'teistas', 'pensadoras', 'justicia', 'misticos', 'mente', 'tierra', 'numeros', 'belleza', 'pueblos', 'cuidado']
   .map((id) => ERAS.findIndex((e) => e.id === id)).filter((i) => i >= 0);
 ERAS.forEach((e, i) => { if (!CHRONO.includes(i)) CHRONO.push(i); });
 // el botón principal dice cuántas épocas y pensadores hay (se calcula, para que no quede viejo)
@@ -44,5 +44,8 @@ const ERA_HOOK = {
   mente: 'Un mundo temático: cómo aprendemos y cómo pensamos.',
   tierra: 'Un mundo temático: quienes enseñaron a cuidar el planeta.',
   numeros: 'Un mundo temático: la belleza de las matemáticas y la lógica.',
+  belleza: 'Un mundo temático: el arte y la pregunta por lo bello.',
+  pueblos: 'Un mundo temático: las sabidurías de Norteamérica y Oceanía.',
+  cuidado: 'Un mundo temático: curar, cuidar y respetar la vida.',
 };
 function nextEra(i) { const k = CHRONO.indexOf(i); return k >= 0 && k < CHRONO.length - 1 ? CHRONO[k + 1] : -1; }

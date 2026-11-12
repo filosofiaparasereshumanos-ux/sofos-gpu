@@ -14,14 +14,14 @@ El juego es una web estática: `index.html`, `img/` y `audio/`, más `manifest.w
 ## 3. Botón en la web de Lovable
 En el chat de Lovable, pide algo como:
 
-> Agrega en la página de inicio una sección destacada «Odisea de la Razón: el videojuego de filosofía», con el texto «Conversa y debate con Sócrates, Hipatia, Sor Juana y 179 pensadores más en 30 épocas. Gratis.» y un botón dorado «Jugar gratis» que abra https://juego.filosofiaparasereshumanos.com en una pestaña nueva. Agrega también la ruta /odisea que redirija a esa misma dirección.
+> Agrega en la página de inicio una sección destacada «Odisea de la Razón: el videojuego de filosofía», con el texto «Conversa y debate con Sócrates, Hipatia, Sor Juana y 200 pensadores más en 33 épocas. Gratis.» y un botón dorado «Jugar gratis» que abra https://juego.filosofiaparasereshumanos.com en una pestaña nueva. Agrega también la ruta /odisea que redirija a esa misma dirección.
 
 ## Instalarla como app
 - **Android / computador (Chrome, Edge):** en la pantalla de título aparece **«Instalar app»**, o en el menú del navegador → *Instalar aplicación*.
 - **iPhone (Safari):** botón **Compartir** → **Agregar a inicio**.
 
 ## Qué cambia respecto a la versión en Claude
-Todo el juego funciona igual (30 épocas, 182 pensadores con voz, debates, libros, oráculo, modo aula, música). Fuera de Claude no hay IA: desaparece «Pregúntale lo que quieras», «¿Qué diría…?» muestra las ideas escritas de cada pensador y el Salón de la Fama se guarda en cada aparato. Para recuperar la IA en tu dominio haría falta un pequeño servidor con una clave de la API de Claude (con costo por uso).
+Todo el juego funciona igual (33 épocas, 203 pensadores con voz, debates, libros, oráculo, modo aula, música). Fuera de Claude no hay IA: desaparece «Pregúntale lo que quieras», «¿Qué diría…?» muestra las ideas escritas de cada pensador y el Salón de la Fama se guarda en cada aparato. Para recuperar la IA en tu dominio haría falta un pequeño servidor con una clave de la API de Claude (con costo por uso).
 
 ## Actualizar
 Cada vez que se publica un cambio en la rama, GitHub Pages lo actualiza solo. Quien tenga la app instalada recibe la versión nueva la próxima vez que la abra con conexión.
