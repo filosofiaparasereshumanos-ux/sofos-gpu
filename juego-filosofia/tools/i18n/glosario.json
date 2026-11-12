@@ -342,5 +342,25 @@
 [
 "(?<![A-Za-zÀ-ÿ])[Nn]ear development (zone|area)(?![A-Za-zÀ-ÿ])",
 "Zone of proximal development"
+],
+[
+"(?<![A-Za-zÀ-ÿ])the Peacekeeper(?![A-Za-zÀ-ÿ])",
+"the Peacemaker"
+],
+[
+"(?<![A-Za-zÀ-ÿ])The Peacekeeper(?![A-Za-zÀ-ÿ])",
+"The Peacemaker"
+],
+[
+"(?<![A-Za-zÀ-ÿ])[Ii] won't fight anymore forever(?![A-Za-zÀ-ÿ])",
+"I will fight no more forever"
+],
+[
+"(?<![A-Za-zÀ-ÿ])game drive(?![A-Za-zÀ-ÿ])",
+"play drive"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Game Drive(?![A-Za-zÀ-ÿ])",
+"Play Drive"
 ]
 ]
