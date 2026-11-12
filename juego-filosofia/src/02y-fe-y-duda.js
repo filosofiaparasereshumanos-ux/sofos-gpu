@@ -209,7 +209,7 @@
       { q: '¿Qué aprendió María Zambrano del exilio, según ella?', a: ['A ver lo esencial', 'A olvidar su lengua', 'A odiar a todos', 'Nada'], e: 'Vivió cuarenta y cinco años fuera de España.' }),
   ]);
   NPCS.push([
-    wnpc(0, 'maestra', 'Lucía', 'maestra rural', sk(0x5a4a6a, 0x2a2a3a, 0xf0d0b0, 0x3a2a1a, { hat: 'longhair', acc: 'book' }), [
+    wnpc(0, 'maestra-lucia', 'Lucía', 'maestra rural', sk(0x5a4a6a, 0x2a2a3a, 0xf0d0b0, 0x3a2a1a, { hat: 'longhair', acc: 'book' }), [
       'Mi abuela no sabía leer; no la dejaron ir a la escuela. Mi madre aprendió a escondidas. Yo enseño a leer a cuarenta niñas y niños.',
       'Cada vez que una niña lee su primera frase en voz alta, siento que se abre una puerta que estuvo cerrada siglos.',
       'Mary Wollstonecraft tenía razón: la diferencia no estaba en la cabeza de las niñas, sino en las puertas de las escuelas.',
@@ -228,7 +228,7 @@
   Object.assign(QUESTS, {
     chatelet: { text: 'Visita mi laboratorio de Cirey. Luego dime qué gran obra traduje al francés.', needs: { pois: ['cirey'], npcs: [] },
       riddle: { q: '¿Qué obra tradujo Émilie du Châtelet?', a: ['Los Principia de Newton', 'La Odisea', 'El Quijote', 'La Biblia'] } },
-    wollstonecraft: { text: 'Escucha a Lucía, la maestra rural, y visita Seneca Falls. Luego dime qué pedí para niñas y niños.', needs: { pois: ['seneca-falls'], npcs: ['maestra'] },
+    wollstonecraft: { text: 'Escucha a Lucía, la maestra rural, y visita Seneca Falls. Luego dime qué pedí para niñas y niños.', needs: { pois: ['seneca-falls'], npcs: ['maestra-lucia'] },
       riddle: { q: '¿Qué pidió Mary Wollstonecraft para niñas y niños?', a: ['Una educación igual', 'Escuelas separadas', 'Que no estudiaran', 'Solo bordado'] } },
     gouges: { text: 'Habla con Kate, la sufragista, y visita el lugar del primer voto. Luego dime qué declaración escribí.', needs: { pois: ['sufragio'], npcs: ['sufragista'] },
       riddle: { q: '¿Qué declaración escribió Olympe de Gouges?', a: ['La de los derechos de la mujer y de la ciudadana', 'La de independencia', 'La de guerra', 'Ninguna'] } },
@@ -236,7 +236,7 @@
       riddle: { q: '¿Qué preguntó Sojourner Truth en Akron?', a: ['¿Acaso no soy una mujer?', '¿Qué hora es?', '¿Dónde está el rey?', '¿Quién ganó?'] } },
     tristan: { text: 'Escucha a Pierre, el obrero tipógrafo. Luego dime qué propuse en La unión obrera.', needs: { pois: [], npcs: ['obrero'] },
       riddle: { q: '¿Qué propuso Flora Tristán?', a: ['Que los trabajadores de todos los países se unieran', 'Que se prohibieran los talleres', 'Que volviera el rey', 'Que nadie leyera'] } },
-    stein: { text: 'Visita la casa del exilio y escucha a Lucía, la maestra. Luego dime qué estudié en mi tesis.', needs: { pois: ['la-piece'], npcs: ['maestra'] },
+    stein: { text: 'Visita la casa del exilio y escucha a Lucía, la maestra. Luego dime qué estudié en mi tesis.', needs: { pois: ['la-piece'], npcs: ['maestra-lucia'] },
       riddle: { q: '¿Qué estudió Edith Stein en su tesis?', a: ['La empatía', 'Los planetas', 'La guerra', 'El dinero'] } },
   });
   Object.assign(ANECDOTES, {
@@ -278,7 +278,7 @@
     poi(1, 'senado', 'El Senado romano', 'En la Curia, el edificio donde se reunía el Senado de Roma, los senadores discutían las leyes sentados en bancos de madera. En noviembre del año 63 a. C., Cicerón denunció allí a Catilina, que estaba presente. Los senadores que estaban a su lado se apartaron de él, dejándolo solo en su banco.',
       'La palabra «senado» viene del latín «senex», anciano: era el consejo de los mayores.',
       { q: '¿De qué palabra latina viene «senado»?', a: ['De «senex», anciano', 'De «sol»', 'De «sena», cena', 'De «signum», señal'], e: 'Era el consejo de los mayores.' }),
-    poi(2, 'valladolid', 'La Junta de Valladolid', 'Entre 1550 y 1551, el emperador Carlos V suspendió las nuevas conquistas en América y reunió en Valladolid a un grupo de juristas y teólogos para decidir si eran justas. Juan Ginés de Sepúlveda defendió la guerra contra los pueblos indígenas; Bartolomé de las Casas, durante cinco días, leyó un enorme alegato a favor de su libertad.',
+    poi(2, 'junta-valladolid', 'La Junta de Valladolid', 'Entre 1550 y 1551, el emperador Carlos V suspendió las nuevas conquistas en América y reunió en Valladolid a un grupo de juristas y teólogos para decidir si eran justas. Juan Ginés de Sepúlveda defendió la guerra contra los pueblos indígenas; Bartolomé de las Casas, durante cinco días, leyó un enorme alegato a favor de su libertad.',
       'Es uno de los primeros debates de la historia en que un imperio discutió si sus propias conquistas eran justas.',
       { q: '¿Qué se discutió en la Junta de Valladolid?', a: ['Si las conquistas en América eran justas', 'El precio del trigo', 'Quién sería el próximo rey', 'Un torneo de caballería'], e: 'Las Casas contra Sepúlveda.' }),
     poi(3, 'marcha-sal', 'La Marcha de la Sal', 'El 12 de marzo de 1930, Gandhi salió de su comunidad cerca de Ahmedabad con setenta y ocho compañeros. Caminaron veinticuatro días, unos 390 kilómetros, hasta la playa de Dandi. Allí, el 6 de abril, Gandhi tomó un puñado de sal del mar, desobedeciendo la ley británica que prohibía a los indios producir su propia sal.',
@@ -294,7 +294,7 @@
       'Una vez juzgué a un hombre que había robado pan para sus hijos. La ley decía una cosa; la justicia, quizás, otra. Esas son las noches en que no duermo.',
       'Montesquieu decía que el juez debe ser solo la boca que pronuncia las palabras de la ley. A veces pienso que también debe tener oídos y corazón.',
     ], true),
-    wnpc(1, 'campesino', 'Ramu', 'salinero de la costa', sk(0xf4f0e8, 0xe8e0d0, 0x8a5a3a, 0x1a1410, { hat: 'turban', acc: 'none' }), [
+    wnpc(1, 'salinero', 'Ramu', 'salinero de la costa', sk(0xf4f0e8, 0xe8e0d0, 0x8a5a3a, 0x1a1410, { hat: 'turban', acc: 'none' }), [
       'Mi familia saca sal del mar desde hace generaciones. Un día el gobierno dijo que la sal era suya y que había que pagarla. ¡La sal del mar!',
       'Cuando el Mahatma llegó a la playa, toda mi aldea fue a verlo. Tomó sal con la mano. Al día siguiente, todos hicimos lo mismo.',
       'Me llevaron preso tres semanas. No me arrepiento. Aprendí que un hombre pobre también puede decir «no».',
@@ -310,11 +310,11 @@
       riddle: { q: '¿Qué hizo Solón con las deudas de los pobres?', a: ['Las anuló y liberó a los esclavizados por ellas', 'Las duplicó', 'Las vendió', 'Nada'] } },
     ciceron: { text: 'Visita el Senado y escucha a Aurelia, la jueza. Luego dime qué es la verdadera ley.', needs: { pois: ['senado'], npcs: ['jueza'] },
       riddle: { q: '¿Qué es la verdadera ley para Cicerón?', a: ['La recta razón conforme a la naturaleza', 'La voluntad del más fuerte', 'Lo que diga el césar', 'Una costumbre cualquiera'] } },
-    lascasas: { text: 'Visita la Junta de Valladolid. Luego dime qué defendí ante el emperador.', needs: { pois: ['valladolid'], npcs: [] },
+    lascasas: { text: 'Visita la Junta de Valladolid. Luego dime qué defendí ante el emperador.', needs: { pois: ['junta-valladolid'], npcs: [] },
       riddle: { q: '¿Qué defendió Las Casas en Valladolid?', a: ['Que los indígenas eran libres y plenamente humanos', 'La guerra de conquista', 'La esclavitud', 'Nada'] } },
     montesquieu: { text: 'Escucha a Aurelia, la jueza. Luego dime en cuántos poderes dividí el Estado.', needs: { pois: [], npcs: ['jueza'] },
       riddle: { q: '¿En cuántos poderes dividió Montesquieu el Estado?', a: ['Tres: legislativo, ejecutivo y judicial', 'Uno solo', 'Diez', 'Ninguno'] } },
-    gandhi: { text: 'Camina hasta el lugar de la Marcha de la Sal y escucha a Ramu, el salinero. Luego dime cómo se llama mi método.', needs: { pois: ['marcha-sal'], npcs: ['campesino'] },
+    gandhi: { text: 'Camina hasta el lugar de la Marcha de la Sal y escucha a Ramu, el salinero. Luego dime cómo se llama mi método.', needs: { pois: ['marcha-sal'], npcs: ['salinero'] },
       riddle: { q: '¿Cómo llamó Gandhi a su método?', a: ['Satyagraha, la fuerza de la verdad', 'Blitzkrieg', 'Laissez faire', 'Carpe diem'] } },
     king: { text: 'Visita el autobús de Montgomery y escucha a Claudette, la costurera. Luego dime qué puede expulsar al odio.', needs: { pois: ['montgomery'], npcs: ['costurera'] },
       riddle: { q: '¿Qué puede expulsar al odio, según Martin Luther King?', a: ['Solo el amor', 'Más odio', 'El dinero', 'El miedo'] } },
@@ -352,7 +352,7 @@
 
   // ---------------------------------------------------------------- XXVII · La montaña de los místicos
   POIS.push([
-    poi(0, 'cueva-muro', 'La cueva frente al muro', 'En el monte Song, en China, cerca del monasterio de Shaolin, hay una pequeña cueva donde, según la tradición, Bodhidharma meditó nueve años mirando la pared. Se cuenta que su sombra quedó grabada en la roca. Un discípulo, Huike, esperó afuera en la nieve para que lo aceptara como alumno.',
+    poi(0, 'cueva-bodhidharma', 'La cueva frente al muro', 'En el monte Song, en China, cerca del monasterio de Shaolin, hay una pequeña cueva donde, según la tradición, Bodhidharma meditó nueve años mirando la pared. Se cuenta que su sombra quedó grabada en la roca. Un discípulo, Huike, esperó afuera en la nieve para que lo aceptara como alumno.',
       'Los monjes de Shaolin dicen que Bodhidharma les enseñó ejercicios para fortalecer el cuerpo después de tantas horas sentados. Así nacería, según la leyenda, el famoso kung-fu de Shaolin.',
       { q: '¿Cuántos años meditó Bodhidharma frente al muro, según la leyenda?', a: ['Nueve', 'Uno', 'Cuarenta', 'Cien'], e: 'Cerca del monasterio de Shaolin.' }),
     poi(1, 'cueva-milarepa', 'Las cuevas del ermitaño', 'En las montañas del Tíbet y de Nepal hay muchas cuevas donde, según la tradición, meditó Milarepa. Algunas están a más de cuatro mil metros de altura. En una de ellas, la cueva de la Sombra de Garuda, se ven todavía marcas en la roca que los peregrinos atribuyen a su mano.',
@@ -369,12 +369,12 @@
       { q: '¿Cuántos monasterios fundó Shankara en los extremos de la India?', a: ['Cuatro', 'Uno', 'Doce', 'Cien'], e: 'Uno en cada punto cardinal.' }),
   ]);
   NPCS.push([
-    wnpc(0, 'tejedora', 'Lakshmi', 'tejedora de seda', sk(0xc82a5a, 0xe8b048, 0x8a5a3a, 0x1a1410, { hat: 'braids', acc: 'none' }), [
+    wnpc(0, 'tejedora-seda', 'Lakshmi', 'tejedora de seda', sk(0xc82a5a, 0xe8b048, 0x8a5a3a, 0x1a1410, { hat: 'braids', acc: 'none' }), [
       'Tejo un sari en tres semanas. Si me distraigo un segundo, el dibujo se tuerce. Mi abuela decía que tejer es una forma de rezar.',
       'Canto los versos de Kabir mientras tejo: el ritmo del telar y el ritmo del poema son el mismo.',
       'Hindúes y musulmanes tejemos juntos en esta calle desde hace siglos. La seda no pregunta de qué religión son tus manos.',
     ], true),
-    wnpc(1, 'monje', 'Tenzin', 'monje tibetano', sk(0x8a2a2a, 0xe8b048, 0xb08060, 0x1a1410, { hat: 'bald', acc: 'none' }), [
+    wnpc(1, 'monje-tenzin', 'Tenzin', 'monje tibetano', sk(0x8a2a2a, 0xe8b048, 0xb08060, 0x1a1410, { hat: 'bald', acc: 'none' }), [
       'Mira esas banderas de colores. Tienen oraciones escritas: cada vez que el viento las mueve, las oraciones viajan por el mundo.',
       'Mi maestro me hizo hacer un mandala de arena durante semanas. Cuando lo terminé, lo barrió. Así aprendí que nada dura para siempre.',
       'Respira. Antes de hablar con los sabios de esta montaña, aquieta un poco tu mente. Tres respiraciones lentas bastan para empezar.',
@@ -386,15 +386,15 @@
     ], true),
   ]);
   Object.assign(QUESTS, {
-    bodhidharma: { text: 'Visita la cueva frente al muro y escucha a Tenzin, el monje. Luego dime qué le respondí al emperador.', needs: { pois: ['cueva-muro'], npcs: ['monje'] },
+    bodhidharma: { text: 'Visita la cueva frente al muro y escucha a Tenzin, el monje. Luego dime qué le respondí al emperador.', needs: { pois: ['cueva-bodhidharma'], npcs: ['monje-tenzin'] },
       riddle: { q: '¿Qué mérito dijo Bodhidharma que tenía el emperador por construir templos?', a: ['Ninguno', 'Muchísimo', 'Un reino en el cielo', 'La inmortalidad'] } },
-    huineng: { text: 'Escucha a Tenzin, el monje. Luego dime qué dice mi poema sobre el polvo.', needs: { pois: [], npcs: ['monje'] },
+    huineng: { text: 'Escucha a Tenzin, el monje. Luego dime qué dice mi poema sobre el polvo.', needs: { pois: [], npcs: ['monje-tenzin'] },
       riddle: { q: '¿Qué dice el poema de Huineng?', a: ['Que desde el principio no hay ni una cosa donde se pose el polvo', 'Que hay que barrer cada día', 'Que el polvo es oro', 'Que los espejos son malos'] } },
     milarepa: { text: 'Visita las cuevas del ermitaño. Luego dime qué me hizo hacer mi maestro Marpa.', needs: { pois: ['cueva-milarepa'], npcs: [] },
       riddle: { q: '¿Qué le hizo hacer Marpa a Milarepa?', a: ['Construir y derribar torres de piedra', 'Leer mil libros', 'Viajar a la India', 'Nada'] } },
-    kabir: { text: 'Visita los telares de Benarés y escucha a Lakshmi, la tejedora. Luego dime dónde está lo divino, según yo.', needs: { pois: ['benares'], npcs: ['tejedora'] },
+    kabir: { text: 'Visita los telares de Benarés y escucha a Lakshmi, la tejedora. Luego dime dónde está lo divino, según yo.', needs: { pois: ['benares'], npcs: ['tejedora-seda'] },
       riddle: { q: '¿Dónde está lo divino, según Kabir?', a: ['Dentro de cada persona', 'Solo en el templo', 'Solo en la mezquita', 'En el oro'] } },
-    mirabai: { text: 'Escucha a Lakshmi, la tejedora, y a Anjali, la peregrina. Luego dime a quién dediqué mis canciones.', needs: { pois: [], npcs: ['tejedora', 'peregrina'] },
+    mirabai: { text: 'Escucha a Lakshmi, la tejedora, y a Anjali, la peregrina. Luego dime a quién dediqué mis canciones.', needs: { pois: [], npcs: ['tejedora-seda', 'peregrina'] },
       riddle: { q: '¿A quién cantaba Mirabai?', a: ['A Krishna', 'Al rey', 'Al mar', 'A la guerra'] } },
     ramana: { text: 'Rodea la montaña de Arunachala y escucha a Anjali, la peregrina. Luego dime qué pregunta enseñaba.', needs: { pois: ['arunachala'], npcs: ['peregrina'] },
       riddle: { q: '¿Qué pregunta enseñaba Ramana Maharshi?', a: ['¿Quién soy yo?', '¿Cuánto tengo?', '¿Dónde está el tesoro?', '¿Quién ganará?'] } },
@@ -856,7 +856,7 @@
       'Tejer me enseña paciencia. Una alfombra grande puede llevar meses. Si te apuras, el dibujo se tuerce.',
       'Decimos «hózhó»: vivir en belleza y en equilibrio con todo lo que te rodea. Es la palabra más importante que conozco.',
     ], true),
-    wnpc(1, 'navegante', 'Kaimana', 'navegante polinesio', sk(0xe8b048, 0x2a5a7a, 0x8a5a3a, 0x1a1410, { hat: 'longhair', acc: 'none' }), [
+    wnpc(1, 'navegante-kaimana', 'Kaimana', 'navegante polinesio', sk(0xe8b048, 0x2a5a7a, 0x8a5a3a, 0x1a1410, { hat: 'longhair', acc: 'none' }), [
       'Mis antepasados cruzaron el océano Pacífico en canoas dobles, sin brújula ni mapas, mucho antes que los europeos. Se guiaban por las estrellas, las olas y los pájaros.',
       'Aprendí a memorizar dónde sale y se pone cada estrella. Y a sentir con el cuerpo, acostado en la canoa, la dirección de las olas.',
       'Si ves un ave que vuela al atardecer, síguela: va a dormir a tierra. El océano habla, si sabes escucharlo.',
@@ -876,9 +876,9 @@
       riddle: { q: '¿Cómo se mueve la vida según Alce Negro?', a: ['En círculos', 'En línea recta', 'Al azar', 'No se mueve'] } },
     tewhiti: { text: 'Visita Parihaka. Luego dime qué símbolo de paz llevábamos en el pelo.', needs: { pois: ['parihaka'], npcs: [] },
       riddle: { q: '¿Qué llevaban en el pelo los habitantes de Parihaka?', a: ['Una pluma blanca de albatros', 'Una corona', 'Una flor roja', 'Nada'] } },
-    liliuokalani: { text: 'Visita el palacio ʻIolani y escucha a Kaimana, el navegante. Luego dime mi canción más famosa.', needs: { pois: ['iolani'], npcs: ['navegante'] },
+    liliuokalani: { text: 'Visita el palacio ʻIolani y escucha a Kaimana, el navegante. Luego dime mi canción más famosa.', needs: { pois: ['iolani'], npcs: ['navegante-kaimana'] },
       riddle: { q: '¿Cuál es la canción más famosa de Liliʻuokalani?', a: ['Aloha ʻOe', 'Cielito lindo', 'La bamba', 'Ninguna'] } },
-    unaipon: { text: 'Visita Uluru y escucha a Kaimana, el navegante. Luego dime qué estudié para imaginar una máquina voladora.', needs: { pois: ['uluru'], npcs: ['navegante'] },
+    unaipon: { text: 'Visita Uluru y escucha a Kaimana, el navegante. Luego dime qué estudié para imaginar una máquina voladora.', needs: { pois: ['uluru'], npcs: ['navegante-kaimana'] },
       riddle: { q: '¿Qué estudió Unaipon para imaginar un helicóptero?', a: ['El vuelo del bumerán', 'Las nubes', 'Los cohetes', 'Las gallinas'] } },
   });
   Object.assign(ANECDOTES, {
@@ -941,7 +941,7 @@
       'Muchas medicinas vienen de plantas: la aspirina, de la corteza del sauce; la quinina, de un árbol de los Andes que los pueblos originarios ya usaban.',
       'Nunca tomes una medicina sin saber qué es y cuánto tomar. La farmacia es un lugar de ciencia, no de magia.',
     ]),
-    wnpc(2, 'partera', 'Dolores', 'partera', sk(0x8a5a4a, 0xe8e0d0, 0xc49372, 0x3a2a1a, { hat: 'longhair', acc: 'none' }), [
+    wnpc(2, 'partera-dolores', 'Dolores', 'partera-dolores', sk(0x8a5a4a, 0xe8e0d0, 0xc49372, 0x3a2a1a, { hat: 'longhair', acc: 'none' }), [
       'He ayudado a nacer a más de dos mil niños en este pueblo. Muchos de los que ahora son abuelos, los recibí yo en mis manos.',
       'Mi abuela, que también era partera, ya decía que había que lavarse bien las manos con jabón antes de tocar a una madre. ¡Sabía más que muchos médicos de su tiempo!',
       'Cada nacimiento es distinto, y cada uno me sigue emocionando como el primero.',
@@ -952,7 +952,7 @@
       riddle: { q: '¿Qué llevan las arterias según Galeno?', a: ['Sangre', 'Aire', 'Agua', 'Nada'] } },
     vesalio: { text: 'Visita el teatro anatómico de Padua. Luego dime cómo se llama mi gran libro.', needs: { pois: ['teatro-anatomico'], npcs: [] },
       riddle: { q: '¿Cómo se llama el gran libro de Vesalio?', a: ['De humani corporis fabrica', 'El canon', 'Cosmos', 'La República'] } },
-    semmelweis: { text: 'Visita el lavabo de Viena y escucha a Dolores, la partera. Luego dime qué gesto salvó a las madres.', needs: { pois: ['lavado-manos'], npcs: ['partera'] },
+    semmelweis: { text: 'Visita el lavabo de Viena y escucha a Dolores, la partera. Luego dime qué gesto salvó a las madres.', needs: { pois: ['lavado-manos'], npcs: ['partera-dolores'] },
       riddle: { q: '¿Qué gesto salvó a las madres de Viena?', a: ['Lavarse las manos', 'Rezar', 'Dormir más', 'Abrir ventanas'] } },
     nightingale: { text: 'Visita el hospital de Escútari y escucha a Rosa, la enfermera de noche. Luego dime qué usé para convencer al gobierno.', needs: { pois: ['escutari'], npcs: ['enfermera'] },
       riddle: { q: '¿Qué usó Nightingale para convencer al gobierno?', a: ['Datos y gráficos', 'Poemas', 'Amenazas', 'Nada'] } },
