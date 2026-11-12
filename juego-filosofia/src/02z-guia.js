@@ -48,9 +48,13 @@ const GUIDE_LINES = [
     'La vidente de la Völuspá, Egill, Aud la Sabia, Thorgeir y Snorri Sturluson te esperan. Recuerda lo que dice el Hávamál: un ser humano es la alegría de otro ser humano.'],
   ['Bienvenido a la antigua Persia, el primer gran imperio de muchos pueblos. Aquí se aprendió que se puede gobernar respetando las diferencias, y que cada persona elige entre la verdad y la mentira.',
     'Zaratustra, Ciro el Grande, Mani, Burzoe y Ferdousí te esperan. Pasea por el jardín: de su nombre persa viene nuestra palabra paraíso.'],
+  ['Bienvenido al ateneo de los librepensadores. Aquí se reúnen quienes explicaron el mundo sin dioses: con átomos, con la naturaleza y con la ciencia. Muchos fueron perseguidos por decirlo.',
+    'Ajita, Lucrecio, Diderot, Feuerbach, Ernestine Rose, Carl Sagan y Bertrand Russell te esperan. Escúchalos con la mente abierta: no vienen a burlarse de nadie, vienen a defender la libertad de pensar.'],
+  ['Bienvenido a la casa de la fe. Aquí dialogan creyentes de muchas tradiciones que quisieron entender su fe con la razón y con el corazón.',
+    'Anselmo, Maimónides, Al-Ghazali, Teresa de Ávila, Leibniz, Simone Weil y Blaise Pascal te esperan. Escúchalos con la mente abierta: la fe también piensa, y también duda.'],
 ];
 // dónde espera en cada época (junto al punto de llegada, en z = 31)
-const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5], 17: [2.8, 24.5], 18: [2.8, 24.5], 19: [2.8, 24.5], 20: [2.8, 24.5], 21: [2.8, 24.5] };
+const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5], 17: [2.8, 24.5], 18: [2.8, 24.5], 19: [2.8, 24.5], 20: [2.8, 24.5], 21: [2.8, 24.5], 22: [2.8, 26.5], 23: [2.8, 26.5] };
 GUIDE_LINES.forEach((lines, i) => {
   if (!NPCS[i]) NPCS[i] = [];
   NPCS[i].unshift({ id: i === 0 ? 'guia' : 'guia-' + ERAS[i].id, name: 'El guía', role: 'Filosofía para Seres Humanos', portrait: 'guia', greeter: true,

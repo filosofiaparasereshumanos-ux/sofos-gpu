@@ -129,7 +129,7 @@ setTimeout(() => Mision.paint(), 700);
 const TL_ROWS = [
   ['Grecia y Roma', ['presocraticos', 'atenas', 'helenismo']], ['Europa', ['medieval', 'renacimiento', 'modernidad', 'xix', 'contemporanea', 'vikingos']],
   ['Mesopotamia, Persia e islam', ['sumer', 'persia', 'islam']], ['India, China y Japón', ['india', 'china', 'japon']], ['África', ['africa']],
-  ['América', ['latinoamerica', 'mexicas', 'incas', 'mapuche']], ['Poesía y ciencia', ['poetas', 'ciencia']],
+  ['América', ['latinoamerica', 'mexicas', 'incas', 'mapuche']], ['Poesía y ciencia', ['poetas', 'ciencia']], ['Fe y duda', ['ateos', 'teistas']],
 ];
 const Tiempo = {
   list: null, sel: null,
