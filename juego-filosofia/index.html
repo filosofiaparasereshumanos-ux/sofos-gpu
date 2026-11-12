@@ -18431,7 +18431,7 @@ async function boot() {
 }
 
 // Gancho de pruebas automáticas (solo con #debug en la URL)
-if (location.hash === '#debug') window.__dbg = { get AULA() { return AULA; }, ga: (x, z, y) => groundAt(world, x, z, y), get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, get Agora() { return Agora; }, get Foto() { return Foto; }, get Avatar() { return Avatar; }, get Dif() { return Dif; }, get Torneo() { return Torneo; }, get Versus() { return Versus; }, get Mision() { return Mision; }, get Tiempo() { return Tiempo; }, get Escucha() { return Escucha; }, get Perfil() { return Perfil; }, get ERAS() { return ERAS; }, get Orbes() { return typeof Orbes !== 'undefined' ? Orbes : null; } };
+if (location.hash === '#debug') window.__dbg = { get AULA() { return AULA; }, ga: (x, z, y) => groundAt(world, x, z, y), get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, get Agora() { return Agora; }, get Foto() { return Foto; }, get Avatar() { return Avatar; }, get Dif() { return Dif; }, get Torneo() { return Torneo; }, get Versus() { return Versus; }, get Mision() { return Mision; }, get Tiempo() { return Tiempo; }, get Escucha() { return Escucha; }, get Perfil() { return Perfil; }, get ERAS() { return ERAS; }, get Orbes() { return typeof Orbes !== 'undefined' ? Orbes : null; }, get VERSUS() { return VERSUS; } };
 
 // ---- src/04a-lesson.js ----
 // ============================================================================
@@ -21764,7 +21764,7 @@ const Orbes = {
   catch(W, o) {
     this.vanish(W, o, true); Audio.pickup && Audio.pickup(); buzz(20);
     const list = this.pool(); if (!list.length) return;
-    const q = list[Math.floor(Math.random() * list.length)]; const right = q.a[0];
+    const q = list[Math.floor(Math.random() * list.length)]; const right = q.a[0]; this.last = q;
     const ops = shuffle(q.a.slice(0, 4)).map((a) => [a, () => this.answer(o, q, a === right)]);
     XP.open(o.kind === 'star' ? '✶ Orbe dorado de una estrella fugaz' : '⤒ Orbe de sabiduría · ' + ERAS[G.eraIdx].name, q.q, `Una pregunta sobre ${q.who}. Elige la respuesta.`, ops);
   },

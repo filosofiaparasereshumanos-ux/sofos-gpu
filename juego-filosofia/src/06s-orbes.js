@@ -123,7 +123,7 @@ const Orbes = {
   catch(W, o) {
     this.vanish(W, o, true); Audio.pickup && Audio.pickup(); buzz(20);
     const list = this.pool(); if (!list.length) return;
-    const q = list[Math.floor(Math.random() * list.length)]; const right = q.a[0];
+    const q = list[Math.floor(Math.random() * list.length)]; const right = q.a[0]; this.last = q;
     const ops = shuffle(q.a.slice(0, 4)).map((a) => [a, () => this.answer(o, q, a === right)]);
     XP.open(o.kind === 'star' ? '✶ Orbe dorado de una estrella fugaz' : '⤒ Orbe de sabiduría · ' + ERAS[G.eraIdx].name, q.q, `Una pregunta sobre ${q.who}. Elige la respuesta.`, ops);
   },
