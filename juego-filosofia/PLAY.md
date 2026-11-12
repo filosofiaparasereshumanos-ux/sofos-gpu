@@ -12,7 +12,7 @@ sola, sin subir una versión nueva a Play.
 | App web con manifiesto, service worker e íconos | `manifest.webmanifest`, `sw.js`, `img/icon-*.png` |
 | Ícono 512×512 | `img/icon-512.png` |
 | Gráfico destacado 1024×500 | `marketing/play/grafico-destacado.png` |
-| Capturas de teléfono 1080×1920 | `marketing/play/1-inicio.png` … `8-experimento.png` (portada, Japón, pensadora, debate, avatar, ágora en Persia, escuchar juntos y el dilema del tranvía) |
+| Capturas de teléfono 1080×1920 | `marketing/play/1-inicio.png` … `8-experimento.png` (portada, Japón, pensadora, debate, frase célebre, ágora en Persia, salto a un orbe y el dilema del tranvía) |
 | Política de privacidad (URL pública) | https://filosofiaparasereshumanos-ux.github.io/sofos-gpu/juego-filosofia/privacidad.html |
 
 ## Pasos (unos 30 minutos)
@@ -77,11 +77,14 @@ Debate con 203 filósofas y filósofos en 33 épocas, de Sumer a hoy.
 **Completa:**
 Odisea de la Razón es un viaje en 3D por la historia del pensamiento. Camina por la
 Atenas de Sócrates, la Persia de Zaratustra, la Bagdad de la Casa de la Sabiduría, la
-Tenochtitlan de los poetas nahuas o el Japón del zen, y debate con 107 pensadoras y
+Tenochtitlan de los poetas nahuas o el Japón del zen, y debate con 203 pensadoras y
 pensadores: Hipatia, Sor Juana, Confucio, Avicena, Simone de Beauvoir, Paulo Freire,
 Marie Curie y muchos más.
 
-• Escucha sus lecciones narradas y descubre lugares, libros y personajes de cada época.
+• Escucha sus lecciones narradas e ilustradas y descubre lugares, libros y personajes de cada época.
+• Colecciona más de 460 frases célebres, dichas con la voz de cada pensador, y compártelas como tarjeta.
+• Salta para alcanzar las preguntas escondidas en lo alto y caza la estrella dorada de cada mundo.
+• Cuatro canciones originales en cada uno de los 33 mundos.
 • Vence en debates de preguntas y en 41 diálogos socráticos: toma postura, da razones y aprende a detectar falacias.
 • Vive 11 experimentos filosóficos: la caverna de Platón, el tranvía, la habitación china, la máquina de experiencias…
 • Vota en la pregunta del día de cada época y descubre cuántos viajeros piensan como tú.
