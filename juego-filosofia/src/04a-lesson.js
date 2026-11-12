@@ -11,16 +11,23 @@ const Lesson = {
   open(data, sage) {
     this.book = null; this.data = data; this.parts = LESSONS[data.id] || [];
     this.begin(sage ? 'world' : 'menu', sage);
+    this.art(data.id);
     setMedal($('#ls-medal'), data.id, data.short[0]); $('#ls-name').textContent = 'Lección de ' + data.short; $('#ls-meta').textContent = `${data.epithet} · ${data.dates}`;
     this.show();
   },
   // abre un libro (BOOKS) para estudiarlo, junto a su atril o desde la biblioteca del códice
   openBook(b, inWorld) {
+    this.art(null);
     this.book = b; this.data = { id: b.author, short: b.by };
     this.parts = [...b.parts.map(bookPartText), 'Una cita para recordar. ' + b.quote];
     this.begin(inWorld ? 'world' : 'menu', null);
     setMedal($('#ls-medal'), 'b-' + b.id, '❦'); $('#ls-medal').classList.toggle('cover', !!(typeof SPRITES !== 'undefined' && SPRITES['b-' + b.id])); $('#ls-name').textContent = b.title; $('#ls-meta').textContent = `${b.by} · ${b.year} · ${b.kind}`;
     this.show();
+  },
+  // ilustración de un momento de su vida (img/esc-<id>.jpg), si la tiene
+  art(id) {
+    const box = $('#ls-art'); const on = !!(id && typeof ESC_ART !== 'undefined' && ESC_ART.has(id)); box.hidden = !on;
+    if (on) box.firstElementChild.style.backgroundImage = `url(img/esc-${id}.jpg)`;
   },
   begin(from, sage) {
     this.sage = sage || null; this.i = 0; this.s = 0; this.from = from; this.prevState = G.state; this.done = false;
