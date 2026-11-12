@@ -17,14 +17,14 @@ const Lesson = {
   },
   // abre un libro (BOOKS) para estudiarlo, junto a su atril o desde la biblioteca del códice
   openBook(b, inWorld) {
-    this.art(null);
+    this.art('b-' + b.id);
     this.book = b; this.data = { id: b.author, short: b.by };
     this.parts = [...b.parts.map(bookPartText), 'Una cita para recordar. ' + b.quote];
     this.begin(inWorld ? 'world' : 'menu', null);
     setMedal($('#ls-medal'), 'b-' + b.id, '❦'); $('#ls-medal').classList.toggle('cover', !!(typeof SPRITES !== 'undefined' && SPRITES['b-' + b.id])); $('#ls-name').textContent = b.title; $('#ls-meta').textContent = `${b.by} · ${b.year} · ${b.kind}`;
     this.show();
   },
-  // ilustración de un momento de su vida (img/esc-<id>.jpg), si la tiene
+  // ilustración de un momento de su vida o de una escena del libro (img/esc-<id>.jpg, img/esc-b-<libro>.jpg), si la tiene
   art(id) {
     const box = $('#ls-art'); const on = !!(id && typeof ESC_ART !== 'undefined' && ESC_ART.has(id)); box.hidden = !on;
     if (on) box.firstElementChild.style.backgroundImage = `url(img/esc-${id}.jpg)`;
