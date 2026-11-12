@@ -238,6 +238,12 @@ function texBooks(seed) {
 function labelTexture(title, sub, color = '#f3e6c4') {
   const c = document.createElement('canvas'); c.width = 1024; c.height = 256; const ctx = c.getContext('2d');
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  // placa oscura detrás del texto, para que se lea también con mucha luz
+  ctx.font = '600 92px "Marcellus SC", "Marcellus", Georgia, serif'; const w1 = ctx.measureText(title.toUpperCase()).width;
+  ctx.font = 'italic 54px "EB Garamond", Georgia, serif'; const w2 = sub ? ctx.measureText(sub).width : 0;
+  const pw = Math.min(1010, Math.max(w1, w2) + 70), ph = sub ? 222 : 130, px = 512 - pw / 2, py = sub ? 22 : 36;
+  ctx.fillStyle = 'rgba(12,10,16,0.62)'; ctx.strokeStyle = 'rgba(214,168,74,0.75)'; ctx.lineWidth = 4;
+  ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(px, py, pw, ph, 40); else ctx.rect(px, py, pw, ph); ctx.fill(); ctx.stroke();
   ctx.shadowColor = 'rgba(0,0,0,0.9)'; ctx.shadowBlur = 18;
   ctx.fillStyle = color; ctx.font = '600 92px "Marcellus SC", "Marcellus", Georgia, serif';
   ctx.fillText(title.toUpperCase(), 512, 100);

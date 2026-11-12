@@ -1999,6 +1999,7 @@ function buildWorld(idx) {
   if (typeof buildCave === 'function' && idx === CAVE_ERA) buildCave(W);
   if (typeof buildZones === 'function') buildZones(W);
   if (typeof Agora !== 'undefined') { try { Agora.build(W); } catch (e) { console.warn('ágora', e); } }
+  try { Orbes.build(W); } catch (e) { console.warn('orbes', e); }
 
   buildPortal(W);
   // puntos de aparición de enemigos
@@ -2311,9 +2312,34 @@ function buildProp(W, kind, st, off) {
       break;
     }
     case 'barrel': {
-      const jar = add(mesh(new THREE.LatheGeometry([[0, 0], [0.6, 0.05], [1.3, 0.6], [1.45, 1.4], [1.2, 2.2], [0.75, 2.6], [0.8, 2.8]].map((p) => new THREE.Vector2(p[0], p[1])), 24), std(0xa0583a, { roughness: 0.9, side: THREE.DoubleSide }), 0, 1.3, 0));
-      const sg = st.side; jar.rotation.z = sg * Math.PI / 2; jar.position.set(sg * 2.0, 1.35, 0);
-      col(1.6); break;
+      // Diógenes vive dentro de su tinaja: una gran tinaja de barro tumbada, con la boca hacia el camino.
+      // Él asoma en la boca; detrás, su manta, su lámpara, su cuenco y su perro.
+      const sg = st.side; g.position.set(0, 0, 0);
+      const clay = std(0xa8603a, { roughness: 0.92, side: THREE.DoubleSide }); const clayIn = std(0x4a2414, { roughness: 1, side: THREE.BackSide });
+      const prof = [[0.05, 0], [1.0, 0.1], [1.85, 0.9], [2.05, 2.1], [1.85, 3.1], [1.55, 3.55], [1.62, 3.7], [1.5, 3.75]].map((p) => new THREE.Vector2(p[0], p[1]));
+      const jar = new THREE.Group(); jar.position.set(sg * 3.55, 1.95, 0.15); jar.rotation.z = sg * Math.PI / 2; g.add(jar);
+      jar.add(mesh(new THREE.LatheGeometry(prof, 32), clay, 0, 0, 0)); jar.add(mesh(new THREE.LatheGeometry(prof.map((v) => new THREE.Vector2(v.x * 0.94, v.y)), 32), clayIn, 0, 0, 0, false, false));
+      for (const y of [1.2, 2.6]) jar.add(withRot(mesh(new THREE.TorusGeometry(2.0, 0.05, 6, 40), std(0x6a3a22, { roughness: 1 }), 0, y, 0, false, false), 'x', Math.PI / 2));
+      // grietas pintadas y un remiendo de cuerda
+      jar.add(withRot(mesh(new THREE.TorusGeometry(1.62, 0.07, 6, 32), std(0x8a7a5a, { roughness: 1 }), 0, 3.62, 0, false, false), 'x', Math.PI / 2));
+      // cuñas de piedra para que no ruede
+      for (const dz of [-1.5, 1.5]) add(mesh(new THREE.DodecahedronGeometry(0.42, 0), stone, sg * 2.6, 0.25, dz + 0.15));
+      // manta de paja en el suelo de la boca, cuenco y lámpara encendida
+      const mat = add(mesh(new THREE.PlaneGeometry(2.2, 1.6), std(0xc8a860, { roughness: 1, side: THREE.DoubleSide }), sg * 0.2, 0.03, 0.15, false, true)); mat.rotation.x = -Math.PI / 2;
+      add(mesh(new THREE.SphereGeometry(0.22, 12, 8, 0, TAU, 0, Math.PI / 2), clay, -sg * 0.9, 0.02, 1.4)).rotation.x = Math.PI;
+      const lamp = add(mesh(new THREE.SphereGeometry(0.16, 10, 8), clay, -sg * 1.1, 0.14, -1.3)); lamp.scale.set(1.5, 0.6, 1);
+      const flame = add(mesh(new THREE.SphereGeometry(0.07, 8, 6), glow(0xffb040, 5), -sg * 1.3, 0.3, -1.3, false, false));
+      W.anim.push((t) => { flame.scale.setScalar(1 + Math.sin(t * 11) * 0.18); });
+      // su perro, dormido junto a la tinaja (le llamaban «el Perro»)
+      const dog = new THREE.Group(); dog.position.set(-sg * 1.7, 0, 0.9); dog.rotation.y = sg * 0.6; g.add(dog);
+      const fur = std(0x8a6a44, { roughness: 1 });
+      dog.add(withRot(mesh(new THREE.CapsuleGeometry(0.28, 0.7, 4, 10), fur, 0, 0.3, 0), 'z', Math.PI / 2));
+      const head = mesh(new THREE.SphereGeometry(0.22, 10, 8), fur, 0.62, 0.3, 0.1); dog.add(head);
+      dog.add(mesh(new THREE.ConeGeometry(0.1, 0.22, 6), fur, 0.62, 0.52, 0.18)); dog.add(mesh(new THREE.ConeGeometry(0.1, 0.22, 6), fur, 0.62, 0.52, -0.0));
+      dog.add(withRot(mesh(new THREE.CylinderGeometry(0.07, 0.03, 0.5, 6), fur, -0.62, 0.32, 0, false, false), 'z', 1.2));
+      W.anim.push((t) => { head.position.y = 0.3 + Math.sin(t * 1.6) * 0.015; dog.children[0].scale.y = 1 + Math.sin(t * 1.6) * 0.03; });
+      W.colliders.push({ t: 1, x: st.pos.x + sg * 3.6, z: st.pos.z + 0.15, r: 2.0, h: 4 }, { t: 1, x: st.pos.x - sg * 1.7, z: st.pos.z + 0.9, r: 0.5, h: 0.8 });
+      break;
     }
     case 'garden': {
       for (const [dx, dz] of [[0, -2], [0.6, 2], [1.4, 0]]) { const c = cypress(3.2); c.position.set(dx * st.side, 0, dz); c.scale.setScalar(0.7); g.add(c); }
