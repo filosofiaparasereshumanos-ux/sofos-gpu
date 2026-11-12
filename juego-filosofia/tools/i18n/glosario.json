@@ -334,5 +334,13 @@
 [
 "(?<![A-Za-zÀ-ÿ])Academia de Platón(?![A-Za-zÀ-ÿ])",
 "Plato's Academy"
+],
+[
+"(?<![A-Za-zÀ-ÿ])[Nn]ext development (zone|area)(?![A-Za-zÀ-ÿ])",
+"zone of proximal development"
+],
+[
+"(?<![A-Za-zÀ-ÿ])[Nn]ear development (zone|area)(?![A-Za-zÀ-ÿ])",
+"Zone of proximal development"
 ]
 ]
