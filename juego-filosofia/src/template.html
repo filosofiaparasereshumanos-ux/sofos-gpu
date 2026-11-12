@@ -877,6 +877,34 @@ body.touch .gm.boss { width: 30px; height: 30px; }
   .stat .v { font-size: 1.05rem; }
   #path { top: calc(128px + var(--sat)); }
 }
+/* ---------- debates más vivos ---------- */
+#d-rope { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; margin: 2px 0 8px; font-family: var(--display); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: #f3e6c4; }
+#d-rope .rp-track { position: relative; height: 8px; border-radius: 6px; background: linear-gradient(90deg, rgba(92,196,154,0.55), rgba(255,255,255,0.08) 50%, rgba(214,92,92,0.5)); box-shadow: inset 0 1px 3px rgba(0,0,0,0.6); }
+#d-rope .rp-mid { position: absolute; left: 50%; top: -4px; bottom: -4px; width: 2px; background: rgba(255,233,176,0.5); }
+#d-knot { position: absolute; top: 50%; left: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff3c4, #d8a640 60%, #7a5418); box-shadow: 0 0 12px rgba(255,211,106,0.7); transition: left .7s cubic-bezier(.3,1.6,.5,1); }
+#d-rope.win #d-knot { box-shadow: 0 0 20px rgba(92,240,170,0.95); animation: knotPulse .9s ease-in-out infinite; }
+#d-rope.lose #d-knot { box-shadow: 0 0 18px rgba(255,90,90,0.9); }
+#d-rope .rp-you { color: #8ff0c4; } #d-rope .rp-them { color: #ffb0a0; max-width: 10ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@keyframes knotPulse { 50% { transform: scale(1.18); } }
+#d-cards { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 8px 0 10px; }
+#d-cards .argc { font-family: var(--display); font-size: 0.74rem; letter-spacing: 0.06em; padding: 6px 11px; border-radius: 999px; border: 1px solid rgba(216,178,90,0.45); background: rgba(216,178,90,0.08); color: #f3e6c4; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+#d-cards .argc .ai { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: rgba(216,178,90,0.3); font-size: 0.7rem; }
+#d-cards .argc.on { background: linear-gradient(180deg, #ffe9a8, #e2b04e); color: #1a1206; border-color: #ffe9a8; box-shadow: 0 0 12px rgba(226,176,78,0.6); }
+#d-cards .argc.weak:not(.on) { border-color: rgba(92,240,170,0.8); } #d-cards .argc.weak::after { content: '▲'; color: #5cf0aa; font-size: 0.6rem; }
+#d-cards .argc.strong:not(.on) { border-color: rgba(255,120,110,0.7); opacity: 0.8; } #d-cards .argc.strong::after { content: '▼'; color: #ff8070; font-size: 0.6rem; }
+#d-cards .argc:disabled { opacity: 0.45; cursor: default; }
+#d-cards small { flex-basis: 100%; color: rgba(243,230,196,0.7); font-size: 0.8rem; font-style: italic; }
+.d-quote { color: #ffe3a3; font-style: italic; } .d-ally { color: #8fe9ff; }
+#d-rival { display: inline-block; margin-top: 4px; padding: 2px 8px; border-radius: 999px; font-family: var(--display); font-size: 0.68rem; letter-spacing: 0.1em; background: rgba(214,92,92,0.25); border: 1px solid rgba(255,120,110,0.6); color: #ffc2b8; }
+#d-bet { margin: 6px 0 10px; padding: 12px 14px; border: 1px solid rgba(255,211,106,0.7); border-radius: 10px; background: linear-gradient(180deg, rgba(90,64,16,0.55), rgba(40,28,8,0.6)); box-shadow: 0 0 24px rgba(226,176,78,0.35); }
+#d-bet p { margin: 0 0 10px; } #d-bet div { display: flex; gap: 10px; flex-wrap: wrap; }
+#d-bet:not([hidden]) ~ #d-answers { visibility: hidden; }
+#duel.allin .duel-card { box-shadow: 0 0 0 2px rgba(255,211,106,0.85), 0 0 50px rgba(226,176,78,0.45); }
+#d-crit { position: absolute; left: 50%; top: 28%; transform: translate(-50%, -50%) scale(0.4); opacity: 0; pointer-events: none; z-index: 30; font-family: var(--display); font-size: clamp(2.2rem, 7vw, 4.4rem); letter-spacing: 0.08em; text-transform: uppercase; color: #fff3c4; text-shadow: 0 0 18px #ffb52e, 0 0 50px #ff8a00, 0 4px 0 #6a3d00; white-space: nowrap; }
+#d-crit.on { animation: critIn 1.4s cubic-bezier(.2,1.6,.4,1) forwards; }
+@keyframes critIn { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.4) rotate(-6deg); } 18% { opacity: 1; transform: translate(-50%, -50%) scale(1.15) rotate(-3deg); } 70% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(-3deg); } 100% { opacity: 0; transform: translate(-50%, -60%) scale(1.05) rotate(-3deg); } }
+#duel.oracle #d-rope, #duel.oracle #d-cards, #duel.oracle #d-bet, #duel.oracle #d-rival { display: none !important; }
+@media (max-height: 520px) { #d-cards small { display: none; } #d-cards { margin: 4px 0 6px; } #d-rope { margin: 0 0 4px; } }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }

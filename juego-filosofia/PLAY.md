@@ -86,6 +86,7 @@ Marie Curie y muchos más.
 • Salta para alcanzar las preguntas escondidas en lo alto y caza la estrella dorada de cada mundo.
 • Cuatro canciones originales en cada uno de los 33 mundos.
 • Vence en debates de preguntas y en 41 diálogos socráticos: toma postura, da razones y aprende a detectar falacias.
+• Debates con emoción: el pensador te replica con su voz, tira y afloja de persuasión, golpes críticos, aliados, apuesta final a todo o nada, dilemas sin respuesta correcta y revanchas.
 • Vive 11 experimentos filosóficos: la caverna de Platón, el tranvía, la habitación china, la máquina de experiencias…
 • Vota en la pregunta del día de cada época y descubre cuántos viajeros piensan como tú.
 • Comparte tu perfil filosófico («Pienso como Descartes») y sácate fotos con los pensadores.
