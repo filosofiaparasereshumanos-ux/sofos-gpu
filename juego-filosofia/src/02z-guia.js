@@ -58,9 +58,15 @@ const GUIDE_LINES = [
     'Solón, Cicerón, Bartolomé de las Casas, Montesquieu, Gandhi, Martin Luther King y John Rawls te esperan. Al final tendrás que imaginar una sociedad sin saber qué lugar ocuparás en ella.'],
   ['Bienvenido a la montaña de los místicos. Respira despacio: aquí los sabios no buscaron la verdad en las estrellas, sino dentro de sí mismos.',
     'Bodhidharma, Huineng, Milarepa, Kabir, Mirabai, Ramana Maharshi y Shankara te esperan. No te darán respuestas fáciles: te darán preguntas para mirar hacia adentro.'],
+  ['Bienvenido a la escuela de la mente. Aquí se reúnen quienes estudiaron cómo aprendemos, cómo pensamos y qué soñamos.',
+    'Comenio, Pestalozzi, Maria Montessori, Freud, Piaget, Vygotsky y William James te esperan. En esta escuela, las preguntas valen más que las respuestas.'],
+  ['Bienvenido al bosque de la Tierra. Respira: estos árboles tienen cientos de años. Aquí se aprende a ser parte de la naturaleza, no su dueño.',
+    'Humboldt, Aldo Leopold, Rachel Carson, Chico Mendes, Arne Næss, Berta Cáceres y James Lovelock te esperan. Algunos dieron la vida por un bosque o un río.'],
+  ['Bienvenido a la torre de los números. Las matemáticas no son solo cuentas: son un idioma para entender el mundo y una forma de belleza.',
+    'Euclides, Fibonacci, Boole, Ramanujan, Emmy Noether, Gödel y Alan Turing te esperan. En lo alto de la torre te preguntarán si una máquina puede pensar.'],
 ];
 // dónde espera en cada época (junto al punto de llegada, en z = 31)
-const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5], 17: [2.8, 24.5], 18: [2.8, 24.5], 19: [2.8, 24.5], 20: [2.8, 24.5], 21: [2.8, 24.5], 22: [2.8, 26.5], 23: [2.8, 26.5], 24: [2.8, 26.5], 25: [2.8, 26.5], 26: [2.8, 26.5] };
+const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5], 17: [2.8, 24.5], 18: [2.8, 24.5], 19: [2.8, 24.5], 20: [2.8, 24.5], 21: [2.8, 24.5], 22: [2.8, 26.5], 23: [2.8, 26.5], 24: [2.8, 26.5], 25: [2.8, 26.5], 26: [2.8, 26.5], 27: [2.8, 26.5], 28: [2.8, 26.5], 29: [2.8, 26.5] };
 GUIDE_LINES.forEach((lines, i) => {
   if (!NPCS[i]) NPCS[i] = [];
   NPCS[i].unshift({ id: i === 0 ? 'guia' : 'guia-' + ERAS[i].id, name: 'El guía', role: 'Filosofía para Seres Humanos', portrait: 'guia', greeter: true,

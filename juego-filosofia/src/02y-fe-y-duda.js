@@ -460,3 +460,284 @@
     );
   } catch (e) { /* herramientas sin debates */ }
 }
+
+// ============================================================================
+//  XXVIII · LA ESCUELA DE LA MENTE, XXIX · EL BOSQUE DE LA TIERRA y
+//  XXX · LA TORRE DE LOS NÚMEROS: lugares, ciudadanos, encargos, anécdotas y libros
+// ============================================================================
+{
+  const PP = [[-17, 30], [17, 24], [17, 6], [-17, -2], [6, -40]];
+  const BB = [[16, -12], [-16, 16]];
+  const poi = (i, id, name, text, fact, q) => ({ id, at: PP[i], name, text, fact, q });
+  const book = (b, i) => ({ ...b, at: BB[i] });
+
+  // ---------------------------------------------------------------- XXVIII · La escuela de la mente
+  POIS.push([
+    poi(0, 'orbis-pictus', 'El mundo en imágenes', 'En 1658 se publicó en Núremberg el «Orbis sensualium pictus», de Comenio: el mundo de las cosas sensibles en imágenes. Cada página tenía un grabado, con objetos numerados, y debajo sus nombres en latín y en alemán. Por primera vez muchos niños aprendían mirando dibujos y no solo repitiendo palabras.',
+      'Empieza con un maestro que invita a un niño: «Ven, muchacho, aprende a ser sabio». Fue traducido a muchas lenguas y usado en las escuelas durante casi dos siglos.',
+      { q: '¿Qué tenía de nuevo el Orbis pictus de Comenio?', a: ['Cada palabra iba acompañada de un dibujo', 'No tenía palabras', 'Estaba escrito en clave', 'Era un mapa de estrellas'], e: 'Uno de los primeros libros ilustrados para niños.' }),
+    poi(1, 'stans', 'El orfanato de Stans', 'En 1798 la guerra arrasó el pueblo de Stans, en Suiza, y dejó decenas de niños huérfanos. Pestalozzi, ya con más de cincuenta años, se hizo cargo de ellos en un convento vacío, sin ayudantes. Los niños llegaban sucios, enfermos y desconfiados. Él les enseñaba a leer, a contar y a trabajar, y sobre todo a cuidarse entre ellos.',
+      'Cuando un pueblo vecino se incendió, los niños de Stans, que no tenían nada, pidieron recibir a otros huérfanos y compartir con ellos su pan.',
+      { q: '¿Qué pidieron los huérfanos de Stans cuando se incendió un pueblo vecino?', a: ['Recibir a otros huérfanos y compartir su pan', 'Irse de vacaciones', 'Más juguetes', 'Nada'], e: 'Habían aprendido a cuidarse entre ellos.' }),
+    poi(2, 'casa-bambini', 'La Casa de los Niños', 'El 6 de enero de 1907, en el barrio pobre de San Lorenzo, en Roma, Maria Montessori abrió la primera «Casa dei Bambini» para unos cincuenta niños pequeños que pasaban el día solos mientras sus padres trabajaban. Puso mesas y sillas ligeras de su tamaño, estantes bajos y materiales para tocar. Los niños, que al principio lloraban y peleaban, empezaron a concentrarse y a trabajar con calma.',
+      'Montessori observó que un niña de tres años repitió más de cuarenta veces un ejercicio de encajar cilindros, sin distraerse, y salió de él feliz y descansada.',
+      { q: '¿Cómo eran los muebles de la Casa de los Niños?', a: ['Ligeros y del tamaño de los niños', 'Enormes y pesados', 'De hierro', 'No había muebles'], e: 'Para que los niños pudieran moverlos solos.' }),
+    poi(3, 'divan', 'El diván de Berggasse 19', 'Durante casi cincuenta años, Freud recibió a sus pacientes en su consulta de la calle Berggasse, número 19, en Viena. Los pacientes se recostaban en un diván cubierto con una alfombra persa, y Freud se sentaba detrás, donde no lo veían, para que hablaran con libertad. La sala estaba llena de estatuillas antiguas de Egipto, Grecia y Roma, que él coleccionaba.',
+      'El diván viajó con Freud cuando huyó a Londres en 1938, y hoy se puede ver en su casa museo de esa ciudad.',
+      { q: '¿Dónde se sentaba Freud mientras su paciente hablaba en el diván?', a: ['Detrás, donde el paciente no lo veía', 'Encima del diván', 'En otra ciudad', 'En el techo'], e: 'Para que hablaran con libertad.' }),
+    poi(4, 'vasos-piaget', 'El experimento de los vasos', 'Pon la misma cantidad de agua en dos vasos iguales. Luego vacía uno en un vaso alto y delgado. Pregúntale a un niño de cuatro años si hay más agua, menos o igual: casi siempre dirá que hay más en el vaso alto. Un niño de siete u ocho años dirá que es igual, «porque no añadiste ni quitaste nada». Piaget llamó a esto «conservación».',
+      'Piaget hacía experimentos parecidos con bolitas de plastilina, filas de monedas y palitos. Le interesaba menos si el niño acertaba que cómo razonaba.',
+      { q: '¿Qué suele responder un niño de cuatro años en el experimento de los vasos?', a: ['Que hay más agua en el vaso alto', 'Que es igual', 'Que no hay agua', 'Que hay menos en el alto'], e: 'Todavía no comprende la conservación.' }),
+  ]);
+  NPCS.push([
+    wnpc(0, 'alumna', 'Inés', 'alumna curiosa', sk(0x4a6a9a, 0xe8e8e8, 0xf0d0b0, 0x5a3a2a, { hat: 'braids', acc: 'book' }), [
+      'Antes odiaba la escuela: todo era copiar y callar. Ahora tengo una maestra que me deja preguntar. ¡Hago tantas preguntas que se ríe!',
+      'Ayer no entendía las fracciones. Mi compañero me las explicó con una pizza dibujada, y de pronto lo vi. A veces un amigo explica mejor que un libro.',
+      'Cuando sea grande quiero ser maestra. O astronauta. O las dos cosas: maestra en el espacio.',
+    ], true),
+    wnpc(1, 'maestro', 'Tomás', 'maestro de escuela rural', sk(0x6a5a4a, 0x3a3a3a, 0xe0c0a0, 0x4a3a2a, { hat: 'none', acc: 'book' }), [
+      'Tengo niños de seis a doce años en la misma sala. Los mayores ayudan a los pequeños: así aprenden dos veces.',
+      'Antes creía que enseñar era hablar mucho. Ahora creo que enseñar es preguntar bien y escuchar mucho.',
+      'Un día un niño me corrigió un error en la pizarra. Le di las gracias delante de todos. Ese día aprendieron más que con cualquier lección.',
+    ]),
+    wnpc(2, 'abuela', 'Carmen', 'abuela cuentacuentos', sk(0x8a3a4a, 0x3a2a2a, 0xe0b090, 0xe8e8e8, { hat: 'hood', acc: 'staff' }), [
+      'Yo no fui a la escuela, pero mi abuela me contaba cuentos cada noche. Con ellos aprendí más palabras de las que puedo contar.',
+      'A mis nietos les cuento los mismos cuentos. Siempre me piden el mismo, una y otra vez. Los niños aprenden repitiendo lo que aman.',
+      'Los sueños también son cuentos que nos contamos de noche. Mi madre decía que hay que escucharlos, aunque no se entiendan.',
+    ], true),
+  ]);
+  Object.assign(QUESTS, {
+    comenio: { text: 'Visita el mundo en imágenes y escucha a Tomás, el maestro rural. Luego dime qué propuse en la Didáctica magna.', needs: { pois: ['orbis-pictus'], npcs: ['maestro'] },
+      riddle: { q: '¿Qué propuso Comenio?', a: ['Enseñar todo a todos', 'Enseñar solo a los nobles', 'Cerrar las escuelas', 'Enseñar solo latín'] } },
+    pestalozzi: { text: 'Visita el orfanato de Stans. Luego dime qué tres partes de la persona hay que educar.', needs: { pois: ['stans'], npcs: [] },
+      riddle: { q: '¿Qué hay que educar según Pestalozzi?', a: ['La cabeza, el corazón y las manos', 'Solo la memoria', 'Solo los músculos', 'Nada'] } },
+    montessori: { text: 'Visita la Casa de los Niños y escucha a Inés, la alumna curiosa. Luego dime cuál es el lema de mis escuelas.', needs: { pois: ['casa-bambini'], npcs: ['alumna'] },
+      riddle: { q: '¿Cuál es el lema Montessori?', a: ['Ayúdame a hacerlo por mí mismo', 'Obedece y calla', 'Copia diez veces', 'No toques nada'] } },
+    freud: { text: 'Visita mi diván de Viena y escucha a Carmen, la abuela cuentacuentos. Luego dime qué son los sueños, según yo.', needs: { pois: ['divan'], npcs: ['abuela'] },
+      riddle: { q: '¿Qué son los sueños para Freud?', a: ['El camino real hacia el inconsciente', 'Ruido sin sentido', 'Mensajes de otros planetas', 'Nada'] } },
+    piaget: { text: 'Prueba el experimento de los vasos. Luego dime cómo se construye la inteligencia del niño.', needs: { pois: ['vasos-piaget'], npcs: [] },
+      riddle: { q: '¿Cómo se construye la inteligencia según Piaget?', a: ['Por etapas', 'De golpe, al nacer', 'Solo con castigos', 'No se construye'] } },
+    vygotsky: { text: 'Escucha a Inés, la alumna, y a Tomás, el maestro. Luego dime cómo llamé al espacio donde se aprende con ayuda.', needs: { pois: [], npcs: ['alumna', 'maestro'] },
+      riddle: { q: '¿Cómo se llama ese espacio?', a: ['Zona de desarrollo próximo', 'Zona de recreo', 'Zona prohibida', 'Zona de silencio'] } },
+  });
+  Object.assign(ANECDOTES, {
+    comenio: ['Me ofrecieron organizar las escuelas de Suecia, de Inglaterra e incluso, según una vieja historia, me invitaron a dirigir la universidad de Harvard en América. Pero mi lugar estaba con mi pueblo en el exilio.', 'Inventé un juego de teatro escolar para enseñar latín: los alumnos representaban escenas en lugar de memorizar listas. Los padres venían a verlos como a una función.'],
+    pestalozzi: ['Era tan desordenado con mi ropa que una vez llegué a una reunión con los zapatos atados con paja. Los niños se reían, y yo con ellos.', 'Un joven alemán, Friedrich Fröbel, pasó dos años conmigo en Yverdon. Después inventó el jardín de infancia, el «kindergarten».'],
+    montessori: ['Cuando estudiaba medicina, los compañeros no me dejaban entrar a la sala de disección con ellos. Tenía que hacer mis prácticas sola, de noche, entre los cadáveres.', 'Fui propuesta tres veces para el Premio Nobel de la Paz. Pensaba que educar bien a los niños era la manera más segura de construir la paz.'],
+    freud: ['Fumaba muchos puros al día; decía que lo ayudaban a pensar. Alguien me preguntó si eso tenía un significado oculto, y dicen que respondí: «A veces un puro es solo un puro».', 'Cuando los nazis quemaron mis libros, comenté: «En la Edad Media me habrían quemado a mí; ahora se conforman con quemar mis libros». No sabía lo que vendría después.'],
+    piaget: ['Iba a todas partes en bicicleta, con boina y pipa, y pasaba los veranos escribiendo en una granja de los Alpes rodeado de papeles.', 'Jugaba a las canicas con niños de Ginebra para estudiar cómo entendían las reglas. Los pequeños creían que las reglas eran eternas; los mayores sabían que se pueden cambiar si todos están de acuerdo.'],
+    vygotsky: ['De joven, como era judío, solo podía entrar a la universidad por una lotería. Gané. Mi madre me había dicho que esa suerte había que aprovecharla bien.', 'Escribía tan rápido y tanto que mis amigos decían que dormía con un lápiz en la mano. Sabía que tenía poco tiempo.'],
+    wjames: ['Mis alumnos recuerdan que daba clases paseando por el aula, haciendo bromas y a veces preguntándoles a ellos qué pensaban. Era raro en un profesor de Harvard de entonces.', 'Viajé a Brasil de joven en una expedición científica por el Amazonas. Me enfermé de viruela y casi me quedo ciego unos días. Ahí decidí que no sería naturalista.'],
+  });
+  BOOKS.push([
+    book({ id: 'orbis-pictus-libro', author: 'comenio', by: 'Comenio', title: 'Orbis sensualium pictus', year: '1658', kind: 'libro escolar ilustrado',
+      parts: [
+        { t: 'Ven, muchacho', x: 'El libro empieza con un maestro que invita a un niño a aprender. El niño pregunta qué significa ser sabio, y el maestro responde: entender rectamente, hacer rectamente y hablar rectamente.' },
+        { t: 'El mundo en ciento cincuenta imágenes', x: 'Hay grabados de todo: Dios, el cielo, el fuego, las plantas, los animales, el cuerpo, los oficios, la escuela, la ciudad. Cada objeto tiene un número, y debajo su nombre.' },
+        { t: 'Las cosas antes que las palabras', x: 'Para Comenio, hay que conocer primero las cosas, con los sentidos, y después sus nombres. Por eso el libro enseña mirando.' },
+        { t: 'Un libro que viajó', x: 'Fue traducido a muchas lenguas y se usó durante casi dos siglos. Goethe recordaba que de niño fue uno de sus libros favoritos.' },
+      ],
+      quote: 'Nada hay en el entendimiento que no haya estado antes en los sentidos.',
+      q: { q: '¿Qué debe conocerse primero según Comenio?', a: ['Las cosas, con los sentidos, y después sus nombres', 'Solo las palabras', 'Solo los números', 'Nada'], e: 'Por eso su libro tiene imágenes.' } }, 0),
+    book({ id: 'interpretacion-suenos', author: 'freud', by: 'Sigmund Freud', title: 'La interpretación de los sueños', year: '1899', kind: 'psicología',
+      parts: [
+        { t: 'Los sueños tienen sentido', x: 'Freud sostiene que los sueños no son ruido sin sentido: expresan, de forma disfrazada, deseos y preocupaciones que no reconocemos despiertos.' },
+        { t: 'El sueño de Irma', x: 'Analiza un sueño propio sobre una paciente llamada Irma, y descubre en él su deseo de no ser culpable de su enfermedad.' },
+        { t: 'El trabajo del sueño', x: 'El sueño condensa varias ideas en una imagen y desplaza lo importante a detalles pequeños. Por eso parece extraño.' },
+        { t: 'El camino real', x: 'Freud concluye que la interpretación de los sueños es el camino real hacia el conocimiento del inconsciente.' },
+      ],
+      quote: 'La interpretación de los sueños es el camino real hacia el conocimiento de lo inconsciente.',
+      q: { q: '¿Qué expresan los sueños, según Freud?', a: ['Deseos y preocupaciones disfrazados', 'Mensajes del futuro', 'Nada', 'Solo lo que comimos'], e: 'De forma condensada y desplazada.' } }, 1),
+  ]);
+  BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });
+
+  // ---------------------------------------------------------------- XXIX · El bosque de la Tierra
+  POIS.push([
+    poi(0, 'chimborazo', 'La subida al Chimborazo', 'El 23 de junio de 1802, Humboldt, Bonpland y algunos acompañantes intentaron subir el Chimborazo, en Ecuador. Sin equipo de montaña, con los pies heridos y mareados por la altura, llegaron a unos 5.900 metros, más alto que nadie hasta entonces que se supiera. Una grieta les cerró el paso. Allí arriba Humboldt entendió cómo la vida cambia con la altura.',
+      'Después dibujó su «Naturgemälde», un gran cuadro de la montaña con los nombres de las plantas escritos a la altura donde crecen.',
+      { q: '¿Qué entendió Humboldt en el Chimborazo?', a: ['Cómo la vida cambia con la altura', 'Que la montaña era de oro', 'Que no había plantas', 'Nada'], e: 'Lo dibujó en su Naturgemälde.' }),
+    poi(1, 'lobo', 'El fuego verde', 'En una montaña de Arizona, un joven guardabosques y sus compañeros vieron una manada de lobos cruzando un río. Dispararon. Cuando Aldo Leopold llegó junto a una vieja loba, vio morir en sus ojos un fuego verde y feroz. Años después escribió que en ese momento supo que había algo en esos ojos que solo la loba y la montaña conocían.',
+      'En el parque de Yellowstone, cuando en 1995 volvieron a soltarse lobos, los ciervos dejaron de comer las orillas de los ríos, crecieron árboles y volvieron castores y pájaros.',
+      { q: '¿Qué pasó en Yellowstone cuando volvieron los lobos en 1995?', a: ['Crecieron árboles en las orillas y volvieron castores y pájaros', 'Desaparecieron todos los árboles', 'Nada', 'Se secó el río'], e: 'Todo está conectado.' }),
+    poi(2, 'primavera-silenciosa', 'El pueblo sin pájaros', 'El libro de Rachel Carson empieza con una fábula: un pueblo en el que todo vivía en armonía, hasta que un polvo blanco cayó sobre los tejados y los campos. Las gallinas no tenían pollitos, los manzanos no daban fruta, y en primavera no cantaba ningún pájaro. «Nadie había hecho magia; la gente lo había hecho por sí misma.»',
+      'Carson aclaró que ese pueblo no existía, pero que cada una de esas desgracias ya había ocurrido en algún lugar real.',
+      { q: '¿Qué cae sobre el pueblo en la fábula de Rachel Carson?', a: ['Un polvo blanco: el pesticida', 'Nieve', 'Ceniza de un volcán', 'Harina'], e: 'Y los pájaros dejan de cantar.' }),
+    poi(3, 'seringal', 'El seringal de Xapuri', 'En la selva de Acre, en Brasil, los seringueiros recorren cada día senderos que unen cientos de árboles de caucho. Hacen cortes finos en la corteza y recogen la savia blanca, el látex, en pequeñas tazas, sin matar al árbol. Un árbol bien cuidado puede dar látex durante décadas. Allí vivió y luchó Chico Mendes.',
+      'Hoy, la Reserva Extractiva Chico Mendes protege casi un millón de hectáreas de selva donde las comunidades viven del caucho, las castañas y otros frutos.',
+      { q: '¿Cómo se extrae el látex del árbol de caucho?', a: ['Con cortes finos en la corteza, sin matar al árbol', 'Talando el árbol', 'Quemando el bosque', 'Con dinamita'], e: 'Un árbol puede dar látex durante décadas.' }),
+    poi(4, 'gualcarque', 'El río Gualcarque', 'El río Gualcarque baja por las montañas del occidente de Honduras, entre bosques de pinos, hasta el territorio lenca de Río Blanco. Para los lencas es sagrado: en sus aguas habitan los espíritus. Durante años, la comunidad acampó junto al río y bloqueó el camino de las máquinas que venían a construir una represa.',
+      'Después del asesinato de Berta Cáceres, varios bancos internacionales se retiraron del proyecto, y el río sigue corriendo libre.',
+      { q: '¿Por qué el río Gualcarque es especial para el pueblo lenca?', a: ['Porque es sagrado: en sus aguas habitan los espíritus', 'Porque tiene oro', 'Porque es el más largo del mundo', 'Por nada'], e: 'Lo defendieron con resistencia pacífica.' }),
+  ]);
+  NPCS.push([
+    wnpc(0, 'guardabosques', 'Ana', 'guardabosques', sk(0x4a5a3a, 0x3a3a2a, 0xe8c8a8, 0x8a5a3a, { hat: 'cap', acc: 'staff' }), [
+      'Conozco este bosque árbol por árbol. Ese roble tiene trescientos años: vio pasar a tus tatarabuelos.',
+      'Un bosque no es solo árboles: es hongos bajo tierra que conectan las raíces, pájaros que siembran semillas, insectos que deshacen las hojas. Si quitas una pieza, todo se tambalea.',
+      'Lo más difícil de mi trabajo no son los incendios: es convencer a la gente de no tirar basura. Llévate tu basura, y deja solo tus huellas.',
+    ], true),
+    wnpc(1, 'balsero', 'Julián', 'balsero del río', sk(0xe8e0d0, 0x5a7a9a, 0xa07050, 0x2a1a10, { hat: 'cap', acc: 'staff' }), [
+      'Mi abuelo pescaba aquí peces del tamaño de un brazo. Mi padre, del tamaño de una mano. Yo, cuando pesco, saco peces del tamaño de un dedo. Algo está pasando.',
+      'Cuando cortan el bosque de arriba, el río se llena de barro. Cuando lo dejan en paz, el agua vuelve a ser clara. El río sabe lo que pasa en la montaña.',
+      'Un río no es solo agua: es un camino, un mercado, una despensa y un cementerio de antepasados. Por eso lo cuidamos.',
+    ]),
+    wnpc(2, 'apicultora', 'Marta', 'apicultora', sk(0xe8d0a0, 0x8a6a2a, 0xf0d0b0, 0x5a3a2a, { hat: 'hood', acc: 'none' }), [
+      'Mis abejas visitan millones de flores para hacer un frasco de miel. Sin ellas, muchas frutas y verduras no existirían.',
+      'Algunos venenos para insectos confunden a las abejas: salen a buscar flores y no saben volver a la colmena. Rachel Carson ya lo había advertido.',
+      'Si quieres ayudar, planta flores sin venenos en tu ventana o tu patio. Para una abeja, un balcón con flores es un oasis.',
+    ], true),
+  ]);
+  Object.assign(QUESTS, {
+    humboldt: { text: 'Sube conmigo al Chimborazo y escucha a Ana, la guardabosques. Luego dime qué descubrí sobre la naturaleza.', needs: { pois: ['chimborazo'], npcs: ['guardabosques'] },
+      riddle: { q: '¿Qué descubrió Humboldt?', a: ['Que todo en la naturaleza está conectado', 'Que la naturaleza es una máquina', 'Que nada cambia', 'Que no hay plantas en los Andes'] } },
+    leopold: { text: 'Visita el lugar del fuego verde. Luego dime qué propuse en mi almanaque.', needs: { pois: ['lobo'], npcs: [] },
+      riddle: { q: '¿Qué propuso Aldo Leopold?', a: ['Una ética de la tierra', 'Cazar todos los lobos', 'Construir una ciudad', 'Vender el bosque'] } },
+    carson: { text: 'Visita el pueblo sin pájaros y escucha a Marta, la apicultora. Luego dime qué veneno denuncié.', needs: { pois: ['primavera-silenciosa'], npcs: ['apicultora'] },
+      riddle: { q: '¿Qué pesticida denunció Rachel Carson?', a: ['El DDT', 'La sal', 'El azúcar', 'El jabón'] } },
+    mendes: { text: 'Visita el seringal de Xapuri. Luego dime qué eran los empates.', needs: { pois: ['seringal'], npcs: [] },
+      riddle: { q: '¿Qué eran los empates?', a: ['Cadenas humanas pacíficas frente a las motosierras', 'Partidos de fútbol', 'Fiestas', 'Carreras'] } },
+    naess: { text: 'Escucha a Julián, el balsero, y a Ana, la guardabosques. Luego dime qué es la ecología profunda.', needs: { pois: [], npcs: ['balsero', 'guardabosques'] },
+      riddle: { q: '¿Qué es la ecología profunda?', a: ['Reconocer que todo ser vivo vale por sí mismo', 'Bucear en el mar', 'Cuidar solo lo útil', 'Estudiar volcanes'] } },
+    caceres: { text: 'Visita el río Gualcarque y escucha a Julián, el balsero. Luego dime por qué el río es sagrado para mi pueblo.', needs: { pois: ['gualcarque'], npcs: ['balsero'] },
+      riddle: { q: '¿Por qué el Gualcarque es sagrado para los lencas?', a: ['Porque en sus aguas habitan los espíritus', 'Porque tiene oro', 'Porque es muy largo', 'Por nada'] } },
+  });
+  Object.assign(ANECDOTES, {
+    humboldt: ['En mi casa de Berlín recibía tantas cartas, unas dos mil al año, que pensé en poner un anuncio en el periódico pidiendo que dejaran de escribirme. Las contestaba casi todas.', 'Simón Bolívar me conoció en París de joven. Años después escribió que yo había sido el verdadero descubridor de América, porque la había mostrado al mundo tal como era.'],
+    leopold: ['Todos los años anotaba en mi diario el primer día en que cantaban los gansos o florecían ciertas plantas. Hoy esos datos ayudan a estudiar el cambio del clima.', 'Escribí que hay dos peligros espirituales en no tener una granja: creer que el desayuno viene del supermercado y que el calor viene de la calefacción.'],
+    carson: ['Cuando era niña, encontré en el campo, lejos del mar, un fósil de concha. Me pregunté cómo había llegado allí, y empezó mi amor por el océano.', 'Cuando el presidente Kennedy leyó mi libro, pidió a sus científicos que estudiaran el tema. Confirmaron casi todo lo que yo había escrito.'],
+    mendes: ['En las noches de la selva, alrededor del fuego, enseñaba a leer a otros caucheros con los periódicos viejos que llegaban de la ciudad.', 'Recibí un premio de las Naciones Unidas en 1987. En mi pueblo, muchos no sabían quién era la ONU, pero sabían que yo defendía su bosque.'],
+    naess: ['A los setenta años todavía escalaba. Mis colegas de la universidad se acostumbraron a verme trepar por los marcos de las puertas y por las paredes de los edificios.', 'Me preguntaron cuál era mi filosofía en una sola palabra. Respondí: «Alegría». Cuidar la Tierra no tiene por qué ser triste.'],
+    caceres: ['Mi madre recibía en casa a refugiadas de las guerras de El Salvador. Desde niña aprendí que la solidaridad no es una idea, sino una puerta abierta.', 'En la ceremonia del Premio Goldman terminé mi discurso diciendo: «¡Despertemos, humanidad! Ya no hay tiempo». Muchos lo repiten todavía.'],
+    lovelock: ['Durante casi toda mi vida trabajé como científico independiente, en un laboratorio en mi casa de campo, sin depender de ninguna universidad. Decía que así nadie podía decirme qué pensar.', 'A los cien años todavía publicaba libros. El último trataba sobre la inteligencia artificial y el futuro de la vida en la Tierra.'],
+  });
+  BOOKS.push([
+    book({ id: 'primavera-silenciosa-libro', author: 'carson', by: 'Rachel Carson', title: 'Primavera silenciosa', year: '1962', kind: 'ciencia y ecología',
+      parts: [
+        { t: 'Una fábula para el mañana', x: 'El libro empieza con un pueblo imaginario donde, de pronto, los pájaros dejan de cantar. No es magia: es el veneno que la gente misma ha rociado.' },
+        { t: 'Elixires de muerte', x: 'Carson explica cómo los nuevos pesticidas, como el DDT, no desaparecen: se acumulan en el suelo, en el agua y en los tejidos de los animales.' },
+        { t: 'La cadena de la vida', x: 'El veneno pasa de los insectos a los peces y a los pájaros, cada vez más concentrado. Los huevos de las aves se vuelven frágiles y no nacen polluelos.' },
+        { t: 'El otro camino', x: 'Carson no pide prohibir toda química, sino usar con prudencia lo que no entendemos bien, y buscar soluciones que respeten la vida.' },
+      ],
+      quote: 'Cuanto más claramente podamos centrar nuestra atención en las maravillas del universo, menos gusto tendremos por la destrucción.',
+      q: { q: '¿Qué pasa con el veneno en la cadena de la vida, según Carson?', a: ['Se acumula y se concentra cada vez más', 'Desaparece enseguida', 'Se vuelve alimento', 'Nada'], e: 'De los insectos a los peces y los pájaros.' } }, 0),
+    book({ id: 'almanaque', author: 'leopold', by: 'Aldo Leopold', title: 'Almanaque del condado arenoso', year: '1949', kind: 'ensayo de naturaleza',
+      parts: [
+        { t: 'Mes a mes', x: 'La primera parte cuenta un año en la granja de Leopold: el regreso de los gansos en marzo, las flores de abril, la sequía del verano, la nieve de enero.' },
+        { t: 'El roble partido', x: 'Al cortar con sierra un viejo roble caído por un rayo, Leopold recorre sus anillos como si viajara hacia atrás en la historia del país.' },
+        { t: 'Pensar como una montaña', x: 'El ensayo de la loba y el fuego verde: la montaña sabe que sin lobos los ciervos la destruirán.' },
+        { t: 'La ética de la tierra', x: 'Al final propone ampliar nuestra comunidad moral al suelo, el agua, las plantas y los animales: la tierra no es una propiedad, sino una comunidad a la que pertenecemos.' },
+      ],
+      quote: 'Algo es correcto cuando tiende a preservar la integridad, la estabilidad y la belleza de la comunidad biótica.',
+      q: { q: '¿Qué es la tierra para Leopold?', a: ['Una comunidad a la que pertenecemos', 'Una mercancía', 'Un enemigo', 'Nada'], e: 'Su ética de la tierra.' } }, 1),
+  ]);
+  BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });
+
+  // ---------------------------------------------------------------- XXX · La torre de los números
+  POIS.push([
+    poi(0, 'postulados', 'Los cinco postulados', 'Euclides empezó su geometría con cinco postulados. Los cuatro primeros son muy sencillos: por dos puntos pasa una recta, una recta se puede prolongar, se puede trazar un círculo, todos los ángulos rectos son iguales. El quinto, el de las paralelas, es más largo y complicado. Durante dos mil años, muchos matemáticos intentaron demostrarlo a partir de los otros.',
+      'En el siglo XIX, Gauss, Lobachevski y Bolyai descubrieron que, si se cambia el quinto postulado, aparecen geometrías nuevas y coherentes. Einstein usó una de ellas para describir el universo.',
+      { q: '¿Qué pasó al cambiar el quinto postulado de Euclides?', a: ['Aparecieron geometrías nuevas y coherentes', 'Todo se volvió falso', 'Nada', 'Desapareció la geometría'], e: 'Las geometrías no euclidianas.' }),
+    poi(1, 'conejos', 'El problema de los conejos', 'En el Liber abaci, Fibonacci propone: una pareja de conejos se pone en un corral. Cada mes, cada pareja adulta tiene una nueva pareja, que empieza a reproducirse al segundo mes. ¿Cuántas parejas habrá al cabo de un año? Mes a mes salen 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233.',
+      'Si divides un número de la sucesión entre el anterior, el resultado se acerca a 1,618…, el número áureo, que muchos artistas han usado buscando proporciones armoniosas.',
+      { q: '¿A qué número se acerca la división de dos números seguidos de la sucesión de Fibonacci?', a: ['Al número áureo, 1,618…', 'A cero', 'A cien', 'A pi'], e: 'La proporción áurea.' }),
+    poi(2, 'taxi-1729', 'El taxi 1729', 'Un día, el matemático Hardy fue a visitar a Ramanujan, enfermo en un hospital de Londres. Le comentó que había llegado en un taxi con un número aburrido: 1729. Ramanujan respondió enseguida: «No, Hardy, es un número muy interesante: es el menor número que se puede escribir como suma de dos cubos de dos maneras distintas». En efecto: 1729 es 1 al cubo más 12 al cubo, y también 9 al cubo más 10 al cubo.',
+      'Desde entonces, a los números así se los llama «números taxicab». Hardy decía que cada número entero era un amigo personal de Ramanujan.',
+      { q: '¿Qué tiene de especial el número 1729?', a: ['Es el menor que es suma de dos cubos de dos maneras', 'Es el mayor número primo', 'Es el año de la Revolución Francesa', 'Nada'], e: '1³ + 12³ = 9³ + 10³.' }),
+    poi(3, 'puentes-konigsberg', 'Los siete puentes de Königsberg', 'La ciudad de Königsberg tenía un río con dos islas y siete puentes. Sus habitantes se preguntaban si era posible dar un paseo cruzando cada puente una sola vez. En 1736, el matemático Leonhard Euler demostró que no: dibujó las zonas de tierra como puntos y los puentes como líneas, y vio que el paseo es imposible cuando más de dos puntos tienen un número impar de líneas.',
+      'Así nació la teoría de grafos, que hoy usan los mapas de tu teléfono para buscar el mejor camino, y las redes sociales para saber quién conoce a quién.',
+      { q: '¿Qué rama de las matemáticas nació con el problema de los puentes?', a: ['La teoría de grafos', 'La aritmética', 'La trigonometría', 'La astrología'], e: 'Euler la inventó en 1736.' }),
+    poi(4, 'bletchley', 'Bletchley Park', 'En una mansión de la campiña inglesa, durante la Segunda Guerra Mundial, miles de personas trabajaron en secreto para descifrar los mensajes militares alemanes. Muchas eran mujeres, y había matemáticos, lingüistas, campeones de ajedrez y expertos en crucigramas. Turing y su equipo diseñaron máquinas electromecánicas, las «bombas», para encontrar las claves de la máquina Enigma, que cambiaban cada día.',
+      'Todo fue secreto durante treinta años. Muchas de las personas que trabajaron allí murieron sin poder contarle a su familia lo que habían hecho.',
+      { q: '¿Qué intentaban descifrar en Bletchley Park?', a: ['Los mensajes de la máquina Enigma', 'Jeroglíficos egipcios', 'Partituras de Bach', 'El idioma de los delfines'], e: 'Las claves cambiaban cada día.' }),
+  ]);
+  NPCS.push([
+    wnpc(0, 'contable', 'Lucas', 'contable de un mercader', sk(0x6a3a2a, 0x3a2a1a, 0xe0c0a0, 0x3a2a1a, { hat: 'cap', acc: 'book' }), [
+      'Antes hacía las cuentas con números romanos y un ábaco. Para multiplicar MCMXLVII por XXIII tardaba una tarde entera.',
+      'Con las cifras nuevas que trajo Fibonacci, y con el cero, lo hago en unos minutos. Al principio algunos gremios las prohibieron, por miedo a que fuera fácil falsificarlas.',
+      'El cero es un número muy extraño: no vale nada, pero a la derecha de otro lo multiplica por diez. Nada, que lo cambia todo.',
+    ]),
+    wnpc(1, 'descifradora', 'Joan', 'descifradora de Bletchley', sk(0x3a4a3a, 0x2a2a2a, 0xf4dcc8, 0x8a5a3a, { hat: 'longhair', acc: 'none' }), [
+      'Me contrataron porque gané un concurso de crucigramas del periódico. ¡Quién iba a pensar que los crucigramas ayudarían a ganar una guerra!',
+      'No podía decirle a nadie dónde trabajaba, ni siquiera a mis padres. Les decía que era secretaria.',
+      'Alan era tímido y un poco raro: encadenaba su taza de té al radiador para que no se la robaran. Pero cuando hablaba de matemáticas, se le iluminaba la cara.',
+    ], true),
+    wnpc(2, 'arquitecta', 'Elena', 'arquitecta', sk(0x3a3a4a, 0x8a8aa0, 0xf0d0b0, 0x2a1a10, { hat: 'longhair', acc: 'scroll' }), [
+      'Cada edificio que diseño es geometría: ángulos, triángulos, círculos. Euclides está en cada esquina de tu casa.',
+      'Los triángulos son las figuras más fuertes: no se deforman. Por eso los ves en los puentes y en las grúas.',
+      'Cuando un niño me pregunta para qué sirven las matemáticas, le digo: para que el techo no se te caiga encima.',
+    ], true),
+  ]);
+  Object.assign(QUESTS, {
+    euclides: { text: 'Estudia los cinco postulados y escucha a Elena, la arquitecta. Luego dime qué demostré sobre los números primos.', needs: { pois: ['postulados'], npcs: ['arquitecta'] },
+      riddle: { q: '¿Qué demostró Euclides sobre los números primos?', a: ['Que hay infinitos', 'Que son diez', 'Que no existen', 'Que todos son pares'] } },
+    fibonacci: { text: 'Resuelve el problema de los conejos y escucha a Lucas, el contable. Luego dime qué número sigue en 1, 1, 2, 3, 5, 8.', needs: { pois: ['conejos'], npcs: ['contable'] },
+      riddle: { q: '¿Qué número sigue en 1, 1, 2, 3, 5, 8?', a: ['13', '10', '11', '16'] } },
+    boole: { text: 'Visita los puentes de Königsberg. Luego dime con cuántos valores trabaja mi álgebra.', needs: { pois: ['puentes-konigsberg'], npcs: [] },
+      riddle: { q: '¿Con cuántos valores trabaja el álgebra de Boole?', a: ['Dos: verdadero y falso', 'Diez', 'Infinitos', 'Ninguno'] } },
+    ramanujan: { text: 'Súbete al taxi 1729. Luego dime qué tiene de especial ese número.', needs: { pois: ['taxi-1729'], npcs: [] },
+      riddle: { q: '¿Qué tiene de especial el 1729?', a: ['Es el menor que es suma de dos cubos de dos maneras', 'Es primo', 'Es par', 'Nada'] } },
+    noether: { text: 'Escucha a Elena, la arquitecta, y estudia los postulados. Luego dime qué corresponde a cada simetría.', needs: { pois: ['postulados'], npcs: ['arquitecta'] },
+      riddle: { q: '¿Qué corresponde a cada simetría según Emmy Noether?', a: ['Una ley de conservación', 'Un número primo', 'Un error', 'Nada'] } },
+    godel: { text: 'Escucha a Joan, la descifradora, y visita Bletchley Park. Luego dime qué demostré sobre las verdades matemáticas.', needs: { pois: ['bletchley'], npcs: ['descifradora'] },
+      riddle: { q: '¿Qué demostró Gödel?', a: ['Que hay verdades que no se pueden demostrar dentro de un sistema', 'Que todo se puede demostrar', 'Que no hay números', 'Que la lógica es inútil'] } },
+  });
+  Object.assign(ANECDOTES, {
+    euclides: ['Durante siglos, en las escuelas de Inglaterra, el teorema de que los ángulos de la base de un triángulo isósceles son iguales se llamaba «el puente de los asnos»: quien no lo cruzaba, no seguía adelante.', 'Abraham Lincoln estudió los seis primeros libros de mis Elementos de noche, a la luz de una vela, para aprender a razonar como abogado.'],
+    fibonacci: ['El emperador Federico II, muy aficionado a la ciencia, organizó un torneo de matemáticas en Pisa y me puso problemas difíciles delante de toda su corte. Los resolví todos.', 'Pisa me concedió un sueldo de por vida por ayudar a la ciudad con sus cuentas y enseñar a los ciudadanos. Es de los pocos datos de mi vida que conocemos por documentos.'],
+    boole: ['Mi esposa Mary y yo tuvimos cinco hijas. Una, Alicia, sin estudios universitarios, descubrió figuras geométricas de cuatro dimensiones y las construyó en cartón.', 'Caminé bajo una lluvia fuerte para no faltar a una clase y di la lección empapado. Me enfermé y morí poco después, con cuarenta y nueve años.'],
+    ramanujan: ['Escribía con tiza en una pizarra y borraba con el codo, porque el papel era caro. Solo pasaba a los cuadernos los resultados finales.', 'Hardy puntuó a los matemáticos de su tiempo del 1 al 100: a sí mismo se dio 25, a su colega Littlewood 30, al gran Hilbert 80… y a Ramanujan 100.'],
+    noether: ['Daba clases caminando por las calles de Gotinga con sus alumnos, hablando de álgebra a todo volumen, sin importar la lluvia. A sus alumnos los llamaban «los chicos de Noether».', 'Cuando los nazis me prohibieron enseñar, seguí dando clases en mi departamento. Un alumno llegó una vez con uniforme nazi; lo recibí igual, y me reí de él.'],
+    godel: ['En Princeton, Einstein y yo caminábamos juntos cada tarde hablando en alemán. La gente se preguntaba de qué hablaban esos dos señores tan distintos: él jovial, yo serio y abrigado.', 'Para el cumpleaños setenta de Einstein le regalé una solución de sus ecuaciones donde el universo gira y, en teoría, se podría viajar al pasado.'],
+    turing: ['Corría tan bien que fui de los mejores maratonistas de Inglaterra. A veces iba corriendo a reuniones en Londres, a más de sesenta kilómetros.', 'Escribí uno de los primeros programas para jugar al ajedrez, antes de que hubiera una computadora capaz de ejecutarlo. Hacía yo los cálculos a mano, y tardaba media hora por jugada.'],
+  });
+  BOOKS.push([
+    book({ id: 'elementos-libro', author: 'euclides', by: 'Euclides', title: 'Los Elementos', year: 'c. 300 a. C.', kind: 'tratado de geometría',
+      parts: [
+        { t: 'Definiciones', x: 'Un punto es lo que no tiene partes. Una línea es una longitud sin anchura. Con definiciones así de simples empieza el libro más influyente de la matemática.' },
+        { t: 'El triángulo equilátero', x: 'La primera proposición enseña a construir un triángulo equilátero con solo una regla y un compás: dos círculos que se cortan.' },
+        { t: 'Pitágoras', x: 'El primer libro termina con el teorema de Pitágoras: en un triángulo rectángulo, el cuadrado de la hipotenusa es igual a la suma de los cuadrados de los catetos.' },
+        { t: 'Infinitos primos', x: 'En el libro noveno demuestra que los números primos no se acaban nunca. Y en el último construye los cinco sólidos regulares.' },
+      ],
+      quote: 'Lo que había que demostrar.',
+      q: { q: '¿Con qué teorema termina el primer libro de los Elementos?', a: ['Con el teorema de Pitágoras', 'Con el de Gödel', 'Con el de Noether', 'Con ninguno'], e: 'Sobre los triángulos rectángulos.' } }, 0),
+    book({ id: 'liber-abaci', author: 'fibonacci', by: 'Fibonacci', title: 'Liber abaci', year: '1202', kind: 'tratado de cálculo',
+      parts: [
+        { t: 'Las nueve cifras de los indios', x: 'El libro empieza: «Las nueve cifras de los indios son estas: 9 8 7 6 5 4 3 2 1. Con ellas, y con el signo 0, que los árabes llaman zephirum, se escribe cualquier número».' },
+        { t: 'Para los mercaderes', x: 'Fibonacci enseña a sumar, multiplicar y dividir, a cambiar monedas, a repartir ganancias y a convertir pesos y medidas.' },
+        { t: 'Los conejos', x: 'Entre muchos problemas aparece el de los conejos que se reproducen, del que nace la famosa sucesión 1, 1, 2, 3, 5, 8, 13…' },
+        { t: 'Un cambio lento', x: 'Las nuevas cifras tardaron siglos en imponerse. Algunas ciudades las prohibieron en documentos oficiales, porque un 0 podía convertirse fácilmente en un 6 o un 9.' },
+      ],
+      quote: 'Con estas nueve cifras y con el signo 0 se escribe cualquier número.',
+      q: { q: '¿Cómo llamaban los árabes al cero, según Fibonacci?', a: ['Zephirum', 'Nihil', 'Alfa', 'Ómega'], e: 'De ahí vienen «cifra» y «cero».' } }, 1),
+  ]);
+  BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });
+
+  // ---------------------------------------------------------------- debates
+  try {
+    VERSUS.push(
+      { id: 'freud-sartre', a: 'freud', b: 'sartre', q: '¿Somos dueños de nosotros mismos?', eje: null, va: 0, vb: 0,
+        turns: [
+          ['a', 'Crees que decides con libertad, pero gran parte de lo que haces nace de deseos y miedos que no conoces. El yo no es dueño en su propia casa.'],
+          ['b', 'Esa es una excusa demasiado cómoda. Siempre elegimos, incluso cuando decimos que no podíamos evitarlo. Echarle la culpa al inconsciente es mala fe.'],
+          ['a', 'No digo que no seamos responsables. Digo que para ser libres primero hay que conocer lo que nos mueve en la sombra. Donde estaba el ello, debe llegar el yo.'],
+          ['b', 'Estamos de acuerdo en algo: nadie te hará libre desde fuera. Eres lo que haces con lo que hicieron de ti.'],
+        ],
+        cierre: 'Freud muestra las fuerzas ocultas de la mente; Sartre insiste en que siempre podemos elegir. Quizás la libertad empieza por conocerse.' },
+      { id: 'carson-bacon', a: 'carson', b: 'bacon', q: '¿Debe el ser humano dominar la naturaleza?', eje: null, va: 0, vb: 0,
+        turns: [
+          ['b', 'El saber es poder. Con la ciencia, el ser humano puede dominar la naturaleza y ponerla a su servicio: curar enfermedades, vencer el hambre.'],
+          ['a', 'Tu ciencia nos dio mucho. Pero la expresión «dominar la naturaleza» nació de la arrogancia. Rociamos veneno sin saber dónde terminaría, y terminó en nuestros cuerpos.'],
+          ['b', 'Yo también escribí que a la naturaleza solo se la domina obedeciéndola, es decir, conociendo sus leyes.'],
+          ['a', 'Entonces conozcámosla de verdad, con humildad. No somos sus dueños: somos parte de ella, y lo que le hacemos, nos lo hacemos.'],
+        ],
+        cierre: 'Bacon soñó con una ciencia que diera poder al ser humano. Carson advirtió los límites de ese poder. Hoy buscamos una ciencia que cuide además de transformar.' },
+      { id: 'turing-descartes', a: 'turing', b: 'descartes', q: '¿Pueden pensar las máquinas?', eje: null, va: 0, vb: 0,
+        turns: [
+          ['b', 'Una máquina podría imitar algunos gestos humanos, pero nunca podría combinar palabras para responder con sentido a todo lo que se le diga, como hace hasta el más torpe de los hombres.'],
+          ['a', 'Esa es justamente mi prueba, monsieur Descartes. Si conversas con una máquina y no puedes distinguirla de una persona, ¿con qué derecho dices que no piensa?'],
+          ['b', 'Imitar no es pensar. Yo sé que pienso porque lo siento desde dentro. ¿Lo sabe la máquina?'],
+          ['a', '¿Y cómo sabes que piensan los demás seres humanos? Solo por cómo responden. Quizás debamos darles a las máquinas la misma cortesía.'],
+        ],
+        cierre: 'Descartes creía que el lenguaje con sentido era exclusivo del alma humana. Turing propuso juzgar por la conducta. Hoy, con máquinas que conversan, la pregunta es más actual que nunca.' },
+    );
+  } catch (e) { /* herramientas sin debates */ }
+}

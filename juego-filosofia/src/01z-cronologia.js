@@ -5,7 +5,7 @@
 //  Los números romanos de cada época se reasignan según este orden.
 // ============================================================================
 const CHRONO = ['sumer', 'africa', 'india', 'persia', 'presocraticos', 'china', 'atenas', 'helenismo', 'medieval', 'islam', 'vikingos', 'japon',
-  'mexicas', 'incas', 'renacimiento', 'mapuche', 'modernidad', 'xix', 'latinoamerica', 'contemporanea', 'poetas', 'ciencia', 'ateos', 'teistas', 'pensadoras', 'justicia', 'misticos']
+  'mexicas', 'incas', 'renacimiento', 'mapuche', 'modernidad', 'xix', 'latinoamerica', 'contemporanea', 'poetas', 'ciencia', 'ateos', 'teistas', 'pensadoras', 'justicia', 'misticos', 'mente', 'tierra', 'numeros']
   .map((id) => ERAS.findIndex((e) => e.id === id)).filter((i) => i >= 0);
 ERAS.forEach((e, i) => { if (!CHRONO.includes(i)) CHRONO.push(i); });
 // el botón principal dice cuántas épocas y pensadores hay (se calcula, para que no quede viejo)
@@ -41,5 +41,8 @@ const ERA_HOOK = {
   pensadoras: 'Un mundo temático: las mujeres que pensaron cuando no las dejaban.',
   justicia: 'Un mundo temático: qué es una sociedad justa.',
   misticos: 'Un mundo temático: los sabios de Oriente que miraron hacia adentro.',
+  mente: 'Un mundo temático: cómo aprendemos y cómo pensamos.',
+  tierra: 'Un mundo temático: quienes enseñaron a cuidar el planeta.',
+  numeros: 'Un mundo temático: la belleza de las matemáticas y la lógica.',
 };
 function nextEra(i) { const k = CHRONO.indexOf(i); return k >= 0 && k < CHRONO.length - 1 ? CHRONO[k + 1] : -1; }

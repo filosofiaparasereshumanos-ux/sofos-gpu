@@ -72,7 +72,7 @@ sola, sin subir una versión nueva a Play.
 ## Descripción para la ficha
 
 **Breve (80 caracteres):**
-Debate con 161 filósofas y filósofos en 27 épocas, de Sumer a hoy.
+Debate con 182 filósofas y filósofos en 30 épocas, de Sumer a hoy.
 
 **Completa:**
 Odisea de la Razón es un viaje en 3D por la historia del pensamiento. Camina por la
