@@ -44,6 +44,9 @@ const Cosmos = {
     else { fill('#c8a888'); blots('#a8805a', 20, 8); x.fillStyle = '#f0e8dc'; x.beginPath(); x.ellipse(140, 72, 22, 18, 0.3, 0, TAU); x.fill(); }
     const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
   },
+  // brillo redondo y suave (estrellas y halo del Sol)
+  glowTex() { if (this._gt) return this._gt; const c = document.createElement('canvas'); c.width = c.height = 64; const x = c.getContext('2d'); const g = x.createRadialGradient(32, 32, 0, 32, 32, 32);
+    g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(0.25, 'rgba(255,255,255,0.6)'); g.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = g; x.fillRect(0, 0, 64, 64); this._gt = new THREE.CanvasTexture(c); return this._gt; },
   label(text, sub) { const l = new THREE.Sprite(new THREE.SpriteMaterial({ map: labelTexture(text, sub), transparent: true, depthWrite: false, toneMapped: false })); l.scale.set(2.8, 0.7, 1); return l; },
   // ---------- el gran telescopio de la plaza abre el atlas
   build(W) {
@@ -142,10 +145,10 @@ ZONES.push({
     zoneBase(W, Z, std(0xffffff, { map: floorT, roughness: 0.9, metalness: 0 })); zoneWalls(W, Z, 8, std(0x02030a), false);
     // cielo estrellado propio
     { const n = 2200, pos = new Float32Array(n * 3); const r = mulberry32(35); for (let i = 0; i < n; i++) { const u = r() * 2 - 1, a = r() * TAU, rad = 160; const q = Math.sqrt(1 - u * u); pos[i * 3] = C[0] + Math.cos(a) * q * rad; pos[i * 3 + 1] = Math.abs(u) * rad * 0.8 - 10; pos[i * 3 + 2] = C[1] + Math.sin(a) * q * rad; }
-      const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); W.group.add(new THREE.Points(g, new THREE.PointsMaterial({ color: 0xdfe8ff, size: 0.7, sizeAttenuation: true }))); }
+      const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); W.group.add(new THREE.Points(g, new THREE.PointsMaterial({ color: 0xdfe8ff, size: 0.55, sizeAttenuation: true, map: Cosmos.glowTex(), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }))); }
     // el Sol
     const sun = mesh(new THREE.SphereGeometry(5, 40, 24), new THREE.MeshBasicMaterial({ map: Cosmos.tex('sol'), toneMapped: false }), C[0], 7, C[1], false, false); W.group.add(sun);
-    const halo = mesh(new THREE.SphereGeometry(6.4, 32, 18), new THREE.MeshBasicMaterial({ color: 0xffb030, transparent: true, opacity: 0.18, blending: THREE.AdditiveBlending, depthWrite: false }), C[0], 7, C[1], false, false); W.group.add(halo);
+    const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: Cosmos.glowTex(), color: 0xffb040, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false })); halo.scale.set(26, 26, 1); halo.position.set(C[0], 7, C[1]); W.group.add(halo);
     const light = new THREE.PointLight(0xfff0d0, 260, 140, 1.2); light.position.set(C[0], 7, C[1]); W.group.add(light);
     { const l = Cosmos.label('El Sol', 'Explorar'); l.position.set(C[0], 14, C[1]); W.group.add(l); }
     W.colliders.push({ t: 1, x: C[0], z: C[1], r: 3.2, h: 12 });
@@ -170,7 +173,7 @@ ZONES.push({
     W.spots.push({ x: -195, z: 44, r: 1.8, verb: 'Abrir', label: 'El atlas del cosmos', on: () => W.zoneIn === Z, act: () => Cosmos.open('planetas') });
     zoneLabel(W, 'El planetario', 'Los tamaños y las distancias no están a escala', -200, 4.2, 44, 1);
     W.anim.push((t) => {
-      if (W.zoneIn !== Z) return; sun.rotation.y = t * 0.05; halo.scale.setScalar(1 + Math.sin(t * 1.4) * 0.03);
+      if (W.zoneIn !== Z) return; sun.rotation.y = t * 0.05; halo.scale.setScalar(26 * (1 + Math.sin(t * 1.4) * 0.04));
       for (const o of s.pl) { const a = o.a + (t / o.per) * TAU; o.x = C[0] + Math.cos(a) * o.orb; o.z = C[1] + Math.sin(a) * o.orb; o.g.position.set(o.x, o.y + Math.sin(t + o.orb) * 0.15, o.z); o.mark.position.set(o.x, 0.05, o.z); o.body.rotation.y = t * 0.4; }
     });
   },
