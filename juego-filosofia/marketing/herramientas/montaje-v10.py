@@ -108,7 +108,7 @@ def seg_footage(frames, cap=None, voice=None, min_n=None, zoom0=1.06, zoom1=1.0,
 # 1 · ARRANQUE: cortes rápidos por los mundos con destellos y textos que golpean
 def seg_hook():
     flies = [seq(FR, f'fly{i:02d}') for i in range(12)]; per = 14; n = max(len(flies) * per, int((voz['hook'] + 0.35) * FPS))
-    texts = [('33 MUNDOS', 0.0), ('+200 PENSADORES', 0.36), ('UNA SOLA PREGUNTA', 0.72)]
+    texts = [('35 MUNDOS', 0.0), ('+200 PENSADORES', 0.2), ('UNA SOLA PREGUNTA', 0.6)]
     lays = [center_text(t, 132, CREAM if i < 2 else GOLD) for i, (t, _) in enumerate(texts)]
     def gen():
         for i in range(n):
@@ -213,7 +213,7 @@ def seg_end():
     d.ellipse((W / 2 - 190, 360, W / 2 + 190, 740), fill=(22, 18, 12, 255), outline=GOLD + (255,), width=6); bg.alpha_composite(logo, (int(W / 2 - logo.width / 2), 400))
     def line(t, y, font, size, fill):
         f = ImageFont.truetype(font, size); d.text(((W - d.textlength(t, font=f)) / 2, y), t, font=f, fill=fill)
-    line('ODISEA DE LA RAZÓN', 820, F_BLACK, 88, CREAM + (255,)); line('33 mundos · +200 pensadores', 950, F_BOLD, 58, GOLD + (255,))
+    line('ODISEA DE LA RAZÓN', 820, F_BLACK, 88, CREAM + (255,)); line('35 mundos · +200 pensadores', 950, F_BOLD, 58, GOLD + (255,))
     line('Gratis · en español y en inglés', 1040, F_SERIF, 54, CREAM + (255,)); line('Juega hoy · link en la bio', 1200, F_BLACK, 66, GOLD + (255,))
     line('Filosofía para Seres Humanos', 1420, F_SERIF, 50, (243, 230, 196, 255)); line('filosofiaparasereshumanos.com', 1490, F_SERIF, 44, (243, 230, 196, 220))
     card = bg.convert('RGB')
@@ -226,7 +226,7 @@ def seg_end():
 seg_hook()
 seg_atreves()
 seg_title()
-seg_footage(seq(FR, 'fly02', start=4) + seq(FR, 'fly03', start=4) + seq(FR, 'fly05', start=4) + seq(FR, 'fly06', start=4), ('33 mundos', 'de Sumer a la torre de los números'), 'mundos', sfx=[(0, 'whoosh')])
+seg_footage(seq(FR, 'fly02', start=4) + seq(FR, 'fly03', start=4) + seq(FR, 'fly05', start=4) + seq(FR, 'fly06', start=4), ('35 mundos', 'de Sumer al borde del universo'), 'mundos', sfx=[(0, 'whoosh')])
 seg_pensadores()
 seg_footage(seq(FR0, 'vs_socrates', start=45), ('Debate', 'y gánales con tus ideas'), 'debate', punch=True, sfx=[(0, 'hit')], bottom=True, zoom0=1.0)
 seg_footage(seq(FR, 'orbe', take=150), ('¡Salta!', 'alcanza los orbes de sabiduría'), 'orbes', punch=True, sfx=[(1.75, 'whoosh')], bottom=True)
