@@ -8,21 +8,33 @@
 // ============================================================================
 const MRT = Object.assign(Object.create(RT), { ws: null, hb: null, handlers: {}, joined: false, want: false, tries: 0, ref: 0, topic: '' });
 const JUNTOS_KEY = 'odisea-juntos', AVATAR_KEY = 'odisea-razon.avatar';
-const AV_ROBES = [0x3a6ab8, 0xb83a4a, 0x3a9a5a, 0xc8962a, 0x7a4ab8, 0x2a9aa8, 0xd86a2a, 0xa83a8a, 0xe8e0d0, 0x2a2a2a, 0xf0c848, 0x8a1a2a, 0x30c8c0];
-const AV_SKINS = [0xf0d0b0, 0xe0b090, 0xc49372, 0xa0704a, 0x8a5a3a, 0x5a3820];
-const AV_HAIRS = [0x1a1410, 0x4a2a1a, 0x8a5a2a, 0xd8b070, 0xb83a2a, 0xe8e8e8, 0x3a5ab8];
+const AV_ROBES = [0x3a6ab8, 0xb83a4a, 0x3a9a5a, 0xc8962a, 0x7a4ab8, 0x2a9aa8, 0xd86a2a, 0xa83a8a, 0xe8e0d0, 0x2a2a2a, 0xf0c848, 0x8a1a2a, 0x30c8c0, 0x6a4a32, 0x1e3260, 0x6e8a3a, 0xe8a0b4, 0x4a4e58];
+const AV_SKINS = [0xf0d0b0, 0xe0b090, 0xc49372, 0xa0704a, 0x8a5a3a, 0x5a3820, 0xfae4d2, 0x3e2616];
+const AV_HAIRS = [0x1a1410, 0x4a2a1a, 0x8a5a2a, 0xd8b070, 0xb83a2a, 0xe8e8e8, 0x3a5ab8, 0x7a7a7a, 0xc0662e, 0xe87aa8, 0x8a4ac8, 0x3aa86a];
 // [forma, nombre, logro que lo desbloquea]
-const AV_HATS = [['none', 'Sin nada'], ['longhair', 'Pelo largo'], ['braids', 'Trenzas'], ['cap', 'Gorro'], ['turban', 'Turbante', 'explorador'], ['laurel', 'Laurel', 'tabano'], ['hood', 'Capucha', 'salida'], ['beret', 'Boina', 'dialogo'], ['wig', 'Peluca', 'cogito'], ['mitre', 'Mitra', 'lector'], ['ruff', 'Gorguera', 'racha7']];
+const AV_HATS = [['none', 'Sin nada'], ['longhair', 'Pelo largo'], ['braids', 'Trenzas'], ['cap', 'Gorro'], ['turban', 'Turbante', 'explorador'], ['laurel', 'Laurel', 'tabano'], ['hood', 'Capucha', 'salida'], ['beret', 'Boina', 'dialogo'], ['wig', 'Peluca', 'cogito'], ['mitre', 'Mitra', 'lector'], ['ruff', 'Gorguera', 'racha7'],
+  ['short', 'Pelo corto'], ['bob', 'Melena'], ['curly', 'Rizos'], ['afro', 'Afro'], ['bun', 'Moño'], ['topknot', 'Moño alto'], ['ponytail', 'Coleta'], ['pigtails', 'Dos coletas'], ['mohawk', 'Cresta'], ['shaved', 'Rapado'], ['bald', 'Calvicie'], ['tonsure', 'Tonsura'],
+  ['headband', 'Cinta'], ['flowers', 'Corona de flores'], ['straw', 'Sombrero de paja'], ['tophat', 'Chistera', 'biblioteca'], ['mortar', 'Birrete', 'academia'], ['crown', 'Corona', 'rango-filosofo']];
 const AV_ROBE_LOCK = { 10: 'agora', 11: 'juntos', 12: 'racha3' }; // túnicas especiales
+const AV_BEARDS = [['none', 'Sin barba'], ['stubble', 'Barba de tres días'], ['mustache', 'Bigote'], ['goatee', 'Perilla'], ['chevron', 'Bigote y perilla'], ['full', 'Barba'], ['long', 'Barba de filósofo'], ['sage', 'Barba larga y canosa']];
+const AV_EXTRAS = [['none', 'Nada'], ['round', 'Gafas redondas'], ['square', 'Gafas'], ['monocle', 'Monóculo', 'kant'], ['earrings', 'Pendientes'], ['necklace', 'Collar'], ['scarf', 'Bufanda']];
+const AV_ITEMS = [['none', 'Nada'], ['book', 'Libro'], ['scroll', 'Pergamino'], ['quill', 'Pluma'], ['staff', 'Bastón'], ['lens', 'Lupa'], ['cup', 'Copa'], ['lamp', 'Lámpara de Diógenes', 'honesto']];
+// del aspecto guardado (índices) a la figura 3D
+function avLook(l) {
+  const hair = AV_HAIRS[l.h] ?? AV_HAIRS[0], b = (AV_BEARDS[l.b] || AV_BEARDS[0])[0];
+  const look = { robe: AV_ROBES[l.r] ?? AV_ROBES[0], robe2: 0x2a2620, skin: AV_SKINS[l.s] ?? AV_SKINS[2], hair, beard: false, hat: (AV_HATS[l.t] || AV_HATS[0])[0], acc: (AV_ITEMS[l.o] || AV_ITEMS[0])[0], extra: (AV_EXTRAS[l.g] || AV_EXTRAS[0])[0], beardStyle: b };
+  return look;
+}
+function avParse(ls) { const [r, s, h, t, b, g, o] = String(ls || '').split(',').map((x) => x | 0); return { r, s, h, t, b, g, o }; }
 const EMOTES = ['👋', '👍', '❓', '💡', '😂', '👏'];
 const MUTE_KEY = 'odisea-razon.silenciados';
 const Juntos = {
   on: false, mode: '', code: '', chan: '', id: '', name: '', R: new Map(), sendT: 0, last: null, near: null, duel: null, inv: null, emoT: 0, wantT: 0,
   hash(s) { let h = 7; for (const c of s) h = (Math.imul(h, 31) + c.charCodeAt(0)) >>> 0; return h; },
   myId() { if (!this.id) { try { this.id = localStorage.getItem('odisea-juntos-id') || Sala.rid(8); localStorage.setItem('odisea-juntos-id', this.id); } catch (e) { this.id = Sala.rid(8); } } return this.id; },
-  look() { const d = { r: this.hash(this.myId()) % AV_ROBES.length, s: 2, h: 0, t: 0, n: '' }; try { return { ...d, ...(JSON.parse(localStorage.getItem(AVATAR_KEY) || 'null') || {}) }; } catch (e) { return d; } },
+  look() { const d = { r: this.hash(this.myId()) % 10, s: 2, h: 0, t: 0, b: 0, g: 0, o: 0, n: '' }; try { return { ...d, ...(JSON.parse(localStorage.getItem(AVATAR_KEY) || 'null') || {}) }; } catch (e) { return d; } },
   myName() { const l = this.look(); return Sala.clean(l.n) || Sala.clean((typeof Fame !== 'undefined' && Fame.alias()) || '') || 'Viajero ' + (this.hash(this.myId()) % 9000 + 1000); },
-  lookStr(l = this.look()) { return [l.r, l.s, l.h, l.t].join(','); },
+  lookStr(l = this.look()) { return [l.r, l.s, l.h, l.t, l.b | 0, l.g | 0, l.o | 0].join(','); },
   publicOn() { return Sala.ok() && G.settings.mundo === true; },
   // silenciar: no vuelves a ver ni recibir nada de ese viajero en este aparato
   muted() { if (!this._mu) { try { this._mu = new Set(JSON.parse(localStorage.getItem(MUTE_KEY) || '[]')); } catch (e) { this._mu = new Set(); } } return this._mu; },
@@ -75,9 +87,8 @@ const Juntos = {
   },
   // ---------------------------------------------------------------- avatares
   avatar(id, name, ls, rk = 0) {
-    const [r, s, h, t] = String(ls || '').split(',').map((x) => x | 0);
-    const robe = AV_ROBES[r % AV_ROBES.length] ?? AV_ROBES[0], hat = (AV_HATS[t] || AV_HATS[0])[0];
-    const fig = buildFigure({ robe, robe2: 0x2a2620, skin: AV_SKINS[s] ?? AV_SKINS[2], hair: AV_HAIRS[h] ?? AV_HAIRS[0], beard: false, hat, acc: 'none' }, 0xffffff);
+    const LK = avLook(avParse(ls)), robe = LK.robe;
+    const fig = buildFigure(LK, 0xffffff);
     fig.halo.visible = false; const g = new THREE.Group(); g.add(fig.group);
     // su rango se ve sobre su cabeza: título, color y corona de laurel
     const RI = typeof Rango !== 'undefined' ? Rango.info(rk) : null; const rcol = RI ? new THREE.Color(RI.r.c) : null;
@@ -89,7 +100,7 @@ const Juntos = {
   },
   rPos(d) {
     const id = String(d.id || ''); if (!/^[A-Za-z0-9]{6,12}$/.test(id) || id === this.id || this.muted().has(id)) return;
-    let r = this.R.get(id); const name = Sala.clean(d.n) || 'Viajero'; const ls = String(d.l || '0,2,0,0').slice(0, 16); const rk = Math.max(0, Math.min(999, d.rk | 0));
+    let r = this.R.get(id); const name = Sala.clean(d.n) || 'Viajero'; const ls = String(d.l || '0,2,0,0').slice(0, 40); const rk = Math.max(0, Math.min(999, d.rk | 0));
     if (r && (r.ls !== ls || r.name !== name || r.rk !== rk)) { this.drop(id); r = null; }
     if (!r) { if (this.R.size >= 60) return; r = { ...this.avatar(id, name, ls, rk), name, ls, rk, x: d.x, y: d.y, z: d.z, yaw: d.r, tx: d.x, ty: d.y, tz: d.z, tyaw: d.r }; this.R.set(id, r); if (d.e === G.eraIdx && G.state === 'play') toast(`👋 ${name} ha llegado a esta época.`); }
     const wasHere = r.e === G.eraIdx; r.e = d.e; r.v = d.v > 0 ? 1 : d.v < 0 ? -1 : 0; r.lec = /^[a-z0-9_-]{2,24}$/.test(String(d.ls || '')) ? d.ls : ''; r.zone = d.zn || ''; r.tx = +d.x || 0; r.ty = +d.y || 0; r.tz = +d.z || 0; r.tyaw = +d.r || 0; r.seen = performance.now(); r.st = d.s;

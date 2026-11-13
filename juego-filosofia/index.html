@@ -152,9 +152,10 @@ kbd { font-family: var(--display); font-size: 0.78em; border: 1px solid var(--li
 #prompt { position: absolute; left: 50%; top: calc(50% + 46px); transform: translateX(-50%); font-family: var(--display); letter-spacing: 0.12em; font-size: 0.95rem; padding: 8px 16px; background: rgba(13,12,18,0.72); border: 1px solid var(--line); white-space: nowrap; max-width: 92vw; overflow: hidden; text-overflow: ellipsis; }
 #prompt b { color: var(--gold-bright); font-weight: 400; }
 #toasts { position: absolute; top: calc(70px + var(--sat)); left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; width: min(560px, 92vw); }
-.toast { background: rgba(13,12,18,0.82); border-left: 2px solid var(--gold); padding: 8px 14px; font-size: 1.02rem; text-align: center; animation: toastIn .35s ease-out; text-shadow: 0 1px 3px #000; }
-.toast.fade { opacity: 0; transition: opacity .6s; }
-@keyframes toastIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+.toast { display: flex; align-items: center; gap: 10px; max-width: 100%; box-sizing: border-box; background: linear-gradient(135deg, rgba(58,40,14,0.96), rgba(22,15,8,0.96)); border: 1.5px solid var(--gold); border-radius: 14px; padding: 10px 16px; color: #fff4dc; font-size: 1.05rem; line-height: 1.3; text-align: left; text-shadow: 0 1px 2px #000; box-shadow: 0 8px 26px rgba(0,0,0,0.6), 0 0 20px rgba(255,200,90,0.28), inset 0 1px 0 rgba(255,230,160,0.3); animation: toastIn .5s cubic-bezier(.2,1.5,.4,1); }
+.toast .ti { flex: 0 0 auto; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; font-size: 1.3rem; background: radial-gradient(circle, rgba(255,211,106,0.4), rgba(255,211,106,0.06)); box-shadow: 0 0 12px rgba(255,211,106,0.35); }
+.toast.fade { opacity: 0; transform: translateY(-8px); transition: opacity .6s, transform .6s; }
+@keyframes toastIn { from { opacity: 0; transform: translateY(-16px) scale(0.9); } to { opacity: 1; transform: none; } }
 #vignette { position: absolute; inset: 0; pointer-events: none; z-index: 9; background: radial-gradient(ellipse at center, transparent 45%, rgba(190, 30, 40, 0.75) 100%); opacity: 0; transition: opacity .12s; }
 #lowhp { position: absolute; inset: 0; pointer-events: none; z-index: 8; background: radial-gradient(ellipse at center, transparent 55%, rgba(120, 10, 20, 0.6) 100%); opacity: 0; }
 
@@ -392,7 +393,7 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .on-sw.on { border-color: #7fd08a; } .on-sw.on i { background: #4fae62; } .on-sw.on i::after { transform: translateX(20px); background: #fff; }
 .on-sw.big { width: 100%; margin: 12px 0 4px; padding: 12px 14px; } .on-sw.big span { font-size: 1rem; } .on-sw.big small { font-size: 0.82rem; white-space: normal; }
 .av-card { width: min(520px, 100%); } .av-h { font-family: var(--display); font-weight: normal; color: var(--gold); margin: 0 0 8px; text-align: center; letter-spacing: 0.08em; }
-.av-top { display: flex; gap: 12px; align-items: center; } #app #av-prev { position: static !important; inset: auto; flex: 0 0 42%; width: 42% !important; max-width: 200px; aspect-ratio: 11 / 13; height: auto !important; border-radius: 14px; background: radial-gradient(circle at 50% 40%, rgba(216,178,90,0.25), rgba(0,0,0,0.25)); }
+.av-top { display: flex; gap: 12px; align-items: center; } #app #av-prev { position: static !important; inset: auto; flex: 0 0 42%; width: 42% !important; max-width: 240px; aspect-ratio: 11 / 13; touch-action: none; height: auto !important; border-radius: 14px; background: radial-gradient(circle at 50% 40%, rgba(216,178,90,0.25), rgba(0,0,0,0.25)); }
 .av-side { flex: 1; min-width: 0; } #av-name { width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.3); color: var(--parchment); border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; font-family: var(--body); font-size: 1rem; margin-bottom: 6px; }
 .av-card .av-row { display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; gap: 6px; margin: 5px 0; }
 .av-arrow { height: 40px; border-radius: 10px; border: 1px solid var(--line); background: rgba(255,255,255,0.06); color: var(--gold-bright); font-size: 1rem; cursor: pointer; }
@@ -856,7 +857,7 @@ body.touch #toasts { top: calc(140px + var(--sat)); width: min(520px, 84vw); }
 body.tc-on #toasts { top: calc(250px + var(--sat)) !important; }
 body.touch #tfs, body.touch #tpause { top: calc(12px + var(--sat)); }
 body.touch .hud-tr { right: calc(116px + var(--sar)); }
-body.touch .toast { font-size: 0.92rem; padding: 6px 12px; }
+body.touch .toast { font-size: 0.95rem; padding: 8px 12px; } body.touch .toast .ti { width: 30px; height: 30px; font-size: 1.1rem; }
 @media (max-width: 760px) { .node span { display: none; } .node.now span { display: block; } }
 body.touch .gm { width: 26px; height: 26px; font-size: 0.75rem; }
 body.touch .gm.boss { width: 30px; height: 30px; }
@@ -18190,7 +18191,7 @@ function buildFigure(look, accent) {
   // manto (himation / estola) en diagonal
   const sash = mesh(new THREE.TorusGeometry(0.43, 0.05, 6, 32, Math.PI * 1.25), robe2, 0, 1.12, 0); sash.rotation.set(Math.PI / 2 - 0.12, 0.6, 0); sash.scale.set(1, 1.12, 0.55); body.add(sash);
   body.add(mesh(new THREE.CylinderGeometry(0.4, 0.42, 0.08, 20), robe2, 0, 1.0, 0));
-  if (look.hat === 'ruff' || look.hat === 'wig' || look.hat === 'longhair') put(body, mesh(new THREE.ConeGeometry(0.12, 0.35, 4), std(0xf6f2ea), 0, 1.4, 0.3)).rotation.x = Math.PI; // corbatín
+  if ((look.hat === 'ruff' || look.hat === 'wig' || look.hat === 'longhair') && look.extra === undefined) put(body, mesh(new THREE.ConeGeometry(0.12, 0.35, 4), std(0xf6f2ea), 0, 1.4, 0.3)).rotation.x = Math.PI; // corbatín
   // cabeza
   const head = new THREE.Group(); head.position.y = 1.78; g.add(head);
   head.add(mesh(new THREE.CylinderGeometry(0.09, 0.11, 0.2, 10), skin, 0, -0.18, 0));
@@ -18205,9 +18206,9 @@ function buildFigure(look, accent) {
     head.add(mesh(new THREE.BoxGeometry(0.12, 0.025, 0.03), std(look.beard, { roughness: 1 }), 0, -0.06, 0.19, false));
     if (look.beardGrey) for (const [x, y] of [[-0.06, -0.2], [0.05, -0.26], [0, -0.33], [-0.03, -0.12], [0.08, -0.15]]) head.add(mesh(new THREE.BoxGeometry(0.012, 0.09, 0.01), std(look.beardGrey, { roughness: 1 }), x, y * (look.beardLen || 1), 0.205 - Math.abs(y) * 0.25, false)); // canas
   }
-  const cap = (geo, m, y = 0.04, z = -0.01) => { const c = mesh(geo, m, 0, y, z); head.add(c); return c; };
+  const cap = (geo, m, y = 0.04, z = -0.01) => { const c = mesh(geo, m, 0, y, z); c.scale.set(0.97, 1.1, 1.02); c.rotation.x = -0.34; head.add(c); return c; }; // un poco más alto que el cráneo: sin franjas en la frente
   switch (look.hat) {
-    case 'bald': cap(new THREE.SphereGeometry(0.205, 16, 10, 0, TAU, Math.PI * 0.55, Math.PI * 0.25), hair, 0, -0.01); break;
+    case 'bald': cap(new THREE.SphereGeometry(0.205, 16, 10, Math.PI / 2 + 0.95, TAU - 1.9, Math.PI * 0.42, Math.PI * 0.2), hair, 0, -0.01); break;
     case 'laurel': cap(new THREE.SphereGeometry(0.21, 16, 10, 0, TAU, 0, Math.PI * 0.45), hair, 0.01);
       { const l = mesh(new THREE.TorusGeometry(0.2, 0.03, 6, 20), std(0x4a7a2a, { roughness: 0.8 }), 0, 0.08, -0.01); l.rotation.x = Math.PI / 2 - 0.2; head.add(l); } break;
     case 'none': cap(new THREE.SphereGeometry(0.21, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015); break;
@@ -18235,6 +18236,66 @@ function buildFigure(look, accent) {
     case 'longhair': cap(new THREE.SphereGeometry(0.215, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01);
       for (const s of [-1, 1]) { const l = mesh(new THREE.BoxGeometry(0.09, 0.42, 0.2), hair, s * 0.17, -0.14, -0.05); head.add(l); }
       break;
+    // ---- peinados y sombreros del avatar
+    case 'short': cap(new THREE.SphereGeometry(0.213, 16, 10, 0, TAU, 0, Math.PI * 0.44), hair, 0.012, -0.012);
+      { const q = mesh(new THREE.SphereGeometry(0.09, 12, 8), hair, 0.05, 0.17, 0.1); q.scale.set(1.5, 0.55, 1); q.rotation.z = -0.3; head.add(q); } break;
+    case 'bob': cap(new THREE.SphereGeometry(0.212, 18, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015);
+      { const back = mesh(new THREE.SphereGeometry(0.222, 18, 10, Math.PI / 2 + 1.1, TAU - 2.2, Math.PI * 0.5, Math.PI * 0.24), hair, 0, 0.0, -0.01); back.scale.set(1.02, 1.08, 1.02); back.material = back.material.clone(); back.material.side = THREE.DoubleSide; head.add(back); } break;
+    case 'curly': cap(new THREE.SphereGeometry(0.21, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015);
+      for (let i = 0; i < 26; i++) { const th = Math.acos(1 - (i + 0.5) / 26 * 1.15), ph = i * 2.4; const y = Math.cos(th), r = Math.sin(th); const z = Math.sin(ph) * r; if (z > 0.55 && y < 0.75) continue;
+        head.add(mesh(new THREE.SphereGeometry(0.058, 8, 6), hair, Math.cos(ph) * r * 0.215, 0.03 + y * 0.215, z * 0.215 - 0.015)); } break;
+    case 'afro': { const a = mesh(new THREE.SphereGeometry(0.28, 22, 16), hair, 0, 0.12, -0.1); a.scale.set(1.08, 0.95, 1); head.add(a); cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015); } break;
+    case 'bun': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015); head.add(mesh(new THREE.SphereGeometry(0.095, 12, 10), hair, 0, 0.1, -0.21)); break;
+    case 'topknot': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015); head.add(mesh(new THREE.SphereGeometry(0.075, 12, 10), hair, 0, 0.27, -0.04));
+      { const t = mesh(new THREE.TorusGeometry(0.05, 0.016, 6, 14), std(0xb83a2a, { roughness: 0.6 }), 0, 0.215, -0.03); t.rotation.x = Math.PI / 2; head.add(t); } break;
+    case 'ponytail': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015);
+      { const p2 = mesh(new THREE.CylinderGeometry(0.06, 0.025, 0.42, 10), hair, 0, -0.08, -0.27); p2.rotation.x = 0.35; head.add(p2);
+        const t = mesh(new THREE.TorusGeometry(0.05, 0.015, 6, 14), std(0x3a6ab8, { roughness: 0.6 }), 0, 0.11, -0.21); t.rotation.x = 0.35 + Math.PI / 2; head.add(t); } break;
+    case 'pigtails': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015);
+      for (const sx of [-1, 1]) { const p2 = mesh(new THREE.CylinderGeometry(0.055, 0.02, 0.36, 10), hair, sx * 0.23, -0.08, -0.07); p2.rotation.z = sx * 0.25; head.add(p2); head.add(mesh(new THREE.SphereGeometry(0.035, 8, 6), std(0xe85a8a, { roughness: 0.6 }), sx * 0.2, 0.08, -0.07)); } break;
+    case 'mohawk': { const stub = mesh(new THREE.SphereGeometry(0.205, 24, 12, Math.PI / 2 + 0.95, TAU - 1.9, 0, 1.45), std(look.stubble || 0x6a5648, { roughness: 1 }), 0, 0.005, -0.005); stub.scale.set(0.93, 1.08, 1); head.add(stub);
+      for (let i = 0; i < 6; i++) { const a = -0.9 + i * 0.42; const c = mesh(new THREE.ConeGeometry(0.045, 0.16, 6), hair, 0, 0.03 + Math.cos(a) * 0.23, Math.sin(a) * 0.23); c.rotation.x = a; head.add(c); } } break;
+    case 'shaved': { const st = mesh(new THREE.SphereGeometry(0.205, 24, 12, Math.PI / 2 + 0.95, TAU - 1.9, 0, 1.45), std(hair, { roughness: 1, transparent: true, opacity: 0.35 }), 0, 0.005, -0.005); st.scale.set(0.93, 1.08, 1); head.add(st); } break;
+    case 'headband': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015);
+      { const b = mesh(new THREE.TorusGeometry(0.205, 0.022, 6, 28), robe2, 0, 0.1, -0.01); b.rotation.x = Math.PI / 2 - 0.15; b.scale.set(0.95, 1.05, 1); head.add(b); } break;
+    case 'flowers': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015);
+      { const C = [0xf0e060, 0xe8608a, 0xffffff, 0x9a70e0, 0xf08a40]; for (let i = 0; i < 12; i++) { const a = (i / 12) * TAU; head.add(mesh(new THREE.SphereGeometry(0.04, 8, 6), std(C[i % 5], { roughness: 0.6 }), Math.cos(a) * 0.2, 0.1 - Math.sin(a) * 0.035, Math.sin(a) * 0.2 - 0.01)); }
+        const v = mesh(new THREE.TorusGeometry(0.2, 0.014, 6, 28), std(0x4a8a3a, { roughness: 0.8 }), 0, 0.1, -0.01); v.rotation.x = Math.PI / 2 - 0.17; head.add(v); } break;
+    case 'straw': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015);
+      { const m = std(0xd8b868, { roughness: 0.95 }); head.add(mesh(new THREE.CylinderGeometry(0.4, 0.42, 0.02, 28), m, 0, 0.12, -0.01)); head.add(mesh(new THREE.CylinderGeometry(0.18, 0.21, 0.15, 20), m, 0, 0.2, -0.01)); head.add(mesh(new THREE.CylinderGeometry(0.213, 0.213, 0.04, 20), std(0x8a2a2a), 0, 0.15, -0.01)); } break;
+    case 'tophat': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015);
+      { const m = std(0x18161a, { roughness: 0.5 }); head.add(mesh(new THREE.CylinderGeometry(0.31, 0.31, 0.02, 28), m, 0, 0.14, -0.01)); head.add(mesh(new THREE.CylinderGeometry(0.19, 0.18, 0.34, 22), m, 0, 0.32, -0.01)); head.add(mesh(new THREE.CylinderGeometry(0.186, 0.186, 0.05, 22), std(0x7a1a2a), 0, 0.18, -0.01)); } break;
+    case 'mortar': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015);
+      { const m = std(0x1a1a22, { roughness: 0.6 }); head.add(mesh(new THREE.CylinderGeometry(0.2, 0.21, 0.12, 20), m, 0, 0.15, -0.01)); const b = mesh(new THREE.BoxGeometry(0.46, 0.025, 0.46), m, 0, 0.22, -0.01); b.rotation.y = Math.PI / 4; head.add(b);
+        const gold = std(0xd8a838, { metalness: 0.6, roughness: 0.4 }); head.add(mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.16, 6), gold, 0.2, 0.15, 0.1)); head.add(mesh(new THREE.SphereGeometry(0.022, 8, 6), gold, 0.2, 0.06, 0.1)); } break;
+    case 'crown': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015);
+      { const gold = std(0xe0b040, { metalness: 0.85, roughness: 0.25 }); const band = mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.08, 24, 1, true), gold, 0, 0.15, -0.01); band.material = band.material.clone(); band.material.side = THREE.DoubleSide; head.add(band);
+        for (let i = 0; i < 8; i++) { const a = (i / 8) * TAU; head.add(mesh(new THREE.ConeGeometry(0.03, 0.09, 4), gold, Math.cos(a) * 0.2, 0.23, Math.sin(a) * 0.2 - 0.01)); if (i % 2 === 0) head.add(mesh(new THREE.SphereGeometry(0.018, 8, 6), std([0xc8202a, 0x2a5ac8][i % 4 ? 1 : 0], { roughness: 0.2 }), Math.cos(a) * 0.205, 0.15, Math.sin(a) * 0.205 - 0.01)); } } break;
+  }
+  // barbas cortas del avatar (las largas usan look.beard)
+  if (look.beardStyle && look.beardStyle !== 'none') {
+    const bc = std(look.beard || look.beardCol || look.hair, { roughness: 1 }), st = look.beardStyle;
+    if (st === 'stubble') { const m = new THREE.MeshStandardMaterial({ color: look.beardCol || look.hair, roughness: 1, transparent: true, opacity: 0.42, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -3, polygonOffsetUnits: -10 });
+      const sh = new THREE.Mesh(new THREE.SphereGeometry(0.2045, 24, 12, Math.PI / 2 - 1.15, 2.3, Math.PI * 0.6, Math.PI * 0.3), m); sh.scale.copy(skull.scale); sh.renderOrder = 3; head.add(sh); }
+    if (st === 'full' || st === 'long' || st === 'sage') { // barba que sigue la mandíbula, sin tapar la cara
+      const len = st === 'full' ? 1 : st === 'long' ? 1.5 : 1.75, m = st === 'sage' ? std(0xd8d4cc, { roughness: 1 }) : bc;
+      const bd = mesh(new THREE.SphereGeometry(0.185, 22, 14, 0, TAU, Math.PI * 0.47, Math.PI * 0.53), m, 0, -0.07, 0.03, false); bd.scale.set(0.86, 1.15 * len, 0.9); head.add(bd);
+      if (st === 'sage') for (const [x, y] of [[-0.06, -0.14], [0.05, -0.2], [0, -0.28], [-0.03, -0.1], [0.08, -0.12]]) head.add(mesh(new THREE.BoxGeometry(0.012, 0.09, 0.01), std(0xffffff, { roughness: 1 }), x, y, 0.2 - Math.abs(y) * 0.2, false));
+    }
+    if (['mustache', 'chevron', 'full', 'long', 'sage'].includes(st)) for (const sx of [-1, 1]) { const m2 = mesh(new THREE.CapsuleGeometry(0.018, 0.06, 4, 8), st === 'sage' ? std(0xe8e4dc, { roughness: 1 }) : bc, sx * 0.04, -0.045, 0.19, false); m2.rotation.z = sx * (Math.PI / 2 - 0.35); head.add(m2); }
+    if (st === 'goatee' || st === 'chevron') { const gt = mesh(new THREE.SphereGeometry(0.05, 10, 8), bc, 0, -0.165, 0.145, false); gt.scale.set(1, 1.5, 0.8); head.add(gt); }
+  }
+  // complementos del avatar
+  if (look.extra && look.extra !== 'none') {
+    const ex = look.extra, metal = std(0xc8a050, { metalness: 0.85, roughness: 0.3 }), dark = std(0x1a1614, { metalness: 0.4, roughness: 0.4 });
+    if (ex === 'round' || ex === 'square') { const m = ex === 'round' ? metal : dark;
+      for (const sx of [-1, 1]) { const lens = ex === 'round' ? mesh(new THREE.TorusGeometry(0.047, 0.008, 6, 20), m, sx * 0.07, 0.045, 0.205, false) : mesh(new THREE.TorusGeometry(0.052, 0.01, 4, 4), m, sx * 0.07, 0.045, 0.205, false); if (ex === 'square') { lens.rotation.z = Math.PI / 4; lens.scale.set(1.15, 0.85, 1); } head.add(lens);
+        const arm = mesh(new THREE.BoxGeometry(0.008, 0.008, 0.2), m, sx * 0.168, 0.05, 0.1, false); arm.rotation.y = sx * 0.12; head.add(arm); }
+      head.add(mesh(new THREE.BoxGeometry(0.045, 0.008, 0.008), m, 0, 0.055, 0.21, false)); }
+    if (ex === 'monocle') { const l = mesh(new THREE.TorusGeometry(0.05, 0.009, 6, 20), metal, 0.07, 0.045, 0.207, false); head.add(l); const ch = mesh(new THREE.CylinderGeometry(0.003, 0.003, 0.24, 4), metal, 0.11, -0.07, 0.18, false); ch.rotation.z = 0.25; head.add(ch); }
+    if (ex === 'earrings') for (const sx of [-1, 1]) { head.add(mesh(new THREE.TorusGeometry(0.022, 0.006, 6, 14), metal, sx * 0.188, -0.06, 0.0, false)); head.add(mesh(new THREE.SphereGeometry(0.014, 8, 6), metal, sx * 0.188, -0.085, 0.0, false)); }
+    if (ex === 'necklace') { const n = mesh(new THREE.TorusGeometry(0.2, 0.012, 6, 32), metal, 0, 1.52, 0.03); n.rotation.x = Math.PI / 2 - 0.45; body.add(n); body.add(mesh(new THREE.SphereGeometry(0.035, 10, 8), std(0x2a8ac8, { roughness: 0.15, metalness: 0.3 }), 0, 1.43, 0.22)); }
+    if (ex === 'scarf') { const sc = std(0xc8462a, { roughness: 0.95 }); const n = mesh(new THREE.TorusGeometry(0.16, 0.065, 8, 24), sc, 0, 1.56, 0); n.rotation.x = Math.PI / 2; body.add(n); const t = mesh(new THREE.BoxGeometry(0.11, 0.4, 0.04), sc, 0.1, 1.36, 0.3); t.rotation.set(-0.25, 0, 0.1); body.add(t); }
   }
   // brazos
   const mkArm = (s) => {
@@ -19936,8 +19997,15 @@ $('#b-clesson').addEventListener('click', () => { const s = Duel._won; closeConc
 // ============================================================================
 function addScore(n) { G.score += n; }
 function toast(msg) {
-  const box = $('#toasts'); const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg; box.appendChild(el);
-  while (box.children.length > 3) box.firstChild.remove();
+  const box = $('#toasts'); const el = document.createElement('div'); el.className = 'toast';
+  // el emoji del principio va destacado en un círculo dorado
+  const m = String(msg).match(/^((?:\p{Extended_Pictographic}|\p{Regional_Indicator})(?:\uFE0F|\u200D|\p{Extended_Pictographic}|\p{Regional_Indicator})*)\s*/u);
+  if (m) { const i = document.createElement('span'); i.className = 'ti'; i.textContent = m[1]; const t = document.createElement('span'); t.textContent = msg.slice(m[0].length); el.append(i, t); } else el.textContent = msg;
+  box.appendChild(el);
+  // siempre por debajo de la ruta de los pensadores y del letrero de arriba (no se tapan)
+  let top = 0; for (const id of ['path', 'h-obj', 'trialcard']) { const e = document.getElementById(id); if (!e || e.hidden || !e.offsetParent) continue; const r = e.getBoundingClientRect(); if (r.height && r.top < innerHeight * 0.45) top = Math.max(top, r.bottom + (id === 'path' ? 26 : 10)); }
+  if (top) box.style.setProperty('top', top + 'px', 'important'); else box.style.removeProperty('top');
+  while (box.children.length > (IS_TOUCH ? 2 : 3)) box.firstChild.remove();
   setTimeout(() => el.classList.add('fade'), 3800); setTimeout(() => el.remove(), 4500);
 }
 let crossT = 0;
@@ -20332,7 +20400,7 @@ async function boot() {
 }
 
 // Gancho de pruebas automáticas (solo con #debug en la URL)
-if (location.hash === '#debug') window.__dbg = { get AULA() { return AULA; }, get BOOKS() { return BOOKS; }, get Debate() { return Debate; }, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, ga: (x, z, y) => groundAt(world, x, z, y), get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, get Agora() { return Agora; }, get Foto() { return Foto; }, get Avatar() { return Avatar; }, get Dif() { return Dif; }, get Torneo() { return Torneo; }, get Versus() { return Versus; }, get Mision() { return Mision; }, get Tiempo() { return Tiempo; }, get Escucha() { return Escucha; }, get Perfil() { return Perfil; }, get ERAS() { return ERAS; }, get Orbes() { return typeof Orbes !== 'undefined' ? Orbes : null; }, get VERSUS() { return VERSUS; } };
+if (location.hash === '#debug') window.__dbg = { get AULA() { return AULA; }, get BOOKS() { return BOOKS; }, get Debate() { return Debate; }, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, ga: (x, z, y) => groundAt(world, x, z, y), get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, toast, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, get Agora() { return Agora; }, get Foto() { return Foto; }, get Avatar() { return Avatar; }, get Dif() { return Dif; }, get Torneo() { return Torneo; }, get Versus() { return Versus; }, get Mision() { return Mision; }, get Tiempo() { return Tiempo; }, get Escucha() { return Escucha; }, get Perfil() { return Perfil; }, get ERAS() { return ERAS; }, get Orbes() { return typeof Orbes !== 'undefined' ? Orbes : null; }, get VERSUS() { return VERSUS; } };
 
 // ---- src/04a-lesson.js ----
 // ============================================================================
@@ -22428,21 +22496,33 @@ $('#sl-name').addEventListener('keydown', (e) => { if (e.key === 'Enter') Sala.j
 // ============================================================================
 const MRT = Object.assign(Object.create(RT), { ws: null, hb: null, handlers: {}, joined: false, want: false, tries: 0, ref: 0, topic: '' });
 const JUNTOS_KEY = 'odisea-juntos', AVATAR_KEY = 'odisea-razon.avatar';
-const AV_ROBES = [0x3a6ab8, 0xb83a4a, 0x3a9a5a, 0xc8962a, 0x7a4ab8, 0x2a9aa8, 0xd86a2a, 0xa83a8a, 0xe8e0d0, 0x2a2a2a, 0xf0c848, 0x8a1a2a, 0x30c8c0];
-const AV_SKINS = [0xf0d0b0, 0xe0b090, 0xc49372, 0xa0704a, 0x8a5a3a, 0x5a3820];
-const AV_HAIRS = [0x1a1410, 0x4a2a1a, 0x8a5a2a, 0xd8b070, 0xb83a2a, 0xe8e8e8, 0x3a5ab8];
+const AV_ROBES = [0x3a6ab8, 0xb83a4a, 0x3a9a5a, 0xc8962a, 0x7a4ab8, 0x2a9aa8, 0xd86a2a, 0xa83a8a, 0xe8e0d0, 0x2a2a2a, 0xf0c848, 0x8a1a2a, 0x30c8c0, 0x6a4a32, 0x1e3260, 0x6e8a3a, 0xe8a0b4, 0x4a4e58];
+const AV_SKINS = [0xf0d0b0, 0xe0b090, 0xc49372, 0xa0704a, 0x8a5a3a, 0x5a3820, 0xfae4d2, 0x3e2616];
+const AV_HAIRS = [0x1a1410, 0x4a2a1a, 0x8a5a2a, 0xd8b070, 0xb83a2a, 0xe8e8e8, 0x3a5ab8, 0x7a7a7a, 0xc0662e, 0xe87aa8, 0x8a4ac8, 0x3aa86a];
 // [forma, nombre, logro que lo desbloquea]
-const AV_HATS = [['none', 'Sin nada'], ['longhair', 'Pelo largo'], ['braids', 'Trenzas'], ['cap', 'Gorro'], ['turban', 'Turbante', 'explorador'], ['laurel', 'Laurel', 'tabano'], ['hood', 'Capucha', 'salida'], ['beret', 'Boina', 'dialogo'], ['wig', 'Peluca', 'cogito'], ['mitre', 'Mitra', 'lector'], ['ruff', 'Gorguera', 'racha7']];
+const AV_HATS = [['none', 'Sin nada'], ['longhair', 'Pelo largo'], ['braids', 'Trenzas'], ['cap', 'Gorro'], ['turban', 'Turbante', 'explorador'], ['laurel', 'Laurel', 'tabano'], ['hood', 'Capucha', 'salida'], ['beret', 'Boina', 'dialogo'], ['wig', 'Peluca', 'cogito'], ['mitre', 'Mitra', 'lector'], ['ruff', 'Gorguera', 'racha7'],
+  ['short', 'Pelo corto'], ['bob', 'Melena'], ['curly', 'Rizos'], ['afro', 'Afro'], ['bun', 'Moño'], ['topknot', 'Moño alto'], ['ponytail', 'Coleta'], ['pigtails', 'Dos coletas'], ['mohawk', 'Cresta'], ['shaved', 'Rapado'], ['bald', 'Calvicie'], ['tonsure', 'Tonsura'],
+  ['headband', 'Cinta'], ['flowers', 'Corona de flores'], ['straw', 'Sombrero de paja'], ['tophat', 'Chistera', 'biblioteca'], ['mortar', 'Birrete', 'academia'], ['crown', 'Corona', 'rango-filosofo']];
 const AV_ROBE_LOCK = { 10: 'agora', 11: 'juntos', 12: 'racha3' }; // túnicas especiales
+const AV_BEARDS = [['none', 'Sin barba'], ['stubble', 'Barba de tres días'], ['mustache', 'Bigote'], ['goatee', 'Perilla'], ['chevron', 'Bigote y perilla'], ['full', 'Barba'], ['long', 'Barba de filósofo'], ['sage', 'Barba larga y canosa']];
+const AV_EXTRAS = [['none', 'Nada'], ['round', 'Gafas redondas'], ['square', 'Gafas'], ['monocle', 'Monóculo', 'kant'], ['earrings', 'Pendientes'], ['necklace', 'Collar'], ['scarf', 'Bufanda']];
+const AV_ITEMS = [['none', 'Nada'], ['book', 'Libro'], ['scroll', 'Pergamino'], ['quill', 'Pluma'], ['staff', 'Bastón'], ['lens', 'Lupa'], ['cup', 'Copa'], ['lamp', 'Lámpara de Diógenes', 'honesto']];
+// del aspecto guardado (índices) a la figura 3D
+function avLook(l) {
+  const hair = AV_HAIRS[l.h] ?? AV_HAIRS[0], b = (AV_BEARDS[l.b] || AV_BEARDS[0])[0];
+  const look = { robe: AV_ROBES[l.r] ?? AV_ROBES[0], robe2: 0x2a2620, skin: AV_SKINS[l.s] ?? AV_SKINS[2], hair, beard: false, hat: (AV_HATS[l.t] || AV_HATS[0])[0], acc: (AV_ITEMS[l.o] || AV_ITEMS[0])[0], extra: (AV_EXTRAS[l.g] || AV_EXTRAS[0])[0], beardStyle: b };
+  return look;
+}
+function avParse(ls) { const [r, s, h, t, b, g, o] = String(ls || '').split(',').map((x) => x | 0); return { r, s, h, t, b, g, o }; }
 const EMOTES = ['👋', '👍', '❓', '💡', '😂', '👏'];
 const MUTE_KEY = 'odisea-razon.silenciados';
 const Juntos = {
   on: false, mode: '', code: '', chan: '', id: '', name: '', R: new Map(), sendT: 0, last: null, near: null, duel: null, inv: null, emoT: 0, wantT: 0,
   hash(s) { let h = 7; for (const c of s) h = (Math.imul(h, 31) + c.charCodeAt(0)) >>> 0; return h; },
   myId() { if (!this.id) { try { this.id = localStorage.getItem('odisea-juntos-id') || Sala.rid(8); localStorage.setItem('odisea-juntos-id', this.id); } catch (e) { this.id = Sala.rid(8); } } return this.id; },
-  look() { const d = { r: this.hash(this.myId()) % AV_ROBES.length, s: 2, h: 0, t: 0, n: '' }; try { return { ...d, ...(JSON.parse(localStorage.getItem(AVATAR_KEY) || 'null') || {}) }; } catch (e) { return d; } },
+  look() { const d = { r: this.hash(this.myId()) % 10, s: 2, h: 0, t: 0, b: 0, g: 0, o: 0, n: '' }; try { return { ...d, ...(JSON.parse(localStorage.getItem(AVATAR_KEY) || 'null') || {}) }; } catch (e) { return d; } },
   myName() { const l = this.look(); return Sala.clean(l.n) || Sala.clean((typeof Fame !== 'undefined' && Fame.alias()) || '') || 'Viajero ' + (this.hash(this.myId()) % 9000 + 1000); },
-  lookStr(l = this.look()) { return [l.r, l.s, l.h, l.t].join(','); },
+  lookStr(l = this.look()) { return [l.r, l.s, l.h, l.t, l.b | 0, l.g | 0, l.o | 0].join(','); },
   publicOn() { return Sala.ok() && G.settings.mundo === true; },
   // silenciar: no vuelves a ver ni recibir nada de ese viajero en este aparato
   muted() { if (!this._mu) { try { this._mu = new Set(JSON.parse(localStorage.getItem(MUTE_KEY) || '[]')); } catch (e) { this._mu = new Set(); } } return this._mu; },
@@ -22495,9 +22575,8 @@ const Juntos = {
   },
   // ---------------------------------------------------------------- avatares
   avatar(id, name, ls, rk = 0) {
-    const [r, s, h, t] = String(ls || '').split(',').map((x) => x | 0);
-    const robe = AV_ROBES[r % AV_ROBES.length] ?? AV_ROBES[0], hat = (AV_HATS[t] || AV_HATS[0])[0];
-    const fig = buildFigure({ robe, robe2: 0x2a2620, skin: AV_SKINS[s] ?? AV_SKINS[2], hair: AV_HAIRS[h] ?? AV_HAIRS[0], beard: false, hat, acc: 'none' }, 0xffffff);
+    const LK = avLook(avParse(ls)), robe = LK.robe;
+    const fig = buildFigure(LK, 0xffffff);
     fig.halo.visible = false; const g = new THREE.Group(); g.add(fig.group);
     // su rango se ve sobre su cabeza: título, color y corona de laurel
     const RI = typeof Rango !== 'undefined' ? Rango.info(rk) : null; const rcol = RI ? new THREE.Color(RI.r.c) : null;
@@ -22509,7 +22588,7 @@ const Juntos = {
   },
   rPos(d) {
     const id = String(d.id || ''); if (!/^[A-Za-z0-9]{6,12}$/.test(id) || id === this.id || this.muted().has(id)) return;
-    let r = this.R.get(id); const name = Sala.clean(d.n) || 'Viajero'; const ls = String(d.l || '0,2,0,0').slice(0, 16); const rk = Math.max(0, Math.min(999, d.rk | 0));
+    let r = this.R.get(id); const name = Sala.clean(d.n) || 'Viajero'; const ls = String(d.l || '0,2,0,0').slice(0, 40); const rk = Math.max(0, Math.min(999, d.rk | 0));
     if (r && (r.ls !== ls || r.name !== name || r.rk !== rk)) { this.drop(id); r = null; }
     if (!r) { if (this.R.size >= 60) return; r = { ...this.avatar(id, name, ls, rk), name, ls, rk, x: d.x, y: d.y, z: d.z, yaw: d.r, tx: d.x, ty: d.y, tz: d.z, tyaw: d.r }; this.R.set(id, r); if (d.e === G.eraIdx && G.state === 'play') toast(`👋 ${name} ha llegado a esta época.`); }
     const wasHere = r.e === G.eraIdx; r.e = d.e; r.v = d.v > 0 ? 1 : d.v < 0 ? -1 : 0; r.lec = /^[a-z0-9_-]{2,24}$/.test(String(d.ls || '')) ? d.ls : ''; r.zone = d.zn || ''; r.tx = +d.x || 0; r.ty = +d.y || 0; r.tz = +d.z || 0; r.tyaw = +d.r || 0; r.seen = performance.now(); r.st = d.s;
@@ -22856,8 +22935,7 @@ const Agora = {
     for (const u of d.ult) {
       const id = String(u.jugador || ''); if (id === Juntos.myId() || Juntos.R.has(id) || Juntos.muted().has(id)) continue;
       const v = u.voto > 0 ? 1 : -1; const k = cnt[v]++; if (k >= 5) continue;
-      const [r, s, h, t] = String(u.aspecto || '').split(',').map((n) => n | 0);
-      const fig = buildFigure({ robe: AV_ROBES[r] ?? AV_ROBES[0], robe2: 0x2a2620, skin: AV_SKINS[s] ?? AV_SKINS[2], hair: AV_HAIRS[h] ?? AV_HAIRS[0], beard: false, hat: (AV_HATS[t] || AV_HATS[0])[0], acc: 'none' }, 0xffffff);
+      const fig = buildFigure(avLook(avParse(u.aspecto)), 0xffffff);
       fig.halo.visible = false; fig.group.traverse((o) => { if (o.material && !o.isSprite) { o.material = o.material.clone(); o.material.transparent = true; o.material.opacity = 0.62; o.castShadow = false; } });
       const g = new THREE.Group(); g.add(fig.group); const a = (k / 5) * Math.PI * 1.4 + 0.5; g.position.set(v * 2.6 + Math.cos(a) * 0.85 * v, 0, 1.2 + Math.sin(a) * 0.85); g.rotation.y = Math.atan2(-g.position.x, 1.4 - g.position.z);
       const l = new THREE.Sprite(new THREE.SpriteMaterial({ map: labelTexture(Sala.clean(u.apodo) || 'Viajero', 'pasó hoy'), transparent: true, opacity: 0.9, depthWrite: false, toneMapped: false })); l.scale.set(1.7, 0.42, 1); l.position.y = 2.6; g.add(l);
@@ -22888,7 +22966,7 @@ const Foto = {
     const p = player.pos; let best = null, bd = 9;
     if (!world.zoneIn && !(world.cave && world.cave.in)) for (const s of sages) { if (s.state === 'sealed' || !s.group.visible) continue; const d = Math.hypot(s.pos.x - p.x, s.pos.z - p.z); if (d < bd) { bd = d; best = s; } }
     // mi avatar, sin etiqueta
-    const l = Juntos.look(); const fig = buildFigure({ robe: AV_ROBES[l.r] ?? AV_ROBES[0], robe2: 0x2a2620, skin: AV_SKINS[l.s] ?? AV_SKINS[2], hair: AV_HAIRS[l.h] ?? AV_HAIRS[0], beard: false, hat: (AV_HATS[l.t] || AV_HATS[0])[0], acc: 'none' }, 0xffffff);
+    const fig = buildFigure(avLook(Juntos.look()), 0xffffff);
     fig.halo.visible = false; const me = new THREE.Group(); me.add(fig.group); scene.add(me);
     const cam0 = camera.position.clone(), q0 = camera.quaternion.clone(), fov0 = camera.fov, asp0 = camera.aspect; const hidden = [];
     const hide = (o) => { if (o && o.visible) { o.visible = false; hidden.push(o); } };
@@ -23023,9 +23101,9 @@ const Escucha = {
 // ============================================================================
 const Avatar = {
   draft: null, pv: null, fromPlay: false,
-  PARTS: [['r', 'Túnica', () => AV_ROBES], ['s', 'Piel', () => AV_SKINS], ['h', 'Pelo', () => AV_HAIRS], ['t', 'Cabeza', () => AV_HATS]],
+  PARTS: [['r', 'Túnica', () => AV_ROBES], ['s', 'Piel', () => AV_SKINS], ['h', 'Color de pelo', () => AV_HAIRS], ['t', 'Peinado o sombrero', () => AV_HATS], ['b', 'Barba', () => AV_BEARDS], ['g', 'Complemento', () => AV_EXTRAS], ['o', 'En la mano', () => AV_ITEMS]],
   got() { return new Set(store.get(ACH_KEY, [])); },
-  need(key, i) { return key === 't' ? AV_HATS[i][2] : key === 'r' ? AV_ROBE_LOCK[i] : null; },
+  need(key, i) { const L = this.PARTS.find((p) => p[0] === key)[2](); return Array.isArray(L[i]) ? L[i][2] : key === 'r' ? AV_ROBE_LOCK[i] : null; },
   locked(key, i) { const n = this.need(key, i); return n && !this.got().has(n) ? n : null; },
   online() { return G.settings.mundo === true; },
   open() {
@@ -23046,7 +23124,7 @@ const Avatar = {
     const raw = $('#av-name').value.trim(); const name = Sala.clean(raw); if (raw && !name) toast('Ese apodo no sirve: usa de 2 a 16 letras, sin palabras ofensivas.'); else n.n = name;
     try { localStorage.setItem(AVATAR_KEY, JSON.stringify(n)); } catch (e) { /* nada */ } Juntos.last = null; Juntos.sendT = 0;
   },
-  step(key, d) { const list = this.PARTS.find((p) => p[0] === key)[2](); this.draft[key] = (this.draft[key] + d + list.length) % list.length; Audio.click(); this.paint(); this.figure(); this.commit(); },
+  step(key, d) { this.focus(key); const list = this.PARTS.find((p) => p[0] === key)[2](); this.draft[key] = ((this.draft[key] | 0) + d + list.length) % list.length; Audio.click(); this.paint(); this.figure(); this.commit(); },
   random() { for (const [key, , list] of this.PARTS) { const ok = list().map((_, i) => i).filter((i) => !this.locked(key, i)); this.draft[key] = ok[Math.floor(Math.random() * ok.length)]; } Audio.click(); this.paint(); this.figure(); this.commit(); },
   setOnline(v) {
     G.settings.mundo = !!v; saveSettings(); syncSettings(); Juntos.asked = true;
@@ -23057,13 +23135,13 @@ const Avatar = {
   paint() {
     const box = $('#av-opts'); box.innerHTML = '';
     for (const [key, label, list] of this.PARTS) {
-      const L = list(), i = this.draft[key], lock = this.locked(key, i); const row = document.createElement('div'); row.className = 'av-row';
+      const L = list(), i = (this.draft[key] | 0) % L.length, lock = this.locked(key, i); const row = document.createElement('div'); row.className = 'av-row';
       const prev = document.createElement('button'); prev.className = 'av-arrow'; prev.textContent = '◀'; prev.setAttribute('aria-label', label + ' anterior'); prev.addEventListener('click', () => this.step(key, -1));
       const next = document.createElement('button'); next.className = 'av-arrow'; next.textContent = '▶'; next.setAttribute('aria-label', label + ' siguiente'); next.addEventListener('click', () => this.step(key, 1));
       const mid = document.createElement('div'); mid.className = 'av-mid' + (lock ? ' lock' : '');
       const t = document.createElement('b'); t.textContent = label; mid.appendChild(t);
       const v = document.createElement('span');
-      if (key === 't') v.textContent = (lock ? '🔒 ' : '') + L[i][1]; else { const sw = document.createElement('i'); sw.style.background = '#' + L[i].toString(16).padStart(6, '0'); v.appendChild(sw); v.appendChild(document.createTextNode(`${lock ? '🔒 ' : ''}${i + 1} de ${L.length}`)); }
+      if (Array.isArray(L[i])) v.textContent = (lock ? '🔒 ' : '') + L[i][1]; else { const sw = document.createElement('i'); sw.style.background = '#' + L[i].toString(16).padStart(6, '0'); v.appendChild(sw); v.appendChild(document.createTextNode(`${lock ? '🔒 ' : ''}${i + 1} de ${L.length}`)); }
       mid.appendChild(v);
       if (lock) { const a = ACH.find((x) => x.id === lock); const h = document.createElement('small'); h.textContent = `Se gana con el logro «${a ? a.n : lock}»`; mid.appendChild(h); }
       row.append(prev, mid, next); box.appendChild(row);
@@ -23083,16 +23161,26 @@ const Avatar = {
       const c = $('#av-prev'); const r = new THREE.WebGLRenderer({ canvas: c, alpha: true, antialias: true }); r.setPixelRatio(Math.min(2, window.devicePixelRatio || 1)); r.setSize(c.clientWidth || 220, c.clientHeight || 260, false);
       const sc = new THREE.Scene(); sc.add(new THREE.HemisphereLight(0xfff4e0, 0x40342a, 1.6)); const d = new THREE.DirectionalLight(0xffffff, 2.2); d.position.set(2, 4, 3); sc.add(d);
       const cam = new THREE.PerspectiveCamera(32, (c.clientWidth || 220) / (c.clientHeight || 260), 0.1, 30); cam.position.set(0, 1.4, 4.1); cam.lookAt(0, 1.2, 0);
-      this.pv = { r, sc, cam, fig: null, t0: performance.now() }; this.figure();
-      const loop = () => { const P = this.pv; if (!P || P.r !== r) return; const t = (performance.now() - P.t0) / 1000; if (P.fig) { P.fig.group.rotation.y = Math.sin(t * 0.7) * 0.9; P.fig.group.position.y = Math.sin(t * 2) * 0.015; } r.render(sc, cam); requestAnimationFrame(loop); };
+      this.pv = { r, sc, cam, fig: null, t0: performance.now(), z: 0, zt: 0, drag: null, spin: 0, last: 0 }; this.figure();
+      // arrastrar para girar el avatar; al elegir cabeza, barba o complemento la cámara se acerca a la cara
+      const P0 = this.pv; c.style.touchAction = 'none'; c.style.cursor = 'grab';
+      c.onpointerdown = (e) => { P0.drag = e.clientX; P0.last = performance.now(); c.setPointerCapture(e.pointerId); };
+      c.onpointermove = (e) => { if (P0.drag == null) return; P0.spin += (e.clientX - P0.drag) * 0.012; P0.drag = e.clientX; P0.last = performance.now(); };
+      c.onpointerup = c.onpointercancel = () => { P0.drag = null; };
+      c.ondblclick = () => { P0.zt = P0.zt > 0.5 ? 0 : 1; };
+      const loop = () => { const P = this.pv; if (!P || P.r !== r) return; const now = performance.now(), t = (now - P.t0) / 1000;
+        if (P.fig) { const idle = now - P.last > 2500; if (idle) P.spin *= 0.97; P.fig.group.rotation.y = P.spin + (idle ? Math.sin(t * 0.7) * 0.6 : 0); P.fig.group.position.y = Math.sin(t * 2) * 0.015; }
+        P.z += (P.zt - P.z) * 0.12; const z = P.z; cam.position.set(0, 1.4 + z * 0.36, 4.1 - z * 2.75); cam.lookAt(0, 1.2 + z * 0.55, 0);
+        r.render(sc, cam); requestAnimationFrame(loop); };
       requestAnimationFrame(loop);
     } catch (e) { this.pv = null; $('#av-prev').hidden = true; }
   },
   figure() {
     const P = this.pv; if (!P) return; if (P.fig) { P.sc.remove(P.fig.group); P.fig.group.traverse((o) => { if (o.geometry) o.geometry.dispose(); }); }
-    const l = this.draft; const fig = buildFigure({ robe: AV_ROBES[l.r] ?? AV_ROBES[0], robe2: 0x2a2620, skin: AV_SKINS[l.s] ?? AV_SKINS[2], hair: AV_HAIRS[l.h] ?? AV_HAIRS[0], beard: false, hat: (AV_HATS[l.t] || AV_HATS[0])[0], acc: 'none' }, 0xffffff);
+    const fig = buildFigure(avLook(this.draft), 0xffffff);
     fig.halo.visible = false; P.sc.add(fig.group); P.fig = fig;
   },
+  focus(key) { if (this.pv) this.pv.zt = ['s', 'h', 't', 'b', 'g'].includes(key) ? 1 : 0; },
   stopPreview() { const P = this.pv; this.pv = null; if (!P) return; try { if (P.fig) P.fig.group.traverse((o) => { if (o.geometry) o.geometry.dispose(); }); P.r.dispose(); } catch (e) { /* nada */ } },
 };
 on('#av-ok', () => Avatar.close());

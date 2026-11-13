@@ -6,9 +6,9 @@
 // ============================================================================
 const Avatar = {
   draft: null, pv: null, fromPlay: false,
-  PARTS: [['r', 'Túnica', () => AV_ROBES], ['s', 'Piel', () => AV_SKINS], ['h', 'Pelo', () => AV_HAIRS], ['t', 'Cabeza', () => AV_HATS]],
+  PARTS: [['r', 'Túnica', () => AV_ROBES], ['s', 'Piel', () => AV_SKINS], ['h', 'Color de pelo', () => AV_HAIRS], ['t', 'Peinado o sombrero', () => AV_HATS], ['b', 'Barba', () => AV_BEARDS], ['g', 'Complemento', () => AV_EXTRAS], ['o', 'En la mano', () => AV_ITEMS]],
   got() { return new Set(store.get(ACH_KEY, [])); },
-  need(key, i) { return key === 't' ? AV_HATS[i][2] : key === 'r' ? AV_ROBE_LOCK[i] : null; },
+  need(key, i) { const L = this.PARTS.find((p) => p[0] === key)[2](); return Array.isArray(L[i]) ? L[i][2] : key === 'r' ? AV_ROBE_LOCK[i] : null; },
   locked(key, i) { const n = this.need(key, i); return n && !this.got().has(n) ? n : null; },
   online() { return G.settings.mundo === true; },
   open() {
@@ -29,7 +29,7 @@ const Avatar = {
     const raw = $('#av-name').value.trim(); const name = Sala.clean(raw); if (raw && !name) toast('Ese apodo no sirve: usa de 2 a 16 letras, sin palabras ofensivas.'); else n.n = name;
     try { localStorage.setItem(AVATAR_KEY, JSON.stringify(n)); } catch (e) { /* nada */ } Juntos.last = null; Juntos.sendT = 0;
   },
-  step(key, d) { const list = this.PARTS.find((p) => p[0] === key)[2](); this.draft[key] = (this.draft[key] + d + list.length) % list.length; Audio.click(); this.paint(); this.figure(); this.commit(); },
+  step(key, d) { this.focus(key); const list = this.PARTS.find((p) => p[0] === key)[2](); this.draft[key] = ((this.draft[key] | 0) + d + list.length) % list.length; Audio.click(); this.paint(); this.figure(); this.commit(); },
   random() { for (const [key, , list] of this.PARTS) { const ok = list().map((_, i) => i).filter((i) => !this.locked(key, i)); this.draft[key] = ok[Math.floor(Math.random() * ok.length)]; } Audio.click(); this.paint(); this.figure(); this.commit(); },
   setOnline(v) {
     G.settings.mundo = !!v; saveSettings(); syncSettings(); Juntos.asked = true;
@@ -40,13 +40,13 @@ const Avatar = {
   paint() {
     const box = $('#av-opts'); box.innerHTML = '';
     for (const [key, label, list] of this.PARTS) {
-      const L = list(), i = this.draft[key], lock = this.locked(key, i); const row = document.createElement('div'); row.className = 'av-row';
+      const L = list(), i = (this.draft[key] | 0) % L.length, lock = this.locked(key, i); const row = document.createElement('div'); row.className = 'av-row';
       const prev = document.createElement('button'); prev.className = 'av-arrow'; prev.textContent = '◀'; prev.setAttribute('aria-label', label + ' anterior'); prev.addEventListener('click', () => this.step(key, -1));
       const next = document.createElement('button'); next.className = 'av-arrow'; next.textContent = '▶'; next.setAttribute('aria-label', label + ' siguiente'); next.addEventListener('click', () => this.step(key, 1));
       const mid = document.createElement('div'); mid.className = 'av-mid' + (lock ? ' lock' : '');
       const t = document.createElement('b'); t.textContent = label; mid.appendChild(t);
       const v = document.createElement('span');
-      if (key === 't') v.textContent = (lock ? '🔒 ' : '') + L[i][1]; else { const sw = document.createElement('i'); sw.style.background = '#' + L[i].toString(16).padStart(6, '0'); v.appendChild(sw); v.appendChild(document.createTextNode(`${lock ? '🔒 ' : ''}${i + 1} de ${L.length}`)); }
+      if (Array.isArray(L[i])) v.textContent = (lock ? '🔒 ' : '') + L[i][1]; else { const sw = document.createElement('i'); sw.style.background = '#' + L[i].toString(16).padStart(6, '0'); v.appendChild(sw); v.appendChild(document.createTextNode(`${lock ? '🔒 ' : ''}${i + 1} de ${L.length}`)); }
       mid.appendChild(v);
       if (lock) { const a = ACH.find((x) => x.id === lock); const h = document.createElement('small'); h.textContent = `Se gana con el logro «${a ? a.n : lock}»`; mid.appendChild(h); }
       row.append(prev, mid, next); box.appendChild(row);
@@ -66,16 +66,26 @@ const Avatar = {
       const c = $('#av-prev'); const r = new THREE.WebGLRenderer({ canvas: c, alpha: true, antialias: true }); r.setPixelRatio(Math.min(2, window.devicePixelRatio || 1)); r.setSize(c.clientWidth || 220, c.clientHeight || 260, false);
       const sc = new THREE.Scene(); sc.add(new THREE.HemisphereLight(0xfff4e0, 0x40342a, 1.6)); const d = new THREE.DirectionalLight(0xffffff, 2.2); d.position.set(2, 4, 3); sc.add(d);
       const cam = new THREE.PerspectiveCamera(32, (c.clientWidth || 220) / (c.clientHeight || 260), 0.1, 30); cam.position.set(0, 1.4, 4.1); cam.lookAt(0, 1.2, 0);
-      this.pv = { r, sc, cam, fig: null, t0: performance.now() }; this.figure();
-      const loop = () => { const P = this.pv; if (!P || P.r !== r) return; const t = (performance.now() - P.t0) / 1000; if (P.fig) { P.fig.group.rotation.y = Math.sin(t * 0.7) * 0.9; P.fig.group.position.y = Math.sin(t * 2) * 0.015; } r.render(sc, cam); requestAnimationFrame(loop); };
+      this.pv = { r, sc, cam, fig: null, t0: performance.now(), z: 0, zt: 0, drag: null, spin: 0, last: 0 }; this.figure();
+      // arrastrar para girar el avatar; al elegir cabeza, barba o complemento la cámara se acerca a la cara
+      const P0 = this.pv; c.style.touchAction = 'none'; c.style.cursor = 'grab';
+      c.onpointerdown = (e) => { P0.drag = e.clientX; P0.last = performance.now(); c.setPointerCapture(e.pointerId); };
+      c.onpointermove = (e) => { if (P0.drag == null) return; P0.spin += (e.clientX - P0.drag) * 0.012; P0.drag = e.clientX; P0.last = performance.now(); };
+      c.onpointerup = c.onpointercancel = () => { P0.drag = null; };
+      c.ondblclick = () => { P0.zt = P0.zt > 0.5 ? 0 : 1; };
+      const loop = () => { const P = this.pv; if (!P || P.r !== r) return; const now = performance.now(), t = (now - P.t0) / 1000;
+        if (P.fig) { const idle = now - P.last > 2500; if (idle) P.spin *= 0.97; P.fig.group.rotation.y = P.spin + (idle ? Math.sin(t * 0.7) * 0.6 : 0); P.fig.group.position.y = Math.sin(t * 2) * 0.015; }
+        P.z += (P.zt - P.z) * 0.12; const z = P.z; cam.position.set(0, 1.4 + z * 0.36, 4.1 - z * 2.75); cam.lookAt(0, 1.2 + z * 0.55, 0);
+        r.render(sc, cam); requestAnimationFrame(loop); };
       requestAnimationFrame(loop);
     } catch (e) { this.pv = null; $('#av-prev').hidden = true; }
   },
   figure() {
     const P = this.pv; if (!P) return; if (P.fig) { P.sc.remove(P.fig.group); P.fig.group.traverse((o) => { if (o.geometry) o.geometry.dispose(); }); }
-    const l = this.draft; const fig = buildFigure({ robe: AV_ROBES[l.r] ?? AV_ROBES[0], robe2: 0x2a2620, skin: AV_SKINS[l.s] ?? AV_SKINS[2], hair: AV_HAIRS[l.h] ?? AV_HAIRS[0], beard: false, hat: (AV_HATS[l.t] || AV_HATS[0])[0], acc: 'none' }, 0xffffff);
+    const fig = buildFigure(avLook(this.draft), 0xffffff);
     fig.halo.visible = false; P.sc.add(fig.group); P.fig = fig;
   },
+  focus(key) { if (this.pv) this.pv.zt = ['s', 'h', 't', 'b', 'g'].includes(key) ? 1 : 0; },
   stopPreview() { const P = this.pv; this.pv = null; if (!P) return; try { if (P.fig) P.fig.group.traverse((o) => { if (o.geometry) o.geometry.dispose(); }); P.r.dispose(); } catch (e) { /* nada */ } },
 };
 on('#av-ok', () => Avatar.close());

@@ -1090,8 +1090,15 @@ $('#b-clesson').addEventListener('click', () => { const s = Duel._won; closeConc
 // ============================================================================
 function addScore(n) { G.score += n; }
 function toast(msg) {
-  const box = $('#toasts'); const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg; box.appendChild(el);
-  while (box.children.length > 3) box.firstChild.remove();
+  const box = $('#toasts'); const el = document.createElement('div'); el.className = 'toast';
+  // el emoji del principio va destacado en un círculo dorado
+  const m = String(msg).match(/^((?:\p{Extended_Pictographic}|\p{Regional_Indicator})(?:\uFE0F|\u200D|\p{Extended_Pictographic}|\p{Regional_Indicator})*)\s*/u);
+  if (m) { const i = document.createElement('span'); i.className = 'ti'; i.textContent = m[1]; const t = document.createElement('span'); t.textContent = msg.slice(m[0].length); el.append(i, t); } else el.textContent = msg;
+  box.appendChild(el);
+  // siempre por debajo de la ruta de los pensadores y del letrero de arriba (no se tapan)
+  let top = 0; for (const id of ['path', 'h-obj', 'trialcard']) { const e = document.getElementById(id); if (!e || e.hidden || !e.offsetParent) continue; const r = e.getBoundingClientRect(); if (r.height && r.top < innerHeight * 0.45) top = Math.max(top, r.bottom + (id === 'path' ? 26 : 10)); }
+  if (top) box.style.setProperty('top', top + 'px', 'important'); else box.style.removeProperty('top');
+  while (box.children.length > (IS_TOUCH ? 2 : 3)) box.firstChild.remove();
   setTimeout(() => el.classList.add('fade'), 3800); setTimeout(() => el.remove(), 4500);
 }
 let crossT = 0;
@@ -1486,4 +1493,4 @@ async function boot() {
 }
 
 // Gancho de pruebas automáticas (solo con #debug en la URL)
-if (location.hash === '#debug') window.__dbg = { get AULA() { return AULA; }, get BOOKS() { return BOOKS; }, get Debate() { return Debate; }, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, ga: (x, z, y) => groundAt(world, x, z, y), get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, get Agora() { return Agora; }, get Foto() { return Foto; }, get Avatar() { return Avatar; }, get Dif() { return Dif; }, get Torneo() { return Torneo; }, get Versus() { return Versus; }, get Mision() { return Mision; }, get Tiempo() { return Tiempo; }, get Escucha() { return Escucha; }, get Perfil() { return Perfil; }, get ERAS() { return ERAS; }, get Orbes() { return typeof Orbes !== 'undefined' ? Orbes : null; }, get VERSUS() { return VERSUS; } };
+if (location.hash === '#debug') window.__dbg = { get AULA() { return AULA; }, get BOOKS() { return BOOKS; }, get Debate() { return Debate; }, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, ga: (x, z, y) => groundAt(world, x, z, y), get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, toast, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, get Agora() { return Agora; }, get Foto() { return Foto; }, get Avatar() { return Avatar; }, get Dif() { return Dif; }, get Torneo() { return Torneo; }, get Versus() { return Versus; }, get Mision() { return Mision; }, get Tiempo() { return Tiempo; }, get Escucha() { return Escucha; }, get Perfil() { return Perfil; }, get ERAS() { return ERAS; }, get Orbes() { return typeof Orbes !== 'undefined' ? Orbes : null; }, get VERSUS() { return VERSUS; } };

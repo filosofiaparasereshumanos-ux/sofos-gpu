@@ -150,8 +150,7 @@ const Agora = {
     for (const u of d.ult) {
       const id = String(u.jugador || ''); if (id === Juntos.myId() || Juntos.R.has(id) || Juntos.muted().has(id)) continue;
       const v = u.voto > 0 ? 1 : -1; const k = cnt[v]++; if (k >= 5) continue;
-      const [r, s, h, t] = String(u.aspecto || '').split(',').map((n) => n | 0);
-      const fig = buildFigure({ robe: AV_ROBES[r] ?? AV_ROBES[0], robe2: 0x2a2620, skin: AV_SKINS[s] ?? AV_SKINS[2], hair: AV_HAIRS[h] ?? AV_HAIRS[0], beard: false, hat: (AV_HATS[t] || AV_HATS[0])[0], acc: 'none' }, 0xffffff);
+      const fig = buildFigure(avLook(avParse(u.aspecto)), 0xffffff);
       fig.halo.visible = false; fig.group.traverse((o) => { if (o.material && !o.isSprite) { o.material = o.material.clone(); o.material.transparent = true; o.material.opacity = 0.62; o.castShadow = false; } });
       const g = new THREE.Group(); g.add(fig.group); const a = (k / 5) * Math.PI * 1.4 + 0.5; g.position.set(v * 2.6 + Math.cos(a) * 0.85 * v, 0, 1.2 + Math.sin(a) * 0.85); g.rotation.y = Math.atan2(-g.position.x, 1.4 - g.position.z);
       const l = new THREE.Sprite(new THREE.SpriteMaterial({ map: labelTexture(Sala.clean(u.apodo) || 'Viajero', 'pasó hoy'), transparent: true, opacity: 0.9, depthWrite: false, toneMapped: false })); l.scale.set(1.7, 0.42, 1); l.position.y = 2.6; g.add(l);
@@ -182,7 +181,7 @@ const Foto = {
     const p = player.pos; let best = null, bd = 9;
     if (!world.zoneIn && !(world.cave && world.cave.in)) for (const s of sages) { if (s.state === 'sealed' || !s.group.visible) continue; const d = Math.hypot(s.pos.x - p.x, s.pos.z - p.z); if (d < bd) { bd = d; best = s; } }
     // mi avatar, sin etiqueta
-    const l = Juntos.look(); const fig = buildFigure({ robe: AV_ROBES[l.r] ?? AV_ROBES[0], robe2: 0x2a2620, skin: AV_SKINS[l.s] ?? AV_SKINS[2], hair: AV_HAIRS[l.h] ?? AV_HAIRS[0], beard: false, hat: (AV_HATS[l.t] || AV_HATS[0])[0], acc: 'none' }, 0xffffff);
+    const fig = buildFigure(avLook(Juntos.look()), 0xffffff);
     fig.halo.visible = false; const me = new THREE.Group(); me.add(fig.group); scene.add(me);
     const cam0 = camera.position.clone(), q0 = camera.quaternion.clone(), fov0 = camera.fov, asp0 = camera.aspect; const hidden = [];
     const hide = (o) => { if (o && o.visible) { o.visible = false; hidden.push(o); } };

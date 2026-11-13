@@ -152,9 +152,10 @@ kbd { font-family: var(--display); font-size: 0.78em; border: 1px solid var(--li
 #prompt { position: absolute; left: 50%; top: calc(50% + 46px); transform: translateX(-50%); font-family: var(--display); letter-spacing: 0.12em; font-size: 0.95rem; padding: 8px 16px; background: rgba(13,12,18,0.72); border: 1px solid var(--line); white-space: nowrap; max-width: 92vw; overflow: hidden; text-overflow: ellipsis; }
 #prompt b { color: var(--gold-bright); font-weight: 400; }
 #toasts { position: absolute; top: calc(70px + var(--sat)); left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; width: min(560px, 92vw); }
-.toast { background: rgba(13,12,18,0.82); border-left: 2px solid var(--gold); padding: 8px 14px; font-size: 1.02rem; text-align: center; animation: toastIn .35s ease-out; text-shadow: 0 1px 3px #000; }
-.toast.fade { opacity: 0; transition: opacity .6s; }
-@keyframes toastIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+.toast { display: flex; align-items: center; gap: 10px; max-width: 100%; box-sizing: border-box; background: linear-gradient(135deg, rgba(58,40,14,0.96), rgba(22,15,8,0.96)); border: 1.5px solid var(--gold); border-radius: 14px; padding: 10px 16px; color: #fff4dc; font-size: 1.05rem; line-height: 1.3; text-align: left; text-shadow: 0 1px 2px #000; box-shadow: 0 8px 26px rgba(0,0,0,0.6), 0 0 20px rgba(255,200,90,0.28), inset 0 1px 0 rgba(255,230,160,0.3); animation: toastIn .5s cubic-bezier(.2,1.5,.4,1); }
+.toast .ti { flex: 0 0 auto; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; font-size: 1.3rem; background: radial-gradient(circle, rgba(255,211,106,0.4), rgba(255,211,106,0.06)); box-shadow: 0 0 12px rgba(255,211,106,0.35); }
+.toast.fade { opacity: 0; transform: translateY(-8px); transition: opacity .6s, transform .6s; }
+@keyframes toastIn { from { opacity: 0; transform: translateY(-16px) scale(0.9); } to { opacity: 1; transform: none; } }
 #vignette { position: absolute; inset: 0; pointer-events: none; z-index: 9; background: radial-gradient(ellipse at center, transparent 45%, rgba(190, 30, 40, 0.75) 100%); opacity: 0; transition: opacity .12s; }
 #lowhp { position: absolute; inset: 0; pointer-events: none; z-index: 8; background: radial-gradient(ellipse at center, transparent 55%, rgba(120, 10, 20, 0.6) 100%); opacity: 0; }
 
@@ -392,7 +393,7 @@ body.touch .tb.act.go { font-size: 0.72rem; }
 .on-sw.on { border-color: #7fd08a; } .on-sw.on i { background: #4fae62; } .on-sw.on i::after { transform: translateX(20px); background: #fff; }
 .on-sw.big { width: 100%; margin: 12px 0 4px; padding: 12px 14px; } .on-sw.big span { font-size: 1rem; } .on-sw.big small { font-size: 0.82rem; white-space: normal; }
 .av-card { width: min(520px, 100%); } .av-h { font-family: var(--display); font-weight: normal; color: var(--gold); margin: 0 0 8px; text-align: center; letter-spacing: 0.08em; }
-.av-top { display: flex; gap: 12px; align-items: center; } #app #av-prev { position: static !important; inset: auto; flex: 0 0 42%; width: 42% !important; max-width: 200px; aspect-ratio: 11 / 13; height: auto !important; border-radius: 14px; background: radial-gradient(circle at 50% 40%, rgba(216,178,90,0.25), rgba(0,0,0,0.25)); }
+.av-top { display: flex; gap: 12px; align-items: center; } #app #av-prev { position: static !important; inset: auto; flex: 0 0 42%; width: 42% !important; max-width: 240px; aspect-ratio: 11 / 13; touch-action: none; height: auto !important; border-radius: 14px; background: radial-gradient(circle at 50% 40%, rgba(216,178,90,0.25), rgba(0,0,0,0.25)); }
 .av-side { flex: 1; min-width: 0; } #av-name { width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.3); color: var(--parchment); border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; font-family: var(--body); font-size: 1rem; margin-bottom: 6px; }
 .av-card .av-row { display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; gap: 6px; margin: 5px 0; }
 .av-arrow { height: 40px; border-radius: 10px; border: 1px solid var(--line); background: rgba(255,255,255,0.06); color: var(--gold-bright); font-size: 1rem; cursor: pointer; }
@@ -856,7 +857,7 @@ body.touch #toasts { top: calc(140px + var(--sat)); width: min(520px, 84vw); }
 body.tc-on #toasts { top: calc(250px + var(--sat)) !important; }
 body.touch #tfs, body.touch #tpause { top: calc(12px + var(--sat)); }
 body.touch .hud-tr { right: calc(116px + var(--sar)); }
-body.touch .toast { font-size: 0.92rem; padding: 6px 12px; }
+body.touch .toast { font-size: 0.95rem; padding: 8px 12px; } body.touch .toast .ti { width: 30px; height: 30px; font-size: 1.1rem; }
 @media (max-width: 760px) { .node span { display: none; } .node.now span { display: block; } }
 body.touch .gm { width: 26px; height: 26px; font-size: 0.75rem; }
 body.touch .gm.boss { width: 30px; height: 30px; }
@@ -3487,7 +3488,7 @@ ERAS.push({
         { q: 'According to Freire, learning to read is learning to read...', a: ['The Word and the World', 'Only in Latin', 'Only the sacred books', 'Numbers only'], e: 'The reading of the world precedes the reading of the word.' },
         { q: 'What country was Paulo Freire from?', a: ['Brazil', 'Argentina', 'Portugal', 'Uruguay'], e: 'He was born in Recife, northeastern Brazil.' },
         { q: 'How many workers learned to read in Angicos, in 1963, with their method, in about forty hours?', a: ['About three hundred', 'Three', 'Thirty thousand', 'None'], e: 'The experience of Angicos made his method famous.' },
-        { q: 'What happened to Freire after the 1964 military coup in Brazil?', a: ['He was imprisoned and exiled for sixteen years.', 'He was appointed Minister', 'He became military.', 'Nothing.'], e: 'He lived in Chile, the United States and Switzerland.' },
+        { q: 'What happened to Freire after the 1964 military coup in Brazil?', a: ['He was imprisoned and exiled for sixteen years.', 'He was appointed Minister', 'He became military.', 'Nothing'], e: 'He lived in Chile, the United States and Switzerland.' },
         { q: 'What are the "words that generate" of your literacy method?', a: ['Words from the daily life of students who are used to learn to read and think', 'Magical Words', 'Latin words', 'Words invented by the master'], e: 'As a brick for construction workers.' },
         { q: 'Which Argentine-Mexican philosopher founded the “philosophy of liberation”?', a: ['Enrique Dussel', 'Jorge Luis Borges', 'Ernesto Sabato', 'Leopoldo Lugones'], e: 'Think from the victim and from the periphery of the world.' },
         { q: 'Which Peruvian thinker wrote “Seven essays of interpretation of Peruvian reality”?', a: ['José Carlos Mariátegui', 'César Vallejo', 'Mario Vargas Llosa', 'Garcilaso de la Vega'], e: 'Published in 1928, it unites Marxism and the indigenous world.' },
@@ -4526,7 +4527,7 @@ ERAS.push({
         { q: 'What did Archimedes say about the lever?', a: ['Give me a foothold and I\'ll move the world', 'The lever is useless.', 'Only gods use levers', 'With the lever it flies'], e: 'With a lever long enough, a small force moves a great weight.' },
         { q: 'What number did Archimedes calculate with great precision?', a: ['Pi, the relationship between circumference and diameter', 'Zero', 'The number of stars', 'The Age of the Universe'], e: 'He narrowed it between 3 + 10/71 and 3 + 1/7.' },
         { q: 'What city did Archimedes live in?', a: ['Syracuse in Sicily', 'Athens', 'Alexandria only', 'Rome'], e: 'A great Greek city in Sicily.' },
-        { q: 'What does Archimedes say to the Roman soldier who killed him?', a: ['Don\'t disturb my circles', 'Surrender', 'Call the king.', 'Nothing.'], e: 'I was drawing figures in the sand.' },
+        { q: 'What does Archimedes say to the Roman soldier who killed him?', a: ['Don\'t disturb my circles', 'Surrender', 'Call the king.', 'Nothing'], e: 'I was drawing figures in the sand.' },
         { q: 'What invention to raise water is attributed to Archimedes?', a: ['The Archimedes screw', 'The modern hydraulic wheel', 'The electric pump', 'The Roman aqueduct'], e: 'It is still used in some places to water.' },
         { q: 'What figure did Archimedes ask to record in his tomb?', a: ['A sphere inside a cylinder', 'A crown', 'A lever', 'A ship'], e: 'He was proud to have calculated the relationship between his volumes.' },
       ] },
@@ -4536,7 +4537,7 @@ ERAS.push({
       defeat: 'You\'d rather look than repeat. The great book of nature is written in mathematical language: continue reading it.',
       concept: { name: 'Observe, measure and experience', text: 'Galileo Galilei, an Italian scientist, perfected the telescope and discovered the moons of Jupiter, the phases of Venus and the mountains of the Moon, proof that the Earth revolves around the Sun. He studied the movement with experiments and mathematics. He was tried by the Inquisition in 1633 and forced to retract.' },
       q: [
-        { q: 'What did Galileo discover around Jupiter?', a: ['Four moons', 'Ice rings', 'A small sun', 'Nothing.'], e: 'Today they are called Galilean satellites.' },
+        { q: 'What did Galileo discover around Jupiter?', a: ['Four moons', 'Ice rings', 'A small sun', 'Nothing'], e: 'Today they are called Galilean satellites.' },
         { q: 'What instrument did Galileo perfect to observe the sky?', a: ['The telescope', 'The electronic microscope', 'The compass', 'The atomic clock'], e: 'In 1609, from a Dutch invention.' },
         { q: 'What did Galileo defend about the Earth and the Sun?', a: ['That the Earth revolves around the Sun', 'That the Sun revolves around the Earth', 'That the Earth is flat', 'That the sun never moves'], e: 'Following Copernicus.' },
         { q: 'What happened to Galileo in 1633?', a: ['The Inquisition judged him and forced him to retract', 'Received a Nobel Prize', 'He was named pope.', 'He traveled to America.'], e: 'He spent his last years in house arrest.' },
@@ -4846,7 +4847,7 @@ ERAS.push({
         { q: 'Which Nordic god sought wisdom at any price?', a: ['Odin, who gave an eye to drink from the well of wisdom', 'Thor', 'Loki', 'Freyr'], e: 'Snorri tells it at the Edda.' },
         { q: 'Why did Snorri write the minor Edda?', a: ['To teach poets the myths and images of ancient poetry', 'To collect taxes', 'To declare war', 'To sell boats'], e: 'The poetry of the scalds was full of allusions to myths.' },
         { q: 'What is the name of the rainbow that unites the human world and that of the gods?', a: ['Bifröst', 'Midgard', 'Valhalla', 'Yggdrasil'], e: 'The shaky bridge in the sky.' },
-        { q: 'What do we keep today thanks to writers like Snorri?', a: ['The Memory and Stories of Ancient Cultures', 'Nothing.', 'Only weapons', 'Coins only'], e: 'Writing is a way to take care of the past.' },
+        { q: 'What do we keep today thanks to writers like Snorri?', a: ['The Memory and Stories of Ancient Cultures', 'Nothing', 'Only weapons', 'Coins only'], e: 'Writing is a way to take care of the past.' },
       ] },
   ],
 });
@@ -4926,7 +4927,7 @@ ERAS.push({
         { q: 'Which empire did Cyrus the Great found?', a: ['The Persian Achemenid Empire', 'The Roman Empire', 'The Inca Empire', 'The Han Chinese Empire'], e: 'It spread from Asia Minor to India.' },
         { q: 'Which city did Cyrus conquer in 539 BC. C.?', a: ['Babylon', 'Athens', 'Rome', 'Carthage'], e: 'He broke her in without destroying her.' },
         { q: 'What is the Cyrus Cylinder?', a: ['A clay cylinder with a text in which Cyrus announces his policy towards the peoples', 'A marble column', 'A carriage wheel', 'A coin'], e: 'Today it is in the British Museum, and a copy at the UN headquarters.' },
-        { q: 'What did Cyrus allow the people deported by Babylon?', a: ['Return to your lands and rebuild your temples', 'To be sold as slaves', 'Nothing.', 'Becoming Soldiers'], e: 'Among them, the Jews returned to Jerusalem.' },
+        { q: 'What did Cyrus allow the people deported by Babylon?', a: ['Return to your lands and rebuild your temples', 'To be sold as slaves', 'Nothing', 'Becoming Soldiers'], e: 'Among them, the Jews returned to Jerusalem.' },
         { q: 'Why do historians argue to call the Cylinder a “human rights statement”?', a: ['Because it was also a king\'s propaganda, and human rights are a modern idea', 'Because it\'s fake.', 'Because it\'s written in Chinese', 'Because no one\'s read it.'], e: 'Reading the past carefully is part of thinking well.' },
         { q: 'Where\'s Cyrus\'s grave?', a: ['In Pasargada, in present-day Iran', 'In Egypt', 'In Athens', 'In Rome'], e: 'A simple stone house on steps.' },
         { q: 'What Greek author wrote a work on Cyrus\'s education?', a: ['Xenophon, at the Cyropedia', 'Homer', 'Safo', 'Aristophanes'], e: 'He presented it as a model of ruler.' },
@@ -5043,7 +5044,7 @@ Object.assign(LESSONS, {
       { q: 'Why did they call Democritus "the philosopher who laughs"?', a: ['Because he laughed at human madness and sought serene joy', 'Because I used to tell jokes at the theater.', 'Because he was an actor.', 'Because I never meant it.'], e: 'For him, good courage (euthymia) was the goal of life.' },
       { q: 'What city was Democritus from?', a: ['De Abdera, in Thrace', 'From Athens', 'From Rome', 'From Alexandria'], e: 'Northern Greece.' },
       { q: 'Which later philosopher resumed atomism to think of a quiet life?', a: ['Epicurus', 'Plato', 'Augustine', 'Kant'], e: 'The Epicureans were the heirs of Democritus.' },
-      { q: 'What does Democritus have to do with modern science?', a: ['Chemistry regained its idea that matter is made of atoms', 'He invented the microscope.', 'He discovered the electricity.', 'Nothing.'], e: 'Although today we know that the atom can be divided.' },
+      { q: 'What does Democritus have to do with modern science?', a: ['Chemistry regained its idea that matter is made of atoms', 'He invented the microscope.', 'He discovered the electricity.', 'Nothing'], e: 'Although today we know that the atom can be divided.' },
     ] }, 'parmenides');
   add('helenismo', {
     id: 'seneca', name: 'Lucio Anneo Seneca', short: 'Seneca', dates: 'c. 4 a. C. – 65', epithet: 'The stoic one who taught us not to waste time',
@@ -5315,7 +5316,7 @@ Object.assign(LESSONS, {
       Q('What example did Mencius use to show our natural goodness?', 'A child about to fall into a well', 'We all feel the urge to save him.', 'A thief in the night', 'A king on his throne', 'A river overflowing'),
       Q('What great teacher was Mencius a follower of?', 'Of Confucius', 'He is called "the second wise man."', 'De Laozi', 'From Buddha', 'From Socrates'),
       Q('How many “breeds” of kindness do we have, according to Mencius?', 'Four: compassion, shame, respect and a sense of justice', 'They are the seeds of virtues.', 'One', 'Ten', 'None'),
-      Q('What happens, according to Mencius, to a ruler who oppresses the people?', 'He loses the command of heaven and the people can rebel', 'Power is justified for the good of the people.', 'Must always be obeyed', 'He becomes God', 'Nothing.'),
+      Q('What happens, according to Mencius, to a ruler who oppresses the people?', 'He loses the command of heaven and the people can rebel', 'Power is justified for the good of the people.', 'Must always be obeyed', 'He becomes God', 'Nothing'),
       Q('What do education and society do with our seeds of goodness?', 'They grow them to grow.', 'Like a gardener with his plants.', 'They destroy them.', 'They sell them.', 'They hide them.'),
     ] }, 'banzhao');
 
@@ -5378,7 +5379,7 @@ Object.assign(LESSONS, {
       Q('What\'s his great work called?', 'Muqaddima (Introduction)', 'Introduction to a Universal History.', 'The Koran', 'The Iliad', 'The Art of War'),
       Q('According to Ibn Khaldun, why do empires fall?', 'Because luxury weakens the union that made them strong', 'History progresses in cycles.', 'By chance.', 'For the punishment of the stars', 'They never fall'),
       Q('From what current science is Ibn Khaldun regarded as a pioneer?', 'From Sociology', 'He studied society and its laws.', 'From astronomy', 'Chemical', 'Computers'),
-      Q('What was Ibn Khaldun looking for in history?', 'The causes of the events, and not just counting them', 'The climate, the economy, the way of life.', 'Dates only', 'Just legends.', 'Nothing.'),
+      Q('What was Ibn Khaldun looking for in history?', 'The causes of the events, and not just counting them', 'The climate, the economy, the way of life.', 'Dates only', 'Just legends.', 'Nothing'),
     ] }, 'zerayacob');
   add('africa', {
     id: 'mandela', name: 'Nelson Mandela', short: 'Mandela', dates: '1918 – 2013', epithet: 'The prisoner who chose forgiveness',
@@ -5422,7 +5423,7 @@ Object.assign(LESSONS, {
       Q('What national anthems did Tagore write?', 'Those of India and Bangladesh', 'A unique case in the world.', 'The one from England', 'The French one', 'None'),
       Q('What\'s your most famous singing book called?', 'Gitanjali', 'It means “song offering”.', 'Ramayana', '20 Love Poems', 'Herb leaves'),
       Q('What region of India was Tagore from?', 'Of Bengal', 'He wrote in Bengali.', 'Kashmir', 'From Tibet', 'From Ceylon'),
-      Q('What did Tagore warn about nationalism?', 'That can divide and confront the peoples', 'He defended the union between cultures.', 'Which is always good.', 'Which is the only way', 'Nothing.'),
+      Q('What did Tagore warn about nationalism?', 'That can divide and confront the peoples', 'He defended the union between cultures.', 'Which is always good.', 'Which is the only way', 'Nothing'),
     ] }, 'mistral');
 
   // ---------------------------------------------------------------- Ciencia
@@ -5642,7 +5643,7 @@ Object.assign(LESSONS, {
         concept: { name: 'Encyclopedia and freedom of thought', text: 'Denis Diderot led, with D’Alembert, the “Encyclopaedia”, which gathered in seventeen volumes of text and eleven sheets the knowledge of science, arts and crafts of his time. It was banned several times, and Diderot spent months in prison for a writing of his. He began as a deist and ended up being an atheist and materialist: he thought nature explained itself. He defended tolerance, criticism of the authority and dignity of manual labour, which the Encyclopedia portrayed with respect.' },
         q: [
           Q('What great work did Diderot direct?', 'The Encyclopedia', 'Along with D’Alembert.', 'Don Quixote', 'Gutenberg’s Bible', 'The Social Contract'),
-          Q('What happened to Diderot for one of his writings?', 'He spent months in prison.', 'He was locked up in Vincennes\' castle.', 'They made him king.', 'They gave him a prize.', 'Nothing.'),
+          Q('What happened to Diderot for one of his writings?', 'He spent months in prison.', 'He was locked up in Vincennes\' castle.', 'They made him king.', 'They gave him a prize.', 'Nothing'),
           Q('What did Encyclopaedia include, besides science and arts?', 'Handcrafts, with detailed sheets', 'He showed respect for the work of artisans.', 'Only the lives of saints', 'Just poetry.', 'Recipes only'),
           Q('Who did Diderot lead the Encyclopedia with?', 'With D’Alembert', 'A great mathematician.', 'With Napoleon', 'With Newton', 'With Shakespeare'),
           Q('What happened to Encyclopedia several times?', 'It was banned by the authorities', 'Still, it continued to be published, sometimes in secret.', 'It ran out in a day.', 'He got lost in a fire', 'It was translated into Chinese'),
@@ -5672,7 +5673,7 @@ Object.assign(LESSONS, {
           Q('What did Ernestine Rose do at the age of sixteen?', 'He won a court trial to defend his inheritance.', 'She defended herself.', 'He founded a city.', 'He wrote an opera.', 'He crossed the ocean to swim'),
           Q('What law helped you get in the United States?', 'That married women could have property', 'Before, everything happened at the husband\'s hands.', 'That women won\'t vote', 'Forbidding newspapers', 'None'),
           Q('What is the name of the text he published in 1861?', 'A Defense of Atheism', 'He read it first as a lecture.', 'The second sex', 'Linkage of women \' s rights', 'Uncle Tom\'s cabin.'),
-          Q('What did their struggles have in common, according to her?', 'Freedom and equality of all persons', 'Think freely and live freely.', 'Money', 'War', 'Nothing.'),
+          Q('What did their struggles have in common, according to her?', 'Freedom and equality of all persons', 'Think freely and live freely.', 'Money', 'War', 'Nothing'),
         ] },
       { id: 'sagan', name: 'Carl Sagan', short: 'Sagan', dates: '1934 – 1996', epithet: 'The astronomer of the pale blue dot',
         look: lk(0x8a5a3a, 0x4a3a2a, 0xe0c0a0, 0x3a2a1a, { hat: 'none', acc: 'none' }), prop: 'stars',
@@ -5810,7 +5811,7 @@ Object.assign(LESSONS, {
           Q('What did Pascal study in physics?', 'The vacuum and air pressure', 'The pressure unit is named after him: the pascal.', 'Electricity', 'Radioactivity', 'The planets'),
           Q('What objection is usually made to the bet?', 'That there are many different religions and you don\'t know which one to bet on', 'And that faith is not chosen as a play.', 'Which is too easy', 'Who doesn\'t use math', 'None'),
           Q('Which number triangle is named after Pascal?', 'Pascal\'s triangle, used in combinatorial', 'He was already known to Chinese and Persian mathematicians.', 'The Bermuda Triangle', 'The love triangle', 'The equilateral triangle'),
-          Q('What did Pascal say about the two infinites?', 'That the human being is between the infinitely great and the infinitely small', 'A whole in the face of nothing, a nothing in the face of nothing.', 'That infinity does not exist', 'That there\'s only one infinite', 'Nothing.'),
+          Q('What did Pascal say about the two infinites?', 'That the human being is between the infinitely great and the infinitely small', 'A whole in the face of nothing, a nothing in the face of nothing.', 'That infinity does not exist', 'That there\'s only one infinite', 'Nothing'),
           Q('Where, according to Pascal, is all our dignity?', 'In the thought', '«Let us make every effort to think carefully: that is the principle of morality.»', 'In the money', 'In the force', 'In fame'),
         ] },
     ],
@@ -5947,7 +5948,7 @@ Object.assign(LESSONS, {
           Q('What\'s the name of the physics book you wrote?', 'Physical institutions', 'He published it in 1740 and joined Newton and Leibniz.', 'The Prince', 'Cosmos', 'The Encyclopedia'),
           Q('Where did Emilie install her lab?', 'In the castle of Cirey', 'There he lived and worked alongside Voltaire.', 'On the Moon', 'On a boat', 'In Rome'),
           Q('What famous writer did he share studies and discussions with?', 'With Voltaire', 'They argued from equal to equal.', 'With Shakespeare', 'With Cervantes', 'With Goethe'),
-          Q('What did Emilie ask for for women?', 'To participate in all the rights of humanity, especially those of the spirit', 'I mean, being able to study and think.', 'To stay at home', 'That they didn\'t read', 'Nothing.'),
+          Q('What did Emilie ask for for women?', 'To participate in all the rights of humanity, especially those of the spirit', 'I mean, being able to study and think.', 'To stay at home', 'That they didn\'t read', 'Nothing'),
         ] },
       { id: 'wollstonecraft', name: 'Mary Wollstonecraft', short: 'Wollstonecraft', dates: '1759 – 1797', epithet: 'The one who claimed education for women',
         look: lk(0x8a5a6a, 0x4a2a3a, 0xf4dcc8, 0xa0603a, { hat: 'longhair', acc: 'book' }), prop: 'lectern',
@@ -5998,7 +5999,7 @@ Object.assign(LESSONS, {
           Q('What country was Flora Tristan\'s father from?', 'Peru', 'He traveled to Arequipa to claim his inheritance.', 'From Japan', 'From Russia', 'From Egypt'),
           Q('What is the name of the book of your trip to Peru?', 'Pilgrimages of a pariah', 'A pariah is someone excluded from society.', 'Around the world in 80 days', 'Cosmos', 'The miserable'),
           Q('Which famous painter was Flora Tristan\'s grandson?', 'Paul Gauguin', 'He spent part of his childhood in Lima.', 'Picasso', 'Van Gogh', 'Frida Kahlo'),
-          Q('What united Flora Tristan in her struggle?', 'The Liberation of Workers and Women', 'He said one was not possible without the other.', 'The Army and the Church', 'Kings and nobles', 'Nothing.'),
+          Q('What united Flora Tristan in her struggle?', 'The Liberation of Workers and Women', 'He said one was not possible without the other.', 'The Army and the Church', 'Kings and nobles', 'Nothing'),
           Q('What did Flora Tristan have to run from?', 'From a violent husband, who came to shoot him', 'He survived and continued writing.', 'From a storm', 'From a circus', 'From his students'),
         ] },
       { id: 'stein', name: 'Edith Stein', short: 'Edith Stein', dates: '1891 – 1942', epithet: 'The Philosopher of Empathy',
@@ -6050,7 +6051,7 @@ Object.assign(LESSONS, {
         defeat: 'You\'ve legislated with balance. I didn\'t give every side everything I wanted, but what was right. That\'s why nobody was completely happy... and the city was saved.',
         concept: { name: 'The shaking-off of burdens', text: 'Solon was an Athenian legislator and poet, among the Seven Wise Men of Greece. Towards 594 a. C. Athens was on the verge of civil war: poor peasants who did not pay their debts lost their land and could be sold as slaves. Solon decreed the "sixachtheia", the shock of the burdens: he cancelled those debts, freed those who had been enslaved by them, and prohibited a person from being loaned. He wrote new laws on rotating wooden boards, exposed in public, and then went on a trip for ten years so that he would not be asked to change them.' },
         q: [
-          Q('What did Solon do with the debts of poor peasants?', 'He annulled them and freed those who had been enslaved by them.', 'It was called "seischtheia", the shock of the loads.', 'He doubled them.', 'Forgave only the rich.', 'Nothing.'),
+          Q('What did Solon do with the debts of poor peasants?', 'He annulled them and freed those who had been enslaved by them.', 'It was called "seischtheia", the shock of the loads.', 'He doubled them.', 'Forgave only the rich.', 'Nothing'),
           Q('What group of wise men are you telling Solon?', 'The Seven Sages of Greece', 'Along with Thales de Miletus, among others.', 'The Twelve Apostles', 'The Three Wizard Kings', 'The 100 poets'),
           Q('What did Solon do after giving his laws?', 'He went on a trip for ten years so they wouldn\'t ask him to change them.', 'The laws had to work without him.', 'He became king forever', 'He burned them.', 'He hid them.'),
           Q('Where did Solon write his laws?', 'On rotating wooden boards displayed in public', 'So everyone could read them.', 'In the sand', 'In secret, in a paper', 'He didn\'t write them.'),
@@ -6091,7 +6092,7 @@ Object.assign(LESSONS, {
         q: [
           Q('In what three powers did you propose to divide the Montesquieu State?', 'Legislative, executive and judicial', 'So that no one has all the power.', 'King, church and army', 'North, South and Central', 'Rich, poor and noble'),
           Q('What\'s his great work on the law called?', 'The Spirit of the Laws', 'Published in 1748.', 'The social contract', 'The Leviathan', 'The Republic'),
-          Q('What if the same group has all three powers, according to Montesquieu?', 'There is no freedom', 'Power must stop power.', 'Everything works best.', 'There\'s more parties', 'Nothing.'),
+          Q('What if the same group has all three powers, according to Montesquieu?', 'There is no freedom', 'Power must stop power.', 'Everything works best.', 'There\'s more parties', 'Nothing'),
           Q('Who are the protagonists of their "Persian Letters"?', 'Two Persian travelers visiting France', 'That\'s how he mocked French customs.', 'Two Chinese kings', 'Two pirates', 'Two cats'),
           Q('What constitution was inspired by Montesquieu\'s ideas?', 'The United States, and many Latin America', 'With his division of powers.', 'None', 'Only Persia\'s', 'The Roman Empire'),
           Q('What did the Montesquieu lands produce near Bordeaux?', 'Wine', 'He sold his wine even to England.', 'Rice', 'Oil', 'Silk'),
@@ -6185,7 +6186,7 @@ Object.assign(LESSONS, {
         concept: { name: 'The transformation', text: 'Milarepa is Tibet\'s most beloved poet and yogi. After their father\'s death, their uncles took away their inheritance and treated them as servants. His mother pushed him to learn black magic to get revenge, and according to tradition caused the death of many people. Repented, he sought Master Marpa, who had him build and tear down stone towers over and over again to purify him, before teaching him. He then spent years meditating in mountain caves, eating almost only nettles, until his skin turned green. He reached the awakening and taught singing: his "One Hundred Thousand Songs" are poems about impermanence and freedom.' },
         q: [
           Q('Why did Milarepa learn black magic?', 'To get back at the guys who took away their inheritance', 'His mother pushed him to do it.', 'For fun.', 'To get rich', 'To be king'),
-          Q('What made you do your master Marpa before you taught him?', 'Build and tear down stone towers over and over again', 'To purify his past.', 'Read a thousand books', 'Traveling to China', 'Nothing.'),
+          Q('What made you do your master Marpa before you taught him?', 'Build and tear down stone towers over and over again', 'To purify his past.', 'Read a thousand books', 'Traveling to China', 'Nothing'),
           Q('What did Milarepa eat in the caves?', 'Almost only nettles, until her skin turned green', 'He lived in extreme simplicity.', 'Banquets', 'Sea fish', 'Pastels'),
           Q('How did Milarepa teach?', 'Singing', 'His "One Hundred Thousand Songs" are famous in Tibet.', 'With punishment', 'Writing laws', 'With numbers'),
           Q('What country is Milarepa from?', 'From Tibet', 'It\'s his poet and most beloved yogi.', 'From Japan', 'From Egypt', 'From Greece'),
@@ -6212,7 +6213,7 @@ Object.assign(LESSONS, {
         q: [
           Q('Which god did Mirabai love and sing?', 'To Krishna', 'Ever since I was a kid.', 'A Zeus', 'To Odin', 'A Ra'),
           Q('What was Mirabai doing in the temples?', 'I sang and danced with the common people', 'No matter the caste.', 'I was collecting taxes.', 'I gave orders.', 'Sleep'),
-          Q('What does the legend of poison tell?', 'That the poison turned nectar', 'Her political family wanted to kill her.', 'Who invented a medicine', 'Who poisoned the king', 'Nothing.'),
+          Q('What does the legend of poison tell?', 'That the poison turned nectar', 'Her political family wanted to kill her.', 'Who invented a medicine', 'Who poisoned the king', 'Nothing'),
           Q('What are Mirabai\'s devotional songs called?', 'Bhajan', 'They are still sung in India.', 'Tangos', 'Operas', 'National anthems'),
           Q('What is ‘bhakti’?', 'The Way of Loving Devotion', 'Mirabai is one of their great voices.', 'A type of food', 'A military exercise', 'A War Dance'),
           Q('What did Mirabai do at the end of his life?', 'He left the palace and lived as a pilgrim', 'In Vrindavan and Dwarka.', 'She became a warrior queen', 'He went to Europe.', 'He wrote laws.'),
@@ -6494,7 +6495,7 @@ Object.assign(LESSONS, {
         q: [
           Q('What is the “zone of proximal development”?', 'The distance between what you can do alone and what you can do with help', 'That\'s where you learn.', 'An area of the brain', 'A neighborhood of Moscow', 'The school yard'),
           Q('According to Vygotsky, how do we learn about everything?', 'With others', 'First with help, then alone.', 'Always alone.', 'Sleeping', 'No talking.'),
-          Q('What\'s wrong with talking about children who talk alone while playing?', 'It becomes inner voice, thought', 'Language becomes thought.', 'Disappear', 'It becomes singing.', 'Nothing.'),
+          Q('What\'s wrong with talking about children who talk alone while playing?', 'It becomes inner voice, thought', 'Language becomes thought.', 'Disappear', 'It becomes singing.', 'Nothing'),
           Q('What did they call Vygotsky for his genius and early death?', 'The Mozart of Psychology', 'He died at 37 years of age.', 'The Napoleon of the Mind', 'The King of Children', 'The Wise One of Russia'),
           Q('What\'s your best-known book?', 'Thought and language', 'Published in 1934.', 'War and peace', 'Capital', 'The Republic'),
           Q('Which country was Vygotsky from?', 'From Russia', 'In times of the Soviet Union.', 'From France', 'From Mexico', 'From India'),
@@ -6506,7 +6507,7 @@ Object.assign(LESSONS, {
         concept: { name: 'The current of consciousness and habit', text: 'William James was an American physician, psychologist, and philosopher, brother of novelist Henry James. First he wanted to be a painter. At Harvard he gave one of the first psychology courses in the United States and wrote the "Principles of Psychology" (1890). He described the mind as a "current of consciousness", a continuous flow and not a sum of pieces. He showed the strength of habits, which form our character. He was one of the founders of pragmatism: an idea is valid for the differences it produces in life. As a young man he went through a deep depression and left her deciding to believe in her free will.' },
         q: [
           Q('How did William James describe the mind?', 'Like a stream of consciousness, a continuous river', 'I don\'t eat separate pieces.', 'Like a closed box.', 'Like a watch.', 'Like a stone'),
-          Q('What do habits make, according to James?', 'Our character', 'What we do every day is shaping us.', 'Our height', 'Our last name', 'Nothing.'),
+          Q('What do habits make, according to James?', 'Our character', 'What we do every day is shaping us.', 'Our height', 'Our last name', 'Nothing'),
           Q('What philosophical current helped found James?', 'Pragmatism', 'An idea is worth its effects on life.', 'Stoicism', 'Atomism', 'German idealism'),
           Q('Who was William James\' brother?', 'The novelist Henry James', 'A family of geniuses.', 'Abraham Lincoln', 'Mark Twain', 'Charles Darwin'),
           Q('What did James want to be before he was a scientist?', 'Painter', 'He studied painting as a young man.', 'Firefighter', 'Sailor', 'King'),
@@ -6538,7 +6539,7 @@ Object.assign(LESSONS, {
           Q('What did Humboldt discover about nature?', 'Which is a network where everything is connected.', 'Climate, plants, animals and people.', 'Which is a lifeless machine', 'Which is separated into pieces', 'That never changes'),
           Q('Which volcano went up Humboldt, then considered the highest in the world?', 'The Chimborazo', 'In Ecuador, in 1802.', 'The Vesuvius', 'The Fuji', 'The Etna'),
           Q('Who did Humboldt travel through America with?', 'With the botanist Aimé Bonpland', 'Between 1799 and 1804.', 'With Napoleon', 'With Columbus', 'With Darwin'),
-          Q('What did Humboldt warn about watching the lake of Valencia go down?', 'That logging changed the climate', 'He was one of the first to see it.', 'That the lake had a monster', 'That it rained too much', 'Nothing.'),
+          Q('What did Humboldt warn about watching the lake of Valencia go down?', 'That logging changed the climate', 'He was one of the first to see it.', 'That the lake had a monster', 'That it rained too much', 'Nothing'),
           Q('What\'s Humboldt\'s last great work called?', 'Cosmos', 'I wanted to describe the whole universe.', 'The origin of the species', 'The Odyssey', 'Silent Spring'),
           Q('What did Humboldt draw on his famous mountain maps?', 'How vegetation changes with height', 'From the jungle to the snow.', 'Castles', 'Boats', 'Portraits of Kings'),
         ] },
@@ -6549,7 +6550,7 @@ Object.assign(LESSONS, {
         concept: { name: 'The Ethics of the Earth', text: 'Aldo Leopold was an American forest ranger and ecologist. As a young man, he hunted wolves, because it was believed that eliminating them would give more deer for hunters. When he saw a wolf die, he understood his mistake: without wolves, the deer multiply, devour the mountain and then die of hunger. He told it in the essay "Think like a mountain". In his "Salmanac of the Sandy County" (1949) he proposed an "ethics of the earth": to expand our moral community to include soil, water, plants and animals. He bought a razed farm and, with his family, planted thousands of pines to get it back. He died fighting a fire on a neighbor\'s farm.' },
         q: [
           Q('What did Aldo Leopold propose in the Almanac of the sandy county?', 'An Ethics of the Earth', 'Include soil, water, plants and animals in our moral community.', 'Hunting all wolves', 'Build more cities', 'Selling the forests'),
-          Q('What did Leopold see in the eyes of the wolf he had shot?', 'A green and fierce fire that went out', 'That\'s where he started to change.', 'Gold tears', 'Nothing.', 'A reflection of the moon'),
+          Q('What did Leopold see in the eyes of the wolf he had shot?', 'A green and fierce fire that went out', 'That\'s where he started to change.', 'Gold tears', 'Nothing', 'A reflection of the moon'),
           Q('What happens on a mountain without wolves, according to Leopold?', 'Deer multiply, devour it, and then starve.', 'Everything\'s connected.', 'More Trees Grow', 'It rains more', 'Nothing changes'),
           Q('What\'s your most famous essay called?', 'Thinking Like a Mountain', 'About her changing her eyes.', 'Walking like a river', 'Talking like a tree', 'Flying like an eagle'),
           Q('What did Leopold do with a razed farm?', 'He planted thousands of pines with his family to get her back.', 'There he wrote his almanac.', 'He sold it.', 'He built a hotel', 'He left her.'),
@@ -6578,7 +6579,7 @@ Object.assign(LESSONS, {
           Q('What were Chico Mendes\' "empates"?', 'Peaceful human chains in front of chainsaws', 'No guns, holding hands.', 'Football games', 'Celebrations', 'Boat racing'),
           Q('What did Mendes propose to protect the jungle?', 'Extractive reserves where communities live without logging', 'The jungle standing and its people with it.', 'Cut everything and plant grass', 'Close the jungle to everyone', 'Building cities'),
           Q('What country did Chico Mendes live in?', 'In Brazil', 'In the state of Acre, in the Amazon.', 'In Chile', 'In Spain', 'In Japan'),
-          Q('What united Mendes\' struggle for the first time?', 'The defense of nature and of those who live in it', 'Ecology and social justice.', 'Football and music', 'War and peace', 'Nothing.'),
+          Q('What united Mendes\' struggle for the first time?', 'The defense of nature and of those who live in it', 'Ecology and social justice.', 'Football and music', 'War and peace', 'Nothing'),
           Q('What happened to Chico Mendes in 1988?', 'He was killed by a farmer.', 'His death moved the world.', 'He became president.', 'He won an Oscar.', 'He moved to Europe.'),
         ] },
       { id: 'naess', name: 'Arne Næss', short: 'Næss', dates: '1912 – 2009', epithet: 'The philosopher of deep ecology',
@@ -6591,7 +6592,7 @@ Object.assign(LESSONS, {
           Q('What is "superficial" ecology according to Næss?', 'Taking care of nature just to keep it serving us', 'He wanted to go further.', 'Look at nature from above', 'Plant flowers in pots', 'None'),
           Q('What motto summarized your way of life?', '‘Rich in Ends, Simple in Media’', 'Living with simplicity.', '"More is better"', '‘Win at any price’', '«Never leave home»'),
           Q('What sport did Næss play?', 'Climbing', 'He climbed mountains all over the world.', 'Boxing', 'Golf', 'Synchronized swimming'),
-          Q('What did Næss do in 1970 next to a waterfall?', 'He chained himself to prevent a dam from destroying it.', 'A peaceful protest.', 'He built a hotel', 'He caught salmon.', 'Nothing.'),
+          Q('What did Næss do in 1970 next to a waterfall?', 'He chained himself to prevent a dam from destroying it.', 'A peaceful protest.', 'He built a hotel', 'He caught salmon.', 'Nothing'),
           Q('Which country was Arne Næss from?', 'Norway', 'His cabin was in the mountains.', 'From Italy', 'From Brazil', 'Kenya'),
         ] },
       { id: 'caceres', name: 'Berta Cáceres', short: 'Berta Cáceres', dates: '1971 – 2016', epithet: 'The guardian of the sacred river',
@@ -6605,7 +6606,7 @@ Object.assign(LESSONS, {
           Q('What award did you receive in 2015?', 'The Goldman Prize', 'The most important for environmental defenders.', 'An Oscar', 'The World', 'The Nobel Prize in Physics'),
           Q('How did you resist the construction of the dam?', 'With a peaceful resistance of years', 'Blockages, denunciations and community organization.', 'With an army', 'Buying the company', 'He didn\'t resist.'),
           Q('What organization did you co-founded in 1993?', 'COPINH', 'Council of Popular and Indigenous Organizations of Honduras.', 'The UN', 'A football team', 'A bank'),
-          Q('What reminded the world of his murder in 2016?', 'That many nature advocates risk their lives', 'His fight is still alive.', 'That rivers don\'t matter', 'Nothing.', 'That more dams have to be built'),
+          Q('What reminded the world of his murder in 2016?', 'That many nature advocates risk their lives', 'His fight is still alive.', 'That rivers don\'t matter', 'Nothing', 'That more dams have to be built'),
         ] },
       { id: 'lovelock', boss: true, final: false, name: 'James Lovelock', short: 'Lovelock', dates: '1919 – 2022', epithet: 'The scientist of Gaia',
         look: lk(0x4a5a6a, 0x2a2a3a, 0xf0d0b0, 0xe8e8e8, { hat: 'none', acc: 'lens' }), prop: 'globe',
@@ -6710,10 +6711,10 @@ Object.assign(LESSONS, {
         q: [
           Q('What do Gödel\'s incompletion theorems show?', 'That in certain systems there are truths that cannot be demonstrated', 'Math can\'t prove everything.', 'That everything can be proved', 'That there are no numbers', 'That two plus two is five.'),
           Q('How old was Gödel when he showed them?', '25 years', 'In 1931.', 'Eighty', 'Ten', 'Fifty'),
-          Q('What, in a way, does Gödel\'s special formula say?', '«I am not demonstrable»', 'An idea similar to the paradox of the liar.', '«I am the best»', '‘Two plus two’', 'Nothing.'),
+          Q('What, in a way, does Gödel\'s special formula say?', '«I am not demonstrable»', 'An idea similar to the paradox of the liar.', '«I am the best»', '‘Two plus two’', 'Nothing'),
           Q('What famous scientist did Gödel walk with every day in Princeton?', 'With Albert Einstein', 'They were great friends.', 'With Newton', 'With Darwin', 'With Galileo'),
           Q('Which country was Gödel from?', 'From Austria', 'He was born in the Czech Republic and studied in Vienna.', 'From Japan', 'From Argentina', 'From Egypt'),
-          Q('What did many mathematicians believe before Gödel?', 'That mathematics could prove everything.', 'Gödel showed no.', 'There were no numbers', 'That logic didn\'t work', 'Nothing.'),
+          Q('What did many mathematicians believe before Gödel?', 'That mathematics could prove everything.', 'Gödel showed no.', 'There were no numbers', 'That logic didn\'t work', 'Nothing'),
         ] },
       { id: 'turing', boss: true, final: false, name: 'Alan Turing', short: 'Turing', dates: '1912 – 1954', epithet: 'The Father of Computing',
         look: lk(0x6a5a4a, 0x3a3a3a, 0xf0d0b0, 0x2a1a10, { hat: 'none', acc: 'none' }), prop: 'gears',
@@ -6928,7 +6929,7 @@ Object.assign(LESSONS, {
           Q('What is Hokusai\'s most famous work?', 'The Great Wave of Kanagawa', 'From the series Thirty-six views of Mount Fuji.', 'The starry night', 'Las Meninas', 'The Gioconda'),
           Q('Which mountain appears small at the bottom of The Great Wave?', 'Mount Fuji', 'Hokusai painted it from many places.', 'The Everest', 'The Olympus', 'The Aconcagua'),
           Q('What did Hokusai call himself?', 'The old man crazy about drawing', 'He drew until he was ninety.', 'The King of Colors', 'The perfect teacher', 'The sleeping painter'),
-          Q('What did Hokusai ask for on his deathbed?', 'Five more years to become a true painter', 'He always wanted to keep learning.', 'Gold', 'A palace', 'Nothing.'),
+          Q('What did Hokusai ask for on his deathbed?', 'Five more years to become a true painter', 'He always wanted to keep learning.', 'Gold', 'A palace', 'Nothing'),
           Q('What\'s the name of Hokusai\'s engraving style?', 'Ukiyo-e, images of the floating world', 'Very popular wood engravings.', 'Baroque', 'Cubism', 'Gothic'),
           Q('What European painters did Hokusai influence?', 'Van Gogh and Monet', 'They were fascinated by Japanese engravings.', 'In Velázquez', 'In Michelangelo', 'None'),
         ] },
@@ -6943,7 +6944,7 @@ Object.assign(LESSONS, {
           Q('What anthem today is the Ode to Joy?', 'The European Union', 'A melody of peace.', 'The Olympic Games', 'That of a football team', 'None'),
           Q('What is Heiligenstadt\'s Testament?', 'A letter stating that art saved him from surrendering', 'He wrote it in 1802.', 'Your property will', 'A Symphony', 'A poem'),
           Q('What city did Beethoven live and work in?', 'In Vienna', 'He was born in Bonn, though.', 'In Paris', 'In Madrid', 'In Rome'),
-          Q('What did Beethoven defend about the artist?', 'Your freedom and dignity, not being a servant of nobles', 'An artist is not a servant.', 'That I should always obey', 'That I wasn\'t supposed to collect', 'Nothing.'),
+          Q('What did Beethoven defend about the artist?', 'Your freedom and dignity, not being a servant of nobles', 'An artist is not a servant.', 'That I should always obey', 'That I wasn\'t supposed to collect', 'Nothing'),
         ] },
       { id: 'tolstoi', name: 'Leon Tolstoy', short: 'Tolstoy', dates: '1828 – 1910', epithet: 'The novelist who asked what art is',
         look: lk(0xe8e0d0, 0x6a5a4a, 0xe8c8a8, 0xe8e8e8, { beard: 0xe8e8e8, hat: 'none', acc: 'book' }), prop: 'tree',
@@ -6965,9 +6966,9 @@ Object.assign(LESSONS, {
         concept: { name: 'Concerning the Spiritual in Art', text: 'Vasili Kandinsky was a Russian painter. He studied law and economics, and at the age of thirty he left everything to paint, after seeing a painting by Monet and hearing an opera by Wagner, where he said "see" colors. He was one of the first abstract painters: his paintings do not represent objects, but use colours, lines and shapes as a music for the eye. I felt a relationship between colors and sounds (synesthesia). In "From the Spiritual in Art" (1911) he explained that art must express the inner life. He was a teacher at the Bauhaus, a famous school of art and design.' },
         q: [
           Q('What did Kandinsky\'s paintings have again?', 'They were abstract: they did not represent objects', 'Colors and shapes like music.', 'They were photographs.', 'They were portraits of kings.', 'They were maps.'),
-          Q('What did Kandinsky feel when he saw colors?', 'That sounded like instruments', 'A relationship called synesthesia.', 'Dream', 'Hunger', 'Nothing.'),
+          Q('What did Kandinsky feel when he saw colors?', 'That sounded like instruments', 'A relationship called synesthesia.', 'Dream', 'Hunger', 'Nothing'),
           Q('What\'s the name of your 1911 book?', 'Concerning the Spiritual in Art', 'Art expresses inner life.', 'The Interpretation of Dreams', 'Capital', 'Cosmos'),
-          Q('What did Kandinsky study before becoming a painter?', 'Law and economics', 'He changed his life at the age of 30.', 'Medicine', 'Astronomy', 'Nothing.'),
+          Q('What did Kandinsky study before becoming a painter?', 'Law and economics', 'He changed his life at the age of 30.', 'Medicine', 'Astronomy', 'Nothing'),
           Q('In what famous school of art and design was he a teacher?', 'La Bauhaus', 'In Germany.', 'Plato\'s Academy', 'Harvard', 'The Sorbonne'),
           Q('What color sounded like a trumpet to him?', 'Yellow', 'And blue as a cello.', 'The Black One', 'The gray one', 'The brown'),
         ] },
@@ -6978,11 +6979,11 @@ Object.assign(LESSONS, {
         concept: { name: 'Art as its own truth', text: 'Frida Kahlo was a Mexican painter. He had polio as a child and, at the age of eighteen, a terrible bus accident caused him pains all his life and more than thirty operations. She started painting in bed, with a mirror over her. Almost a third of his paintings are self-portraits: in them he shows his wounded body, his emotions and his love for Mexico, with Tehuano dresses, plants, monkeys and symbols of Mexican culture. He turned pain into art without hiding it. He lived in the Blue House of Coyoacán, today a museum. He painted, he said, "my own reality."' },
         q: [
           Q('What did Frida Kahlo paint more often?', 'Self-portraits', 'Because it was the thing I knew best.', 'Snowscapes', 'Battles', 'Boats'),
-          Q('What happened to Frida when she was eighteen?', 'A serious bus accident', 'It caused him pains all his life.', 'He won the lottery', 'He traveled to the moon.', 'Nothing.'),
+          Q('What happened to Frida when she was eighteen?', 'A serious bus accident', 'It caused him pains all his life.', 'He won the lottery', 'He traveled to the moon.', 'Nothing'),
           Q('How did Frida start painting?', 'In bed, with a mirror over her', 'His mother put him on the roof.', 'At an art school in Paris', 'On a boat', 'Copying photos'),
           Q('What\'s the name of Frida\'s house in Coyoacán, today\'s museum?', 'The Blue House', 'There he was born and died.', 'The White House', 'The Red Palace', 'The Green Tower'),
           Q('What culture celebrate Frida\'s paintings and dresses?', 'Mexican culture', 'With Tehuano dresses and symbols of Mexico.', 'Viking culture', 'Chinese culture', 'None'),
-          Q('What did Frida do with her pain?', 'He turned it into art without hiding it.', 'He painted his own reality.', 'He always hid it.', 'He stopped painting.', 'Nothing.'),
+          Q('What did Frida do with her pain?', 'He turned it into art without hiding it.', 'He painted his own reality.', 'He always hid it.', 'He stopped painting.', 'Nothing'),
         ] },
       { id: 'schiller', boss: true, final: false, name: 'Friedrich Schiller', short: 'Schiller', dates: '1759 – 1805', epithet: 'The poet of aesthetic education',
         look: lk(0x4a3a5a, 0xe8e0d0, 0xf0d0b0, 0xc88a5a, { hat: 'none', acc: 'quill' }), prop: 'lyre',
@@ -6993,7 +6994,7 @@ Object.assign(LESSONS, {
           Q('What poem did Schiller use Beethoven in his Ninth Symphony?', 'The Ode to Joy', 'Today European anthem.', 'The Iliad', 'The raven', 'None'),
           Q('When is the human being fully human, according to Schiller?', 'When he plays', 'The impulse of play reconciles senses and reason.', 'When he works without rest', 'When he sleeps', 'When you obey'),
           Q('What\'s your book called on art and freedom?', 'Letters on the Aesthetic Education of Man', '1795.', 'Criticism of Pure Reason', 'The social contract', 'The Republic'),
-          Q('What reconciles the play drive?', 'Sensitive and formal impulse', 'The material and the reason.', 'Day and night', 'North and South', 'Nothing.'),
+          Q('What reconciles the play drive?', 'Sensitive and formal impulse', 'The material and the reason.', 'Day and night', 'North and South', 'Nothing'),
           Q('What great German writer was Schiller a friend of?', 'De Goethe', 'They worked together at Weimar.', 'Of Shakespeare', 'De Cervantes', 'From Dante'),
           Q('What play by Schiller is about Swiss freedom?', 'Guillermo Tell', 'The apple and crossbow hero.', 'Hamlet', 'Life is sleep', 'Fausto'),
           Q('What three qualities did Vitruvio ask of a building?', 'Firmness, utility and beauty', 'In Architectural.', 'Height, gold and towers', 'Speed and price', 'None'),
@@ -7024,7 +7025,7 @@ Object.assign(LESSONS, {
           Q('What sacred lands did he refuse to surrender?', 'The Black Hills', 'Where gold had been found.', 'The islands of Hawaii', 'The Andes', 'The Sahara Desert'),
           Q('What battle did the Lakotas, Cheyennes and Arapajos win in 1876?', 'Little Bighorn', 'Against Custer\'s army.', 'Waterloo', 'Marathon', 'Lepanto'),
           Q('What animal was the basis of the life of the Lakota people?', 'The bison', 'It was almost exterminated by settlers.', 'The camel', 'The kangaroo', 'The Elephant'),
-          Q('What did Sitting Bull say about the future of the children?', 'Let\'s put our minds together to give them a good life', 'Think of those who will come.', 'That didn\'t matter.', 'That they had to leave', 'Nothing.'),
+          Q('What did Sitting Bull say about the future of the children?', 'Let\'s put our minds together to give them a good life', 'Think of those who will come.', 'That didn\'t matter.', 'That they had to leave', 'Nothing'),
           Q('Where did Sitting Bull go into exile with his people?', 'To Canada', 'For a few years.', 'To Mexico', 'To Europe', 'To Japan'),
         ] },
       { id: 'joseph', name: 'Chief Joseph (Hinmatoowyalahtq ⁇ it)', short: 'Chief Joseph', dates: '1840 – 1904', epithet: 'The boss who said, I won\'t fight anymore.',
@@ -7033,11 +7034,11 @@ Object.assign(LESSONS, {
         defeat: 'You listened to my heart. Treat us all as equals: the earth is the mother of all, and all should have equal rights over it.',
         concept: { name: 'Equality of all peoples', text: 'Chief Joseph, whose name nez percé means "Trueno traveling over the mountains", guided his people when the U.S. government wanted to force them to leave the valley of Wallowa, where their father was buried. In 1877, after clashes, some eight hundred perces fled more than two thousand kilometers trying to reach Canada, persecuted by the army. A few kilometers from the border, with its hungry and icy people, he gave up with a famous speech: "I will not fight anymore forever". The rest of his life he traveled, even to Washington, asking that his people could return to their land and that all human beings be treated as equals.' },
         q: [
-          Q('What did Chief Joseph say when he surrendered in 1877?', '“I will fight no more forever”', 'From where the sun is now.', '«I will return with an army»', '«I will never give up»', 'Nothing.'),
+          Q('What did Chief Joseph say when he surrendered in 1877?', '“I will fight no more forever”', 'From where the sun is now.', '«I will return with an army»', '«I will never give up»', 'Nothing'),
           Q('What does the name nez perce of Chief Joseph mean?', 'Thunder that travels over the mountains', 'Hinmatóowyalahtq ⁇ it.', 'Quiet water', 'Big bear.', 'A fleeting star'),
           Q('Where was the Nez people fleeing to in 1877?', 'Towards Canada', 'More than 2,000 kilometers.', 'Towards Mexico', 'Towards the sea', 'Towards Europe'),
           Q('Which valley did not want to leave the perces?', 'Wallowa Valley, where his father was buried', 'Their ancestral land.', 'The Valley of Death', 'The Nile Valley', 'None'),
-          Q('What did Chief Joseph ask for the rest of his life?', 'Return to their land and that all were treated as equals', 'He traveled to Washington.', 'Gold', 'An army', 'Nothing.'),
+          Q('What did Chief Joseph ask for the rest of his life?', 'Return to their land and that all were treated as equals', 'He traveled to Washington.', 'Gold', 'An army', 'Nothing'),
           Q('Why did Chief Joseph surrender?', 'To save your people, hungry and frozen', 'The children were dying of cold.', 'Because I wanted to be rich.', 'For boredom', 'Because he lost a game.'),
         ] },
       { id: 'alcenegro', name: 'Black Elk (Heaka Sápa)', short: 'Black Elk', dates: '1863 – 1950', epithet: 'The visionary of the sacred circle',
@@ -7046,7 +7047,7 @@ Object.assign(LESSONS, {
         defeat: 'You\'ve entered the circle. Everything that the power of the world does is done in a circle: heaven, earth, wind, life.',
         concept: { name: 'The Sacred Circle', text: 'He ⁇ ka Sápa, Black Elk, was a healer and sacred man of the Oglala Lakota people. As a child he had a great vision, which he told many years later to the poet John Neihardt in the book "Black Elk Speaks" (1932). In it he saw the "sacred bow" of his people as part of many rings, all the peoples, united around a great flowered tree. For him, life moves in circles: the sun, the moon, the seasons, the lives of people, and everything is united. He witnessed the battle of Little Bighorn as a child and the massacre of Wounded Knee (1890). He also traveled to Europe with a Western show. His vision of the unity of all peoples continues to inspire many.' },
         q: [
-          Q('What did Black Elk see in his great vision?', 'The hoop of his people joined to many hoops in one circle', 'All the villages around a flowery tree.', 'A city of gold', 'An iron ship', 'Nothing.'),
+          Q('What did Black Elk see in his great vision?', 'The hoop of his people joined to many hoops in one circle', 'All the villages around a flowery tree.', 'A city of gold', 'An iron ship', 'Nothing'),
           Q('What\'s the name of the book where he told his vision?', 'Black Elk Speaks', 'With the poet John Neihardt in 1932.', 'The last Mohican', 'Dancing with wolves', 'Cosmos'),
           Q('How does life move, according to Black Elk?', 'In Circles', 'Sun, moon, seasons.', 'Straight in line', 'Random', 'It\'s not moving.'),
           Q('Which town did Black Elk belong to?', 'The Oglala Lakota people', 'He was a healer and a holy man.', 'To the Aztec people', 'To the Maori people', 'To the Inuit people'),
@@ -7061,10 +7062,10 @@ Object.assign(LESSONS, {
         q: [
           Q('Which village did Te Whiti found in New Zealand?', 'Parihaka', 'At the foot of Mount Taranaki.', 'Auckland', 'Wellington', 'Sydney'),
           Q('How did the children of Parihaka receive the soldiers in 1881?', 'Singing and offering bread', 'A resistance without violence.', 'With stones', 'Running away', 'With arrows'),
-          Q('What were the Parihaka farmers doing on the confiscated land?', 'They plowed them peacefully and removed the fences.', 'They were arrested by hundreds, and others replaced them.', 'They burned them.', 'They built strong.', 'Nothing.'),
+          Q('What were the Parihaka farmers doing on the confiscated land?', 'They plowed them peacefully and removed the fences.', 'They were arrested by hundreds, and others replaced them.', 'They burned them.', 'They built strong.', 'Nothing'),
           Q('Which town did Te Whiti belong to?', 'To the Maori people', 'From New Zealand.', 'To the Australian Aboriginal people', 'To the Hawaiian people', 'To the Lakota people'),
-          Q('What\'s so special about Te Whiti\'s resistance to Gandhi?', 'It happened decades before.', 'An early example of non-violence.', 'It was violent.', 'It was in India', 'Nothing.'),
-          Q('What happened to Te Whiti after the invasion of Parihaka?', 'He was imprisoned without trial.', 'He returned years later to his village.', 'They made him king.', 'He went to England.', 'Nothing.'),
+          Q('What\'s so special about Te Whiti\'s resistance to Gandhi?', 'It happened decades before.', 'An early example of non-violence.', 'It was violent.', 'It was in India', 'Nothing'),
+          Q('What happened to Te Whiti after the invasion of Parihaka?', 'He was imprisoned without trial.', 'He returned years later to his village.', 'They made him king.', 'He went to England.', 'Nothing'),
         ] },
       { id: 'liliuokalani', name: 'Liliuokalani', short: 'Liliuokalani', dates: '1838 – 1917', epithet: 'The Last Queen of Hawaii',
         look: lk(0x2a2a3a, 0xe8b048, 0xa07050, 0x2a1a10, { hat: 'longhair', acc: 'none' }), prop: 'flower',
@@ -7076,7 +7077,7 @@ Object.assign(LESSONS, {
           Q('What\'s your most famous song?', 'Aloha', 'The best known Hawaiian song.', 'Cute honey.', 'Guantanamera', 'None'),
           Q('Why did he surrender power without a fight?', 'To prevent bloodshed', 'Under protest.', 'Because I was tired.', 'For money', 'Because he didn\'t care.'),
           Q('Where were you locked up in 1895?', 'In the palace Iolani', 'His own palace.', 'In a Tower of London', 'On a deserted island', 'Nowhere.'),
-          Q('What did the United States Congress do in 1993?', 'He apologized for the overthrow', 'A hundred years later.', 'He gave him a medal.', 'Nothing.', 'He built a museum'),
+          Q('What did the United States Congress do in 1993?', 'He apologized for the overthrow', 'A hundred years later.', 'He gave him a medal.', 'Nothing', 'He built a museum'),
           Q('How many songs did he write approximately?', 'More than 150', 'It was great music.', 'None', 'Two', 'Ten'),
         ] },
       { id: 'unaipon', name: 'David Unaipon', short: 'Unaipon', dates: '1872 – 1967', epithet: 'The Aboriginal inventor and narrator',
@@ -7088,7 +7089,7 @@ Object.assign(LESSONS, {
           Q('What did Unaipon study to imagine a flying machine?', 'The flight of the boomeran', 'He thought of something like a helicopter.', 'The flight of the hens', 'The clouds', 'Rockets'),
           Q('What invention did Unaipon patent?', 'An improved sheep shearer', 'For work in the field.', 'The phone', 'The wheel', 'The radio'),
           Q('Which town did Unaipon belong to?', 'To the Ngarrindjeri people of Australia', 'South of the country.', 'To the Maori people', 'To the Lakota people', 'To the Inuit people'),
-          Q('What was Unaipon in Australian literature?', 'The First Aboriginal Writer Published', 'With tales of his people.', 'The Last Poet', 'A critic', 'Nothing.'),
+          Q('What was Unaipon in Australian literature?', 'The First Aboriginal Writer Published', 'With tales of his people.', 'The Last Poet', 'A critic', 'Nothing'),
           Q('Where does the portrait of Unaipon appear today?', 'On the fifty-dollar Australian ticket', 'As a national tribute.', 'In a Chinese currency', 'On the Moon', 'Nowhere.'),
           Q('What do you know united Unaipon?', 'The Science of Books and the Wisdom of His People', 'They weren\'t enemies to him.', 'War and trade', 'None', 'Magic and money'),
         ] },
@@ -7103,7 +7104,7 @@ Object.assign(LESSONS, {
           Q('Who helped the Peacemaker spread peace?', 'Hiawatha and Jigonhsasee', 'The mother of nations.', 'Napoleon', 'Columbus', 'No one'),
           Q('How many future generations do you have to think about when deciding?', 'In seven', 'A principle of responsibility for the future.', 'None.', 'In a', 'One hundred'),
           Q('Who chooses the chiefs in the haudenosaunee tradition?', 'The mothers of the clans', 'Women have a central role.', 'A king', 'Soldiers', 'Foreign nationals'),
-          Q('What does the image of the five arrows show together?', 'That together they don\'t break', 'The strength of union.', 'That we have to hunt more', 'That war is good', 'Nothing.'),
+          Q('What does the image of the five arrows show together?', 'That together they don\'t break', 'The strength of union.', 'That we have to hunt more', 'That war is good', 'Nothing'),
           Q('What sacred lands refused to hand over Sitting Bull?', 'The Black Hills', 'Where gold was found.', 'Hawaii', 'The Andes', 'None'),
           Q('Who said “I will not fight anymore forever”?', 'Chief Joseph', 'In 1877.', 'Sitting Bull', 'Gandhi', 'Te Whiti'),
           Q('Who told his vision of the sacred circle in “Black Elk Speaks”?', 'Black Elk', 'Holy Lakota man.', 'Crazy Horse', 'Geronimo', 'Unaipon'),
@@ -7129,9 +7130,9 @@ Object.assign(LESSONS, {
         concept: { name: 'The best doctor is also a philosopher', text: 'Galeno was born in Pergamum, in present-day Turkey. He was a doctor of the gladiators of his city, which allowed him to observe deep wounds, and then a doctor of emperors in Rome, like Marco Aurelius. He experimented with animals and showed, for example, that arteries carry blood and not air, and that the brain, through the nerves, controls the voice. He wrote hundreds of books, and his medicine dominated Europe and the Islamic world for more than 300 years. Some of his mistakes, such as thinking that the anatomy of animals was equal to that of humans, took centuries to correct. He wrote a book entitled "The best physician is also a philosopher".' },
         q: [
           Q('Who was Galen curing in Pergamum?', 'To the gladiators', 'From his wounds he looked at the body inside.', 'To the horses', 'To the kings of Egypt', 'No one'),
-          Q('What did Galen show about the arteries?', 'That carry blood and not air', 'With experiments.', 'That are empty', 'Bringing water', 'Nothing.'),
+          Q('What did Galen show about the arteries?', 'That carry blood and not air', 'With experiments.', 'That are empty', 'Bringing water', 'Nothing'),
           Q('What emperor was Galen\'s doctor?', 'De Marcus Aurelius', 'In Rome.', 'Of Napoleon', 'De Charlemagne', 'Of Cyrus'),
-          Q('How long did Galeno\'s medicine dominate?', 'More than one thousand three hundred years', 'In Europe and the Islamic world.', 'One year', 'Ten years', 'Nothing.'),
+          Q('How long did Galeno\'s medicine dominate?', 'More than one thousand three hundred years', 'In Europe and the Islamic world.', 'One year', 'Ten years', 'Nothing'),
           Q('What\'s the title of one of your books?', 'The best doctor is also a philosopher', 'Observe and reason.', 'The Art of War', 'The Republic', 'Cosmos'),
           Q('What mistake of Galen took centuries to correct?', 'To think that animal anatomy was equal to human', 'Vesalio corrected it.', 'That Earth spins', 'That the blood is red', 'None'),
         ] },
@@ -7156,7 +7157,7 @@ Object.assign(LESSONS, {
         q: [
           Q('What did Semmelweis discover that saved lives?', 'Washing hands before caring for mothers', 'With a chlorine solution.', 'Sleep more', 'Eating fruit', 'Open windows'),
           Q('Why did more mothers die in the doctors\' room?', 'Because they had remains of autopsies in their hands.', 'Before taking care of the deliveries.', 'Because it was colder.', 'For bad luck.', 'For the food'),
-          Q('How did many doctors react to their discovery?', 'They offended and rejected him.', 'They didn\'t want to believe that they caused the deaths.', 'They gave him a prize.', 'They all applauded him.', 'Nothing.'),
+          Q('How did many doctors react to their discovery?', 'They offended and rejected him.', 'They didn\'t want to believe that they caused the deaths.', 'They gave him a prize.', 'They all applauded him.', 'Nothing'),
           Q('What year did Semmelweis impose hand washing?', 'In 1847', 'At the hospital in Vienna.', 'In 1492', 'In 2000', 'In 100'),
           Q('Who later proved the existence of the microbes and gave him the reason?', 'Pasteur', 'Germ theory.', 'Newton', 'Darwin', 'Freud'),
           Q('Which country was Semmelweis from?', 'From Hungary', 'He worked in Vienna.', 'From Japan', 'From Brazil', 'From Egypt'),
@@ -7170,9 +7171,9 @@ Object.assign(LESSONS, {
           Q('What did they call Florence Nightingale?', 'The lady of the lamp', 'I ran through the wounded rooms at night.', 'The Queen of the Sea', 'The Iron Lady', 'The golden girl'),
           Q('What war did Nightingale work in?', 'In the Crimean War', 'At the hospital in Escutari.', 'In World War I', 'In the Trojan War', 'None.'),
           Q('What more soldiers died in Escutari?', 'Infections, more than wounds', 'Because of dirt and overcrowding.', 'Of boredom', 'Cold only', 'You\'re welcome.'),
-          Q('What did Nightingale use to prove that the deaths were preventable?', 'Data and graphics, such as your pink diagram', 'It was a great math.', 'Poems', 'Songs', 'Nothing.'),
+          Q('What did Nightingale use to prove that the deaths were preventable?', 'Data and graphics, such as your pink diagram', 'It was a great math.', 'Poems', 'Songs', 'Nothing'),
           Q('What did you found in London in 1860?', 'The first modern nursing school', 'Nursing as a profession.', 'A bank', 'A theatre', 'A zoo'),
-          Q('What improved the health of the soldiers?', 'Hygiene, ventilation and good food', 'Simple measures that save lives.', 'More war', 'Less water', 'Nothing.'),
+          Q('What improved the health of the soldiers?', 'Hygiene, ventilation and good food', 'Simple measures that save lives.', 'More war', 'Less water', 'Nothing'),
         ] },
       { id: 'pasteur', name: 'Louis Pasteur', short: 'Pasteur', dates: '1822 – 1895', epithet: 'Microbes scientist',
         look: lk(0x2a2a2a, 0x1a1a1a, 0xf0d0b0, 0x8a8a8a, { beard: 0x8a8a8a, hat: 'none', acc: 'lens' }), prop: 'lens',
@@ -7180,12 +7181,12 @@ Object.assign(LESSONS, {
         defeat: 'You\'ve watched patiently. In the field of observation, chance only favors prepared minds.',
         concept: { name: 'The theory of germs', text: 'Louis Pasteur was a French chemist and microbiologist. With its famous jars of swan neck, it proved that microbes are not born spontaneously, but come from other microbes of the air. He showed that many microbes cause disease and fermentation, and invented "pasteurization": heating foods like milk to kill harmful microbes. He developed vaccines, including rabies: in 1885 he first tested it at Joseph Meister, a nine-year-old boy bitten by a rabid dog, who was saved. His discoveries proved Semmelweis right and changed medicine forever.' },
         q: [
-          Q('What did Pasteur show with his swan neck jars?', 'That microbes are not born alone, but from other microbes', 'Against spontaneous generation.', 'Let the water boil', 'That the jars break', 'Nothing.'),
+          Q('What did Pasteur show with his swan neck jars?', 'That microbes are not born alone, but from other microbes', 'Against spontaneous generation.', 'Let the water boil', 'That the jars break', 'Nothing'),
           Q('What is pasteurization?', 'Heat food to kill harmful microbes', 'Like milk.', 'Freezing food', 'Paint Foods', 'Eating cakes'),
           Q('Against what disease did Pasteur test a vaccine in 1885?', 'Rabies', 'The Joseph Meister boy.', 'The cold', 'The flu', 'Measles'),
           Q('Who was Joseph Meister?', 'A child bitten by a rabid dog who was saved with the vaccine', 'I was nine years old.', 'A king', 'A rival scientist', 'A dog'),
           Q('Who was right about Pasteur\'s discoveries?', 'A Semmelweis', 'About hand washing.', 'To Galen in everything', 'No one', 'To the alchemists'),
-          Q('What did Pasteur say about chance in science?', 'Which only favors prepared minds', 'We must observe patiently.', 'Who decides everything', 'That doesn\'t exist', 'Nothing.'),
+          Q('What did Pasteur say about chance in science?', 'Which only favors prepared minds', 'We must observe patiently.', 'Who decides everything', 'That doesn\'t exist', 'Nothing'),
         ] },
       { id: 'cajal', name: 'Santiago Ramón y Cajal', short: 'Ramon y Cajal', dates: '1852 – 1934', epithet: 'The neuron sketcher',
         look: lk(0x3a3a3a, 0x2a2a2a, 0xe8c8a8, 0x8a8a8a, { beard: 0x8a8a8a, hat: 'none', acc: 'quill' }), prop: 'tree',
@@ -7198,7 +7199,7 @@ Object.assign(LESSONS, {
           Q('What prize did Cajal receive in 1906?', 'The Nobel Prize, shared with Golgi', 'I thought otherwise.', 'An Oscar', 'The Cervantes Prize', 'None'),
           Q('What do your neuron drawings look like?', 'To trees', 'With branches that communicate.', 'To sea stars', 'To cars', 'Homes'),
           Q('Which country was Ramón y Cajal from?', 'From Spain', 'From Aragon.', 'From Italy', 'From Argentina', 'From Germany'),
-          Q('What did Cajal say that each person can be?', 'Sculptor of his own brain', 'With effort and learning.', 'Owner of the world', 'Immortal', 'Nothing.'),
+          Q('What did Cajal say that each person can be?', 'Sculptor of his own brain', 'With effort and learning.', 'Owner of the world', 'Immortal', 'Nothing'),
         ] },
       { id: 'schweitzer', boss: true, final: false, name: 'Albert Schweitzer', short: 'Schweitzer', dates: '1875 – 1965', epithet: 'The doctor of reverence for life',
         look: lk(0xf0ece0, 0x4a4a4a, 0xf0d0b0, 0xc8c8c8, { hat: 'none', acc: 'book' }), prop: 'garden',
@@ -7210,7 +7211,7 @@ Object.assign(LESSONS, {
           Q('Where did you found your hospital?', 'In Lambaréné, Gabon, in Africa', 'With his wife Helene.', 'In Paris', 'In New York', 'In Tokyo'),
           Q('What was Schweitzer doing besides being a doctor?', 'He was a philosopher, theologian and organist.', 'Expert in Bach\'s music.', 'He was a racing driver.', 'He was a pirate.', 'Nothing more.'),
           Q('Where did he come up with the expression "reverence for life"?', 'Navigating a river in Africa among hippos', 'In 1915.', 'In a bank', 'On a train from London', 'Dreaming'),
-          Q('What did you do with the Nobel Peace Prize money?', 'He used it for his hospital.', 'He received it in 1952.', 'He bought himself a castle.', 'He lost it.', 'Nothing.'),
+          Q('What did you do with the Nobel Peace Prize money?', 'He used it for his hospital.', 'He received it in 1952.', 'He bought himself a castle.', 'He lost it.', 'Nothing'),
           Q('What did Schweitzer fight at the end of his life?', 'Against nuclear weapons testing', 'Out of respect for all life.', 'Against hippos', 'Against music', 'Against nothing'),
           Q('What doctor cured Pergamum gladiators?', 'Galen', 'Then Marcus Aurelius\'s doctor.', 'Hippocrates', 'Avicenna', 'Pasteur'),
           Q('Who published De humani corporis fabrica in 1543?', 'Vesalio', 'The beginning of modern anatomy.', 'Copernicus', 'Leonardo', 'Galen'),
@@ -7880,7 +7881,7 @@ const FAL_BY_ID = Object.fromEntries(FALACIAS.map((f) => [f.id, f]));
           Q('«This famous footballer says this cream heals the heart». What fallacy is it?', 'False authority', 'He\'s not an expert in medicine.', 'Appeal to force', 'Equivocation', 'Sunk cost'),
           Q('What profession did Bernays invent?', 'Public relations', 'Influence people\'s opinion.', 'Astronomy', 'Surgery', 'Sports journalism'),
           Q('What is the title of the book Bernays published in 1928?', 'Propaganda', 'His techniques are still in advertising.', 'Capital', 'Walden', 'Cosmos'),
-          Q('What did Bernays do to sell bacon?', 'He got many doctors to recommend hearty breakfasts', 'He used the authority of the doctors.', 'He gave away pigs.', 'He banned the cereals.', 'Nothing.'),
+          Q('What did Bernays do to sell bacon?', 'He got many doctors to recommend hearty breakfasts', 'He used the authority of the doctors.', 'He gave away pigs.', 'He banned the cereals.', 'Nothing'),
         ] },
       { id: 'stebbing', boss: true, final: false, name: 'Susan Stebbing', short: 'Stebbing', dates: '1885 – 1943', epithet: 'The teacher of clear thinking',
         look: lk(0x3a4a5a, 0x8a6a4a, 0xf0d8c0, 0x8a8a8a, { hat: 'longhair', acc: 'book' }), prop: 'chalkboard',
@@ -8084,7 +8085,7 @@ const CALENDARIO = [
           Q('What did they call the women who studied plates at Harvard?', 'Computers', 'They calculated by hand.', 'Robots', 'Pilots', 'Witches'),
           Q('Who used Leavitt\'s rule to prove that Andromeda is another galaxy?', 'Edwin Hubble', 'In 1924.', 'Kepler', 'Galileo', 'Copernicus'),
           Q('Where were the cepheids that Leavitt studied?', 'In the Magellan Cloud', 'A small galaxy next door.', 'On the Moon', 'On Mars', 'In the Sun'),
-          Q('How much did you get paid an hour at Harvard?', 'Thirty cents', 'A very low salary.', 'A thousand dollars', 'Nothing.', 'One hundred dollars'),
+          Q('How much did you get paid an hour at Harvard?', 'Thirty cents', 'A very low salary.', 'A thousand dollars', 'Nothing', 'One hundred dollars'),
           Q('What is the use of a “standard candle” such as cepheids?', 'To measure distances in the universe', 'Knowing its real brightness.', 'To illuminate houses', 'For cooking', 'Not at all.'),
         ] },
       { id: 'payne', name: 'Cecilia Payne-Gaposchkin', short: 'Cecilia Payne', dates: '1900 – 1979', epithet: 'She who discovered what stars are made of',
@@ -8095,9 +8096,9 @@ const CALENDARIO = [
         q: [
           Q('What are the stars made of above all, as Payne discovered?', 'Of hydrogen and helium', 'He read it in his light.', 'Of iron', 'Of water', 'Of rock'),
           Q('What is the spectrum of a star?', 'Its light separated in colors, like a rainbow', 'It reveals what it\'s made of.', 'A ghost.', 'His shadow', 'Its size'),
-          Q('What did Russell say at the beginning of Payne\'s conclusion?', 'Which was clearly impossible.', 'He later confirmed that he was right.', 'That was great.', 'Nothing.', 'Which was obvious.'),
+          Q('What did Russell say at the beginning of Payne\'s conclusion?', 'Which was clearly impossible.', 'He later confirmed that he was right.', 'That was great.', 'Nothing', 'Which was obvious.'),
           Q('Why didn\'t they give him the title at Cambridge?', 'Because I was a woman.', 'Then women were not given titles.', 'Because he failed.', 'Because he didn\'t study.', 'Because he left before.'),
-          Q('What was Payne at Harvard in 1956?', 'The first female professor', 'And he ran the department.', 'The director of the zoo', 'The first astronaut', 'Nothing.'),
+          Q('What was Payne at Harvard in 1956?', 'The first female professor', 'And he ran the department.', 'The director of the zoo', 'The first astronaut', 'Nothing'),
           Q('What did Otto Struve call Payne\'s thesis?', 'The most brilliant ever written in astronomy', 'From 1925.', 'A mistake', 'A poem', 'A common thesis'),
         ] },
       { id: 'chandrasekhar', name: 'Subrahmanyan Chandrasekhar', short: 'Chandrasekhar', dates: '1910 – 1995', epithet: 'He who calculated the death of stars',
@@ -8119,7 +8120,7 @@ const CALENDARIO = [
         defeat: 'You\'ve seen the invisible. Almost everything in the universe is still a mystery, and that is the most exciting thing.',
         concept: { name: 'Dark Matter', text: 'Vera Rubin was an American astronomer. As a child, she looked at the stars from the window of her room. Princeton University did not admit women in astronomy, so it studied at other universities. In 1965 she was the first woman officially authorized to observe in the large telescope of Monte Palomar. With his colleague Kent Ford he measured in the 1970s how stars rotate in Andromeda and in many other spiral galaxies: those in the suburbs moved as fast as those in the center. With the stuff you see, they should get away. He concluded that each galaxy is wrapped in a halo of invisible matter, dark matter, which is about five times more than normal matter. In 2025 a large observatory in Chile, named after him, took its first images.' },
         q: [
-          Q('What did Vera Rubin discover when measuring how galaxies rotate?', 'That there is invisible matter: dark matter', 'The stars outside were spinning too fast.', 'That galaxies don\'t turn', 'Which are flat as tables', 'Nothing.'),
+          Q('What did Vera Rubin discover when measuring how galaxies rotate?', 'That there is invisible matter: dark matter', 'The stars outside were spinning too fast.', 'That galaxies don\'t turn', 'Which are flat as tables', 'Nothing'),
           Q('How much dark matter is there about normal matter?', 'About five times more.', 'We don\'t know what it is yet.', 'Half', 'None', 'Same'),
           Q('In which neighbouring galaxy did Rubin begin his measurements?', 'In Andromeda', 'With his colleague Kent Ford.', 'On the Moon', 'On Mars', 'In the Sun'),
           Q('What was Vera Rubin in 1965 in Monte Palomar?', 'The first woman allowed to observe there', 'A big telescope from California.', 'The Director', 'The cook', 'The Guard'),
@@ -8442,7 +8443,7 @@ Object.assign(FRASES, {
         [
           Q('What does the Qur\'an itself call the story of Joseph?', 'The most beautiful of the stories', 'Quran 12:3.', 'The saddest story', 'The War of Brothers', 'The Journey to the Sea'),
           Q('What\'s so special about sura 12?', 'It tells a single story from beginning to end', 'Joseph\'s.', 'It\'s the shortest.', 'He has no words.', 'It\'s in Greek.'),
-          Q('What did Joseph\'s brothers do, jealous?', 'He was thrown into a well.', 'He was sold as a slave.', 'He was crowned king', 'They gave him a boat.', 'Nothing.'),
+          Q('What did Joseph\'s brothers do, jealous?', 'He was thrown into a well.', 'He was sold as a slave.', 'He was crowned king', 'They gave him a boat.', 'Nothing'),
           Q('What gift did Joseph have?', 'Interpreting dreams', 'Like the king of Egypt.', 'Fly', 'Talk to the fish', 'Becoming invisible'),
           Q('In what other sacred book does the story of Joseph appear?', 'In the Genesis of the Bible', 'With differences of detail.', 'In the Odyssey', 'In the Mahabharata', 'None'),
           Q('What virtue does Joseph\'s surah stand out?', 'Patience and Forgiveness', '"Beautiful patience."', 'Revenge', 'Wealth', 'The Force'),
@@ -8455,7 +8456,7 @@ Object.assign(FRASES, {
           Q('What\'s so special about Mary in the Koran?', 'She\'s the only woman named after him.', 'And a sura bears his name.', 'He\'s missing.', 'She\'s a warrior queen', 'She\'s a prophet of the sea.'),
           Q('What is Jesus called in the Koran?', 'Isa', 'One of the great prophets.', 'Yusuf', 'Musa', 'Ibrahim'),
           Q('By which tree does Mary give birth, according to Sura 19?', 'Next to a palm tree', 'That gives him dates.', 'Next to an olive tree', 'Next to an oak tree', 'Next to an apple tree'),
-          Q('What is Jesus for Islam?', 'A great prophet and the Messiah, but not God', 'A difference with Christianity.', 'A King of Egypt', 'A Greek philosopher', 'Nothing.'),
+          Q('What is Jesus for Islam?', 'A great prophet and the Messiah, but not God', 'A difference with Christianity.', 'A King of Egypt', 'A Greek philosopher', 'Nothing'),
           Q('What birth is first announced to Zechariah in Sura 19?', 'John\'s (Yahya)', 'Being an old man.', 'Joseph\'s.', 'That of Moses', 'David\'s'),
           Q('Where does Mary appear more often, in the Koran or in the New Testament?', 'In the Koran', 'She is highly revered in Islam.', 'In the New Testament', 'Same', 'None'),
         ]),
@@ -8465,10 +8466,10 @@ Object.assign(FRASES, {
         { name: 'The stories of the Cave', text: 'Sura 18 gathers four stories. That of the sleepers of the cave: young believers who, persecuted, take refuge in a cave and sleep for about three hundred years. The owner of two gardens, who thinks he owns everything and loses it for his pride. That of Moses and a mysterious sage, to whom tradition calls Al-Khidr: Moses does not understand his strange acts until the sage explains his reasons, a lesson about patience and the limits of his own knowledge. And that of Dhul-Qarnayn, a righteous king who travels from east to west and builds a wall to protect a people. Many Muslims recite this sura on Fridays.' },
         [
           Q('What did the young men of the cave, according to surah 18?', 'Sleeping for about 300 years', 'Refugees from their pursuers.', 'Building a city', 'Navigating the sea', 'Paint the cave'),
-          Q('What does Moses learn from the mysterious sage (Al-Khidr)?', 'Patience and that your own knowledge has limits', 'I didn\'t understand his actions at first.', 'To fight', 'Fishing', 'Nothing.'),
-          Q('What\'s wrong with the owner of the two gardens?', 'He loses everything for his pride', 'He thought he owned everything.', 'Win a prize', 'She\'s getting married', 'Nothing.'),
+          Q('What does Moses learn from the mysterious sage (Al-Khidr)?', 'Patience and that your own knowledge has limits', 'I didn\'t understand his actions at first.', 'To fight', 'Fishing', 'Nothing'),
+          Q('What\'s wrong with the owner of the two gardens?', 'He loses everything for his pride', 'He thought he owned everything.', 'Win a prize', 'She\'s getting married', 'Nothing'),
           Q('What day do many Muslims recite the Surah of the Cave?', 'Friday', 'The day of community prayer.', 'Monday', 'Sunday', 'Never'),
-          Q('According to 18:109, what would be exhausted before the words of God?', 'The sea, if it were ink', 'An image of the inexhaustible.', 'The sun', 'Trees', 'Nothing.'),
+          Q('According to 18:109, what would be exhausted before the words of God?', 'The sea, if it were ink', 'An image of the inexhaustible.', 'The sun', 'Trees', 'Nothing'),
           Q('What does Dhul-Qarnayn raise to protect a people?', 'A wall', 'A righteous, traveling king.', 'A temple', 'A bridge', 'A tower'),
         ]),
       st('rahman', 'Sura of the Merciful (Ar-Rahman)', 'Ar-Rahman', 'Sura 55 · 78 verses', '“The Bride of the Qur’an”', 'flower',
@@ -13139,7 +13140,7 @@ BOOKS.push([
       { t: 'A voice coming back', x: 'Even today, his verses appear in ancient papyrus. Each finding is like recovering a piece of a voice that spoke twenty-six centuries ago. Safo wrote: someone, I tell you, will remember us in the future.' },
     ],
     quote: 'Someone, I tell you, will remember us in the future.',
-    q: { q: 'How much of Safo\'s poetry is preserved?', a: ['A complete poem and many fragments', 'His nine complete books', 'Nothing.', 'Just his name.'], e: 'The Ode to Aphrodite is the only entire poem.' } },
+    q: { q: 'How much of Safo\'s poetry is preserved?', a: ['A complete poem and many fragments', 'His nine complete books', 'Nothing', 'Just his name.'], e: 'The Ode to Aphrodite is the only entire poem.' } },
 ]);
 BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });
 
@@ -16794,7 +16795,7 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
       { q: 'What was the first country to recognize women\'s vote in national elections?', a: ['New Zealand, in 1893', 'France, in 1789', 'Greece, in Antiquity', 'Switzerland, in 1850'], e: 'After a petition of almost thirty-two thousand signatures.' }),
     poi(4, 'la-piece', 'The House of Exile', 'In a small village in the French Jura near Geneva, Maria Zambrano lived years in an old house with her sister Araceli and many cats. There, far from his country, he wrote some of his most beautiful pages. He said that exile, although it hurts, can teach to see the essentials.',
       'When he returned to Madrid in 1984, he was eighty years old. He had left Spain on foot, crossing the Pyrenees, in the winter of 1939.',
-      { q: 'What did Maria Zambrano learn from exile, according to her?', a: ['Let\'s see the essentials', 'To forget your tongue', 'To hate everyone', 'Nothing.'], e: 'He lived 45 years outside Spain.' }),
+      { q: 'What did Maria Zambrano learn from exile, according to her?', a: ['Let\'s see the essentials', 'To forget your tongue', 'To hate everyone', 'Nothing'], e: 'He lived 45 years outside Spain.' }),
   ]);
   NPCS.push([
     wnpc(0, 'maestra-lucia', 'Lucia', 'maestra rural', sk(0x5a4a6a, 0x2a2a3a, 0xf0d0b0, 0x3a2a1a, { hat: 'longhair', acc: 'book' }), [
@@ -16895,11 +16896,11 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
   ]);
   Object.assign(QUESTS, {
     solon: { text: 'Visit the place of the shock of the loads. Then tell me what I did with the debts.', needs: { pois: ['seisachtheia'], npcs: [] },
-      riddle: { q: 'What did Solon do with the debts of the poor?', a: ['He annulled them and freed those enslaved by them.', 'He doubled them.', 'He sold them.', 'Nothing.'] } },
+      riddle: { q: 'What did Solon do with the debts of the poor?', a: ['He annulled them and freed those enslaved by them.', 'He doubled them.', 'He sold them.', 'Nothing'] } },
     ciceron: { text: 'Visit the Senate and listen to Aurelia, the judge. Then tell me what the real law is.', needs: { pois: ['senado'], npcs: ['jueza'] },
       riddle: { q: 'What is the real law for Cicero?', a: ['Right Reason According to Nature', 'The will of the strongest', 'Whatever the Caesar says', 'Any habit.'] } },
     lascasas: { text: 'Visit the Valladolid Board. Then tell me what I defended before the emperor.', needs: { pois: ['junta-valladolid'], npcs: [] },
-      riddle: { q: 'What did Las Casas defend in Valladolid?', a: ['That indigenous people were free and fully humane', 'The War of Conquest', 'Slavery', 'Nothing.'] } },
+      riddle: { q: 'What did Las Casas defend in Valladolid?', a: ['That indigenous people were free and fully humane', 'The War of Conquest', 'Slavery', 'Nothing'] } },
     montesquieu: { text: 'Listen to Aurelia, the judge. Then tell me how many powers I divided the state.', needs: { pois: [], npcs: ['jueza'] },
       riddle: { q: 'How many powers did the state divide Montesquieu into?', a: ['Three: legislative, executive and judicial', 'One only', 'Ten', 'None'] } },
     gandhi: { text: 'Walk to the place of the Salt March and listen to Ramu, the salinero. Then tell me what my method is called.', needs: { pois: ['marcha-sal'], npcs: ['salinero'] },
@@ -16948,7 +16949,7 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
       { q: 'What Tibetan practice would make it possible to resist the cold, according to tradition?', a: ['The Tummo, Meditation of the Inner Heat', 'Eat a lot', 'Running non-stop', 'Sleeping all winter'], e: 'Milarepa wore only a cotton cloth.' }),
     poi(2, 'arunachala', 'Arunachala Mountain', 'Arunachala is a sacred mountain in southern India, next to the city of Tiruvannamalai. The pilgrims surround her barefoot, walking about fourteen kilometers. Ramana Maharshi arrived there at the age of sixteen and never left. He said the mountain itself taught in silence.',
       'On the full moon of the month of Kartikai a huge fire is lit at the top, which is seen from far away, and hundreds of thousands of people surround the mountain.',
-      { q: 'What do pilgrims do in Arunachala?', a: ['They surround her walking barefoot', 'They climb it with strings.', 'They shoot arrows at him', 'Nothing.'], e: 'About 14 kilometers.' }),
+      { q: 'What do pilgrims do in Arunachala?', a: ['They surround her walking barefoot', 'They climb it with strings.', 'They shoot arrows at him', 'Nothing'], e: 'About 14 kilometers.' }),
     poi(3, 'benares', 'The looms of Benares', 'Benares or Varanasi, on the banks of the Ganges, is one of the oldest inhabited cities in the world and the most sacred for Hindus. Kabir, the weaver, lived there. Still today, in their alleys, you hear the noise of the looms that weave the famous silk saris of Benares.',
       'Kabir comparaba el cuerpo con una tela: «Esta sábana la tejió el Tejedor con hilos finos; los santos la usaron con cuidado, y Kabir la devolvió tal como la recibió».',
       { q: 'What did Kabir compare the body to?', a: ['With a fabric woven with fine threads', 'With a sword', 'With a stone', 'With a boat'], e: 'Kabir was a trade weaver.' }),
@@ -16979,7 +16980,7 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
     huineng: { text: 'Listen to Tenzin, the monk. Then tell me what my poem says about the dust.', needs: { pois: [], npcs: ['monje-tenzin'] },
       riddle: { q: 'What does Huineng\'s poem say?', a: ['That from the beginning there\'s not one thing where you lay the dust', 'That we have to sweep every day', 'That the dust is gold', 'That mirrors are bad'] } },
     milarepa: { text: 'Visit the hermit\'s caves. Then tell me what my master Marpa did to me.', needs: { pois: ['cueva-milarepa'], npcs: [] },
-      riddle: { q: 'What made Marpa do to Milarepa?', a: ['Build and tear down stone towers', 'Read a thousand books', 'Traveling to India', 'Nothing.'] } },
+      riddle: { q: 'What made Marpa do to Milarepa?', a: ['Build and tear down stone towers', 'Read a thousand books', 'Traveling to India', 'Nothing'] } },
     kabir: { text: 'Visit Benares\' looms and listen to Lakshmi, the weaver. Then tell me where the divine is, according to me.', needs: { pois: ['benares'], npcs: ['tejedora-seda'] },
       riddle: { q: 'Where is the divine, according to Kabir?', a: ['Within each person', 'Only in the temple', 'Only in the mosque', 'In the gold'] } },
     mirabai: { text: 'Listen to Lakshmi, the weaver, and Anjali, the pilgrim. Then tell me who I dedicated my songs to.', needs: { pois: [], npcs: ['tejedora-seda', 'peregrina'] },
@@ -17066,7 +17067,7 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
       { q: 'What did the Orbis Pictus de Comenio have again?', a: ['Each word was accompanied by a drawing', 'He had no words.', 'It was coded.', 'It was a map of stars'], e: 'One of the first illustrated books for children.' }),
     poi(1, 'stans', 'Stans\' orphanage.', 'In 1798 the war swept through the town of Stans in Switzerland and left dozens of orphaned children. Pestalozzi, already more than fifty years old, took care of them in an empty convent, without assistants. The children arrived dirty, sick and distrustful. He taught them to read, count, and work, and above all to take care of one another.',
       'When a neighboring village caught fire, Stans’ children, who had nothing, asked to receive other orphans and share their bread with them.',
-      { q: 'What did Stans\' orphans ask for when a neighboring town burned down?', a: ['Receive other orphans and share their bread', 'Going on vacation', 'More toys', 'Nothing.'], e: 'They had learned to take care of each other.' }),
+      { q: 'What did Stans\' orphans ask for when a neighboring town burned down?', a: ['Receive other orphans and share their bread', 'Going on vacation', 'More toys', 'Nothing'], e: 'They had learned to take care of each other.' }),
     poi(2, 'casa-bambini', 'The Children\'s House', 'On January 6, 1907, in the poor neighborhood of San Lorenzo, in Rome, Maria Montessori opened the first "Casa dei Bambini" for about fifty young children who spent the day alone while their parents worked. He placed light tables and chairs of his size, low shelves and touching materials. The children, who at first cried and fought, began to concentrate and work calmly.',
       'Montessori observed that a three-year-old girl repeated more than forty times an exercise of fitting cylinders, without distraction, and left him happy and rested.',
       { q: 'What were the furniture at the Children\'s House like?', a: ['Lightweight and the size of children', 'Huge and heavy', 'Of iron', 'There was no furniture'], e: 'So the children could move them alone.' }),
@@ -17098,11 +17099,11 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
     comenio: { text: 'Visit the world in images and listen to Tomás, the rural master. Then tell me what I proposed in Magna Didactics.', needs: { pois: ['orbis-pictus'], npcs: ['maestro'] },
       riddle: { q: 'What did Comenio propose?', a: ['Teach everything to everyone', 'Teaching only the nobles', 'Close schools', 'Teaching only Latin'] } },
     pestalozzi: { text: 'Visit Stans\' orphanage. Then tell me what three parts of the person needs to be educated.', needs: { pois: ['stans'], npcs: [] },
-      riddle: { q: 'What is there to educate according to Pestalozzi?', a: ['Head, heart and hands', 'Only the memory', 'Only the muscles', 'Nothing.'] } },
+      riddle: { q: 'What is there to educate according to Pestalozzi?', a: ['Head, heart and hands', 'Only the memory', 'Only the muscles', 'Nothing'] } },
     montessori: { text: 'Visit the Children\'s House and listen to Inés, the curious student. Then tell me what the motto of my schools is.', needs: { pois: ['casa-bambini'], npcs: ['alumna'] },
       riddle: { q: 'What is the motto Montessori?', a: ['Help me do it for myself', 'Obey and be silent', 'Copy ten times', 'Don\'t touch anything.'] } },
     freud: { text: 'Visit my Vienna divan and listen to Carmen, grandmother storytellers. Then tell me what dreams are, according to me.', needs: { pois: ['divan'], npcs: ['abuela'] },
-      riddle: { q: 'What are dreams for Freud?', a: ['The real way to the unconscious', 'Noise without meaning', 'Messages from other planets', 'Nothing.'] } },
+      riddle: { q: 'What are dreams for Freud?', a: ['The real way to the unconscious', 'Noise without meaning', 'Messages from other planets', 'Nothing'] } },
     piaget: { text: 'Try the vessel experiment. Then tell me how to build the child\'s intelligence.', needs: { pois: ['vasos-piaget'], npcs: [] },
       riddle: { q: 'How is intelligence built according to Piaget?', a: ['Staged', 'Suddenly, at birth', 'Only with punishments', 'Not built'] } },
     vygotsky: { text: 'Listen to Inés, the student, and Thomas, the teacher. Then tell me what I called space where you learn with help.', needs: { pois: [], npcs: ['alumna', 'maestro'] },
@@ -17126,7 +17127,7 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
         { t: 'A book that traveled', x: 'It was translated into many languages and used for almost two centuries. Goethe remembered that as a child it was one of his favorite books.' },
       ],
       quote: 'There is nothing in understanding that has not been before in the senses.',
-      q: { q: 'What should be known first according to Comenio?', a: ['Things, with the senses, and then their names', 'Only the words', 'Only the numbers', 'Nothing.'], e: 'That\'s why your book has images.' } }, 0),
+      q: { q: 'What should be known first according to Comenio?', a: ['Things, with the senses, and then their names', 'Only the words', 'Only the numbers', 'Nothing'], e: 'That\'s why your book has images.' } }, 0),
     book({ id: 'interpretacion-suenos', author: 'freud', by: 'Sigmund Freud', title: 'The Interpretation of Dreams', year: '1899', kind: 'psychology',
       parts: [
         { t: 'Dreams make sense', x: 'Freud maintains that dreams are not meaningless noise: they express, in disguise, desires and worries that we do not recognize awake.' },
@@ -17135,7 +17136,7 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
         { t: 'The Real Way', x: 'Freud concludes that the interpretation of dreams is the real way to the knowledge of the unconscious.' },
       ],
       quote: 'The interpretation of dreams is the real way to the knowledge of the unconscious.',
-      q: { q: 'What do dreams express, according to Freud?', a: ['Disguised desires and concerns', 'Messages from the future', 'Nothing.', 'Just what we ate.'], e: 'Condensed and displaced.' } }, 1),
+      q: { q: 'What do dreams express, according to Freud?', a: ['Disguised desires and concerns', 'Messages from the future', 'Nothing', 'Just what we ate.'], e: 'Condensed and displaced.' } }, 1),
   ]);
   BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });
 
@@ -17143,10 +17144,10 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
   POIS.push([
     poi(0, 'chimborazo', 'The climb to the Chimborazo', 'On June 23, 1802, Humboldt, Bonpland and some companions tried to climb the Chimborazo, in Ecuador. Without mountain gear, with feet wounded and dizzy by the height, they reached about 5,900 meters, higher than anyone else until then that was known. A crack closed their way. Up there Humboldt understood how life changes with height.',
       'He then drew his "Naturgemälde", a great picture of the mountain with the names of the plants written to the height where they grow.',
-      { q: 'What did Humboldt understand at the Chimborazo?', a: ['How life changes with height', 'That the mountain was golden', 'That there were no plants', 'Nothing.'], e: 'He drew it in his Naturgemälde.' }),
+      { q: 'What did Humboldt understand at the Chimborazo?', a: ['How life changes with height', 'That the mountain was golden', 'That there were no plants', 'Nothing'], e: 'He drew it in his Naturgemälde.' }),
     poi(1, 'lobo', 'The Green Fire', 'On a mountain in Arizona, a young ranger and his companions saw a pack of wolves crossing a river. They fired. When Aldo Leopold arrived next to an old wolf, he saw a green and fierce fire die in his eyes. Years later he wrote that at that time he knew that there was something in those eyes that only the wolf and the mountain knew.',
       'In Yellowstone Park, when wolves were released again in 1995, the deer stopped eating the banks of the rivers, grew trees and returned beavers and birds.',
-      { q: 'What happened in Yellowstone when the wolves returned in 1995?', a: ['They grew trees on the banks and returned beavers and birds', 'All the trees disappeared.', 'Nothing.', 'The river dried up.'], e: 'Everything\'s connected.' }),
+      { q: 'What happened in Yellowstone when the wolves returned in 1995?', a: ['They grew trees on the banks and returned beavers and birds', 'All the trees disappeared.', 'Nothing', 'The river dried up.'], e: 'Everything\'s connected.' }),
     poi(2, 'primavera-silenciosa', 'The village without birds', 'Rachel Carson\'s book begins with a fable: a village where everything lived in harmony, until a white dust fell on the roofs and fields. The chickens did not have chicks, the apple trees did not give fruit, and in spring he did not sing any birds. "No one had done magic; the people had done it for themselves."',
       'Carson clarified that that town did not exist, but that each of those misfortunes had already occurred somewhere real.',
       { q: 'What falls on the village in Rachel Carson\'s fable?', a: ['A white powder: the pesticide', 'Snow', 'Ash of a volcano', 'Flour'], e: 'And the birds stop singing.' }),
@@ -17206,7 +17207,7 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
         { t: 'The other way', x: 'Carson does not ask to ban all chemistry, but to use with caution what we do not understand well, and to seek solutions that respect life.' },
       ],
       quote: 'The more clearly we can focus our attention on the wonders of the universe, the less we will enjoy destruction.',
-      q: { q: 'What about the poison in the chain of life, according to Carson?', a: ['Accumulates and concentrates more and more', 'Disappear immediately.', 'It becomes food', 'Nothing.'], e: 'From insects to fish and birds.' } }, 0),
+      q: { q: 'What about the poison in the chain of life, according to Carson?', a: ['Accumulates and concentrates more and more', 'Disappear immediately.', 'It becomes food', 'Nothing'], e: 'From insects to fish and birds.' } }, 0),
     book({ id: 'almanaque', author: 'leopold', by: 'Aldo Leopold', title: 'A Sand County Almanac', year: '1949', kind: 'Nature test',
       parts: [
         { t: 'Month to month', x: 'The first part counts a year at Leopold\'s farm: the return of the geese in March, the flowers of April, the drought of summer, the snow of January.' },
@@ -17215,7 +17216,7 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
         { t: 'The Ethics of the Earth', x: 'In the end he proposes to extend our moral community to soil, water, plants and animals: land is not a property, but a community to which we belong.' },
       ],
       quote: 'Something is correct when it tends to preserve the integrity, stability and beauty of the biotic community.',
-      q: { q: 'What is land for Leopold?', a: ['A community to which we belong', 'A commodity', 'An enemy', 'Nothing.'], e: 'Your ethics of the earth.' } }, 1),
+      q: { q: 'What is land for Leopold?', a: ['A community to which we belong', 'A commodity', 'An enemy', 'Nothing'], e: 'Your ethics of the earth.' } }, 1),
   ]);
   BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });
 
@@ -17223,13 +17224,13 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
   POIS.push([
     poi(0, 'postulados', 'The five postulates', 'Euclid began his geometry with five postulates. The first four are very simple: by two points passes a line, a line can be prolonged, a circle can be drawn, all the right angles are equal. The fifth, the parallel, is longer and more complicated. For two thousand years, many mathematicians tried to prove it from the others.',
       'In the 19th century, Gauss, Lobachevski and Bolyai discovered that, if the fifth postulate is changed, new and coherent geometries appear. Einstein used one of them to describe the universe.',
-      { q: 'What happened to changing Euclid\'s fifth postulate?', a: ['New and coherent geometries appeared', 'Everything became false.', 'Nothing.', 'Geometry disappeared.'], e: 'Non-Euclidean geometries.' }),
+      { q: 'What happened to changing Euclid\'s fifth postulate?', a: ['New and coherent geometries appeared', 'Everything became false.', 'Nothing', 'Geometry disappeared.'], e: 'Non-Euclidean geometries.' }),
     poi(1, 'conejos', 'The rabbit problem', 'In the Liber abaci, Fibonacci proposes: a pair of rabbits is put in a corral. Each month, each adult couple has a new partner, which starts to reproduce in the second month. How many couples will there be after a year? Month by month they come out 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233.',
       'If you divide a number of the succession between the previous one, the result approaches 1,618... the golden number, which many artists have used looking for harmonious proportions.',
       { q: 'What number approaches the division of two numbers followed by Fibonacci\'s succession?', a: ['The golden number, 1,618...', 'To zero', 'A hundred', 'A pi'], e: 'The golden ratio.' }),
     poi(2, 'taxi-1729', 'Taxi 1729', 'One day, mathematician Hardy went to visit Ramanujan, sick in a London hospital. He told him that he had arrived in a taxi with a boring number: 1729. Ramanujan replied immediately: "No, Hardy, it is a very interesting number: it is the least number that can be written as a sum of two cubes in two different ways". In effect: 1729 is 1 to the cube plus 12 to the cube, and also 9 to the cube plus 10 to the cube.',
       'Since then, numbers are called taxicab numbers. Hardy said that every whole number was a personal friend of Ramanujan.',
-      { q: 'What\'s so special about number 1729?', a: ['It\'s the smallest that\'s sum of two cubes in two ways.', 'It\'s the biggest prime number.', 'It\'s the Year of the French Revolution', 'Nothing.'], e: '1³ + 12³ = 9³ + 10³.' }),
+      { q: 'What\'s so special about number 1729?', a: ['It\'s the smallest that\'s sum of two cubes in two ways.', 'It\'s the biggest prime number.', 'It\'s the Year of the French Revolution', 'Nothing'], e: '1³ + 12³ = 9³ + 10³.' }),
     poi(3, 'puentes-konigsberg', 'The seven bridges of Königsberg', 'The city of Königsberg had a river with two islands and seven bridges. Its inhabitants wondered if it was possible to take a walk across each bridge once. In 1736, mathematician Leonhard Euler demonstrated that he did not: he drew the ground areas as points and bridges as lines, and saw that the walk is impossible when more than two points have an odd number of lines.',
       'This is how the graph theory was born, which today uses the maps of your phone to find the best way, and social networks to know who knows who.',
       { q: 'What branch of mathematics was born with the problem of bridges?', a: ['The theory of graphs', 'Arithmetic', 'Trigonometry', 'Astrology'], e: 'Euler invented it in 1736.' }),
@@ -17262,9 +17263,9 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
     boole: { text: 'Visit the bridges of Königsberg. Then tell me how many values my algebra works with.', needs: { pois: ['puentes-konigsberg'], npcs: [] },
       riddle: { q: 'How many values does Boole\'s algebra work with?', a: ['Two: True and False', 'Ten', 'Infinite', 'None'] } },
     ramanujan: { text: 'Get in taxi 1729. Then tell me what\'s so special about that number.', needs: { pois: ['taxi-1729'], npcs: [] },
-      riddle: { q: 'What\'s so special about 1729?', a: ['It\'s the smallest that\'s sum of two cubes in two ways.', 'He\'s a cousin.', 'It\'s even.', 'Nothing.'] } },
+      riddle: { q: 'What\'s so special about 1729?', a: ['It\'s the smallest that\'s sum of two cubes in two ways.', 'He\'s a cousin.', 'It\'s even.', 'Nothing'] } },
     noether: { text: 'Listen to Elena, the architect, and study postulates. Then tell me what corresponds to every symmetry.', needs: { pois: ['postulados'], npcs: ['arquitecta'] },
-      riddle: { q: 'What corresponds to every symmetry according to Emmy Noether?', a: ['A Conservation Law', 'A prime number', 'A mistake', 'Nothing.'] } },
+      riddle: { q: 'What corresponds to every symmetry according to Emmy Noether?', a: ['A Conservation Law', 'A prime number', 'A mistake', 'Nothing'] } },
     godel: { text: 'Listen to Joan, the decryptor, and visit Bletchley Park. Then tell me what I proved about mathematical truths.', needs: { pois: ['bletchley'], npcs: ['descifradora'] },
       riddle: { q: 'What did Gödel prove?', a: ['That there are truths that cannot be demonstrated within a system', 'That everything can be proved', 'There are no numbers', 'That logic is useless'] } },
   });
@@ -17377,13 +17378,13 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
   ]);
   Object.assign(QUESTS, {
     vitruvio: { text: 'Visit Chauvet\'s cave and listen to Camila, the sculptor. Then tell me what three qualities a building must have.', needs: { pois: ['cueva-chauvet'], npcs: ['escultora'] },
-      riddle: { q: 'What should a building have according to Vitruvio?', a: ['Firmness, utility and beauty', 'Gold, towers and height', 'Size only', 'Nothing.'] } },
+      riddle: { q: 'What should a building have according to Vitruvio?', a: ['Firmness, utility and beauty', 'Gold, towers and height', 'Size only', 'Nothing'] } },
     hokusai: { text: 'Look closely at the big wave. Then tell me which mountain appears at the bottom.', needs: { pois: ['gran-ola'], npcs: [] },
       riddle: { q: 'What mountain appears in The Great Wave?', a: ['Mount Fuji', 'The Everest', 'The Olympus', 'The Chimborazo'] } },
     beethoven: { text: 'Attend the premiere of the Ninth and listen to Antonio, the violin builder. Then tell me what poem my symphony ends with.', needs: { pois: ['novena'], npcs: ['luthier'] },
       riddle: { q: 'What poem does the Ninth end with?', a: ['The Ode to Joy', 'The Odyssey', 'None', 'The raven'] } },
     tolstoi: { text: 'Listen to Lola, the dancer, and Antonio, the luthier. Then tell me what art is, according to me.', needs: { pois: [], npcs: ['bailarina', 'luthier'] },
-      riddle: { q: 'What is art for Tolstoy?', a: ['A contagion of feelings that unites people', 'An ornament', 'A business', 'Nothing.'] } },
+      riddle: { q: 'What is art for Tolstoy?', a: ['A contagion of feelings that unites people', 'An ornament', 'A business', 'Nothing'] } },
     kandinsky: { text: 'Discover the colors that ring. Then tell me which instrument sounds like yellow.', needs: { pois: ['sinestesia'], npcs: [] },
       riddle: { q: 'How does yellow sound to Kandinsky?', a: ['Like a trumpet', 'Like a drum', 'Like silence', 'Like a broken bell'] } },
     frida: { text: 'Visit the Blue House and listen to Camila, the sculptor. Then tell me what I painted more than anything.', needs: { pois: ['casa-azul'], npcs: ['escultora'] },
@@ -17433,10 +17434,10 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
       { q: 'What symbol of peace did the inhabitants of Parihaka carry?', a: ['A white albatross pen', 'A golden crown', 'A sword', 'A red flag'], e: 'It is still a symbol of peaceful resistance.' }),
     poi(3, 'iolani', 'The palace Iolani', 'In Honolulu stands the palace Iolani, the only royal palace in U.S. territory. I had a power and a phone before the White House. In 1895, Queen Liliuokalani was locked up almost eight months in a upstairs room. To pass the time, he sewed a quilt with his story and composed songs.',
       'The queen\'s quilt, with embroidered messages and dates, is still preserved and displayed in the palace.',
-      { q: 'What did the Iolani palace have before the White House?', a: ['Electric light and telephone', 'A zoo', 'A gold elevator', 'Nothing.'], e: 'It was a very modern palace.' }),
+      { q: 'What did the Iolani palace have before the White House?', a: ['Electric light and telephone', 'A zoo', 'A gold elevator', 'Nothing'], e: 'It was a very modern palace.' }),
     poi(4, 'uluru', 'Uluru', 'In the center of Australia stands Uluru, a huge sandstone rock that changes color with light: red on at sunset, purple at dusk. For the Anangu people it is a sacred place, full of stories of the "Time of Dream", when ancestral beings created the world. In 1985 the government returned Uluru\'s property to the Anangu.',
       'Since 2019 it is forbidden to climb the rock, out of respect for its traditional guardians.',
-      { q: 'What happened in 2019 in Uluru?', a: ['It was forbidden to climb the rock, out of respect for the Anangu', 'A hotel was built on top', 'It was painted blue.', 'Nothing.'], e: 'It\'s a sacred place.' }),
+      { q: 'What happened in 2019 in Uluru?', a: ['It was forbidden to climb the rock, out of respect for the Anangu', 'A hotel was built on top', 'It was painted blue.', 'Nothing'], e: 'It\'s a sacred place.' }),
   ]);
   NPCS.push([
     wnpc(0, 'tejedora-dine', 'Nizhoni', 'weaver diene', sk(0xc84a2a, 0x2a2a3a, 0x9a6a4a, 0x1a1410, { hat: 'braids', acc: 'none' }), [
@@ -17459,11 +17460,11 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
     torosentado: { text: 'Visit the big flocks and listen to Winona, the storyteller grandmother. Then tell me which animal was the basis of my people\'s life.', needs: { pois: ['bisontes'], npcs: ['narradora'] },
       riddle: { q: 'What animal was the basis of Lakota life?', a: ['The bison', 'The camel', 'The kangaroo', 'The Elephant'] } },
     joseph: { text: 'Listen to Winona, the storyteller grandmother. Then tell me what I said when I gave up.', needs: { pois: [], npcs: ['narradora'] },
-      riddle: { q: 'What did Chief Joseph say when he surrendered?', a: ['I will fight no more forever.', 'I\'ll be back with an army.', 'I\'ll never give up', 'Nothing.'] } },
+      riddle: { q: 'What did Chief Joseph say when he surrendered?', a: ['I will fight no more forever.', 'I\'ll be back with an army.', 'I\'ll never give up', 'Nothing'] } },
     alcenegro: { text: 'Visit the Tree of Peace and listen to Nizhoni, the weaver. Then tell me how life moves, according to me.', needs: { pois: ['arbol-paz'], npcs: ['tejedora-dine'] },
       riddle: { q: 'How does life move according to Black Elk?', a: ['In Circles', 'Straight in line', 'Random', 'It\'s not moving.'] } },
     tewhiti: { text: 'Visit Parihaka. Then tell me what a symbol of peace we had in our hair.', needs: { pois: ['parihaka'], npcs: [] },
-      riddle: { q: 'What did the inhabitants of Parihaka have in their hair?', a: ['A white albatross pen', 'A crown', 'A red flower', 'Nothing.'] } },
+      riddle: { q: 'What did the inhabitants of Parihaka have in their hair?', a: ['A white albatross pen', 'A crown', 'A red flower', 'Nothing'] } },
     liliuokalani: { text: 'Visit the Iolani Palace and listen to Kaimana, the navigator. Then tell me my most famous song.', needs: { pois: ['iolani'], npcs: ['navegante-kaimana'] },
       riddle: { q: 'What is Liliuokalani\'s most famous song?', a: ['Aloha', 'Cute honey.', 'The Bamba', 'None'] } },
     unaipon: { text: 'Visit Uluru and listen to Kaimana, the navigator. Then tell me what I studied to imagine a flying machine.', needs: { pois: ['uluru'], npcs: ['navegante-kaimana'] },
@@ -17513,7 +17514,7 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
       { q: 'What were they washing their hands with in Semmelweis\'s room?', a: ['With chlorine water', 'With wine', 'With sea water', 'They didn\'t wash.'], e: 'Until there\'s no smell left.' }),
     poi(3, 'escutari', 'The hospital in Escutari', 'In the Escutari barracks, opposite Istanbul, a huge hospital was installed for British soldiers wounded in the Crimean war. When Florence Nightingale arrived in 1854, the soldiers slept on the ground, there were rats and lice, bandages were missing and the sewers were broken. Nightingale organized the cleaning, kitchen, laundry and ventilation, and went through the night rooms with his lamp.',
       'With his data, Nightingale showed in his pink diagram that most of the deaths were due to preventable diseases, not war wounds.',
-      { q: 'What did Nightingale\'s pink diagram show?', a: ['That most deaths were due to preventable diseases', 'That there were many flowers', 'That the war was good', 'Nothing.'], e: 'With data and graphics.' }),
+      { q: 'What did Nightingale\'s pink diagram show?', a: ['That most deaths were due to preventable diseases', 'That there were many flowers', 'That the war was good', 'Nothing'], e: 'With data and graphics.' }),
     poi(4, 'vacuna-rabia', 'The child and vaccine', 'On July 6, 1885, a mother arrived at Pasteur\'s laboratory in Paris with her nine-year-old son Joseph Meister, bitten fourteen times by a rabid dog. Rabies were always deadly. Pasteur was not a doctor, and his vaccine had only been tested on dogs. After consulting doctors, he decided to try it: for ten days he was injected with the vaccine. Joseph survived.',
       'Months later, people were bitten from many countries, including a group from Russia bitten by a wolf. This is how the Pasteur Institute was born.',
       { q: 'Who was the first child saved with Pasteur\'s rabies vaccine?', a: ['Joseph Meister', 'Louis Braille', 'Mozart', 'No one'], e: 'In 1885, nine years old.' }),
@@ -17537,13 +17538,13 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
   ]);
   Object.assign(QUESTS, {
     galeno: { text: 'Visit the school of gladiators and listen to Matthias, the apothecary. Then tell me what the arteries are wearing, as I proved.', needs: { pois: ['gladiadores'], npcs: ['boticario'] },
-      riddle: { q: 'What do the arteries carry according to Galen?', a: ['Blood', 'Air', 'Water', 'Nothing.'] } },
+      riddle: { q: 'What do the arteries carry according to Galen?', a: ['Blood', 'Air', 'Water', 'Nothing'] } },
     vesalio: { text: 'Visit Padua\'s anatomical theatre. Then tell me what my great book is called.', needs: { pois: ['teatro-anatomico'], npcs: [] },
       riddle: { q: 'What\'s the name of Vesalio\'s great book?', a: ['Of humani corporis manufactures', 'The canon', 'Cosmos', 'The Republic'] } },
     semmelweis: { text: 'Visit the Vienna sink and listen to Dolores, the midwife. Then tell me what gesture saved the mothers.', needs: { pois: ['lavado-manos'], npcs: ['partera-dolores'] },
       riddle: { q: 'What gesture saved the mothers of Vienna?', a: ['Washing your hands', 'Pray', 'Sleep more', 'Open windows'] } },
     nightingale: { text: 'Visit Escutari Hospital and listen to Rosa, the night nurse. Then tell me what I used to convince the government.', needs: { pois: ['escutari'], npcs: ['enfermera'] },
-      riddle: { q: 'What did Nightingale use to convince the government?', a: ['Data and graphs', 'Poems', 'Threats', 'Nothing.'] } },
+      riddle: { q: 'What did Nightingale use to convince the government?', a: ['Data and graphs', 'Poems', 'Threats', 'Nothing'] } },
     pasteur: { text: 'He knows the story of the child and the vaccine. Then tell me what disease it was.', needs: { pois: ['vacuna-rabia'], npcs: [] },
       riddle: { q: 'What disease was the 1885 vaccine against?', a: ['Rabies', 'The flu', 'The cold', 'Chickenpox'] } },
     cajal: { text: 'Listen to Matthias, the apothecary, and Rosa, the nurse. Then tell me what cells the brain is made of.', needs: { pois: [], npcs: ['boticario', 'enfermera'] },
@@ -17567,7 +17568,7 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
         { t: 'Watching yourself', x: 'Your main message: The doctor should not rely only on ancient books, but open his eyes and check with his own hands.' },
       ],
       quote: 'I have set out to describe the human body as I have seen it, not as the books tell it.',
-      q: { q: 'What is the main message of the Fabrica?', a: ['Checking yourself instead of relying only on ancient books', 'Obey Galen', 'Do not study the body', 'Nothing.'], e: 'The beginning of modern anatomy.' } }, 0),
+      q: { q: 'What is the main message of the Fabrica?', a: ['Checking yourself instead of relying only on ancient books', 'Obey Galen', 'Do not study the body', 'Nothing'], e: 'The beginning of modern anatomy.' } }, 0),
     book({ id: 'notas-enfermeria', author: 'nightingale', by: 'Florence Nightingale', title: 'Notes on Nursing', year: '1859', kind: 'Care manual',
       parts: [
         { t: 'For all women', x: 'Nightingale wrote the book for anyone who cared for a sick person at home, not just for professional nurses. Thousands of copies were sold.' },
@@ -17732,7 +17733,7 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
   POIS.push([
     poi(0, 'monte-wilson', 'The Monte Wilson Telescope', 'On top of Mount Wilson, in California, was the Hooker telescope, with a mirror of two and a half meters, the largest in the world in its time. On the night of October 6, 1923, Edwin Hubble photographed the Andromeda nebula and found in it a cepheid star. Using Henrietta Leavitt\'s rule he calculated his distance: he was far further than any star in the Milky Way. Andromeda was another galaxy. Suddenly, the universe became immense.',
       'On the glass plate, Hubble crossed out the letter N of "nova" and wrote enthusiastically: "VAR!", a variable star. In 1929 he also showed that galaxies distance themselves from one another: the universe expands.',
-      { q: 'What did Hubble show in 1923 with an Andromeda cepheid?', a: ['That Andromeda is another galaxy', 'That Andromeda is a planet', 'That the Sun revolves around the Earth', 'Nothing.'], e: 'He used Henrietta Leavitt\'s rule.' }),
+      { q: 'What did Hubble show in 1923 with an Andromeda cepheid?', a: ['That Andromeda is another galaxy', 'That Andromeda is a planet', 'That the Sun revolves around the Earth', 'Nothing'], e: 'He used Henrietta Leavitt\'s rule.' }),
     poi(1, 'atomo-primitivo', 'The primitive atom', 'In 1927, the Belgian priest and physicist Georges Lemaître proposed that the universe expand, and in 1931 he imagined that it all began in a "primitive atom" that fragmented. This is how the theory we call the Big Bang was born today. Today we know that about 13.8 billion years ago the universe was very hot and dense, and since then it has expanded and cooled.',
       'The name "Big Bang", "great explosion", was invented in 1949 by astronomer Fred Hoyle on the radio, half joking, because he did not believe in that theory. In 1965, Penzias and Wilson found the echo of the Big Bang: at first they thought that the noise of their antenna came from pigeon droppings.',
       { q: 'Who proposed that the universe began in a “primitive atom”?', a: ['Georges Lemaître', 'Fred Hoyle', 'Galileo', 'Aristotle'], e: 'The origin of the Big Bang theory.' }),
@@ -17775,7 +17776,7 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
     chandrasekhar: { text: 'Visit the Cambridge radio telescope. Then tell me what a pulsar is.', needs: { pois: ['pulsar-cambridge'], npcs: [] },
       riddle: { q: 'What is a pulsar?', a: ['A neutron star that turns like a lighthouse', 'A planet', 'A comet', 'A cloud'] } },
     rubin: { text: 'Visit the James Webb telescope and listen to Ana, the astronaut. Then tell me how much dark matter there is to normal.', needs: { pois: ['jwst'], npcs: ['astronauta'] },
-      riddle: { q: 'How much dark matter is there about normal matter?', a: ['About five times more.', 'Half', 'Nothing.', 'Same'] } },
+      riddle: { q: 'How much dark matter is there about normal matter?', a: ['About five times more.', 'Half', 'Nothing', 'Same'] } },
     hawking: { text: 'Visit the first photo of a black hole and listen to Amara and Tomás. Then tell me what black holes emit.', needs: { pois: ['eht-m87'], npcs: ['radioastronoma', 'cometero'] },
       riddle: { q: 'What do black holes emit, according to Hawking?', a: ['A weak radiation', 'Green light', 'Music', 'Nothing at all.'] } },
   });
@@ -18190,7 +18191,7 @@ function buildFigure(look, accent) {
   // manto (himation / estola) en diagonal
   const sash = mesh(new THREE.TorusGeometry(0.43, 0.05, 6, 32, Math.PI * 1.25), robe2, 0, 1.12, 0); sash.rotation.set(Math.PI / 2 - 0.12, 0.6, 0); sash.scale.set(1, 1.12, 0.55); body.add(sash);
   body.add(mesh(new THREE.CylinderGeometry(0.4, 0.42, 0.08, 20), robe2, 0, 1.0, 0));
-  if (look.hat === 'ruff' || look.hat === 'wig' || look.hat === 'longhair') put(body, mesh(new THREE.ConeGeometry(0.12, 0.35, 4), std(0xf6f2ea), 0, 1.4, 0.3)).rotation.x = Math.PI; // corbatín
+  if ((look.hat === 'ruff' || look.hat === 'wig' || look.hat === 'longhair') && look.extra === undefined) put(body, mesh(new THREE.ConeGeometry(0.12, 0.35, 4), std(0xf6f2ea), 0, 1.4, 0.3)).rotation.x = Math.PI; // corbatín
   // cabeza
   const head = new THREE.Group(); head.position.y = 1.78; g.add(head);
   head.add(mesh(new THREE.CylinderGeometry(0.09, 0.11, 0.2, 10), skin, 0, -0.18, 0));
@@ -18205,9 +18206,9 @@ function buildFigure(look, accent) {
     head.add(mesh(new THREE.BoxGeometry(0.12, 0.025, 0.03), std(look.beard, { roughness: 1 }), 0, -0.06, 0.19, false));
     if (look.beardGrey) for (const [x, y] of [[-0.06, -0.2], [0.05, -0.26], [0, -0.33], [-0.03, -0.12], [0.08, -0.15]]) head.add(mesh(new THREE.BoxGeometry(0.012, 0.09, 0.01), std(look.beardGrey, { roughness: 1 }), x, y * (look.beardLen || 1), 0.205 - Math.abs(y) * 0.25, false)); // canas
   }
-  const cap = (geo, m, y = 0.04, z = -0.01) => { const c = mesh(geo, m, 0, y, z); head.add(c); return c; };
+  const cap = (geo, m, y = 0.04, z = -0.01) => { const c = mesh(geo, m, 0, y, z); c.scale.set(0.97, 1.1, 1.02); c.rotation.x = -0.34; head.add(c); return c; }; // un poco más alto que el cráneo: sin franjas en la frente
   switch (look.hat) {
-    case 'bald': cap(new THREE.SphereGeometry(0.205, 16, 10, 0, TAU, Math.PI * 0.55, Math.PI * 0.25), hair, 0, -0.01); break;
+    case 'bald': cap(new THREE.SphereGeometry(0.205, 16, 10, Math.PI / 2 + 0.95, TAU - 1.9, Math.PI * 0.42, Math.PI * 0.2), hair, 0, -0.01); break;
     case 'laurel': cap(new THREE.SphereGeometry(0.21, 16, 10, 0, TAU, 0, Math.PI * 0.45), hair, 0.01);
       { const l = mesh(new THREE.TorusGeometry(0.2, 0.03, 6, 20), std(0x4a7a2a, { roughness: 0.8 }), 0, 0.08, -0.01); l.rotation.x = Math.PI / 2 - 0.2; head.add(l); } break;
     case 'none': cap(new THREE.SphereGeometry(0.21, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015); break;
@@ -18235,6 +18236,66 @@ function buildFigure(look, accent) {
     case 'longhair': cap(new THREE.SphereGeometry(0.215, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01);
       for (const s of [-1, 1]) { const l = mesh(new THREE.BoxGeometry(0.09, 0.42, 0.2), hair, s * 0.17, -0.14, -0.05); head.add(l); }
       break;
+    // ---- peinados y sombreros del avatar
+    case 'short': cap(new THREE.SphereGeometry(0.213, 16, 10, 0, TAU, 0, Math.PI * 0.44), hair, 0.012, -0.012);
+      { const q = mesh(new THREE.SphereGeometry(0.09, 12, 8), hair, 0.05, 0.17, 0.1); q.scale.set(1.5, 0.55, 1); q.rotation.z = -0.3; head.add(q); } break;
+    case 'bob': cap(new THREE.SphereGeometry(0.212, 18, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015);
+      { const back = mesh(new THREE.SphereGeometry(0.222, 18, 10, Math.PI / 2 + 1.1, TAU - 2.2, Math.PI * 0.5, Math.PI * 0.24), hair, 0, 0.0, -0.01); back.scale.set(1.02, 1.08, 1.02); back.material = back.material.clone(); back.material.side = THREE.DoubleSide; head.add(back); } break;
+    case 'curly': cap(new THREE.SphereGeometry(0.21, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015);
+      for (let i = 0; i < 26; i++) { const th = Math.acos(1 - (i + 0.5) / 26 * 1.15), ph = i * 2.4; const y = Math.cos(th), r = Math.sin(th); const z = Math.sin(ph) * r; if (z > 0.55 && y < 0.75) continue;
+        head.add(mesh(new THREE.SphereGeometry(0.058, 8, 6), hair, Math.cos(ph) * r * 0.215, 0.03 + y * 0.215, z * 0.215 - 0.015)); } break;
+    case 'afro': { const a = mesh(new THREE.SphereGeometry(0.28, 22, 16), hair, 0, 0.12, -0.1); a.scale.set(1.08, 0.95, 1); head.add(a); cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015); } break;
+    case 'bun': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015); head.add(mesh(new THREE.SphereGeometry(0.095, 12, 10), hair, 0, 0.1, -0.21)); break;
+    case 'topknot': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015); head.add(mesh(new THREE.SphereGeometry(0.075, 12, 10), hair, 0, 0.27, -0.04));
+      { const t = mesh(new THREE.TorusGeometry(0.05, 0.016, 6, 14), std(0xb83a2a, { roughness: 0.6 }), 0, 0.215, -0.03); t.rotation.x = Math.PI / 2; head.add(t); } break;
+    case 'ponytail': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015);
+      { const p2 = mesh(new THREE.CylinderGeometry(0.06, 0.025, 0.42, 10), hair, 0, -0.08, -0.27); p2.rotation.x = 0.35; head.add(p2);
+        const t = mesh(new THREE.TorusGeometry(0.05, 0.015, 6, 14), std(0x3a6ab8, { roughness: 0.6 }), 0, 0.11, -0.21); t.rotation.x = 0.35 + Math.PI / 2; head.add(t); } break;
+    case 'pigtails': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015);
+      for (const sx of [-1, 1]) { const p2 = mesh(new THREE.CylinderGeometry(0.055, 0.02, 0.36, 10), hair, sx * 0.23, -0.08, -0.07); p2.rotation.z = sx * 0.25; head.add(p2); head.add(mesh(new THREE.SphereGeometry(0.035, 8, 6), std(0xe85a8a, { roughness: 0.6 }), sx * 0.2, 0.08, -0.07)); } break;
+    case 'mohawk': { const stub = mesh(new THREE.SphereGeometry(0.205, 24, 12, Math.PI / 2 + 0.95, TAU - 1.9, 0, 1.45), std(look.stubble || 0x6a5648, { roughness: 1 }), 0, 0.005, -0.005); stub.scale.set(0.93, 1.08, 1); head.add(stub);
+      for (let i = 0; i < 6; i++) { const a = -0.9 + i * 0.42; const c = mesh(new THREE.ConeGeometry(0.045, 0.16, 6), hair, 0, 0.03 + Math.cos(a) * 0.23, Math.sin(a) * 0.23); c.rotation.x = a; head.add(c); } } break;
+    case 'shaved': { const st = mesh(new THREE.SphereGeometry(0.205, 24, 12, Math.PI / 2 + 0.95, TAU - 1.9, 0, 1.45), std(hair, { roughness: 1, transparent: true, opacity: 0.35 }), 0, 0.005, -0.005); st.scale.set(0.93, 1.08, 1); head.add(st); } break;
+    case 'headband': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015);
+      { const b = mesh(new THREE.TorusGeometry(0.205, 0.022, 6, 28), robe2, 0, 0.1, -0.01); b.rotation.x = Math.PI / 2 - 0.15; b.scale.set(0.95, 1.05, 1); head.add(b); } break;
+    case 'flowers': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015);
+      { const C = [0xf0e060, 0xe8608a, 0xffffff, 0x9a70e0, 0xf08a40]; for (let i = 0; i < 12; i++) { const a = (i / 12) * TAU; head.add(mesh(new THREE.SphereGeometry(0.04, 8, 6), std(C[i % 5], { roughness: 0.6 }), Math.cos(a) * 0.2, 0.1 - Math.sin(a) * 0.035, Math.sin(a) * 0.2 - 0.01)); }
+        const v = mesh(new THREE.TorusGeometry(0.2, 0.014, 6, 28), std(0x4a8a3a, { roughness: 0.8 }), 0, 0.1, -0.01); v.rotation.x = Math.PI / 2 - 0.17; head.add(v); } break;
+    case 'straw': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015);
+      { const m = std(0xd8b868, { roughness: 0.95 }); head.add(mesh(new THREE.CylinderGeometry(0.4, 0.42, 0.02, 28), m, 0, 0.12, -0.01)); head.add(mesh(new THREE.CylinderGeometry(0.18, 0.21, 0.15, 20), m, 0, 0.2, -0.01)); head.add(mesh(new THREE.CylinderGeometry(0.213, 0.213, 0.04, 20), std(0x8a2a2a), 0, 0.15, -0.01)); } break;
+    case 'tophat': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015);
+      { const m = std(0x18161a, { roughness: 0.5 }); head.add(mesh(new THREE.CylinderGeometry(0.31, 0.31, 0.02, 28), m, 0, 0.14, -0.01)); head.add(mesh(new THREE.CylinderGeometry(0.19, 0.18, 0.34, 22), m, 0, 0.32, -0.01)); head.add(mesh(new THREE.CylinderGeometry(0.186, 0.186, 0.05, 22), std(0x7a1a2a), 0, 0.18, -0.01)); } break;
+    case 'mortar': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015);
+      { const m = std(0x1a1a22, { roughness: 0.6 }); head.add(mesh(new THREE.CylinderGeometry(0.2, 0.21, 0.12, 20), m, 0, 0.15, -0.01)); const b = mesh(new THREE.BoxGeometry(0.46, 0.025, 0.46), m, 0, 0.22, -0.01); b.rotation.y = Math.PI / 4; head.add(b);
+        const gold = std(0xd8a838, { metalness: 0.6, roughness: 0.4 }); head.add(mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.16, 6), gold, 0.2, 0.15, 0.1)); head.add(mesh(new THREE.SphereGeometry(0.022, 8, 6), gold, 0.2, 0.06, 0.1)); } break;
+    case 'crown': cap(new THREE.SphereGeometry(0.212, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015);
+      { const gold = std(0xe0b040, { metalness: 0.85, roughness: 0.25 }); const band = mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.08, 24, 1, true), gold, 0, 0.15, -0.01); band.material = band.material.clone(); band.material.side = THREE.DoubleSide; head.add(band);
+        for (let i = 0; i < 8; i++) { const a = (i / 8) * TAU; head.add(mesh(new THREE.ConeGeometry(0.03, 0.09, 4), gold, Math.cos(a) * 0.2, 0.23, Math.sin(a) * 0.2 - 0.01)); if (i % 2 === 0) head.add(mesh(new THREE.SphereGeometry(0.018, 8, 6), std([0xc8202a, 0x2a5ac8][i % 4 ? 1 : 0], { roughness: 0.2 }), Math.cos(a) * 0.205, 0.15, Math.sin(a) * 0.205 - 0.01)); } } break;
+  }
+  // barbas cortas del avatar (las largas usan look.beard)
+  if (look.beardStyle && look.beardStyle !== 'none') {
+    const bc = std(look.beard || look.beardCol || look.hair, { roughness: 1 }), st = look.beardStyle;
+    if (st === 'stubble') { const m = new THREE.MeshStandardMaterial({ color: look.beardCol || look.hair, roughness: 1, transparent: true, opacity: 0.42, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -3, polygonOffsetUnits: -10 });
+      const sh = new THREE.Mesh(new THREE.SphereGeometry(0.2045, 24, 12, Math.PI / 2 - 1.15, 2.3, Math.PI * 0.6, Math.PI * 0.3), m); sh.scale.copy(skull.scale); sh.renderOrder = 3; head.add(sh); }
+    if (st === 'full' || st === 'long' || st === 'sage') { // barba que sigue la mandíbula, sin tapar la cara
+      const len = st === 'full' ? 1 : st === 'long' ? 1.5 : 1.75, m = st === 'sage' ? std(0xd8d4cc, { roughness: 1 }) : bc;
+      const bd = mesh(new THREE.SphereGeometry(0.185, 22, 14, 0, TAU, Math.PI * 0.47, Math.PI * 0.53), m, 0, -0.07, 0.03, false); bd.scale.set(0.86, 1.15 * len, 0.9); head.add(bd);
+      if (st === 'sage') for (const [x, y] of [[-0.06, -0.14], [0.05, -0.2], [0, -0.28], [-0.03, -0.1], [0.08, -0.12]]) head.add(mesh(new THREE.BoxGeometry(0.012, 0.09, 0.01), std(0xffffff, { roughness: 1 }), x, y, 0.2 - Math.abs(y) * 0.2, false));
+    }
+    if (['mustache', 'chevron', 'full', 'long', 'sage'].includes(st)) for (const sx of [-1, 1]) { const m2 = mesh(new THREE.CapsuleGeometry(0.018, 0.06, 4, 8), st === 'sage' ? std(0xe8e4dc, { roughness: 1 }) : bc, sx * 0.04, -0.045, 0.19, false); m2.rotation.z = sx * (Math.PI / 2 - 0.35); head.add(m2); }
+    if (st === 'goatee' || st === 'chevron') { const gt = mesh(new THREE.SphereGeometry(0.05, 10, 8), bc, 0, -0.165, 0.145, false); gt.scale.set(1, 1.5, 0.8); head.add(gt); }
+  }
+  // complementos del avatar
+  if (look.extra && look.extra !== 'none') {
+    const ex = look.extra, metal = std(0xc8a050, { metalness: 0.85, roughness: 0.3 }), dark = std(0x1a1614, { metalness: 0.4, roughness: 0.4 });
+    if (ex === 'round' || ex === 'square') { const m = ex === 'round' ? metal : dark;
+      for (const sx of [-1, 1]) { const lens = ex === 'round' ? mesh(new THREE.TorusGeometry(0.047, 0.008, 6, 20), m, sx * 0.07, 0.045, 0.205, false) : mesh(new THREE.TorusGeometry(0.052, 0.01, 4, 4), m, sx * 0.07, 0.045, 0.205, false); if (ex === 'square') { lens.rotation.z = Math.PI / 4; lens.scale.set(1.15, 0.85, 1); } head.add(lens);
+        const arm = mesh(new THREE.BoxGeometry(0.008, 0.008, 0.2), m, sx * 0.168, 0.05, 0.1, false); arm.rotation.y = sx * 0.12; head.add(arm); }
+      head.add(mesh(new THREE.BoxGeometry(0.045, 0.008, 0.008), m, 0, 0.055, 0.21, false)); }
+    if (ex === 'monocle') { const l = mesh(new THREE.TorusGeometry(0.05, 0.009, 6, 20), metal, 0.07, 0.045, 0.207, false); head.add(l); const ch = mesh(new THREE.CylinderGeometry(0.003, 0.003, 0.24, 4), metal, 0.11, -0.07, 0.18, false); ch.rotation.z = 0.25; head.add(ch); }
+    if (ex === 'earrings') for (const sx of [-1, 1]) { head.add(mesh(new THREE.TorusGeometry(0.022, 0.006, 6, 14), metal, sx * 0.188, -0.06, 0.0, false)); head.add(mesh(new THREE.SphereGeometry(0.014, 8, 6), metal, sx * 0.188, -0.085, 0.0, false)); }
+    if (ex === 'necklace') { const n = mesh(new THREE.TorusGeometry(0.2, 0.012, 6, 32), metal, 0, 1.52, 0.03); n.rotation.x = Math.PI / 2 - 0.45; body.add(n); body.add(mesh(new THREE.SphereGeometry(0.035, 10, 8), std(0x2a8ac8, { roughness: 0.15, metalness: 0.3 }), 0, 1.43, 0.22)); }
+    if (ex === 'scarf') { const sc = std(0xc8462a, { roughness: 0.95 }); const n = mesh(new THREE.TorusGeometry(0.16, 0.065, 8, 24), sc, 0, 1.56, 0); n.rotation.x = Math.PI / 2; body.add(n); const t = mesh(new THREE.BoxGeometry(0.11, 0.4, 0.04), sc, 0.1, 1.36, 0.3); t.rotation.set(-0.25, 0, 0.1); body.add(t); }
   }
   // brazos
   const mkArm = (s) => {
@@ -19936,8 +19997,15 @@ $('#b-clesson').addEventListener('click', () => { const s = Duel._won; closeConc
 // ============================================================================
 function addScore(n) { G.score += n; }
 function toast(msg) {
-  const box = $('#toasts'); const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg; box.appendChild(el);
-  while (box.children.length > 3) box.firstChild.remove();
+  const box = $('#toasts'); const el = document.createElement('div'); el.className = 'toast';
+  // el emoji del principio va destacado en un círculo dorado
+  const m = String(msg).match(/^((?:\p{Extended_Pictographic}|\p{Regional_Indicator})(?:\uFE0F|\u200D|\p{Extended_Pictographic}|\p{Regional_Indicator})*)\s*/u);
+  if (m) { const i = document.createElement('span'); i.className = 'ti'; i.textContent = m[1]; const t = document.createElement('span'); t.textContent = msg.slice(m[0].length); el.append(i, t); } else el.textContent = msg;
+  box.appendChild(el);
+  // siempre por debajo de la ruta de los pensadores y del letrero de arriba (no se tapan)
+  let top = 0; for (const id of ['path', 'h-obj', 'trialcard']) { const e = document.getElementById(id); if (!e || e.hidden || !e.offsetParent) continue; const r = e.getBoundingClientRect(); if (r.height && r.top < innerHeight * 0.45) top = Math.max(top, r.bottom + (id === 'path' ? 26 : 10)); }
+  if (top) box.style.setProperty('top', top + 'px', 'important'); else box.style.removeProperty('top');
+  while (box.children.length > (IS_TOUCH ? 2 : 3)) box.firstChild.remove();
   setTimeout(() => el.classList.add('fade'), 3800); setTimeout(() => el.remove(), 4500);
 }
 let crossT = 0;
@@ -20332,7 +20400,7 @@ async function boot() {
 }
 
 // Gancho de pruebas automáticas (solo con #debug en la URL)
-if (location.hash === '#debug') window.__dbg = { get AULA() { return AULA; }, get BOOKS() { return BOOKS; }, get Debate() { return Debate; }, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, ga: (x, z, y) => groundAt(world, x, z, y), get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, get Agora() { return Agora; }, get Foto() { return Foto; }, get Avatar() { return Avatar; }, get Dif() { return Dif; }, get Torneo() { return Torneo; }, get Versus() { return Versus; }, get Mision() { return Mision; }, get Tiempo() { return Tiempo; }, get Escucha() { return Escucha; }, get Perfil() { return Perfil; }, get ERAS() { return ERAS; }, get Orbes() { return typeof Orbes !== 'undefined' ? Orbes : null; }, get VERSUS() { return VERSUS; } };
+if (location.hash === '#debug') window.__dbg = { get AULA() { return AULA; }, get BOOKS() { return BOOKS; }, get Debate() { return Debate; }, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, ga: (x, z, y) => groundAt(world, x, z, y), get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, toast, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, get Agora() { return Agora; }, get Foto() { return Foto; }, get Avatar() { return Avatar; }, get Dif() { return Dif; }, get Torneo() { return Torneo; }, get Versus() { return Versus; }, get Mision() { return Mision; }, get Tiempo() { return Tiempo; }, get Escucha() { return Escucha; }, get Perfil() { return Perfil; }, get ERAS() { return ERAS; }, get Orbes() { return typeof Orbes !== 'undefined' ? Orbes : null; }, get VERSUS() { return VERSUS; } };
 
 // ---- src/04a-lesson.js ----
 // ============================================================================
@@ -22466,21 +22534,33 @@ $('#sl-name').addEventListener('keydown', (e) => { if (e.key === 'Enter') Sala.j
 // ============================================================================
 const MRT = Object.assign(Object.create(RT), { ws: null, hb: null, handlers: {}, joined: false, want: false, tries: 0, ref: 0, topic: '' });
 const JUNTOS_KEY = 'odisea-juntos', AVATAR_KEY = 'odisea-razon.avatar';
-const AV_ROBES = [0x3a6ab8, 0xb83a4a, 0x3a9a5a, 0xc8962a, 0x7a4ab8, 0x2a9aa8, 0xd86a2a, 0xa83a8a, 0xe8e0d0, 0x2a2a2a, 0xf0c848, 0x8a1a2a, 0x30c8c0];
-const AV_SKINS = [0xf0d0b0, 0xe0b090, 0xc49372, 0xa0704a, 0x8a5a3a, 0x5a3820];
-const AV_HAIRS = [0x1a1410, 0x4a2a1a, 0x8a5a2a, 0xd8b070, 0xb83a2a, 0xe8e8e8, 0x3a5ab8];
+const AV_ROBES = [0x3a6ab8, 0xb83a4a, 0x3a9a5a, 0xc8962a, 0x7a4ab8, 0x2a9aa8, 0xd86a2a, 0xa83a8a, 0xe8e0d0, 0x2a2a2a, 0xf0c848, 0x8a1a2a, 0x30c8c0, 0x6a4a32, 0x1e3260, 0x6e8a3a, 0xe8a0b4, 0x4a4e58];
+const AV_SKINS = [0xf0d0b0, 0xe0b090, 0xc49372, 0xa0704a, 0x8a5a3a, 0x5a3820, 0xfae4d2, 0x3e2616];
+const AV_HAIRS = [0x1a1410, 0x4a2a1a, 0x8a5a2a, 0xd8b070, 0xb83a2a, 0xe8e8e8, 0x3a5ab8, 0x7a7a7a, 0xc0662e, 0xe87aa8, 0x8a4ac8, 0x3aa86a];
 // [forma, nombre, logro que lo desbloquea]
-const AV_HATS = [['none', 'With nothing.'], ['longhair', 'Long hair'], ['braids', 'Trains'], ['cap', 'Hat'], ['turban', 'Turbant', 'explorador'], ['laurel', 'Laurel', 'tabano'], ['hood', 'Hood', 'salida'], ['beret', 'Boina', 'dialogo'], ['wig', 'Peluca', 'cogito'], ['mitre', 'Mitra', 'lector'], ['ruff', 'Gorgeous', 'racha7']];
+const AV_HATS = [['none', 'With nothing.'], ['longhair', 'Long hair'], ['braids', 'Trains'], ['cap', 'Hat'], ['turban', 'Turbant', 'explorador'], ['laurel', 'Laurel', 'tabano'], ['hood', 'Hood', 'salida'], ['beret', 'Boina', 'dialogo'], ['wig', 'Peluca', 'cogito'], ['mitre', 'Mitra', 'lector'], ['ruff', 'Gorgeous', 'racha7'],
+  ['short', 'Short hair'], ['bob', 'Bob'], ['curly', 'Curls'], ['afro', 'Afro'], ['bun', 'Bun'], ['topknot', 'Top knot'], ['ponytail', 'Ponytail'], ['pigtails', 'Pigtails'], ['mohawk', 'Mohawk'], ['shaved', 'Shaved'], ['bald', 'Balding'], ['tonsure', 'Tonsure'],
+  ['headband', 'Headband'], ['flowers', 'Flower crown'], ['straw', 'Straw hat'], ['tophat', 'Top hat', 'biblioteca'], ['mortar', 'Graduation cap', 'academia'], ['crown', 'Crown', 'rango-filosofo']];
 const AV_ROBE_LOCK = { 10: 'agora', 11: 'juntos', 12: 'racha3' }; // túnicas especiales
+const AV_BEARDS = [['none', 'No beard'], ['stubble', 'Stubble'], ['mustache', 'Moustache'], ['goatee', 'Goatee'], ['chevron', 'Moustache and goatee'], ['full', 'Beard'], ['long', 'Philosopher\'s beard'], ['sage', 'Long grey beard']];
+const AV_EXTRAS = [['none', 'Nothing'], ['round', 'Round glasses'], ['square', 'Glasses'], ['monocle', 'Monocle', 'kant'], ['earrings', 'Earrings'], ['necklace', 'Necklace'], ['scarf', 'Scarf']];
+const AV_ITEMS = [['none', 'Nothing'], ['book', 'Book'], ['scroll', 'Scroll'], ['quill', 'Quill'], ['staff', 'Staff'], ['lens', 'Magnifying glass'], ['cup', 'Cup'], ['lamp', 'Diogenes\' lamp', 'honesto']];
+// del aspecto guardado (índices) a la figura 3D
+function avLook(l) {
+  const hair = AV_HAIRS[l.h] ?? AV_HAIRS[0], b = (AV_BEARDS[l.b] || AV_BEARDS[0])[0];
+  const look = { robe: AV_ROBES[l.r] ?? AV_ROBES[0], robe2: 0x2a2620, skin: AV_SKINS[l.s] ?? AV_SKINS[2], hair, beard: false, hat: (AV_HATS[l.t] || AV_HATS[0])[0], acc: (AV_ITEMS[l.o] || AV_ITEMS[0])[0], extra: (AV_EXTRAS[l.g] || AV_EXTRAS[0])[0], beardStyle: b };
+  return look;
+}
+function avParse(ls) { const [r, s, h, t, b, g, o] = String(ls || '').split(',').map((x) => x | 0); return { r, s, h, t, b, g, o }; }
 const EMOTES = ['👋', '👍', '❓', '💡', '😂', '👏'];
 const MUTE_KEY = 'odisea-razon.silenciados';
 const Juntos = {
   on: false, mode: '', code: '', chan: '', id: '', name: '', R: new Map(), sendT: 0, last: null, near: null, duel: null, inv: null, emoT: 0, wantT: 0,
   hash(s) { let h = 7; for (const c of s) h = (Math.imul(h, 31) + c.charCodeAt(0)) >>> 0; return h; },
   myId() { if (!this.id) { try { this.id = localStorage.getItem('odisea-juntos-id') || Sala.rid(8); localStorage.setItem('odisea-juntos-id', this.id); } catch (e) { this.id = Sala.rid(8); } } return this.id; },
-  look() { const d = { r: this.hash(this.myId()) % AV_ROBES.length, s: 2, h: 0, t: 0, n: '' }; try { return { ...d, ...(JSON.parse(localStorage.getItem(AVATAR_KEY) || 'null') || {}) }; } catch (e) { return d; } },
+  look() { const d = { r: this.hash(this.myId()) % 10, s: 2, h: 0, t: 0, b: 0, g: 0, o: 0, n: '' }; try { return { ...d, ...(JSON.parse(localStorage.getItem(AVATAR_KEY) || 'null') || {}) }; } catch (e) { return d; } },
   myName() { const l = this.look(); return Sala.clean(l.n) || Sala.clean((typeof Fame !== 'undefined' && Fame.alias()) || '') || 'Traveller ' + (this.hash(this.myId()) % 9000 + 1000); },
-  lookStr(l = this.look()) { return [l.r, l.s, l.h, l.t].join(','); },
+  lookStr(l = this.look()) { return [l.r, l.s, l.h, l.t, l.b | 0, l.g | 0, l.o | 0].join(','); },
   publicOn() { return Sala.ok() && G.settings.mundo === true; },
   // silenciar: no vuelves a ver ni recibir nada de ese viajero en este aparato
   muted() { if (!this._mu) { try { this._mu = new Set(JSON.parse(localStorage.getItem(MUTE_KEY) || '[]')); } catch (e) { this._mu = new Set(); } } return this._mu; },
@@ -22533,9 +22613,8 @@ const Juntos = {
   },
   // ---------------------------------------------------------------- avatares
   avatar(id, name, ls, rk = 0) {
-    const [r, s, h, t] = String(ls || '').split(',').map((x) => x | 0);
-    const robe = AV_ROBES[r % AV_ROBES.length] ?? AV_ROBES[0], hat = (AV_HATS[t] || AV_HATS[0])[0];
-    const fig = buildFigure({ robe, robe2: 0x2a2620, skin: AV_SKINS[s] ?? AV_SKINS[2], hair: AV_HAIRS[h] ?? AV_HAIRS[0], beard: false, hat, acc: 'none' }, 0xffffff);
+    const LK = avLook(avParse(ls)), robe = LK.robe;
+    const fig = buildFigure(LK, 0xffffff);
     fig.halo.visible = false; const g = new THREE.Group(); g.add(fig.group);
     // su rango se ve sobre su cabeza: título, color y corona de laurel
     const RI = typeof Rango !== 'undefined' ? Rango.info(rk) : null; const rcol = RI ? new THREE.Color(RI.r.c) : null;
@@ -22547,7 +22626,7 @@ const Juntos = {
   },
   rPos(d) {
     const id = String(d.id || ''); if (!/^[A-Za-z0-9]{6,12}$/.test(id) || id === this.id || this.muted().has(id)) return;
-    let r = this.R.get(id); const name = Sala.clean(d.n) || 'Traveller'; const ls = String(d.l || '0,2,0,0').slice(0, 16); const rk = Math.max(0, Math.min(999, d.rk | 0));
+    let r = this.R.get(id); const name = Sala.clean(d.n) || 'Traveller'; const ls = String(d.l || '0,2,0,0').slice(0, 40); const rk = Math.max(0, Math.min(999, d.rk | 0));
     if (r && (r.ls !== ls || r.name !== name || r.rk !== rk)) { this.drop(id); r = null; }
     if (!r) { if (this.R.size >= 60) return; r = { ...this.avatar(id, name, ls, rk), name, ls, rk, x: d.x, y: d.y, z: d.z, yaw: d.r, tx: d.x, ty: d.y, tz: d.z, tyaw: d.r }; this.R.set(id, r); if (d.e === G.eraIdx && G.state === 'play') toast(`👋 ${name} It's come to this time.`); }
     const wasHere = r.e === G.eraIdx; r.e = d.e; r.v = d.v > 0 ? 1 : d.v < 0 ? -1 : 0; r.lec = /^[a-z0-9_-]{2,24}$/.test(String(d.ls || '')) ? d.ls : ''; r.zone = d.zn || ''; r.tx = +d.x || 0; r.ty = +d.y || 0; r.tz = +d.z || 0; r.tyaw = +d.r || 0; r.seen = performance.now(); r.st = d.s;
@@ -22894,8 +22973,7 @@ const Agora = {
     for (const u of d.ult) {
       const id = String(u.jugador || ''); if (id === Juntos.myId() || Juntos.R.has(id) || Juntos.muted().has(id)) continue;
       const v = u.voto > 0 ? 1 : -1; const k = cnt[v]++; if (k >= 5) continue;
-      const [r, s, h, t] = String(u.aspecto || '').split(',').map((n) => n | 0);
-      const fig = buildFigure({ robe: AV_ROBES[r] ?? AV_ROBES[0], robe2: 0x2a2620, skin: AV_SKINS[s] ?? AV_SKINS[2], hair: AV_HAIRS[h] ?? AV_HAIRS[0], beard: false, hat: (AV_HATS[t] || AV_HATS[0])[0], acc: 'none' }, 0xffffff);
+      const fig = buildFigure(avLook(avParse(u.aspecto)), 0xffffff);
       fig.halo.visible = false; fig.group.traverse((o) => { if (o.material && !o.isSprite) { o.material = o.material.clone(); o.material.transparent = true; o.material.opacity = 0.62; o.castShadow = false; } });
       const g = new THREE.Group(); g.add(fig.group); const a = (k / 5) * Math.PI * 1.4 + 0.5; g.position.set(v * 2.6 + Math.cos(a) * 0.85 * v, 0, 1.2 + Math.sin(a) * 0.85); g.rotation.y = Math.atan2(-g.position.x, 1.4 - g.position.z);
       const l = new THREE.Sprite(new THREE.SpriteMaterial({ map: labelTexture(Sala.clean(u.apodo) || 'Traveller', 'It happened today.'), transparent: true, opacity: 0.9, depthWrite: false, toneMapped: false })); l.scale.set(1.7, 0.42, 1); l.position.y = 2.6; g.add(l);
@@ -22926,7 +23004,7 @@ const Foto = {
     const p = player.pos; let best = null, bd = 9;
     if (!world.zoneIn && !(world.cave && world.cave.in)) for (const s of sages) { if (s.state === 'sealed' || !s.group.visible) continue; const d = Math.hypot(s.pos.x - p.x, s.pos.z - p.z); if (d < bd) { bd = d; best = s; } }
     // mi avatar, sin etiqueta
-    const l = Juntos.look(); const fig = buildFigure({ robe: AV_ROBES[l.r] ?? AV_ROBES[0], robe2: 0x2a2620, skin: AV_SKINS[l.s] ?? AV_SKINS[2], hair: AV_HAIRS[l.h] ?? AV_HAIRS[0], beard: false, hat: (AV_HATS[l.t] || AV_HATS[0])[0], acc: 'none' }, 0xffffff);
+    const fig = buildFigure(avLook(Juntos.look()), 0xffffff);
     fig.halo.visible = false; const me = new THREE.Group(); me.add(fig.group); scene.add(me);
     const cam0 = camera.position.clone(), q0 = camera.quaternion.clone(), fov0 = camera.fov, asp0 = camera.aspect; const hidden = [];
     const hide = (o) => { if (o && o.visible) { o.visible = false; hidden.push(o); } };
@@ -23061,9 +23139,9 @@ const Escucha = {
 // ============================================================================
 const Avatar = {
   draft: null, pv: null, fromPlay: false,
-  PARTS: [['r', 'Tunic', () => AV_ROBES], ['s', 'Skin', () => AV_SKINS], ['h', 'Hair', () => AV_HAIRS], ['t', 'Head', () => AV_HATS]],
+  PARTS: [['r', 'Tunic', () => AV_ROBES], ['s', 'Skin', () => AV_SKINS], ['h', 'Hair colour', () => AV_HAIRS], ['t', 'Hairstyle or hat', () => AV_HATS], ['b', 'Beard', () => AV_BEARDS], ['g', 'Accessory', () => AV_EXTRAS], ['o', 'In hand', () => AV_ITEMS]],
   got() { return new Set(store.get(ACH_KEY, [])); },
-  need(key, i) { return key === 't' ? AV_HATS[i][2] : key === 'r' ? AV_ROBE_LOCK[i] : null; },
+  need(key, i) { const L = this.PARTS.find((p) => p[0] === key)[2](); return Array.isArray(L[i]) ? L[i][2] : key === 'r' ? AV_ROBE_LOCK[i] : null; },
   locked(key, i) { const n = this.need(key, i); return n && !this.got().has(n) ? n : null; },
   online() { return G.settings.mundo === true; },
   open() {
@@ -23084,7 +23162,7 @@ const Avatar = {
     const raw = $('#av-name').value.trim(); const name = Sala.clean(raw); if (raw && !name) toast('That nickname doesn\'t work: use 2 to 16 letters, without offensive words.'); else n.n = name;
     try { localStorage.setItem(AVATAR_KEY, JSON.stringify(n)); } catch (e) { /* nada */ } Juntos.last = null; Juntos.sendT = 0;
   },
-  step(key, d) { const list = this.PARTS.find((p) => p[0] === key)[2](); this.draft[key] = (this.draft[key] + d + list.length) % list.length; Audio.click(); this.paint(); this.figure(); this.commit(); },
+  step(key, d) { this.focus(key); const list = this.PARTS.find((p) => p[0] === key)[2](); this.draft[key] = ((this.draft[key] | 0) + d + list.length) % list.length; Audio.click(); this.paint(); this.figure(); this.commit(); },
   random() { for (const [key, , list] of this.PARTS) { const ok = list().map((_, i) => i).filter((i) => !this.locked(key, i)); this.draft[key] = ok[Math.floor(Math.random() * ok.length)]; } Audio.click(); this.paint(); this.figure(); this.commit(); },
   setOnline(v) {
     G.settings.mundo = !!v; saveSettings(); syncSettings(); Juntos.asked = true;
@@ -23095,13 +23173,13 @@ const Avatar = {
   paint() {
     const box = $('#av-opts'); box.innerHTML = '';
     for (const [key, label, list] of this.PARTS) {
-      const L = list(), i = this.draft[key], lock = this.locked(key, i); const row = document.createElement('div'); row.className = 'av-row';
+      const L = list(), i = (this.draft[key] | 0) % L.length, lock = this.locked(key, i); const row = document.createElement('div'); row.className = 'av-row';
       const prev = document.createElement('button'); prev.className = 'av-arrow'; prev.textContent = '◀'; prev.setAttribute('aria-label', label + ' anterior'); prev.addEventListener('click', () => this.step(key, -1));
       const next = document.createElement('button'); next.className = 'av-arrow'; next.textContent = '▶'; next.setAttribute('aria-label', label + ' siguiente'); next.addEventListener('click', () => this.step(key, 1));
       const mid = document.createElement('div'); mid.className = 'av-mid' + (lock ? ' lock' : '');
       const t = document.createElement('b'); t.textContent = label; mid.appendChild(t);
       const v = document.createElement('span');
-      if (key === 't') v.textContent = (lock ? '🔒 ' : '') + L[i][1]; else { const sw = document.createElement('i'); sw.style.background = '#' + L[i].toString(16).padStart(6, '0'); v.appendChild(sw); v.appendChild(document.createTextNode(`${lock ? '🔒 ' : ''}${i + 1} de ${L.length}`)); }
+      if (Array.isArray(L[i])) v.textContent = (lock ? '🔒 ' : '') + L[i][1]; else { const sw = document.createElement('i'); sw.style.background = '#' + L[i].toString(16).padStart(6, '0'); v.appendChild(sw); v.appendChild(document.createTextNode(`${lock ? '🔒 ' : ''}${i + 1} de ${L.length}`)); }
       mid.appendChild(v);
       if (lock) { const a = ACH.find((x) => x.id === lock); const h = document.createElement('small'); h.textContent = `Winn with achievement «${a ? a.n : lock}»`; mid.appendChild(h); }
       row.append(prev, mid, next); box.appendChild(row);
@@ -23121,16 +23199,26 @@ const Avatar = {
       const c = $('#av-prev'); const r = new THREE.WebGLRenderer({ canvas: c, alpha: true, antialias: true }); r.setPixelRatio(Math.min(2, window.devicePixelRatio || 1)); r.setSize(c.clientWidth || 220, c.clientHeight || 260, false);
       const sc = new THREE.Scene(); sc.add(new THREE.HemisphereLight(0xfff4e0, 0x40342a, 1.6)); const d = new THREE.DirectionalLight(0xffffff, 2.2); d.position.set(2, 4, 3); sc.add(d);
       const cam = new THREE.PerspectiveCamera(32, (c.clientWidth || 220) / (c.clientHeight || 260), 0.1, 30); cam.position.set(0, 1.4, 4.1); cam.lookAt(0, 1.2, 0);
-      this.pv = { r, sc, cam, fig: null, t0: performance.now() }; this.figure();
-      const loop = () => { const P = this.pv; if (!P || P.r !== r) return; const t = (performance.now() - P.t0) / 1000; if (P.fig) { P.fig.group.rotation.y = Math.sin(t * 0.7) * 0.9; P.fig.group.position.y = Math.sin(t * 2) * 0.015; } r.render(sc, cam); requestAnimationFrame(loop); };
+      this.pv = { r, sc, cam, fig: null, t0: performance.now(), z: 0, zt: 0, drag: null, spin: 0, last: 0 }; this.figure();
+      // arrastrar para girar el avatar; al elegir cabeza, barba o complemento la cámara se acerca a la cara
+      const P0 = this.pv; c.style.touchAction = 'none'; c.style.cursor = 'grab';
+      c.onpointerdown = (e) => { P0.drag = e.clientX; P0.last = performance.now(); c.setPointerCapture(e.pointerId); };
+      c.onpointermove = (e) => { if (P0.drag == null) return; P0.spin += (e.clientX - P0.drag) * 0.012; P0.drag = e.clientX; P0.last = performance.now(); };
+      c.onpointerup = c.onpointercancel = () => { P0.drag = null; };
+      c.ondblclick = () => { P0.zt = P0.zt > 0.5 ? 0 : 1; };
+      const loop = () => { const P = this.pv; if (!P || P.r !== r) return; const now = performance.now(), t = (now - P.t0) / 1000;
+        if (P.fig) { const idle = now - P.last > 2500; if (idle) P.spin *= 0.97; P.fig.group.rotation.y = P.spin + (idle ? Math.sin(t * 0.7) * 0.6 : 0); P.fig.group.position.y = Math.sin(t * 2) * 0.015; }
+        P.z += (P.zt - P.z) * 0.12; const z = P.z; cam.position.set(0, 1.4 + z * 0.36, 4.1 - z * 2.75); cam.lookAt(0, 1.2 + z * 0.55, 0);
+        r.render(sc, cam); requestAnimationFrame(loop); };
       requestAnimationFrame(loop);
     } catch (e) { this.pv = null; $('#av-prev').hidden = true; }
   },
   figure() {
     const P = this.pv; if (!P) return; if (P.fig) { P.sc.remove(P.fig.group); P.fig.group.traverse((o) => { if (o.geometry) o.geometry.dispose(); }); }
-    const l = this.draft; const fig = buildFigure({ robe: AV_ROBES[l.r] ?? AV_ROBES[0], robe2: 0x2a2620, skin: AV_SKINS[l.s] ?? AV_SKINS[2], hair: AV_HAIRS[l.h] ?? AV_HAIRS[0], beard: false, hat: (AV_HATS[l.t] || AV_HATS[0])[0], acc: 'none' }, 0xffffff);
+    const fig = buildFigure(avLook(this.draft), 0xffffff);
     fig.halo.visible = false; P.sc.add(fig.group); P.fig = fig;
   },
+  focus(key) { if (this.pv) this.pv.zt = ['s', 'h', 't', 'b', 'g'].includes(key) ? 1 : 0; },
   stopPreview() { const P = this.pv; this.pv = null; if (!P) return; try { if (P.fig) P.fig.group.traverse((o) => { if (o.geometry) o.geometry.dispose(); }); P.r.dispose(); } catch (e) { /* nada */ } },
 };
 on('#av-ok', () => Avatar.close());
