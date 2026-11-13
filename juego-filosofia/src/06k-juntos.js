@@ -74,20 +74,24 @@ const Juntos = {
     $('#mp-emo').hidden = !(G.state === 'play');
   },
   // ---------------------------------------------------------------- avatares
-  avatar(id, name, ls) {
+  avatar(id, name, ls, rk = 0) {
     const [r, s, h, t] = String(ls || '').split(',').map((x) => x | 0);
     const robe = AV_ROBES[r % AV_ROBES.length] ?? AV_ROBES[0], hat = (AV_HATS[t] || AV_HATS[0])[0];
     const fig = buildFigure({ robe, robe2: 0x2a2620, skin: AV_SKINS[s] ?? AV_SKINS[2], hair: AV_HAIRS[h] ?? AV_HAIRS[0], beard: false, hat, acc: 'none' }, 0xffffff);
     fig.halo.visible = false; const g = new THREE.Group(); g.add(fig.group);
-    const l = new THREE.Sprite(new THREE.SpriteMaterial({ map: labelTexture(name, this.mode === 'grupo' ? 'de tu grupo' : 'viajero'), transparent: true, depthWrite: false, toneMapped: false })); l.scale.set(2.2, 0.55, 1); l.position.y = 2.75; g.add(l);
-    const ring = new THREE.Mesh(new THREE.RingGeometry(0.45, 0.6, 24), new THREE.MeshBasicMaterial({ color: robe, transparent: true, opacity: 0.8, side: THREE.DoubleSide, toneMapped: false })); ring.rotation.x = -Math.PI / 2; ring.position.y = 0.04; g.add(ring);
+    // su rango se ve sobre su cabeza: título, color y corona de laurel
+    const RI = typeof Rango !== 'undefined' ? Rango.info(rk) : null; const rcol = RI ? new THREE.Color(RI.r.c) : null;
+    const RKT = { venc: 'vencidos', grupo: 'tu grupo' }; const sub = RI ? `${RI.r.i} ${RI.r.n} · ${rk} ` + RKT.venc + (this.mode === 'grupo' ? ' · ' + RKT.grupo : '') : (this.mode === 'grupo' ? 'de tu grupo' : 'viajero');
+    const l = new THREE.Sprite(new THREE.SpriteMaterial({ map: labelTexture(name, sub, RI ? RI.r.c : undefined), transparent: true, depthWrite: false, toneMapped: false })); l.scale.set(2.4, 0.6, 1); l.position.y = 2.85; g.add(l);
+    if (RI && RI.k >= 1) { const cr = Rango.crown(rcol.getHex()); cr.position.y = 2.32; fig.group.add(cr); }
+    const ring = new THREE.Mesh(new THREE.RingGeometry(0.45, 0.6, 24), new THREE.MeshBasicMaterial({ color: RI && RI.k >= 1 ? rcol : robe, transparent: true, opacity: 0.8, side: THREE.DoubleSide, toneMapped: false })); ring.rotation.x = -Math.PI / 2; ring.position.y = 0.04; g.add(ring);
     scene.add(g); return { g, fig };
   },
   rPos(d) {
     const id = String(d.id || ''); if (!/^[A-Za-z0-9]{6,12}$/.test(id) || id === this.id || this.muted().has(id)) return;
-    let r = this.R.get(id); const name = Sala.clean(d.n) || 'Viajero'; const ls = String(d.l || '0,2,0,0').slice(0, 16);
-    if (r && (r.ls !== ls || r.name !== name)) { this.drop(id); r = null; }
-    if (!r) { if (this.R.size >= 60) return; r = { ...this.avatar(id, name, ls), name, ls, x: d.x, y: d.y, z: d.z, yaw: d.r, tx: d.x, ty: d.y, tz: d.z, tyaw: d.r }; this.R.set(id, r); if (d.e === G.eraIdx && G.state === 'play') toast(`👋 ${name} ha llegado a esta época.`); }
+    let r = this.R.get(id); const name = Sala.clean(d.n) || 'Viajero'; const ls = String(d.l || '0,2,0,0').slice(0, 16); const rk = Math.max(0, Math.min(999, d.rk | 0));
+    if (r && (r.ls !== ls || r.name !== name || r.rk !== rk)) { this.drop(id); r = null; }
+    if (!r) { if (this.R.size >= 60) return; r = { ...this.avatar(id, name, ls, rk), name, ls, rk, x: d.x, y: d.y, z: d.z, yaw: d.r, tx: d.x, ty: d.y, tz: d.z, tyaw: d.r }; this.R.set(id, r); if (d.e === G.eraIdx && G.state === 'play') toast(`👋 ${name} ha llegado a esta época.`); }
     const wasHere = r.e === G.eraIdx; r.e = d.e; r.v = d.v > 0 ? 1 : d.v < 0 ? -1 : 0; r.lec = /^[a-z0-9_-]{2,24}$/.test(String(d.ls || '')) ? d.ls : ''; r.zone = d.zn || ''; r.tx = +d.x || 0; r.ty = +d.y || 0; r.tz = +d.z || 0; r.tyaw = +d.r || 0; r.seen = performance.now(); r.st = d.s;
     if (!wasHere && r.e === G.eraIdx) { r.x = r.tx; r.y = r.ty; r.z = r.tz; }
     this.paintBadge();
@@ -115,7 +119,7 @@ const Juntos = {
     this.sendT -= dt; const p = player.pos; const moved = !this.last || Math.hypot(p.x - this.last[0], p.z - this.last[1]) > 0.15 || Math.abs(player.yaw - this.last[2]) > 0.12;
     if (MRT.joined && this.sendT <= 0 && (moved || this.sendT < -4)) {
       this.name = this.myName();
-      MRT.send('pos', { id: this.myId(), n: this.name, l: this.lookStr(), e: G.eraIdx, x: +p.x.toFixed(2), y: +p.y.toFixed(2), z: +p.z.toFixed(2), r: +player.yaw.toFixed(2), zn: world && world.zoneIn ? world.zoneIn.id : world && world.cave && world.cave.in ? 'cueva' : '', s: playing ? 1 : 0, v: typeof Agora !== 'undefined' ? Agora.mine(G.eraIdx) : 0, ls: typeof Escucha !== 'undefined' ? Escucha.mine() : '' });
+      MRT.send('pos', { id: this.myId(), n: this.name, l: this.lookStr(), rk: typeof Rango !== 'undefined' ? Rango.n() : 0, e: G.eraIdx, x: +p.x.toFixed(2), y: +p.y.toFixed(2), z: +p.z.toFixed(2), r: +player.yaw.toFixed(2), zn: world && world.zoneIn ? world.zoneIn.id : world && world.cave && world.cave.in ? 'cueva' : '', s: playing ? 1 : 0, v: typeof Agora !== 'undefined' ? Agora.mine(G.eraIdx) : 0, ls: typeof Escucha !== 'undefined' ? Escucha.mine() : '' });
       this.sendT = 0.33; this.last = [p.x, p.z, player.yaw];
     }
     const now = performance.now(); let best = null, bd = 3.2; const myZone = world && world.zoneIn ? world.zoneIn.id : world && world.cave && world.cave.in ? 'cueva' : '';

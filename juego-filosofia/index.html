@@ -950,6 +950,19 @@ body.touch .gm.boss { width: 30px; height: 30px; }
 .cs-weight { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 6px 0; } .cs-weight input { width: 90px; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); background: rgba(0,0,0,0.3); color: inherit; font: inherit; }
 .cs-cal { border-left: 3px solid #8fb8ff; padding: 6px 12px; margin: 10px 0; background: rgba(143,184,255,0.06); border-radius: 0 10px 10px 0; }
 .cs-cal .cs-date { display: block; font-family: var(--display); letter-spacing: 0.08em; color: #9ab8ff; font-size: 0.85rem; } .cs-cal b { color: #fff3d8; } .cs-cal p { margin: 4px 0; line-height: 1.4; } .cs-cal small { color: rgba(243,230,196,0.6); }
+/* ---------- rango y victorias ---------- */
+.vic-b { --rk: #d8c8a8; } .vic-b b { color: var(--rk); text-shadow: 0 0 10px var(--rk); }
+.vi-card { width: min(640px, 100%); } .vi-head { --rk: #d8c8a8; text-align: center; padding: 6px 0 12px; border-bottom: 1px solid var(--line); margin-bottom: 10px; }
+.vi-laurel { width: 108px; height: 108px; margin: 4px auto 8px; border-radius: 50%; display: grid; place-items: center; font-size: 2.6rem; color: #1a1206;
+  background: radial-gradient(circle at 35% 30%, #fff, var(--rk) 55%, rgba(0,0,0,0.6)); box-shadow: 0 0 0 3px var(--rk), 0 0 34px var(--rk), inset 0 -6px 14px rgba(0,0,0,0.35); }
+.vi-rank { font-family: var(--display); font-size: 1.7rem; letter-spacing: 0.08em; color: var(--rk); margin: 2px 0; text-shadow: 0 0 18px rgba(0,0,0,0.6); }
+.vi-count { margin: 4px 0 10px; } .vi-track { height: 10px; border-radius: 6px; background: rgba(255,255,255,0.08); overflow: hidden; max-width: 420px; margin: 0 auto; box-shadow: inset 0 1px 3px rgba(0,0,0,0.6); }
+.vi-track i { display: block; height: 100%; background: linear-gradient(90deg, var(--gold), var(--rk)); box-shadow: 0 0 12px var(--rk); transition: width .8s; }
+.vi-note { font-size: 0.82rem; font-style: italic; color: rgba(243,230,196,0.6); margin: 6px 0 0; }
+.vi-era { padding: 8px 10px; margin: 6px 0; border: 1px solid var(--line); border-radius: 10px; background: rgba(0,0,0,0.2); } .vi-era.full { border-color: rgba(255,211,106,0.7); box-shadow: 0 0 14px rgba(255,211,106,0.15); }
+.vi-eh { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; margin-bottom: 6px; } .vi-eh b { font-family: var(--display); font-size: 0.85rem; letter-spacing: 0.05em; } .vi-eh span { font-size: 0.82rem; color: var(--gold); white-space: nowrap; }
+.vi-faces { display: flex; flex-wrap: wrap; gap: 6px; } .vi-f { width: 40px !important; height: 40px !important; filter: grayscale(1) brightness(0.45); opacity: 0.7; }
+.vi-f.on { filter: none; opacity: 1; box-shadow: 0 0 0 2px #ffd36a, 0 0 10px rgba(255,211,106,0.7); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
@@ -1028,6 +1041,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="on-av" id="b-frases"><b>❝</b><span>Frases célebres</span><small>Tu colección</small></button>
         <button class="on-av" id="b-falacias"><b>🔎</b><span>Falacias</span><small>Bestiario y entrenamiento</small></button>
         <button class="on-av" id="b-cosmos"><b>🔭</b><span>Cosmos</span><small>Atlas del universo</small></button>
+        <button class="on-av vic-b" id="b-vic"><b>🏛</b><span>Mis victorias</span><small id="b-vic-s"></small></button>
       </div>
       <button class="more-b" id="b-more" aria-expanded="false">Más opciones ▾</button>
       <div class="minis" id="t-more" hidden>
@@ -1263,6 +1277,14 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <div class="cs-img" id="cs-img"></div><p id="cs-desc" class="cs-desc"></p><ul id="cs-objs" class="cs-objs"></ul>
     </div>
     <div id="cs-planetas" hidden></div><div id="cs-calendario" hidden></div>
+  </div></div>
+  <div id="vi" class="nb" hidden><div class="nb-card vi-card" role="dialog" aria-label="Mis victorias">
+    <button class="ls-x pn-x" id="vi-x" aria-label="Cerrar">✕</button>
+    <div class="vi-head" id="vi-head"><div class="vi-laurel"><span id="vi-emblem"></span></div>
+      <div class="eyebrow" id="vi-lvl"></div><h3 class="vi-rank" id="vi-rank"></h3><p class="vi-count" id="vi-count"></p>
+      <div class="vi-track"><i id="vi-bar"></i></div><p class="qd-note" id="vi-next"></p><p class="qd-note" id="vi-full"></p>
+      <p class="vi-note">Los demás viajeros ven tu rango y tu corona sobre tu avatar cuando juegas en línea.</p></div>
+    <div id="vi-eras"></div>
   </div></div>
   <div id="tl" class="nb" hidden><div class="nb-card tl-card" role="dialog" aria-label="Línea de tiempo">
     <button class="ls-x pn-x" id="tl-x" aria-label="Cerrar">✕</button>
@@ -19573,7 +19595,7 @@ function renderTravel() {
     b.querySelector('.ph').style.backgroundImage = `url('${ART.era(i)}')`;
     b.querySelector('.yr').textContent = `${e.num} · ${e.years}`; b.querySelector('.nm').textContent = e.name;
     b.querySelector('.hk').textContent = ERA_HOOK[e.id] || e.sages.map((x) => x.short).join(', ');
-    const st = b.querySelector('.st'); st.textContent = i === here ? '● Aquí vas' : done ? '✓ Completada' : e.sages.map((x) => x.short).join(' · '); if (done && i !== here) st.classList.add('ok');
+    const got = e.sages.filter((x) => G.codex.has(x.id)).length; const st = b.querySelector('.st'); st.textContent = (i === here ? '● Aquí vas · ' : '') + (done && got === e.sages.length ? '✓ Completada' : got ? `🏛 ${got} de ${e.sages.length} vencidos` : (i === here ? '' : e.sages.map((x) => x.short).join(' · '))); if (got && i !== here) st.classList.add('ok'); if (done && i !== here) st.classList.add('ok');
     b.addEventListener('click', () => { Audio.init(); Audio.click(); startOdyssey(i); });
     grid.appendChild(b);
   });
@@ -19706,7 +19728,7 @@ async function boot() {
 }
 
 // Gancho de pruebas automáticas (solo con #debug en la URL)
-if (location.hash === '#debug') window.__dbg = { get AULA() { return AULA; }, get BOOKS() { return BOOKS; }, get Debate() { return Debate; }, ga: (x, z, y) => groundAt(world, x, z, y), get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, get Agora() { return Agora; }, get Foto() { return Foto; }, get Avatar() { return Avatar; }, get Dif() { return Dif; }, get Torneo() { return Torneo; }, get Versus() { return Versus; }, get Mision() { return Mision; }, get Tiempo() { return Tiempo; }, get Escucha() { return Escucha; }, get Perfil() { return Perfil; }, get ERAS() { return ERAS; }, get Orbes() { return typeof Orbes !== 'undefined' ? Orbes : null; }, get VERSUS() { return VERSUS; } };
+if (location.hash === '#debug') window.__dbg = { get AULA() { return AULA; }, get BOOKS() { return BOOKS; }, get Debate() { return Debate; }, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, ga: (x, z, y) => groundAt(world, x, z, y), get ZONES() { return typeof ZONES !== 'undefined' ? ZONES : []; }, get XP() { return XP; }, G, player, Duel, startEra, enterEra, loadWorld, get sages() { return sages; }, get citizens() { return citizens; }, get Talk() { return Talk; }, Narr, Audio, LESSONS, get Lesson() { return Lesson; }, get Places() { return Places; }, get Track() { return Track; }, get enemies() { return enemies; }, get world() { return world; }, camera, renderer, spawnFromPoints, tryInteract, closeConcept, killEnemy, get Oracle() { return Oracle; }, get Fame() { return Fame; }, achieve, Music, updatePlayer, updateTrials, input, setT: (t) => (tAcc = t), getT: () => tAcc, get Juntos() { return typeof Juntos !== 'undefined' ? Juntos : null; }, get Agora() { return Agora; }, get Foto() { return Foto; }, get Avatar() { return Avatar; }, get Dif() { return Dif; }, get Torneo() { return Torneo; }, get Versus() { return Versus; }, get Mision() { return Mision; }, get Tiempo() { return Tiempo; }, get Escucha() { return Escucha; }, get Perfil() { return Perfil; }, get ERAS() { return ERAS; }, get Orbes() { return typeof Orbes !== 'undefined' ? Orbes : null; }, get VERSUS() { return VERSUS; } };
 
 // ---- src/04a-lesson.js ----
 // ============================================================================
@@ -21868,20 +21890,24 @@ const Juntos = {
     $('#mp-emo').hidden = !(G.state === 'play');
   },
   // ---------------------------------------------------------------- avatares
-  avatar(id, name, ls) {
+  avatar(id, name, ls, rk = 0) {
     const [r, s, h, t] = String(ls || '').split(',').map((x) => x | 0);
     const robe = AV_ROBES[r % AV_ROBES.length] ?? AV_ROBES[0], hat = (AV_HATS[t] || AV_HATS[0])[0];
     const fig = buildFigure({ robe, robe2: 0x2a2620, skin: AV_SKINS[s] ?? AV_SKINS[2], hair: AV_HAIRS[h] ?? AV_HAIRS[0], beard: false, hat, acc: 'none' }, 0xffffff);
     fig.halo.visible = false; const g = new THREE.Group(); g.add(fig.group);
-    const l = new THREE.Sprite(new THREE.SpriteMaterial({ map: labelTexture(name, this.mode === 'grupo' ? 'de tu grupo' : 'viajero'), transparent: true, depthWrite: false, toneMapped: false })); l.scale.set(2.2, 0.55, 1); l.position.y = 2.75; g.add(l);
-    const ring = new THREE.Mesh(new THREE.RingGeometry(0.45, 0.6, 24), new THREE.MeshBasicMaterial({ color: robe, transparent: true, opacity: 0.8, side: THREE.DoubleSide, toneMapped: false })); ring.rotation.x = -Math.PI / 2; ring.position.y = 0.04; g.add(ring);
+    // su rango se ve sobre su cabeza: título, color y corona de laurel
+    const RI = typeof Rango !== 'undefined' ? Rango.info(rk) : null; const rcol = RI ? new THREE.Color(RI.r.c) : null;
+    const RKT = { venc: 'vencidos', grupo: 'tu grupo' }; const sub = RI ? `${RI.r.i} ${RI.r.n} · ${rk} ` + RKT.venc + (this.mode === 'grupo' ? ' · ' + RKT.grupo : '') : (this.mode === 'grupo' ? 'de tu grupo' : 'viajero');
+    const l = new THREE.Sprite(new THREE.SpriteMaterial({ map: labelTexture(name, sub, RI ? RI.r.c : undefined), transparent: true, depthWrite: false, toneMapped: false })); l.scale.set(2.4, 0.6, 1); l.position.y = 2.85; g.add(l);
+    if (RI && RI.k >= 1) { const cr = Rango.crown(rcol.getHex()); cr.position.y = 2.32; fig.group.add(cr); }
+    const ring = new THREE.Mesh(new THREE.RingGeometry(0.45, 0.6, 24), new THREE.MeshBasicMaterial({ color: RI && RI.k >= 1 ? rcol : robe, transparent: true, opacity: 0.8, side: THREE.DoubleSide, toneMapped: false })); ring.rotation.x = -Math.PI / 2; ring.position.y = 0.04; g.add(ring);
     scene.add(g); return { g, fig };
   },
   rPos(d) {
     const id = String(d.id || ''); if (!/^[A-Za-z0-9]{6,12}$/.test(id) || id === this.id || this.muted().has(id)) return;
-    let r = this.R.get(id); const name = Sala.clean(d.n) || 'Viajero'; const ls = String(d.l || '0,2,0,0').slice(0, 16);
-    if (r && (r.ls !== ls || r.name !== name)) { this.drop(id); r = null; }
-    if (!r) { if (this.R.size >= 60) return; r = { ...this.avatar(id, name, ls), name, ls, x: d.x, y: d.y, z: d.z, yaw: d.r, tx: d.x, ty: d.y, tz: d.z, tyaw: d.r }; this.R.set(id, r); if (d.e === G.eraIdx && G.state === 'play') toast(`👋 ${name} ha llegado a esta época.`); }
+    let r = this.R.get(id); const name = Sala.clean(d.n) || 'Viajero'; const ls = String(d.l || '0,2,0,0').slice(0, 16); const rk = Math.max(0, Math.min(999, d.rk | 0));
+    if (r && (r.ls !== ls || r.name !== name || r.rk !== rk)) { this.drop(id); r = null; }
+    if (!r) { if (this.R.size >= 60) return; r = { ...this.avatar(id, name, ls, rk), name, ls, rk, x: d.x, y: d.y, z: d.z, yaw: d.r, tx: d.x, ty: d.y, tz: d.z, tyaw: d.r }; this.R.set(id, r); if (d.e === G.eraIdx && G.state === 'play') toast(`👋 ${name} ha llegado a esta época.`); }
     const wasHere = r.e === G.eraIdx; r.e = d.e; r.v = d.v > 0 ? 1 : d.v < 0 ? -1 : 0; r.lec = /^[a-z0-9_-]{2,24}$/.test(String(d.ls || '')) ? d.ls : ''; r.zone = d.zn || ''; r.tx = +d.x || 0; r.ty = +d.y || 0; r.tz = +d.z || 0; r.tyaw = +d.r || 0; r.seen = performance.now(); r.st = d.s;
     if (!wasHere && r.e === G.eraIdx) { r.x = r.tx; r.y = r.ty; r.z = r.tz; }
     this.paintBadge();
@@ -21909,7 +21935,7 @@ const Juntos = {
     this.sendT -= dt; const p = player.pos; const moved = !this.last || Math.hypot(p.x - this.last[0], p.z - this.last[1]) > 0.15 || Math.abs(player.yaw - this.last[2]) > 0.12;
     if (MRT.joined && this.sendT <= 0 && (moved || this.sendT < -4)) {
       this.name = this.myName();
-      MRT.send('pos', { id: this.myId(), n: this.name, l: this.lookStr(), e: G.eraIdx, x: +p.x.toFixed(2), y: +p.y.toFixed(2), z: +p.z.toFixed(2), r: +player.yaw.toFixed(2), zn: world && world.zoneIn ? world.zoneIn.id : world && world.cave && world.cave.in ? 'cueva' : '', s: playing ? 1 : 0, v: typeof Agora !== 'undefined' ? Agora.mine(G.eraIdx) : 0, ls: typeof Escucha !== 'undefined' ? Escucha.mine() : '' });
+      MRT.send('pos', { id: this.myId(), n: this.name, l: this.lookStr(), rk: typeof Rango !== 'undefined' ? Rango.n() : 0, e: G.eraIdx, x: +p.x.toFixed(2), y: +p.y.toFixed(2), z: +p.z.toFixed(2), r: +player.yaw.toFixed(2), zn: world && world.zoneIn ? world.zoneIn.id : world && world.cave && world.cave.in ? 'cueva' : '', s: playing ? 1 : 0, v: typeof Agora !== 'undefined' ? Agora.mine(G.eraIdx) : 0, ls: typeof Escucha !== 'undefined' ? Escucha.mine() : '' });
       this.sendT = 0.33; this.last = [p.x, p.z, player.yaw];
     }
     const now = performance.now(); let best = null, bd = 3.2; const myZone = world && world.zoneIn ? world.zoneIn.id : world && world.cave && world.cave.in ? 'cueva' : '';
@@ -23641,6 +23667,78 @@ ZONES.push({
     XP.open('🪐 ' + COS_UI.pass + ` · ${Cosmos.pass.size}/${PLANETAS.length}`, p.n, Cosmos.card(p), [['Seguir', null], ['Ver en el atlas', () => Cosmos.open('planetas', p.id)], ...(Cosmos.weight() ? [] : [['Calcular mi peso aquí', () => Cosmos.open('planetas', p.id)]])]);
   },
 });
+
+// ---- src/06x-rango.js ----
+// ============================================================================
+//  RANGO Y VICTORIAS
+//  · Cada pensador vencido suma a tu rango: de Viajero curioso a Guardián de
+//    la Razón, con su color y su corona de laurel.
+//  · «Mis victorias» (Inicio): tu rango, cuántos llevas, cuánto falta para el
+//    siguiente y, época por época, los retratos de los que ya venciste.
+//  · En el mundo: los vencidos llevan una corona de laurel dorada.
+//  · En línea: los demás viajeros ven tu rango sobre tu avatar, con tu corona.
+// ============================================================================
+const RANGOS = [
+  { n: 'Viajero curioso', min: 0, c: '#d8c8a8', i: '✧' },
+  { n: 'Aprendiz', min: 3, c: '#d0905a', i: '❧' },
+  { n: 'Discípulo', min: 10, c: '#c8d4e4', i: '☙' },
+  { n: 'Dialéctico', min: 25, c: '#f0c860', i: '✦' },
+  { n: 'Filósofo', min: 50, c: '#6ad8b0', i: '❖' },
+  { n: 'Sabio', min: 90, c: '#8fb8ff', i: '✺' },
+  { n: 'Maestro', min: 140, c: '#c890ff', i: '✹' },
+  { n: 'Guardián de la Razón', min: 200, c: '#fff4d0', i: '☀' },
+];
+ACH.push({ id: 'rango-filosofo', i: '❖', n: 'Filósofo', d: 'Alcanza el rango de Filósofo: 50 pensadores vencidos.' }, { id: 'rango-guardian', i: '☀', n: 'Guardián de la Razón', d: 'Alcanza el rango más alto.' });
+const Rango = {
+  total() { return ERAS.reduce((a, e) => a + e.sages.length, 0); },
+  n() { return G.codex ? G.codex.size : 0; },
+  of(n) { let k = 0; RANGOS.forEach((r, i) => { if (n >= r.min) k = i; }); return k; },
+  info(n = this.n()) { const k = this.of(n); const r = RANGOS[k], nx = RANGOS[k + 1]; return { k, lvl: k + 1, r, nx, n, falta: nx ? nx.min - n : 0, pct: nx ? (n - r.min) / (nx.min - r.min) : 1 }; },
+  check() { const k = this.of(this.n()); if (k >= 4) achieve('rango-filosofo'); if (k >= 7) achieve('rango-guardian'); if (this._k !== undefined && k > this._k) { const r = RANGOS[k]; setTimeout(() => toast(`${r.i} ¡Nuevo rango: ${r.n}! Los demás viajeros lo verán sobre tu avatar.`), 1600); Audio.victory && Audio.victory(); } this._k = k; this.paintButton(); },
+  // ---------- corona de laurel 3D, del color del rango
+  crown(col) {
+    const g = new THREE.Group(); const m = new THREE.MeshStandardMaterial({ color: col, emissive: col, emissiveIntensity: 0.6, metalness: 0.7, roughness: 0.3 });
+    g.add(new THREE.Mesh(new THREE.TorusGeometry(0.24, 0.025, 8, 28), m));
+    for (let i = 0; i < 14; i++) { const a = (i / 14) * Math.PI * 2; if (Math.abs(Math.sin(a)) > 0.92 && Math.cos(a) > 0) continue; const leaf = new THREE.Mesh(new THREE.SphereGeometry(0.06, 6, 4), m); leaf.scale.set(0.6, 1.5, 0.35); leaf.position.set(Math.cos(a) * 0.24, Math.sin(a) * 0.24, 0); leaf.rotation.z = a + 0.6; g.add(leaf); }
+    g.rotation.x = Math.PI / 2; return g;
+  },
+  // ---------- botón de Inicio
+  paintButton() { const s = $('#b-vic-s'); if (!s) return; const I = this.info(); s.textContent = `${I.r.n} · ${I.n} de ${this.total()}`; const b = $('#b-vic'); if (b) b.style.setProperty('--rk', I.r.c); },
+  // ---------- la ficha «Mis victorias»
+  open() { Panel.open('vi'); this.paint(); },
+  close() { Panel.close('vi'); },
+  paint() {
+    const I = this.info(); const T = this.total(); const card = $('#vi-head'); card.style.setProperty('--rk', I.r.c);
+    $('#vi-emblem').textContent = I.r.i; $('#vi-lvl').textContent = `Nivel ${I.lvl} de ${RANGOS.length}`; $('#vi-rank').textContent = I.r.n;
+    $('#vi-count').textContent = `${I.n} de ${T} pensadoras y pensadores vencidos`;
+    $('#vi-bar').style.width = Math.round(I.pct * 100) + '%';
+    $('#vi-next').textContent = I.nx ? `Te faltan ${I.falta} para ser ${I.nx.n}` : 'Has alcanzado el rango más alto';
+    const box = $('#vi-eras'); box.innerHTML = ''; let full = 0;
+    for (const i of CHRONO) {
+      const e = ERAS[i]; const got = e.sages.filter((s) => G.codex.has(s.id)).length; if (got === e.sages.length) full++;
+      const row = document.createElement('div'); row.className = 'vi-era' + (got === e.sages.length ? ' full' : got ? ' some' : '');
+      row.innerHTML = '<div class="vi-eh"><b></b><span></span></div><div class="vi-faces"></div>';
+      row.querySelector('b').textContent = `${e.num} · ${e.name}`; row.querySelector('span').textContent = got === e.sages.length ? '✓ completa' : `${got} / ${e.sages.length}`;
+      const faces = row.querySelector('.vi-faces');
+      for (const s of e.sages) { const f = document.createElement('i'); f.className = 'medal sm vi-f' + (G.codex.has(s.id) ? ' on' : ''); f.title = s.name + (G.codex.has(s.id) ? ' · vencido' : ''); setMedal(f, s.id, s.short[0]); faces.appendChild(f); }
+      box.appendChild(row);
+    }
+    $('#vi-full').textContent = `${full} de ${CHRONO.length} épocas completas`;
+  },
+};
+// los pensadores vencidos llevan una corona de laurel dorada y lo dicen en su letrero
+{
+  const d0 = Sage.prototype.defeat;
+  Sage.prototype.defeat = function () {
+    d0.call(this);
+    this.label.material.map = labelTexture(this.data.short, '✓ Vencido · ' + this.data.concept.name, '#ffd36a'); this.label.material.needsUpdate = true;
+    if (!this._crown && this.fig && this.fig.group) { const c = Rango.crown(0xffd36a); c.position.y = 2.32; this.fig.group.add(c); this._crown = c; }
+    if (typeof Rango !== 'undefined') Rango.check();
+  };
+}
+on('#b-vic', () => { Audio.click(); Rango.open(); });
+on('#vi-x', () => Rango.close());
+Rango._k = Rango.of(Rango.n()); Rango.paintButton();
 
 </script>
 </body>
