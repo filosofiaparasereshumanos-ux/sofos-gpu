@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: b2c2508
+          sparse-checkout: juego-filosofia/marketing
       - uses: softprops/action-gh-release@v2
         with:
           tag_name: videos
