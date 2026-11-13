@@ -506,5 +506,145 @@
 [
 "(?<![A-Za-zÀ-ÿ])Lambaréné(?![A-Za-zÀ-ÿ])",
 "Lambaréné"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Sermon of the Mountain(?![A-Za-zÀ-ÿ])",
+"Sermon on the Mount"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Yibril(?![A-Za-zÀ-ÿ])",
+"Jibril"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Uzmán(?![A-Za-zÀ-ÿ])",
+"Uthman"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Uzman(?![A-Za-zÀ-ÿ])",
+"Uthman"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Jadiya(?![A-Za-zÀ-ÿ])",
+"Khadija"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Mahoma(?![A-Za-zÀ-ÿ])",
+"Muhammad"
+],
+[
+"(?<![A-Za-zÀ-ÿ])La Meca(?![A-Za-zÀ-ÿ])",
+"Mecca"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Hégira(?![A-Za-zÀ-ÿ])",
+"Hijra"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Hegira(?![A-Za-zÀ-ÿ])",
+"Hijra"
+],
+[
+"(?<![A-Za-zÀ-ÿ])hach(?![A-Za-zÀ-ÿ])",
+"hajj"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Al-Jidr(?![A-Za-zÀ-ÿ])",
+"Al-Khidr"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Yaqub(?![A-Za-zÀ-ÿ])",
+"Yaqub"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Zayd ibn Thabit(?![A-Za-zÀ-ÿ])",
+"Zayd ibn Thabit"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Qumrán(?![A-Za-zÀ-ÿ])",
+"Qumran"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Casiodoro de Reina(?![A-Za-zÀ-ÿ])",
+"Casiodoro de Reina"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Tanaj(?![A-Za-zÀ-ÿ])",
+"Tanakh"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Vulgata(?![A-Za-zÀ-ÿ])",
+"Vulgate"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Fedón(?![A-Za-zÀ-ÿ])",
+"Phaedo"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Corintios(?![A-Za-zÀ-ÿ])",
+"Corinthians"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Gálatas(?![A-Za-zÀ-ÿ])",
+"Galatians"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Areópago(?![A-Za-zÀ-ÿ])",
+"Areopagus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Cafarnaúm(?![A-Za-zÀ-ÿ])",
+"Capernaum"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Caná(?![A-Za-zÀ-ÿ])",
+"Cana"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Nebo(?![A-Za-zÀ-ÿ])",
+"Nebo"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Deuteronomio(?![A-Za-zÀ-ÿ])",
+"Deuteronomy"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Éxodo(?![A-Za-zÀ-ÿ])",
+"Exodus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Levítico(?![A-Za-zÀ-ÿ])",
+"Leviticus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Números(?![A-Za-zÀ-ÿ])",
+"Numbers"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Génesis(?![A-Za-zÀ-ÿ])",
+"Genesis"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Yabal al-Nur(?![A-Za-zÀ-ÿ])",
+"Jabal al-Nur"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Saná(?![A-Za-zÀ-ÿ])",
+"Sanaa"
+],
+[
+"(?<![A-Za-zÀ-ÿ])tayuid(?![A-Za-zÀ-ÿ])",
+"tajwid"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Mushaf(?![A-Za-zÀ-ÿ])",
+"Mushaf"
+],
+[
+"The Lord is my shepherd, I am not lacking",
+"The Lord is my shepherd; I shall not want"
+],
+[
+"The Lord is my shepherd, nothing is lacking",
+"The Lord is my shepherd; I shall not want"
 ]
 ]

@@ -141,7 +141,16 @@ ${falRows}</table>
   <div class="box"><span class="tag">escala · 10 min</span><h3>Del aula al universo</h3><p>Recorred las escalas del atlas y pedid que comparen: si el Sol fuera una naranja en el aula, ¿dónde estaría Próxima Centauri?</p></div>
 </div>
 
-<h2>10. Qué evaluar</h2>
+<h2>10. Los libros sagrados: la Biblia y el Corán</h2>
+<p>Dos épocas recorren los libros sagrados de judíos, cristianos y musulmanes: <b>El camino de la Biblia</b> (Moisés y la Torá, David y los Salmos, los cuatro evangelistas y Pablo) y <b>El jardín del Corán</b> (la primera revelación, la Fátiha, las suras de José, María, la Caverna y Ar-Rahmán, y cómo se reunió el Libro). Cada estación explica qué dice el texto, cómo lo lee la tradición creyente y, cuando corresponde, qué piensan los estudiosos sobre cómo se escribió.</p>
+<p>En estas dos épocas <b>no se vence a nadie</b>: el debate se convierte en «Pon a prueba lo que aprendiste» y cada personaje queda «Comprendido». No hay burlas, apuestas ni coronas de victoria. Por respeto a la tradición islámica, en el jardín del Corán <b>no se representa a ningún profeta</b>: cada estación es un atril con un medallón geométrico y una voz narradora.</p>
+<div class="modes">
+  <div class="box"><span class="tag">comparación · 20 min</span><h3>Personajes compartidos</h3><p>José, Moisés, María y Jesús aparecen en la Biblia y en el Corán. Pide que comparen cómo cuenta cada libro la historia de José: ¿qué coincide y qué cambia?</p></div>
+  <div class="box"><span class="tag">historia del libro</span><h3>¿Cómo llega un texto hasta hoy?</h3><p>Copistas de Qumrán, la imprenta de Gutenberg, la memoria de los hafiz y el manuscrito de Birmingham: ¿cómo se conserva y transmite un texto durante siglos?</p></div>
+</div>
+<div class="box"><b>Para un aula diversa:</b> presenta estas épocas como conocimiento cultural, no como catequesis ni como crítica. Distingue siempre entre lo que dice el texto, lo que cree la tradición y lo que piensan los estudiosos, como hace el juego, y deja espacio para que cada estudiante hable desde sus propias convicciones o sin ellas.</div>
+
+<h2>11. Qué evaluar</h2>
 <table><tr><th style="width:26%">Criterio</th><th>Dónde se ve</th></tr>
 <tr><td><b>Conocimiento</b></td><td>Pensadores vencidos en debate, lugares visitados y libros leídos: columnas de la tabla de entregas del Modo aula.</td></tr>
 <tr><td><b>Argumentación</b></td><td>En el Cuaderno del filósofo: la postura de cada diálogo, la razón elegida (buena, débil o falacia) y la respuesta a la objeción.</td></tr>
@@ -149,7 +158,7 @@ ${falRows}</table>
 <tr><td><b>Postura filosófica</b></td><td>El mapa filosófico: no se califica «bien» o «mal», sirve para conversar y para formar grupos de debate.</td></tr></table>
 <div class="box"><b>Sugerencia:</b> pide que, en una posición donde eligieron una falacia, expliquen con sus palabras por qué esa razón no sirve. Reconocer una falacia propia es un gran aprendizaje.</div>
 
-<h2>11. Privacidad y seguridad</h2>
+<h2>12. Privacidad y seguridad</h2>
 <ul>
   <li>El progreso se guarda <b>en el aparato</b> de cada estudiante. No se piden correos ni datos personales.</li>
   <li>La cuenta es opcional: solo usuario y contraseña, para recuperar el avance en otro aparato y para el ranking.</li>
@@ -157,7 +166,7 @@ ${falRows}</table>
   <li>Las entregas del Modo aula llevan un código de verificación: si alguien modifica su texto, el juego lo detecta.</li>
 </ul>
 
-<h2>12. Preguntas frecuentes</h2>
+<h2>13. Preguntas frecuentes</h2>
 <h3>¿Funciona sin internet?</h3><p>Una vez abierto, sí: el juego se guarda en el aparato. Los modos <b>En vivo</b>, el <b>mundo abierto</b>, los grupos, las cuentas y el ranking necesitan conexión.</p>
 <h3>¿Y en celulares antiguos?</h3><p>El juego baja la calidad gráfica solo si el aparato va lento. También se puede elegir calidad baja en «Ajustes».</p>
 <h3>¿Se puede instalar como aplicación?</h3><p>Sí: en el menú, «Instalar» lo deja en la pantalla de inicio como una app, sin pasar por la tienda.</p>

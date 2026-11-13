@@ -1,7 +1,7 @@
 {
   "name": "Odisea de la Razón",
   "short_name": "Odisea",
-  "description": "Conversa y debate con Sócrates, Hipatia, Sor Juana, Bashō y 213 pensadores más. Viaja por 35 épocas, de Sumer a nuestros días, y explóralas junto a otros viajeros. Una propuesta de Filosofía para Seres Humanos.",
+  "description": "Conversa y debate con Sócrates, Hipatia, Sor Juana, Bashō y 227 pensadores más. Viaja por 37 épocas, de Sumer a nuestros días, y explóralas junto a otros viajeros. Una propuesta de Filosofía para Seres Humanos.",
   "lang": "es",
   "start_url": "./index.html",
   "scope": "./",

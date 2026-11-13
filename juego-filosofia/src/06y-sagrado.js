@@ -8,8 +8,7 @@
 //    con un libro abierto y su medallón geométrico flotando encima.
 // ============================================================================
 const SACRED_TXT = {
-  ok: ['Así es.', 'Correcto.', 'Bien aprendido.', 'Lo has comprendido.'],
-  no: ['No es así. Vuelve a pensarlo con calma.', 'Repasa la historia y vuelve a intentarlo.', 'Casi: escucha otra vez.'],
+  ok: DEB_LINES.sacOk, no: DEB_LINES.sacNo,
   test: 'Pon a prueba lo que aprendiste', qn: 'Pregunta', comp: 'Comprensión', conv: 'Convicción', done: 'Comprendido', nextQ: 'Siguiente pregunta', finish: 'Completar',
 };
 const isSacred = () => !!(ERAS[G.eraIdx] && ERAS[G.eraIdx].sacred);

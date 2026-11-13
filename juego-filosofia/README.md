@@ -12,7 +12,7 @@ ratón y `E` para interactuar.
 
 ## Qué puedes hacer
 
-- **35 épocas y 217 pensadoras y pensadores**, de Sumer a hoy, con lecciones narradas e ilustradas,
+- **37 épocas y 231 pensadoras y pensadores**, de Sumer a hoy, con lecciones narradas e ilustradas,
   frases célebres, libros, lugares y debates. Vídeo de lo último: `marketing/novedades.mp4`.
 
 - **El mercado de los sofistas** (época XXXIV): Gorgias, Trasímaco, Eutidemo y Dionisodoro, Pedro

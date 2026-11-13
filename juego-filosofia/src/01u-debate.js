@@ -22,6 +22,9 @@ const DEB_LINES = {
   // dilemas
   dilema: ['Ahora un dilema. Aquí no hay respuesta correcta: elige tu postura.'],
   dilema2: ['Bien. Ahora defiéndela.', 'Interesante postura. Defiéndela.'],
+  // mundos sagrados: respuestas suaves, sin burlas
+  sacOk: ['Así es.', 'Correcto.', 'Bien aprendido.', 'Lo has comprendido.'],
+  sacNo: ['No es así. Vuelve a pensarlo con calma.', 'Repasa la historia y vuelve a intentarlo.', 'Casi: escucha otra vez.'],
 };
 // tipos de argumento: cada pensador cae ante uno y resiste otro
 const ARG_CARDS = [
