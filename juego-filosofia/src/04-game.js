@@ -1140,7 +1140,15 @@ const SCREENS = ['sala', 'cuaderno', 'reto', 'cuenta', 'aula', 'qd', 'travel', '
 function show(id) { SCREENS.forEach((s) => ($('#' + s).hidden = s !== id)); if (id) { const b = $('#' + id).querySelector('.btn.primary, .btn'); if (b && !IS_TOUCH) setTimeout(() => b.focus({ preventScroll: true }), 30); } }
 function hideAll() { SCREENS.forEach((s) => ($('#' + s).hidden = true)); }
 
+// cada época recuerda a quién venciste en ella, aunque viajes a otras y vuelvas
+const ERA_PROG_KEY = 'odisea-razon.epocas';
+function saveEraProgress() {
+  if (!world || world.idx !== G.eraIdx || !sages.length) return;
+  const m = store.get(ERA_PROG_KEY, {}) || {}; const ids = sages.filter((s) => s.state === 'defeated').map((s) => s.data.id);
+  if (ids.length) m[G.eraIdx] = ids; else delete m[G.eraIdx]; store.set(ERA_PROG_KEY, m);
+}
 function saveProgress() {
+  saveEraProgress();
   if (G.explore) return;
   // también se guarda lo hecho dentro de la época: a quién has vencido y si el portal quedó abierto
   const beaten = world && world.idx === G.eraIdx ? sages.filter((s) => s.state === 'defeated').map((s) => s.data.id) : (G.beatenRestore || []);
@@ -1176,6 +1184,7 @@ function startEra(idx, fresh) {
   G.eraStart = { score: G.score, frags: G.frags, stats: { ...G.stats } };
   saveProgress();
   loadWorld(idx); Audio.startMusic(idx);
+  { const prev = (store.get(ERA_PROG_KEY, {}) || {})[idx]; if (prev && prev.length) { restoreBeaten(prev); saveProgress(); const n = sages.filter((x) => x.state === 'defeated').length; if (n) setTimeout(() => toast(`Ya habías vencido a ${n} de ${sages.length} pensadores en esta época: tu avance se conserva.`), 1200); } }
   const e = ERAS[idx];
   $('#i-eyebrow').textContent = `Época ${e.pos + 1} de ${CHRONO.length} · ${e.years}`;
   setEraBackdrop($('#intro'), idx); $('#i-num').textContent = e.num; $('#i-name').textContent = e.name; $('#i-meta').textContent = e.place;
@@ -1332,7 +1341,7 @@ function renderTravel() {
   const hasSave = !!(sv && (sv.eraIdx !== CHRONO[0] || (sv.beaten && sv.beaten.length) || sv.score > 0));
   if (hasSave && G.travelFrom !== 'pause') { const e = ERAS[sv.eraIdx]; big('cont', sv.eraIdx, `Tu odisea · época ${e.pos + 1} de ${CHRONO.length}`, e.name, ERA_HOOK[e.id] || e.place, 'Continuar ▶', () => $('#b-continue').click()); }
   const s0 = ERAS[CHRONO[0]];
-  big('start', CHRONO[0], 'Empieza por el principio', `${s0.name} · hace 4.500 años`, ERA_HOOK[s0.id], hasSave ? 'Empezar de nuevo desde aquí ▶' : 'Comenzar la odisea ▶', () => startOdyssey(CHRONO[0]));
+  big('start', CHRONO[0], 'Empieza por el principio', `${s0.name} · hace 4.500 años`, ERA_HOOK[s0.id], hasSave ? 'Empezar de nuevo desde aquí ▶' : 'Comenzar la odisea ▶', () => { if (hasSave) store.set(ERA_PROG_KEY, {}); startOdyssey(CHRONO[0]); });
   const grid = $('#tv-grid'); grid.innerHTML = '';
   const here = sv ? sv.eraIdx : -1;
   CHRONO.forEach((i) => {

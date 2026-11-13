@@ -1,7 +1,7 @@
 // Service worker de Odisea de la Razón: la app abre sin conexión.
 // Página: red primero (para recibir novedades) y copia guardada si no hay red.
 // Imágenes, voces, biblioteca 3D y fuentes: se guardan la primera vez que se usan.
-const V = 'odisea-v59';
+const V = 'odisea-v60';
 const CORE = ['./', './index.html', './index-en.html', './manifest.webmanifest', './img/icon-192.png', './img/icon-512.png'];
 self.addEventListener('install', (e) => { e.waitUntil(caches.open(V).then((c) => c.addAll(CORE)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', (e) => {

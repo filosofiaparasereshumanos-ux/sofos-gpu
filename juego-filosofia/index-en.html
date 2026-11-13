@@ -19362,7 +19362,15 @@ const SCREENS = ['sala', 'cuaderno', 'reto', 'cuenta', 'aula', 'qd', 'travel', '
 function show(id) { SCREENS.forEach((s) => ($('#' + s).hidden = s !== id)); if (id) { const b = $('#' + id).querySelector('.btn.primary, .btn'); if (b && !IS_TOUCH) setTimeout(() => b.focus({ preventScroll: true }), 30); } }
 function hideAll() { SCREENS.forEach((s) => ($('#' + s).hidden = true)); }
 
+// cada época recuerda a quién venciste en ella, aunque viajes a otras y vuelvas
+const ERA_PROG_KEY = 'odisea-razon.epocas';
+function saveEraProgress() {
+  if (!world || world.idx !== G.eraIdx || !sages.length) return;
+  const m = store.get(ERA_PROG_KEY, {}) || {}; const ids = sages.filter((s) => s.state === 'defeated').map((s) => s.data.id);
+  if (ids.length) m[G.eraIdx] = ids; else delete m[G.eraIdx]; store.set(ERA_PROG_KEY, m);
+}
 function saveProgress() {
+  saveEraProgress();
   if (G.explore) return;
   // también se guarda lo hecho dentro de la época: a quién has vencido y si el portal quedó abierto
   const beaten = world && world.idx === G.eraIdx ? sages.filter((s) => s.state === 'defeated').map((s) => s.data.id) : (G.beatenRestore || []);
@@ -19398,6 +19406,7 @@ function startEra(idx, fresh) {
   G.eraStart = { score: G.score, frags: G.frags, stats: { ...G.stats } };
   saveProgress();
   loadWorld(idx); Audio.startMusic(idx);
+  { const prev = (store.get(ERA_PROG_KEY, {}) || {})[idx]; if (prev && prev.length) { restoreBeaten(prev); saveProgress(); const n = sages.filter((x) => x.state === 'defeated').length; if (n) setTimeout(() => toast(`You had already beaten ${n} of ${sages.length} thinkers in this era: your progress is saved.`), 1200); } }
   const e = ERAS[idx];
   $('#i-eyebrow').textContent = `Time ${e.pos + 1} of ${CHRONO.length} · ${e.years}`;
   setEraBackdrop($('#intro'), idx); $('#i-num').textContent = e.num; $('#i-name').textContent = e.name; $('#i-meta').textContent = e.place;
@@ -19554,7 +19563,7 @@ function renderTravel() {
   const hasSave = !!(sv && (sv.eraIdx !== CHRONO[0] || (sv.beaten && sv.beaten.length) || sv.score > 0));
   if (hasSave && G.travelFrom !== 'pause') { const e = ERAS[sv.eraIdx]; big('cont', sv.eraIdx, `Your Odyssey · period ${e.pos + 1} of ${CHRONO.length}`, e.name, ERA_HOOK[e.id] || e.place, 'Continue', () => $('#b-continue').click()); }
   const s0 = ERAS[CHRONO[0]];
-  big('start', CHRONO[0], 'Start at the beginning', `${s0.name} · 4,500 years ago`, ERA_HOOK[s0.id], hasSave ? 'Start all over again from here' : 'Start the odyssey', () => startOdyssey(CHRONO[0]));
+  big('start', CHRONO[0], 'Start at the beginning', `${s0.name} · 4,500 years ago`, ERA_HOOK[s0.id], hasSave ? 'Start all over again from here' : 'Start the odyssey', () => { if (hasSave) store.set(ERA_PROG_KEY, {}); startOdyssey(CHRONO[0]); });
   const grid = $('#tv-grid'); grid.innerHTML = '';
   const here = sv ? sv.eraIdx : -1;
   CHRONO.forEach((i) => {
@@ -23410,7 +23419,7 @@ const Falacias = {
     const next = () => { const f = order[n++ % order.length]; return { f, ej: pick(f.ej) }; };
     W.spots = W.spots || [];
     W.falStalls.forEach((p, i) => {
-      const st = { ...next(), done: false };
+      const st = { ...next(), done: false }; (W.falState = W.falState || []).push(st);
       const sign = new THREE.Sprite(new THREE.SpriteMaterial({ transparent: true, depthWrite: false, toneMapped: false }));
       sign.scale.set(2.4, 0.6, 1); sign.position.set(p.sx, 3.9, p.sz); W.group.add(sign);
       const paint = () => { sign.material.map = labelTexture(st.done ? '✓ ' + st.f.n : '❓ Tricky sales pitch', st.done ? 'Fallacy caught' : 'Analyze the argument', st.done ? '#b8f0c8' : '#ffe3a3'); sign.material.needsUpdate = true; };
@@ -23475,7 +23484,7 @@ const Falacias = {
     const box = $('#fa-train'); box.querySelectorAll('.fa-ops button').forEach((b) => { b.disabled = true; if (b.textContent === c.f.n) b.classList.add('right'); });
     if (ok) { t.streak++; Audio.correct(); const best = store.get(FAL_BEST_KEY, 0) || 0; if (t.streak > best) store.set(FAL_BEST_KEY, t.streak); if (t.streak >= 10) achieve('entrenado'); }
     else { btn.classList.add('wrong'); t.streak = 0; Audio.wrong && Audio.wrong(); }
-    const fb = box.querySelector('.fa-fb'); fb.hidden = false; fb.innerHTML = '<div class="fa-img"></div><b></b><p></p><button class="btn primary">Siguiente</button>'; fb.querySelector('.fa-img').style.backgroundImage = `url(img/fal-${c.f.id}.jpg)`;
+    const fb = box.querySelector('.fa-fb'); fb.hidden = false; fb.innerHTML = '<div class="fa-img"></div><b></b><p></p><button class="btn primary">Next</button>'; fb.querySelector('.fa-img').style.backgroundImage = `url(img/fal-${c.f.id}.jpg)`;
     fb.querySelector('b').textContent = (ok ? '✓ Correcto: ' : '- It was: ') + c.f.n + ' (' + c.f.l + ')'; fb.querySelector('p').textContent = this.explain(c.f);
     fb.querySelector('button').addEventListener('click', () => { Audio.click(); t.go = true; this.paintTrain(); });
     box.querySelector('.fa-stk').textContent = `Racha: ${t.streak} · Best run: ${store.get(FAL_BEST_KEY, 0) || 0}`;

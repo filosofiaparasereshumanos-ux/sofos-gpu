@@ -20573,5 +20573,8 @@
 "Escalas": "Scales",
 "Planetas": "Planets",
 "Calendario cósmico": "Cosmic Calendar",
-"Alejar ▶": "Move away"
+"Alejar ▶": "Move away",
+"Ya habías vencido a ⟦0⟧ de ⟦1⟧ pensadores en esta época: tu avance se conserva.": "You'd already beaten ⟦0⟧ of ⟦1⟧ thinkers at this time: your advance is preserved.",
+"<div class=\"fa-img\"></div><b></b><p></p><button class=\"btn primary\">Siguiente</button>": "<div class=\"fa-img\"></div><b></b><p></p><button class=\"btn primary\">Next</button>",
+"UTC": "UTC"
 }
