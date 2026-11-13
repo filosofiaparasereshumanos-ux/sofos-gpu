@@ -117,16 +117,17 @@ const Juntos = {
     const playing = G.state === 'play' && world && world.idx === G.eraIdx;
     // mi posición: 3 veces por segundo al moverme, cada 4 s si estoy quieto
     this.sendT -= dt; const p = player.pos; const moved = !this.last || Math.hypot(p.x - this.last[0], p.z - this.last[1]) > 0.15 || Math.abs(player.yaw - this.last[2]) > 0.12;
-    if (MRT.joined && this.sendT <= 0 && (moved || this.sendT < -4)) {
+    if (MRT.joined && this.sendT <= 0 && (moved || this.sendT < -8)) {
       this.name = this.myName();
       MRT.send('pos', { id: this.myId(), n: this.name, l: this.lookStr(), rk: typeof Rango !== 'undefined' ? Rango.n() : 0, e: G.eraIdx, x: +p.x.toFixed(2), y: +p.y.toFixed(2), z: +p.z.toFixed(2), r: +player.yaw.toFixed(2), zn: world && world.zoneIn ? world.zoneIn.id : world && world.cave && world.cave.in ? 'cueva' : '', s: playing ? 1 : 0, v: typeof Agora !== 'undefined' ? Agora.mine(G.eraIdx) : 0, ls: typeof Escucha !== 'undefined' ? Escucha.mine() : '' });
-      this.sendT = 0.33; this.last = [p.x, p.z, player.yaw];
+      // cuantos más viajeros hay en la época, menos a menudo se envía la posición (cuida el plan gratuito de mensajes)
+      this.sendT = Math.min(2.5, 0.4 * (1 + this.R.size / 4)); this.last = [p.x, p.z, player.yaw];
     }
     const now = performance.now(); let best = null, bd = 3.2; const myZone = world && world.zoneIn ? world.zoneIn.id : world && world.cave && world.cave.in ? 'cueva' : '';
     for (const [id, r] of this.R) {
-      if (now - r.seen > 12000) { this.drop(id); continue; }
+      if (now - r.seen > 16000) { this.drop(id); continue; }
       const vis = r.e === G.eraIdx && r.zone === myZone && !!world; r.g.visible = vis; if (!vis) continue;
-      const k = Math.min(1, dt * 8); const step = Math.hypot(r.tx - r.x, r.tz - r.z);
+      const k = Math.min(1, dt * 4.5); const step = Math.hypot(r.tx - r.x, r.tz - r.z);
       r.x += (r.tx - r.x) * k; r.y += (r.ty - r.y) * k; r.z += (r.tz - r.z) * k;
       let dy = r.tyaw - r.yaw; while (dy > Math.PI) dy -= Math.PI * 2; while (dy < -Math.PI) dy += Math.PI * 2; r.yaw += dy * k;
       r.g.position.set(r.x, r.y, r.z); r.fig.group.rotation.y = r.yaw + Math.PI; r.ph = (r.ph || 0) + dt * (step > 0.05 ? 9 : 0);
