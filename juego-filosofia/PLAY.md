@@ -72,19 +72,21 @@ sola, sin subir una versión nueva a Play.
 ## Descripción para la ficha
 
 **Breve (80 caracteres):**
-Debate con 203 filósofas y filósofos en 33 épocas, de Sumer a hoy.
+Debate con 217 filósofas y filósofos en 35 épocas, de Sumer a hoy.
 
 **Completa:**
 Odisea de la Razón es un viaje en 3D por la historia del pensamiento. Camina por la
 Atenas de Sócrates, la Persia de Zaratustra, la Bagdad de la Casa de la Sabiduría, la
-Tenochtitlan de los poetas nahuas o el Japón del zen, y debate con 203 pensadoras y
+Tenochtitlan de los poetas nahuas o el Japón del zen, y debate con 217 pensadoras y
 pensadores: Hipatia, Sor Juana, Confucio, Avicena, Simone de Beauvoir, Paulo Freire,
 Marie Curie y muchos más.
 
 • Escucha sus lecciones narradas e ilustradas y descubre lugares, libros y personajes de cada época.
 • Colecciona más de 460 frases célebres, dichas con la voz de cada pensador, y compártelas como tarjeta.
 • Salta para alcanzar las preguntas escondidas en lo alto y caza la estrella dorada de cada mundo.
-• Cuatro canciones originales en cada uno de los 33 mundos.
+• Caza falacias en el mercado de los sofistas y aprende las 26 trampas más comunes del razonamiento en su bestiario.
+• Camina entre los planetas en el planetario, sella tu pasaporte planetario y viaja por el atlas del cosmos hasta el borde del universo observable.
+• Cuatro canciones originales en cada uno de los 35 mundos.
 • Vence en debates de preguntas y en 41 diálogos socráticos: toma postura, da razones y aprende a detectar falacias.
 • Debates con emoción: el pensador te replica con su voz, tira y afloja de persuasión, golpes críticos, aliados, apuesta final a todo o nada, dilemas sin respuesta correcta y revanchas.
 • Vive 11 experimentos filosóficos: la caverna de Platón, el tranvía, la habitación china, la máquina de experiencias…

@@ -112,9 +112,12 @@ const Cosmos = {
   paintCal() {
     const box = $('#cs-calendario'); box.innerHTML = '';
     const intro = document.createElement('p'); intro.className = 'cs-desc'; intro.textContent = 'Imagina que toda la historia del universo, 13.800 millones de años, cabe en un solo año. El Big Bang ocurre el 1 de enero a medianoche. ¿Cuándo aparecemos nosotros?'; box.appendChild(intro);
-    const MES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+    // fechas sin palabras que traducir: el formato del idioma de la página y la hora en cifras
+    const lang = document.documentElement.lang === 'en' ? 'en-GB' : 'es';
     const when = (hace) => { const s = (1 - hace / 13800) * 365 * 86400; const d = new Date(Date.UTC(2001, 0, 1) + s * 1000); const left = (hace / 13800) * 365 * 86400;
-      if (left < 60) return `31 de diciembre, a ${left.toFixed(1).replace('.', ',')} segundos de la medianoche`; if (left < 86400) return `31 de diciembre a las ${String(d.getUTCHours()).padStart(2, '0')}:${String(d.getUTCMinutes()).padStart(2, '0')}`; return `${d.getUTCDate()} de ${MES[d.getUTCMonth()]}`; };
+      const day = d.toLocaleDateString(lang, { day: 'numeric', month: 'long', timeZone: 'UTC' }); if (left >= 86400) return day;
+      const hh = String(d.getUTCHours()).padStart(2, '0'), mm = String(d.getUTCMinutes()).padStart(2, '0'), ss = String(d.getUTCSeconds()).padStart(2, '0');
+      return left < 60 ? `${day} · ${hh}:${mm}:${ss}${(1 - (left % 1)).toFixed(1).slice(1)}` : `${day} · ${hh}:${mm}`; };
     for (const e of CALENDARIO) { const it = document.createElement('div'); it.className = 'cs-cal'; it.innerHTML = '<span class="cs-date"></span><b></b><p></p><small></small>'; it.querySelector('.cs-date').textContent = when(e.hace); it.querySelector('b').textContent = e.n; it.querySelector('p').textContent = e.t;
       it.querySelector('small').textContent = e.hace >= 1 ? `Hace ${String(e.hace).replace(/\B(?=(\d{3})+(?!\d))/g, '.')} millones de años` : `Hace ${Math.round(e.hace * 1e6).toLocaleString('es')} años`; box.appendChild(it); }
   },

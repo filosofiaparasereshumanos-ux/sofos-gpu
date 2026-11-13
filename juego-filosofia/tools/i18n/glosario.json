@@ -362,5 +362,149 @@
 [
 "(?<![A-Za-zÀ-ÿ])Game Drive(?![A-Za-zÀ-ÿ])",
 "Play Drive"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Trasimac(us|o)(?![A-Za-zÀ-ÿ])",
+"Thrasymachus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Thrasimac(us|o)(?![A-Za-zÀ-ÿ])",
+"Thrasymachus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Trasímaco(?![A-Za-zÀ-ÿ])",
+"Thrasymachus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Discards(?![A-Za-zÀ-ÿ])",
+"Descartes"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Encomio de Helena(?![A-Za-zÀ-ÿ])",
+"Encomium of Helen"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Encomium of Helena(?![A-Za-zÀ-ÿ])",
+"Encomium of Helen"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Helena of Troy(?![A-Za-zÀ-ÿ])",
+"Helen of Troy"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Helena de Troya(?![A-Za-zÀ-ÿ])",
+"Helen of Troy"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Fedon(?![A-Za-zÀ-ÿ])",
+"Phaedo"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Banket(?![A-Za-zÀ-ÿ])",
+"Symposium"
+],
+[
+"(?<![A-Za-zÀ-ÿ])divinous(?![A-Za-zÀ-ÿ])",
+"divine"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Eutidemo(?![A-Za-zÀ-ÿ])",
+"Euthydemus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Dionisodoro(?![A-Za-zÀ-ÿ])",
+"Dionysodorus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Pedro Hispano(?![A-Za-zÀ-ÿ])",
+"Peter of Spain"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Leontinos(?![A-Za-zÀ-ÿ])",
+"Leontini"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Calcedonia(?![A-Za-zÀ-ÿ])",
+"Chalcedon"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Quíos(?![A-Za-zÀ-ÿ])",
+"Chios"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Calias(?![A-Za-zÀ-ÿ])",
+"Callias"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Sumulae logicales(?![A-Za-zÀ-ÿ])",
+"Summulae logicales"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Caroline Herschel(?![A-Za-zÀ-ÿ])",
+"Caroline Herschel"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Cecilia Payne-Gaposchkin(?![A-Za-zÀ-ÿ])",
+"Cecilia Payne-Gaposchkin"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Andromeda galaxy(?![A-Za-zÀ-ÿ])",
+"Andromeda galaxy"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Sagittarius A\\\\*(?![A-Za-zÀ-ÿ])",
+"Sagittarius A*"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Magellan Clouds(?![A-Za-zÀ-ÿ])",
+"Magellanic Clouds"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Clouds of Magellan(?![A-Za-zÀ-ÿ])",
+"Magellanic Clouds"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Cloud of Magellan(?![A-Za-zÀ-ÿ])",
+"Magellanic Cloud"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Mount Olympus(?![A-Za-zÀ-ÿ])",
+"Olympus Mons"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Big Bang(?![A-Za-zÀ-ÿ])",
+"Big Bang"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Brief history of time(?![A-Za-zÀ-ÿ])",
+"A Brief History of Time"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Brief History of Time(?![A-Za-zÀ-ÿ])",
+"A Brief History of Time"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Thinking with purpose(?![A-Za-zÀ-ÿ])",
+"Thinking to Some Purpose"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Think with purpose(?![A-Za-zÀ-ÿ])",
+"Thinking to Some Purpose"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Thinking with Purpose(?![A-Za-zÀ-ÿ])",
+"Thinking to Some Purpose"
+],
+[
+"(?<![A-Za-zÀ-ÿ])The harmony of the world(?![A-Za-zÀ-ÿ])",
+"The Harmony of the World"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Tycho Brahe(?![A-Za-zÀ-ÿ])",
+"Tycho Brahe"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Lambaréné(?![A-Za-zÀ-ÿ])",
+"Lambaréné"
 ]
 ]

@@ -53,15 +53,15 @@ const APP_HEAD = `<meta name="theme-color" content="#120d07">
 <meta name="apple-mobile-web-app-title" content="Odisea">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Odisea de la Razón · ¿Te atreves a pensar?">
-<meta property="og:description" content="Conversa y debate con Sócrates, Hipatia, Sor Juana y 200 pensadores más en 33 épocas, de Sumer a nuestros días. Explora el mundo junto a otros viajeros y debate con ellos. Gratis, en el navegador.">
+<meta property="og:description" content="Conversa y debate con Sócrates, Hipatia, Sor Juana y 214 pensadores más en 35 épocas, de Sumer a nuestros días. Explora el mundo junto a otros viajeros y debate con ellos. Gratis, en el navegador.">
 <meta property="og:image" content="https://filosofiaparasereshumanos-ux.github.io/sofos-gpu/juego-filosofia/marketing/portada-titulo.jpg">
 <meta name="twitter:card" content="summary_large_image">
 `;
-const a = page(read('src/template.html'), `const NARR_INDEX = ${narr};\n` + join_(parts3d), 'El primer juego educativo completo de filosofía, ciencia e historia: conversa y debate con 203 pensadoras y pensadores en 33 épocas, de Sumer a nuestros días. Gratis, en el navegador.', APP_HEAD);
+const a = page(read('src/template.html'), `const NARR_INDEX = ${narr};\n` + join_(parts3d), 'El primer juego educativo completo de filosofía, ciencia e historia: conversa y debate con 217 pensadoras y pensadores en 35 épocas, de Sumer a nuestros días. Gratis, en el navegador.', APP_HEAD);
 let full = a.full;
 if (EN) full = full.replace('<meta property="og:title" content="Odisea de la Razón · ¿Te atreves a pensar?">', '<meta property="og:title" content="Odyssey of Reason · Dare to think?">')
-  .replace(/<meta property="og:description" content="[^"]*">/, '<meta property="og:description" content="Talk and debate with Socrates, Hypatia, Sor Juana and 200 more thinkers across 33 eras, from Sumer to today. Explore the world with other travelers. Free, in your browser.">')
-  .replace(/<meta name="description" content="[^"]*">/, '<meta name="description" content="The first complete educational game of philosophy, science and history: talk and debate with 203 thinkers across 33 eras, from Sumer to today. Free.">');
+  .replace(/<meta property="og:description" content="[^"]*">/, '<meta property="og:description" content="Talk and debate with Socrates, Hypatia, Sor Juana and 214 more thinkers across 35 eras, from Sumer to today. Explore the world with other travelers. Free, in your browser.">')
+  .replace(/<meta name="description" content="[^"]*">/, '<meta name="description" content="The first complete educational game of philosophy, science and history: talk and debate with 217 thinkers across 35 eras, from Sumer to today. Free.">');
 writeFileSync(join(here, EN ? 'index-en.html' : 'index.html'), full);
 console.log(`${EN ? 'index-en.html' : 'index.html'} (viaje 3D): ${(full.length / 1024).toFixed(0)} KB`);
 
