@@ -25,6 +25,7 @@ const Falacias = {
     achieve('cazador1'); if (this.caught.size >= 10) achieve('cazador10'); if (this.caught.size >= FALACIAS.length) achieve('cazadortodas');
     return true;
   },
+  art(f) { requestAnimationFrame(() => { const a = $('#xp-art'); if (!a) return; a.hidden = false; a.style.backgroundImage = `url(img/fal-${f.id}.jpg)`; a.style.backgroundSize = 'cover'; a.style.backgroundPosition = 'center'; }); },
   explain(f) { return `${f.d} Cómo responder: ${f.r}`; },
   // ---------- los puestos del mercado
   build(W) {
@@ -52,11 +53,11 @@ const Falacias = {
     if (ok) {
       const nueva = this.catch(f); st.done = true; paint(); const pts = nueva ? 150 : 80; addScore(pts); updateHud();
       Audio.correct(); buzz([20, 30]); popup(`+${pts}<small>falacia cazada</small>`, 'up');
-      setTimeout(() => XP.open('✓ ¡Falacia cazada!' + (nueva ? ' · nueva en tu bestiario' : ''), f.n + ' (' + f.l + ')', this.explain(f), [['Seguir', null], ['Abrir el bestiario', () => this.open()]]), 60);
+      setTimeout(() => XP.open('✓ ¡Falacia cazada!' + (nueva ? ' · nueva en tu bestiario' : ''), f.n + ' (' + f.l + ')', this.explain(f), [['Seguir', null], ['Abrir el bestiario', () => this.open()]]) || this.art(f), 60);
     } else {
       Audio.wrong && Audio.wrong(); buzz([50, 40]);
       const was = st.f; st.ej = pick(was.ej.filter((e) => e !== st.ej)) || st.ej;
-      setTimeout(() => XP.open('✗ No era esa', `Era: ${was.n}`, `«${o.n}» no encaja aquí. ${this.explain(was)} El pregonero tiene otro ejemplo: vuelve a analizarlo.`, [['Seguir', null]]), 60);
+      setTimeout(() => XP.open('✗ No era esa', `Era: ${was.n}`, `«${o.n}» no encaja aquí. ${this.explain(was)} El pregonero tiene otro ejemplo: vuelve a analizarlo.`, [['Seguir', null]]) || this.art(was), 60);
     }
   },
   // ---------- el bestiario
@@ -75,7 +76,7 @@ const Falacias = {
       const h = document.createElement('h4'); h.className = 'fa-gh'; h.textContent = g; box.appendChild(h);
       for (const f of FALACIAS.filter((x) => x.g === g)) {
         const on = this.caught.has(f.id); const it = document.createElement('details'); it.className = 'fa-it' + (on ? ' got' : '');
-        it.innerHTML = '<summary><b></b><i></i><span class="fa-ok"></span></summary><p class="fa-d"></p><p class="fa-ex"></p><p class="fa-r"></p>';
+        it.innerHTML = '<summary><b></b><i></i><span class="fa-ok"></span></summary><div class="fa-img"></div><p class="fa-d"></p><p class="fa-ex"></p><p class="fa-r"></p>'; it.querySelector('.fa-img').style.backgroundImage = `url(img/fal-${f.id}.jpg)`;
         it.querySelector('b').textContent = f.n; it.querySelector('i').textContent = f.l; it.querySelector('.fa-ok').textContent = on ? '✓ cazada' : '';
         it.querySelector('.fa-d').textContent = f.d; it.querySelector('.fa-ex').textContent = '«' + f.ej[0] + '»'; it.querySelector('.fa-r').textContent = 'Cómo responder: ' + f.r;
         box.appendChild(it);
@@ -98,7 +99,7 @@ const Falacias = {
     const box = $('#fa-train'); box.querySelectorAll('.fa-ops button').forEach((b) => { b.disabled = true; if (b.textContent === c.f.n) b.classList.add('right'); });
     if (ok) { t.streak++; Audio.correct(); const best = store.get(FAL_BEST_KEY, 0) || 0; if (t.streak > best) store.set(FAL_BEST_KEY, t.streak); if (t.streak >= 10) achieve('entrenado'); }
     else { btn.classList.add('wrong'); t.streak = 0; Audio.wrong && Audio.wrong(); }
-    const fb = box.querySelector('.fa-fb'); fb.hidden = false; fb.innerHTML = '<b></b><p></p><button class="btn primary">Siguiente</button>';
+    const fb = box.querySelector('.fa-fb'); fb.hidden = false; fb.innerHTML = '<div class="fa-img"></div><b></b><p></p><button class="btn primary">Siguiente</button>'; fb.querySelector('.fa-img').style.backgroundImage = `url(img/fal-${c.f.id}.jpg)`;
     fb.querySelector('b').textContent = (ok ? '✓ Correcto: ' : '✗ Era: ') + c.f.n + ' (' + c.f.l + ')'; fb.querySelector('p').textContent = this.explain(c.f);
     fb.querySelector('button').addEventListener('click', () => { Audio.click(); t.go = true; this.paintTrain(); });
     box.querySelector('.fa-stk').textContent = `Racha: ${t.streak} · Mejor racha: ${store.get(FAL_BEST_KEY, 0) || 0}`;

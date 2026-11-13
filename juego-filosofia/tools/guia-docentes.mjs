@@ -8,9 +8,11 @@ import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const files = readdirSync(join(root, 'src')).filter((f) => /^01[a-z]?-.*\.js$/.test(f)).sort().concat(['02p-dialogos.js']);
 const ctx = { console }; vm.createContext(ctx);
-vm.runInContext(files.map((f) => readFileSync(join(root, 'src', f), 'utf8')).join('\n') + '\n;globalThis.__o = { ERAS, CHRONO, DIALOGOS };', ctx);
-const { ERAS, CHRONO, DIALOGOS } = ctx.__o;
+vm.runInContext(files.map((f) => readFileSync(join(root, 'src', f), 'utf8')).join('\n') + '\n;globalThis.__o = { ERAS, CHRONO, DIALOGOS, FALACIAS, DILEMAS, PLANETAS, COSMOS_ESCALAS };', ctx);
+const { ERAS, CHRONO, DIALOGOS, FALACIAS, DILEMAS, PLANETAS, COSMOS_ESCALAS } = ctx.__o;
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const falRows = FALACIAS.map((f) => `<tr><td><b>${esc(f.n)}</b><br><small>${esc(f.l)} · ${esc(f.g)}</small></td><td>${esc(f.d)}</td><td><i>«${esc(f.ej[0])}»</i></td></tr>`).join('\n');
+const dilRows = DILEMAS.map((d) => `<li>${esc(d.q)}</li>`).join('');
 const era = (id) => ERAS.find((e) => e.id === id);
 const nSages = ERAS.reduce((a, e) => a + e.sages.length, 0), nDlg = Object.keys(DIALOGOS).length;
 const sageEra = {}; ERAS.forEach((e) => e.sages.forEach((s) => (sageEra[s.id] = { e, s })));
@@ -54,6 +56,7 @@ th { font-family: "Marcellus SC", serif; font-weight: normal; color: var(--gold)
 .box { border: 1px solid var(--line); border-left: 4px solid var(--gold); background: #fff; border-radius: 8px; padding: 10px 14px; margin: 10px 0; break-inside: avoid; }
 .steps { counter-reset: s; list-style: none; padding: 0; } .steps li { counter-increment: s; position: relative; padding-left: 38px; margin: 8px 0; }
 .steps li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--gold); color: #fff; text-align: center; font-family: "Marcellus SC", serif; line-height: 26px; }
+.cols { columns: 2; font-size: 0.92rem; } .cols li { margin: 3px 0; break-inside: avoid; }
 .modes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } .modes .box { margin: 0; }
 .modes h3 { margin-top: 0; } .tag { display: inline-block; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #fff; background: var(--gold); border-radius: 999px; padding: 1px 8px; }
 code, .k { font-family: inherit; background: #f3e8cf; border-radius: 4px; padding: 0 4px; }
@@ -113,7 +116,32 @@ ${xpRows}</table>
 <table><tr><th style="width:26%">Pensador</th><th>Tesis que propone</th></tr>
 ${dlgRows}</table>
 
-<h2>7. Qué evaluar</h2>
+<h2 class="pb">7. Pensamiento crítico: el mercado de los sofistas</h2>
+<p>En la época «El mercado de los sofistas» el alumnado conoce a Gorgias, Trasímaco, Eutidemo y Dionisodoro, Pedro Hispano, Barnum, Bernays y Susan Stebbing. Cada puesto del mercado esconde un <b>pregón tramposo</b>: hay que acercarse, pulsar «Analizar» y elegir qué falacia es. Las falacias cazadas se guardan en el <b>Bestiario de falacias</b> (Inicio → Falacias), que explica las ${FALACIAS.length} falacias con ejemplos y cómo responder a cada una, y tiene un modo <b>Entrenar</b> con rachas, útil también sin jugar.</p>
+<div class="modes">
+  <div class="box"><span class="tag">20 min · por equipos</span><h3>Cazadores de anuncios</h3><p>Cada equipo trae dos anuncios, titulares o mensajes de redes. Con el bestiario abierto, identifican la falacia y la «responden» con la frase de «Cómo responder».</p></div>
+  <div class="box"><span class="tag">10 min · competencia</span><h3>Racha de la clase</h3><p>Proyecta el modo Entrenar. La clase vota la respuesta en voz alta o con tarjetas; se anota la mejor racha del grupo y se intenta superarla otro día.</p></div>
+  <div class="box"><span class="tag">escritura</span><h3>Inventa tu pregón</h3><p>Cada estudiante escribe un pregón tramposo para un producto imaginario usando una falacia; sus compañeros deben descubrir cuál es.</p></div>
+  <div class="box"><span class="tag">debate</span><h3>Stebbing contra Bernays</h3><p>Tras ver su debate en el juego, discutid: ¿quién debe guiar la opinión pública? ¿Cómo nos protegemos de la propaganda en las redes?</p></div>
+</div>
+<table><tr><th style="width:24%">Falacia</th><th style="width:40%">Qué es</th><th>Ejemplo del juego</th></tr>
+${falRows}</table>
+
+<h2>8. Debates con emoción y dilemas</h2>
+<p>En los duelos, el pensador replica con su voz, una <b>cuerda de persuasión</b> muestra quién va ganando y antes de responder se puede elegir el <b>tipo de argumento</b>: ejemplo, pregunta socrática o detectar una falacia. Cada pensador cae ante uno y resiste otro: es una buena excusa para hablar de cómo se argumenta. A veces aparece un <b>dilema</b> sin respuesta correcta: se elige una postura y luego hay que elegir la razón que la sostiene con coherencia (las trampas son falacias o razones del bando contrario).</p>
+<div class="box"><b>Para clase:</b> elegid un dilema, dividid el grupo según su postura y pedid a cada mitad que encuentre la mejor razón… y la mejor razón del otro bando.</div>
+<ul class="cols">${dilRows}</ul>
+
+<h2>9. El observatorio del cosmos</h2>
+<p>La época «El observatorio del cosmos» reúne a Kepler, Caroline Herschel, Henrietta Leavitt, Cecilia Payne, Chandrasekhar, Vera Rubin y Stephen Hawking. Junto a Kepler hay un portal al <b>planetario</b>: se camina entre el Sol y los planetas en órbita y cada uno abre su ficha con datos reales y sella el <b>pasaporte planetario</b>. El <b>Atlas del cosmos</b> (gran telescopio o Inicio → Cosmos) recorre ${COSMOS_ESCALAS.length} escalas, de la Tierra y la Luna al universo observable, la ficha de cada planeta con la <b>báscula cósmica</b> (cuánto pesarías allí) y el <b>calendario cósmico</b>.</p>
+<div class="modes">
+  <div class="box"><span class="tag">ciencias · 15 min</span><h3>¿Cuánto pesarías en Júpiter?</h3><p>Con la báscula cósmica, cada estudiante calcula su peso en tres mundos y explica por qué cambia: masa y gravedad no son lo mismo.</p></div>
+  <div class="box"><span class="tag">pasillo · toda la clase</span><h3>El calendario cósmico en una cuerda</h3><p>Tended una cuerda de 12 metros (un metro por mes) y colgad los hitos del calendario cósmico. Los seres humanos ocupan… ¡el último milímetro!</p></div>
+  <div class="box"><span class="tag">filosofía de la ciencia</span><h3>Cuando la verdad parece imposible</h3><p>Payne, Chandrasekhar y Rubin descubrieron cosas que casi nadie creía. ¿Qué hace falta para cambiar de idea ante las pruebas?</p></div>
+  <div class="box"><span class="tag">escala · 10 min</span><h3>Del aula al universo</h3><p>Recorred las escalas del atlas y pedid que comparen: si el Sol fuera una naranja en el aula, ¿dónde estaría Próxima Centauri?</p></div>
+</div>
+
+<h2>10. Qué evaluar</h2>
 <table><tr><th style="width:26%">Criterio</th><th>Dónde se ve</th></tr>
 <tr><td><b>Conocimiento</b></td><td>Pensadores vencidos en debate, lugares visitados y libros leídos: columnas de la tabla de entregas del Modo aula.</td></tr>
 <tr><td><b>Argumentación</b></td><td>En el Cuaderno del filósofo: la postura de cada diálogo, la razón elegida (buena, débil o falacia) y la respuesta a la objeción.</td></tr>
@@ -121,7 +149,7 @@ ${dlgRows}</table>
 <tr><td><b>Postura filosófica</b></td><td>El mapa filosófico: no se califica «bien» o «mal», sirve para conversar y para formar grupos de debate.</td></tr></table>
 <div class="box"><b>Sugerencia:</b> pide que, en una posición donde eligieron una falacia, expliquen con sus palabras por qué esa razón no sirve. Reconocer una falacia propia es un gran aprendizaje.</div>
 
-<h2>8. Privacidad y seguridad</h2>
+<h2>11. Privacidad y seguridad</h2>
 <ul>
   <li>El progreso se guarda <b>en el aparato</b> de cada estudiante. No se piden correos ni datos personales.</li>
   <li>La cuenta es opcional: solo usuario y contraseña, para recuperar el avance en otro aparato y para el ranking.</li>
@@ -129,7 +157,7 @@ ${dlgRows}</table>
   <li>Las entregas del Modo aula llevan un código de verificación: si alguien modifica su texto, el juego lo detecta.</li>
 </ul>
 
-<h2>9. Preguntas frecuentes</h2>
+<h2>12. Preguntas frecuentes</h2>
 <h3>¿Funciona sin internet?</h3><p>Una vez abierto, sí: el juego se guarda en el aparato. Los modos <b>En vivo</b>, el <b>mundo abierto</b>, los grupos, las cuentas y el ranking necesitan conexión.</p>
 <h3>¿Y en celulares antiguos?</h3><p>El juego baja la calidad gráfica solo si el aparato va lento. También se puede elegir calidad baja en «Ajustes».</p>
 <h3>¿Se puede instalar como aplicación?</h3><p>Sí: en el menú, «Instalar» lo deja en la pantalla de inicio como una app, sin pasar por la tienda.</p>

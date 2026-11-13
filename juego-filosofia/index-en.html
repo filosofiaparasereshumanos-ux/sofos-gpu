@@ -931,11 +931,11 @@ body.touch .gm.boss { width: 30px; height: 30px; }
 .fa-it summary { cursor: pointer; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; list-style: none; } .fa-it summary::-webkit-details-marker { display: none; }
 .fa-it summary b { font-family: var(--display); letter-spacing: 0.04em; color: var(--gold-bright); } .fa-it summary i { font-size: 0.85rem; color: rgba(243,230,196,0.6); }
 .fa-it .fa-ok { margin-left: auto; font-size: 0.78rem; color: #8ff0c4; } .fa-it.got { border-color: rgba(92,240,170,0.45); }
-.fa-it p { margin: 6px 0; line-height: 1.4; } .fa-ex { font-style: italic; color: #ffe3a3; } .fa-r { font-size: 0.92rem; color: #cdf4ff; }
+.fa-it p { margin: 6px 0; line-height: 1.4; } .fa-img { height: 170px; border-radius: 10px; margin: 8px 0; background: #1a140c center/cover no-repeat; border: 1px solid var(--line); } .fa-ex { font-style: italic; color: #ffe3a3; } .fa-r { font-size: 0.92rem; color: #cdf4ff; }
 #fa-train { text-align: center; } .fa-stk { font-family: var(--display); letter-spacing: 0.1em; font-size: 0.78rem; color: var(--gold); }
 .fa-q { font-size: 1.15rem; font-style: italic; line-height: 1.45; margin: 10px auto; max-width: 52ch; color: #fff3d8; }
 .fa-ops { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; } .fa-ops .btn { text-transform: none; letter-spacing: 0.02em; font-size: 0.95rem; }
-.fa-ops .btn.right { border-color: var(--right); background: rgba(92,196,154,0.25); } .fa-ops .btn.wrong { border-color: var(--wrong); background: rgba(214,92,92,0.25); }
+.fa-ops .btn.right { border-color: var(--right) !important; background: rgba(92,196,154,0.3) !important; color: #e8fff4 !important; opacity: 1 !important; } .fa-ops .btn.wrong { border-color: var(--wrong) !important; background: rgba(214,92,92,0.3) !important; opacity: 1 !important; }
 .fa-fb { border-top: 1px dashed var(--line); padding-top: 10px; margin-top: 6px; } .fa-fb p { line-height: 1.45; text-align: left; }
 @media (max-width: 520px) { .fa-ops { grid-template-columns: 1fr; } }
 /* ---------- atlas del cosmos ---------- */
@@ -23401,6 +23401,7 @@ const Falacias = {
     achieve('cazador1'); if (this.caught.size >= 10) achieve('cazador10'); if (this.caught.size >= FALACIAS.length) achieve('cazadortodas');
     return true;
   },
+  art(f) { requestAnimationFrame(() => { const a = $('#xp-art'); if (!a) return; a.hidden = false; a.style.backgroundImage = `url(img/fal-${f.id}.jpg)`; a.style.backgroundSize = 'cover'; a.style.backgroundPosition = 'center'; }); },
   explain(f) { return `${f.d} How to respond: ${f.r}`; },
   // ---------- los puestos del mercado
   build(W) {
@@ -23428,11 +23429,11 @@ const Falacias = {
     if (ok) {
       const nueva = this.catch(f); st.done = true; paint(); const pts = nueva ? 150 : 80; addScore(pts); updateHud();
       Audio.correct(); buzz([20, 30]); popup(`+${pts}<small>falacia cazada</small>`, 'up');
-      setTimeout(() => XP.open('✓ Fallace hunted!' + (nueva ? ' · new in your bestiary' : ''), f.n + ' (' + f.l + ')', this.explain(f), [['Follow', null], ['Open the Beast', () => this.open()]]), 60);
+      setTimeout(() => XP.open('✓ Fallace hunted!' + (nueva ? ' · new in your bestiary' : ''), f.n + ' (' + f.l + ')', this.explain(f), [['Follow', null], ['Open the Beast', () => this.open()]]) || this.art(f), 60);
     } else {
       Audio.wrong && Audio.wrong(); buzz([50, 40]);
       const was = st.f; st.ej = pick(was.ej.filter((e) => e !== st.ej)) || st.ej;
-      setTimeout(() => XP.open('It wasn\'t that.', `It was: ${was.n}`, `«${o.n}» does not fit here. ${this.explain(was)} The proclaimer has another example: re-examine it.`, [['Follow', null]]), 60);
+      setTimeout(() => XP.open('It wasn\'t that.', `It was: ${was.n}`, `«${o.n}» does not fit here. ${this.explain(was)} The proclaimer has another example: re-examine it.`, [['Follow', null]]) || this.art(was), 60);
     }
   },
   // ---------- el bestiario
@@ -23451,7 +23452,7 @@ const Falacias = {
       const h = document.createElement('h4'); h.className = 'fa-gh'; h.textContent = g; box.appendChild(h);
       for (const f of FALACIAS.filter((x) => x.g === g)) {
         const on = this.caught.has(f.id); const it = document.createElement('details'); it.className = 'fa-it' + (on ? ' got' : '');
-        it.innerHTML = '<summary><b></b><i></i><span class="fa-ok"></span></summary><p class="fa-d"></p><p class="fa-ex"></p><p class="fa-r"></p>';
+        it.innerHTML = '<summary><b></b><i></i><span class="fa-ok"></span></summary><div class="fa-img"></div><p class="fa-d"></p><p class="fa-ex"></p><p class="fa-r"></p>'; it.querySelector('.fa-img').style.backgroundImage = `url(img/fal-${f.id}.jpg)`;
         it.querySelector('b').textContent = f.n; it.querySelector('i').textContent = f.l; it.querySelector('.fa-ok').textContent = on ? '✓ cazada' : '';
         it.querySelector('.fa-d').textContent = f.d; it.querySelector('.fa-ex').textContent = '«' + f.ej[0] + '»'; it.querySelector('.fa-r').textContent = 'How to respond: ' + f.r;
         box.appendChild(it);
@@ -23474,7 +23475,7 @@ const Falacias = {
     const box = $('#fa-train'); box.querySelectorAll('.fa-ops button').forEach((b) => { b.disabled = true; if (b.textContent === c.f.n) b.classList.add('right'); });
     if (ok) { t.streak++; Audio.correct(); const best = store.get(FAL_BEST_KEY, 0) || 0; if (t.streak > best) store.set(FAL_BEST_KEY, t.streak); if (t.streak >= 10) achieve('entrenado'); }
     else { btn.classList.add('wrong'); t.streak = 0; Audio.wrong && Audio.wrong(); }
-    const fb = box.querySelector('.fa-fb'); fb.hidden = false; fb.innerHTML = '<b></b><p></p><button class="btn primary">Next</button>';
+    const fb = box.querySelector('.fa-fb'); fb.hidden = false; fb.innerHTML = '<div class="fa-img"></div><b></b><p></p><button class="btn primary">Siguiente</button>'; fb.querySelector('.fa-img').style.backgroundImage = `url(img/fal-${c.f.id}.jpg)`;
     fb.querySelector('b').textContent = (ok ? '✓ Correcto: ' : '- It was: ') + c.f.n + ' (' + c.f.l + ')'; fb.querySelector('p').textContent = this.explain(c.f);
     fb.querySelector('button').addEventListener('click', () => { Audio.click(); t.go = true; this.paintTrain(); });
     box.querySelector('.fa-stk').textContent = `Racha: ${t.streak} · Best run: ${store.get(FAL_BEST_KEY, 0) || 0}`;

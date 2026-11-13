@@ -20,6 +20,7 @@ th { font-family: "Marcellus SC", serif; font-weight: normal; color: var(--gold)
 .box { border: 1px solid var(--line); border-left: 4px solid var(--gold); background: #fff; border-radius: 8px; padding: 10px 14px; margin: 10px 0; break-inside: avoid; }
 .steps { counter-reset: s; list-style: none; padding: 0; } .steps li { counter-increment: s; position: relative; padding-left: 38px; margin: 8px 0; }
 .steps li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--gold); color: #fff; text-align: center; font-family: "Marcellus SC", serif; line-height: 26px; }
+.cols { columns: 2; font-size: 0.92rem; } .cols li { margin: 3px 0; break-inside: avoid; }
 .modes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } .modes .box { margin: 0; }
 .modes h3 { margin-top: 0; } .tag { display: inline-block; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #fff; background: var(--gold); border-radius: 999px; padding: 1px 8px; }
 code, .k { font-family: inherit; background: #f3e8cf; border-radius: 4px; padding: 0 4px; }
@@ -34,7 +35,7 @@ code, .k { font-family: inherit; background: #f3e8cf; border-radius: 4px; paddin
   <h1>Odisea de la Razón</h1>
   <p class="lead">Un videojuego gratuito para aprender filosofía, ciencia e historia dialogando con los grandes pensadores. Funciona en el navegador del celular o del computador, sin instalar nada.</p>
   <p><b>filosofiaparasereshumanos-ux.github.io/sofos-gpu</b></p>
-  <div class="nums"><div><b>33</b><span>épocas</span></div><div><b>203</b><span>pensadoras y pensadores</span></div><div><b>41</b><span>diálogos socráticos</span></div><div><b>11</b><span>experimentos mentales</span></div></div>
+  <div class="nums"><div><b>35</b><span>épocas</span></div><div><b>217</b><span>pensadoras y pensadores</span></div><div><b>41</b><span>diálogos socráticos</span></div><div><b>11</b><span>experimentos mentales</span></div></div>
 </section>
 
 <h2>1. Qué es y para quién</h2>
@@ -129,7 +130,57 @@ code, .k { font-family: inherit; background: #f3e8cf; border-radius: 4px; paddin
 <tr><td><b>Mistral</b><br><small>XXI · El jardín de los poetas</small></td><td>«Muchas cosas pueden esperar, el niño no: ahora mismo se están formando sus huesos, su sangre y sus sentidos.»</td></tr>
 <tr><td><b>Galileo</b><br><small>XXII · El taller de los científicos</small></td><td>«En las cuestiones de la naturaleza vale más la observación de uno solo que la autoridad de mil sabios.»</td></tr></table>
 
-<h2>7. Qué evaluar</h2>
+<h2 class="pb">7. Pensamiento crítico: el mercado de los sofistas</h2>
+<p>En la época «El mercado de los sofistas» el alumnado conoce a Gorgias, Trasímaco, Eutidemo y Dionisodoro, Pedro Hispano, Barnum, Bernays y Susan Stebbing. Cada puesto del mercado esconde un <b>pregón tramposo</b>: hay que acercarse, pulsar «Analizar» y elegir qué falacia es. Las falacias cazadas se guardan en el <b>Bestiario de falacias</b> (Inicio → Falacias), que explica las 26 falacias con ejemplos y cómo responder a cada una, y tiene un modo <b>Entrenar</b> con rachas, útil también sin jugar.</p>
+<div class="modes">
+  <div class="box"><span class="tag">20 min · por equipos</span><h3>Cazadores de anuncios</h3><p>Cada equipo trae dos anuncios, titulares o mensajes de redes. Con el bestiario abierto, identifican la falacia y la «responden» con la frase de «Cómo responder».</p></div>
+  <div class="box"><span class="tag">10 min · competencia</span><h3>Racha de la clase</h3><p>Proyecta el modo Entrenar. La clase vota la respuesta en voz alta o con tarjetas; se anota la mejor racha del grupo y se intenta superarla otro día.</p></div>
+  <div class="box"><span class="tag">escritura</span><h3>Inventa tu pregón</h3><p>Cada estudiante escribe un pregón tramposo para un producto imaginario usando una falacia; sus compañeros deben descubrir cuál es.</p></div>
+  <div class="box"><span class="tag">debate</span><h3>Stebbing contra Bernays</h3><p>Tras ver su debate en el juego, discutid: ¿quién debe guiar la opinión pública? ¿Cómo nos protegemos de la propaganda en las redes?</p></div>
+</div>
+<table><tr><th style="width:24%">Falacia</th><th style="width:40%">Qué es</th><th>Ejemplo del juego</th></tr>
+<tr><td><b>Ataque a la persona</b><br><small>ad hominem · Ataques</small></td><td>En lugar de discutir la idea, se ataca a quien la dice: su aspecto, su pasado, su edad o su forma de ser.</td><td><i>«¿Cómo vas a tener razón sobre el cambio climático, si ni siquiera terminaste la escuela?»</i></td></tr>
+<tr><td><b>Hombre de paja</b><br><small>straw man · Ataques</small></td><td>Se deforma la idea del otro, haciéndola más tonta o extrema, para atacarla con facilidad.</td><td><i>«Mi hermana dice que comamos menos carne. ¡Quiere prohibir todos los asados del mundo!»</i></td></tr>
+<tr><td><b>Tú también</b><br><small>tu quoque · Ataques</small></td><td>Se rechaza una crítica diciendo que quien la hace también comete la misma falta.</td><td><i>«¿Me dices que no fume? ¡Tú fumabas a mi edad!»</i></td></tr>
+<tr><td><b>Culpa por asociación</b><br><small>guilt by association · Ataques</small></td><td>Se rechaza una idea porque también la defiende alguien que nos parece malo.</td><td><i>«A ese dictador también le gustaban los perros. ¡No adoptes un perro!»</i></td></tr>
+<tr><td><b>Falso dilema</b><br><small>false dilemma · Trampas de lógica</small></td><td>Se presentan solo dos opciones cuando en realidad hay más.</td><td><i>«O estás conmigo, o estás contra mí.»</i></td></tr>
+<tr><td><b>Pendiente resbaladiza</b><br><small>slippery slope · Trampas de lógica</small></td><td>Se afirma que un pequeño paso llevará sin remedio a una cadena de desastres, sin mostrar por qué.</td><td><i>«Si te dejo ver la tele diez minutos más, luego querrás verla toda la noche, suspenderás y acabarás sin trabajo.»</i></td></tr>
+<tr><td><b>Razonamiento circular</b><br><small>petitio principii · Trampas de lógica</small></td><td>La conclusión ya está escondida en las premisas: se da por probado lo que había que probar.</td><td><i>«Este libro dice la verdad, porque en el libro pone que todo lo que dice es verdad.»</i></td></tr>
+<tr><td><b>Generalización apresurada</b><br><small>hasty generalization · Trampas de lógica</small></td><td>Se saca una conclusión sobre todos a partir de muy pocos casos.</td><td><i>«Conocí a dos turistas maleducados de ese país: todos allí son maleducados.»</i></td></tr>
+<tr><td><b>Composición y división</b><br><small>composition · Trampas de lógica</small></td><td>Se cree que lo que vale para las partes vale para el todo, o al revés.</td><td><i>«Cada jugador de este equipo es muy bueno, así que el equipo será invencible.»</i></td></tr>
+<tr><td><b>Después de, luego a causa de</b><br><small>post hoc ergo propter hoc · Falsas causas</small></td><td>Se cree que como algo pasó después de otra cosa, fue causado por ella.</td><td><i>«Me puse mis calcetines de la suerte y ganamos el partido: los calcetines nos hicieron ganar.»</i></td></tr>
+<tr><td><b>Correlación no es causa</b><br><small>cum hoc · Falsas causas</small></td><td>Como dos cosas suceden juntas, se cree que una causa la otra, cuando puede haber una tercera causa o pura coincidencia.</td><td><i>«Cuando se venden más helados, hay más ahogados. ¡Los helados hacen que la gente se ahogue!»</i></td></tr>
+<tr><td><b>Prueba anecdótica</b><br><small>anecdotal evidence · Falsas causas</small></td><td>Se usa una historia personal o un caso aislado en lugar de pruebas amplias y fiables.</td><td><i>«Mi abuelo fumó toda su vida y vivió hasta los noventa, así que fumar no hace daño.»</i></td></tr>
+<tr><td><b>Falsa autoridad</b><br><small>ad verecundiam · Presiones</small></td><td>Se acepta algo porque lo dice alguien famoso o importante, aunque no sea experto en el tema.</td><td><i>«Este futbolista famoso dice que esta crema cura las enfermedades del corazón, así que debe ser verdad.»</i></td></tr>
+<tr><td><b>Apelación a la mayoría</b><br><small>ad populum · Presiones</small></td><td>Se dice que algo es verdadero o bueno porque mucha gente lo cree o lo hace.</td><td><i>«¡Millones de personas ya lo compraron! No pueden estar todos equivocados.»</i></td></tr>
+<tr><td><b>Apelación a las emociones</b><br><small>ad misericordiam · Presiones</small></td><td>Se intenta convencer despertando lástima, miedo o ternura, en lugar de dar razones.</td><td><i>«Profe, tiene que aprobarme: si no, mi perrito se pondrá muy triste.»</i></td></tr>
+<tr><td><b>Apelación a la fuerza</b><br><small>ad baculum · Presiones</small></td><td>Se intenta imponer una idea con amenazas, en lugar de con razones.</td><td><i>«Vas a estar de acuerdo conmigo, o le cuento a todos tu secreto.»</i></td></tr>
+<tr><td><b>Apelación a la tradición</b><br><small>ad antiquitatem · Presiones</small></td><td>Se defiende algo solo porque siempre se ha hecho así.</td><td><i>«Las chicas no juegan al fútbol: siempre ha sido así.»</i></td></tr>
+<tr><td><b>Apelación a la novedad</b><br><small>ad novitatem · Presiones</small></td><td>Se cree que algo es mejor solo porque es nuevo o moderno.</td><td><i>«¡Es el modelo de este año! Tiene que ser mejor que el tuyo.»</i></td></tr>
+<tr><td><b>Apelación a la naturaleza</b><br><small>appeal to nature · Presiones</small></td><td>Se dice que algo es bueno por ser «natural», o malo por ser «artificial».</td><td><i>«Este jarabe es cien por cien natural, así que no puede hacerte daño.»</i></td></tr>
+<tr><td><b>Apelación a la ignorancia</b><br><small>ad ignorantiam · Trampas de lógica</small></td><td>Se dice que algo es verdadero porque no se ha probado que sea falso, o al revés.</td><td><i>«Nadie ha demostrado que los fantasmas no existan, así que existen.»</i></td></tr>
+<tr><td><b>Inversión de la carga de la prueba</b><br><small>onus probandi · Trampas de lógica</small></td><td>Quien afirma algo no da pruebas, y exige a los demás que demuestren que es falso.</td><td><i>«Hay un dragón invisible en mi garaje. Demuéstrame que no.»</i></td></tr>
+<tr><td><b>Pista falsa</b><br><small>red herring · Trampas de palabras</small></td><td>Se cambia de tema con algo llamativo para no responder a la cuestión.</td><td><i>«—¿Por qué no hiciste los deberes? —¡Mira qué bonito está el cielo hoy!»</i></td></tr>
+<tr><td><b>Equívoco</b><br><small>equivocation · Trampas de palabras</small></td><td>Se usa una misma palabra con dos sentidos distintos en un mismo razonamiento.</td><td><i>«Ese perro es padre, y es tuyo; luego ese perro es tu padre.»</i></td></tr>
+<tr><td><b>Pregunta cargada</b><br><small>loaded question · Trampas de palabras</small></td><td>La pregunta esconde una acusación: respondas sí o no, pareces culpable.</td><td><i>«¿Ya dejaste de copiar en los exámenes?»</i></td></tr>
+<tr><td><b>Ningún verdadero escocés</b><br><small>no true Scotsman · Trampas de palabras</small></td><td>Cuando aparece un ejemplo contrario, se cambia la definición para excluirlo.</td><td><i>«—Ningún aficionado de mi equipo grita insultos. —Pues ayer vi a uno. —Entonces no era un verdadero aficionado.»</i></td></tr>
+<tr><td><b>Costo hundido</b><br><small>sunk cost · Trampas de lógica</small></td><td>Se sigue con algo malo solo porque ya se invirtió mucho en ello.</td><td><i>«La película es aburridísima, pero ya pagué la entrada, así que me quedo hasta el final aunque sufra.»</i></td></tr></table>
+
+<h2>8. Debates con emoción y dilemas</h2>
+<p>En los duelos, el pensador replica con su voz, una <b>cuerda de persuasión</b> muestra quién va ganando y antes de responder se puede elegir el <b>tipo de argumento</b>: ejemplo, pregunta socrática o detectar una falacia. Cada pensador cae ante uno y resiste otro: es una buena excusa para hablar de cómo se argumenta. A veces aparece un <b>dilema</b> sin respuesta correcta: se elige una postura y luego hay que elegir la razón que la sostiene con coherencia (las trampas son falacias o razones del bando contrario).</p>
+<div class="box"><b>Para clase:</b> elegid un dilema, dividid el grupo según su postura y pedid a cada mitad que encuentre la mejor razón… y la mejor razón del otro bando.</div>
+<ul class="cols"><li>¿Es correcto mentir para salvar a un amigo?</li><li>¿Deberían prohibirse las redes sociales a los menores de 16 años?</li><li>¿Es mejor una vida feliz pero ignorante, o una vida sabia pero triste?</li><li>¿Deben las leyes obedecerse aunque sean injustas?</li><li>¿Debería el dinero repartirse por igual entre todos?</li><li>¿Tienen derechos los animales?</li><li>¿Una máquina podrá algún día pensar de verdad?</li><li>¿Es preferible la seguridad a la libertad?</li><li>¿Somos libres de verdad o todo está determinado?</li><li>¿Es justo castigar a alguien para dar ejemplo a los demás?</li><li>¿Debemos ayudar primero a los cercanos o a quien más lo necesita?</li><li>¿Es la belleza algo objetivo o depende de quien mira?</li><li>¿Debemos decir siempre lo que pensamos?</li><li>¿Hay que cuidar la naturaleza por ella misma o por nosotros?</li></ul>
+
+<h2>9. El observatorio del cosmos</h2>
+<p>La época «El observatorio del cosmos» reúne a Kepler, Caroline Herschel, Henrietta Leavitt, Cecilia Payne, Chandrasekhar, Vera Rubin y Stephen Hawking. Junto a Kepler hay un portal al <b>planetario</b>: se camina entre el Sol y los planetas en órbita y cada uno abre su ficha con datos reales y sella el <b>pasaporte planetario</b>. El <b>Atlas del cosmos</b> (gran telescopio o Inicio → Cosmos) recorre 8 escalas, de la Tierra y la Luna al universo observable, la ficha de cada planeta con la <b>báscula cósmica</b> (cuánto pesarías allí) y el <b>calendario cósmico</b>.</p>
+<div class="modes">
+  <div class="box"><span class="tag">ciencias · 15 min</span><h3>¿Cuánto pesarías en Júpiter?</h3><p>Con la báscula cósmica, cada estudiante calcula su peso en tres mundos y explica por qué cambia: masa y gravedad no son lo mismo.</p></div>
+  <div class="box"><span class="tag">pasillo · toda la clase</span><h3>El calendario cósmico en una cuerda</h3><p>Tended una cuerda de 12 metros (un metro por mes) y colgad los hitos del calendario cósmico. Los seres humanos ocupan… ¡el último milímetro!</p></div>
+  <div class="box"><span class="tag">filosofía de la ciencia</span><h3>Cuando la verdad parece imposible</h3><p>Payne, Chandrasekhar y Rubin descubrieron cosas que casi nadie creía. ¿Qué hace falta para cambiar de idea ante las pruebas?</p></div>
+  <div class="box"><span class="tag">escala · 10 min</span><h3>Del aula al universo</h3><p>Recorred las escalas del atlas y pedid que comparen: si el Sol fuera una naranja en el aula, ¿dónde estaría Próxima Centauri?</p></div>
+</div>
+
+<h2>10. Qué evaluar</h2>
 <table><tr><th style="width:26%">Criterio</th><th>Dónde se ve</th></tr>
 <tr><td><b>Conocimiento</b></td><td>Pensadores vencidos en debate, lugares visitados y libros leídos: columnas de la tabla de entregas del Modo aula.</td></tr>
 <tr><td><b>Argumentación</b></td><td>En el Cuaderno del filósofo: la postura de cada diálogo, la razón elegida (buena, débil o falacia) y la respuesta a la objeción.</td></tr>
@@ -137,7 +188,7 @@ code, .k { font-family: inherit; background: #f3e8cf; border-radius: 4px; paddin
 <tr><td><b>Postura filosófica</b></td><td>El mapa filosófico: no se califica «bien» o «mal», sirve para conversar y para formar grupos de debate.</td></tr></table>
 <div class="box"><b>Sugerencia:</b> pide que, en una posición donde eligieron una falacia, expliquen con sus palabras por qué esa razón no sirve. Reconocer una falacia propia es un gran aprendizaje.</div>
 
-<h2>8. Privacidad y seguridad</h2>
+<h2>11. Privacidad y seguridad</h2>
 <ul>
   <li>El progreso se guarda <b>en el aparato</b> de cada estudiante. No se piden correos ni datos personales.</li>
   <li>La cuenta es opcional: solo usuario y contraseña, para recuperar el avance en otro aparato y para el ranking.</li>
@@ -145,7 +196,7 @@ code, .k { font-family: inherit; background: #f3e8cf; border-radius: 4px; paddin
   <li>Las entregas del Modo aula llevan un código de verificación: si alguien modifica su texto, el juego lo detecta.</li>
 </ul>
 
-<h2>9. Preguntas frecuentes</h2>
+<h2>12. Preguntas frecuentes</h2>
 <h3>¿Funciona sin internet?</h3><p>Una vez abierto, sí: el juego se guarda en el aparato. Los modos <b>En vivo</b>, el <b>mundo abierto</b>, los grupos, las cuentas y el ranking necesitan conexión.</p>
 <h3>¿Y en celulares antiguos?</h3><p>El juego baja la calidad gráfica solo si el aparato va lento. También se puede elegir calidad baja en «Ajustes».</p>
 <h3>¿Se puede instalar como aplicación?</h3><p>Sí: en el menú, «Instalar» lo deja en la pantalla de inicio como una app, sin pasar por la tienda.</p>
@@ -175,16 +226,18 @@ code, .k { font-family: inherit; background: #f3e8cf; border-radius: 4px; paddin
 <tr><td><b>XX</b></td><td>La Época Contemporánea<br><small>Siglos XX – XXI</small></td><td>Wittgenstein · Frankl · Sartre · Beauvoir · Camus · Arendt · Heidegger</td></tr>
 <tr><td><b>XXI</b></td><td>El jardín de los poetas<br><small>Del siglo VII a.C. al siglo XX</small></td><td>Safo · Li Bai · Rumi · Dickinson · Tagore · Mistral · Neruda</td></tr>
 <tr><td><b>XXII</b></td><td>El taller de los científicos<br><small>Del siglo III a.C. al siglo XX</small></td><td>Arquímedes · Galileo · Newton · Darwin · Lovelace · Curie · Einstein</td></tr>
-<tr><td><b>XXIII</b></td><td>Los librepensadores<br><small>Del siglo VI a.C. al siglo XX</small></td><td>Ajita · Lucrecio · Diderot · Feuerbach · Ernestine Rose · Sagan · Russell</td></tr>
-<tr><td><b>XXIV</b></td><td>La casa de la fe<br><small>Del siglo XI al siglo XX</small></td><td>Anselmo · Maimónides · Al-Ghazali · Teresa de Ávila · Leibniz · Weil · Pascal</td></tr>
-<tr><td><b>XXV</b></td><td>Las pensadoras<br><small>Siglos XVIII – XX</small></td><td>Du Châtelet · Wollstonecraft · Olympe de Gouges · Sojourner Truth · Flora Tristán · Edith Stein · María Zambrano</td></tr>
-<tr><td><b>XXVI</b></td><td>La asamblea de la justicia<br><small>Del siglo VI a.C. al siglo XX</small></td><td>Solón · Cicerón · Las Casas · Montesquieu · Gandhi · Luther King · Rawls</td></tr>
-<tr><td><b>XXVII</b></td><td>La montaña de los místicos<br><small>Siglos V – XX</small></td><td>Bodhidharma · Huineng · Milarepa · Kabir · Mirabai · Ramana Maharshi · Shankara</td></tr>
-<tr><td><b>XXVIII</b></td><td>La escuela de la mente<br><small>Siglos XVII – XX</small></td><td>Comenio · Pestalozzi · Montessori · Freud · Piaget · Vygotsky · William James</td></tr>
-<tr><td><b>XXIX</b></td><td>El bosque de la Tierra<br><small>Siglos XVIII – XXI</small></td><td>Humboldt · Leopold · Rachel Carson · Chico Mendes · Næss · Berta Cáceres · Lovelock</td></tr>
-<tr><td><b>XXX</b></td><td>La torre de los números<br><small>Del siglo III a.C. al siglo XX</small></td><td>Euclides · Fibonacci · Boole · Ramanujan · Emmy Noether · Gödel · Turing</td></tr>
-<tr><td><b>XXXI</b></td><td>El taller de la belleza<br><small>Del siglo I a.C. al siglo XX</small></td><td>Vitruvio · Hokusai · Beethoven · Tolstói · Kandinsky · Frida Kahlo · Schiller</td></tr>
-<tr><td><b>XXXII</b></td><td>La gran asamblea de los pueblos<br><small>Norteamérica y Oceanía</small></td><td>Toro Sentado · Jefe Joseph · Alce Negro · Te Whiti · Liliʻuokalani · Unaipon · el Pacificador</td></tr>
-<tr><td><b>XXXIII</b></td><td>La casa de los cuidados<br><small>Siglos II – XX</small></td><td>Galeno · Vesalio · Semmelweis · Nightingale · Pasteur · Ramón y Cajal · Schweitzer</td></tr></table>
+<tr><td><b>XXIII</b></td><td>Los librepensadores<br><small>Del siglo VI a. C. al siglo XX</small></td><td>Ajita · Lucrecio · Diderot · Feuerbach · Ernestine Rose · Sagan · Russell</td></tr>
+<tr><td><b>XXIV</b></td><td>La casa de la fe<br><small>Del siglo XI al siglo XX</small></td><td>Anselmo · Maimónides · Al-Ghazali · Teresa de Ávila · Leibniz · Simone Weil · Pascal</td></tr>
+<tr><td><b>XXV</b></td><td>Las pensadoras<br><small>Del siglo XVIII al siglo XX</small></td><td>Du Châtelet · Wollstonecraft · Olympe de Gouges · Sojourner Truth · Flora Tristán · Edith Stein · Zambrano</td></tr>
+<tr><td><b>XXVI</b></td><td>La asamblea de la justicia<br><small>Del siglo VI a. C. al siglo XX</small></td><td>Solón · Cicerón · Las Casas · Montesquieu · Gandhi · Luther King · Rawls</td></tr>
+<tr><td><b>XXVII</b></td><td>La montaña de los místicos<br><small>Del siglo V al siglo XX</small></td><td>Bodhidharma · Huineng · Milarepa · Kabir · Mirabai · Ramana · Shankara</td></tr>
+<tr><td><b>XXVIII</b></td><td>La escuela de la mente<br><small>Del siglo XVII al siglo XX</small></td><td>Comenio · Pestalozzi · Montessori · Freud · Piaget · Vygotsky · William James</td></tr>
+<tr><td><b>XXIX</b></td><td>El bosque de la Tierra<br><small>Del siglo XVIII al siglo XXI</small></td><td>Humboldt · Leopold · Rachel Carson · Chico Mendes · Næss · Berta Cáceres · Lovelock</td></tr>
+<tr><td><b>XXX</b></td><td>La torre de los números<br><small>Del siglo III a. C. al siglo XX</small></td><td>Euclides · Fibonacci · Boole · Ramanujan · Emmy Noether · Gödel · Turing</td></tr>
+<tr><td><b>XXXI</b></td><td>El taller de la belleza<br><small>Del siglo I a. C. al siglo XX</small></td><td>Vitruvio · Hokusai · Beethoven · Tolstói · Kandinsky · Frida Kahlo · Schiller</td></tr>
+<tr><td><b>XXXII</b></td><td>La gran asamblea de los pueblos<br><small>De tiempos antiguos al siglo XX</small></td><td>Toro Sentado · Jefe Joseph · Alce Negro · Te Whiti · Liliʻuokalani · Unaipon · El Pacificador</td></tr>
+<tr><td><b>XXXIII</b></td><td>La casa de los cuidados<br><small>Del siglo II al siglo XX</small></td><td>Galeno · Vesalio · Semmelweis · Nightingale · Pasteur · Ramón y Cajal · Schweitzer</td></tr>
+<tr><td><b>XXXIV</b></td><td>El mercado de los sofistas<br><small>Del siglo V a. C. a hoy</small></td><td>Gorgias · Trasímaco · Eutidemo · Pedro Hispano · Barnum · Bernays · Stebbing</td></tr>
+<tr><td><b>XXXV</b></td><td>El observatorio del cosmos<br><small>Del siglo XVII a hoy</small></td><td>Kepler · Caroline Herschel · Leavitt · Cecilia Payne · Chandrasekhar · Vera Rubin · Hawking</td></tr></table>
 <p class="foot">Odisea de la Razón es un proyecto de <b>Filosofía para Seres Humanos</b> · filosofiaparasereshumanos.com<br>Juego gratuito: filosofiaparasereshumanos-ux.github.io/sofos-gpu</p>
 </main></body></html>
