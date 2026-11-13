@@ -34,7 +34,7 @@ const Falacias = {
     const next = () => { const f = order[n++ % order.length]; return { f, ej: pick(f.ej) }; };
     W.spots = W.spots || [];
     W.falStalls.forEach((p, i) => {
-      const st = { ...next(), done: false };
+      const st = { ...next(), done: false }; (W.falState = W.falState || []).push(st);
       const sign = new THREE.Sprite(new THREE.SpriteMaterial({ transparent: true, depthWrite: false, toneMapped: false }));
       sign.scale.set(2.4, 0.6, 1); sign.position.set(p.sx, 3.9, p.sz); W.group.add(sign);
       const paint = () => { sign.material.map = labelTexture(st.done ? '✓ ' + st.f.n : '❓ Pregón tramposo', st.done ? 'Falacia cazada' : 'Analiza su argumento', st.done ? '#b8f0c8' : '#ffe3a3'); sign.material.needsUpdate = true; };

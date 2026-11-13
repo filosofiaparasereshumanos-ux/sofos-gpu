@@ -12,6 +12,22 @@ ratón y `E` para interactuar.
 
 ## Qué puedes hacer
 
+- **35 épocas y 217 pensadoras y pensadores**, de Sumer a hoy, con lecciones narradas e ilustradas,
+  frases célebres, libros, lugares y debates. Vídeo de lo último: `marketing/novedades.mp4`.
+
+- **El mercado de los sofistas** (época XXXIV): Gorgias, Trasímaco, Eutidemo y Dionisodoro, Pedro
+  Hispano, Barnum, Bernays y Susan Stebbing. Cada puesto esconde un pregón tramposo: hay que
+  identificar la falacia. El **bestiario** (Inicio → Falacias) ilustra 26 falacias con ejemplos, cómo
+  responder y un modo de entrenamiento.
+
+- **El observatorio del cosmos** (época XXXV): Kepler, Caroline Herschel, Leavitt, Cecilia Payne,
+  Chandrasekhar, Vera Rubin y Hawking. En el **planetario** se camina entre los planetas en órbita y
+  se sella un pasaporte planetario con datos reales; el **atlas del cosmos** (Inicio → Cosmos)
+  recorre ocho escalas hasta el universo observable, con báscula cósmica y calendario cósmico.
+
+- **Debates con emoción**: el pensador replica con su voz, cuerda de persuasión, cartas de argumento
+  (ejemplo, pregunta socrática, falacia), golpe crítico, aliado, apuesta final, dilemas y revanchas.
+
 - **Arte y música**: retratos al óleo de los 68 pensadores, una ilustración para cada época y
   cultura, y una banda sonora propia para cada una (generados con kie.ai: nano-banana y Suno; los
   scripts están en `tools/kie/`, la clave nunca se incluye en el juego).
