@@ -1234,3 +1234,153 @@
     );
   } catch (e) { /* herramientas sin debates */ }
 }
+
+// ============================================================================
+//  XXXVI · EL CAMINO DE LA BIBLIA y XXXVII · EL JARDÍN DEL CORÁN
+// ============================================================================
+{
+  const PP = [[-17, 30], [17, 24], [17, 6], [-17, -2], [6, -40]];
+  const BB = [[16, -12], [-16, 16]];
+  const poi = (i, id, name, text, fact, q) => ({ id, at: PP[i], name, text, fact, q });
+  const book = (b, i) => ({ ...b, at: BB[i] });
+  // ---------------------------------------------------------------- XXXVI · El camino de la Biblia
+  POIS.push([
+    poi(0, 'sinai', 'El monte Sinaí', 'Según el libro del Éxodo, en la cima de una montaña del desierto, envuelta en nubes, truenos y fuego, Moisés recibió de Dios las dos tablas de la Ley con los Diez Mandamientos. La tradición sitúa el monte Sinaí en el sur de la península del Sinaí, donde desde el siglo VI se alza el monasterio de Santa Catalina, uno de los monasterios cristianos más antiguos que siguen habitados.',
+      'Los Diez Mandamientos aparecen dos veces en la Biblia: en el Éxodo, capítulo 20, y en el Deuteronomio, capítulo 5, con pequeñas diferencias.',
+      { q: '¿En qué dos libros de la Biblia aparecen los Diez Mandamientos?', a: ['En el Éxodo y el Deuteronomio', 'En los Salmos y Juan', 'En Génesis y Apocalipsis', 'En ninguno'], e: 'Éxodo 20 y Deuteronomio 5.' }),
+    poi(1, 'qumran', 'Las cuevas de Qumrán', 'En 1947, un joven pastor beduino buscaba una cabra perdida cerca del mar Muerto. Lanzó una piedra a una cueva, oyó romperse una vasija y encontró rollos muy antiguos. Eran los manuscritos del mar Muerto: unos novecientos textos, copiados entre el siglo III a. C. y el siglo I, entre ellos copias de casi todos los libros de la Biblia hebrea. El gran rollo de Isaías, de unos siete metros, es mil años más antiguo que las copias completas que se conocían.',
+      'La comparación de los rollos con copias mil años posteriores mostró que el texto se había transmitido con gran fidelidad, aunque con algunas variantes.',
+      { q: '¿Cómo se descubrieron los manuscritos del mar Muerto?', a: ['Un pastor buscando una cabra lanzó una piedra a una cueva', 'Con un satélite', 'En una biblioteca de Roma', 'Nunca se descubrieron'], e: 'En 1947, en Qumrán.' }),
+    poi(2, 'jerusalen-templo', 'El templo de Jerusalén', 'Según la Biblia, el rey Salomón, hijo de David, construyó en Jerusalén el primer templo, destruido por los babilonios en el año 587 a. C. Tras el exilio se levantó un segundo templo, que el rey Herodes amplió con enorme lujo. Allí, según los evangelios, Jesús enseñó y expulsó a los mercaderes. Los romanos lo destruyeron en el año 70. Hoy queda el Muro Occidental, lugar de oración para los judíos.',
+      'Jerusalén es una ciudad santa para judíos, cristianos y musulmanes: allí están el Muro Occidental, la basílica del Santo Sepulcro y la mezquita de Al-Aqsa.',
+      { q: '¿Para qué tres religiones es Jerusalén una ciudad santa?', a: ['Judaísmo, cristianismo e islam', 'Solo el budismo', 'Hinduismo y sintoísmo', 'Ninguna'], e: 'Con lugares sagrados de las tres.' }),
+    poi(3, 'mar-galilea', 'El mar de Galilea', 'El mar de Galilea es en realidad un gran lago de agua dulce, rodeado de colinas. Según los evangelios, Jesús vivió y predicó en sus orillas, en pueblos como Cafarnaúm, y llamó a sus primeros discípulos, Pedro, Andrés, Santiago y Juan, que eran pescadores: «Venid conmigo y os haré pescadores de hombres». En sus colinas se recuerda el Sermón de la Montaña.',
+      'En 1986, durante una sequía, apareció en el barro del lago una barca de pesca del siglo I, conservada casi entera.',
+      { q: '¿Qué oficio tenían Pedro y Andrés, según los evangelios?', a: ['Pescadores', 'Recaudadores', 'Soldados', 'Escribas'], e: 'En el mar de Galilea.' }),
+    poi(4, 'biblia-gutenberg', 'La Biblia de Gutenberg', 'Hacia 1455, en Maguncia, Johannes Gutenberg imprimió la Biblia en latín con su invento de tipos móviles de metal. Fue el primer gran libro impreso en Europa. Se hicieron unos 180 ejemplares y se conservan cerca de cincuenta. Gracias a la imprenta, y después a las traducciones a las lenguas de cada pueblo, la Biblia llegó a millones de personas.',
+      'La Biblia es el libro más traducido de la historia: la Biblia completa existe en más de setecientas lenguas, y alguna parte, en más de tres mil.',
+      { q: '¿Cuál fue el primer gran libro impreso con tipos móviles en Europa?', a: ['La Biblia de Gutenberg', 'El Quijote', 'La Ilíada', 'Un periódico'], e: 'Hacia 1455.' }),
+  ]);
+  NPCS.push([
+    wnpc(0, 'escriba-qumran', 'Eliezer', 'escriba copista', sk(0xe8e0d0, 0x3a5a8a, 0xc49372, 0x3a2a1a, { beard: 0x3a2a1a, hat: 'none', acc: 'quill' }), [
+      'Copio los rollos letra por letra. Si me equivoco en una sola letra del nombre de Dios, empiezo la hoja de nuevo.',
+      'Escribimos en pergamino, con tinta de hollín. La Biblia hebrea se escribe de derecha a izquierda, y en tiempos antiguos solo con consonantes.',
+      'Gracias a copistas como yo, los textos atravesaron los siglos antes de que existiera la imprenta.',
+    ]),
+    wnpc(1, 'pescador-galilea', 'Simón', 'pescador de Galilea', sk(0x8a6a4a, 0x3a3a3a, 0xc49372, 0x2a1a10, { beard: 0x2a1a10, hat: 'cap', acc: 'none' }), [
+      'Pescamos de noche, con redes. A veces volvemos sin nada. Por eso todos aquí conocen la historia de la pesca milagrosa.',
+      'En este lago las tormentas llegan de repente, bajando de las montañas. Los evangelios cuentan una en la que Jesús calmó el viento.',
+      'Aquí hablamos arameo, la lengua que hablaba Jesús. Los evangelios, sin embargo, se escribieron en griego.',
+    ]),
+    wnpc(2, 'traductora-biblia', 'Clara', 'traductora de la Biblia', sk(0x3a4a6a, 0xe8e8e8, 0xe0c0a0, 0x5a3a2a, { hat: 'longhair', acc: 'book' }), [
+      'Traducir la Biblia es difícil: el hebreo, el arameo y el griego tienen palabras sin equivalente exacto. Cada traducción es también una interpretación.',
+      'San Jerónimo la tradujo al latín hacia el año 400: la Vulgata. Al español la tradujeron, entre otros, Casiodoro de Reina en 1569 y muchos equipos modernos.',
+      'Los judíos llaman a su Biblia Tanaj; los cristianos la llaman Antiguo Testamento y le añaden el Nuevo Testamento, sobre Jesús y los primeros cristianos.',
+    ], true),
+  ]);
+  Object.assign(QUESTS, {
+    moises: { text: 'Visita el monte Sinaí. Luego dime cuántos mandamientos recibí.', needs: { pois: ['sinai'], npcs: [] }, riddle: { q: '¿Cuántos mandamientos hay en las tablas de la Ley?', a: ['Diez', 'Siete', 'Tres', 'Cien'] } },
+    david: { text: 'Visita el templo de Jerusalén. Luego dime qué ciudad hice mi capital.', needs: { pois: ['jerusalen-templo'], npcs: [] }, riddle: { q: '¿Qué ciudad convirtió David en su capital?', a: ['Jerusalén', 'Belén', 'Nazaret', 'Roma'] } },
+    mateo: { text: 'Escucha a Eliezer, el escriba. Luego dime qué significa «evangelio».', needs: { pois: [], npcs: ['escriba-qumran'] }, riddle: { q: '¿Qué significa «evangelio»?', a: ['Buena noticia', 'Libro', 'Ley', 'Canto'] } },
+    marcos: { text: 'Visita el mar de Galilea y escucha a Simón, el pescador. Luego dime qué lengua hablaba Jesús.', needs: { pois: ['mar-galilea'], npcs: ['pescador-galilea'] }, riddle: { q: '¿Qué lengua hablaba Jesús?', a: ['Arameo', 'Latín', 'Inglés', 'Japonés'] } },
+    lucas: { text: 'Visita las cuevas de Qumrán. Luego dime cómo se encontraron los manuscritos.', needs: { pois: ['qumran'], npcs: [] }, riddle: { q: '¿Quién encontró los manuscritos del mar Muerto?', a: ['Un joven pastor buscando una cabra', 'Un rey', 'Un astronauta', 'Nadie'] } },
+    juan: { text: 'Escucha a Clara, la traductora. Luego dime en qué lengua se escribieron los evangelios.', needs: { pois: [], npcs: ['traductora-biblia'] }, riddle: { q: '¿En qué lengua se escribieron los evangelios?', a: ['En griego', 'En latín', 'En español', 'En árabe'] } },
+    pablo: { text: 'Visita la Biblia de Gutenberg. Luego dime cuál es el libro más traducido de la historia.', needs: { pois: ['biblia-gutenberg'], npcs: [] }, riddle: { q: '¿Cuál es el libro más traducido de la historia?', a: ['La Biblia', 'Un diccionario', 'Un libro de cocina', 'Ninguno'] } },
+  });
+  Object.assign(ANECDOTES, {
+    moises: ['Según el Éxodo, cuando bajó del Sinaí su rostro brillaba tanto que tuvo que cubrirlo con un velo. Por una mala traducción latina de esa palabra, algunos artistas, como Miguel Ángel, lo esculpieron con cuernos.', 'La tradición dice que murió a los ciento veinte años, mirando la tierra prometida desde el monte Nebo, sin llegar a entrar.'],
+    david: ['Según la Biblia, bailó con todas sus fuerzas delante del arca cuando la llevaron a Jerusalén, y su esposa Mical se burló de él.', 'Su hijo Salomón, famoso por su sabiduría, construyó el primer templo de Jerusalén.'],
+    mateo: ['Su evangelio fue el más citado y usado por los primeros cristianos; por eso se puso el primero del Nuevo Testamento.', 'Solo él cuenta la visita de los magos de Oriente guiados por una estrella.'],
+    marcos: ['Algunos piensan que el joven que huyó desnudo dejando su sábana, en el arresto de Jesús, era el propio Marcos firmando discretamente su obra.', 'Venecia lo tomó como patrón: el león alado de san Marcos es todavía el símbolo de la ciudad.'],
+    lucas: ['Una antigua leyenda dice que Lucas pintó el primer retrato de María; por eso es patrón de los pintores, además de los médicos.', 'Escribe en el griego más elegante de todo el Nuevo Testamento.'],
+    juan: ['Una tradición cuenta que, ya muy anciano, solo repetía: «Hijitos, amaos los unos a los otros». Cuando le preguntaron por qué, respondió que eso bastaba.', 'El último libro de la Biblia, el Apocalipsis, lleva el nombre de un Juan que escribió en la isla de Patmos.'],
+    pablo: ['Según los Hechos, en Atenas discutió con filósofos estoicos y epicúreos en el Areópago.', 'Viajó unos dieciséis mil kilómetros, naufragó tres veces y fabricaba tiendas de campaña para ganarse la vida.'],
+  });
+  BOOKS.push([
+    book({ id: 'salmos', author: 'david', by: 'Tradición atribuida a David', title: 'Los Salmos', year: 'siglos X – IV a. C.', kind: 'poesía y oración',
+      parts: [
+        { t: 'Ciento cincuenta cantos', x: 'El libro reúne 150 salmos divididos en cinco partes, quizá imitando los cinco libros de la Torá.' },
+        { t: 'Todas las emociones', x: 'Hay salmos de alegría, de tristeza, de miedo, de enfado, de perdón y de confianza: el creyente habla a Dios con toda su vida.' },
+        { t: 'El buen pastor', x: 'El salmo 23 compara a Dios con un pastor que conduce a sus ovejas a pastos verdes y aguas tranquilas, y las acompaña en los valles oscuros.' },
+        { t: 'Una oración compartida', x: 'Judíos y cristianos rezan los salmos cada día, y han inspirado música de todas las épocas, del canto gregoriano al góspel.' },
+      ],
+      quote: 'El Señor es mi pastor, nada me falta.',
+      q: { q: '¿Cuántos salmos tiene el libro?', a: ['150', '10', '50', '365'], e: 'Divididos en cinco partes.' } }, 0),
+    book({ id: 'corintios', author: 'pablo', by: 'Pablo de Tarso', title: 'Primera carta a los Corintios', year: 'hacia el año 54', kind: 'carta',
+      parts: [
+        { t: 'Una comunidad dividida', x: 'Pablo escribe a los cristianos de Corinto, una ciudad portuaria griega, porque están divididos en grupos que discuten entre sí.' },
+        { t: 'Un solo cuerpo', x: 'Les dice que son como un cuerpo con muchos miembros: el ojo no puede decir a la mano «no te necesito».' },
+        { t: 'El himno al amor', x: 'El capítulo 13 es uno de los textos más leídos del mundo: el amor es paciente, es servicial, no tiene envidia, todo lo excusa, todo lo espera.' },
+        { t: 'La esperanza', x: 'En el capítulo 15 habla de la resurrección, el centro de la fe cristiana.' },
+      ],
+      quote: 'Ahora permanecen la fe, la esperanza y el amor; pero el mayor de ellos es el amor.',
+      q: { q: '¿Con qué compara Pablo a la comunidad en la carta a los Corintios?', a: ['Con un cuerpo de muchos miembros', 'Con un ejército', 'Con un barco', 'Con una torre'], e: 'Todos se necesitan.' } }, 1),
+  ]);
+  BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });
+
+  // ---------------------------------------------------------------- XXXVII · El jardín del Corán
+  POIS.push([
+    poi(0, 'cueva-hira', 'La cueva de Hira', 'Sobre La Meca se alza el Yabal al-Nur, el monte de la Luz. Cerca de su cima hay una pequeña cueva, Hira, donde según la tradición Mahoma solía retirarse a meditar y donde recibió la primera revelación del Corán, hacia el año 610. Hoy muchos peregrinos suben a pie por un camino empinado para verla.',
+      'La cueva es tan pequeña que apenas caben unas pocas personas sentadas, y desde ella se ve la ciudad de La Meca.',
+      { q: '¿Cómo se llama el monte donde está la cueva de Hira?', a: ['El monte de la Luz (Yabal al-Nur)', 'El monte Sinaí', 'El monte Olimpo', 'El monte Everest'], e: 'Sobre La Meca.' }),
+    poi(1, 'kaaba', 'La Kaaba', 'En el centro de la gran mezquita de La Meca está la Kaaba, un edificio en forma de cubo cubierto con una tela negra bordada en oro, la kiswa. Según la tradición islámica, la construyeron Abraham, Ibrahim, y su hijo Ismael. Los musulmanes de todo el mundo rezan orientados hacia ella, y en la peregrinación, el hach, la rodean siete veces.',
+      'El hach es uno de los cinco pilares del islam: todo musulmán que pueda debe hacerlo al menos una vez en la vida. Cada año reúne a casi dos millones de personas.',
+      { q: '¿Hacia dónde rezan los musulmanes de todo el mundo?', a: ['Hacia la Kaaba, en La Meca', 'Hacia el norte', 'Hacia el sol', 'Hacia Roma'], e: 'La dirección se llama alquibla.' }),
+    poi(2, 'mezquita-profeta', 'La mezquita de Medina', 'En el año 622, perseguidos en La Meca, el Profeta y sus seguidores emigraron a la ciudad de Yathrib, que pasó a llamarse Medina. Esa emigración, la Hégira, marca el año uno del calendario islámico. Allí se construyó una mezquita sencilla, con muros de adobe, columnas de troncos de palmera y techo de hojas. Hoy es una de las mezquitas más grandes del mundo.',
+      'El calendario islámico es lunar: su año tiene unos 354 días, por eso el mes de Ramadán cambia de estación con los años.',
+      { q: '¿Qué marca el año uno del calendario islámico?', a: ['La Hégira, la emigración a Medina en 622', 'La construcción de la Kaaba', 'El nacimiento de Abraham', 'La caída de Roma'], e: 'Un calendario lunar.' }),
+    poi(3, 'manuscrito-birmingham', 'El manuscrito de Birmingham', 'En 2015, unos investigadores de la Universidad de Birmingham analizaron dos hojas de pergamino con fragmentos del Corán escritos en una antigua letra árabe. La prueba del carbono 14 indicó que el pergamino se preparó entre los años 568 y 645: es uno de los fragmentos del Corán más antiguos que se conocen, muy cercano a la época de la revelación.',
+      'Otros manuscritos muy antiguos, como los de Saná, en Yemen, ayudan a los estudiosos a conocer cómo se escribía el Corán en sus primeros tiempos.',
+      { q: '¿Qué prueba indicó la antigüedad del manuscrito de Birmingham?', a: ['El carbono 14', 'Un horóscopo', 'Una encuesta', 'Ninguna'], e: 'Entre 568 y 645.' }),
+    poi(4, 'caligrafia', 'El taller del calígrafo', 'Como el islam evita representar a Dios y a los profetas, el arte islámico desarrolló otras formas de belleza: la caligrafía, los motivos geométricos de estrellas entrelazadas y los arabescos de plantas. Los calígrafos escriben el Corán con cálamos de caña, en estilos como el cúfico, de letras angulosas, o el nasj, más redondeado, y adornan las páginas con oro y lapislázuli.',
+      'Copiar el Corán con caligrafía perfecta podía llevar años. Muchos calígrafos famosos firmaban sus obras con humildad, pidiendo perdón por sus errores.',
+      { q: '¿Qué formas de arte desarrolló sobre todo el arte islámico?', a: ['Caligrafía, geometría y arabescos', 'Estatuas de profetas', 'Retratos de reyes', 'Fotografía'], e: 'Evita representar a Dios y a los profetas.' }),
+  ]);
+  NPCS.push([
+    wnpc(0, 'hafiz', 'Bilal', 'hafiz, recitador del Corán', sk(0xf0f0f0, 0x3a5a3a, 0x8a5a3a, 0x1a1a1a, { beard: 0x1a1a1a, hat: 'cap', acc: 'book' }), [
+      'Empecé a memorizar el Corán a los siete años, una página cada día. A los doce ya lo sabía entero: soy hafiz.',
+      'El Corán se recita con reglas precisas, el tayuid, que indican cómo alargar, pausar y pronunciar cada letra. Bien recitado, suena casi como música.',
+      'Muchos musulmanes no hablan árabe, pero aprenden a recitar en árabe y leen traducciones para entender el sentido.',
+    ]),
+    wnpc(1, 'caligrafa', 'Leila', 'calígrafa', sk(0x2a4a8a, 0xd8a838, 0xc49372, 0x2a1a10, { hat: 'hood', acc: 'quill' }), [
+      'Mi cálamo es una caña tallada en diagonal. El ancho de la punta marca la medida de cada letra: la caligrafía es proporción, como la música.',
+      'En el arte islámico no pintamos a los profetas. Buscamos la belleza en la palabra, en la geometría infinita y en las flores entrelazadas.',
+      'Una estrella de ocho puntas nace de dos cuadrados girados. Con regla y compás se puede llenar una cúpula entera.',
+    ], true),
+    wnpc(2, 'peregrina-meca', 'Amina', 'peregrina', sk(0xf4f4f4, 0xe8e8e8, 0xd0a07a, 0x3a2a1a, { hat: 'hood', acc: 'none' }), [
+      'Este año hice el hach, la peregrinación a La Meca. Todos vestíamos de blanco, ricos y pobres, de todos los países: así nos sentimos iguales.',
+      'Los cinco pilares del islam son la profesión de fe, la oración, la limosna, el ayuno de Ramadán y la peregrinación.',
+      'En Ramadán ayunamos desde el alba hasta la puesta del sol. Al anochecer rompemos el ayuno compartiendo dátiles y agua.',
+    ], true),
+  ]);
+  Object.assign(QUESTS, {
+    iqra: { text: 'Visita la cueva de Hira. Luego dime cuál fue la primera palabra revelada.', needs: { pois: ['cueva-hira'], npcs: [] }, riddle: { q: '¿Cuál fue la primera palabra revelada del Corán?', a: ['¡Lee!', '¡Escucha!', '¡Corre!', '¡Duerme!'] } },
+    fatiha: { text: 'Escucha a Bilal, el hafiz. Luego dime cuántas aleyas tiene la Fátiha.', needs: { pois: [], npcs: ['hafiz'] }, riddle: { q: '¿Cuántas aleyas tiene la Fátiha?', a: ['Siete', 'Tres', 'Cien', 'Doce'] } },
+    yusuf: { text: 'Visita la mezquita de Medina. Luego dime qué virtud destaca la historia de José.', needs: { pois: ['mezquita-profeta'], npcs: [] }, riddle: { q: '¿Qué virtudes destaca la historia de José?', a: ['La paciencia y el perdón', 'La venganza', 'La riqueza', 'La fuerza'] } },
+    maryam: { text: 'Escucha a Amina, la peregrina. Luego dime cómo se llama Jesús en el Corán.', needs: { pois: [], npcs: ['peregrina-meca'] }, riddle: { q: '¿Cómo se llama Jesús en el Corán?', a: ['Isa', 'Musa', 'Yusuf', 'Nuh'] } },
+    kahf: { text: 'Visita la Kaaba. Luego dime cuántos años durmieron los jóvenes de la caverna.', needs: { pois: ['kaaba'], npcs: [] }, riddle: { q: '¿Cuánto durmieron los jóvenes de la caverna?', a: ['Unos trescientos años', 'Una noche', 'Diez años', 'Mil años'] } },
+    rahman: { text: 'Visita el taller del calígrafo y escucha a Leila. Luego dime qué significa «Ar-Rahmán».', needs: { pois: ['caligrafia'], npcs: ['caligrafa'] }, riddle: { q: '¿Qué significa «Ar-Rahmán»?', a: ['El Misericordioso', 'El Guerrero', 'El Rey', 'El Desierto'] } },
+    mushaf: { text: 'Visita el manuscrito de Birmingham y escucha a Bilal y a Amina. Luego dime cuántas suras tiene el Corán.', needs: { pois: ['manuscrito-birmingham'], npcs: ['hafiz', 'peregrina-meca'] }, riddle: { q: '¿Cuántas suras tiene el Corán?', a: ['114', '7', '150', '30'] } },
+  });
+  Object.assign(ANECDOTES, {
+    iqra: ['Según la tradición, la revelación llegaba a veces como el sonido de una campana, y en los días más fríos el Profeta sudaba al recibirla.', 'La sura 96 también se llama Al-Alaq, «el coágulo», por uno de sus primeros versículos sobre la creación del ser humano.'],
+    fatiha: ['En muchas lenguas del mundo musulmán, «leer la Fátiha» por alguien significa rezar por él.', 'Aunque la Fátiha es la primera sura del libro, no fue la primera en ser revelada.'],
+    yusuf: ['En el Corán, cuando José es tentado, las mujeres de la ciudad se cortan las manos con sus cuchillos al ver su belleza, distraídas mientras pelan fruta.', 'José es en el Corán un profeta, y su historia se considera un consuelo para los momentos difíciles.'],
+    maryam: ['En el Corán, Jesús recién nacido habla desde la cuna para defender la inocencia de su madre.', 'La sura 3 lleva el nombre de la familia de María, la familia de Imrán.'],
+    kahf: ['Los durmientes de la caverna también aparecen en una leyenda cristiana, los Siete Durmientes de Éfeso.', 'Según la sura, un perro acompañaba a los jóvenes y dormía con las patas extendidas a la entrada de la cueva.'],
+    rahman: ['Muchos recitadores famosos son conocidos sobre todo por su interpretación de esta sura.', 'La sura habla de dos jardines y de otros dos más, con fuentes, frutos y frescura: imágenes muy queridas en tierras de desierto.'],
+    mushaf: ['La copia de Uzmán se escribió sin puntos ni vocales; los signos que distinguen letras y vocales se añadieron después para facilitar la lectura.', 'El Corán se divide también en treinta partes iguales, para poder recitarlo entero en las treinta noches de Ramadán.'],
+  });
+  BOOKS.push([
+    book({ id: 'coran-mushaf', author: 'mushaf', by: 'Texto sagrado del islam', title: 'El Corán', year: 'siglo VII', kind: 'libro sagrado',
+      parts: [
+        { t: 'La recitación', x: 'Corán significa recitación. Para los musulmanes, es la palabra de Dios revelada en árabe al profeta Mahoma durante unos veintitrés años.' },
+        { t: 'Ciento catorce suras', x: 'Se divide en 114 suras de muy distinta longitud, ordenadas más o menos de la más larga a la más corta, y en unas 6.236 aleyas.' },
+        { t: 'Profetas compartidos', x: 'Muchos personajes son comunes con la Biblia: Adán, Noé, Abraham, Moisés, José, David, María y Jesús, entre otros.' },
+        { t: 'Leer y comprender', x: 'Además del texto, los musulmanes estudian el tafsir, la interpretación de los sabios, y la sunna, el ejemplo del Profeta, para comprenderlo.' },
+      ],
+      quote: 'Os hemos hecho pueblos y tribus para que os conozcáis unos a otros.',
+      q: { q: '¿Qué personajes comparten la Biblia y el Corán?', a: ['Abraham, Moisés, José, María y Jesús, entre otros', 'Ninguno', 'Solo reyes de Persia', 'Héroes griegos'], e: 'Profetas compartidos.' } }, 0),
+  ]);
+  BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });
+}

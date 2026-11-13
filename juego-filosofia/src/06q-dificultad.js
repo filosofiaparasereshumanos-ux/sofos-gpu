@@ -70,7 +70,9 @@ const Dif = {
     // solo preguntas sobre este pensador: las suyas, las de sus libros y las que se generan con sus datos
     const books = (typeof BOOKS !== 'undefined' ? BOOKS.flat() : []).filter((b) => b.author === d.id && b.q).map((b) => ({ ...b.q, place: b.title }));
     let qs;
-    if (k === 'facil') qs = [...core, ...this.gen(d, ei, 'facil')];
+    // mundos sagrados: solo las preguntas escritas a mano (nada de frases mezcladas ni datos generados)
+    if (ERAS[ei] && ERAS[ei].sacred) qs = k === 'facil' ? (core.length ? core : d.q) : k === 'dificil' ? [...(detail.length ? detail : d.q), ...books] : [...d.q, ...books];
+    else if (k === 'facil') qs = [...core, ...this.gen(d, ei, 'facil')];
     else if (k === 'dificil') qs = [...detail, ...books, ...this.gen(d, ei, 'dificil')];
     else qs = [...d.q, ...books, ...this.fraseQ(d)];
     qs = qs.filter((q) => q && q.a && q.a.length >= 3 && new Set(q.a).size === q.a.length);

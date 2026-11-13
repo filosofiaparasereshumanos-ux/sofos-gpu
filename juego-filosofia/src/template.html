@@ -944,6 +944,8 @@ body.touch .gm.boss { width: 30px; height: 30px; }
 .vi-eh { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; margin-bottom: 6px; } .vi-eh b { font-family: var(--display); font-size: 0.85rem; letter-spacing: 0.05em; } .vi-eh span { font-size: 0.82rem; color: var(--gold); white-space: nowrap; }
 .vi-faces { display: flex; flex-wrap: wrap; gap: 6px; } .vi-f { width: 40px !important; height: 40px !important; filter: grayscale(1) brightness(0.45); opacity: 0.7; }
 .vi-f.on { filter: none; opacity: 1; box-shadow: 0 0 0 2px #ffd36a, 0 0 10px rgba(255,211,106,0.7); }
+/* ---------- mundos sagrados: sin cartas de argumento ni aliados ---------- */
+#duel.sacred #d-cards, #duel.sacred #aid-ally, #duel.sacred #d-rival, #duel.sacred #d-bet, #duel.sacred #d-rope { display: none !important; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }

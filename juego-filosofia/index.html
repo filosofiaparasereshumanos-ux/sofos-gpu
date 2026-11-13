@@ -963,6 +963,8 @@ body.touch .gm.boss { width: 30px; height: 30px; }
 .vi-eh { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; margin-bottom: 6px; } .vi-eh b { font-family: var(--display); font-size: 0.85rem; letter-spacing: 0.05em; } .vi-eh span { font-size: 0.82rem; color: var(--gold); white-space: nowrap; }
 .vi-faces { display: flex; flex-wrap: wrap; gap: 6px; } .vi-f { width: 40px !important; height: 40px !important; filter: grayscale(1) brightness(0.45); opacity: 0.7; }
 .vi-f.on { filter: none; opacity: 1; box-shadow: 0 0 0 2px #ffd36a, 0 0 10px rgba(255,211,106,0.7); }
+/* ---------- mundos sagrados: sin cartas de argumento ni aliados ---------- */
+#duel.sacred #d-cards, #duel.sacred #aid-ally, #duel.sacred #d-rival, #duel.sacred #d-bet, #duel.sacred #d-rope { display: none !important; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
@@ -2178,11 +2180,11 @@ function setEraBackdrop(el, i) {
 
 // ---- src/00d-place-art.js ----
 // Pinturas de los lugares agrupadas por época (lo genera tools/place-sheets.py): id -> [época, fila, filas]
-const PLACE_ART = {"mileto":[0,0,5],"dorico":[0,1,5],"mitos":[0,2,5],"didima":[0,3,5],"polis_jonia":[0,4,5],"partenon":[1,0,16],"agora":[1,1,16],"stoa":[1,2,16],"democracia":[1,3,16],"polis":[1,4,16],"teatro":[1,5,16],"gimnasio":[1,6,16],"banquete":[1,7,16],"esparta":[1,8,16],"olimpia":[1,9,16],"akademos":[1,10,16],"delfos":[1,11,16],"cueva-salida":[1,12,16],"cueva-fuego":[1,13,16],"cueva-muro":[1,14,16],"cueva-prisioneros":[1,15,16],"alejandro":[2,0,7],"alejandria":[2,1,7],"jardin":[2,2,7],"arco":[2,3,7],"tinaja":[2,4,7],"corinto":[2,5,7],"faro":[2,6,7],"roseton":[3,0,5],"gotico":[3,1,5],"universidad":[3,2,5],"toledo":[3,3,5],"scriptorium":[3,4,5],"cupula":[4,0,6],"perspectiva":[4,1,6],"ospedale":[4,2,6],"imprenta":[4,3,6],"copernico":[4,4,6],"taller":[4,5,6],"newton":[5,0,5],"enciclopedia":[5,1,5],"telescopio":[5,2,5],"derechos":[5,3,5],"salon":[5,4,5],"fabrica":[6,0,6],"ferrocarril":[6,1,6],"cristal":[6,2,6],"caminante":[6,3,6],"darwin":[6,4,6],"barricadas":[6,5,6],"relatividad":[7,0,6],"guerras":[7,1,6],"luna":[7,2,6],"flore":[7,3,6],"derechos48":[7,4,6],"internet":[7,5,6],"tenochtitlan":[8,0,6],"machupicchu":[8,1,6],"valladolid":[8,2,6],"independencias":[8,3,6],"muralismo":[8,4,6],"mistral":[8,5,6],"templomayor":[9,0,5],"calmecac":[9,1,5],"piedrasol":[9,2,5],"chinampas":[9,3,5],"tlatelolco":[9,4,5],"cusco":[10,0,5],"qhapaqnan":[10,1,5],"sacsayhuaman":[10,2,5],"moray":[10,3,5],"quipus":[10,4,5],"ruka":[11,0,5],"rewe":[11,1,5],"pewen":[11,2,5],"wetripantu":[11,3,5],"quilin":[11,4,5],"muralla":[12,0,5],"seda":[12,1,5],"inventos":[12,2,5],"examenes":[12,3,5],"jardinletrado":[12,4,5],"indo":[13,0,5],"nalanda":[13,1,5],"cero":[13,2,5],"ashoka":[13,3,5],"ganges":[13,4,5],"guiza":[14,0,5],"tombuctu":[14,1,5],"aksum":[14,2,5],"zimbabue":[14,3,5],"robben":[14,4,5],"zigurat":[15,0,5],"edubba":[15,1,5],"liraur":[15,2,5],"murallas":[15,3,5],"estela":[15,4,5],"casasabiduria":[16,0,5],"papel":[16,1,5],"algebra":[16,2,5],"bimaristan":[16,3,5],"milnoches":[16,4,5],"lesbos":[17,0,5],"changan":[17,1,5],"konya":[17,2,5],"elqui":[17,3,5],"islanegra":[17,4,5],"eureka":[18,0,5],"padua":[18,1,5],"analitica":[18,2,5],"cobertizo":[18,3,5],"berna":[18,4,5],"heian":[19,0,5],"eiheiji":[19,1,5],"casadete":[19,2,5],"oku":[19,3,5],"filosofo":[19,4,5],"thing":[20,0,5],"langhus":[20,1,5],"drakkar":[20,2,5],"runas":[20,3,5],"reykholt":[20,4,5],"persepolis":[21,0,5],"cilindro":[21,1,5],"jardin-persa":[21,2,5],"camino-real":[21,3,5],"templo-fuego":[21,4,5],"lucrecio-hallazgo":[22,0,5],"enciclopedia-prohibida":[22,1,5],"tetera":[22,2,5],"punto-azul":[22,3,5],"conciencia":[22,4,5],"bec":[23,0,5],"mezquita-cordoba":[23,1,5],"avila":[23,2,5],"memorial":[23,3,5],"parlamento":[23,4,5],"cirey":[24,0,5],"seneca-falls":[24,1,5],"akron":[24,2,5],"sufragio":[24,3,5],"la-piece":[24,4,5],"seisachtheia":[25,0,5],"senado":[25,1,5],"junta-valladolid":[25,2,5],"marcha-sal":[25,3,5],"montgomery":[25,4,5],"cueva-bodhidharma":[26,0,5],"cueva-milarepa":[26,1,5],"arunachala":[26,2,5],"benares":[26,3,5],"cuatro-monasterios":[26,4,5],"orbis-pictus":[27,0,5],"stans":[27,1,5],"casa-bambini":[27,2,5],"divan":[27,3,5],"vasos-piaget":[27,4,5],"chimborazo":[28,0,5],"lobo":[28,1,5],"primavera-silenciosa":[28,2,5],"seringal":[28,3,5],"gualcarque":[28,4,5],"postulados":[29,0,5],"conejos":[29,1,5],"taxi-1729":[29,2,5],"puentes-konigsberg":[29,3,5],"bletchley":[29,4,5],"cueva-chauvet":[30,0,5],"gran-ola":[30,1,5],"novena":[30,2,5],"casa-azul":[30,3,5],"sinestesia":[30,4,5],"arbol-paz":[31,0,5],"bisontes":[31,1,5],"parihaka":[31,2,5],"iolani":[31,3,5],"uluru":[31,4,5],"gladiadores":[32,0,5],"teatro-anatomico":[32,1,5],"lavado-manos":[32,2,5],"escutari":[32,3,5],"vacuna-rabia":[32,4,5],"casa-calias":[33,0,5],"liceo-refutaciones":[33,1,5],"disputa-paris":[33,2,5],"museo-barnum":[33,3,5],"antorchas":[33,4,5],"monte-wilson":[34,0,5],"atomo-primitivo":[34,1,5],"pulsar-cambridge":[34,2,5],"eht-m87":[34,3,5],"jwst":[34,4,5]};
+const PLACE_ART = {"mileto":[0,0,5],"dorico":[0,1,5],"mitos":[0,2,5],"didima":[0,3,5],"polis_jonia":[0,4,5],"partenon":[1,0,16],"agora":[1,1,16],"stoa":[1,2,16],"democracia":[1,3,16],"polis":[1,4,16],"teatro":[1,5,16],"gimnasio":[1,6,16],"banquete":[1,7,16],"esparta":[1,8,16],"olimpia":[1,9,16],"akademos":[1,10,16],"delfos":[1,11,16],"cueva-salida":[1,12,16],"cueva-fuego":[1,13,16],"cueva-muro":[1,14,16],"cueva-prisioneros":[1,15,16],"alejandro":[2,0,7],"alejandria":[2,1,7],"jardin":[2,2,7],"arco":[2,3,7],"tinaja":[2,4,7],"corinto":[2,5,7],"faro":[2,6,7],"roseton":[3,0,5],"gotico":[3,1,5],"universidad":[3,2,5],"toledo":[3,3,5],"scriptorium":[3,4,5],"cupula":[4,0,6],"perspectiva":[4,1,6],"ospedale":[4,2,6],"imprenta":[4,3,6],"copernico":[4,4,6],"taller":[4,5,6],"newton":[5,0,5],"enciclopedia":[5,1,5],"telescopio":[5,2,5],"derechos":[5,3,5],"salon":[5,4,5],"fabrica":[6,0,6],"ferrocarril":[6,1,6],"cristal":[6,2,6],"caminante":[6,3,6],"darwin":[6,4,6],"barricadas":[6,5,6],"relatividad":[7,0,6],"guerras":[7,1,6],"luna":[7,2,6],"flore":[7,3,6],"derechos48":[7,4,6],"internet":[7,5,6],"tenochtitlan":[8,0,6],"machupicchu":[8,1,6],"valladolid":[8,2,6],"independencias":[8,3,6],"muralismo":[8,4,6],"mistral":[8,5,6],"templomayor":[9,0,5],"calmecac":[9,1,5],"piedrasol":[9,2,5],"chinampas":[9,3,5],"tlatelolco":[9,4,5],"cusco":[10,0,5],"qhapaqnan":[10,1,5],"sacsayhuaman":[10,2,5],"moray":[10,3,5],"quipus":[10,4,5],"ruka":[11,0,5],"rewe":[11,1,5],"pewen":[11,2,5],"wetripantu":[11,3,5],"quilin":[11,4,5],"muralla":[12,0,5],"seda":[12,1,5],"inventos":[12,2,5],"examenes":[12,3,5],"jardinletrado":[12,4,5],"indo":[13,0,5],"nalanda":[13,1,5],"cero":[13,2,5],"ashoka":[13,3,5],"ganges":[13,4,5],"guiza":[14,0,5],"tombuctu":[14,1,5],"aksum":[14,2,5],"zimbabue":[14,3,5],"robben":[14,4,5],"zigurat":[15,0,5],"edubba":[15,1,5],"liraur":[15,2,5],"murallas":[15,3,5],"estela":[15,4,5],"casasabiduria":[16,0,5],"papel":[16,1,5],"algebra":[16,2,5],"bimaristan":[16,3,5],"milnoches":[16,4,5],"lesbos":[17,0,5],"changan":[17,1,5],"konya":[17,2,5],"elqui":[17,3,5],"islanegra":[17,4,5],"eureka":[18,0,5],"padua":[18,1,5],"analitica":[18,2,5],"cobertizo":[18,3,5],"berna":[18,4,5],"heian":[19,0,5],"eiheiji":[19,1,5],"casadete":[19,2,5],"oku":[19,3,5],"filosofo":[19,4,5],"thing":[20,0,5],"langhus":[20,1,5],"drakkar":[20,2,5],"runas":[20,3,5],"reykholt":[20,4,5],"persepolis":[21,0,5],"cilindro":[21,1,5],"jardin-persa":[21,2,5],"camino-real":[21,3,5],"templo-fuego":[21,4,5],"lucrecio-hallazgo":[22,0,5],"enciclopedia-prohibida":[22,1,5],"tetera":[22,2,5],"punto-azul":[22,3,5],"conciencia":[22,4,5],"bec":[23,0,5],"mezquita-cordoba":[23,1,5],"avila":[23,2,5],"memorial":[23,3,5],"parlamento":[23,4,5],"cirey":[24,0,5],"seneca-falls":[24,1,5],"akron":[24,2,5],"sufragio":[24,3,5],"la-piece":[24,4,5],"seisachtheia":[25,0,5],"senado":[25,1,5],"junta-valladolid":[25,2,5],"marcha-sal":[25,3,5],"montgomery":[25,4,5],"cueva-bodhidharma":[26,0,5],"cueva-milarepa":[26,1,5],"arunachala":[26,2,5],"benares":[26,3,5],"cuatro-monasterios":[26,4,5],"orbis-pictus":[27,0,5],"stans":[27,1,5],"casa-bambini":[27,2,5],"divan":[27,3,5],"vasos-piaget":[27,4,5],"chimborazo":[28,0,5],"lobo":[28,1,5],"primavera-silenciosa":[28,2,5],"seringal":[28,3,5],"gualcarque":[28,4,5],"postulados":[29,0,5],"conejos":[29,1,5],"taxi-1729":[29,2,5],"puentes-konigsberg":[29,3,5],"bletchley":[29,4,5],"cueva-chauvet":[30,0,5],"gran-ola":[30,1,5],"novena":[30,2,5],"casa-azul":[30,3,5],"sinestesia":[30,4,5],"arbol-paz":[31,0,5],"bisontes":[31,1,5],"parihaka":[31,2,5],"iolani":[31,3,5],"uluru":[31,4,5],"gladiadores":[32,0,5],"teatro-anatomico":[32,1,5],"lavado-manos":[32,2,5],"escutari":[32,3,5],"vacuna-rabia":[32,4,5],"casa-calias":[33,0,5],"liceo-refutaciones":[33,1,5],"disputa-paris":[33,2,5],"museo-barnum":[33,3,5],"antorchas":[33,4,5],"monte-wilson":[34,0,5],"atomo-primitivo":[34,1,5],"pulsar-cambridge":[34,2,5],"eht-m87":[34,3,5],"jwst":[34,4,5],"sinai":[35,0,5],"qumran":[35,1,5],"jerusalen-templo":[35,2,5],"mar-galilea":[35,3,5],"biblia-gutenberg":[35,4,5],"cueva-hira":[36,0,5],"kaaba":[36,1,5],"mezquita-profeta":[36,2,5],"manuscrito-birmingham":[36,3,5],"caligrafia":[36,4,5]};
 
 // ---- src/00e-sprites.js ----
 // Generado por tools/sprite-sheets.py: retratos de ciudadanos y portadas de libros.
-const SPRITES = {"c-abogada":["img/ciudadanos.jpg",0,0,8,14],"c-abuela":["img/ciudadanos.jpg",1,0,8,14],"c-aclla":["img/ciudadanos.jpg",2,0,8,14],"c-alfarera":["img/ciudadanos.jpg",3,0,8,14],"c-alfarero":["img/ciudadanos.jpg",4,0,8,14],"c-alfombrera":["img/ciudadanos.jpg",5,0,8,14],"c-alumna":["img/ciudadanos.jpg",6,0,8,14],"c-apicultora":["img/ciudadanos.jpg",7,0,8,14],"c-aprendiz":["img/ciudadanos.jpg",0,1,8,14],"c-arquitecta":["img/ciudadanos.jpg",1,1,8,14],"c-arrocero":["img/ciudadanos.jpg",2,1,8,14],"c-aspasia":["img/ciudadanos.jpg",3,1,8,14],"c-astrolabista":["img/ciudadanos.jpg",4,1,8,14],"c-astronauta":["img/ciudadanos.jpg",5,1,8,14],"c-astronoma":["img/ciudadanos.jpg",6,1,8,14],"c-astronomo":["img/ciudadanos.jpg",7,1,8,14],"c-babbage":["img/ciudadanos.jpg",0,2,8,14],"c-bailarina":["img/ciudadanos.jpg",1,2,8,14],"c-balsero":["img/ciudadanos.jpg",2,2,8,14],"c-bibliotecario":["img/ciudadanos.jpg",3,2,8,14],"c-boticario":["img/ciudadanos.jpg",4,2,8,14],"c-calias":["img/ciudadanos.jpg",5,2,8,14],"c-caligrafa-heian":["img/ciudadanos.jpg",6,2,8,14],"c-caligrafo":["img/ciudadanos.jpg",7,2,8,14],"c-camarero":["img/ciudadanos.jpg",0,3,8,14],"c-campesino-abum":["img/ciudadanos.jpg",1,3,8,14],"c-campesino":["img/ciudadanos.jpg",2,3,8,14],"c-cantora":["img/ciudadanos.jpg",3,3,8,14],"c-cefalo":["img/ciudadanos.jpg",4,3,8,14],"c-chapar":["img/ciudadanos.jpg",5,3,8,14],"c-chasqui":["img/ciudadanos.jpg",6,3,8,14],"c-chatelet":["img/ciudadanos.jpg",7,3,8,14],"c-chinampera":["img/ciudadanos.jpg",0,4,8,14],"c-cometero":["img/ciudadanos.jpg",1,4,8,14],"c-condotiero":["img/ciudadanos.jpg",2,4,8,14],"c-contable":["img/ciudadanos.jpg",3,4,8,14],"c-copista":["img/ciudadanos.jpg",4,4,8,14],"c-costurera":["img/ciudadanos.jpg",5,4,8,14],"c-derviche":["img/ciudadanos.jpg",6,4,8,14],"c-descifradora":["img/ciudadanos.jpg",7,4,8,14],"c-enfermera":["img/ciudadanos.jpg",0,5,8,14],"c-escriba-dudu":["img/ciudadanos.jpg",1,5,8,14],"c-escriba":["img/ciudadanos.jpg",2,5,8,14],"c-escultora":["img/ciudadanos.jpg",3,5,8,14],"c-estudiante-tang":["img/ciudadanos.jpg",4,5,8,14],"c-estudiante":["img/ciudadanos.jpg",5,5,8,14],"c-estudiante68":["img/ciudadanos.jpg",6,5,8,14],"c-filis":["img/ciudadanos.jpg",7,5,8,14],"c-gerardo":["img/ciudadanos.jpg",0,6,8,14],"c-griot":["img/ciudadanos.jpg",1,6,8,14],"c-guardabosques":["img/ciudadanos.jpg",2,6,8,14],"c-hortelano":["img/ciudadanos.jpg",3,6,8,14],"c-impresor":["img/ciudadanos.jpg",4,6,8,14],"c-ingeniero":["img/ciudadanos.jpg",5,6,8,14],"c-jardinero":["img/ciudadanos.jpg",6,6,8,14],"c-jueza":["img/ciudadanos.jpg",7,6,8,14],"c-librero-bagdad":["img/ciudadanos.jpg",0,7,8,14],"c-librero":["img/ciudadanos.jpg",1,7,8,14],"c-luthier":["img/ciudadanos.jpg",2,7,8,14],"c-maestra-elqui":["img/ciudadanos.jpg",3,7,8,14],"c-maestra-lucia":["img/ciudadanos.jpg",4,7,8,14],"c-maestra":["img/ciudadanos.jpg",5,7,8,14],"c-maestro":["img/ciudadanos.jpg",6,7,8,14],"c-maquinista":["img/ciudadanos.jpg",7,7,8,14],"c-matematico":["img/ciudadanos.jpg",0,8,8,14],"c-medica":["img/ciudadanos.jpg",1,8,8,14],"c-mercader":["img/ciudadanos.jpg",2,8,8,14],"c-monje-tenzin":["img/ciudadanos.jpg",3,8,8,14],"c-monje-zen":["img/ciudadanos.jpg",4,8,8,14],"c-monje":["img/ciudadanos.jpg",5,8,8,14],"c-narradora":["img/ciudadanos.jpg",6,8,8,14],"c-navegante-kaimana":["img/ciudadanos.jpg",7,8,8,14],"c-navegante":["img/ciudadanos.jpg",0,9,8,14],"c-nicias":["img/ciudadanos.jpg",1,9,8,14],"c-obrera":["img/ciudadanos.jpg",2,9,8,14],"c-obrero":["img/ciudadanos.jpg",3,9,8,14],"c-palife":["img/ciudadanos.jpg",4,9,8,14],"c-partera-dolores":["img/ciudadanos.jpg",5,9,8,14],"c-partera":["img/ciudadanos.jpg",6,9,8,14],"c-peregrina":["img/ciudadanos.jpg",7,9,8,14],"c-peregrino":["img/ciudadanos.jpg",0,10,8,14],"c-periodista":["img/ciudadanos.jpg",1,10,8,14],"c-pescador":["img/ciudadanos.jpg",2,10,8,14],"c-pintor":["img/ciudadanos.jpg",3,10,8,14],"c-plantadora":["img/ciudadanos.jpg",4,10,8,14],"c-platero":["img/ciudadanos.jpg",5,10,8,14],"c-pochteca":["img/ciudadanos.jpg",6,10,8,14],"c-pregonero":["img/ciudadanos.jpg",7,10,8,14],"c-programadora":["img/ciudadanos.jpg",0,11,8,14],"c-pulidor":["img/ciudadanos.jpg",1,11,8,14],"c-quipucamayoc":["img/ciudadanos.jpg",2,11,8,14],"c-radioastronoma":["img/ciudadanos.jpg",3,11,8,14],"c-radiologa":["img/ciudadanos.jpg",4,11,8,14],"c-rapsoda":["img/ciudadanos.jpg",5,11,8,14],"c-runista":["img/ciudadanos.jpg",6,11,8,14],"c-salinero":["img/ciudadanos.jpg",7,11,8,14],"c-sedera":["img/ciudadanos.jpg",0,12,8,14],"c-sosias":["img/ciudadanos.jpg",1,12,8,14],"c-sufragista":["img/ciudadanos.jpg",2,12,8,14],"c-tabernera":["img/ciudadanos.jpg",3,12,8,14],"c-tejedora-dine":["img/ciudadanos.jpg",4,12,8,14],"c-tejedora-norte":["img/ciudadanos.jpg",5,12,8,14],"c-tejedora-seda":["img/ciudadanos.jpg",6,12,8,14],"c-tejedora":["img/ciudadanos.jpg",7,12,8,14],"c-teon":["img/ciudadanos.jpg",0,13,8,14],"c-tipografo":["img/ciudadanos.jpg",1,13,8,14],"c-tlacuilo":["img/ciudadanos.jpg",2,13,8,14],"c-traductor":["img/ciudadanos.jpg",3,13,8,14],"c-verificadora":["img/ciudadanos.jpg",4,13,8,14],"c-witralwe":["img/ciudadanos.jpg",5,13,8,14],"b-alce-negro-habla":["img/portadas.jpg",0,0,8,9],"b-almanaque":["img/portadas.jpg",1,0,8,9],"b-analectas":["img/portadas.jpg",2,0,8,9],"b-apologia":["img/portadas.jpg",3,0,8,9],"b-armonia-mundo":["img/portadas.jpg",4,0,8,9],"b-banquete_libro":["img/portadas.jpg",5,0,8,9],"b-breve-historia":["img/portadas.jpg",6,0,8,9],"b-cantares":["img/portadas.jpg",7,0,8,9],"b-cartas-estetica":["img/portadas.jpg",0,1,8,9],"b-cien-mil-cantos":["img/portadas.jpg",1,1,8,9],"b-ciudad_damas":["img/portadas.jpg",2,1,8,9],"b-ciudadvirtuosa":["img/portadas.jpg",3,1,8,9],"b-claros-bosque":["img/portadas.jpg",4,1,8,9],"b-comentarios":["img/portadas.jpg",5,1,8,9],"b-confesiones":["img/portadas.jpg",6,1,8,9],"b-cosmos":["img/portadas.jpg",7,1,8,9],"b-declaracion-mujer":["img/portadas.jpg",0,2,8,9],"b-dhammapada":["img/portadas.jpg",1,2,8,9],"b-edda":["img/portadas.jpg",2,2,8,9],"b-eichmann":["img/portadas.jpg",3,2,8,9],"b-elementos-libro":["img/portadas.jpg",4,2,8,9],"b-encomio-helena":["img/portadas.jpg",5,2,8,9],"b-ensayos":["img/portadas.jpg",6,2,8,9],"b-espiritu-leyes":["img/portadas.jpg",7,2,8,9],"b-etica":["img/portadas.jpg",0,3,8,9],"b-fabrica-vesalio":["img/portadas.jpg",1,3,8,9],"b-fedon":["img/portadas.jpg",2,3,8,9],"b-fragmentos-safo":["img/portadas.jpg",3,3,8,9],"b-fragmentos":["img/portadas.jpg",4,3,8,9],"b-gathas":["img/portadas.jpg",5,3,8,9],"b-genji":["img/portadas.jpg",6,3,8,9],"b-gilgamesh-libro":["img/portadas.jpg",7,3,8,9],"b-gran-ley":["img/portadas.jpg",0,4,8,9],"b-hatata":["img/portadas.jpg",1,4,8,9],"b-havamal":["img/portadas.jpg",2,4,8,9],"b-himnos-inanna":["img/portadas.jpg",3,4,8,9],"b-ilustracion":["img/portadas.jpg",4,4,8,9],"b-interpretacion-suenos":["img/portadas.jpg",5,4,8,9],"b-liber-abaci":["img/portadas.jpg",6,4,8,9],"b-libertad":["img/portadas.jpg",7,4,8,9],"b-lo-espiritual":["img/portadas.jpg",0,5,8,9],"b-manifiesto":["img/portadas.jpg",1,5,8,9],"b-masnavi":["img/portadas.jpg",2,5,8,9],"b-meditaciones":["img/portadas.jpg",3,5,8,9],"b-meneceo":["img/portadas.jpg",4,5,8,9],"b-mensajero-sidereo":["img/portadas.jpg",5,5,8,9],"b-metodo":["img/portadas.jpg",6,5,8,9],"b-moradas":["img/portadas.jpg",7,5,8,9],"b-notas-enfermeria":["img/portadas.jpg",0,6,8,9],"b-notas-lovelace":["img/portadas.jpg",1,6,8,9],"b-nuestra_america":["img/portadas.jpg",2,6,8,9],"b-orbis-pictus-libro":["img/portadas.jpg",3,6,8,9],"b-pedagogia":["img/portadas.jpg",4,6,8,9],"b-pensamientos":["img/portadas.jpg",5,6,8,9],"b-pensar-proposito":["img/portadas.jpg",6,6,8,9],"b-poema":["img/portadas.jpg",7,6,8,9],"b-primavera-silenciosa-libro":["img/portadas.jpg",0,7,8,9],"b-principe":["img/portadas.jpg",1,7,8,9],"b-republica":["img/portadas.jpg",2,7,8,9],"b-rerum-natura":["img/portadas.jpg",3,7,8,9],"b-respuesta":["img/portadas.jpg",4,7,8,9],"b-segundo_sexo":["img/portadas.jpg",5,7,8,9],"b-sendas-oku":["img/portadas.jpg",6,7,8,9],"b-shahnameh":["img/portadas.jpg",7,7,8,9],"b-sisifo":["img/portadas.jpg",0,8,8,9],"b-suma":["img/portadas.jpg",1,8,8,9],"b-sutra-estrado":["img/portadas.jpg",2,8,8,9],"b-taoteching":["img/portadas.jpg",3,8,8,9],"b-teoria-justicia":["img/portadas.jpg",4,8,8,9],"b-vindicacion":["img/portadas.jpg",5,8,8,9],"b-zaratustra":["img/portadas.jpg",6,8,8,9],"p-agustin":["img/retratos.jpg",0,0,10,22],"p-ajita":["img/retratos.jpg",1,0,10,22],"p-alcenegro":["img/retratos.jpg",2,0,10,22],"p-alfarabi":["img/retratos.jpg",3,0,10,22],"p-algazali":["img/retratos.jpg",4,0,10,22],"p-alhacen":["img/retratos.jpg",5,0,10,22],"p-aljuarismi":["img/retratos.jpg",6,0,10,22],"p-alkindi":["img/retratos.jpg",7,0,10,22],"p-anselmo":["img/retratos.jpg",8,0,10,22],"p-arendt":["img/retratos.jpg",9,0,10,22],"p-aristoteles":["img/retratos.jpg",0,1,10,22],"p-arquimedes":["img/retratos.jpg",1,1,10,22],"p-aryabhata":["img/retratos.jpg",2,1,10,22],"p-aud":["img/retratos.jpg",3,1,10,22],"p-averroes":["img/retratos.jpg",4,1,10,22],"p-avicena":["img/retratos.jpg",5,1,10,22],"p-bacon":["img/retratos.jpg",6,1,10,22],"p-banzhao":["img/retratos.jpg",7,1,10,22],"p-barnum":["img/retratos.jpg",8,1,10,22],"p-basho":["img/retratos.jpg",9,1,10,22],"p-beauvoir":["img/retratos.jpg",0,2,10,22],"p-beethoven":["img/retratos.jpg",1,2,10,22],"p-bernays":["img/retratos.jpg",2,2,10,22],"p-bodhidharma":["img/retratos.jpg",3,2,10,22],"p-boole":["img/retratos.jpg",4,2,10,22],"p-buda":["img/retratos.jpg",5,2,10,22],"p-burzoe":["img/retratos.jpg",6,2,10,22],"p-caceres":["img/retratos.jpg",7,2,10,22],"p-cajal":["img/retratos.jpg",8,2,10,22],"p-camus":["img/retratos.jpg",9,2,10,22],"p-carson":["img/retratos.jpg",0,3,10,22],"p-castellanos":["img/retratos.jpg",1,3,10,22],"p-chandrasekhar":["img/retratos.jpg",2,3,10,22],"p-chatelet":["img/retratos.jpg",3,3,10,22],"p-cherschel":["img/retratos.jpg",4,3,10,22],"p-ciceron":["img/retratos.jpg",5,3,10,22],"p-ciro":["img/retratos.jpg",6,3,10,22],"p-comenio":["img/retratos.jpg",7,3,10,22],"p-confucio":["img/retratos.jpg",8,3,10,22],"p-copernico":["img/retratos.jpg",9,3,10,22],"p-curie":["img/retratos.jpg",0,4,10,22],"p-dante":["img/retratos.jpg",1,4,10,22],"p-darwin":["img/retratos.jpg",2,4,10,22],"p-democrito":["img/retratos.jpg",3,4,10,22],"p-descartes":["img/retratos.jpg",4,4,10,22],"p-dickinson":["img/retratos.jpg",5,4,10,22],"p-diderot":["img/retratos.jpg",6,4,10,22],"p-diogenes":["img/retratos.jpg",7,4,10,22],"p-dogen":["img/retratos.jpg",8,4,10,22],"p-egill":["img/retratos.jpg",9,4,10,22],"p-einstein":["img/retratos.jpg",0,5,10,22],"p-enheduanna":["img/retratos.jpg",1,5,10,22],"p-epicteto":["img/retratos.jpg",2,5,10,22],"p-epicuro":["img/retratos.jpg",3,5,10,22],"p-ernestinerose":["img/retratos.jpg",4,5,10,22],"p-euclides":["img/retratos.jpg",5,5,10,22],"p-eutidemo":["img/retratos.jpg",6,5,10,22],"p-ferdousi":["img/retratos.jpg",7,5,10,22],"p-feuerbach":["img/retratos.jpg",8,5,10,22],"p-fibonacci":["img/retratos.jpg",9,5,10,22],"p-frankl":["img/retratos.jpg",0,6,10,22],"p-freire":["img/retratos.jpg",1,6,10,22],"p-freud":["img/retratos.jpg",2,6,10,22],"p-frida":["img/retratos.jpg",3,6,10,22],"p-galeno":["img/retratos.jpg",4,6,10,22],"p-galileo":["img/retratos.jpg",5,6,10,22],"p-gandhi":["img/retratos.jpg",6,6,10,22],"p-garcilaso":["img/retratos.jpg",7,6,10,22],"p-gargi":["img/retratos.jpg",8,6,10,22],"p-gilgamesh":["img/retratos.jpg",9,6,10,22],"p-godel":["img/retratos.jpg",0,7,10,22],"p-gorgias":["img/retratos.jpg",1,7,10,22],"p-gouges":["img/retratos.jpg",2,7,10,22],"p-guamanpoma":["img/retratos.jpg",3,7,10,22],"p-guia":["img/retratos.jpg",4,7,10,22],"p-hammurabi":["img/retratos.jpg",5,7,10,22],"p-hawking":["img/retratos.jpg",6,7,10,22],"p-hegel":["img/retratos.jpg",7,7,10,22],"p-heidegger":["img/retratos.jpg",8,7,10,22],"p-heraclito":["img/retratos.jpg",9,7,10,22],"p-hildegarda":["img/retratos.jpg",0,8,10,22],"p-hipatia":["img/retratos.jpg",1,8,10,22],"p-hipocrates":["img/retratos.jpg",2,8,10,22],"p-hobbes":["img/retratos.jpg",3,8,10,22],"p-hokusai":["img/retratos.jpg",4,8,10,22],"p-huineng":["img/retratos.jpg",5,8,10,22],"p-humboldt":["img/retratos.jpg",6,8,10,22],"p-hume":["img/retratos.jpg",7,8,10,22],"p-ibnjaldun":["img/retratos.jpg",8,8,10,22],"p-incaroca":["img/retratos.jpg",9,8,10,22],"p-janequeo":["img/retratos.jpg",0,9,10,22],"p-joseph":["img/retratos.jpg",1,9,10,22],"p-kabir":["img/retratos.jpg",2,9,10,22],"p-kandinsky":["img/retratos.jpg",3,9,10,22],"p-kant":["img/retratos.jpg",4,9,10,22],"p-kepler":["img/retratos.jpg",5,9,10,22],"p-kierkegaard":["img/retratos.jpg",6,9,10,22],"p-kimche":["img/retratos.jpg",7,9,10,22],"p-king":["img/retratos.jpg",8,9,10,22],"p-laozi":["img/retratos.jpg",9,9,10,22],"p-lascasas":["img/retratos.jpg",0,10,10,22],"p-lautaro":["img/retratos.jpg",1,10,10,22],"p-leavitt":["img/retratos.jpg",2,10,10,22],"p-leibniz":["img/retratos.jpg",3,10,10,22],"p-leonardo":["img/retratos.jpg",4,10,10,22],"p-leopold":["img/retratos.jpg",5,10,10,22],"p-libai":["img/retratos.jpg",6,10,10,22],"p-liliuokalani":["img/retratos.jpg",7,10,10,22],"p-locke":["img/retratos.jpg",8,10,10,22],"p-lovelace":["img/retratos.jpg",9,10,10,22],"p-lovelock":["img/retratos.jpg",0,11,10,22],"p-lucrecio":["img/retratos.jpg",1,11,10,22],"p-maathai":["img/retratos.jpg",2,11,10,22],"p-machi":["img/retratos.jpg",3,11,10,22],"p-macuilxochitzin":["img/retratos.jpg",4,11,10,22],"p-mahavira":["img/retratos.jpg",5,11,10,22],"p-maimonides":["img/retratos.jpg",6,11,10,22],"p-mandela":["img/retratos.jpg",7,11,10,22],"p-mani":["img/retratos.jpg",8,11,10,22],"p-maquiavelo":["img/retratos.jpg",9,11,10,22],"p-marcoaurelio":["img/retratos.jpg",0,12,10,22],"p-marti":["img/retratos.jpg",1,12,10,22],"p-marx":["img/retratos.jpg",2,12,10,22],"p-mencio":["img/retratos.jpg",3,12,10,22],"p-mendes":["img/retratos.jpg",4,12,10,22],"p-milarepa":["img/retratos.jpg",5,12,10,22],"p-mill":["img/retratos.jpg",6,12,10,22],"p-mirabai":["img/retratos.jpg",7,12,10,22],"p-mistral":["img/retratos.jpg",8,12,10,22],"p-montaigne":["img/retratos.jpg",9,12,10,22],"p-montesquieu":["img/retratos.jpg",0,13,10,22],"p-montessori":["img/retratos.jpg",1,13,10,22],"p-mozi":["img/retratos.jpg",2,13,10,22],"p-murasaki":["img/retratos.jpg",3,13,10,22],"p-naess":["img/retratos.jpg",4,13,10,22],"p-nagarjuna":["img/retratos.jpg",5,13,10,22],"p-neruda":["img/retratos.jpg",6,13,10,22],"p-newton":["img/retratos.jpg",7,13,10,22],"p-nezahualcoyotl":["img/retratos.jpg",8,13,10,22],"p-nietzsche":["img/retratos.jpg",9,13,10,22],"p-nightingale":["img/retratos.jpg",0,14,10,22],"p-nishida":["img/retratos.jpg",1,14,10,22],"p-noether":["img/retratos.jpg",2,14,10,22],"p-ockham":["img/retratos.jpg",3,14,10,22],"p-pachacutec":["img/retratos.jpg",4,14,10,22],"p-pacificador":["img/retratos.jpg",5,14,10,22],"p-parmenides":["img/retratos.jpg",6,14,10,22],"p-pascal":["img/retratos.jpg",7,14,10,22],"p-pasteur":["img/retratos.jpg",8,14,10,22],"p-payne":["img/retratos.jpg",9,14,10,22],"p-paz":["img/retratos.jpg",0,15,10,22],"p-pedrohispano":["img/retratos.jpg",1,15,10,22],"p-pestalozzi":["img/retratos.jpg",2,15,10,22],"p-piaget":["img/retratos.jpg",3,15,10,22],"p-pico":["img/retratos.jpg",4,15,10,22],"p-pirron":["img/retratos.jpg",5,15,10,22],"p-pitagoras":["img/retratos.jpg",6,15,10,22],"p-pizan":["img/retratos.jpg",7,15,10,22],"p-platon":["img/retratos.jpg",8,15,10,22],"p-protagoras":["img/retratos.jpg",9,15,10,22],"p-ptahhotep":["img/retratos.jpg",0,16,10,22],"p-rabia":["img/retratos.jpg",1,16,10,22],"p-ramana":["img/retratos.jpg",2,16,10,22],"p-ramanujan":["img/retratos.jpg",3,16,10,22],"p-rawls":["img/retratos.jpg",4,16,10,22],"p-rikyu":["img/retratos.jpg",5,16,10,22],"p-rousseau":["img/retratos.jpg",6,16,10,22],"p-rubin":["img/retratos.jpg",7,16,10,22],"p-rumi":["img/retratos.jpg",8,16,10,22],"p-russell":["img/retratos.jpg",9,16,10,22],"p-safo":["img/retratos.jpg",0,17,10,22],"p-sagan":["img/retratos.jpg",1,17,10,22],"p-sartre":["img/retratos.jpg",2,17,10,22],"p-schiller":["img/retratos.jpg",3,17,10,22],"p-schopenhauer":["img/retratos.jpg",4,17,10,22],"p-schweitzer":["img/retratos.jpg",5,17,10,22],"p-semmelweis":["img/retratos.jpg",6,17,10,22],"p-seneca":["img/retratos.jpg",7,17,10,22],"p-shankara":["img/retratos.jpg",8,17,10,22],"p-shuruppak":["img/retratos.jpg",9,17,10,22],"p-snorri":["img/retratos.jpg",0,18,10,22],"p-socrates":["img/retratos.jpg",1,18,10,22],"p-solon":["img/retratos.jpg",2,18,10,22],"p-sorjuana":["img/retratos.jpg",3,18,10,22],"p-spinoza":["img/retratos.jpg",4,18,10,22],"p-stebbing":["img/retratos.jpg",5,18,10,22],"p-stein":["img/retratos.jpg",6,18,10,22],"p-tagore":["img/retratos.jpg",7,18,10,22],"p-tales":["img/retratos.jpg",8,18,10,22],"p-teano":["img/retratos.jpg",9,18,10,22],"p-tecayehuatzin":["img/retratos.jpg",0,19,10,22],"p-teresa":["img/retratos.jpg",1,19,10,22],"p-tewhiti":["img/retratos.jpg",2,19,10,22],"p-thoreau":["img/retratos.jpg",3,19,10,22],"p-thorgeir":["img/retratos.jpg",4,19,10,22],"p-tlacaelel":["img/retratos.jpg",5,19,10,22],"p-tochihuitzin":["img/retratos.jpg",6,19,10,22],"p-tolstoi":["img/retratos.jpg",7,19,10,22],"p-tomas":["img/retratos.jpg",8,19,10,22],"p-torosentado":["img/retratos.jpg",9,19,10,22],"p-trasimaco":["img/retratos.jpg",0,20,10,22],"p-tristan":["img/retratos.jpg",1,20,10,22],"p-truth":["img/retratos.jpg",2,20,10,22],"p-turing":["img/retratos.jpg",3,20,10,22],"p-tutu":["img/retratos.jpg",4,20,10,22],"p-unaipon":["img/retratos.jpg",5,20,10,22],"p-vesalio":["img/retratos.jpg",6,20,10,22],"p-vitruvio":["img/retratos.jpg",7,20,10,22],"p-volva":["img/retratos.jpg",8,20,10,22],"p-vygotsky":["img/retratos.jpg",9,20,10,22],"p-weil":["img/retratos.jpg",0,21,10,22],"p-wittgenstein":["img/retratos.jpg",1,21,10,22],"p-wjames":["img/retratos.jpg",2,21,10,22],"p-wollstonecraft":["img/retratos.jpg",3,21,10,22],"p-zambrano":["img/retratos.jpg",4,21,10,22],"p-zaratustra":["img/retratos.jpg",5,21,10,22],"p-zerayacob":["img/retratos.jpg",6,21,10,22],"p-zhuangzi":["img/retratos.jpg",7,21,10,22]};
+const SPRITES = {"c-abogada":["img/ciudadanos.jpg",0,0,8,14],"c-abuela":["img/ciudadanos.jpg",1,0,8,14],"c-aclla":["img/ciudadanos.jpg",2,0,8,14],"c-alfarera":["img/ciudadanos.jpg",3,0,8,14],"c-alfarero":["img/ciudadanos.jpg",4,0,8,14],"c-alfombrera":["img/ciudadanos.jpg",5,0,8,14],"c-alumna":["img/ciudadanos.jpg",6,0,8,14],"c-apicultora":["img/ciudadanos.jpg",7,0,8,14],"c-aprendiz":["img/ciudadanos.jpg",0,1,8,14],"c-arquitecta":["img/ciudadanos.jpg",1,1,8,14],"c-arrocero":["img/ciudadanos.jpg",2,1,8,14],"c-aspasia":["img/ciudadanos.jpg",3,1,8,14],"c-astrolabista":["img/ciudadanos.jpg",4,1,8,14],"c-astronauta":["img/ciudadanos.jpg",5,1,8,14],"c-astronoma":["img/ciudadanos.jpg",6,1,8,14],"c-astronomo":["img/ciudadanos.jpg",7,1,8,14],"c-babbage":["img/ciudadanos.jpg",0,2,8,14],"c-bailarina":["img/ciudadanos.jpg",1,2,8,14],"c-balsero":["img/ciudadanos.jpg",2,2,8,14],"c-bibliotecario":["img/ciudadanos.jpg",3,2,8,14],"c-boticario":["img/ciudadanos.jpg",4,2,8,14],"c-calias":["img/ciudadanos.jpg",5,2,8,14],"c-caligrafa-heian":["img/ciudadanos.jpg",6,2,8,14],"c-caligrafo":["img/ciudadanos.jpg",7,2,8,14],"c-camarero":["img/ciudadanos.jpg",0,3,8,14],"c-campesino-abum":["img/ciudadanos.jpg",1,3,8,14],"c-campesino":["img/ciudadanos.jpg",2,3,8,14],"c-cantora":["img/ciudadanos.jpg",3,3,8,14],"c-cefalo":["img/ciudadanos.jpg",4,3,8,14],"c-chapar":["img/ciudadanos.jpg",5,3,8,14],"c-chasqui":["img/ciudadanos.jpg",6,3,8,14],"c-chatelet":["img/ciudadanos.jpg",7,3,8,14],"c-chinampera":["img/ciudadanos.jpg",0,4,8,14],"c-cometero":["img/ciudadanos.jpg",1,4,8,14],"c-condotiero":["img/ciudadanos.jpg",2,4,8,14],"c-contable":["img/ciudadanos.jpg",3,4,8,14],"c-copista":["img/ciudadanos.jpg",4,4,8,14],"c-costurera":["img/ciudadanos.jpg",5,4,8,14],"c-derviche":["img/ciudadanos.jpg",6,4,8,14],"c-descifradora":["img/ciudadanos.jpg",7,4,8,14],"c-enfermera":["img/ciudadanos.jpg",0,5,8,14],"c-escriba-dudu":["img/ciudadanos.jpg",1,5,8,14],"c-escriba":["img/ciudadanos.jpg",2,5,8,14],"c-escultora":["img/ciudadanos.jpg",3,5,8,14],"c-estudiante-tang":["img/ciudadanos.jpg",4,5,8,14],"c-estudiante":["img/ciudadanos.jpg",5,5,8,14],"c-estudiante68":["img/ciudadanos.jpg",6,5,8,14],"c-filis":["img/ciudadanos.jpg",7,5,8,14],"c-gerardo":["img/ciudadanos.jpg",0,6,8,14],"c-griot":["img/ciudadanos.jpg",1,6,8,14],"c-guardabosques":["img/ciudadanos.jpg",2,6,8,14],"c-hortelano":["img/ciudadanos.jpg",3,6,8,14],"c-impresor":["img/ciudadanos.jpg",4,6,8,14],"c-ingeniero":["img/ciudadanos.jpg",5,6,8,14],"c-jardinero":["img/ciudadanos.jpg",6,6,8,14],"c-jueza":["img/ciudadanos.jpg",7,6,8,14],"c-librero-bagdad":["img/ciudadanos.jpg",0,7,8,14],"c-librero":["img/ciudadanos.jpg",1,7,8,14],"c-luthier":["img/ciudadanos.jpg",2,7,8,14],"c-maestra-elqui":["img/ciudadanos.jpg",3,7,8,14],"c-maestra-lucia":["img/ciudadanos.jpg",4,7,8,14],"c-maestra":["img/ciudadanos.jpg",5,7,8,14],"c-maestro":["img/ciudadanos.jpg",6,7,8,14],"c-maquinista":["img/ciudadanos.jpg",7,7,8,14],"c-matematico":["img/ciudadanos.jpg",0,8,8,14],"c-medica":["img/ciudadanos.jpg",1,8,8,14],"c-mercader":["img/ciudadanos.jpg",2,8,8,14],"c-monje-tenzin":["img/ciudadanos.jpg",3,8,8,14],"c-monje-zen":["img/ciudadanos.jpg",4,8,8,14],"c-monje":["img/ciudadanos.jpg",5,8,8,14],"c-narradora":["img/ciudadanos.jpg",6,8,8,14],"c-navegante-kaimana":["img/ciudadanos.jpg",7,8,8,14],"c-navegante":["img/ciudadanos.jpg",0,9,8,14],"c-nicias":["img/ciudadanos.jpg",1,9,8,14],"c-obrera":["img/ciudadanos.jpg",2,9,8,14],"c-obrero":["img/ciudadanos.jpg",3,9,8,14],"c-palife":["img/ciudadanos.jpg",4,9,8,14],"c-partera-dolores":["img/ciudadanos.jpg",5,9,8,14],"c-partera":["img/ciudadanos.jpg",6,9,8,14],"c-peregrina":["img/ciudadanos.jpg",7,9,8,14],"c-peregrino":["img/ciudadanos.jpg",0,10,8,14],"c-periodista":["img/ciudadanos.jpg",1,10,8,14],"c-pescador":["img/ciudadanos.jpg",2,10,8,14],"c-pintor":["img/ciudadanos.jpg",3,10,8,14],"c-plantadora":["img/ciudadanos.jpg",4,10,8,14],"c-platero":["img/ciudadanos.jpg",5,10,8,14],"c-pochteca":["img/ciudadanos.jpg",6,10,8,14],"c-pregonero":["img/ciudadanos.jpg",7,10,8,14],"c-programadora":["img/ciudadanos.jpg",0,11,8,14],"c-pulidor":["img/ciudadanos.jpg",1,11,8,14],"c-quipucamayoc":["img/ciudadanos.jpg",2,11,8,14],"c-radioastronoma":["img/ciudadanos.jpg",3,11,8,14],"c-radiologa":["img/ciudadanos.jpg",4,11,8,14],"c-rapsoda":["img/ciudadanos.jpg",5,11,8,14],"c-runista":["img/ciudadanos.jpg",6,11,8,14],"c-salinero":["img/ciudadanos.jpg",7,11,8,14],"c-sedera":["img/ciudadanos.jpg",0,12,8,14],"c-sosias":["img/ciudadanos.jpg",1,12,8,14],"c-sufragista":["img/ciudadanos.jpg",2,12,8,14],"c-tabernera":["img/ciudadanos.jpg",3,12,8,14],"c-tejedora-dine":["img/ciudadanos.jpg",4,12,8,14],"c-tejedora-norte":["img/ciudadanos.jpg",5,12,8,14],"c-tejedora-seda":["img/ciudadanos.jpg",6,12,8,14],"c-tejedora":["img/ciudadanos.jpg",7,12,8,14],"c-teon":["img/ciudadanos.jpg",0,13,8,14],"c-tipografo":["img/ciudadanos.jpg",1,13,8,14],"c-tlacuilo":["img/ciudadanos.jpg",2,13,8,14],"c-traductor":["img/ciudadanos.jpg",3,13,8,14],"c-verificadora":["img/ciudadanos.jpg",4,13,8,14],"c-witralwe":["img/ciudadanos.jpg",5,13,8,14],"b-alce-negro-habla":["img/portadas.jpg",0,0,8,9],"b-almanaque":["img/portadas.jpg",1,0,8,9],"b-analectas":["img/portadas.jpg",2,0,8,9],"b-apologia":["img/portadas.jpg",3,0,8,9],"b-armonia-mundo":["img/portadas.jpg",4,0,8,9],"b-banquete_libro":["img/portadas.jpg",5,0,8,9],"b-breve-historia":["img/portadas.jpg",6,0,8,9],"b-cantares":["img/portadas.jpg",7,0,8,9],"b-cartas-estetica":["img/portadas.jpg",0,1,8,9],"b-cien-mil-cantos":["img/portadas.jpg",1,1,8,9],"b-ciudad_damas":["img/portadas.jpg",2,1,8,9],"b-ciudadvirtuosa":["img/portadas.jpg",3,1,8,9],"b-claros-bosque":["img/portadas.jpg",4,1,8,9],"b-comentarios":["img/portadas.jpg",5,1,8,9],"b-confesiones":["img/portadas.jpg",6,1,8,9],"b-cosmos":["img/portadas.jpg",7,1,8,9],"b-declaracion-mujer":["img/portadas.jpg",0,2,8,9],"b-dhammapada":["img/portadas.jpg",1,2,8,9],"b-edda":["img/portadas.jpg",2,2,8,9],"b-eichmann":["img/portadas.jpg",3,2,8,9],"b-elementos-libro":["img/portadas.jpg",4,2,8,9],"b-encomio-helena":["img/portadas.jpg",5,2,8,9],"b-ensayos":["img/portadas.jpg",6,2,8,9],"b-espiritu-leyes":["img/portadas.jpg",7,2,8,9],"b-etica":["img/portadas.jpg",0,3,8,9],"b-fabrica-vesalio":["img/portadas.jpg",1,3,8,9],"b-fedon":["img/portadas.jpg",2,3,8,9],"b-fragmentos-safo":["img/portadas.jpg",3,3,8,9],"b-fragmentos":["img/portadas.jpg",4,3,8,9],"b-gathas":["img/portadas.jpg",5,3,8,9],"b-genji":["img/portadas.jpg",6,3,8,9],"b-gilgamesh-libro":["img/portadas.jpg",7,3,8,9],"b-gran-ley":["img/portadas.jpg",0,4,8,9],"b-hatata":["img/portadas.jpg",1,4,8,9],"b-havamal":["img/portadas.jpg",2,4,8,9],"b-himnos-inanna":["img/portadas.jpg",3,4,8,9],"b-ilustracion":["img/portadas.jpg",4,4,8,9],"b-interpretacion-suenos":["img/portadas.jpg",5,4,8,9],"b-liber-abaci":["img/portadas.jpg",6,4,8,9],"b-libertad":["img/portadas.jpg",7,4,8,9],"b-lo-espiritual":["img/portadas.jpg",0,5,8,9],"b-manifiesto":["img/portadas.jpg",1,5,8,9],"b-masnavi":["img/portadas.jpg",2,5,8,9],"b-meditaciones":["img/portadas.jpg",3,5,8,9],"b-meneceo":["img/portadas.jpg",4,5,8,9],"b-mensajero-sidereo":["img/portadas.jpg",5,5,8,9],"b-metodo":["img/portadas.jpg",6,5,8,9],"b-moradas":["img/portadas.jpg",7,5,8,9],"b-notas-enfermeria":["img/portadas.jpg",0,6,8,9],"b-notas-lovelace":["img/portadas.jpg",1,6,8,9],"b-nuestra_america":["img/portadas.jpg",2,6,8,9],"b-orbis-pictus-libro":["img/portadas.jpg",3,6,8,9],"b-pedagogia":["img/portadas.jpg",4,6,8,9],"b-pensamientos":["img/portadas.jpg",5,6,8,9],"b-pensar-proposito":["img/portadas.jpg",6,6,8,9],"b-poema":["img/portadas.jpg",7,6,8,9],"b-primavera-silenciosa-libro":["img/portadas.jpg",0,7,8,9],"b-principe":["img/portadas.jpg",1,7,8,9],"b-republica":["img/portadas.jpg",2,7,8,9],"b-rerum-natura":["img/portadas.jpg",3,7,8,9],"b-respuesta":["img/portadas.jpg",4,7,8,9],"b-segundo_sexo":["img/portadas.jpg",5,7,8,9],"b-sendas-oku":["img/portadas.jpg",6,7,8,9],"b-shahnameh":["img/portadas.jpg",7,7,8,9],"b-sisifo":["img/portadas.jpg",0,8,8,9],"b-suma":["img/portadas.jpg",1,8,8,9],"b-sutra-estrado":["img/portadas.jpg",2,8,8,9],"b-taoteching":["img/portadas.jpg",3,8,8,9],"b-teoria-justicia":["img/portadas.jpg",4,8,8,9],"b-vindicacion":["img/portadas.jpg",5,8,8,9],"b-zaratustra":["img/portadas.jpg",6,8,8,9],"p-agustin":["img/retratos.jpg",0,0,10,24],"p-ajita":["img/retratos.jpg",1,0,10,24],"p-alcenegro":["img/retratos.jpg",2,0,10,24],"p-alfarabi":["img/retratos.jpg",3,0,10,24],"p-algazali":["img/retratos.jpg",4,0,10,24],"p-alhacen":["img/retratos.jpg",5,0,10,24],"p-aljuarismi":["img/retratos.jpg",6,0,10,24],"p-alkindi":["img/retratos.jpg",7,0,10,24],"p-anselmo":["img/retratos.jpg",8,0,10,24],"p-arendt":["img/retratos.jpg",9,0,10,24],"p-aristoteles":["img/retratos.jpg",0,1,10,24],"p-arquimedes":["img/retratos.jpg",1,1,10,24],"p-aryabhata":["img/retratos.jpg",2,1,10,24],"p-aud":["img/retratos.jpg",3,1,10,24],"p-averroes":["img/retratos.jpg",4,1,10,24],"p-avicena":["img/retratos.jpg",5,1,10,24],"p-bacon":["img/retratos.jpg",6,1,10,24],"p-banzhao":["img/retratos.jpg",7,1,10,24],"p-barnum":["img/retratos.jpg",8,1,10,24],"p-basho":["img/retratos.jpg",9,1,10,24],"p-beauvoir":["img/retratos.jpg",0,2,10,24],"p-beethoven":["img/retratos.jpg",1,2,10,24],"p-bernays":["img/retratos.jpg",2,2,10,24],"p-bodhidharma":["img/retratos.jpg",3,2,10,24],"p-boole":["img/retratos.jpg",4,2,10,24],"p-buda":["img/retratos.jpg",5,2,10,24],"p-burzoe":["img/retratos.jpg",6,2,10,24],"p-caceres":["img/retratos.jpg",7,2,10,24],"p-cajal":["img/retratos.jpg",8,2,10,24],"p-camus":["img/retratos.jpg",9,2,10,24],"p-carson":["img/retratos.jpg",0,3,10,24],"p-castellanos":["img/retratos.jpg",1,3,10,24],"p-chandrasekhar":["img/retratos.jpg",2,3,10,24],"p-chatelet":["img/retratos.jpg",3,3,10,24],"p-cherschel":["img/retratos.jpg",4,3,10,24],"p-ciceron":["img/retratos.jpg",5,3,10,24],"p-ciro":["img/retratos.jpg",6,3,10,24],"p-comenio":["img/retratos.jpg",7,3,10,24],"p-confucio":["img/retratos.jpg",8,3,10,24],"p-copernico":["img/retratos.jpg",9,3,10,24],"p-curie":["img/retratos.jpg",0,4,10,24],"p-dante":["img/retratos.jpg",1,4,10,24],"p-darwin":["img/retratos.jpg",2,4,10,24],"p-david":["img/retratos.jpg",3,4,10,24],"p-democrito":["img/retratos.jpg",4,4,10,24],"p-descartes":["img/retratos.jpg",5,4,10,24],"p-dickinson":["img/retratos.jpg",6,4,10,24],"p-diderot":["img/retratos.jpg",7,4,10,24],"p-diogenes":["img/retratos.jpg",8,4,10,24],"p-dogen":["img/retratos.jpg",9,4,10,24],"p-egill":["img/retratos.jpg",0,5,10,24],"p-einstein":["img/retratos.jpg",1,5,10,24],"p-enheduanna":["img/retratos.jpg",2,5,10,24],"p-epicteto":["img/retratos.jpg",3,5,10,24],"p-epicuro":["img/retratos.jpg",4,5,10,24],"p-ernestinerose":["img/retratos.jpg",5,5,10,24],"p-euclides":["img/retratos.jpg",6,5,10,24],"p-eutidemo":["img/retratos.jpg",7,5,10,24],"p-fatiha":["img/retratos.jpg",8,5,10,24],"p-ferdousi":["img/retratos.jpg",9,5,10,24],"p-feuerbach":["img/retratos.jpg",0,6,10,24],"p-fibonacci":["img/retratos.jpg",1,6,10,24],"p-frankl":["img/retratos.jpg",2,6,10,24],"p-freire":["img/retratos.jpg",3,6,10,24],"p-freud":["img/retratos.jpg",4,6,10,24],"p-frida":["img/retratos.jpg",5,6,10,24],"p-galeno":["img/retratos.jpg",6,6,10,24],"p-galileo":["img/retratos.jpg",7,6,10,24],"p-gandhi":["img/retratos.jpg",8,6,10,24],"p-garcilaso":["img/retratos.jpg",9,6,10,24],"p-gargi":["img/retratos.jpg",0,7,10,24],"p-gilgamesh":["img/retratos.jpg",1,7,10,24],"p-godel":["img/retratos.jpg",2,7,10,24],"p-gorgias":["img/retratos.jpg",3,7,10,24],"p-gouges":["img/retratos.jpg",4,7,10,24],"p-guamanpoma":["img/retratos.jpg",5,7,10,24],"p-guia":["img/retratos.jpg",6,7,10,24],"p-hammurabi":["img/retratos.jpg",7,7,10,24],"p-hawking":["img/retratos.jpg",8,7,10,24],"p-hegel":["img/retratos.jpg",9,7,10,24],"p-heidegger":["img/retratos.jpg",0,8,10,24],"p-heraclito":["img/retratos.jpg",1,8,10,24],"p-hildegarda":["img/retratos.jpg",2,8,10,24],"p-hipatia":["img/retratos.jpg",3,8,10,24],"p-hipocrates":["img/retratos.jpg",4,8,10,24],"p-hobbes":["img/retratos.jpg",5,8,10,24],"p-hokusai":["img/retratos.jpg",6,8,10,24],"p-huineng":["img/retratos.jpg",7,8,10,24],"p-humboldt":["img/retratos.jpg",8,8,10,24],"p-hume":["img/retratos.jpg",9,8,10,24],"p-ibnjaldun":["img/retratos.jpg",0,9,10,24],"p-incaroca":["img/retratos.jpg",1,9,10,24],"p-iqra":["img/retratos.jpg",2,9,10,24],"p-janequeo":["img/retratos.jpg",3,9,10,24],"p-joseph":["img/retratos.jpg",4,9,10,24],"p-juan":["img/retratos.jpg",5,9,10,24],"p-kabir":["img/retratos.jpg",6,9,10,24],"p-kahf":["img/retratos.jpg",7,9,10,24],"p-kandinsky":["img/retratos.jpg",8,9,10,24],"p-kant":["img/retratos.jpg",9,9,10,24],"p-kepler":["img/retratos.jpg",0,10,10,24],"p-kierkegaard":["img/retratos.jpg",1,10,10,24],"p-kimche":["img/retratos.jpg",2,10,10,24],"p-king":["img/retratos.jpg",3,10,10,24],"p-laozi":["img/retratos.jpg",4,10,10,24],"p-lascasas":["img/retratos.jpg",5,10,10,24],"p-lautaro":["img/retratos.jpg",6,10,10,24],"p-leavitt":["img/retratos.jpg",7,10,10,24],"p-leibniz":["img/retratos.jpg",8,10,10,24],"p-leonardo":["img/retratos.jpg",9,10,10,24],"p-leopold":["img/retratos.jpg",0,11,10,24],"p-libai":["img/retratos.jpg",1,11,10,24],"p-liliuokalani":["img/retratos.jpg",2,11,10,24],"p-locke":["img/retratos.jpg",3,11,10,24],"p-lovelace":["img/retratos.jpg",4,11,10,24],"p-lovelock":["img/retratos.jpg",5,11,10,24],"p-lucas":["img/retratos.jpg",6,11,10,24],"p-lucrecio":["img/retratos.jpg",7,11,10,24],"p-maathai":["img/retratos.jpg",8,11,10,24],"p-machi":["img/retratos.jpg",9,11,10,24],"p-macuilxochitzin":["img/retratos.jpg",0,12,10,24],"p-mahavira":["img/retratos.jpg",1,12,10,24],"p-maimonides":["img/retratos.jpg",2,12,10,24],"p-mandela":["img/retratos.jpg",3,12,10,24],"p-mani":["img/retratos.jpg",4,12,10,24],"p-maquiavelo":["img/retratos.jpg",5,12,10,24],"p-marcoaurelio":["img/retratos.jpg",6,12,10,24],"p-marcos":["img/retratos.jpg",7,12,10,24],"p-marti":["img/retratos.jpg",8,12,10,24],"p-marx":["img/retratos.jpg",9,12,10,24],"p-maryam":["img/retratos.jpg",0,13,10,24],"p-mateo":["img/retratos.jpg",1,13,10,24],"p-mencio":["img/retratos.jpg",2,13,10,24],"p-mendes":["img/retratos.jpg",3,13,10,24],"p-milarepa":["img/retratos.jpg",4,13,10,24],"p-mill":["img/retratos.jpg",5,13,10,24],"p-mirabai":["img/retratos.jpg",6,13,10,24],"p-mistral":["img/retratos.jpg",7,13,10,24],"p-moises":["img/retratos.jpg",8,13,10,24],"p-montaigne":["img/retratos.jpg",9,13,10,24],"p-montesquieu":["img/retratos.jpg",0,14,10,24],"p-montessori":["img/retratos.jpg",1,14,10,24],"p-mozi":["img/retratos.jpg",2,14,10,24],"p-murasaki":["img/retratos.jpg",3,14,10,24],"p-mushaf":["img/retratos.jpg",4,14,10,24],"p-naess":["img/retratos.jpg",5,14,10,24],"p-nagarjuna":["img/retratos.jpg",6,14,10,24],"p-neruda":["img/retratos.jpg",7,14,10,24],"p-newton":["img/retratos.jpg",8,14,10,24],"p-nezahualcoyotl":["img/retratos.jpg",9,14,10,24],"p-nietzsche":["img/retratos.jpg",0,15,10,24],"p-nightingale":["img/retratos.jpg",1,15,10,24],"p-nishida":["img/retratos.jpg",2,15,10,24],"p-noether":["img/retratos.jpg",3,15,10,24],"p-ockham":["img/retratos.jpg",4,15,10,24],"p-pablo":["img/retratos.jpg",5,15,10,24],"p-pachacutec":["img/retratos.jpg",6,15,10,24],"p-pacificador":["img/retratos.jpg",7,15,10,24],"p-parmenides":["img/retratos.jpg",8,15,10,24],"p-pascal":["img/retratos.jpg",9,15,10,24],"p-pasteur":["img/retratos.jpg",0,16,10,24],"p-payne":["img/retratos.jpg",1,16,10,24],"p-paz":["img/retratos.jpg",2,16,10,24],"p-pedrohispano":["img/retratos.jpg",3,16,10,24],"p-pestalozzi":["img/retratos.jpg",4,16,10,24],"p-piaget":["img/retratos.jpg",5,16,10,24],"p-pico":["img/retratos.jpg",6,16,10,24],"p-pirron":["img/retratos.jpg",7,16,10,24],"p-pitagoras":["img/retratos.jpg",8,16,10,24],"p-pizan":["img/retratos.jpg",9,16,10,24],"p-platon":["img/retratos.jpg",0,17,10,24],"p-protagoras":["img/retratos.jpg",1,17,10,24],"p-ptahhotep":["img/retratos.jpg",2,17,10,24],"p-rabia":["img/retratos.jpg",3,17,10,24],"p-rahman":["img/retratos.jpg",4,17,10,24],"p-ramana":["img/retratos.jpg",5,17,10,24],"p-ramanujan":["img/retratos.jpg",6,17,10,24],"p-rawls":["img/retratos.jpg",7,17,10,24],"p-rikyu":["img/retratos.jpg",8,17,10,24],"p-rousseau":["img/retratos.jpg",9,17,10,24],"p-rubin":["img/retratos.jpg",0,18,10,24],"p-rumi":["img/retratos.jpg",1,18,10,24],"p-russell":["img/retratos.jpg",2,18,10,24],"p-safo":["img/retratos.jpg",3,18,10,24],"p-sagan":["img/retratos.jpg",4,18,10,24],"p-sartre":["img/retratos.jpg",5,18,10,24],"p-schiller":["img/retratos.jpg",6,18,10,24],"p-schopenhauer":["img/retratos.jpg",7,18,10,24],"p-schweitzer":["img/retratos.jpg",8,18,10,24],"p-semmelweis":["img/retratos.jpg",9,18,10,24],"p-seneca":["img/retratos.jpg",0,19,10,24],"p-shankara":["img/retratos.jpg",1,19,10,24],"p-shuruppak":["img/retratos.jpg",2,19,10,24],"p-snorri":["img/retratos.jpg",3,19,10,24],"p-socrates":["img/retratos.jpg",4,19,10,24],"p-solon":["img/retratos.jpg",5,19,10,24],"p-sorjuana":["img/retratos.jpg",6,19,10,24],"p-spinoza":["img/retratos.jpg",7,19,10,24],"p-stebbing":["img/retratos.jpg",8,19,10,24],"p-stein":["img/retratos.jpg",9,19,10,24],"p-tagore":["img/retratos.jpg",0,20,10,24],"p-tales":["img/retratos.jpg",1,20,10,24],"p-teano":["img/retratos.jpg",2,20,10,24],"p-tecayehuatzin":["img/retratos.jpg",3,20,10,24],"p-teresa":["img/retratos.jpg",4,20,10,24],"p-tewhiti":["img/retratos.jpg",5,20,10,24],"p-thoreau":["img/retratos.jpg",6,20,10,24],"p-thorgeir":["img/retratos.jpg",7,20,10,24],"p-tlacaelel":["img/retratos.jpg",8,20,10,24],"p-tochihuitzin":["img/retratos.jpg",9,20,10,24],"p-tolstoi":["img/retratos.jpg",0,21,10,24],"p-tomas":["img/retratos.jpg",1,21,10,24],"p-torosentado":["img/retratos.jpg",2,21,10,24],"p-trasimaco":["img/retratos.jpg",3,21,10,24],"p-tristan":["img/retratos.jpg",4,21,10,24],"p-truth":["img/retratos.jpg",5,21,10,24],"p-turing":["img/retratos.jpg",6,21,10,24],"p-tutu":["img/retratos.jpg",7,21,10,24],"p-unaipon":["img/retratos.jpg",8,21,10,24],"p-vesalio":["img/retratos.jpg",9,21,10,24],"p-vitruvio":["img/retratos.jpg",0,22,10,24],"p-volva":["img/retratos.jpg",1,22,10,24],"p-vygotsky":["img/retratos.jpg",2,22,10,24],"p-weil":["img/retratos.jpg",3,22,10,24],"p-wittgenstein":["img/retratos.jpg",4,22,10,24],"p-wjames":["img/retratos.jpg",5,22,10,24],"p-wollstonecraft":["img/retratos.jpg",6,22,10,24],"p-yusuf":["img/retratos.jpg",7,22,10,24],"p-zambrano":["img/retratos.jpg",8,22,10,24],"p-zaratustra":["img/retratos.jpg",9,22,10,24],"p-zerayacob":["img/retratos.jpg",0,23,10,24],"p-zhuangzi":["img/retratos.jpg",1,23,10,24]};
 
 // ---- src/00f-xp-art.js ----
 // Pinturas de los experimentos (lo genera tools/xp-sheet.py): id -> fila de img/experimentos.jpg
@@ -8206,6 +8208,362 @@ Object.assign(FRASES, {
   hawking: [['Recuerda mirar hacia las estrellas y no hacia tus pies.', 'Juegos Paralímpicos de Londres, 2012'], ['Por difícil que parezca la vida, siempre hay algo que puedes hacer y en lo que puedes tener éxito.', 'Juegos Paralímpicos de Londres, 2012']],
 });
 
+// ---- src/01x-biblia.js ----
+// ============================================================================
+//  XXXVI · EL CAMINO DE LA BIBLIA
+//  Los grandes personajes y autores de la Biblia: la Torá, los Salmos, los
+//  cuatro evangelios y las cartas de Pablo. Se cuenta qué dice cada libro,
+//  cómo lo lee la tradición y qué piensan los estudiosos sobre cómo se
+//  escribió. Es un mundo «sagrado»: aquí no se vence a nadie, se comprende.
+// ============================================================================
+{
+  const Q = (q, ok, e, ...no) => ({ q, a: [ok, ...no], e });
+  ERAS.push({
+    id: 'biblia', num: 'XXXVI', name: 'El camino de la Biblia', world: true, sacred: true,
+    place: 'Un camino imaginario del Sinaí a Jerusalén y del mar de Galilea a Roma', years: 'Del siglo XIII a. C. al siglo I',
+    quote: { t: 'Amarás a tu prójimo como a ti mismo.', a: 'Levítico 19:18, citado por Jesús en los evangelios' },
+    enemy: { one: 'Sombra del Olvido', many: 'Sombras del Olvido' },
+    story: 'La Biblia no es un solo libro: es una biblioteca escrita a lo largo de más de mil años, en hebreo, arameo y griego. Para judíos y cristianos es Palabra de Dios; para todos, es uno de los libros que más han marcado la historia, el arte y la ética del mundo. En este camino recorrerás la Torá de Moisés, los Salmos de David, los cuatro evangelios que cuentan la vida de Jesús y las cartas de Pablo. Aquí no hay que vencer a nadie: escucha a cada uno, pon a prueba lo que aprendiste y descubre cómo se escribió cada parte.',
+    sages: [
+      { id: 'moises', name: 'Moisés', short: 'Moisés', dates: 'según la tradición, siglo XIII a. C.', epithet: 'El legislador del Sinaí',
+        look: lk(0xd8c8a8, 0x8a5a3a, 0xc49372, 0xe8e8e8, { beard: 0xe8e8e8, hat: 'none', acc: 'staff' }), prop: 'tablet',
+        intro: 'Saqué a mi pueblo de la esclavitud de Egipto y lo guié cuarenta años por el desierto. En el monte Sinaí recibí las tablas de la Ley. ¿Quieres conocer la Torá?',
+        defeat: 'Has escuchado la Ley. Escucha, Israel: amarás al Señor tu Dios con todo tu corazón, con toda tu alma y con todas tus fuerzas.',
+        concept: { name: 'La Torá y los Diez Mandamientos', text: 'La Torá, también llamada Pentateuco, son los cinco primeros libros de la Biblia: Génesis, Éxodo, Levítico, Números y Deuteronomio. Cuentan la creación del mundo, la historia de Abraham y sus descendientes, la salida de Egipto y la alianza en el monte Sinaí, donde Dios entrega a Moisés los Diez Mandamientos. La tradición judía y cristiana atribuye la Torá a Moisés. Muchos estudiosos piensan que fue reuniéndose y escribiéndose a lo largo de siglos, a partir de varias tradiciones, y que alcanzó su forma final hacia el siglo V antes de Cristo. Para el judaísmo es el centro de la Escritura: se lee entera en la sinagoga a lo largo del año.' },
+        q: [
+          Q('¿Cuántos libros forman la Torá o Pentateuco?', 'Cinco', 'Génesis, Éxodo, Levítico, Números y Deuteronomio.', 'Tres', 'Diez', 'Doce'),
+          Q('¿Dónde recibió Moisés las tablas de la Ley, según el Éxodo?', 'En el monte Sinaí', 'Con los Diez Mandamientos.', 'En el monte Olimpo', 'En Jerusalén', 'En Roma'),
+          Q('¿De dónde sacó Moisés a su pueblo, según la Biblia?', 'De la esclavitud en Egipto', 'El Éxodo.', 'De Babilonia', 'De Grecia', 'De Persia'),
+          Q('¿Cuántos años duró el camino por el desierto, según la Biblia?', 'Cuarenta', 'Hasta llegar a la tierra prometida.', 'Uno', 'Cien', 'Siete'),
+          Q('¿Con qué palabras empieza la oración del Shemá?', '«Escucha, Israel»', 'Deuteronomio 6:4.', '«Padre nuestro»', '«En el principio»', '«Bienaventurados»'),
+          Q('¿Qué piensan muchos estudiosos sobre cómo se escribió la Torá?', 'Que se fue reuniendo a lo largo de siglos a partir de varias tradiciones', 'La tradición la atribuye a Moisés.', 'Que se escribió en un día', 'Que es del siglo XX', 'Que la escribió Pablo'),
+        ] },
+      { id: 'david', name: 'El rey David', short: 'David', dates: 'siglo X a. C.', epithet: 'El rey poeta de los Salmos',
+        look: lk(0x6a2a5a, 0xd8a838, 0xd0a07a, 0x6a3a1a, { beard: 0x6a3a1a, hat: 'none', acc: 'none' }), prop: 'lyre',
+        intro: 'De niño fui pastor y vencí al gigante Goliat con una honda. Después fui rey de Israel, pero sobre todo canté. El Señor es mi pastor, nada me falta. ¿Cantamos un salmo?',
+        defeat: 'Has escuchado los salmos. Son poemas para todas las horas del alma: para la alegría, el miedo, el perdón y la esperanza.',
+        concept: { name: 'Los Salmos', text: 'El libro de los Salmos reúne 150 poemas y cantos, compuestos para rezar y cantar con música. Hay salmos de alabanza, de acción de gracias, de tristeza y de súplica, de arrepentimiento y de confianza. La tradición atribuye muchos de ellos al rey David, el pastor que según la Biblia venció a Goliat y convirtió Jerusalén en su capital, hacia el año 1000 antes de Cristo. Los estudiosos piensan que el libro reúne cantos de varios autores y épocas, recopilados durante siglos. Los salmos se rezan cada día en sinagogas, iglesias y monasterios, y han inspirado una enorme cantidad de música.' },
+        q: [
+          Q('¿Cuántos salmos tiene el libro de los Salmos?', '150', 'Poemas para cantar y rezar.', '10', '1.000', '7'),
+          Q('¿A quién venció David con una honda, según la Biblia?', 'Al gigante Goliat', 'Siendo un joven pastor.', 'A un león de Nemea', 'A Moisés', 'A un dragón'),
+          Q('¿Cómo empieza el famoso salmo 23?', '«El Señor es mi pastor, nada me falta»', 'Un salmo de confianza.', '«En el principio era el Verbo»', '«Escucha, Israel»', '«Bienaventurados los pobres»'),
+          Q('¿Qué ciudad convirtió David en su capital, según la Biblia?', 'Jerusalén', 'Hacia el año 1000 a. C.', 'Babilonia', 'Atenas', 'Roma'),
+          Q('¿Qué instrumento tocaba David, según la Biblia?', 'La lira o arpa', 'Para calmar al rey Saúl.', 'La guitarra eléctrica', 'El piano', 'La batería'),
+          Q('¿Qué piensan los estudiosos sobre los autores de los Salmos?', 'Que hay cantos de varios autores y épocas', 'La tradición atribuye muchos a David.', 'Que los escribió un solo hombre en un día', 'Que son modernos', 'Que no existen'),
+        ] },
+      { id: 'mateo', name: 'Mateo', short: 'Mateo', dates: 'siglo I', epithet: 'El evangelista del Sermón de la Montaña',
+        look: lk(0x3a6a3a, 0xa83a2a, 0xd0a07a, 0x4a3a2a, { beard: 0x4a3a2a, hat: 'none', acc: 'quill' }), prop: 'lectern',
+        intro: 'Yo cobraba impuestos, y la gente me despreciaba. Jesús me miró y me dijo: sígueme. Mi evangelio cuenta sus enseñanzas, como el Sermón de la Montaña. ¿Lo escuchamos?',
+        defeat: 'Has escuchado las bienaventuranzas. Bienaventurados los que trabajan por la paz, porque serán llamados hijos de Dios.',
+        concept: { name: 'El evangelio de Mateo', text: 'Evangelio significa «buena noticia». El de Mateo es el primero del Nuevo Testamento. Empieza con la genealogía de Jesús desde Abraham, para mostrar que Jesús cumple las promesas hechas a Israel, y cita muchas veces las Escrituras hebreas. Reúne las enseñanzas de Jesús en grandes discursos; el más famoso es el Sermón de la Montaña, con las bienaventuranzas y el Padrenuestro. La tradición lo atribuye a Mateo, el recaudador de impuestos que se hizo apóstol. Muchos estudiosos piensan que se escribió hacia los años 80 o 90, para una comunidad de cristianos de origen judío, usando también el evangelio de Marcos. Su símbolo es un hombre alado.' },
+        q: [
+          Q('¿Qué significa la palabra «evangelio»?', 'Buena noticia', 'Del griego euangelion.', 'Libro antiguo', 'Ley', 'Canción'),
+          Q('¿Qué oficio tenía Mateo antes de seguir a Jesús, según la tradición?', 'Recaudador de impuestos', 'Un oficio despreciado entonces.', 'Pescador', 'Carpintero', 'Soldado'),
+          Q('¿Qué famoso discurso reúne el evangelio de Mateo?', 'El Sermón de la Montaña', 'Con las bienaventuranzas y el Padrenuestro.', 'El discurso de Gettysburg', 'La Apología', 'El Encomio de Helena'),
+          Q('¿Con qué empieza el evangelio de Mateo?', 'Con la genealogía de Jesús desde Abraham', 'Para unirlo a las promesas de Israel.', 'Con la creación del mundo', 'Con un viaje a Roma', 'Con una carta'),
+          Q('¿Cuál es el símbolo tradicional de Mateo?', 'Un hombre alado', 'Por la genealogía humana de Jesús.', 'Un león', 'Un toro', 'Un águila'),
+          Q('Según el Sermón de la Montaña, ¿quiénes serán llamados hijos de Dios?', 'Los que trabajan por la paz', 'Mateo 5:9.', 'Los más ricos', 'Los más fuertes', 'Los que ganan guerras'),
+        ] },
+      { id: 'marcos', name: 'Marcos', short: 'Marcos', dates: 'siglo I', epithet: 'El evangelista más antiguo',
+        look: lk(0x2a4a8a, 0xa83a2a, 0xd0a07a, 0x2a1a10, { beard: 0x2a1a10, hat: 'none', acc: 'scroll' }), prop: 'scroll',
+        intro: 'Mi evangelio es el más corto y el más rápido: «enseguida», «al instante». Escribí para que se supiera quién era Jesús. ¿Sabías que probablemente fui el primero en escribir uno?',
+        defeat: 'Has recorrido mi evangelio. Es breve, pero empieza con una gran pregunta: ¿quién es este hombre?',
+        concept: { name: 'El evangelio de Marcos', text: 'El evangelio de Marcos es el más corto de los cuatro y, para la mayoría de los estudiosos, el primero que se escribió, hacia el año 70. Mateo y Lucas lo usaron como fuente. Empieza sin infancia ni genealogía: directamente con Juan el Bautista y el bautismo de Jesús. Su ritmo es rápido, con muchos milagros, y repite la palabra «enseguida». Los discípulos a menudo no entienden a Jesús, y el libro avanza hacia la cruz. Sus manuscritos más antiguos terminan con las mujeres ante el sepulcro vacío. La tradición dice que Marcos escribió lo que predicaba el apóstol Pedro. Su símbolo es el león.' },
+        q: [
+          Q('¿Cuál es, para la mayoría de los estudiosos, el primer evangelio que se escribió?', 'El de Marcos', 'Hacia el año 70.', 'El de Juan', 'El de Mateo', 'El Apocalipsis'),
+          Q('¿Cuál es el evangelio más corto?', 'El de Marcos', 'Con un ritmo muy rápido.', 'El de Lucas', 'El de Juan', 'El de Mateo'),
+          Q('¿Con quién empieza el evangelio de Marcos?', 'Con Juan el Bautista', 'Sin infancia ni genealogía.', 'Con Abraham', 'Con Adán y Eva', 'Con el rey David'),
+          Q('Según la tradición, ¿la predicación de qué apóstol recogió Marcos?', 'La de Pedro', 'Que había sido pescador.', 'La de Pablo', 'La de Judas', 'La de Tomás'),
+          Q('¿Cuál es el símbolo tradicional de Marcos?', 'El león', 'Por la voz que clama en el desierto.', 'El águila', 'El toro', 'El hombre alado'),
+          Q('¿Qué otros evangelios usaron a Marcos como fuente?', 'Mateo y Lucas', 'Por eso se llaman sinópticos los tres.', 'Juan y Pablo', 'Ninguno', 'El Corán'),
+        ] },
+      { id: 'lucas', name: 'Lucas', short: 'Lucas', dates: 'siglo I', epithet: 'El médico que escribió dos libros',
+        look: lk(0x8a5a3a, 0x3a5a8a, 0xd0a07a, 0x5a3a2a, { beard: 0x5a3a2a, hat: 'none', acc: 'book' }), prop: 'lectern',
+        intro: 'Era médico y acompañé a Pablo en sus viajes. Investigué todo con cuidado desde el principio y lo escribí en orden. Mis parábolas favoritas: el buen samaritano y el hijo pródigo. ¿Te las cuento?',
+        defeat: 'Has escuchado mis parábolas. ¿Quién es mi prójimo? El que se detiene ante quien sufre, sea de donde sea.',
+        concept: { name: 'El evangelio de Lucas y los Hechos', text: 'Lucas es el autor, según la tradición, de dos libros: el tercer evangelio y los Hechos de los Apóstoles, que continúa la historia con los primeros cristianos y los viajes de Pablo. Pablo lo llama «el querido médico». Lucas dice al principio que investigó todo con cuidado para escribirlo en orden. Su evangelio presta mucha atención a los pobres, a las mujeres, a los extranjeros y a la misericordia: solo él cuenta las parábolas del buen samaritano y del hijo pródigo, y el canto de María, el Magníficat. Los estudiosos lo sitúan hacia los años 80 o 90. Su símbolo es el toro.' },
+        q: [
+          Q('¿Qué dos libros escribió Lucas, según la tradición?', 'Un evangelio y los Hechos de los Apóstoles', 'Una historia en dos partes.', 'Los Salmos y la Torá', 'El Apocalipsis y Génesis', 'Ninguno'),
+          Q('¿Qué profesión tenía Lucas, según Pablo?', 'Médico', '«El querido médico».', 'Pescador', 'Rey', 'Soldado'),
+          Q('¿Qué parábola sobre ayudar al que sufre solo cuenta Lucas?', 'El buen samaritano', 'Responde a «¿quién es mi prójimo?».', 'La de la caverna', 'La de Sísifo', 'La del barco de Teseo'),
+          Q('¿Qué parábola cuenta el regreso de un hijo y el perdón de su padre?', 'El hijo pródigo', 'Solo en Lucas.', 'El buen pastor de Platón', 'El rey Midas', 'Edipo'),
+          Q('¿Cuál es el símbolo tradicional de Lucas?', 'El toro', 'Por los sacrificios del templo con que empieza su evangelio.', 'El león', 'El águila', 'El hombre alado'),
+          Q('¿A quién presta especial atención el evangelio de Lucas?', 'A los pobres, las mujeres y los extranjeros', 'Un evangelio de la misericordia.', 'A los reyes', 'A los guerreros', 'A los ricos'),
+        ] },
+      { id: 'juan', name: 'Juan', short: 'Juan', dates: 'siglo I', epithet: 'El discípulo amado',
+        look: lk(0xa83a2a, 0x3a6a3a, 0xe0c0a0, 0x6a4a2a, { hat: 'none', acc: 'book' }), prop: 'stars',
+        intro: 'Mi evangelio no empieza en un pesebre, sino antes del tiempo: en el principio era el Verbo, la Palabra. Es distinto de los otros tres. ¿Quieres saber por qué?',
+        defeat: 'Has escuchado mi evangelio. Lo que más importa cabe en una frase: amaos los unos a los otros.',
+        concept: { name: 'El evangelio de Juan', text: 'El cuarto evangelio es muy distinto de los otros tres. Empieza con un himno: «En el principio era el Verbo», es decir, la Palabra, el Logos, que se hizo carne en Jesús. En lugar de muchas parábolas cuenta siete «signos», como el agua convertida en vino en Caná, y largos discursos en los que Jesús dice «Yo soy el pan de vida», «Yo soy la luz del mundo», «Yo soy el buen pastor». Insiste en el amor: «Amaos los unos a los otros». La tradición lo atribuye al apóstol Juan, el «discípulo amado»; muchos estudiosos piensan que procede de una comunidad formada en torno a su testimonio, hacia el año 90 o 100. Su símbolo es el águila, porque vuela alto.' },
+        q: [
+          Q('¿Cómo empieza el evangelio de Juan?', '«En el principio era el Verbo»', 'La Palabra, el Logos.', '«Escucha, Israel»', '«El Señor es mi pastor»', 'Con la genealogía de Abraham'),
+          Q('¿Qué primer signo cuenta Juan en las bodas de Caná?', 'El agua convertida en vino', 'El primero de siete signos.', 'La multiplicación de los panes', 'La caída de Jericó', 'El paso del mar Rojo'),
+          Q('¿Cuál es el símbolo tradicional de Juan?', 'El águila', 'Porque su evangelio vuela alto.', 'El león', 'El toro', 'El hombre alado'),
+          Q('¿Qué palabra griega traduce «Verbo» en el inicio de Juan?', 'Logos', 'La misma que usó Heráclito.', 'Ágape', 'Polis', 'Cosmos'),
+          Q('¿Qué mandamiento resume el evangelio de Juan?', '«Amaos los unos a los otros»', 'Juan 13:34.', '«No matarás»', '«Conócete a ti mismo»', '«Atrévete a saber»'),
+          Q('¿Cómo se llama a sí mismo el autor en el evangelio de Juan?', 'El discípulo amado', 'La tradición lo identifica con el apóstol Juan.', 'El maestro de justicia', 'El profeta', 'El rey'),
+        ] },
+      { id: 'pablo', boss: true, final: false, name: 'Pablo de Tarso', short: 'Pablo', dates: 'c. 5 – c. 67', epithet: 'El apóstol de los gentiles',
+        look: lk(0xa83a2a, 0x3a5a3a, 0xd0a07a, 0x2a1a10, { beard: 0x2a1a10, hat: 'bald', acc: 'scroll' }), prop: 'scroll',
+        intro: 'Yo perseguía a los cristianos, hasta que en el camino de Damasco una luz me derribó. Desde entonces recorrí el Mediterráneo y escribí cartas a las comunidades. Son los escritos cristianos más antiguos. ¿Me acompañas en el último tramo del camino?',
+        defeat: 'Has recorrido todo el camino. Ahora permanecen la fe, la esperanza y el amor; pero el mayor de ellos es el amor.',
+        concept: { name: 'Las cartas de Pablo', text: 'Pablo nació en Tarso, en la actual Turquía. Era judío fariseo y ciudadano romano, y al principio perseguía a los seguidores de Jesús. Según los Hechos, en el camino a Damasco tuvo una visión que cambió su vida. Desde entonces viajó por todo el Mediterráneo fundando comunidades entre los no judíos, los «gentiles», y les escribió cartas. Trece cartas del Nuevo Testamento llevan su nombre; los estudiosos consideran seguro que siete son suyas, como Romanos, Corintios y Gálatas. Escritas hacia los años 50, son los textos cristianos más antiguos que se conservan, más que los evangelios. En la primera carta a los Corintios está su famoso himno al amor. Según la tradición, murió en Roma.' },
+        q: [
+          Q('¿Dónde tuvo Pablo la experiencia que cambió su vida, según los Hechos?', 'En el camino de Damasco', 'Una luz lo derribó.', 'En el monte Sinaí', 'En Atenas', 'En Galilea'),
+          Q('¿Por qué son especiales las cartas de Pablo?', 'Son los escritos cristianos más antiguos que se conservan', 'Hacia los años 50, antes que los evangelios.', 'Son las más modernas', 'Son en latín', 'No tienen autor'),
+          Q('¿A quiénes predicó sobre todo Pablo?', 'A los no judíos o gentiles', 'Por todo el Mediterráneo.', 'Solo a los reyes', 'Solo a los romanos ricos', 'A nadie'),
+          Q('Según el himno de 1 Corintios 13, ¿cuál es el mayor de la fe, la esperanza y el amor?', 'El amor', '«Pero el mayor de ellos es el amor».', 'La fe', 'La esperanza', 'Ninguno'),
+          Q('¿Cuántas cartas consideran los estudiosos que son seguramente de Pablo?', 'Siete', 'De las trece que llevan su nombre.', 'Una', 'Cien', 'Ninguna'),
+          Q('¿Qué hacía Pablo antes de su conversión?', 'Perseguía a los cristianos', 'Era fariseo.', 'Era pescador', 'Era recaudador de impuestos', 'Era médico'),
+          Q('¿Cuántos libros forman la Torá?', 'Cinco', 'El Pentateuco.', 'Siete', 'Dos', 'Doce'),
+          Q('¿Cuántos poemas tiene el libro de los Salmos?', '150', 'Muchos atribuidos a David.', '20', '365', '7'),
+          Q('¿Qué evangelista cobraba impuestos?', 'Mateo', 'Jesús le dijo: sígueme.', 'Lucas', 'Juan', 'Marcos'),
+          Q('¿Cuál es probablemente el evangelio más antiguo?', 'El de Marcos', 'Hacia el año 70.', 'El de Juan', 'El de Lucas', 'El de Mateo'),
+          Q('¿Qué evangelista era médico?', 'Lucas', 'Autor también de los Hechos.', 'Juan', 'Marcos', 'Mateo'),
+          Q('¿Qué evangelio empieza con «En el principio era el Verbo»?', 'El de Juan', 'Su símbolo es el águila.', 'El de Mateo', 'El de Marcos', 'El de Lucas'),
+        ] },
+    ],
+  });
+}
+
+Object.assign(LESSONS, {
+  moises: [
+    'Soy Moisés. Según el libro del Éxodo, nací en Egipto cuando mi pueblo, los hebreos, era esclavo del faraón. Mi madre me escondió en una cesta en el río Nilo, y me crio la hija del faraón.',
+    'Un día, en el desierto, vi una zarza que ardía sin consumirse. Desde ella Dios me llamó y me reveló su nombre: Yo soy el que soy. Me pidió que liberara a mi pueblo.',
+    'Tras las plagas de Egipto, salimos de noche, cruzamos el mar y caminamos cuarenta años por el desierto. En el monte Sinaí recibí la Ley: los Diez Mandamientos, grabados en dos tablas de piedra.',
+    'La Torá son los cinco primeros libros de la Biblia. La tradición dice que yo los escribí. Muchos estudiosos piensan que se fueron reuniendo durante siglos, a partir de varias tradiciones, hasta su forma final hacia el siglo quinto antes de Cristo.',
+    'Para el pueblo judío, la Torá es el corazón de la Escritura. Su oración principal empieza así: Escucha, Israel. Mi pregunta para ti: ¿por qué crees que una comunidad necesita leyes compartidas?',
+  ],
+  david: [
+    'Soy David, el hijo menor de Jesé, de Belén. De niño cuidaba las ovejas de mi padre y tocaba la lira para el rey Saúl, que estaba triste.',
+    'Según el primer libro de Samuel, me enfrenté al gigante filisteo Goliat solo con una honda y cinco piedras del río. Nadie esperaba que un pastor ganara.',
+    'Llegué a ser rey de Israel y llevé el arca de la alianza a Jerusalén, que se convirtió en la capital. Pero también cometí graves errores, y el profeta Natán me los echó en cara. Entonces pedí perdón.',
+    'El libro de los Salmos reúne ciento cincuenta cantos. La tradición me atribuye muchos de ellos; los estudiosos piensan que el libro reúne poemas de varios autores y épocas.',
+    'Hay salmos de alegría, de miedo, de perdón y de confianza: El Señor es mi pastor, nada me falta. Mi pregunta para ti: ¿qué emoción te gustaría convertir en canción?',
+  ],
+  mateo: [
+    'Soy Mateo, también llamado Leví. Cobraba impuestos en Cafarnaún para los romanos, y la gente me consideraba un pecador. Jesús pasó junto a mi mesa y me dijo: sígueme. Me levanté y lo seguí.',
+    'Mi evangelio empieza con la genealogía de Jesús desde Abraham. Quería mostrar a los judíos de mi comunidad que Jesús cumple las promesas de las Escrituras.',
+    'Reuní sus enseñanzas en cinco grandes discursos. El más famoso es el Sermón de la Montaña: bienaventurados los pobres de espíritu, los que lloran, los que tienen hambre de justicia, los que trabajan por la paz.',
+    'Allí está también el Padrenuestro, y una regla de oro: trata a los demás como quieres que te traten. Los estudiosos piensan que mi evangelio se escribió hacia los años ochenta o noventa, usando también el de Marcos.',
+    'Mi símbolo es un hombre alado. Mi pregunta para ti: de las bienaventuranzas, ¿cuál te parece más difícil de vivir?',
+  ],
+  marcos: [
+    'Soy Marcos. La tradición dice que acompañé al apóstol Pedro y que puse por escrito lo que él predicaba en Roma.',
+    'Mi evangelio es el más corto. No cuento la infancia de Jesús: empiezo con Juan el Bautista en el desierto y el bautismo en el río Jordán.',
+    'Escribo con prisa, como quien corre a contar una noticia: enseguida, al instante. Cuento muchos milagros y cómo los discípulos, a menudo, no entendían quién era Jesús.',
+    'La mayoría de los estudiosos piensa que fui el primero en escribir un evangelio, hacia el año setenta. Mateo y Lucas usaron mi relato. Los manuscritos más antiguos de mi libro terminan con las mujeres ante el sepulcro vacío.',
+    'Mi símbolo es el león. Mi pregunta para ti: ¿por qué crees que alguien siente la urgencia de escribir una historia?',
+  ],
+  lucas: [
+    'Soy Lucas. Pablo me llamaba el querido médico. Lo acompañé en algunos de sus viajes por el mar Mediterráneo.',
+    'Al empezar mi evangelio explico que investigué todo con cuidado desde el principio, para escribirlo en orden. Cuento la infancia de Jesús y el canto de María, el Magníficat.',
+    'Me importan los últimos: los pobres, los enfermos, las mujeres, los extranjeros. Solo yo cuento la parábola del buen samaritano, que ayuda a un herido aunque es de un pueblo despreciado.',
+    'También la del hijo pródigo: un hijo que malgasta todo y vuelve, y un padre que corre a abrazarlo. Después escribí una segunda parte, los Hechos de los Apóstoles, sobre los primeros cristianos.',
+    'Mi símbolo es el toro. Mi pregunta para ti: ¿quién es tu prójimo?',
+  ],
+  juan: [
+    'Soy Juan. La tradición me identifica con el discípulo amado, el más joven, que estuvo al pie de la cruz con María.',
+    'Mi evangelio empieza antes del tiempo: en el principio era el Verbo, la Palabra, y la Palabra se hizo carne. Uso la palabra griega Logos, que los filósofos ya conocían.',
+    'No cuento muchas parábolas. Cuento siete signos, como el agua convertida en vino en las bodas de Caná, y largos discursos: yo soy el pan de vida, yo soy la luz del mundo, yo soy el buen pastor.',
+    'Muchos estudiosos piensan que mi evangelio nació en una comunidad formada en torno a mi testimonio, hacia el año noventa o cien. Es el más distinto de los cuatro.',
+    'Mi símbolo es el águila, porque mira de frente al sol. Mi pregunta para ti: ¿qué significa para ti amar a los demás?',
+  ],
+  pablo: [
+    'Soy Pablo, de Tarso. Era judío fariseo y ciudadano romano, y perseguía a los seguidores de Jesús, porque me parecía que traicionaban la Ley.',
+    'Según los Hechos, camino de Damasco una luz me derribó y oí una voz. Quedé ciego unos días. Cuando recuperé la vista, mi vida había cambiado.',
+    'Viajé por Asia Menor, Grecia y hasta Roma, en barco y a pie. Naufragué, estuve en la cárcel, y fundé comunidades entre los no judíos. Les escribía cartas para aconsejarlas.',
+    'Trece cartas llevan mi nombre; los estudiosos consideran seguro que siete son mías. Escritas hacia los años cincuenta, son los textos cristianos más antiguos que se conservan.',
+    'En la primera carta a los Corintios escribí: el amor es paciente, es servicial. Ya no hay judío ni griego, ni esclavo ni libre. Mi pregunta para ti: ¿qué puede unir a personas muy distintas?',
+  ],
+});
+
+Object.assign(FRASES, {
+  moises: [['Escucha, Israel: el Señor es nuestro Dios, el Señor es uno.', 'Deuteronomio 6:4'], ['No matarás.', 'Éxodo 20:13']],
+  david: [['El Señor es mi pastor, nada me falta.', 'Salmo 23:1'], ['Los cielos cuentan la gloria de Dios.', 'Salmo 19:1']],
+  mateo: [['Bienaventurados los que trabajan por la paz, porque serán llamados hijos de Dios.', 'Mateo 5:9'], ['Todo lo que queráis que os hagan los hombres, hacedlo también vosotros con ellos.', 'Mateo 7:12']],
+  marcos: [['Amarás a tu prójimo como a ti mismo.', 'Marcos 12:31'], ['El sábado fue hecho para el hombre, y no el hombre para el sábado.', 'Marcos 2:27']],
+  lucas: [['Pedid y se os dará; buscad y hallaréis; llamad y se os abrirá.', 'Lucas 11:9'], ['No juzguéis, y no seréis juzgados.', 'Lucas 6:37']],
+  juan: [['En el principio era el Verbo.', 'Juan 1:1'], ['Amaos los unos a los otros.', 'Juan 13:34'], ['La verdad os hará libres.', 'Juan 8:32']],
+  pablo: [['El amor es paciente, es servicial; el amor no tiene envidia.', '1 Corintios 13:4'], ['Ahora permanecen la fe, la esperanza y el amor; pero el mayor de ellos es el amor.', '1 Corintios 13:13']],
+});
+
+// ---- src/01y-coran.js ----
+// ============================================================================
+//  XXXVII · EL JARDÍN DEL CORÁN
+//  Siete estaciones, cada una dedicada a una sura (o a la historia del Libro).
+//  Por respeto a la tradición islámica, aquí no se representa a ningún profeta
+//  ni a sus compañeros: cada estación es un atril con un medallón geométrico, y
+//  una voz narradora cuenta en tercera persona lo que dice el texto y cómo lo
+//  entienden los musulmanes. Es un mundo «sagrado»: aquí se comprende, no se vence.
+//  Las aleyas citadas son traducciones aproximadas al español.
+// ============================================================================
+{
+  const Q = (q, ok, e, ...no) => ({ q, a: [ok, ...no], e });
+  const st = (id, name, short, dates, epithet, prop, intro, defeat, concept, q, extra = {}) => ({ id, name, short, dates, epithet, prop, intro, defeat, concept, q, aniconic: true, look: lk(0x1a5a6a, 0xd8a838, 0xc49372, 0x2a2a2a), ...extra });
+  ERAS.push({
+    id: 'coran', num: 'XXXVII', name: 'El jardín del Corán', world: true, sacred: true,
+    place: 'Un jardín imaginario de arcos, fuentes y azulejos, entre La Meca y Medina', years: 'Siglo VII',
+    quote: { t: 'Os hemos hecho pueblos y tribus para que os conozcáis unos a otros.', a: 'Corán 49:13' },
+    enemy: { one: 'Sombra del Olvido', many: 'Sombras del Olvido' },
+    story: 'Para más de mil ochocientos millones de musulmanes, el Corán es la palabra de Dios revelada en árabe al profeta Mahoma durante unos veintitrés años, a partir del año 610. Su nombre significa «la recitación»: se aprende de memoria, se recita en cada oración y se escribe con la caligrafía más bella. En este jardín no hay estatuas ni retratos de profetas: cada estación es un atril con un medallón, y una voz te cuenta una sura, sus historias y cómo la entienden los creyentes. Escucha, pon a prueba lo que aprendiste y descubre cómo se reunió el Libro.',
+    sages: [
+      st('iqra', 'La primera revelación', 'Iqra', 'Sura 96 · La Meca, hacia el año 610', '«¡Lee!»: el comienzo de la revelación', 'stars',
+        'Esta estación cuenta el comienzo. Según la tradición islámica, una noche del mes de Ramadán, en una cueva del monte Hira, llegó la primera palabra del Corán: «¡Lee!». ¿Quieres saber qué ocurrió?',
+        'Has comprendido el comienzo. La primera palabra revelada invita a leer y a aprender: «Lee en el nombre de tu Señor».',
+        { name: 'La primera revelación', text: 'Según la tradición islámica, hacia el año 610 Mahoma, un comerciante de La Meca de unos cuarenta años, solía retirarse a meditar en una cueva del monte Hira. Allí el ángel Gabriel, en árabe Yibril, le transmitió los primeros versículos del Corán, que hoy forman el comienzo de la sura 96: «¡Lee en el nombre de tu Señor, que ha creado! (…) ¡Lee! Tu Señor es el Más Generoso, que enseñó por medio del cálamo». La revelación continuó durante unos veintitrés años, hasta su muerte en el año 632. La palabra Corán, Qur’an, significa «la recitación» o «la lectura». Para los musulmanes es la palabra de Dios en árabe.' },
+        [
+          Q('¿Qué significa la palabra «Corán» (Qur’an)?', 'La recitación o lectura', 'De la raíz árabe qara’a, leer o recitar.', 'La espada', 'El jardín', 'El viaje'),
+          Q('¿Cuál fue la primera palabra revelada, según la tradición?', '«¡Lee!» (Iqra)', 'Comienzo de la sura 96.', '«¡Escucha!»', '«¡Lucha!»', '«¡Duerme!»'),
+          Q('¿Dónde ocurrió la primera revelación, según la tradición?', 'En una cueva del monte Hira, cerca de La Meca', 'El monte de la Luz.', 'En Jerusalén', 'En Damasco', 'En Bagdad'),
+          Q('¿Durante cuántos años fue revelado el Corán, según la tradición?', 'Unos veintitrés años', 'Del 610 al 632.', 'Un día', 'Cien años', 'Tres años'),
+          Q('¿Qué ángel transmitió la revelación, según el islam?', 'Gabriel (Yibril)', 'El mismo nombre que en la Biblia.', 'Miguel', 'Rafael', 'Ninguno'),
+          Q('¿En qué lengua fue revelado el Corán?', 'En árabe', 'Por eso se recita en árabe en todo el mundo.', 'En latín', 'En griego', 'En hebreo'),
+        ]),
+      st('fatiha', 'Al-Fátiha · La que abre', 'Al-Fátiha', 'Sura 1 · siete aleyas', 'La que abre el Libro', 'lectern',
+        'Esta estación guarda la sura más recitada del mundo: la primera, Al-Fátiha, «la que abre». Tiene solo siete aleyas, y los musulmanes la repiten en cada parte de sus oraciones. ¿La conoces?',
+        'Has comprendido la Fátiha. Empieza con «En el nombre de Dios, el Compasivo, el Misericordioso» y termina pidiendo ser guiado por el camino recto.',
+        { name: 'La sura que abre el Libro', text: 'Al-Fátiha es la primera sura del Corán. Tiene siete aleyas o versículos. Empieza con la fórmula que encabeza casi todas las suras, la basmala: «En el nombre de Dios, el Compasivo, el Misericordioso». Sigue con una alabanza a Dios, «Señor de los mundos», «Soberano del Día del Juicio», y termina con una petición: «Guíanos por el camino recto». Los musulmanes la recitan en cada unidad de las cinco oraciones diarias, por lo que se dice al menos diecisiete veces al día. También se la llama «la madre del Libro», porque resume su mensaje.' },
+        [
+          Q('¿Qué significa «Al-Fátiha»?', 'La que abre', 'Es la primera sura.', 'La que cierra', 'La más larga', 'La del desierto'),
+          Q('¿Cuántas aleyas tiene la Fátiha?', 'Siete', 'Una sura breve.', 'Cien', 'Dos', 'Treinta'),
+          Q('¿Con qué fórmula empiezan casi todas las suras?', '«En el nombre de Dios, el Compasivo, el Misericordioso»', 'La basmala.', '«Había una vez»', '«En el principio era el Verbo»', '«Escucha, Israel»'),
+          Q('¿Qué pide la Fátiha al final?', 'Ser guiado por el camino recto', '«Guíanos por el camino recto».', 'Riquezas', 'Victoria en la guerra', 'Lluvia'),
+          Q('¿Cuándo se recita la Fátiha?', 'En cada unidad de las oraciones diarias', 'Al menos diecisiete veces al día.', 'Solo una vez en la vida', 'Solo en bodas', 'Nunca en voz alta'),
+          Q('¿Qué otro nombre recibe la Fátiha?', 'La madre del Libro', 'Porque resume su mensaje.', 'La hija del desierto', 'La sura del hierro', 'El libro de los reyes'),
+        ]),
+      st('yusuf', 'Sura de José (Yusuf)', 'Yusuf', 'Sura 12 · 111 aleyas', '«El más bello de los relatos»', 'water',
+        'Esta estación cuenta una historia completa: la de José, Yusuf, vendido por sus hermanos y llegado a lo más alto en Egipto. El propio Corán la llama «el más bello de los relatos». ¿La escuchamos?',
+        'Has comprendido el relato de José. Su mensaje es la «paciencia hermosa» y el perdón: José perdonó a los hermanos que lo traicionaron.',
+        { name: 'El más bello de los relatos', text: 'La sura 12 es la única del Corán que cuenta una sola historia de principio a fin: la de José, Yusuf, hijo del profeta Jacob, Yaqub. Sus hermanos, celosos, lo arrojan a un pozo; unos viajeros lo venden como esclavo en Egipto. Allí resiste la tentación, es encarcelado injustamente, interpreta los sueños del rey y llega a administrar el país durante siete años de abundancia y siete de hambre. Al final perdona a sus hermanos y se reúne con su padre. La misma historia aparece en el libro del Génesis de la Biblia, con diferencias de detalle. El Corán la presenta así: «Te contamos el más bello de los relatos».' },
+        [
+          Q('¿Cómo llama el propio Corán a la historia de José?', 'El más bello de los relatos', 'Corán 12:3.', 'La historia más triste', 'La guerra de los hermanos', 'El viaje al mar'),
+          Q('¿Qué tiene de especial la sura 12?', 'Cuenta una sola historia de principio a fin', 'La de José.', 'Es la más corta', 'No tiene palabras', 'Está en griego'),
+          Q('¿Qué hicieron los hermanos de José, celosos?', 'Lo arrojaron a un pozo', 'Y fue vendido como esclavo.', 'Lo coronaron rey', 'Le regalaron un barco', 'Nada'),
+          Q('¿Qué don tenía José?', 'Interpretar los sueños', 'Como los del rey de Egipto.', 'Volar', 'Hablar con los peces', 'Hacerse invisible'),
+          Q('¿En qué otro libro sagrado aparece la historia de José?', 'En el Génesis de la Biblia', 'Con diferencias de detalle.', 'En la Odisea', 'En el Mahabharata', 'En ninguno'),
+          Q('¿Qué virtud destaca la sura de José?', 'La paciencia y el perdón', '«Paciencia hermosa».', 'La venganza', 'La riqueza', 'La fuerza'),
+        ]),
+      st('maryam', 'Sura de María (Maryam)', 'Maryam', 'Sura 19 · 98 aleyas', 'La única mujer nombrada en el Corán', 'garden',
+        'Esta estación está dedicada a María, Maryam, la madre de Jesús. Es la única mujer a la que el Corán llama por su nombre, y una sura entera lleva su nombre. ¿Sabes qué cuenta?',
+        'Has comprendido la sura de María. En el islam, María es un modelo de fe, y Jesús, Isa, es un gran profeta.',
+        { name: 'María y Jesús en el Corán', text: 'La sura 19 lleva el nombre de María, Maryam, la única mujer citada por su nombre en el Corán, donde aparece más veces que en todo el Nuevo Testamento. La sura cuenta primero cómo Zacarías, ya anciano, recibe el anuncio del nacimiento de Juan, Yahya. Después narra cómo María, retirada en oración, recibe el anuncio de un hijo, y da a luz a Jesús, Isa, junto a una palmera que le da dátiles, mientras brota un arroyo a sus pies. Para el islam, Jesús es uno de los más grandes profetas y el Mesías, nacido de una virgen, pero no es Dios ni hijo de Dios: esa es una diferencia importante con el cristianismo.' },
+        [
+          Q('¿Qué tiene de especial María en el Corán?', 'Es la única mujer nombrada por su nombre', 'Y una sura lleva su nombre.', 'No aparece', 'Es una reina guerrera', 'Es una profeta del mar'),
+          Q('¿Cómo se llama Jesús en el Corán?', 'Isa', 'Uno de los grandes profetas.', 'Yusuf', 'Musa', 'Ibrahim'),
+          Q('¿Junto a qué árbol da a luz María, según la sura 19?', 'Junto a una palmera', 'Que le da dátiles.', 'Junto a un olivo', 'Junto a un roble', 'Junto a un manzano'),
+          Q('¿Qué es Jesús para el islam?', 'Un gran profeta y el Mesías, pero no Dios', 'Una diferencia con el cristianismo.', 'Un rey de Egipto', 'Un filósofo griego', 'Nada'),
+          Q('¿Qué nacimiento se anuncia primero a Zacarías en la sura 19?', 'El de Juan (Yahya)', 'Siendo ya anciano.', 'El de José', 'El de Moisés', 'El de David'),
+          Q('¿Dónde aparece más veces María, en el Corán o en el Nuevo Testamento?', 'En el Corán', 'Es muy venerada en el islam.', 'En el Nuevo Testamento', 'Igual', 'En ninguno'),
+        ]),
+      st('kahf', 'Sura de la Caverna (Al-Kahf)', 'Al-Kahf', 'Sura 18 · 110 aleyas', 'Cuatro historias para tiempos difíciles', 'cave',
+        'Esta estación cuenta cuatro historias: unos jóvenes que durmieron siglos en una caverna, un hombre orgulloso de su jardín, el viaje de Moisés con un sabio misterioso y un rey que viajó a los confines de la tierra. ¿Empezamos?',
+        'Has comprendido la sura de la Caverna. Si el mar fuera tinta para escribir las palabras de Dios, se agotaría antes que ellas.',
+        { name: 'Las historias de la Caverna', text: 'La sura 18 reúne cuatro historias. La de los durmientes de la caverna: unos jóvenes creyentes que, perseguidos, se refugian en una cueva y duermen durante unos trescientos años. La del dueño de dos jardines, que se cree dueño de todo y lo pierde por su orgullo. La de Moisés y un sabio misterioso, al que la tradición llama Al-Jidr: Moisés no entiende sus actos extraños hasta que el sabio le explica sus razones, una lección sobre la paciencia y los límites del propio saber. Y la de Dhul-Qarnayn, un rey justo que viaja de oriente a occidente y levanta una muralla para proteger a un pueblo. Muchos musulmanes recitan esta sura los viernes.' },
+        [
+          Q('¿Qué hicieron los jóvenes de la caverna, según la sura 18?', 'Dormir unos trescientos años', 'Refugiados de sus perseguidores.', 'Construir una ciudad', 'Navegar por el mar', 'Pintar la cueva'),
+          Q('¿Qué aprende Moisés del sabio misterioso (Al-Jidr)?', 'Paciencia y que su propio saber tiene límites', 'No entendía sus actos al principio.', 'A luchar', 'A pescar', 'Nada'),
+          Q('¿Qué le pasa al dueño de los dos jardines?', 'Pierde todo por su orgullo', 'Se creía dueño de todo.', 'Gana un premio', 'Se casa', 'Nada'),
+          Q('¿Qué día recitan muchos musulmanes la sura de la Caverna?', 'El viernes', 'El día de la oración comunitaria.', 'El lunes', 'El domingo', 'Nunca'),
+          Q('Según 18:109, ¿qué se agotaría antes que las palabras de Dios?', 'El mar, si fuera tinta', 'Una imagen de lo inagotable.', 'El sol', 'Los árboles', 'Nada'),
+          Q('¿Qué levanta Dhul-Qarnayn para proteger a un pueblo?', 'Una muralla', 'Un rey justo y viajero.', 'Un templo', 'Un puente', 'Una torre'),
+        ]),
+      st('rahman', 'Sura del Misericordioso (Ar-Rahmán)', 'Ar-Rahmán', 'Sura 55 · 78 aleyas', '«La novia del Corán»', 'flower',
+        'Esta estación es un canto a la creación: el sol y la luna, los dos mares, los frutos y las flores. Una pregunta se repite como un estribillo: ¿cuál de las gracias de vuestro Señor negaréis? ¿La escuchamos?',
+        'Has comprendido la sura del Misericordioso. La creación entera es un regalo, y la justicia es una balanza que no hay que alterar.',
+        { name: 'El canto de la misericordia', text: 'La sura 55 lleva el nombre de Ar-Rahmán, el Misericordioso, uno de los nombres de Dios en el islam. Es un gran poema sobre la creación: el sol y la luna que siguen su cálculo, las plantas y los árboles, los dos mares que no se mezclan, las perlas y el coral, los jardines con frutos y fuentes. Un estribillo se repite treinta y una veces: «¿Cuál de las gracias de vuestro Señor negaréis?». También habla de la justicia: Dios estableció la balanza, «no alteréis la balanza». Por su belleza, una tradición la llama «la novia del Corán». Es una de las suras más recitadas en voz alta.' },
+        [
+          Q('¿Qué significa «Ar-Rahmán»?', 'El Misericordioso', 'Uno de los nombres de Dios.', 'El Guerrero', 'El Desierto', 'El Rey de Egipto'),
+          Q('¿Qué pregunta se repite como estribillo en la sura 55?', '«¿Cuál de las gracias de vuestro Señor negaréis?»', 'Treinta y una veces.', '«¿Quién eres?»', '«¿Dónde está el mar?»', '«¿Qué hora es?»'),
+          Q('¿Cuántas veces se repite el estribillo?', 'Treinta y una', 'Como un canto.', 'Una', 'Mil', 'Siete'),
+          Q('¿Cómo llama una tradición a la sura de Ar-Rahmán?', 'La novia del Corán', 'Por su belleza.', 'La espada del Corán', 'La madre del desierto', 'El rey de las suras'),
+          Q('¿Qué pide la sura sobre la balanza?', 'No alterarla: ser justos', 'Dios estableció la balanza.', 'Romperla', 'Venderla', 'Esconderla'),
+          Q('¿De qué habla sobre todo la sura de Ar-Rahmán?', 'De las maravillas de la creación', 'Sol, luna, mares, frutos y jardines.', 'De batallas', 'De leyes de comercio', 'De reyes'),
+        ]),
+      st('mushaf', 'El Libro reunido (el Mushaf)', 'El Mushaf', '114 suras', 'Cómo se escribió y se transmitió el Corán', 'lectern',
+        'Esta última estación cuenta cómo las palabras recitadas durante veintitrés años se convirtieron en un libro: quién las memorizó, quién las escribió y cómo se reunieron. ¿Recorres conmigo el último tramo?',
+        'Has recorrido todo el jardín. El Corán se ha transmitido a la vez de memoria y por escrito: millones de personas en el mundo lo saben entero de memoria.',
+        { name: 'Cómo se reunió el Corán', text: 'Según la tradición islámica, mientras duró la revelación muchos compañeros del Profeta memorizaban los versículos y algunos los escribían en hojas de palmera, piedras planas, huesos y pergamino. Tras la muerte de Mahoma, en el año 632, el primer califa, Abu Bakr, encargó a Zayd ibn Thabit reunir todos los fragmentos. Hacia el año 650, el califa Uzmán hizo preparar una copia oficial y envió ejemplares a las grandes ciudades. El Corán tiene 114 suras y unas 6.236 aleyas, ordenadas aproximadamente de la más larga a la más corta, con la Fátiha al principio. Hay suras de La Meca y suras de Medina. Algunos de los manuscritos más antiguos que se conservan, como el de Birmingham, son del siglo VII. Para los musulmanes, las traducciones son interpretaciones: el Corán, en sentido estricto, es el texto árabe.' },
+        [
+          Q('¿Cuántas suras tiene el Corán?', '114', 'Con unas 6.236 aleyas.', '7', '150', '1.000'),
+          Q('¿En qué orden están, aproximadamente, las suras?', 'De la más larga a la más corta, con la Fátiha al principio', 'No por orden de revelación.', 'Por orden alfabético', 'Por fechas exactas', 'Al azar'),
+          Q('¿Qué califa hizo preparar la copia oficial del Corán, hacia el año 650?', 'Uzmán', 'Y la envió a las grandes ciudades.', 'Harún al-Rashid', 'Saladino', 'Solimán'),
+          Q('¿A quién encargó Abu Bakr reunir los fragmentos del Corán?', 'A Zayd ibn Thabit', 'Según la tradición.', 'A Avicena', 'A Rumi', 'A Ibn Jaldún'),
+          Q('¿Cómo se llama quien sabe el Corán entero de memoria?', 'Hafiz', 'Millones en el mundo.', 'Califa', 'Visir', 'Sultán'),
+          Q('Para los musulmanes, ¿qué son las traducciones del Corán?', 'Interpretaciones; el Corán es el texto árabe', 'Por eso se recita en árabe.', 'Lo mismo que el original', 'Libros prohibidos', 'Poemas inventados'),
+          Q('¿Qué significa «Corán»?', 'La recitación', 'La primera palabra revelada fue «¡Lee!».', 'El jardín', 'La espada', 'El camino'),
+          Q('¿Qué sura se recita en cada oración?', 'La Fátiha', 'La que abre.', 'La de la Caverna', 'La de José', 'La de María'),
+          Q('¿Qué sura llama a su historia «el más bello de los relatos»?', 'La de José (Yusuf)', 'Sura 12.', 'La de María', 'La del Misericordioso', 'La de la Caverna'),
+          Q('¿Quién es la única mujer nombrada en el Corán?', 'María (Maryam)', 'La madre de Jesús.', 'Eva', 'Sara', 'Ninguna'),
+          Q('¿Qué sura cuenta la historia de los jóvenes dormidos?', 'La de la Caverna (Al-Kahf)', 'Sura 18.', 'La Fátiha', 'La de José', 'La de María'),
+          Q('¿Qué sura repite «¿Cuál de las gracias de vuestro Señor negaréis?»?', 'Ar-Rahmán', 'Sura 55.', 'La Fátiha', 'La de la Caverna', 'La de José'),
+        ], { boss: true, final: false }),
+    ],
+  });
+}
+
+Object.assign(LESSONS, {
+  iqra: [
+    'Hacia el año seiscientos diez, en La Meca, vivía un comerciante llamado Mahoma, conocido por su honradez. Solía retirarse a meditar en una cueva del monte Hira, sobre la ciudad.',
+    'Según la tradición islámica, una noche del mes de Ramadán se le presentó el ángel Gabriel, Yibril, y le dijo: ¡Lee! Él respondió que no sabía leer. El ángel repitió la orden tres veces.',
+    'Entonces llegaron las primeras palabras del Corán: ¡Lee en el nombre de tu Señor, que ha creado! ¡Lee! Tu Señor es el Más Generoso, que enseñó por medio del cálamo, que enseñó al ser humano lo que no sabía.',
+    'Asustado, volvió a casa, y su esposa Jadiya lo tranquilizó y fue la primera en creer en su mensaje. La revelación continuó durante unos veintitrés años, en La Meca y después en Medina.',
+    'La palabra Corán significa la recitación. Para los musulmanes, es la palabra de Dios en lengua árabe. Una pregunta para ti: ¿por qué crees que la primera palabra fue precisamente lee?',
+  ],
+  fatiha: [
+    'La primera sura del Corán se llama Al-Fátiha, la que abre. Tiene solo siete aleyas, es decir, siete versículos.',
+    'Empieza con la basmala, la fórmula que abre casi todas las suras: En el nombre de Dios, el Compasivo, el Misericordioso.',
+    'Después alaba a Dios, Señor de los mundos, y lo llama Soberano del Día del Juicio. A ti solo adoramos, dice, y a ti solo pedimos ayuda.',
+    'Termina con una petición: Guíanos por el camino recto. Los musulmanes la recitan en cada parte de sus cinco oraciones diarias: al menos diecisiete veces al día.',
+    'Por eso se la llama la madre del Libro: resume su mensaje en pocas palabras. Una pregunta para ti: ¿qué significa para ti seguir un camino recto?',
+  ],
+  yusuf: [
+    'La sura doce cuenta, de principio a fin, la historia de José, Yusuf, hijo de Jacob. El Corán la presenta como el más bello de los relatos.',
+    'De niño, José soñó que once estrellas, el sol y la luna se inclinaban ante él. Sus hermanos, celosos, lo arrojaron a un pozo, y unos viajeros lo vendieron como esclavo en Egipto.',
+    'En Egipto resistió la tentación y fue encarcelado injustamente. En la cárcel interpretó sueños, y después los del rey: siete vacas gordas y siete flacas anunciaban años de abundancia y de hambre.',
+    'José administró Egipto y salvó al pueblo del hambre. Cuando sus hermanos llegaron a pedir trigo, los reconoció y los perdonó. Al final se reunió con su padre, que había esperado con paciencia hermosa.',
+    'La misma historia está en el Génesis de la Biblia, con algunas diferencias. Una pregunta para ti: ¿es posible perdonar a quien te ha hecho mucho daño?',
+  ],
+  maryam: [
+    'La sura diecinueve lleva el nombre de María, Maryam. Es la única mujer a la que el Corán llama por su nombre, y aparece en él más veces que en todo el Nuevo Testamento.',
+    'Empieza con Zacarías, ya anciano, que pide un hijo a Dios. Recibe la noticia del nacimiento de Juan, Yahya, al que los cristianos llaman Juan el Bautista.',
+    'Después cuenta cómo María, retirada en oración, recibe el anuncio de que tendrá un hijo. Da a luz a Jesús, Isa, junto a una palmera que le ofrece dátiles, mientras a sus pies brota un arroyo.',
+    'Para el islam, Jesús es uno de los más grandes profetas y el Mesías, nacido de una virgen; pero no es Dios ni hijo de Dios. Es una diferencia importante con el cristianismo, que cree que Jesús es el Hijo de Dios.',
+    'María es para los musulmanes un modelo de fe y de pureza. Una pregunta para ti: ¿qué personajes comparten la Biblia y el Corán, y por qué crees que ocurre?',
+  ],
+  kahf: [
+    'La sura dieciocho, la de la Caverna, reúne cuatro historias. Muchos musulmanes la recitan los viernes.',
+    'La primera cuenta cómo unos jóvenes creyentes, perseguidos, se refugiaron en una cueva con su perro y durmieron unos trescientos años. Al despertar, el mundo había cambiado.',
+    'La segunda habla de un hombre con dos jardines espléndidos que se creía dueño de todo y despreciaba a su vecino pobre. Lo perdió todo por su orgullo.',
+    'La tercera cuenta el viaje de Moisés con un sabio misterioso, al que la tradición llama Al-Jidr. Moisés no entiende sus actos extraños, hasta que el sabio le explica sus razones. La cuarta, la de Dhul-Qarnayn, un rey justo que viaja hasta los confines de la tierra.',
+    'La sura dice que si el mar fuera tinta para escribir las palabras de Dios, se agotaría antes que ellas. Una pregunta para ti: ¿qué cosas no puedes entender todavía, aunque algún día quizá sí?',
+  ],
+  rahman: [
+    'La sura cincuenta y cinco lleva el nombre de Ar-Rahmán, el Misericordioso, uno de los nombres de Dios. Empieza así: el Misericordioso enseñó el Corán, creó al ser humano y le enseñó a expresarse.',
+    'Es un gran canto a la creación: el sol y la luna siguen su cálculo, las plantas y los árboles se inclinan, los dos mares se encuentran sin mezclarse, y de ellos salen perlas y coral.',
+    'Habla también de la justicia: Dios elevó el cielo y estableció la balanza. No alteréis la balanza: pesad con equidad.',
+    'Treinta y una veces se repite un estribillo: ¿cuál de las gracias de vuestro Señor negaréis? Por su belleza, una tradición la llama la novia del Corán.',
+    'Una pregunta para ti: ¿qué regalo de la naturaleza te parece más maravilloso, y cómo podrías cuidarlo?',
+  ],
+  mushaf: [
+    'El Corán fue revelado poco a poco, durante unos veintitrés años. Muchos compañeros del Profeta memorizaban cada versículo, y algunos los escribían en hojas de palmera, piedras planas, huesos y pergamino.',
+    'Según la tradición, tras la muerte de Mahoma en el año seiscientos treinta y dos, el primer califa, Abu Bakr, encargó a Zayd ibn Thabit reunir todos los fragmentos en un solo libro.',
+    'Hacia el año seiscientos cincuenta, el califa Uzmán hizo preparar una copia oficial y envió ejemplares a las grandes ciudades. A ese libro reunido se le llama Mushaf.',
+    'El Corán tiene ciento catorce suras y unas seis mil doscientas aleyas, ordenadas más o menos de la más larga a la más corta, con la Fátiha al principio. Algunos de los manuscritos más antiguos que se conservan, como el de Birmingham, son del siglo séptimo.',
+    'Hoy millones de personas, llamadas hafiz, lo saben entero de memoria. Para los musulmanes, las traducciones son interpretaciones: el Corán es el texto árabe. Una pregunta para ti: ¿qué diferencia hay entre aprender algo de memoria y comprenderlo?',
+  ],
+});
+
+Object.assign(FRASES, {
+  iqra: [['¡Lee en el nombre de tu Señor, que ha creado!', 'Corán 96:1'], ['Tu Señor es el Más Generoso, que enseñó por medio del cálamo.', 'Corán 96:3-4']],
+  fatiha: [['En el nombre de Dios, el Compasivo, el Misericordioso.', 'Corán 1:1'], ['Guíanos por el camino recto.', 'Corán 1:6']],
+  yusuf: [['Te contamos el más bello de los relatos.', 'Corán 12:3'], ['Paciencia hermosa.', 'Corán 12:18']],
+  maryam: [['Sacude hacia ti el tronco de la palmera y caerán sobre ti dátiles frescos.', 'Corán 19:25']],
+  kahf: [['Si el mar fuera tinta para las palabras de mi Señor, se agotaría el mar antes que las palabras de mi Señor.', 'Corán 18:109']],
+  rahman: [['¿Cuál de las gracias de vuestro Señor negaréis?', 'Corán 55:13'], ['No alteréis la balanza.', 'Corán 55:8']],
+  mushaf: [['No cabe coacción en la religión.', 'Corán 2:256'], ['Os hemos hecho pueblos y tribus para que os conozcáis unos a otros.', 'Corán 49:13']],
+});
+
 // ---- src/01z-cronologia.js ----
 // ============================================================================
 //  LA LÍNEA DEL TIEMPO: un solo viaje por todas las épocas, en orden cronológico,
@@ -8214,7 +8572,7 @@ Object.assign(FRASES, {
 //  Los números romanos de cada época se reasignan según este orden.
 // ============================================================================
 const CHRONO = ['sumer', 'africa', 'india', 'persia', 'presocraticos', 'china', 'atenas', 'helenismo', 'medieval', 'islam', 'vikingos', 'japon',
-  'mexicas', 'incas', 'renacimiento', 'mapuche', 'modernidad', 'xix', 'latinoamerica', 'contemporanea', 'poetas', 'ciencia', 'ateos', 'teistas', 'pensadoras', 'justicia', 'misticos', 'mente', 'tierra', 'numeros', 'belleza', 'pueblos', 'cuidado', 'falacias', 'cosmos']
+  'mexicas', 'incas', 'renacimiento', 'mapuche', 'modernidad', 'xix', 'latinoamerica', 'contemporanea', 'poetas', 'ciencia', 'ateos', 'teistas', 'pensadoras', 'justicia', 'misticos', 'mente', 'tierra', 'numeros', 'belleza', 'pueblos', 'cuidado', 'falacias', 'cosmos', 'biblia', 'coran']
   .map((id) => ERAS.findIndex((e) => e.id === id)).filter((i) => i >= 0);
 ERAS.forEach((e, i) => { if (!CHRONO.includes(i)) CHRONO.push(i); });
 // el botón principal dice cuántas épocas y pensadores hay (se calcula, para que no quede viejo)
@@ -8258,6 +8616,8 @@ const ERA_HOOK = {
   cuidado: 'Un mundo temático: curar, cuidar y respetar la vida.',
   falacias: 'Un mundo temático: los sofistas de todos los tiempos y el arte de descubrir falacias.',
   cosmos: 'Un mundo temático: la astronomía y la astrofísica, del sistema solar al borde del universo.',
+  biblia: 'Un mundo temático: la Torá, los Salmos, los evangelios y las cartas de Pablo.',
+  coran: 'Un mundo temático: las suras del Corán y cómo se reunió el Libro.',
 };
 function nextEra(i) { const k = CHRONO.indexOf(i); return k >= 0 && k < CHRONO.length - 1 ? CHRONO[k + 1] : -1; }
 
@@ -8438,6 +8798,15 @@ const THEMES = [
     sky: [0x02040e, 0x0a1430, 0x1a2a5a], sunDir: [0.3, 0.6, -0.5], sunCol: 0x9ab8ff, sunInt: 0.9, sunDisk: 0xdfe6ff,
     hemi: [0x8aa8ff, 0x1a1a2a, 0.75], fog: [0x0a1430, 0.006], exposure: 1.25, stars: true, moon: true, noClouds: true,
     accent: 0x8fb8ff, enemy: { col: 0x8fb8ff, core: 0x06102a, shell: 'octa' }, lampCol: 0xc8d8ff,
+  },  { // XXXVI · El camino de la Biblia: mañana dorada sobre colinas de olivos
+    sky: [0x5a8ad0, 0xffe0b0, 0xe8c898], sunDir: [-0.5, 0.45, -0.7], sunCol: 0xfff0d0, sunInt: 2.6, sunDisk: 0xfff8e0,
+    hemi: [0xfff0d8, 0x8a6a4a, 0.8], fog: [0xf0dcc0, 0.0062], exposure: 1.06, stars: false,
+    accent: 0xffd890, enemy: { col: 0xb0a090, core: 0x2a2010, shell: 'octa' }, lampCol: 0xffe0a0,
+  },
+  { // XXXVII · El jardín del Corán: atardecer cálido sobre un jardín de azulejos
+    sky: [0x2a3a7a, 0xff9a6a, 0xe8a070], sunDir: [0.7, 0.14, -0.7], sunCol: 0xffc890, sunInt: 2.2, sunDisk: 0xffe0b0,
+    hemi: [0xffd8b8, 0x5a4a3a, 0.75], fog: [0xe8b090, 0.0065], exposure: 1.08, stars: true,
+    accent: 0x4ad8c8, enemy: { col: 0xb0a090, core: 0x2a2010, shell: 'octa' }, lampCol: 0xffd090,
   },
 ];
 
@@ -10330,6 +10699,78 @@ const ERA_BUILDERS = [
     const mtn = farStd(W, 0x1a2440, 0.3);
     for (let k = 0; k < 10; k++) { const x = -150 + k * 33 + (r() - 0.5) * 12, z = -150 - r() * 50, h = 14 + r() * 14, w = 45 + r() * 25; const m = mesh(new THREE.SphereGeometry(w, 12, 8, 0, TAU, 0, Math.PI / 2), mtn, x, -4, z, false, false); m.scale.set(1, h / w, 0.6); W.group.add(m); }
     brazier(W, -4, -34, 0xc8d8ff); brazier(W, 4, -34, 0xc8d8ff);
+  },  // ------------------------------------------------------------------ XXXVI · El camino de la Biblia
+  function (W) {
+    const stones = texTiles('xxxvi', 0xe0cca8, 0xa8906a, 7, 0.14); stones.repeat.set(12, 18); ground(W, stones, [80, 120], 0.85);
+    const r = mulberry32(271);
+    const lime = std(0xe8d8b8, { roughness: 0.9 }); const limeD = std(0xc8b48c, { roughness: 0.9 }); const wood = std(0x7a5232, { roughness: 0.9 });
+    // casas de piedra con techos planos y escaleras exteriores
+    const house = (x, z, w, d, h) => { if (W._near(x, z, Math.max(w, d) / 2 + 0.6)) return; const g = new THREE.Group(); g.position.set(x, 0, z);
+      g.add(mesh(new THREE.BoxGeometry(w, h, d), lime, 0, h / 2, 0)); g.add(mesh(new THREE.BoxGeometry(w + 0.3, 0.25, d + 0.3), limeD, 0, h + 0.12, 0));
+      g.add(mesh(new THREE.BoxGeometry(0.9, 1.6, 0.1), std(0x4a3020), 0, 0.8, d / 2 + 0.03)); g.add(mesh(new THREE.BoxGeometry(0.6, 0.5, 0.1), std(0x2a2018), w / 4, h * 0.7, d / 2 + 0.03));
+      W.group.add(g); W.colliders.push({ t: 0, x0: x - w / 2, x1: x + w / 2, z0: z - d / 2, z1: z + d / 2, h }); };
+    for (const [x, z, w, d, h] of [[-19, 22, 4, 4, 3.5], [19, 14, 4, 5, 4], [-19, 8, 5, 4, 3], [19, -6, 4, 4, 4.5], [-19, -18, 4, 5, 3.5], [19, -26, 5, 4, 3]]) house(x, z, w, d, h);
+    // olivos
+    for (let i = 0; i < 16; i++) { const x = (r() < 0.5 ? -1 : 1) * (7 + r() * 9), z = -40 + r() * 74; if (W._near(x, z, 2.5)) continue; const t = oliveTree(r); t.position.set(x, 0, z); W.group.add(t); W.colliders.push({ t: 1, x, z, r: 0.5, h: 3 }); }
+    // pozo de piedra y vasijas
+    if (!W._near(0, 6, 2)) { W.group.add(mesh(new THREE.CylinderGeometry(1.1, 1.2, 0.9, 18, 1, true), limeD, 0, 0.45, 6)); W.group.add(mesh(new THREE.CircleGeometry(1.05, 18), std(0x2a4a6a, { roughness: 0.1, metalness: 0.3 }), 0, 0.6, 6, false, false).rotateX(-Math.PI / 2));
+      for (const sx of [-1, 1]) W.group.add(mesh(new THREE.BoxGeometry(0.12, 2.2, 0.12), wood, sx * 1.1, 1.1, 6)); W.group.add(mesh(new THREE.BoxGeometry(2.4, 0.12, 0.12), wood, 0, 2.2, 6)); W.colliders.push({ t: 1, x: 0, z: 6, r: 1.3, h: 1 }); }
+    for (let i = 0; i < 8; i++) { const x = (r() < 0.5 ? -1 : 1) * (4 + r() * 3), z = -30 + r() * 56; if (W._near(x, z, 0.8)) continue; const j = mesh(new THREE.SphereGeometry(0.35, 12, 8), std(0xb8683a, { roughness: 0.8 }), x, 0.35, z); j.scale.set(1, 1.3, 1); W.group.add(j); }
+    // la orilla del mar de Galilea con una barca
+    const water = new THREE.MeshStandardMaterial({ color: 0x3a7aa8, roughness: 0.08, metalness: 0.3 });
+    const lake = mesh(new THREE.CircleGeometry(22, 40), water, -45, 0.03, -10, false, true); lake.rotation.x = -Math.PI / 2; lake.scale.set(0.8, 1.6, 1); W.group.add(lake);
+    { const b = new THREE.Group(); b.position.set(-30, 0.2, -6); b.add(withRot(mesh(new THREE.CylinderGeometry(0.6, 0.6, 4, 10, 1, false, 0, Math.PI), wood, 0, 0, 0, false, false), 'z', Math.PI / 2)); b.add(mesh(new THREE.CylinderGeometry(0.05, 0.05, 3, 6), wood, 0, 1.5, 0, false, false)); W.group.add(b); }
+    // las murallas de Jerusalén y el monte Sinaí al fondo
+    { const g = new THREE.Group(); g.position.set(0, 0, -62); g.add(mesh(new THREE.BoxGeometry(44, 9, 3), limeD, 0, 4.5, 0, false, false));
+      for (let k = -5; k <= 5; k++) g.add(mesh(new THREE.BoxGeometry(1.6, 1.4, 3.2), limeD, k * 4, 9.6, 0, false, false));
+      for (const sx of [-24, 24]) g.add(mesh(new THREE.BoxGeometry(6, 15, 6), lime, sx, 7.5, 0, false, false));
+      g.add(mesh(new THREE.BoxGeometry(14, 7, 10), lime, 0, 12, -10, false, false)); g.add(mesh(new THREE.BoxGeometry(15, 0.8, 11), std(0xd8b048, { metalness: 0.6, roughness: 0.35 }), 0, 15.8, -10, false, false));
+      W.group.add(g); }
+    const mtn = farStd(W, 0xa8784a, 0.4);
+    { const m = mesh(new THREE.ConeGeometry(60, 70, 7), mtn, 120, 20, -190, false, false); W.group.add(m); }
+    for (let k = 0; k < 10; k++) { const x = -150 + k * 33 + (r() - 0.5) * 12, z = -140 - r() * 50, h = 10 + r() * 10, w = 50 + r() * 25; const m = mesh(new THREE.SphereGeometry(w, 12, 8, 0, TAU, 0, Math.PI / 2), farStd(W, 0xb89a6a, 0.45), x, -4, z, false, false); m.scale.set(1, h / w, 0.6); W.group.add(m); }
+    brazier(W, -4, -34, 0xffe0a0); brazier(W, 4, -34, 0xffe0a0);
+  },
+  // ------------------------------------------------------------------ XXXVII · El jardín del Corán
+  function (W) {
+    const tiles = texTiles('xxxvii', 0x2a8a9a, 0xe8e0d0, 8, 0.1); tiles.repeat.set(12, 18); ground(W, tiles, [80, 120], 0.5);
+    const r = mulberry32(281);
+    const white = std(0xf4ece0, { roughness: 0.6 }); const blue = std(0x1a5a9a, { roughness: 0.4 }); const tq = std(0x2ab8b0, { roughness: 0.4 }); const gold = std(0xd8a838, { metalness: 0.7, roughness: 0.3 });
+    // arcadas con arcos a ambos lados
+    for (const side of [-1, 1]) {
+      const a = arcade(80, 16, 4.8, white, blue, { attic: 1.4 }); a.rotation.y = Math.PI / 2; a.position.set(side * 21, 0, -5); W.group.add(a);
+      for (let i = 0; i <= 16; i++) W.colliders.push({ t: 1, x: side * 21, z: -45 + i * 5, r: 0.6, h: 7 });
+      W.group.add(mesh(new THREE.BoxGeometry(0.6, 9, 82), std(0xe8dcc8), side * 23.8, 4.5, -5, false, false)); W.colliders.push({ t: 0, x0: side * 23.8 - 0.4, x1: side * 23.8 + 0.4, z0: -47, z1: 37, h: 9 });
+    }
+    // fuente central con cuatro canales de agua (el jardín de cuatro partes)
+    const water = new THREE.MeshStandardMaterial({ color: 0x3ab8d0, roughness: 0.05, metalness: 0.2, emissive: 0x0a3040, emissiveIntensity: 0.4 });
+    if (!W._near(0, 6, 3)) { W.group.add(mesh(new THREE.CylinderGeometry(2.6, 2.8, 0.6, 8), white, 0, 0.3, 6)); const w0 = mesh(new THREE.CircleGeometry(2.4, 8), water, 0, 0.62, 6, false, false); w0.rotation.x = -Math.PI / 2; W.group.add(w0);
+      W.group.add(mesh(new THREE.CylinderGeometry(0.25, 0.35, 1.6, 8), white, 0, 1.2, 6)); W.colliders.push({ t: 1, x: 0, z: 6, r: 2.8, h: 0.6 }); }
+    for (const [dx, dz, len, rot] of [[0, 18, 20, 0], [0, -8, 20, 0]]) { const ch = mesh(new THREE.BoxGeometry(0.7, 0.04, len), water, dx, 0.04, dz, false, false); W.group.add(ch); }
+    // palmeras y naranjos
+    const palm = (x, z) => { if (W._near(x, z, 1.4)) return; const g = new THREE.Group(); g.position.set(x, 0, z); const h = 5 + r() * 2;
+      g.add(withRot(mesh(new THREE.CylinderGeometry(0.16, 0.24, h, 8), std(0x8a6a4a, { roughness: 1 }), 0, h / 2, 0), 'z', (r() - 0.5) * 0.1));
+      for (let i = 0; i < 8; i++) { const a = (i / 8) * TAU; const lf = mesh(new THREE.BoxGeometry(0.25, 0.04, 2.6), std(0x3a8a3a, { roughness: 0.9 }), Math.cos(a) * 1.1, h - 0.2, Math.sin(a) * 1.1, false, false); lf.rotation.set(0.5, -a + Math.PI / 2, 0); g.add(lf); }
+      W.group.add(g); W.colliders.push({ t: 1, x, z, r: 0.3, h }); };
+    for (let i = 0; i < 12; i++) palm((r() < 0.5 ? -1 : 1) * (8 + r() * 9), -40 + r() * 74);
+    for (let i = 0; i < 8; i++) { const x = (r() < 0.5 ? -1 : 1) * (5 + r() * 4), z = -30 + r() * 56; if (W._near(x, z, 1)) continue; W.group.add(mesh(new THREE.CylinderGeometry(0.1, 0.12, 1.2, 6), std(0x6a4a2a), x, 0.6, z)); const c = mesh(new THREE.SphereGeometry(0.8, 12, 10), std(0x2a6a2a, { roughness: 0.9 }), x, 1.6, z); W.group.add(c);
+      for (let k = 0; k < 6; k++) W.group.add(mesh(new THREE.SphereGeometry(0.09, 8, 6), std(0xff8a20, { roughness: 0.5 }), x + (r() - 0.5) * 1.2, 1.4 + r() * 0.6, z + (r() - 0.5) * 1.2, false, false)); W.colliders.push({ t: 1, x, z, r: 0.5, h: 2 }); }
+    // estrellas de ocho puntas sobre pedestales y faroles colgantes
+    const star8 = (x, z) => { if (W._near(x, z, 1)) return; const g = new THREE.Group(); g.position.set(x, 0, z); g.add(mesh(new THREE.BoxGeometry(0.6, 1.2, 0.6), white, 0, 0.6, 0));
+      const s1 = mesh(new THREE.BoxGeometry(0.9, 0.9, 0.08), gold, 0, 1.8, 0, false, false), s2 = s1.clone(); s2.rotation.z = Math.PI / 4; g.add(s1, s2); W.anim.push((t) => { g.rotation.y = t * 0.4; }); W.group.add(g); W.colliders.push({ t: 1, x, z, r: 0.4, h: 1.2 }); };
+    for (const [x, z] of [[-6, 22], [6, 22], [-6, -10], [6, -10]]) star8(x, z);
+    for (let i = 0; i < 14; i++) { const z = -40 + i * 5.5; for (const sx of [-1, 1]) W.group.add(mesh(new THREE.SphereGeometry(0.22, 10, 8), glow(0xffc070, 2.2), sx * 19.6, 3.6, z, false, false)); }
+    // cúpula y alminar al fondo
+    { const g = new THREE.Group(); g.position.set(0, 0, -62);
+      g.add(mesh(new THREE.BoxGeometry(26, 12, 14), white, 0, 6, 0, false, false));
+      for (let k = -2; k <= 2; k++) g.add(mesh(new THREE.BoxGeometry(2.6, 6, 0.3), tq, k * 5, 5, 7.05, false, false));
+      g.add(mesh(new THREE.CylinderGeometry(8, 8, 3, 32), white, 0, 13.5, 0, false, false)); g.add(mesh(new THREE.SphereGeometry(8, 32, 16, 0, TAU, 0, Math.PI / 2), tq, 0, 15, 0, false, false));
+      g.add(mesh(new THREE.ConeGeometry(0.6, 3, 8), gold, 0, 24.5, 0, false, false));
+      for (const sx of [-17, 17]) { g.add(mesh(new THREE.CylinderGeometry(1.4, 1.7, 30, 12), white, sx, 15, 2, false, false)); g.add(mesh(new THREE.CylinderGeometry(2.1, 2.1, 0.8, 12), blue, sx, 24, 2, false, false)); g.add(mesh(new THREE.ConeGeometry(1.5, 4, 12), tq, sx, 32, 2, false, false)); }
+      W.group.add(g); }
+    const mtn = farStd(W, 0x8a5a3a, 0.4);
+    for (let k = 0; k < 10; k++) { const x = -150 + k * 33 + (r() - 0.5) * 12, z = -140 - r() * 50, h = 14 + r() * 14, w = 40 + r() * 25; const m = mesh(new THREE.SphereGeometry(w, 12, 8, 0, TAU, 0, Math.PI / 2), mtn, x, -4, z, false, false); m.scale.set(1, h / w, 0.6); W.group.add(m); }
+    brazier(W, -4, -34, 0xffc070); brazier(W, 4, -34, 0xffc070);
   },
 ];
 
@@ -17379,6 +17820,156 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
   } catch (e) { /* herramientas sin debates */ }
 }
 
+// ============================================================================
+//  XXXVI · EL CAMINO DE LA BIBLIA y XXXVII · EL JARDÍN DEL CORÁN
+// ============================================================================
+{
+  const PP = [[-17, 30], [17, 24], [17, 6], [-17, -2], [6, -40]];
+  const BB = [[16, -12], [-16, 16]];
+  const poi = (i, id, name, text, fact, q) => ({ id, at: PP[i], name, text, fact, q });
+  const book = (b, i) => ({ ...b, at: BB[i] });
+  // ---------------------------------------------------------------- XXXVI · El camino de la Biblia
+  POIS.push([
+    poi(0, 'sinai', 'El monte Sinaí', 'Según el libro del Éxodo, en la cima de una montaña del desierto, envuelta en nubes, truenos y fuego, Moisés recibió de Dios las dos tablas de la Ley con los Diez Mandamientos. La tradición sitúa el monte Sinaí en el sur de la península del Sinaí, donde desde el siglo VI se alza el monasterio de Santa Catalina, uno de los monasterios cristianos más antiguos que siguen habitados.',
+      'Los Diez Mandamientos aparecen dos veces en la Biblia: en el Éxodo, capítulo 20, y en el Deuteronomio, capítulo 5, con pequeñas diferencias.',
+      { q: '¿En qué dos libros de la Biblia aparecen los Diez Mandamientos?', a: ['En el Éxodo y el Deuteronomio', 'En los Salmos y Juan', 'En Génesis y Apocalipsis', 'En ninguno'], e: 'Éxodo 20 y Deuteronomio 5.' }),
+    poi(1, 'qumran', 'Las cuevas de Qumrán', 'En 1947, un joven pastor beduino buscaba una cabra perdida cerca del mar Muerto. Lanzó una piedra a una cueva, oyó romperse una vasija y encontró rollos muy antiguos. Eran los manuscritos del mar Muerto: unos novecientos textos, copiados entre el siglo III a. C. y el siglo I, entre ellos copias de casi todos los libros de la Biblia hebrea. El gran rollo de Isaías, de unos siete metros, es mil años más antiguo que las copias completas que se conocían.',
+      'La comparación de los rollos con copias mil años posteriores mostró que el texto se había transmitido con gran fidelidad, aunque con algunas variantes.',
+      { q: '¿Cómo se descubrieron los manuscritos del mar Muerto?', a: ['Un pastor buscando una cabra lanzó una piedra a una cueva', 'Con un satélite', 'En una biblioteca de Roma', 'Nunca se descubrieron'], e: 'En 1947, en Qumrán.' }),
+    poi(2, 'jerusalen-templo', 'El templo de Jerusalén', 'Según la Biblia, el rey Salomón, hijo de David, construyó en Jerusalén el primer templo, destruido por los babilonios en el año 587 a. C. Tras el exilio se levantó un segundo templo, que el rey Herodes amplió con enorme lujo. Allí, según los evangelios, Jesús enseñó y expulsó a los mercaderes. Los romanos lo destruyeron en el año 70. Hoy queda el Muro Occidental, lugar de oración para los judíos.',
+      'Jerusalén es una ciudad santa para judíos, cristianos y musulmanes: allí están el Muro Occidental, la basílica del Santo Sepulcro y la mezquita de Al-Aqsa.',
+      { q: '¿Para qué tres religiones es Jerusalén una ciudad santa?', a: ['Judaísmo, cristianismo e islam', 'Solo el budismo', 'Hinduismo y sintoísmo', 'Ninguna'], e: 'Con lugares sagrados de las tres.' }),
+    poi(3, 'mar-galilea', 'El mar de Galilea', 'El mar de Galilea es en realidad un gran lago de agua dulce, rodeado de colinas. Según los evangelios, Jesús vivió y predicó en sus orillas, en pueblos como Cafarnaúm, y llamó a sus primeros discípulos, Pedro, Andrés, Santiago y Juan, que eran pescadores: «Venid conmigo y os haré pescadores de hombres». En sus colinas se recuerda el Sermón de la Montaña.',
+      'En 1986, durante una sequía, apareció en el barro del lago una barca de pesca del siglo I, conservada casi entera.',
+      { q: '¿Qué oficio tenían Pedro y Andrés, según los evangelios?', a: ['Pescadores', 'Recaudadores', 'Soldados', 'Escribas'], e: 'En el mar de Galilea.' }),
+    poi(4, 'biblia-gutenberg', 'La Biblia de Gutenberg', 'Hacia 1455, en Maguncia, Johannes Gutenberg imprimió la Biblia en latín con su invento de tipos móviles de metal. Fue el primer gran libro impreso en Europa. Se hicieron unos 180 ejemplares y se conservan cerca de cincuenta. Gracias a la imprenta, y después a las traducciones a las lenguas de cada pueblo, la Biblia llegó a millones de personas.',
+      'La Biblia es el libro más traducido de la historia: la Biblia completa existe en más de setecientas lenguas, y alguna parte, en más de tres mil.',
+      { q: '¿Cuál fue el primer gran libro impreso con tipos móviles en Europa?', a: ['La Biblia de Gutenberg', 'El Quijote', 'La Ilíada', 'Un periódico'], e: 'Hacia 1455.' }),
+  ]);
+  NPCS.push([
+    wnpc(0, 'escriba-qumran', 'Eliezer', 'escriba copista', sk(0xe8e0d0, 0x3a5a8a, 0xc49372, 0x3a2a1a, { beard: 0x3a2a1a, hat: 'none', acc: 'quill' }), [
+      'Copio los rollos letra por letra. Si me equivoco en una sola letra del nombre de Dios, empiezo la hoja de nuevo.',
+      'Escribimos en pergamino, con tinta de hollín. La Biblia hebrea se escribe de derecha a izquierda, y en tiempos antiguos solo con consonantes.',
+      'Gracias a copistas como yo, los textos atravesaron los siglos antes de que existiera la imprenta.',
+    ]),
+    wnpc(1, 'pescador-galilea', 'Simón', 'pescador de Galilea', sk(0x8a6a4a, 0x3a3a3a, 0xc49372, 0x2a1a10, { beard: 0x2a1a10, hat: 'cap', acc: 'none' }), [
+      'Pescamos de noche, con redes. A veces volvemos sin nada. Por eso todos aquí conocen la historia de la pesca milagrosa.',
+      'En este lago las tormentas llegan de repente, bajando de las montañas. Los evangelios cuentan una en la que Jesús calmó el viento.',
+      'Aquí hablamos arameo, la lengua que hablaba Jesús. Los evangelios, sin embargo, se escribieron en griego.',
+    ]),
+    wnpc(2, 'traductora-biblia', 'Clara', 'traductora de la Biblia', sk(0x3a4a6a, 0xe8e8e8, 0xe0c0a0, 0x5a3a2a, { hat: 'longhair', acc: 'book' }), [
+      'Traducir la Biblia es difícil: el hebreo, el arameo y el griego tienen palabras sin equivalente exacto. Cada traducción es también una interpretación.',
+      'San Jerónimo la tradujo al latín hacia el año 400: la Vulgata. Al español la tradujeron, entre otros, Casiodoro de Reina en 1569 y muchos equipos modernos.',
+      'Los judíos llaman a su Biblia Tanaj; los cristianos la llaman Antiguo Testamento y le añaden el Nuevo Testamento, sobre Jesús y los primeros cristianos.',
+    ], true),
+  ]);
+  Object.assign(QUESTS, {
+    moises: { text: 'Visita el monte Sinaí. Luego dime cuántos mandamientos recibí.', needs: { pois: ['sinai'], npcs: [] }, riddle: { q: '¿Cuántos mandamientos hay en las tablas de la Ley?', a: ['Diez', 'Siete', 'Tres', 'Cien'] } },
+    david: { text: 'Visita el templo de Jerusalén. Luego dime qué ciudad hice mi capital.', needs: { pois: ['jerusalen-templo'], npcs: [] }, riddle: { q: '¿Qué ciudad convirtió David en su capital?', a: ['Jerusalén', 'Belén', 'Nazaret', 'Roma'] } },
+    mateo: { text: 'Escucha a Eliezer, el escriba. Luego dime qué significa «evangelio».', needs: { pois: [], npcs: ['escriba-qumran'] }, riddle: { q: '¿Qué significa «evangelio»?', a: ['Buena noticia', 'Libro', 'Ley', 'Canto'] } },
+    marcos: { text: 'Visita el mar de Galilea y escucha a Simón, el pescador. Luego dime qué lengua hablaba Jesús.', needs: { pois: ['mar-galilea'], npcs: ['pescador-galilea'] }, riddle: { q: '¿Qué lengua hablaba Jesús?', a: ['Arameo', 'Latín', 'Inglés', 'Japonés'] } },
+    lucas: { text: 'Visita las cuevas de Qumrán. Luego dime cómo se encontraron los manuscritos.', needs: { pois: ['qumran'], npcs: [] }, riddle: { q: '¿Quién encontró los manuscritos del mar Muerto?', a: ['Un joven pastor buscando una cabra', 'Un rey', 'Un astronauta', 'Nadie'] } },
+    juan: { text: 'Escucha a Clara, la traductora. Luego dime en qué lengua se escribieron los evangelios.', needs: { pois: [], npcs: ['traductora-biblia'] }, riddle: { q: '¿En qué lengua se escribieron los evangelios?', a: ['En griego', 'En latín', 'En español', 'En árabe'] } },
+    pablo: { text: 'Visita la Biblia de Gutenberg. Luego dime cuál es el libro más traducido de la historia.', needs: { pois: ['biblia-gutenberg'], npcs: [] }, riddle: { q: '¿Cuál es el libro más traducido de la historia?', a: ['La Biblia', 'Un diccionario', 'Un libro de cocina', 'Ninguno'] } },
+  });
+  Object.assign(ANECDOTES, {
+    moises: ['Según el Éxodo, cuando bajó del Sinaí su rostro brillaba tanto que tuvo que cubrirlo con un velo. Por una mala traducción latina de esa palabra, algunos artistas, como Miguel Ángel, lo esculpieron con cuernos.', 'La tradición dice que murió a los ciento veinte años, mirando la tierra prometida desde el monte Nebo, sin llegar a entrar.'],
+    david: ['Según la Biblia, bailó con todas sus fuerzas delante del arca cuando la llevaron a Jerusalén, y su esposa Mical se burló de él.', 'Su hijo Salomón, famoso por su sabiduría, construyó el primer templo de Jerusalén.'],
+    mateo: ['Su evangelio fue el más citado y usado por los primeros cristianos; por eso se puso el primero del Nuevo Testamento.', 'Solo él cuenta la visita de los magos de Oriente guiados por una estrella.'],
+    marcos: ['Algunos piensan que el joven que huyó desnudo dejando su sábana, en el arresto de Jesús, era el propio Marcos firmando discretamente su obra.', 'Venecia lo tomó como patrón: el león alado de san Marcos es todavía el símbolo de la ciudad.'],
+    lucas: ['Una antigua leyenda dice que Lucas pintó el primer retrato de María; por eso es patrón de los pintores, además de los médicos.', 'Escribe en el griego más elegante de todo el Nuevo Testamento.'],
+    juan: ['Una tradición cuenta que, ya muy anciano, solo repetía: «Hijitos, amaos los unos a los otros». Cuando le preguntaron por qué, respondió que eso bastaba.', 'El último libro de la Biblia, el Apocalipsis, lleva el nombre de un Juan que escribió en la isla de Patmos.'],
+    pablo: ['Según los Hechos, en Atenas discutió con filósofos estoicos y epicúreos en el Areópago.', 'Viajó unos dieciséis mil kilómetros, naufragó tres veces y fabricaba tiendas de campaña para ganarse la vida.'],
+  });
+  BOOKS.push([
+    book({ id: 'salmos', author: 'david', by: 'Tradición atribuida a David', title: 'Los Salmos', year: 'siglos X – IV a. C.', kind: 'poesía y oración',
+      parts: [
+        { t: 'Ciento cincuenta cantos', x: 'El libro reúne 150 salmos divididos en cinco partes, quizá imitando los cinco libros de la Torá.' },
+        { t: 'Todas las emociones', x: 'Hay salmos de alegría, de tristeza, de miedo, de enfado, de perdón y de confianza: el creyente habla a Dios con toda su vida.' },
+        { t: 'El buen pastor', x: 'El salmo 23 compara a Dios con un pastor que conduce a sus ovejas a pastos verdes y aguas tranquilas, y las acompaña en los valles oscuros.' },
+        { t: 'Una oración compartida', x: 'Judíos y cristianos rezan los salmos cada día, y han inspirado música de todas las épocas, del canto gregoriano al góspel.' },
+      ],
+      quote: 'El Señor es mi pastor, nada me falta.',
+      q: { q: '¿Cuántos salmos tiene el libro?', a: ['150', '10', '50', '365'], e: 'Divididos en cinco partes.' } }, 0),
+    book({ id: 'corintios', author: 'pablo', by: 'Pablo de Tarso', title: 'Primera carta a los Corintios', year: 'hacia el año 54', kind: 'carta',
+      parts: [
+        { t: 'Una comunidad dividida', x: 'Pablo escribe a los cristianos de Corinto, una ciudad portuaria griega, porque están divididos en grupos que discuten entre sí.' },
+        { t: 'Un solo cuerpo', x: 'Les dice que son como un cuerpo con muchos miembros: el ojo no puede decir a la mano «no te necesito».' },
+        { t: 'El himno al amor', x: 'El capítulo 13 es uno de los textos más leídos del mundo: el amor es paciente, es servicial, no tiene envidia, todo lo excusa, todo lo espera.' },
+        { t: 'La esperanza', x: 'En el capítulo 15 habla de la resurrección, el centro de la fe cristiana.' },
+      ],
+      quote: 'Ahora permanecen la fe, la esperanza y el amor; pero el mayor de ellos es el amor.',
+      q: { q: '¿Con qué compara Pablo a la comunidad en la carta a los Corintios?', a: ['Con un cuerpo de muchos miembros', 'Con un ejército', 'Con un barco', 'Con una torre'], e: 'Todos se necesitan.' } }, 1),
+  ]);
+  BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });
+
+  // ---------------------------------------------------------------- XXXVII · El jardín del Corán
+  POIS.push([
+    poi(0, 'cueva-hira', 'La cueva de Hira', 'Sobre La Meca se alza el Yabal al-Nur, el monte de la Luz. Cerca de su cima hay una pequeña cueva, Hira, donde según la tradición Mahoma solía retirarse a meditar y donde recibió la primera revelación del Corán, hacia el año 610. Hoy muchos peregrinos suben a pie por un camino empinado para verla.',
+      'La cueva es tan pequeña que apenas caben unas pocas personas sentadas, y desde ella se ve la ciudad de La Meca.',
+      { q: '¿Cómo se llama el monte donde está la cueva de Hira?', a: ['El monte de la Luz (Yabal al-Nur)', 'El monte Sinaí', 'El monte Olimpo', 'El monte Everest'], e: 'Sobre La Meca.' }),
+    poi(1, 'kaaba', 'La Kaaba', 'En el centro de la gran mezquita de La Meca está la Kaaba, un edificio en forma de cubo cubierto con una tela negra bordada en oro, la kiswa. Según la tradición islámica, la construyeron Abraham, Ibrahim, y su hijo Ismael. Los musulmanes de todo el mundo rezan orientados hacia ella, y en la peregrinación, el hach, la rodean siete veces.',
+      'El hach es uno de los cinco pilares del islam: todo musulmán que pueda debe hacerlo al menos una vez en la vida. Cada año reúne a casi dos millones de personas.',
+      { q: '¿Hacia dónde rezan los musulmanes de todo el mundo?', a: ['Hacia la Kaaba, en La Meca', 'Hacia el norte', 'Hacia el sol', 'Hacia Roma'], e: 'La dirección se llama alquibla.' }),
+    poi(2, 'mezquita-profeta', 'La mezquita de Medina', 'En el año 622, perseguidos en La Meca, el Profeta y sus seguidores emigraron a la ciudad de Yathrib, que pasó a llamarse Medina. Esa emigración, la Hégira, marca el año uno del calendario islámico. Allí se construyó una mezquita sencilla, con muros de adobe, columnas de troncos de palmera y techo de hojas. Hoy es una de las mezquitas más grandes del mundo.',
+      'El calendario islámico es lunar: su año tiene unos 354 días, por eso el mes de Ramadán cambia de estación con los años.',
+      { q: '¿Qué marca el año uno del calendario islámico?', a: ['La Hégira, la emigración a Medina en 622', 'La construcción de la Kaaba', 'El nacimiento de Abraham', 'La caída de Roma'], e: 'Un calendario lunar.' }),
+    poi(3, 'manuscrito-birmingham', 'El manuscrito de Birmingham', 'En 2015, unos investigadores de la Universidad de Birmingham analizaron dos hojas de pergamino con fragmentos del Corán escritos en una antigua letra árabe. La prueba del carbono 14 indicó que el pergamino se preparó entre los años 568 y 645: es uno de los fragmentos del Corán más antiguos que se conocen, muy cercano a la época de la revelación.',
+      'Otros manuscritos muy antiguos, como los de Saná, en Yemen, ayudan a los estudiosos a conocer cómo se escribía el Corán en sus primeros tiempos.',
+      { q: '¿Qué prueba indicó la antigüedad del manuscrito de Birmingham?', a: ['El carbono 14', 'Un horóscopo', 'Una encuesta', 'Ninguna'], e: 'Entre 568 y 645.' }),
+    poi(4, 'caligrafia', 'El taller del calígrafo', 'Como el islam evita representar a Dios y a los profetas, el arte islámico desarrolló otras formas de belleza: la caligrafía, los motivos geométricos de estrellas entrelazadas y los arabescos de plantas. Los calígrafos escriben el Corán con cálamos de caña, en estilos como el cúfico, de letras angulosas, o el nasj, más redondeado, y adornan las páginas con oro y lapislázuli.',
+      'Copiar el Corán con caligrafía perfecta podía llevar años. Muchos calígrafos famosos firmaban sus obras con humildad, pidiendo perdón por sus errores.',
+      { q: '¿Qué formas de arte desarrolló sobre todo el arte islámico?', a: ['Caligrafía, geometría y arabescos', 'Estatuas de profetas', 'Retratos de reyes', 'Fotografía'], e: 'Evita representar a Dios y a los profetas.' }),
+  ]);
+  NPCS.push([
+    wnpc(0, 'hafiz', 'Bilal', 'hafiz, recitador del Corán', sk(0xf0f0f0, 0x3a5a3a, 0x8a5a3a, 0x1a1a1a, { beard: 0x1a1a1a, hat: 'cap', acc: 'book' }), [
+      'Empecé a memorizar el Corán a los siete años, una página cada día. A los doce ya lo sabía entero: soy hafiz.',
+      'El Corán se recita con reglas precisas, el tayuid, que indican cómo alargar, pausar y pronunciar cada letra. Bien recitado, suena casi como música.',
+      'Muchos musulmanes no hablan árabe, pero aprenden a recitar en árabe y leen traducciones para entender el sentido.',
+    ]),
+    wnpc(1, 'caligrafa', 'Leila', 'calígrafa', sk(0x2a4a8a, 0xd8a838, 0xc49372, 0x2a1a10, { hat: 'hood', acc: 'quill' }), [
+      'Mi cálamo es una caña tallada en diagonal. El ancho de la punta marca la medida de cada letra: la caligrafía es proporción, como la música.',
+      'En el arte islámico no pintamos a los profetas. Buscamos la belleza en la palabra, en la geometría infinita y en las flores entrelazadas.',
+      'Una estrella de ocho puntas nace de dos cuadrados girados. Con regla y compás se puede llenar una cúpula entera.',
+    ], true),
+    wnpc(2, 'peregrina-meca', 'Amina', 'peregrina', sk(0xf4f4f4, 0xe8e8e8, 0xd0a07a, 0x3a2a1a, { hat: 'hood', acc: 'none' }), [
+      'Este año hice el hach, la peregrinación a La Meca. Todos vestíamos de blanco, ricos y pobres, de todos los países: así nos sentimos iguales.',
+      'Los cinco pilares del islam son la profesión de fe, la oración, la limosna, el ayuno de Ramadán y la peregrinación.',
+      'En Ramadán ayunamos desde el alba hasta la puesta del sol. Al anochecer rompemos el ayuno compartiendo dátiles y agua.',
+    ], true),
+  ]);
+  Object.assign(QUESTS, {
+    iqra: { text: 'Visita la cueva de Hira. Luego dime cuál fue la primera palabra revelada.', needs: { pois: ['cueva-hira'], npcs: [] }, riddle: { q: '¿Cuál fue la primera palabra revelada del Corán?', a: ['¡Lee!', '¡Escucha!', '¡Corre!', '¡Duerme!'] } },
+    fatiha: { text: 'Escucha a Bilal, el hafiz. Luego dime cuántas aleyas tiene la Fátiha.', needs: { pois: [], npcs: ['hafiz'] }, riddle: { q: '¿Cuántas aleyas tiene la Fátiha?', a: ['Siete', 'Tres', 'Cien', 'Doce'] } },
+    yusuf: { text: 'Visita la mezquita de Medina. Luego dime qué virtud destaca la historia de José.', needs: { pois: ['mezquita-profeta'], npcs: [] }, riddle: { q: '¿Qué virtudes destaca la historia de José?', a: ['La paciencia y el perdón', 'La venganza', 'La riqueza', 'La fuerza'] } },
+    maryam: { text: 'Escucha a Amina, la peregrina. Luego dime cómo se llama Jesús en el Corán.', needs: { pois: [], npcs: ['peregrina-meca'] }, riddle: { q: '¿Cómo se llama Jesús en el Corán?', a: ['Isa', 'Musa', 'Yusuf', 'Nuh'] } },
+    kahf: { text: 'Visita la Kaaba. Luego dime cuántos años durmieron los jóvenes de la caverna.', needs: { pois: ['kaaba'], npcs: [] }, riddle: { q: '¿Cuánto durmieron los jóvenes de la caverna?', a: ['Unos trescientos años', 'Una noche', 'Diez años', 'Mil años'] } },
+    rahman: { text: 'Visita el taller del calígrafo y escucha a Leila. Luego dime qué significa «Ar-Rahmán».', needs: { pois: ['caligrafia'], npcs: ['caligrafa'] }, riddle: { q: '¿Qué significa «Ar-Rahmán»?', a: ['El Misericordioso', 'El Guerrero', 'El Rey', 'El Desierto'] } },
+    mushaf: { text: 'Visita el manuscrito de Birmingham y escucha a Bilal y a Amina. Luego dime cuántas suras tiene el Corán.', needs: { pois: ['manuscrito-birmingham'], npcs: ['hafiz', 'peregrina-meca'] }, riddle: { q: '¿Cuántas suras tiene el Corán?', a: ['114', '7', '150', '30'] } },
+  });
+  Object.assign(ANECDOTES, {
+    iqra: ['Según la tradición, la revelación llegaba a veces como el sonido de una campana, y en los días más fríos el Profeta sudaba al recibirla.', 'La sura 96 también se llama Al-Alaq, «el coágulo», por uno de sus primeros versículos sobre la creación del ser humano.'],
+    fatiha: ['En muchas lenguas del mundo musulmán, «leer la Fátiha» por alguien significa rezar por él.', 'Aunque la Fátiha es la primera sura del libro, no fue la primera en ser revelada.'],
+    yusuf: ['En el Corán, cuando José es tentado, las mujeres de la ciudad se cortan las manos con sus cuchillos al ver su belleza, distraídas mientras pelan fruta.', 'José es en el Corán un profeta, y su historia se considera un consuelo para los momentos difíciles.'],
+    maryam: ['En el Corán, Jesús recién nacido habla desde la cuna para defender la inocencia de su madre.', 'La sura 3 lleva el nombre de la familia de María, la familia de Imrán.'],
+    kahf: ['Los durmientes de la caverna también aparecen en una leyenda cristiana, los Siete Durmientes de Éfeso.', 'Según la sura, un perro acompañaba a los jóvenes y dormía con las patas extendidas a la entrada de la cueva.'],
+    rahman: ['Muchos recitadores famosos son conocidos sobre todo por su interpretación de esta sura.', 'La sura habla de dos jardines y de otros dos más, con fuentes, frutos y frescura: imágenes muy queridas en tierras de desierto.'],
+    mushaf: ['La copia de Uzmán se escribió sin puntos ni vocales; los signos que distinguen letras y vocales se añadieron después para facilitar la lectura.', 'El Corán se divide también en treinta partes iguales, para poder recitarlo entero en las treinta noches de Ramadán.'],
+  });
+  BOOKS.push([
+    book({ id: 'coran-mushaf', author: 'mushaf', by: 'Texto sagrado del islam', title: 'El Corán', year: 'siglo VII', kind: 'libro sagrado',
+      parts: [
+        { t: 'La recitación', x: 'Corán significa recitación. Para los musulmanes, es la palabra de Dios revelada en árabe al profeta Mahoma durante unos veintitrés años.' },
+        { t: 'Ciento catorce suras', x: 'Se divide en 114 suras de muy distinta longitud, ordenadas más o menos de la más larga a la más corta, y en unas 6.236 aleyas.' },
+        { t: 'Profetas compartidos', x: 'Muchos personajes son comunes con la Biblia: Adán, Noé, Abraham, Moisés, José, David, María y Jesús, entre otros.' },
+        { t: 'Leer y comprender', x: 'Además del texto, los musulmanes estudian el tafsir, la interpretación de los sabios, y la sunna, el ejemplo del Profeta, para comprenderlo.' },
+      ],
+      quote: 'Os hemos hecho pueblos y tribus para que os conozcáis unos a otros.',
+      q: { q: '¿Qué personajes comparten la Biblia y el Corán?', a: ['Abraham, Moisés, José, María y Jesús, entre otros', 'Ninguno', 'Solo reyes de Persia', 'Héroes griegos'], e: 'Profetas compartidos.' } }, 0),
+  ]);
+  BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });
+}
+
 // ---- src/02z-guia.js ----
 // ============================================================================
 //  EL FILÓSOFO GUÍA (Filosofía para Seres Humanos)
@@ -17456,9 +18047,13 @@ const GUIDE_LINES = [
     'Gorgias, Trasímaco, los hermanos Eutidemo y Dionisodoro, Pedro Hispano, Barnum y Bernays te esperan, y al final Susan Stebbing. Acércate a los puestos del mercado y caza las falacias de cada pregón.'],
   ['Bienvenido al observatorio del cosmos. Esta noche el cielo está despejado: mira la Vía Láctea sobre tu cabeza.',
     'Kepler, Caroline Herschel, Henrietta Leavitt, Cecilia Payne, Chandrasekhar y Vera Rubin te esperan, y al final Stephen Hawking. Entra en el planetario para caminar entre los planetas, y usa el gran telescopio para abrir el atlas del cosmos.'],
+  ['Bienvenido al camino de la Biblia. Aquí no hay que vencer a nadie: escucha, aprende y pon a prueba lo que comprendiste.',
+    'Moisés, el rey David, los evangelistas Mateo, Marcos, Lucas y Juan, y al final Pablo te cuentan cómo se escribió cada parte de la Biblia y qué dice.'],
+  ['Bienvenido al jardín del Corán. Por respeto a la tradición islámica, aquí no hay imágenes de profetas: cada estación es un atril con un medallón.',
+    'Siete estaciones te cuentan las suras más conocidas y cómo se reunió el Libro. Escucha con calma: aquí se comprende, no se vence.'],
 ];
 // dónde espera en cada época (junto al punto de llegada, en z = 31)
-const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5], 17: [2.8, 24.5], 18: [2.8, 24.5], 19: [2.8, 24.5], 20: [2.8, 24.5], 21: [2.8, 24.5], 22: [2.8, 26.5], 23: [2.8, 26.5], 24: [2.8, 26.5], 25: [2.8, 26.5], 26: [2.8, 26.5], 27: [2.8, 26.5], 28: [2.8, 26.5], 29: [2.8, 26.5], 30: [2.8, 26.5], 31: [2.8, 26.5], 32: [2.8, 26.5], 33: [2.8, 26.5], 34: [2.8, 26.5] };
+const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5], 17: [2.8, 24.5], 18: [2.8, 24.5], 19: [2.8, 24.5], 20: [2.8, 24.5], 21: [2.8, 24.5], 22: [2.8, 26.5], 23: [2.8, 26.5], 24: [2.8, 26.5], 25: [2.8, 26.5], 26: [2.8, 26.5], 27: [2.8, 26.5], 28: [2.8, 26.5], 29: [2.8, 26.5], 30: [2.8, 26.5], 31: [2.8, 26.5], 32: [2.8, 26.5], 33: [2.8, 26.5], 34: [2.8, 26.5], 35: [2.8, 26.5], 36: [2.8, 26.5] };
 GUIDE_LINES.forEach((lines, i) => {
   if (!NPCS[i]) NPCS[i] = [];
   NPCS[i].unshift({ id: i === 0 ? 'guia' : 'guia-' + ERAS[i].id, name: 'El guía', role: 'Filosofía para Seres Humanos', portrait: 'guia', greeter: true,
@@ -17963,6 +18558,10 @@ const SONGS = [
   { bpm: 112, root: 55, scale: [0, 2, 3, 5, 7, 8, 10], prog: [0, 5, 3, 4], pad: 'warm', arp: 'harpsi', arpPat: [0, 2, 4, 2, 5, 4, 2, 1], lead: 'flute', kit: 'frame', seed: 361 },
   // XXXV · El observatorio del cosmos: espacio, campanas y cuerdas lentas
   { bpm: 60, root: 50, scale: [0, 2, 4, 6, 7, 9, 11], prog: [0, 3, 5, 4], pad: 'strings', arp: 'bell', arpPat: [0, 2, 4, 6, 4, 2, 1, 3], lead: 'flute', kit: 'none', seed: 371 },
+  // XXXVI · El camino de la Biblia: modo dórico, arpa y voces suaves
+  { bpm: 64, root: 50, scale: [0, 2, 3, 5, 7, 9, 10], prog: [0, 3, 6, 0], pad: 'strings', arp: 'lyre', arpPat: [0, 2, 4, 2, 0, 4, 2, 1], lead: 'flute', kit: 'none', seed: 381 },
+  // XXXVII · El jardín del Corán: escala con segunda aumentada, laúd y percusión de marco suave
+  { bpm: 70, root: 52, scale: [0, 1, 4, 5, 7, 8, 11], prog: [0, 0, 5, 4], pad: 'warm', arp: 'lute', arpPat: [0, 1, 2, 4, 2, 1, 0, 2], lead: 'flute', kit: 'frame', seed: 391 },
 ];
 // volumen de cada capa según el modo
 const MIX = {
@@ -19291,7 +19890,7 @@ const Duel = {
     particles.emit(_v1.copy(s.pos).setY(1.2), 80, { color: 0xffffff, speed: 6, life: 1.2, size: 0.4, intensity: 2, flat: true });
     $('#duel').hidden = true; Voice.say(s.data.defeat, s);
     const f = $('#flash'); f.classList.remove('on'); void f.offsetWidth; f.classList.add('on');
-    popup(`+${bonus}<small>${s.data.short} vencido</small>`);
+    popup(`+${bonus}<small>${s.data.short} ` + (ERAS[G.eraIdx] && ERAS[G.eraIdx].sacred ? 'comprendido' : 'vencido') + '</small>');
     // cámara lenta antes de la tarjeta de concepto
     G.state = 'victory'; this.vicEnd = performance.now() + (s.boss ? 2000 : 1300); this._won = s; this._bonus = bonus; this._heal = heal;
   },
@@ -19664,6 +20263,8 @@ const MOTES = [
   { c: 0xf0fff8, up: 0.02, g: 0, i: 1.2, s: 0.09 },
   { c: 0xffe070, up: 0.05, g: 0, i: 1.6, s: 0.1 },
   { c: 0xc8d8ff, up: 0.02, g: 0, i: 1.8, s: 0.08 },
+  { c: 0xfff0c8, up: 0.03, g: 0, i: 1.4, s: 0.09 },
+  { c: 0xffe0a0, up: 0.03, g: 0, i: 1.5, s: 0.09 },
 ];
 let moteAcc = 0;
 function ambientMotes(dt) {
@@ -22634,7 +23235,7 @@ setTimeout(() => Mision.paint(), 700);
 const TL_ROWS = [
   ['Grecia y Roma', ['presocraticos', 'atenas', 'helenismo']], ['Europa', ['medieval', 'renacimiento', 'modernidad', 'xix', 'contemporanea', 'vikingos']],
   ['Mesopotamia, Persia e islam', ['sumer', 'persia', 'islam']], ['India, China y Japón', ['india', 'china', 'japon']], ['África', ['africa']],
-  ['América', ['latinoamerica', 'mexicas', 'incas', 'mapuche']], ['Poesía y ciencia', ['poetas', 'ciencia']], ['Fe y duda', ['ateos', 'teistas']], ['Pensadoras y justicia', ['pensadoras', 'justicia']], ['Místicos', ['misticos']], ['Mente y Tierra', ['mente', 'tierra']], ['Números', ['numeros']], ['Arte y pueblos', ['belleza', 'pueblos']], ['Cuidados', ['cuidado']], ['Falacias', ['falacias']], ['Cosmos', ['cosmos']],
+  ['América', ['latinoamerica', 'mexicas', 'incas', 'mapuche']], ['Poesía y ciencia', ['poetas', 'ciencia']], ['Fe y duda', ['ateos', 'teistas']], ['Pensadoras y justicia', ['pensadoras', 'justicia']], ['Místicos', ['misticos']], ['Mente y Tierra', ['mente', 'tierra']], ['Números', ['numeros']], ['Arte y pueblos', ['belleza', 'pueblos']], ['Cuidados', ['cuidado']], ['Falacias', ['falacias']], ['Cosmos', ['cosmos']], ['Libros sagrados', ['biblia', 'coran']],
 ];
 const Tiempo = {
   list: null, sel: null,
@@ -22902,7 +23503,9 @@ const Dif = {
     // solo preguntas sobre este pensador: las suyas, las de sus libros y las que se generan con sus datos
     const books = (typeof BOOKS !== 'undefined' ? BOOKS.flat() : []).filter((b) => b.author === d.id && b.q).map((b) => ({ ...b.q, place: b.title }));
     let qs;
-    if (k === 'facil') qs = [...core, ...this.gen(d, ei, 'facil')];
+    // mundos sagrados: solo las preguntas escritas a mano (nada de frases mezcladas ni datos generados)
+    if (ERAS[ei] && ERAS[ei].sacred) qs = k === 'facil' ? (core.length ? core : d.q) : k === 'dificil' ? [...(detail.length ? detail : d.q), ...books] : [...d.q, ...books];
+    else if (k === 'facil') qs = [...core, ...this.gen(d, ei, 'facil')];
     else if (k === 'dificil') qs = [...detail, ...books, ...this.gen(d, ei, 'dificil')];
     else qs = [...d.q, ...books, ...this.fraseQ(d)];
     qs = qs.filter((q) => q && q.a && q.a.length >= 3 && new Set(q.a).size === q.a.length);
@@ -23740,6 +24343,90 @@ const Rango = {
 on('#b-vic', () => { Audio.click(); Rango.open(); });
 on('#vi-x', () => Rango.close());
 Rango._k = Rango.of(Rango.n()); Rango.paintButton();
+
+// ---- src/06y-sagrado.js ----
+// ============================================================================
+//  MUNDOS SAGRADOS (la Biblia y el Corán)
+//  · Aquí no se vence a nadie: el debate se convierte en «Pon a prueba lo que
+//    aprendiste», el pensador queda «✓ Comprendido» y no hay burlas, apuestas,
+//    dilemas, revanchas, golpes críticos ni coronas de victoria.
+//  · Estaciones sin figura (aniconic): por respeto a la tradición islámica, en el
+//    jardín del Corán no se representa a ningún profeta: cada estación es un atril
+//    con un libro abierto y su medallón geométrico flotando encima.
+// ============================================================================
+const SACRED_TXT = {
+  ok: ['Así es.', 'Correcto.', 'Bien aprendido.', 'Lo has comprendido.'],
+  no: ['No es así. Vuelve a pensarlo con calma.', 'Repasa la historia y vuelve a intentarlo.', 'Casi: escucha otra vez.'],
+  test: 'Pon a prueba lo que aprendiste', qn: 'Pregunta', comp: 'Comprensión', conv: 'Convicción', done: 'Comprendido', nextQ: 'Siguiente pregunta', finish: 'Completar',
+};
+const isSacred = () => !!(ERAS[G.eraIdx] && ERAS[G.eraIdx].sacred);
+// ---------- conversación: la invitación al debate cambia de nombre
+{
+  const o0 = Talk.options;
+  Talk.options = function () {
+    o0.call(this);
+    if (!isSacred()) return;
+    for (const b of document.querySelectorAll('#tk-ops button')) if (/desaf|challenge/i.test(b.textContent)) b.textContent = SACRED_TXT.test;
+  };
+}
+// ---------- el duelo, en modo comprensión
+{
+  const start0 = Duel.start.bind(Duel), ask0 = Duel.ask.bind(Duel), answer0 = Duel.answer.bind(Duel), next0 = Duel.next.bind(Duel), crit0 = Debate.crit.bind(Debate);
+  Duel.start = function (s) {
+    const sac = isSacred(); $('#duel').classList.toggle('sacred', sac);
+    const lbl = document.querySelector('#duel .conv .lbl'); if (lbl) lbl.textContent = sac ? SACRED_TXT.comp : SACRED_TXT.conv;
+    if (sac) { const R = Debate.rivals(); if (R[s.data.id]) { delete R[s.data.id]; store.set(DEB_RIVAL_KEY, R); } s._betAsked = true; s._dilDone = true; s._rivalSaid = true; }
+    start0(s);
+  };
+  Duel.ask = function () { if (isSacred() && this.sage) { this.sage._betAsked = true; this.sage._dilDone = true; } ask0(); if (isSacred()) { const q = $('#d-qnum'); q.textContent = q.textContent.replace(/^[^·]*/, SACRED_TXT.qn + ' ' + (ROMAN[this.round - 1] || this.round) + ' '); } };
+  Duel.answer = function (i) {
+    const sac = isSacred(); const was = this.answered;
+    answer0(i);
+    if (!sac || was || !this.answered || !this.sage) return;
+    const ok = i >= 0 && this.opts[i] && this.opts[i].ok; const s = this.sage;
+    Debate.speak(pick(ok ? SACRED_TXT.ok : SACRED_TXT.no), Math.random() < 0.5 ? Debate.quote(s.data.id) : null);
+    $('#d-next').textContent = G.hp <= 0 ? $('#d-next').textContent : s.conv <= 0 ? SACRED_TXT.finish : SACRED_TXT.nextQ;
+  };
+  Duel.next = function () {
+    const s = this.sage; const sac = isSacred() && s && G.hp <= 0;
+    next0();
+    if (sac) { const R = Debate.rivals(); if (R[s.data.id]) { delete R[s.data.id]; store.set(DEB_RIVAL_KEY, R); } }
+  };
+  Debate.crit = function () { if (isSacred()) return; crit0(); };
+}
+// ---------- al comprender: letrero «Comprendido», sin corona de victoria
+{
+  const d0 = Sage.prototype.defeat;
+  Sage.prototype.defeat = function () {
+    d0.call(this);
+    if (!(ERAS[G.eraIdx] && ERAS[G.eraIdx].sacred)) return;
+    this.label.material.map = labelTexture(this.data.short, '✓ ' + SACRED_TXT.done + ' · ' + this.data.concept.name, '#ffe8b0'); this.label.material.needsUpdate = true;
+    if (this._crown) this._crown.visible = false;
+  };
+}
+// ---------- estaciones sin figura: atril, libro abierto y medallón geométrico
+{
+  const u0 = Sage.prototype.update;
+  Sage.prototype.update = function (...a) {
+    if (this.data.aniconic && !this._anic) {
+      this._anic = true; this.fig.group.visible = false;
+      const g = new THREE.Group(); this.group.add(g); this._orn = g;
+      const wood = std(0x6a4a2a, { roughness: 0.8 }), gold = std(0xd8a838, { metalness: 0.7, roughness: 0.3 });
+      g.add(mesh(new THREE.CylinderGeometry(0.12, 0.2, 1.1, 8), wood, 0, 0.55, 0));
+      const top = mesh(new THREE.BoxGeometry(0.9, 0.06, 0.6), wood, 0, 1.15, 0); top.rotation.x = -0.35; g.add(top);
+      for (const sx of [-1, 1]) { const p = mesh(new THREE.BoxGeometry(0.4, 0.02, 0.5), std(0xf4ecd8, { roughness: 0.7 }), sx * 0.21, 1.2, 0.02); p.rotation.set(-0.35, 0, sx * -0.08); g.add(p); }
+      g.add(mesh(new THREE.CylinderGeometry(0.45, 0.55, 0.12, 16), gold, 0, 0.06, 0));
+      // el medallón de la sura flota y gira despacio sobre el atril
+      const tex = new THREE.TextureLoader().load(ART.portrait(this.data.id)); tex.colorSpace = THREE.SRGBColorSpace;
+      const med = new THREE.Mesh(new THREE.CircleGeometry(0.62, 40), new THREE.MeshBasicMaterial({ map: tex, side: THREE.DoubleSide, toneMapped: false }));
+      med.position.y = 2.15; g.add(med); this._med = med;
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.66, 0.035, 8, 48), gold); ring.position.y = 2.15; g.add(ring); this._ring = ring;
+      const light = new THREE.PointLight(0xffd8a0, 3, 6, 1.6); light.position.y = 2.2; g.add(light);
+    }
+    u0.apply(this, a);
+    if (this._med) { const t = performance.now() / 1000; this._med.position.y = this._ring.position.y = 2.15 + Math.sin(t * 1.2 + this.idx) * 0.06; this._med.rotation.y = this._ring.rotation.y = Math.sin(t * 0.5 + this.idx) * 0.5; }
+  };
+}
 
 </script>
 </body>

@@ -1047,7 +1047,7 @@ const Duel = {
     particles.emit(_v1.copy(s.pos).setY(1.2), 80, { color: 0xffffff, speed: 6, life: 1.2, size: 0.4, intensity: 2, flat: true });
     $('#duel').hidden = true; Voice.say(s.data.defeat, s);
     const f = $('#flash'); f.classList.remove('on'); void f.offsetWidth; f.classList.add('on');
-    popup(`+${bonus}<small>${s.data.short} vencido</small>`);
+    popup(`+${bonus}<small>${s.data.short} ` + (ERAS[G.eraIdx] && ERAS[G.eraIdx].sacred ? 'comprendido' : 'vencido') + '</small>');
     // cámara lenta antes de la tarjeta de concepto
     G.state = 'victory'; this.vicEnd = performance.now() + (s.boss ? 2000 : 1300); this._won = s; this._bonus = bonus; this._heal = heal;
   },
@@ -1420,6 +1420,8 @@ const MOTES = [
   { c: 0xf0fff8, up: 0.02, g: 0, i: 1.2, s: 0.09 },
   { c: 0xffe070, up: 0.05, g: 0, i: 1.6, s: 0.1 },
   { c: 0xc8d8ff, up: 0.02, g: 0, i: 1.8, s: 0.08 },
+  { c: 0xfff0c8, up: 0.03, g: 0, i: 1.4, s: 0.09 },
+  { c: 0xffe0a0, up: 0.03, g: 0, i: 1.5, s: 0.09 },
 ];
 let moteAcc = 0;
 function ambientMotes(dt) {

@@ -74,9 +74,13 @@ const GUIDE_LINES = [
     'Gorgias, Trasímaco, los hermanos Eutidemo y Dionisodoro, Pedro Hispano, Barnum y Bernays te esperan, y al final Susan Stebbing. Acércate a los puestos del mercado y caza las falacias de cada pregón.'],
   ['Bienvenido al observatorio del cosmos. Esta noche el cielo está despejado: mira la Vía Láctea sobre tu cabeza.',
     'Kepler, Caroline Herschel, Henrietta Leavitt, Cecilia Payne, Chandrasekhar y Vera Rubin te esperan, y al final Stephen Hawking. Entra en el planetario para caminar entre los planetas, y usa el gran telescopio para abrir el atlas del cosmos.'],
+  ['Bienvenido al camino de la Biblia. Aquí no hay que vencer a nadie: escucha, aprende y pon a prueba lo que comprendiste.',
+    'Moisés, el rey David, los evangelistas Mateo, Marcos, Lucas y Juan, y al final Pablo te cuentan cómo se escribió cada parte de la Biblia y qué dice.'],
+  ['Bienvenido al jardín del Corán. Por respeto a la tradición islámica, aquí no hay imágenes de profetas: cada estación es un atril con un medallón.',
+    'Siete estaciones te cuentan las suras más conocidas y cómo se reunió el Libro. Escucha con calma: aquí se comprende, no se vence.'],
 ];
 // dónde espera en cada época (junto al punto de llegada, en z = 31)
-const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5], 17: [2.8, 24.5], 18: [2.8, 24.5], 19: [2.8, 24.5], 20: [2.8, 24.5], 21: [2.8, 24.5], 22: [2.8, 26.5], 23: [2.8, 26.5], 24: [2.8, 26.5], 25: [2.8, 26.5], 26: [2.8, 26.5], 27: [2.8, 26.5], 28: [2.8, 26.5], 29: [2.8, 26.5], 30: [2.8, 26.5], 31: [2.8, 26.5], 32: [2.8, 26.5], 33: [2.8, 26.5], 34: [2.8, 26.5] };
+const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5], 17: [2.8, 24.5], 18: [2.8, 24.5], 19: [2.8, 24.5], 20: [2.8, 24.5], 21: [2.8, 24.5], 22: [2.8, 26.5], 23: [2.8, 26.5], 24: [2.8, 26.5], 25: [2.8, 26.5], 26: [2.8, 26.5], 27: [2.8, 26.5], 28: [2.8, 26.5], 29: [2.8, 26.5], 30: [2.8, 26.5], 31: [2.8, 26.5], 32: [2.8, 26.5], 33: [2.8, 26.5], 34: [2.8, 26.5], 35: [2.8, 26.5], 36: [2.8, 26.5] };
 GUIDE_LINES.forEach((lines, i) => {
   if (!NPCS[i]) NPCS[i] = [];
   NPCS[i].unshift({ id: i === 0 ? 'guia' : 'guia-' + ERAS[i].id, name: 'El guía', role: 'Filosofía para Seres Humanos', portrait: 'guia', greeter: true,
