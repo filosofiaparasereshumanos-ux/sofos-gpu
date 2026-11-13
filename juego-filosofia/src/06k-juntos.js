@@ -81,7 +81,7 @@ const Juntos = {
     fig.halo.visible = false; const g = new THREE.Group(); g.add(fig.group);
     // su rango se ve sobre su cabeza: título, color y corona de laurel
     const RI = typeof Rango !== 'undefined' ? Rango.info(rk) : null; const rcol = RI ? new THREE.Color(RI.r.c) : null;
-    const RKT = { venc: 'vencidos', grupo: 'tu grupo' }; const sub = RI ? `${RI.r.i} ${RI.r.n} · ${rk} ` + RKT.venc + (this.mode === 'grupo' ? ' · ' + RKT.grupo : '') : (this.mode === 'grupo' ? 'de tu grupo' : 'viajero');
+    const RKT = { venc: document.documentElement.lang === 'en' ? 'defeated' : 'vencidos', grupo: 'tu grupo' }; const sub = RI ? `${RI.r.i} ${RI.r.n} · ${rk} ` + RKT.venc + (this.mode === 'grupo' ? ' · ' + RKT.grupo : '') : (this.mode === 'grupo' ? 'de tu grupo' : 'viajero');
     const l = new THREE.Sprite(new THREE.SpriteMaterial({ map: labelTexture(name, sub, RI ? RI.r.c : undefined), transparent: true, depthWrite: false, toneMapped: false })); l.scale.set(2.4, 0.6, 1); l.position.y = 2.85; g.add(l);
     if (RI && RI.k >= 1) { const cr = Rango.crown(rcol.getHex()); cr.position.y = 2.32; fig.group.add(cr); }
     const ring = new THREE.Mesh(new THREE.RingGeometry(0.45, 0.6, 24), new THREE.MeshBasicMaterial({ color: RI && RI.k >= 1 ? rcol : robe, transparent: true, opacity: 0.8, side: THREE.DoubleSide, toneMapped: false })); ring.rotation.x = -Math.PI / 2; ring.position.y = 0.04; g.add(ring);
