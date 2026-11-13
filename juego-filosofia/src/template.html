@@ -905,6 +905,20 @@ body.touch .gm.boss { width: 30px; height: 30px; }
 @keyframes critIn { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.4) rotate(-6deg); } 18% { opacity: 1; transform: translate(-50%, -50%) scale(1.15) rotate(-3deg); } 70% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(-3deg); } 100% { opacity: 0; transform: translate(-50%, -60%) scale(1.05) rotate(-3deg); } }
 #duel.oracle #d-rope, #duel.oracle #d-cards, #duel.oracle #d-bet, #duel.oracle #d-rival { display: none !important; }
 @media (max-height: 520px) { #d-cards small { display: none; } #d-cards { margin: 4px 0 6px; } #d-rope { margin: 0 0 4px; } }
+/* ---------- bestiario de falacias ---------- */
+.fa-card { width: min(660px, 100%); } #fa-tabs { display: flex; justify-content: center; gap: 6px; margin: 8px 0 12px; }
+.fa-gh { font-family: var(--display); letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.8rem; color: var(--gold); margin: 14px 0 6px; }
+.fa-it { border: 1px solid var(--line); border-radius: 10px; background: rgba(0,0,0,0.22); margin: 6px 0; padding: 8px 12px; }
+.fa-it summary { cursor: pointer; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; list-style: none; } .fa-it summary::-webkit-details-marker { display: none; }
+.fa-it summary b { font-family: var(--display); letter-spacing: 0.04em; color: var(--gold-bright); } .fa-it summary i { font-size: 0.85rem; color: rgba(243,230,196,0.6); }
+.fa-it .fa-ok { margin-left: auto; font-size: 0.78rem; color: #8ff0c4; } .fa-it.got { border-color: rgba(92,240,170,0.45); }
+.fa-it p { margin: 6px 0; line-height: 1.4; } .fa-ex { font-style: italic; color: #ffe3a3; } .fa-r { font-size: 0.92rem; color: #cdf4ff; }
+#fa-train { text-align: center; } .fa-stk { font-family: var(--display); letter-spacing: 0.1em; font-size: 0.78rem; color: var(--gold); }
+.fa-q { font-size: 1.15rem; font-style: italic; line-height: 1.45; margin: 10px auto; max-width: 52ch; color: #fff3d8; }
+.fa-ops { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; } .fa-ops .btn { text-transform: none; letter-spacing: 0.02em; font-size: 0.95rem; }
+.fa-ops .btn.right { border-color: var(--right); background: rgba(92,196,154,0.25); } .fa-ops .btn.wrong { border-color: var(--wrong); background: rgba(214,92,92,0.25); }
+.fa-fb { border-top: 1px dashed var(--line); padding-top: 10px; margin-top: 6px; } .fa-fb p { line-height: 1.45; text-align: left; }
+@media (max-width: 520px) { .fa-ops { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
@@ -979,6 +993,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="on-av" id="b-versus"><b>⚔</b><span>Debates</span><small>Pensador contra pensador</small></button>
         <button class="on-av" id="b-tiempo"><b>⏳</b><span>Línea de tiempo</span><small>¿Quién vivió a la vez?</small></button>
         <button class="on-av" id="b-frases"><b>❝</b><span>Frases célebres</span><small>Tu colección</small></button>
+        <button class="on-av" id="b-falacias"><b>🔎</b><span>Falacias</span><small>Bestiario y entrenamiento</small></button>
       </div>
       <button class="more-b" id="b-more" aria-expanded="false">Más opciones ▾</button>
       <div class="minis" id="t-more" hidden>
@@ -1195,6 +1210,13 @@ body.touch .gm.boss { width: 30px; height: 30px; }
     <button class="ls-x pn-x" id="fr-x" aria-label="Cerrar">✕</button>
     <div class="eyebrow" style="text-align:center">Habla con los pensadores para descubrirlas</div><h3 class="av-h">Frases célebres</h3>
     <p class="qd-note" id="fr-count" style="text-align:center"></p><div id="fr-items"></div>
+  </div></div>
+  <div id="fa" class="nb" hidden><div class="nb-card fa-card" role="dialog" aria-label="Bestiario de falacias">
+    <button class="ls-x pn-x" id="fa-x" aria-label="Cerrar">✕</button>
+    <div class="eyebrow" style="text-align:center">Argumentos que parecen buenos y no lo son</div><h3 class="av-h">Bestiario de falacias</h3>
+    <p class="qd-note" id="fa-count" style="text-align:center"></p>
+    <div class="seg" id="fa-tabs"><button data-t="lista">Las falacias</button><button data-t="entrena">Entrenar</button></div>
+    <div id="fa-items"></div><div id="fa-train" hidden></div>
   </div></div>
   <div id="tl" class="nb" hidden><div class="nb-card tl-card" role="dialog" aria-label="Línea de tiempo">
     <button class="ls-x pn-x" id="tl-x" aria-label="Cerrar">✕</button>

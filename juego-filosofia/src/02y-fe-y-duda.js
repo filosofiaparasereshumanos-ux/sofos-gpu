@@ -1022,3 +1022,113 @@
     );
   } catch (e) { /* herramientas sin debates */ }
 }
+
+// ============================================================================
+//  XXXIV · EL MERCADO DE LOS SOFISTAS: lugares, ciudadanos, encargos, anécdotas y libros
+// ============================================================================
+{
+  const PP = [[-17, 30], [17, 24], [17, 6], [-17, -2], [6, -40]];
+  const BB = [[16, -12], [-16, 16]];
+  const poi = (i, id, name, text, fact, q) => ({ id, at: PP[i], name, text, fact, q });
+  const book = (b, i) => ({ ...b, at: BB[i] });
+  POIS.push([
+    poi(0, 'casa-calias', 'La casa de Calias', 'Calias era el hombre más rico de Atenas y le encantaba recibir a los sofistas. Platón cuenta en su diálogo «Protágoras» que un día su casa estaba llena: Protágoras paseaba por el pórtico seguido de un coro de admiradores, Hipias respondía preguntas sentado en un trono, y Pródico, envuelto en mantas, explicaba la diferencia entre palabras parecidas desde la cama. El portero, harto de tanto sofista, le cerró la puerta en las narices a Sócrates.',
+      'Los sofistas cobraban por enseñar, y mucho. Protágoras, se decía, ganó más dinero que el escultor Fidias y otros diez escultores juntos.',
+      { q: '¿Quién recibía a los sofistas en su casa de Atenas?', a: ['Calias, el hombre más rico de Atenas', 'El rey de Persia', 'Sócrates', 'Nadie'], e: 'Lo cuenta Platón en el «Protágoras».' }),
+    poi(1, 'liceo-refutaciones', 'El Liceo y las Refutaciones', 'En el Liceo, su escuela de Atenas, Aristóteles escribió un pequeño libro llamado «Refutaciones sofísticas». Es el primer catálogo de falacias de la historia: argumentos que parecen buenos pero no lo son. Las dividió en dos familias: trece trampas, seis que nacen del lenguaje y siete que nacen fuera de él. Muchos nombres que usamos hoy, como «petición de principio», vienen de allí.',
+      'Aristóteles definió la sofística como «una sabiduría aparente, pero no real», y al sofista como alguien que gana dinero con una sabiduría que solo lo parece.',
+      { q: '¿Cuál es el primer catálogo de falacias de la historia?', a: ['Las «Refutaciones sofísticas» de Aristóteles', 'El Quijote', 'La Odisea', 'Un periódico de Londres'], e: 'Escrito en el Liceo de Atenas.' }),
+    poi(2, 'disputa-paris', 'Las disputas de París', 'En las universidades medievales, como la de París, los estudiantes aprendían discutiendo. En la «disputatio», un maestro planteaba una cuestión, un estudiante defendía una respuesta y otros le ponían objeciones. Ganaba quien detectaba las trampas del otro y respondía con distinciones precisas: «distingo: en un sentido sí, en otro no». Para eso estudiaban manuales como el de Pedro Hispano.',
+      'Algunas disputas duraban días enteros, y cualquier asistente podía levantarse a poner una objeción, incluso sobre temas muy curiosos.',
+      { q: '¿Cómo se llamaba el ejercicio de discutir en las universidades medievales?', a: ['La disputatio', 'La olimpiada', 'El torneo de caballeros', 'La siesta'], e: 'Ganaba quien detectaba las trampas del otro.' }),
+    poi(3, 'museo-barnum', 'El museo americano de Barnum', 'En el centro de Nueva York, el museo de Barnum atraía a miles de personas cada día con carteles gigantes, una banda de música tocando a todo volumen en el balcón y rarezas de todo el mundo, algunas verdaderas y otras falsas, como la «sirena de Fiyi». Para que la gente saliera y dejara sitio a otros, Barnum puso un cartel que decía «Por aquí, a la egresa». Muchos lo siguieron pensando que era un animal exótico… y se encontraron en la calle.',
+      '«Egresa» era solo una palabra rara para «salida». Barnum sabía que la curiosidad y la palabra misteriosa movían a la gente más que las razones.',
+      { q: '¿Qué encontraba quien seguía el cartel «Por aquí, a la egresa»?', a: ['La salida a la calle', 'Un animal exótico', 'Un tesoro', 'La sirena de Fiyi'], e: 'Una palabra misteriosa para «salida».' }),
+    poi(4, 'antorchas', 'El desfile de las antorchas', 'El domingo de Pascua de 1929, en la Quinta Avenida de Nueva York, un grupo de jóvenes encendió cigarrillos mientras desfilaba. Los periódicos lo contaron como un gesto por la libertad de las mujeres: «antorchas de la libertad». En realidad lo había organizado Edward Bernays para una empresa de tabaco que quería vender más a las mujeres. Fue una falsa asociación: unir un producto con un valor que nada tiene que ver con él.',
+      'Hoy sabemos que el tabaco causa graves enfermedades. La publicidad de cigarrillos está prohibida o limitada en muchos países.',
+      { q: '¿Quién organizó en secreto el desfile de las «antorchas de la libertad»?', a: ['Edward Bernays, para una empresa de tabaco', 'Las sufragistas', 'El alcalde de Nueva York', 'Nadie'], e: 'Una falsa asociación entre tabaco y libertad.' }),
+  ]);
+  NPCS.push([
+    wnpc(0, 'pregonero', 'Leandro', 'pregonero del mercado', sk(0xc84a2a, 0xe8c040, 0xd8b08a, 0x3a2a1a, { beard: 0x3a2a1a, hat: 'cap', acc: 'none' }), [
+      '¡Compre, compre! ¡El elixir que todo el mundo toma! ¿Y sabes por qué lo vendo tan bien? Porque nadie pregunta si funciona: solo preguntan si lo toma el vecino.',
+      'En este mercado cada puesto tiene su truco. Acércate a los carteles y descubre la falacia escondida en cada pregón.',
+      'Un buen pregonero no da razones: da gritos, prisas y miedo a quedarse sin nada. «¡Solo quedan tres!». Desconfía de las prisas.',
+    ]),
+    wnpc(1, 'verificadora', 'Inés', 'verificadora de noticias', sk(0x2a5a8a, 0xe8e8f0, 0xc49372, 0x2a1a10, { hat: 'longhair', acc: 'book' }), [
+      'Mi trabajo es comprobar lo que se dice en las noticias. Antes de compartir algo, pregunto tres cosas: ¿quién lo dice?, ¿qué pruebas da?, ¿qué dicen otras fuentes?',
+      'Una noticia falsa vuela mucho más rápido que su corrección. Por eso es mejor pensar un minuto antes de reenviar.',
+      'Las falacias no siempre vienen de mentirosos. A veces las decimos sin querer. Aprender a verlas también nos hace más honestos.',
+    ], true),
+    wnpc(2, 'abogada', 'Valeria', 'abogada defensora', sk(0x1a1a2a, 0xe8e8e8, 0xe0c0a0, 0x5a3a2a, { hat: 'longhair', acc: 'scroll' }), [
+      'En un juicio, quien acusa debe probar. Eso es la carga de la prueba: no le toca al acusado demostrar que es inocente.',
+      'Mi rival a veces ataca a mi cliente por su ropa o por su pasado. Yo le recuerdo al jurado que se juzgan los hechos, no a la persona.',
+      'Un buen argumento resiste la pregunta «¿y cómo lo sabes?». Uno tramposo se tambalea en cuanto la haces.',
+    ], true),
+  ]);
+  Object.assign(QUESTS, {
+    gorgias: { text: 'Visita la casa de Calias y escucha a Leandro, el pregonero. Luego dime con qué comparé la fuerza de la palabra.', needs: { pois: ['casa-calias'], npcs: ['pregonero'] },
+      riddle: { q: '¿Con qué comparó Gorgias la fuerza de la palabra sobre el alma?', a: ['Con las drogas sobre el cuerpo', 'Con el viento sobre el mar', 'Con el fuego', 'Con nada'] } },
+    trasimaco: { text: 'Escucha a Valeria, la abogada. Luego dime qué falacia es amenazar en lugar de dar razones.', needs: { pois: [], npcs: ['abogada'] },
+      riddle: { q: '¿Cómo se llama la falacia de imponer una idea con amenazas?', a: ['Apelación a la fuerza', 'Equívoco', 'Hombre de paja', 'Composición'] } },
+    eutidemo: { text: 'Visita el Liceo y las Refutaciones. Luego dime qué trampa usa una palabra con dos sentidos.', needs: { pois: ['liceo-refutaciones'], npcs: [] },
+      riddle: { q: '¿Cómo se llama usar una palabra con dos sentidos en el mismo razonamiento?', a: ['Equívoco', 'Generalización', 'Tradición', 'Novedad'] } },
+    pedrohispano: { text: 'Visita las disputas de París. Luego dime en cuántas familias se dividen las falacias de Aristóteles.', needs: { pois: ['disputa-paris'], npcs: [] },
+      riddle: { q: '¿En qué dos familias se dividen las falacias de Aristóteles?', a: ['Las que nacen del lenguaje y las que nacen fuera de él', 'Las grandes y las pequeñas', 'Las griegas y las latinas', 'Ninguna'] } },
+    barnum: { text: 'Visita mi museo americano y escucha a Inés, la verificadora. Luego dime qué era la «egresa».', needs: { pois: ['museo-barnum'], npcs: ['verificadora'] },
+      riddle: { q: '¿Qué era la «egresa» del museo de Barnum?', a: ['La salida', 'Un pájaro raro', 'Una sirena', 'Un dulce'] } },
+    bernays: { text: 'Visita el desfile de las antorchas. Luego dime qué producto se asoció con la libertad.', needs: { pois: ['antorchas'], npcs: [] },
+      riddle: { q: '¿Qué producto asoció Bernays con la libertad de las mujeres?', a: ['Los cigarrillos', 'Las bicicletas', 'Los libros', 'El pan'] } },
+    stebbing: { text: 'Escucha a Inés, la verificadora, y a Valeria, la abogada. Luego dime qué necesita una democracia.', needs: { pois: [], npcs: ['verificadora', 'abogada'] },
+      riddle: { q: '¿Qué necesita una democracia, según Stebbing?', a: ['Ciudadanos que piensen con claridad', 'Mucha propaganda', 'Un solo partido', 'Que nadie discuta'] } },
+  });
+  Object.assign(ANECDOTES, {
+    gorgias: ['Vivió más de cien años. Se cuenta que, cuando le preguntaron cómo lo había logrado, respondió que nunca había hecho nada solo por placer.', 'En Delfos se levantó una estatua suya, y se dice que era de oro macizo. ¡Así de bien le pagaban sus discursos!'],
+    trasimaco: ['Platón lo describe tan furioso que Sócrates dice que, si no lo hubiera mirado antes, se habría quedado mudo de miedo, como quien ve a un lobo.', 'Al final de la discusión, Trasímaco se ruboriza. Según Platón, es la primera vez que alguien lo vio sonrojarse… aunque hacía calor.'],
+    eutidemo: ['Sócrates, con ironía, dice al final del diálogo que quiere ser su alumno, porque su sabiduría es tan perfecta que se puede aprender en pocos días.', 'Un joven del diálogo, Ctesipo, termina usando sus propias trampas contra ellos, y los hermanos se quedan sin palabras.'],
+    pedrohispano: ['Se dice que como papa estaba tan ocupado en sus libros que mandó construir un estudio nuevo en su palacio de Viterbo. Al poco tiempo, el techo se derrumbó sobre él.', 'También escribió un libro de medicina, «El tesoro de los pobres», con remedios para quienes no podían pagar un médico.'],
+    barnum: ['Su museo de Nueva York se incendió en 1865. Barnum construyó otro… y también se quemó.', 'Ya mayor, fue alcalde de Bridgeport, en Connecticut, y luchó por el agua potable y el alumbrado de gas para la ciudad.'],
+    bernays: ['Para vender jabón, organizó concursos de escultura en barras de jabón para niños, que se hicieron muy populares.', 'En sus memorias contó que un periodista le dijo que el ministro de propaganda nazi usaba uno de sus libros. Bernays, que era judío, escribió que aquello lo había horrorizado.'],
+    stebbing: ['Sufría una enfermedad del oído que le causaba vértigos, pero dio clases y conferencias durante toda su vida.', 'Pidió que su libro se publicara en una colección barata, de bolsillo, para que pudieran comprarlo los trabajadores y no solo los profesores.'],
+  });
+  BOOKS.push([
+    book({ id: 'encomio-helena', author: 'gorgias', by: 'Gorgias de Leontinos', title: 'Encomio de Helena', year: 'c. 414 a. C.', kind: 'discurso',
+      parts: [
+        { t: 'Defender lo indefendible', x: 'Todos culpaban a Helena de la guerra de Troya. Gorgias se propone demostrar, como un juego, que no tuvo culpa.' },
+        { t: 'Cuatro causas', x: 'Helena se fue a Troya por una de cuatro causas: el destino de los dioses, la fuerza, la persuasión de la palabra o el amor. En ningún caso, dice Gorgias, sería culpable.' },
+        { t: 'La palabra como droga', x: 'La parte más famosa explica que la palabra actúa sobre el alma como las drogas sobre el cuerpo: unas curan, otras envenenan, otras hechizan.' },
+        { t: 'Un juego', x: 'Gorgias termina diciendo que escribió el discurso como un elogio de Helena y como un juego para sí mismo. ¡Un juego que muestra el poder de convencer!' },
+      ],
+      quote: 'La palabra es un gran soberano, que con un cuerpo pequeñísimo e invisible lleva a cabo obras divinísimas.',
+      q: { q: '¿Con qué compara Gorgias la palabra en el Encomio de Helena?', a: ['Con las drogas que actúan sobre el cuerpo', 'Con una espada', 'Con el agua', 'Con nada'], e: 'Puede curar, envenenar o hechizar.' } }, 0),
+    book({ id: 'pensar-proposito', author: 'stebbing', by: 'Susan Stebbing', title: 'Pensar con propósito', year: '1939', kind: 'ensayo',
+      parts: [
+        { t: 'Un libro para todos', x: 'Stebbing lo escribió para cualquier lector, en una colección barata, cuando la propaganda de los dictadores amenazaba Europa.' },
+        { t: 'Palabras cargadas', x: 'Muestra cómo los políticos y los periódicos usan palabras cargadas de emoción para que dejemos de pensar y solo sintamos.' },
+        { t: 'Pensamiento enlatado', x: 'Llama pensamiento enlatado a las frases hechas que repetimos sin examinar: son cómodas, pero nos ahorran la tarea de pensar.' },
+        { t: 'Pensar es un deber', x: 'En una democracia, pensar con claridad no es un lujo: es un deber de cada ciudadano, porque de ello depende la libertad de todos.' },
+      ],
+      quote: 'Hay pocas cosas más importantes en una democracia que la capacidad de pensar con claridad.',
+      q: { q: '¿Qué llamaba Stebbing «pensamiento enlatado»?', a: ['Frases hechas que repetimos sin pensar', 'La comida en lata', 'Los libros viejos', 'La música grabada'], e: 'Son cómodas, pero nos ahorran pensar.' } }, 1),
+  ]);
+  BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });
+  try {
+    VERSUS.push(
+      { id: 'socrates-trasimaco', a: 'socrates', b: 'trasimaco', q: '¿Qué es la justicia?', eje: null, va: 0, vb: 0,
+        turns: [
+          ['b', 'La justicia no es otra cosa que lo que conviene al más fuerte. Los que mandan hacen las leyes a su favor y lo llaman justo.'],
+          ['a', 'Dime, Trasímaco: ¿los gobernantes nunca se equivocan? Si se equivocan, a veces mandarán lo que no les conviene, y entonces lo justo será obedecer lo que les perjudica.'],
+          ['b', 'Un gobernante de verdad, en cuanto gobierna, no se equivoca. ¡Deja de enredarme con tus preguntas!'],
+          ['a', 'Un médico de verdad busca el bien del enfermo, no el suyo. Así también el verdadero gobernante busca el bien de los gobernados. Un grito no responde a esa razón.'],
+        ],
+        cierre: 'Trasímaco defiende que la justicia es el interés del poderoso. Sócrates le responde con preguntas y con la analogía del médico. Esta discusión abre «La República» de Platón.' },
+      { id: 'stebbing-bernays', a: 'stebbing', b: 'bernays', q: '¿Se debe guiar la opinión del público?', eje: null, va: 0, vb: 0,
+        turns: [
+          ['b', 'La gente no tiene tiempo de estudiarlo todo. Alguien debe organizar la opinión pública, como se organiza un ejército. Para eso estamos los expertos en persuasión.'],
+          ['a', 'Si otros piensan por nosotros, ¿quién controla a los que piensan? La democracia necesita ciudadanos que razonen, no masas que obedezcan.'],
+          ['b', 'Pero la gente se mueve por emociones y deseos. Es más eficaz hablarles a ellos que a la razón.'],
+          ['a', 'Precisamente por eso hay que enseñar a todos a reconocer las trampas. Quien ve el truco ya no es fácil de manejar.'],
+        ],
+        cierre: 'Bernays creía que unos pocos expertos debían dirigir la opinión pública. Stebbing defendía que cada ciudadano debe aprender a pensar con claridad. La discusión sigue viva en la era de las redes sociales.' },
+    );
+  } catch (e) { /* herramientas sin debates */ }
+}

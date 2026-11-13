@@ -70,11 +70,11 @@ const Debate = {
     this.ally = true; Duel.aidsUsed = true; achieve('aliado'); Audio.pickup();
     const btns = $('#d-answers').children; const wrong = Duel.opts.map((o, i) => (o.ok || btns[i].disabled ? -1 : i)).filter((i) => i >= 0); shuffle(wrong);
     wrong.slice(0, Math.min(2, wrong.length - 1)).forEach((i) => { btns[i].classList.add('gone'); btns[i].disabled = true; });
-    const d = SAGE_BY_ID()[a]; const q = this.quote(a);
+    const d = SAGE_BY_ID()[a].d; const q = this.quote(a);
     const el = $('#d-say'); el.innerHTML = '<span class="d-ally"></span>'; el.firstChild.textContent = `${d.short} acude en tu ayuda: «${q}»`;
     Voice.say(q, { data: { id: a } }); toast(`⚭ ${d.short} acude en tu ayuda`); this.paintAids();
   },
-  paintAids() { const b = $('#aid-ally'); if (!b) return; const s = Duel.sage; const a = s && this.allyFor(s); b.disabled = !a || this.ally || Duel.answered || !!this.dil; b.title = a ? 'Llama a ' + SAGE_BY_ID()[a].short : 'Vence antes a otros pensadores'; },
+  paintAids() { const b = $('#aid-ally'); if (!b) return; const s = Duel.sage; const a = s && this.allyFor(s); b.disabled = !a || this.ally || Duel.answered || !!this.dil; b.title = a ? 'Llama a ' + SAGE_BY_ID()[a].d.short : 'Vence antes a otros pensadores'; },
   // ---------- golpe crítico
   crit() {
     const el = $('#d-crit'); el.classList.remove('on'); void el.offsetWidth; el.classList.add('on'); this.punch = 1; achieve('critico');

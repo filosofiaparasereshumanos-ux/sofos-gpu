@@ -166,6 +166,10 @@ const THEMES = [
     sky: [0x7ab0e8, 0xe8f4f0, 0xc8d8c8], sunDir: [0.4, 0.7, -0.5], sunCol: 0xfffaf0, sunInt: 2.5, sunDisk: 0xffffff,
     hemi: [0xe8f4ff, 0x7a8a7a, 0.85], fog: [0xe0ece8, 0.0065], exposure: 1.02, stars: false,
     accent: 0x6ad8b0, enemy: { col: 0x6ad8b0, core: 0x062a20, shell: 'octa' }, lampCol: 0xfff0d0,
+  },  { // XXXIV · El mercado de los sofistas: tarde de feria con farolillos
+    sky: [0x3a5aa8, 0xffb070, 0xe89a6a], sunDir: [-0.7, 0.18, -0.65], sunCol: 0xffc890, sunInt: 2.3, sunDisk: 0xffe0b0,
+    hemi: [0xffd8b8, 0x6a4a3a, 0.78], fog: [0xe8b090, 0.0068], exposure: 1.1, stars: false,
+    accent: 0xffc030, enemy: { col: 0xb070ff, core: 0x1a0a2a, shell: 'cube' }, lampCol: 0xffc070,
   },
 ];
 
@@ -1963,6 +1967,57 @@ const ERA_BUILDERS = [
     const mtn = farStd(W, 0x8ab08a, 0.45);
     for (let k = 0; k < 10; k++) { const x = -150 + k * 33 + (r() - 0.5) * 12, z = -140 - r() * 50, h = 10 + r() * 10, w = 50 + r() * 25; const m = mesh(new THREE.SphereGeometry(w, 12, 8, 0, TAU, 0, Math.PI / 2), mtn, x, -4, z, false, false); m.scale.set(1, h / w, 0.6); W.group.add(m); }
     brazier(W, -4, -34, 0xfff0d0); brazier(W, 4, -34, 0xfff0d0);
+  },  // ------------------------------------------------------------------ XXXIV · El mercado de los sofistas
+  function (W) {
+    const cob = texTiles('xxxiv', 0xc8a07a, 0x8a6a4a, 10, 0.18); cob.repeat.set(12, 18); ground(W, cob, [80, 120], 0.85);
+    const r = mulberry32(251);
+    const wood = std(0x7a5232, { roughness: 0.9 }); const dark = std(0x3a2a1a, { roughness: 0.9 });
+    const cloth = [0xc83a2a, 0xe8b040, 0x2a6aa8, 0x3a8a4a, 0x8a3aa8, 0xe86a2a];
+    // puestos con toldo de rayas: en ellos los pregoneros esconden sus falacias
+    W.falStalls = [];
+    const stall = (x, z, side, k) => {
+      const g = new THREE.Group(); g.position.set(x, 0, z); g.rotation.y = side > 0 ? -Math.PI / 2 : Math.PI / 2;
+      g.add(mesh(new THREE.BoxGeometry(3.2, 1.0, 1.2), wood, 0, 0.5, 0)); g.add(mesh(new THREE.BoxGeometry(3.4, 0.08, 1.4), dark, 0, 1.04, 0));
+      for (const [px, pz] of [[-1.6, -0.6], [1.6, -0.6], [-1.6, 0.9], [1.6, 0.9]]) g.add(mesh(new THREE.CylinderGeometry(0.06, 0.06, 2.9, 6), dark, px, 1.45, pz));
+      const c1 = std(cloth[k % 6], { roughness: 0.8 }), c2 = std(0xf4ecd8, { roughness: 0.8 });
+      for (let i = 0; i < 8; i++) g.add(withRot(mesh(new THREE.BoxGeometry(0.42, 0.05, 2.0), i % 2 ? c2 : c1, -1.47 + i * 0.42, 2.95, 0.15, false, false), 'x', -0.28));
+      // mercancía: frascos, telas, cajas
+      for (let i = 0; i < 6; i++) g.add(mesh(new THREE.CylinderGeometry(0.1, 0.12, 0.3 + r() * 0.2, 8), std(cloth[(k + i) % 6], { roughness: 0.3 }), -1.2 + i * 0.48, 1.2, -0.1 + (i % 2) * 0.3));
+      g.add(mesh(new THREE.BoxGeometry(0.9, 0.5, 0.7), wood, -1.0, 0.25, 1.2));
+      W.group.add(g); W.colliders.push({ t: 1, x, z, r: 1.7, h: 3 });
+      W.falStalls.push({ x: x - side * 1.7, z, sx: x, sz: z, k });
+    };
+    let k = 0;
+    for (const z of [27, 14, 1, -12, -25]) for (const side of [-1, 1]) { const x = side * 11; if (W._near(x, z, 1.6)) continue; stall(x, z, side, k++); }
+    // guirnaldas de banderines y farolillos cruzando la calle
+    for (const z of [30, 18, 6, -6, -18, -30]) {
+      for (let i = 0; i < 18; i++) { const x = -12 + i * (24 / 17); const y = 5.2 - Math.sin((i / 17) * Math.PI) * 1.1;
+        const fl = mesh(new THREE.ConeGeometry(0.22, 0.45, 3), std(cloth[(i + z) % 6 < 0 ? 0 : (i + Math.abs(z)) % 6], { roughness: 0.8 }), x, y - 0.25, z, false, false); fl.rotation.z = Math.PI; W.group.add(fl);
+        if (i % 4 === 2) W.group.add(mesh(new THREE.SphereGeometry(0.2, 10, 8), glow(0xffc070, 2.4), x, y - 0.5, z + 0.3, false, false)); }
+    }
+    // tarima de los oradores con atril y cortinas
+    if (!W._near(0, 8, 2.6)) { const g = new THREE.Group(); g.position.set(0, 0, 8);
+      g.add(mesh(new THREE.BoxGeometry(5, 0.6, 3), wood, 0, 0.3, 0)); addFloor(W, { kind: 'box', x: 0, z: 8, hw: 2.5, hd: 1.5, top: 0.6, th: 0.6 });
+      g.add(mesh(new THREE.BoxGeometry(0.7, 1.2, 0.5), dark, 0, 1.2, -0.6));
+      for (const sx of [-2.4, 2.4]) { g.add(mesh(new THREE.CylinderGeometry(0.08, 0.08, 4, 8), dark, sx, 2.6, -1.3)); g.add(mesh(new THREE.BoxGeometry(1.1, 3.4, 0.08), std(0x8a1a2a, { roughness: 0.7 }), sx * 0.85, 2.9, -1.3)); }
+      g.add(mesh(new THREE.BoxGeometry(5, 0.5, 0.1), std(0xe8b040, { metalness: 0.5, roughness: 0.4 }), 0, 4.6, -1.3));
+      W.group.add(g); }
+    // gran teatro de las máscaras al fondo
+    { const g = new THREE.Group(); g.position.set(0, 0, -60);
+      const wall = std(0xe0c8a0, { roughness: 0.8 });
+      g.add(mesh(new THREE.BoxGeometry(34, 13, 10), wall, 0, 6.5, 0, false, false));
+      for (let i = -3; i <= 3; i++) g.add(mesh(new THREE.CylinderGeometry(0.6, 0.7, 11, 12), std(0xf4ecd8), i * 4.6, 5.5, 5.4, false, false));
+      const ped = pediment(30, 4, 2, wall); ped.position.set(0, 13, 4.5); g.add(ped);
+      // máscaras de la comedia y la tragedia
+      for (const [sx, col] of [[-5, 0xffd36a], [5, 0xa8c8ff]]) { const m = mesh(new THREE.SphereGeometry(2.2, 18, 12, 0, Math.PI), glow(col, 0.8), sx, 14.5, 5.2, false, false); g.add(m);
+        for (const ex of [-0.7, 0.7]) g.add(mesh(new THREE.SphereGeometry(0.32, 10, 8), std(0x1a1a1a), sx + ex, 15.1, 7.2, false, false)); }
+      W.group.add(g); }
+    // carteles con signos de interrogación sobre postes
+    for (const [x, z] of [[-5, 22], [5, -4], [-5, -20], [5, 20]]) { if (W._near(x, z, 0.8)) continue; W.group.add(mesh(new THREE.CylinderGeometry(0.06, 0.06, 3, 6), dark, x, 1.5, z)); W.group.add(mesh(new THREE.BoxGeometry(1.2, 0.8, 0.06), std(0xf4ecd8), x, 3.1, z)); W.colliders.push({ t: 1, x, z, r: 0.2, h: 3 }); }
+    const roofs = farStd(W, 0xa8603a, 0.4); const walls = farStd(W, 0xe8d0a8, 0.4);
+    for (let k2 = 0; k2 < 14; k2++) { const x = -150 + k2 * 23 + (r() - 0.5) * 8, z = -110 - r() * 40, h = 8 + r() * 14, w = 10 + r() * 8;
+      W.group.add(mesh(new THREE.BoxGeometry(w, h, 8), walls, x, h / 2 - 1, z, false, false)); W.group.add(withRot(mesh(new THREE.ConeGeometry(w * 0.75, 5, 4), roofs, x, h + 1.5, z, false, false), 'y', Math.PI / 4)); }
+    brazier(W, -4, -34, 0xffc070); brazier(W, 4, -34, 0xffc070);
   },
 ];
 
@@ -2000,6 +2055,7 @@ function buildWorld(idx) {
   if (typeof buildZones === 'function') buildZones(W);
   if (typeof Agora !== 'undefined') { try { Agora.build(W); } catch (e) { console.warn('ágora', e); } }
   try { Orbes.build(W); } catch (e) { console.warn('orbes', e); }
+  if (W.falStalls) try { Falacias.build(W); } catch (e) { console.warn('falacias', e); }
 
   buildPortal(W);
   // puntos de aparición de enemigos

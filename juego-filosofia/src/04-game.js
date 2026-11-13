@@ -1409,6 +1409,7 @@ const MOTES = [
   { c: 0xffd8e0, up: 0.03, g: 0, i: 1.5, s: 0.1 },
   { c: 0xffc070, up: 0.06, g: 0, i: 1.7, s: 0.1 },
   { c: 0xf0fff8, up: 0.02, g: 0, i: 1.2, s: 0.09 },
+  { c: 0xffe070, up: 0.05, g: 0, i: 1.6, s: 0.1 },
 ];
 let moteAcc = 0;
 function ambientMotes(dt) {

@@ -924,6 +924,20 @@ body.touch .gm.boss { width: 30px; height: 30px; }
 @keyframes critIn { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.4) rotate(-6deg); } 18% { opacity: 1; transform: translate(-50%, -50%) scale(1.15) rotate(-3deg); } 70% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(-3deg); } 100% { opacity: 0; transform: translate(-50%, -60%) scale(1.05) rotate(-3deg); } }
 #duel.oracle #d-rope, #duel.oracle #d-cards, #duel.oracle #d-bet, #duel.oracle #d-rival { display: none !important; }
 @media (max-height: 520px) { #d-cards small { display: none; } #d-cards { margin: 4px 0 6px; } #d-rope { margin: 0 0 4px; } }
+/* ---------- bestiario de falacias ---------- */
+.fa-card { width: min(660px, 100%); } #fa-tabs { display: flex; justify-content: center; gap: 6px; margin: 8px 0 12px; }
+.fa-gh { font-family: var(--display); letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.8rem; color: var(--gold); margin: 14px 0 6px; }
+.fa-it { border: 1px solid var(--line); border-radius: 10px; background: rgba(0,0,0,0.22); margin: 6px 0; padding: 8px 12px; }
+.fa-it summary { cursor: pointer; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; list-style: none; } .fa-it summary::-webkit-details-marker { display: none; }
+.fa-it summary b { font-family: var(--display); letter-spacing: 0.04em; color: var(--gold-bright); } .fa-it summary i { font-size: 0.85rem; color: rgba(243,230,196,0.6); }
+.fa-it .fa-ok { margin-left: auto; font-size: 0.78rem; color: #8ff0c4; } .fa-it.got { border-color: rgba(92,240,170,0.45); }
+.fa-it p { margin: 6px 0; line-height: 1.4; } .fa-ex { font-style: italic; color: #ffe3a3; } .fa-r { font-size: 0.92rem; color: #cdf4ff; }
+#fa-train { text-align: center; } .fa-stk { font-family: var(--display); letter-spacing: 0.1em; font-size: 0.78rem; color: var(--gold); }
+.fa-q { font-size: 1.15rem; font-style: italic; line-height: 1.45; margin: 10px auto; max-width: 52ch; color: #fff3d8; }
+.fa-ops { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; } .fa-ops .btn { text-transform: none; letter-spacing: 0.02em; font-size: 0.95rem; }
+.fa-ops .btn.right { border-color: var(--right); background: rgba(92,196,154,0.25); } .fa-ops .btn.wrong { border-color: var(--wrong); background: rgba(214,92,92,0.25); }
+.fa-fb { border-top: 1px dashed var(--line); padding-top: 10px; margin-top: 6px; } .fa-fb p { line-height: 1.45; text-align: left; }
+@media (max-width: 520px) { .fa-ops { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
@@ -1000,6 +1014,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="on-av" id="b-versus"><b>⚔</b><span>Debates</span><small>Pensador contra pensador</small></button>
         <button class="on-av" id="b-tiempo"><b>⏳</b><span>Línea de tiempo</span><small>¿Quién vivió a la vez?</small></button>
         <button class="on-av" id="b-frases"><b>❝</b><span>Frases célebres</span><small>Tu colección</small></button>
+        <button class="on-av" id="b-falacias"><b>🔎</b><span>Falacias</span><small>Bestiario y entrenamiento</small></button>
       </div>
       <button class="more-b" id="b-more" aria-expanded="false">Más opciones ▾</button>
       <div class="minis" id="t-more" hidden>
@@ -1216,6 +1231,13 @@ body.touch .gm.boss { width: 30px; height: 30px; }
     <button class="ls-x pn-x" id="fr-x" aria-label="Cerrar">✕</button>
     <div class="eyebrow" style="text-align:center">Habla con los pensadores para descubrirlas</div><h3 class="av-h">Frases célebres</h3>
     <p class="qd-note" id="fr-count" style="text-align:center"></p><div id="fr-items"></div>
+  </div></div>
+  <div id="fa" class="nb" hidden><div class="nb-card fa-card" role="dialog" aria-label="Bestiario de falacias">
+    <button class="ls-x pn-x" id="fa-x" aria-label="Cerrar">✕</button>
+    <div class="eyebrow" style="text-align:center">Argumentos que parecen buenos y no lo son</div><h3 class="av-h">Bestiario de falacias</h3>
+    <p class="qd-note" id="fa-count" style="text-align:center"></p>
+    <div class="seg" id="fa-tabs"><button data-t="lista">Las falacias</button><button data-t="entrena">Entrenar</button></div>
+    <div id="fa-items"></div><div id="fa-train" hidden></div>
   </div></div>
   <div id="tl" class="nb" hidden><div class="nb-card tl-card" role="dialog" aria-label="Línea de tiempo">
     <button class="ls-x pn-x" id="tl-x" aria-label="Cerrar">✕</button>
@@ -2109,11 +2131,11 @@ function setEraBackdrop(el, i) {
 
 // ---- src/00d-place-art.js ----
 // Pinturas de los lugares agrupadas por época (lo genera tools/place-sheets.py): id -> [época, fila, filas]
-const PLACE_ART = {"mileto":[0,0,5],"dorico":[0,1,5],"mitos":[0,2,5],"didima":[0,3,5],"polis_jonia":[0,4,5],"partenon":[1,0,16],"agora":[1,1,16],"stoa":[1,2,16],"democracia":[1,3,16],"polis":[1,4,16],"teatro":[1,5,16],"gimnasio":[1,6,16],"banquete":[1,7,16],"esparta":[1,8,16],"olimpia":[1,9,16],"akademos":[1,10,16],"delfos":[1,11,16],"cueva-salida":[1,12,16],"cueva-fuego":[1,13,16],"cueva-muro":[1,14,16],"cueva-prisioneros":[1,15,16],"alejandro":[2,0,7],"alejandria":[2,1,7],"jardin":[2,2,7],"arco":[2,3,7],"tinaja":[2,4,7],"corinto":[2,5,7],"faro":[2,6,7],"roseton":[3,0,5],"gotico":[3,1,5],"universidad":[3,2,5],"toledo":[3,3,5],"scriptorium":[3,4,5],"cupula":[4,0,6],"perspectiva":[4,1,6],"ospedale":[4,2,6],"imprenta":[4,3,6],"copernico":[4,4,6],"taller":[4,5,6],"newton":[5,0,5],"enciclopedia":[5,1,5],"telescopio":[5,2,5],"derechos":[5,3,5],"salon":[5,4,5],"fabrica":[6,0,6],"ferrocarril":[6,1,6],"cristal":[6,2,6],"caminante":[6,3,6],"darwin":[6,4,6],"barricadas":[6,5,6],"relatividad":[7,0,6],"guerras":[7,1,6],"luna":[7,2,6],"flore":[7,3,6],"derechos48":[7,4,6],"internet":[7,5,6],"tenochtitlan":[8,0,6],"machupicchu":[8,1,6],"valladolid":[8,2,6],"independencias":[8,3,6],"muralismo":[8,4,6],"mistral":[8,5,6],"templomayor":[9,0,5],"calmecac":[9,1,5],"piedrasol":[9,2,5],"chinampas":[9,3,5],"tlatelolco":[9,4,5],"cusco":[10,0,5],"qhapaqnan":[10,1,5],"sacsayhuaman":[10,2,5],"moray":[10,3,5],"quipus":[10,4,5],"ruka":[11,0,5],"rewe":[11,1,5],"pewen":[11,2,5],"wetripantu":[11,3,5],"quilin":[11,4,5],"muralla":[12,0,5],"seda":[12,1,5],"inventos":[12,2,5],"examenes":[12,3,5],"jardinletrado":[12,4,5],"indo":[13,0,5],"nalanda":[13,1,5],"cero":[13,2,5],"ashoka":[13,3,5],"ganges":[13,4,5],"guiza":[14,0,5],"tombuctu":[14,1,5],"aksum":[14,2,5],"zimbabue":[14,3,5],"robben":[14,4,5],"zigurat":[15,0,5],"edubba":[15,1,5],"liraur":[15,2,5],"murallas":[15,3,5],"estela":[15,4,5],"casasabiduria":[16,0,5],"papel":[16,1,5],"algebra":[16,2,5],"bimaristan":[16,3,5],"milnoches":[16,4,5],"lesbos":[17,0,5],"changan":[17,1,5],"konya":[17,2,5],"elqui":[17,3,5],"islanegra":[17,4,5],"eureka":[18,0,5],"padua":[18,1,5],"analitica":[18,2,5],"cobertizo":[18,3,5],"berna":[18,4,5],"heian":[19,0,5],"eiheiji":[19,1,5],"casadete":[19,2,5],"oku":[19,3,5],"filosofo":[19,4,5],"thing":[20,0,5],"langhus":[20,1,5],"drakkar":[20,2,5],"runas":[20,3,5],"reykholt":[20,4,5],"persepolis":[21,0,5],"cilindro":[21,1,5],"jardin-persa":[21,2,5],"camino-real":[21,3,5],"templo-fuego":[21,4,5],"lucrecio-hallazgo":[22,0,5],"enciclopedia-prohibida":[22,1,5],"tetera":[22,2,5],"punto-azul":[22,3,5],"conciencia":[22,4,5],"bec":[23,0,5],"mezquita-cordoba":[23,1,5],"avila":[23,2,5],"memorial":[23,3,5],"parlamento":[23,4,5],"cirey":[24,0,5],"seneca-falls":[24,1,5],"akron":[24,2,5],"sufragio":[24,3,5],"la-piece":[24,4,5],"seisachtheia":[25,0,5],"senado":[25,1,5],"junta-valladolid":[25,2,5],"marcha-sal":[25,3,5],"montgomery":[25,4,5],"cueva-bodhidharma":[26,0,5],"cueva-milarepa":[26,1,5],"arunachala":[26,2,5],"benares":[26,3,5],"cuatro-monasterios":[26,4,5],"orbis-pictus":[27,0,5],"stans":[27,1,5],"casa-bambini":[27,2,5],"divan":[27,3,5],"vasos-piaget":[27,4,5],"chimborazo":[28,0,5],"lobo":[28,1,5],"primavera-silenciosa":[28,2,5],"seringal":[28,3,5],"gualcarque":[28,4,5],"postulados":[29,0,5],"conejos":[29,1,5],"taxi-1729":[29,2,5],"puentes-konigsberg":[29,3,5],"bletchley":[29,4,5],"cueva-chauvet":[30,0,5],"gran-ola":[30,1,5],"novena":[30,2,5],"casa-azul":[30,3,5],"sinestesia":[30,4,5],"arbol-paz":[31,0,5],"bisontes":[31,1,5],"parihaka":[31,2,5],"iolani":[31,3,5],"uluru":[31,4,5],"gladiadores":[32,0,5],"teatro-anatomico":[32,1,5],"lavado-manos":[32,2,5],"escutari":[32,3,5],"vacuna-rabia":[32,4,5]};
+const PLACE_ART = {"mileto":[0,0,5],"dorico":[0,1,5],"mitos":[0,2,5],"didima":[0,3,5],"polis_jonia":[0,4,5],"partenon":[1,0,16],"agora":[1,1,16],"stoa":[1,2,16],"democracia":[1,3,16],"polis":[1,4,16],"teatro":[1,5,16],"gimnasio":[1,6,16],"banquete":[1,7,16],"esparta":[1,8,16],"olimpia":[1,9,16],"akademos":[1,10,16],"delfos":[1,11,16],"cueva-salida":[1,12,16],"cueva-fuego":[1,13,16],"cueva-muro":[1,14,16],"cueva-prisioneros":[1,15,16],"alejandro":[2,0,7],"alejandria":[2,1,7],"jardin":[2,2,7],"arco":[2,3,7],"tinaja":[2,4,7],"corinto":[2,5,7],"faro":[2,6,7],"roseton":[3,0,5],"gotico":[3,1,5],"universidad":[3,2,5],"toledo":[3,3,5],"scriptorium":[3,4,5],"cupula":[4,0,6],"perspectiva":[4,1,6],"ospedale":[4,2,6],"imprenta":[4,3,6],"copernico":[4,4,6],"taller":[4,5,6],"newton":[5,0,5],"enciclopedia":[5,1,5],"telescopio":[5,2,5],"derechos":[5,3,5],"salon":[5,4,5],"fabrica":[6,0,6],"ferrocarril":[6,1,6],"cristal":[6,2,6],"caminante":[6,3,6],"darwin":[6,4,6],"barricadas":[6,5,6],"relatividad":[7,0,6],"guerras":[7,1,6],"luna":[7,2,6],"flore":[7,3,6],"derechos48":[7,4,6],"internet":[7,5,6],"tenochtitlan":[8,0,6],"machupicchu":[8,1,6],"valladolid":[8,2,6],"independencias":[8,3,6],"muralismo":[8,4,6],"mistral":[8,5,6],"templomayor":[9,0,5],"calmecac":[9,1,5],"piedrasol":[9,2,5],"chinampas":[9,3,5],"tlatelolco":[9,4,5],"cusco":[10,0,5],"qhapaqnan":[10,1,5],"sacsayhuaman":[10,2,5],"moray":[10,3,5],"quipus":[10,4,5],"ruka":[11,0,5],"rewe":[11,1,5],"pewen":[11,2,5],"wetripantu":[11,3,5],"quilin":[11,4,5],"muralla":[12,0,5],"seda":[12,1,5],"inventos":[12,2,5],"examenes":[12,3,5],"jardinletrado":[12,4,5],"indo":[13,0,5],"nalanda":[13,1,5],"cero":[13,2,5],"ashoka":[13,3,5],"ganges":[13,4,5],"guiza":[14,0,5],"tombuctu":[14,1,5],"aksum":[14,2,5],"zimbabue":[14,3,5],"robben":[14,4,5],"zigurat":[15,0,5],"edubba":[15,1,5],"liraur":[15,2,5],"murallas":[15,3,5],"estela":[15,4,5],"casasabiduria":[16,0,5],"papel":[16,1,5],"algebra":[16,2,5],"bimaristan":[16,3,5],"milnoches":[16,4,5],"lesbos":[17,0,5],"changan":[17,1,5],"konya":[17,2,5],"elqui":[17,3,5],"islanegra":[17,4,5],"eureka":[18,0,5],"padua":[18,1,5],"analitica":[18,2,5],"cobertizo":[18,3,5],"berna":[18,4,5],"heian":[19,0,5],"eiheiji":[19,1,5],"casadete":[19,2,5],"oku":[19,3,5],"filosofo":[19,4,5],"thing":[20,0,5],"langhus":[20,1,5],"drakkar":[20,2,5],"runas":[20,3,5],"reykholt":[20,4,5],"persepolis":[21,0,5],"cilindro":[21,1,5],"jardin-persa":[21,2,5],"camino-real":[21,3,5],"templo-fuego":[21,4,5],"lucrecio-hallazgo":[22,0,5],"enciclopedia-prohibida":[22,1,5],"tetera":[22,2,5],"punto-azul":[22,3,5],"conciencia":[22,4,5],"bec":[23,0,5],"mezquita-cordoba":[23,1,5],"avila":[23,2,5],"memorial":[23,3,5],"parlamento":[23,4,5],"cirey":[24,0,5],"seneca-falls":[24,1,5],"akron":[24,2,5],"sufragio":[24,3,5],"la-piece":[24,4,5],"seisachtheia":[25,0,5],"senado":[25,1,5],"junta-valladolid":[25,2,5],"marcha-sal":[25,3,5],"montgomery":[25,4,5],"cueva-bodhidharma":[26,0,5],"cueva-milarepa":[26,1,5],"arunachala":[26,2,5],"benares":[26,3,5],"cuatro-monasterios":[26,4,5],"orbis-pictus":[27,0,5],"stans":[27,1,5],"casa-bambini":[27,2,5],"divan":[27,3,5],"vasos-piaget":[27,4,5],"chimborazo":[28,0,5],"lobo":[28,1,5],"primavera-silenciosa":[28,2,5],"seringal":[28,3,5],"gualcarque":[28,4,5],"postulados":[29,0,5],"conejos":[29,1,5],"taxi-1729":[29,2,5],"puentes-konigsberg":[29,3,5],"bletchley":[29,4,5],"cueva-chauvet":[30,0,5],"gran-ola":[30,1,5],"novena":[30,2,5],"casa-azul":[30,3,5],"sinestesia":[30,4,5],"arbol-paz":[31,0,5],"bisontes":[31,1,5],"parihaka":[31,2,5],"iolani":[31,3,5],"uluru":[31,4,5],"gladiadores":[32,0,5],"teatro-anatomico":[32,1,5],"lavado-manos":[32,2,5],"escutari":[32,3,5],"vacuna-rabia":[32,4,5],"casa-calias":[33,0,5],"liceo-refutaciones":[33,1,5],"disputa-paris":[33,2,5],"museo-barnum":[33,3,5],"antorchas":[33,4,5]};
 
 // ---- src/00e-sprites.js ----
 // Generado por tools/sprite-sheets.py: retratos de ciudadanos y portadas de libros.
-const SPRITES = {"c-abuela":["img/ciudadanos.jpg",0,0,8,13],"c-aclla":["img/ciudadanos.jpg",1,0,8,13],"c-alfarera":["img/ciudadanos.jpg",2,0,8,13],"c-alfarero":["img/ciudadanos.jpg",3,0,8,13],"c-alfombrera":["img/ciudadanos.jpg",4,0,8,13],"c-alumna":["img/ciudadanos.jpg",5,0,8,13],"c-apicultora":["img/ciudadanos.jpg",6,0,8,13],"c-aprendiz":["img/ciudadanos.jpg",7,0,8,13],"c-arquitecta":["img/ciudadanos.jpg",0,1,8,13],"c-arrocero":["img/ciudadanos.jpg",1,1,8,13],"c-aspasia":["img/ciudadanos.jpg",2,1,8,13],"c-astrolabista":["img/ciudadanos.jpg",3,1,8,13],"c-astronoma":["img/ciudadanos.jpg",4,1,8,13],"c-astronomo":["img/ciudadanos.jpg",5,1,8,13],"c-babbage":["img/ciudadanos.jpg",6,1,8,13],"c-bailarina":["img/ciudadanos.jpg",7,1,8,13],"c-balsero":["img/ciudadanos.jpg",0,2,8,13],"c-bibliotecario":["img/ciudadanos.jpg",1,2,8,13],"c-boticario":["img/ciudadanos.jpg",2,2,8,13],"c-calias":["img/ciudadanos.jpg",3,2,8,13],"c-caligrafa-heian":["img/ciudadanos.jpg",4,2,8,13],"c-caligrafo":["img/ciudadanos.jpg",5,2,8,13],"c-camarero":["img/ciudadanos.jpg",6,2,8,13],"c-campesino-abum":["img/ciudadanos.jpg",7,2,8,13],"c-campesino":["img/ciudadanos.jpg",0,3,8,13],"c-cantora":["img/ciudadanos.jpg",1,3,8,13],"c-cefalo":["img/ciudadanos.jpg",2,3,8,13],"c-chapar":["img/ciudadanos.jpg",3,3,8,13],"c-chasqui":["img/ciudadanos.jpg",4,3,8,13],"c-chatelet":["img/ciudadanos.jpg",5,3,8,13],"c-chinampera":["img/ciudadanos.jpg",6,3,8,13],"c-condotiero":["img/ciudadanos.jpg",7,3,8,13],"c-contable":["img/ciudadanos.jpg",0,4,8,13],"c-copista":["img/ciudadanos.jpg",1,4,8,13],"c-costurera":["img/ciudadanos.jpg",2,4,8,13],"c-derviche":["img/ciudadanos.jpg",3,4,8,13],"c-descifradora":["img/ciudadanos.jpg",4,4,8,13],"c-enfermera":["img/ciudadanos.jpg",5,4,8,13],"c-escriba-dudu":["img/ciudadanos.jpg",6,4,8,13],"c-escriba":["img/ciudadanos.jpg",7,4,8,13],"c-escultora":["img/ciudadanos.jpg",0,5,8,13],"c-estudiante-tang":["img/ciudadanos.jpg",1,5,8,13],"c-estudiante":["img/ciudadanos.jpg",2,5,8,13],"c-estudiante68":["img/ciudadanos.jpg",3,5,8,13],"c-filis":["img/ciudadanos.jpg",4,5,8,13],"c-gerardo":["img/ciudadanos.jpg",5,5,8,13],"c-griot":["img/ciudadanos.jpg",6,5,8,13],"c-guardabosques":["img/ciudadanos.jpg",7,5,8,13],"c-hortelano":["img/ciudadanos.jpg",0,6,8,13],"c-impresor":["img/ciudadanos.jpg",1,6,8,13],"c-ingeniero":["img/ciudadanos.jpg",2,6,8,13],"c-jardinero":["img/ciudadanos.jpg",3,6,8,13],"c-jueza":["img/ciudadanos.jpg",4,6,8,13],"c-librero-bagdad":["img/ciudadanos.jpg",5,6,8,13],"c-librero":["img/ciudadanos.jpg",6,6,8,13],"c-luthier":["img/ciudadanos.jpg",7,6,8,13],"c-maestra-elqui":["img/ciudadanos.jpg",0,7,8,13],"c-maestra-lucia":["img/ciudadanos.jpg",1,7,8,13],"c-maestra":["img/ciudadanos.jpg",2,7,8,13],"c-maestro":["img/ciudadanos.jpg",3,7,8,13],"c-maquinista":["img/ciudadanos.jpg",4,7,8,13],"c-matematico":["img/ciudadanos.jpg",5,7,8,13],"c-medica":["img/ciudadanos.jpg",6,7,8,13],"c-mercader":["img/ciudadanos.jpg",7,7,8,13],"c-monje-tenzin":["img/ciudadanos.jpg",0,8,8,13],"c-monje-zen":["img/ciudadanos.jpg",1,8,8,13],"c-monje":["img/ciudadanos.jpg",2,8,8,13],"c-narradora":["img/ciudadanos.jpg",3,8,8,13],"c-navegante-kaimana":["img/ciudadanos.jpg",4,8,8,13],"c-navegante":["img/ciudadanos.jpg",5,8,8,13],"c-nicias":["img/ciudadanos.jpg",6,8,8,13],"c-obrera":["img/ciudadanos.jpg",7,8,8,13],"c-obrero":["img/ciudadanos.jpg",0,9,8,13],"c-palife":["img/ciudadanos.jpg",1,9,8,13],"c-partera-dolores":["img/ciudadanos.jpg",2,9,8,13],"c-partera":["img/ciudadanos.jpg",3,9,8,13],"c-peregrina":["img/ciudadanos.jpg",4,9,8,13],"c-peregrino":["img/ciudadanos.jpg",5,9,8,13],"c-periodista":["img/ciudadanos.jpg",6,9,8,13],"c-pescador":["img/ciudadanos.jpg",7,9,8,13],"c-pintor":["img/ciudadanos.jpg",0,10,8,13],"c-plantadora":["img/ciudadanos.jpg",1,10,8,13],"c-platero":["img/ciudadanos.jpg",2,10,8,13],"c-pochteca":["img/ciudadanos.jpg",3,10,8,13],"c-programadora":["img/ciudadanos.jpg",4,10,8,13],"c-pulidor":["img/ciudadanos.jpg",5,10,8,13],"c-quipucamayoc":["img/ciudadanos.jpg",6,10,8,13],"c-radiologa":["img/ciudadanos.jpg",7,10,8,13],"c-rapsoda":["img/ciudadanos.jpg",0,11,8,13],"c-runista":["img/ciudadanos.jpg",1,11,8,13],"c-salinero":["img/ciudadanos.jpg",2,11,8,13],"c-sedera":["img/ciudadanos.jpg",3,11,8,13],"c-sosias":["img/ciudadanos.jpg",4,11,8,13],"c-sufragista":["img/ciudadanos.jpg",5,11,8,13],"c-tabernera":["img/ciudadanos.jpg",6,11,8,13],"c-tejedora-dine":["img/ciudadanos.jpg",7,11,8,13],"c-tejedora-norte":["img/ciudadanos.jpg",0,12,8,13],"c-tejedora-seda":["img/ciudadanos.jpg",1,12,8,13],"c-tejedora":["img/ciudadanos.jpg",2,12,8,13],"c-teon":["img/ciudadanos.jpg",3,12,8,13],"c-tipografo":["img/ciudadanos.jpg",4,12,8,13],"c-tlacuilo":["img/ciudadanos.jpg",5,12,8,13],"c-traductor":["img/ciudadanos.jpg",6,12,8,13],"c-witralwe":["img/ciudadanos.jpg",7,12,8,13],"b-alce-negro-habla":["img/portadas.jpg",0,0,8,9],"b-almanaque":["img/portadas.jpg",1,0,8,9],"b-analectas":["img/portadas.jpg",2,0,8,9],"b-apologia":["img/portadas.jpg",3,0,8,9],"b-banquete_libro":["img/portadas.jpg",4,0,8,9],"b-cantares":["img/portadas.jpg",5,0,8,9],"b-cartas-estetica":["img/portadas.jpg",6,0,8,9],"b-cien-mil-cantos":["img/portadas.jpg",7,0,8,9],"b-ciudad_damas":["img/portadas.jpg",0,1,8,9],"b-ciudadvirtuosa":["img/portadas.jpg",1,1,8,9],"b-claros-bosque":["img/portadas.jpg",2,1,8,9],"b-comentarios":["img/portadas.jpg",3,1,8,9],"b-confesiones":["img/portadas.jpg",4,1,8,9],"b-cosmos":["img/portadas.jpg",5,1,8,9],"b-declaracion-mujer":["img/portadas.jpg",6,1,8,9],"b-dhammapada":["img/portadas.jpg",7,1,8,9],"b-edda":["img/portadas.jpg",0,2,8,9],"b-eichmann":["img/portadas.jpg",1,2,8,9],"b-elementos-libro":["img/portadas.jpg",2,2,8,9],"b-ensayos":["img/portadas.jpg",3,2,8,9],"b-espiritu-leyes":["img/portadas.jpg",4,2,8,9],"b-etica":["img/portadas.jpg",5,2,8,9],"b-fabrica-vesalio":["img/portadas.jpg",6,2,8,9],"b-fedon":["img/portadas.jpg",7,2,8,9],"b-fragmentos-safo":["img/portadas.jpg",0,3,8,9],"b-fragmentos":["img/portadas.jpg",1,3,8,9],"b-gathas":["img/portadas.jpg",2,3,8,9],"b-genji":["img/portadas.jpg",3,3,8,9],"b-gilgamesh-libro":["img/portadas.jpg",4,3,8,9],"b-gran-ley":["img/portadas.jpg",5,3,8,9],"b-hatata":["img/portadas.jpg",6,3,8,9],"b-havamal":["img/portadas.jpg",7,3,8,9],"b-himnos-inanna":["img/portadas.jpg",0,4,8,9],"b-ilustracion":["img/portadas.jpg",1,4,8,9],"b-interpretacion-suenos":["img/portadas.jpg",2,4,8,9],"b-liber-abaci":["img/portadas.jpg",3,4,8,9],"b-libertad":["img/portadas.jpg",4,4,8,9],"b-lo-espiritual":["img/portadas.jpg",5,4,8,9],"b-manifiesto":["img/portadas.jpg",6,4,8,9],"b-masnavi":["img/portadas.jpg",7,4,8,9],"b-meditaciones":["img/portadas.jpg",0,5,8,9],"b-meneceo":["img/portadas.jpg",1,5,8,9],"b-mensajero-sidereo":["img/portadas.jpg",2,5,8,9],"b-metodo":["img/portadas.jpg",3,5,8,9],"b-moradas":["img/portadas.jpg",4,5,8,9],"b-notas-enfermeria":["img/portadas.jpg",5,5,8,9],"b-notas-lovelace":["img/portadas.jpg",6,5,8,9],"b-nuestra_america":["img/portadas.jpg",7,5,8,9],"b-orbis-pictus-libro":["img/portadas.jpg",0,6,8,9],"b-pedagogia":["img/portadas.jpg",1,6,8,9],"b-pensamientos":["img/portadas.jpg",2,6,8,9],"b-poema":["img/portadas.jpg",3,6,8,9],"b-primavera-silenciosa-libro":["img/portadas.jpg",4,6,8,9],"b-principe":["img/portadas.jpg",5,6,8,9],"b-republica":["img/portadas.jpg",6,6,8,9],"b-rerum-natura":["img/portadas.jpg",7,6,8,9],"b-respuesta":["img/portadas.jpg",0,7,8,9],"b-segundo_sexo":["img/portadas.jpg",1,7,8,9],"b-sendas-oku":["img/portadas.jpg",2,7,8,9],"b-shahnameh":["img/portadas.jpg",3,7,8,9],"b-sisifo":["img/portadas.jpg",4,7,8,9],"b-suma":["img/portadas.jpg",5,7,8,9],"b-sutra-estrado":["img/portadas.jpg",6,7,8,9],"b-taoteching":["img/portadas.jpg",7,7,8,9],"b-teoria-justicia":["img/portadas.jpg",0,8,8,9],"b-vindicacion":["img/portadas.jpg",1,8,8,9],"b-zaratustra":["img/portadas.jpg",2,8,8,9],"p-agustin":["img/retratos.jpg",0,0,10,21],"p-ajita":["img/retratos.jpg",1,0,10,21],"p-alcenegro":["img/retratos.jpg",2,0,10,21],"p-alfarabi":["img/retratos.jpg",3,0,10,21],"p-algazali":["img/retratos.jpg",4,0,10,21],"p-alhacen":["img/retratos.jpg",5,0,10,21],"p-aljuarismi":["img/retratos.jpg",6,0,10,21],"p-alkindi":["img/retratos.jpg",7,0,10,21],"p-anselmo":["img/retratos.jpg",8,0,10,21],"p-arendt":["img/retratos.jpg",9,0,10,21],"p-aristoteles":["img/retratos.jpg",0,1,10,21],"p-arquimedes":["img/retratos.jpg",1,1,10,21],"p-aryabhata":["img/retratos.jpg",2,1,10,21],"p-aud":["img/retratos.jpg",3,1,10,21],"p-averroes":["img/retratos.jpg",4,1,10,21],"p-avicena":["img/retratos.jpg",5,1,10,21],"p-bacon":["img/retratos.jpg",6,1,10,21],"p-banzhao":["img/retratos.jpg",7,1,10,21],"p-basho":["img/retratos.jpg",8,1,10,21],"p-beauvoir":["img/retratos.jpg",9,1,10,21],"p-beethoven":["img/retratos.jpg",0,2,10,21],"p-bodhidharma":["img/retratos.jpg",1,2,10,21],"p-boole":["img/retratos.jpg",2,2,10,21],"p-buda":["img/retratos.jpg",3,2,10,21],"p-burzoe":["img/retratos.jpg",4,2,10,21],"p-caceres":["img/retratos.jpg",5,2,10,21],"p-cajal":["img/retratos.jpg",6,2,10,21],"p-camus":["img/retratos.jpg",7,2,10,21],"p-carson":["img/retratos.jpg",8,2,10,21],"p-castellanos":["img/retratos.jpg",9,2,10,21],"p-chatelet":["img/retratos.jpg",0,3,10,21],"p-ciceron":["img/retratos.jpg",1,3,10,21],"p-ciro":["img/retratos.jpg",2,3,10,21],"p-comenio":["img/retratos.jpg",3,3,10,21],"p-confucio":["img/retratos.jpg",4,3,10,21],"p-copernico":["img/retratos.jpg",5,3,10,21],"p-curie":["img/retratos.jpg",6,3,10,21],"p-dante":["img/retratos.jpg",7,3,10,21],"p-darwin":["img/retratos.jpg",8,3,10,21],"p-democrito":["img/retratos.jpg",9,3,10,21],"p-descartes":["img/retratos.jpg",0,4,10,21],"p-dickinson":["img/retratos.jpg",1,4,10,21],"p-diderot":["img/retratos.jpg",2,4,10,21],"p-diogenes":["img/retratos.jpg",3,4,10,21],"p-dogen":["img/retratos.jpg",4,4,10,21],"p-egill":["img/retratos.jpg",5,4,10,21],"p-einstein":["img/retratos.jpg",6,4,10,21],"p-enheduanna":["img/retratos.jpg",7,4,10,21],"p-epicteto":["img/retratos.jpg",8,4,10,21],"p-epicuro":["img/retratos.jpg",9,4,10,21],"p-ernestinerose":["img/retratos.jpg",0,5,10,21],"p-euclides":["img/retratos.jpg",1,5,10,21],"p-ferdousi":["img/retratos.jpg",2,5,10,21],"p-feuerbach":["img/retratos.jpg",3,5,10,21],"p-fibonacci":["img/retratos.jpg",4,5,10,21],"p-frankl":["img/retratos.jpg",5,5,10,21],"p-freire":["img/retratos.jpg",6,5,10,21],"p-freud":["img/retratos.jpg",7,5,10,21],"p-frida":["img/retratos.jpg",8,5,10,21],"p-galeno":["img/retratos.jpg",9,5,10,21],"p-galileo":["img/retratos.jpg",0,6,10,21],"p-gandhi":["img/retratos.jpg",1,6,10,21],"p-garcilaso":["img/retratos.jpg",2,6,10,21],"p-gargi":["img/retratos.jpg",3,6,10,21],"p-gilgamesh":["img/retratos.jpg",4,6,10,21],"p-godel":["img/retratos.jpg",5,6,10,21],"p-gouges":["img/retratos.jpg",6,6,10,21],"p-guamanpoma":["img/retratos.jpg",7,6,10,21],"p-guia":["img/retratos.jpg",8,6,10,21],"p-hammurabi":["img/retratos.jpg",9,6,10,21],"p-hegel":["img/retratos.jpg",0,7,10,21],"p-heidegger":["img/retratos.jpg",1,7,10,21],"p-heraclito":["img/retratos.jpg",2,7,10,21],"p-hildegarda":["img/retratos.jpg",3,7,10,21],"p-hipatia":["img/retratos.jpg",4,7,10,21],"p-hipocrates":["img/retratos.jpg",5,7,10,21],"p-hobbes":["img/retratos.jpg",6,7,10,21],"p-hokusai":["img/retratos.jpg",7,7,10,21],"p-huineng":["img/retratos.jpg",8,7,10,21],"p-humboldt":["img/retratos.jpg",9,7,10,21],"p-hume":["img/retratos.jpg",0,8,10,21],"p-ibnjaldun":["img/retratos.jpg",1,8,10,21],"p-incaroca":["img/retratos.jpg",2,8,10,21],"p-janequeo":["img/retratos.jpg",3,8,10,21],"p-joseph":["img/retratos.jpg",4,8,10,21],"p-kabir":["img/retratos.jpg",5,8,10,21],"p-kandinsky":["img/retratos.jpg",6,8,10,21],"p-kant":["img/retratos.jpg",7,8,10,21],"p-kierkegaard":["img/retratos.jpg",8,8,10,21],"p-kimche":["img/retratos.jpg",9,8,10,21],"p-king":["img/retratos.jpg",0,9,10,21],"p-laozi":["img/retratos.jpg",1,9,10,21],"p-lascasas":["img/retratos.jpg",2,9,10,21],"p-lautaro":["img/retratos.jpg",3,9,10,21],"p-leibniz":["img/retratos.jpg",4,9,10,21],"p-leonardo":["img/retratos.jpg",5,9,10,21],"p-leopold":["img/retratos.jpg",6,9,10,21],"p-libai":["img/retratos.jpg",7,9,10,21],"p-liliuokalani":["img/retratos.jpg",8,9,10,21],"p-locke":["img/retratos.jpg",9,9,10,21],"p-lovelace":["img/retratos.jpg",0,10,10,21],"p-lovelock":["img/retratos.jpg",1,10,10,21],"p-lucrecio":["img/retratos.jpg",2,10,10,21],"p-maathai":["img/retratos.jpg",3,10,10,21],"p-machi":["img/retratos.jpg",4,10,10,21],"p-macuilxochitzin":["img/retratos.jpg",5,10,10,21],"p-mahavira":["img/retratos.jpg",6,10,10,21],"p-maimonides":["img/retratos.jpg",7,10,10,21],"p-mandela":["img/retratos.jpg",8,10,10,21],"p-mani":["img/retratos.jpg",9,10,10,21],"p-maquiavelo":["img/retratos.jpg",0,11,10,21],"p-marcoaurelio":["img/retratos.jpg",1,11,10,21],"p-marti":["img/retratos.jpg",2,11,10,21],"p-marx":["img/retratos.jpg",3,11,10,21],"p-mencio":["img/retratos.jpg",4,11,10,21],"p-mendes":["img/retratos.jpg",5,11,10,21],"p-milarepa":["img/retratos.jpg",6,11,10,21],"p-mill":["img/retratos.jpg",7,11,10,21],"p-mirabai":["img/retratos.jpg",8,11,10,21],"p-mistral":["img/retratos.jpg",9,11,10,21],"p-montaigne":["img/retratos.jpg",0,12,10,21],"p-montesquieu":["img/retratos.jpg",1,12,10,21],"p-montessori":["img/retratos.jpg",2,12,10,21],"p-mozi":["img/retratos.jpg",3,12,10,21],"p-murasaki":["img/retratos.jpg",4,12,10,21],"p-naess":["img/retratos.jpg",5,12,10,21],"p-nagarjuna":["img/retratos.jpg",6,12,10,21],"p-neruda":["img/retratos.jpg",7,12,10,21],"p-newton":["img/retratos.jpg",8,12,10,21],"p-nezahualcoyotl":["img/retratos.jpg",9,12,10,21],"p-nietzsche":["img/retratos.jpg",0,13,10,21],"p-nightingale":["img/retratos.jpg",1,13,10,21],"p-nishida":["img/retratos.jpg",2,13,10,21],"p-noether":["img/retratos.jpg",3,13,10,21],"p-ockham":["img/retratos.jpg",4,13,10,21],"p-pachacutec":["img/retratos.jpg",5,13,10,21],"p-pacificador":["img/retratos.jpg",6,13,10,21],"p-parmenides":["img/retratos.jpg",7,13,10,21],"p-pascal":["img/retratos.jpg",8,13,10,21],"p-pasteur":["img/retratos.jpg",9,13,10,21],"p-paz":["img/retratos.jpg",0,14,10,21],"p-pestalozzi":["img/retratos.jpg",1,14,10,21],"p-piaget":["img/retratos.jpg",2,14,10,21],"p-pico":["img/retratos.jpg",3,14,10,21],"p-pirron":["img/retratos.jpg",4,14,10,21],"p-pitagoras":["img/retratos.jpg",5,14,10,21],"p-pizan":["img/retratos.jpg",6,14,10,21],"p-platon":["img/retratos.jpg",7,14,10,21],"p-protagoras":["img/retratos.jpg",8,14,10,21],"p-ptahhotep":["img/retratos.jpg",9,14,10,21],"p-rabia":["img/retratos.jpg",0,15,10,21],"p-ramana":["img/retratos.jpg",1,15,10,21],"p-ramanujan":["img/retratos.jpg",2,15,10,21],"p-rawls":["img/retratos.jpg",3,15,10,21],"p-rikyu":["img/retratos.jpg",4,15,10,21],"p-rousseau":["img/retratos.jpg",5,15,10,21],"p-rumi":["img/retratos.jpg",6,15,10,21],"p-russell":["img/retratos.jpg",7,15,10,21],"p-safo":["img/retratos.jpg",8,15,10,21],"p-sagan":["img/retratos.jpg",9,15,10,21],"p-sartre":["img/retratos.jpg",0,16,10,21],"p-schiller":["img/retratos.jpg",1,16,10,21],"p-schopenhauer":["img/retratos.jpg",2,16,10,21],"p-schweitzer":["img/retratos.jpg",3,16,10,21],"p-semmelweis":["img/retratos.jpg",4,16,10,21],"p-seneca":["img/retratos.jpg",5,16,10,21],"p-shankara":["img/retratos.jpg",6,16,10,21],"p-shuruppak":["img/retratos.jpg",7,16,10,21],"p-snorri":["img/retratos.jpg",8,16,10,21],"p-socrates":["img/retratos.jpg",9,16,10,21],"p-solon":["img/retratos.jpg",0,17,10,21],"p-sorjuana":["img/retratos.jpg",1,17,10,21],"p-spinoza":["img/retratos.jpg",2,17,10,21],"p-stein":["img/retratos.jpg",3,17,10,21],"p-tagore":["img/retratos.jpg",4,17,10,21],"p-tales":["img/retratos.jpg",5,17,10,21],"p-teano":["img/retratos.jpg",6,17,10,21],"p-tecayehuatzin":["img/retratos.jpg",7,17,10,21],"p-teresa":["img/retratos.jpg",8,17,10,21],"p-tewhiti":["img/retratos.jpg",9,17,10,21],"p-thoreau":["img/retratos.jpg",0,18,10,21],"p-thorgeir":["img/retratos.jpg",1,18,10,21],"p-tlacaelel":["img/retratos.jpg",2,18,10,21],"p-tochihuitzin":["img/retratos.jpg",3,18,10,21],"p-tolstoi":["img/retratos.jpg",4,18,10,21],"p-tomas":["img/retratos.jpg",5,18,10,21],"p-torosentado":["img/retratos.jpg",6,18,10,21],"p-tristan":["img/retratos.jpg",7,18,10,21],"p-truth":["img/retratos.jpg",8,18,10,21],"p-turing":["img/retratos.jpg",9,18,10,21],"p-tutu":["img/retratos.jpg",0,19,10,21],"p-unaipon":["img/retratos.jpg",1,19,10,21],"p-vesalio":["img/retratos.jpg",2,19,10,21],"p-vitruvio":["img/retratos.jpg",3,19,10,21],"p-volva":["img/retratos.jpg",4,19,10,21],"p-vygotsky":["img/retratos.jpg",5,19,10,21],"p-weil":["img/retratos.jpg",6,19,10,21],"p-wittgenstein":["img/retratos.jpg",7,19,10,21],"p-wjames":["img/retratos.jpg",8,19,10,21],"p-wollstonecraft":["img/retratos.jpg",9,19,10,21],"p-zambrano":["img/retratos.jpg",0,20,10,21],"p-zaratustra":["img/retratos.jpg",1,20,10,21],"p-zerayacob":["img/retratos.jpg",2,20,10,21],"p-zhuangzi":["img/retratos.jpg",3,20,10,21]};
+const SPRITES = {"c-abogada":["img/ciudadanos.jpg",0,0,8,14],"c-abuela":["img/ciudadanos.jpg",1,0,8,14],"c-aclla":["img/ciudadanos.jpg",2,0,8,14],"c-alfarera":["img/ciudadanos.jpg",3,0,8,14],"c-alfarero":["img/ciudadanos.jpg",4,0,8,14],"c-alfombrera":["img/ciudadanos.jpg",5,0,8,14],"c-alumna":["img/ciudadanos.jpg",6,0,8,14],"c-apicultora":["img/ciudadanos.jpg",7,0,8,14],"c-aprendiz":["img/ciudadanos.jpg",0,1,8,14],"c-arquitecta":["img/ciudadanos.jpg",1,1,8,14],"c-arrocero":["img/ciudadanos.jpg",2,1,8,14],"c-aspasia":["img/ciudadanos.jpg",3,1,8,14],"c-astrolabista":["img/ciudadanos.jpg",4,1,8,14],"c-astronoma":["img/ciudadanos.jpg",5,1,8,14],"c-astronomo":["img/ciudadanos.jpg",6,1,8,14],"c-babbage":["img/ciudadanos.jpg",7,1,8,14],"c-bailarina":["img/ciudadanos.jpg",0,2,8,14],"c-balsero":["img/ciudadanos.jpg",1,2,8,14],"c-bibliotecario":["img/ciudadanos.jpg",2,2,8,14],"c-boticario":["img/ciudadanos.jpg",3,2,8,14],"c-calias":["img/ciudadanos.jpg",4,2,8,14],"c-caligrafa-heian":["img/ciudadanos.jpg",5,2,8,14],"c-caligrafo":["img/ciudadanos.jpg",6,2,8,14],"c-camarero":["img/ciudadanos.jpg",7,2,8,14],"c-campesino-abum":["img/ciudadanos.jpg",0,3,8,14],"c-campesino":["img/ciudadanos.jpg",1,3,8,14],"c-cantora":["img/ciudadanos.jpg",2,3,8,14],"c-cefalo":["img/ciudadanos.jpg",3,3,8,14],"c-chapar":["img/ciudadanos.jpg",4,3,8,14],"c-chasqui":["img/ciudadanos.jpg",5,3,8,14],"c-chatelet":["img/ciudadanos.jpg",6,3,8,14],"c-chinampera":["img/ciudadanos.jpg",7,3,8,14],"c-condotiero":["img/ciudadanos.jpg",0,4,8,14],"c-contable":["img/ciudadanos.jpg",1,4,8,14],"c-copista":["img/ciudadanos.jpg",2,4,8,14],"c-costurera":["img/ciudadanos.jpg",3,4,8,14],"c-derviche":["img/ciudadanos.jpg",4,4,8,14],"c-descifradora":["img/ciudadanos.jpg",5,4,8,14],"c-enfermera":["img/ciudadanos.jpg",6,4,8,14],"c-escriba-dudu":["img/ciudadanos.jpg",7,4,8,14],"c-escriba":["img/ciudadanos.jpg",0,5,8,14],"c-escultora":["img/ciudadanos.jpg",1,5,8,14],"c-estudiante-tang":["img/ciudadanos.jpg",2,5,8,14],"c-estudiante":["img/ciudadanos.jpg",3,5,8,14],"c-estudiante68":["img/ciudadanos.jpg",4,5,8,14],"c-filis":["img/ciudadanos.jpg",5,5,8,14],"c-gerardo":["img/ciudadanos.jpg",6,5,8,14],"c-griot":["img/ciudadanos.jpg",7,5,8,14],"c-guardabosques":["img/ciudadanos.jpg",0,6,8,14],"c-hortelano":["img/ciudadanos.jpg",1,6,8,14],"c-impresor":["img/ciudadanos.jpg",2,6,8,14],"c-ingeniero":["img/ciudadanos.jpg",3,6,8,14],"c-jardinero":["img/ciudadanos.jpg",4,6,8,14],"c-jueza":["img/ciudadanos.jpg",5,6,8,14],"c-librero-bagdad":["img/ciudadanos.jpg",6,6,8,14],"c-librero":["img/ciudadanos.jpg",7,6,8,14],"c-luthier":["img/ciudadanos.jpg",0,7,8,14],"c-maestra-elqui":["img/ciudadanos.jpg",1,7,8,14],"c-maestra-lucia":["img/ciudadanos.jpg",2,7,8,14],"c-maestra":["img/ciudadanos.jpg",3,7,8,14],"c-maestro":["img/ciudadanos.jpg",4,7,8,14],"c-maquinista":["img/ciudadanos.jpg",5,7,8,14],"c-matematico":["img/ciudadanos.jpg",6,7,8,14],"c-medica":["img/ciudadanos.jpg",7,7,8,14],"c-mercader":["img/ciudadanos.jpg",0,8,8,14],"c-monje-tenzin":["img/ciudadanos.jpg",1,8,8,14],"c-monje-zen":["img/ciudadanos.jpg",2,8,8,14],"c-monje":["img/ciudadanos.jpg",3,8,8,14],"c-narradora":["img/ciudadanos.jpg",4,8,8,14],"c-navegante-kaimana":["img/ciudadanos.jpg",5,8,8,14],"c-navegante":["img/ciudadanos.jpg",6,8,8,14],"c-nicias":["img/ciudadanos.jpg",7,8,8,14],"c-obrera":["img/ciudadanos.jpg",0,9,8,14],"c-obrero":["img/ciudadanos.jpg",1,9,8,14],"c-palife":["img/ciudadanos.jpg",2,9,8,14],"c-partera-dolores":["img/ciudadanos.jpg",3,9,8,14],"c-partera":["img/ciudadanos.jpg",4,9,8,14],"c-peregrina":["img/ciudadanos.jpg",5,9,8,14],"c-peregrino":["img/ciudadanos.jpg",6,9,8,14],"c-periodista":["img/ciudadanos.jpg",7,9,8,14],"c-pescador":["img/ciudadanos.jpg",0,10,8,14],"c-pintor":["img/ciudadanos.jpg",1,10,8,14],"c-plantadora":["img/ciudadanos.jpg",2,10,8,14],"c-platero":["img/ciudadanos.jpg",3,10,8,14],"c-pochteca":["img/ciudadanos.jpg",4,10,8,14],"c-pregonero":["img/ciudadanos.jpg",5,10,8,14],"c-programadora":["img/ciudadanos.jpg",6,10,8,14],"c-pulidor":["img/ciudadanos.jpg",7,10,8,14],"c-quipucamayoc":["img/ciudadanos.jpg",0,11,8,14],"c-radiologa":["img/ciudadanos.jpg",1,11,8,14],"c-rapsoda":["img/ciudadanos.jpg",2,11,8,14],"c-runista":["img/ciudadanos.jpg",3,11,8,14],"c-salinero":["img/ciudadanos.jpg",4,11,8,14],"c-sedera":["img/ciudadanos.jpg",5,11,8,14],"c-sosias":["img/ciudadanos.jpg",6,11,8,14],"c-sufragista":["img/ciudadanos.jpg",7,11,8,14],"c-tabernera":["img/ciudadanos.jpg",0,12,8,14],"c-tejedora-dine":["img/ciudadanos.jpg",1,12,8,14],"c-tejedora-norte":["img/ciudadanos.jpg",2,12,8,14],"c-tejedora-seda":["img/ciudadanos.jpg",3,12,8,14],"c-tejedora":["img/ciudadanos.jpg",4,12,8,14],"c-teon":["img/ciudadanos.jpg",5,12,8,14],"c-tipografo":["img/ciudadanos.jpg",6,12,8,14],"c-tlacuilo":["img/ciudadanos.jpg",7,12,8,14],"c-traductor":["img/ciudadanos.jpg",0,13,8,14],"c-verificadora":["img/ciudadanos.jpg",1,13,8,14],"c-witralwe":["img/ciudadanos.jpg",2,13,8,14],"b-alce-negro-habla":["img/portadas.jpg",0,0,8,9],"b-almanaque":["img/portadas.jpg",1,0,8,9],"b-analectas":["img/portadas.jpg",2,0,8,9],"b-apologia":["img/portadas.jpg",3,0,8,9],"b-banquete_libro":["img/portadas.jpg",4,0,8,9],"b-cantares":["img/portadas.jpg",5,0,8,9],"b-cartas-estetica":["img/portadas.jpg",6,0,8,9],"b-cien-mil-cantos":["img/portadas.jpg",7,0,8,9],"b-ciudad_damas":["img/portadas.jpg",0,1,8,9],"b-ciudadvirtuosa":["img/portadas.jpg",1,1,8,9],"b-claros-bosque":["img/portadas.jpg",2,1,8,9],"b-comentarios":["img/portadas.jpg",3,1,8,9],"b-confesiones":["img/portadas.jpg",4,1,8,9],"b-cosmos":["img/portadas.jpg",5,1,8,9],"b-declaracion-mujer":["img/portadas.jpg",6,1,8,9],"b-dhammapada":["img/portadas.jpg",7,1,8,9],"b-edda":["img/portadas.jpg",0,2,8,9],"b-eichmann":["img/portadas.jpg",1,2,8,9],"b-elementos-libro":["img/portadas.jpg",2,2,8,9],"b-encomio-helena":["img/portadas.jpg",3,2,8,9],"b-ensayos":["img/portadas.jpg",4,2,8,9],"b-espiritu-leyes":["img/portadas.jpg",5,2,8,9],"b-etica":["img/portadas.jpg",6,2,8,9],"b-fabrica-vesalio":["img/portadas.jpg",7,2,8,9],"b-fedon":["img/portadas.jpg",0,3,8,9],"b-fragmentos-safo":["img/portadas.jpg",1,3,8,9],"b-fragmentos":["img/portadas.jpg",2,3,8,9],"b-gathas":["img/portadas.jpg",3,3,8,9],"b-genji":["img/portadas.jpg",4,3,8,9],"b-gilgamesh-libro":["img/portadas.jpg",5,3,8,9],"b-gran-ley":["img/portadas.jpg",6,3,8,9],"b-hatata":["img/portadas.jpg",7,3,8,9],"b-havamal":["img/portadas.jpg",0,4,8,9],"b-himnos-inanna":["img/portadas.jpg",1,4,8,9],"b-ilustracion":["img/portadas.jpg",2,4,8,9],"b-interpretacion-suenos":["img/portadas.jpg",3,4,8,9],"b-liber-abaci":["img/portadas.jpg",4,4,8,9],"b-libertad":["img/portadas.jpg",5,4,8,9],"b-lo-espiritual":["img/portadas.jpg",6,4,8,9],"b-manifiesto":["img/portadas.jpg",7,4,8,9],"b-masnavi":["img/portadas.jpg",0,5,8,9],"b-meditaciones":["img/portadas.jpg",1,5,8,9],"b-meneceo":["img/portadas.jpg",2,5,8,9],"b-mensajero-sidereo":["img/portadas.jpg",3,5,8,9],"b-metodo":["img/portadas.jpg",4,5,8,9],"b-moradas":["img/portadas.jpg",5,5,8,9],"b-notas-enfermeria":["img/portadas.jpg",6,5,8,9],"b-notas-lovelace":["img/portadas.jpg",7,5,8,9],"b-nuestra_america":["img/portadas.jpg",0,6,8,9],"b-orbis-pictus-libro":["img/portadas.jpg",1,6,8,9],"b-pedagogia":["img/portadas.jpg",2,6,8,9],"b-pensamientos":["img/portadas.jpg",3,6,8,9],"b-pensar-proposito":["img/portadas.jpg",4,6,8,9],"b-poema":["img/portadas.jpg",5,6,8,9],"b-primavera-silenciosa-libro":["img/portadas.jpg",6,6,8,9],"b-principe":["img/portadas.jpg",7,6,8,9],"b-republica":["img/portadas.jpg",0,7,8,9],"b-rerum-natura":["img/portadas.jpg",1,7,8,9],"b-respuesta":["img/portadas.jpg",2,7,8,9],"b-segundo_sexo":["img/portadas.jpg",3,7,8,9],"b-sendas-oku":["img/portadas.jpg",4,7,8,9],"b-shahnameh":["img/portadas.jpg",5,7,8,9],"b-sisifo":["img/portadas.jpg",6,7,8,9],"b-suma":["img/portadas.jpg",7,7,8,9],"b-sutra-estrado":["img/portadas.jpg",0,8,8,9],"b-taoteching":["img/portadas.jpg",1,8,8,9],"b-teoria-justicia":["img/portadas.jpg",2,8,8,9],"b-vindicacion":["img/portadas.jpg",3,8,8,9],"b-zaratustra":["img/portadas.jpg",4,8,8,9],"p-agustin":["img/retratos.jpg",0,0,10,22],"p-ajita":["img/retratos.jpg",1,0,10,22],"p-alcenegro":["img/retratos.jpg",2,0,10,22],"p-alfarabi":["img/retratos.jpg",3,0,10,22],"p-algazali":["img/retratos.jpg",4,0,10,22],"p-alhacen":["img/retratos.jpg",5,0,10,22],"p-aljuarismi":["img/retratos.jpg",6,0,10,22],"p-alkindi":["img/retratos.jpg",7,0,10,22],"p-anselmo":["img/retratos.jpg",8,0,10,22],"p-arendt":["img/retratos.jpg",9,0,10,22],"p-aristoteles":["img/retratos.jpg",0,1,10,22],"p-arquimedes":["img/retratos.jpg",1,1,10,22],"p-aryabhata":["img/retratos.jpg",2,1,10,22],"p-aud":["img/retratos.jpg",3,1,10,22],"p-averroes":["img/retratos.jpg",4,1,10,22],"p-avicena":["img/retratos.jpg",5,1,10,22],"p-bacon":["img/retratos.jpg",6,1,10,22],"p-banzhao":["img/retratos.jpg",7,1,10,22],"p-barnum":["img/retratos.jpg",8,1,10,22],"p-basho":["img/retratos.jpg",9,1,10,22],"p-beauvoir":["img/retratos.jpg",0,2,10,22],"p-beethoven":["img/retratos.jpg",1,2,10,22],"p-bernays":["img/retratos.jpg",2,2,10,22],"p-bodhidharma":["img/retratos.jpg",3,2,10,22],"p-boole":["img/retratos.jpg",4,2,10,22],"p-buda":["img/retratos.jpg",5,2,10,22],"p-burzoe":["img/retratos.jpg",6,2,10,22],"p-caceres":["img/retratos.jpg",7,2,10,22],"p-cajal":["img/retratos.jpg",8,2,10,22],"p-camus":["img/retratos.jpg",9,2,10,22],"p-carson":["img/retratos.jpg",0,3,10,22],"p-castellanos":["img/retratos.jpg",1,3,10,22],"p-chatelet":["img/retratos.jpg",2,3,10,22],"p-ciceron":["img/retratos.jpg",3,3,10,22],"p-ciro":["img/retratos.jpg",4,3,10,22],"p-comenio":["img/retratos.jpg",5,3,10,22],"p-confucio":["img/retratos.jpg",6,3,10,22],"p-copernico":["img/retratos.jpg",7,3,10,22],"p-curie":["img/retratos.jpg",8,3,10,22],"p-dante":["img/retratos.jpg",9,3,10,22],"p-darwin":["img/retratos.jpg",0,4,10,22],"p-democrito":["img/retratos.jpg",1,4,10,22],"p-descartes":["img/retratos.jpg",2,4,10,22],"p-dickinson":["img/retratos.jpg",3,4,10,22],"p-diderot":["img/retratos.jpg",4,4,10,22],"p-diogenes":["img/retratos.jpg",5,4,10,22],"p-dogen":["img/retratos.jpg",6,4,10,22],"p-egill":["img/retratos.jpg",7,4,10,22],"p-einstein":["img/retratos.jpg",8,4,10,22],"p-enheduanna":["img/retratos.jpg",9,4,10,22],"p-epicteto":["img/retratos.jpg",0,5,10,22],"p-epicuro":["img/retratos.jpg",1,5,10,22],"p-ernestinerose":["img/retratos.jpg",2,5,10,22],"p-euclides":["img/retratos.jpg",3,5,10,22],"p-eutidemo":["img/retratos.jpg",4,5,10,22],"p-ferdousi":["img/retratos.jpg",5,5,10,22],"p-feuerbach":["img/retratos.jpg",6,5,10,22],"p-fibonacci":["img/retratos.jpg",7,5,10,22],"p-frankl":["img/retratos.jpg",8,5,10,22],"p-freire":["img/retratos.jpg",9,5,10,22],"p-freud":["img/retratos.jpg",0,6,10,22],"p-frida":["img/retratos.jpg",1,6,10,22],"p-galeno":["img/retratos.jpg",2,6,10,22],"p-galileo":["img/retratos.jpg",3,6,10,22],"p-gandhi":["img/retratos.jpg",4,6,10,22],"p-garcilaso":["img/retratos.jpg",5,6,10,22],"p-gargi":["img/retratos.jpg",6,6,10,22],"p-gilgamesh":["img/retratos.jpg",7,6,10,22],"p-godel":["img/retratos.jpg",8,6,10,22],"p-gorgias":["img/retratos.jpg",9,6,10,22],"p-gouges":["img/retratos.jpg",0,7,10,22],"p-guamanpoma":["img/retratos.jpg",1,7,10,22],"p-guia":["img/retratos.jpg",2,7,10,22],"p-hammurabi":["img/retratos.jpg",3,7,10,22],"p-hegel":["img/retratos.jpg",4,7,10,22],"p-heidegger":["img/retratos.jpg",5,7,10,22],"p-heraclito":["img/retratos.jpg",6,7,10,22],"p-hildegarda":["img/retratos.jpg",7,7,10,22],"p-hipatia":["img/retratos.jpg",8,7,10,22],"p-hipocrates":["img/retratos.jpg",9,7,10,22],"p-hobbes":["img/retratos.jpg",0,8,10,22],"p-hokusai":["img/retratos.jpg",1,8,10,22],"p-huineng":["img/retratos.jpg",2,8,10,22],"p-humboldt":["img/retratos.jpg",3,8,10,22],"p-hume":["img/retratos.jpg",4,8,10,22],"p-ibnjaldun":["img/retratos.jpg",5,8,10,22],"p-incaroca":["img/retratos.jpg",6,8,10,22],"p-janequeo":["img/retratos.jpg",7,8,10,22],"p-joseph":["img/retratos.jpg",8,8,10,22],"p-kabir":["img/retratos.jpg",9,8,10,22],"p-kandinsky":["img/retratos.jpg",0,9,10,22],"p-kant":["img/retratos.jpg",1,9,10,22],"p-kierkegaard":["img/retratos.jpg",2,9,10,22],"p-kimche":["img/retratos.jpg",3,9,10,22],"p-king":["img/retratos.jpg",4,9,10,22],"p-laozi":["img/retratos.jpg",5,9,10,22],"p-lascasas":["img/retratos.jpg",6,9,10,22],"p-lautaro":["img/retratos.jpg",7,9,10,22],"p-leibniz":["img/retratos.jpg",8,9,10,22],"p-leonardo":["img/retratos.jpg",9,9,10,22],"p-leopold":["img/retratos.jpg",0,10,10,22],"p-libai":["img/retratos.jpg",1,10,10,22],"p-liliuokalani":["img/retratos.jpg",2,10,10,22],"p-locke":["img/retratos.jpg",3,10,10,22],"p-lovelace":["img/retratos.jpg",4,10,10,22],"p-lovelock":["img/retratos.jpg",5,10,10,22],"p-lucrecio":["img/retratos.jpg",6,10,10,22],"p-maathai":["img/retratos.jpg",7,10,10,22],"p-machi":["img/retratos.jpg",8,10,10,22],"p-macuilxochitzin":["img/retratos.jpg",9,10,10,22],"p-mahavira":["img/retratos.jpg",0,11,10,22],"p-maimonides":["img/retratos.jpg",1,11,10,22],"p-mandela":["img/retratos.jpg",2,11,10,22],"p-mani":["img/retratos.jpg",3,11,10,22],"p-maquiavelo":["img/retratos.jpg",4,11,10,22],"p-marcoaurelio":["img/retratos.jpg",5,11,10,22],"p-marti":["img/retratos.jpg",6,11,10,22],"p-marx":["img/retratos.jpg",7,11,10,22],"p-mencio":["img/retratos.jpg",8,11,10,22],"p-mendes":["img/retratos.jpg",9,11,10,22],"p-milarepa":["img/retratos.jpg",0,12,10,22],"p-mill":["img/retratos.jpg",1,12,10,22],"p-mirabai":["img/retratos.jpg",2,12,10,22],"p-mistral":["img/retratos.jpg",3,12,10,22],"p-montaigne":["img/retratos.jpg",4,12,10,22],"p-montesquieu":["img/retratos.jpg",5,12,10,22],"p-montessori":["img/retratos.jpg",6,12,10,22],"p-mozi":["img/retratos.jpg",7,12,10,22],"p-murasaki":["img/retratos.jpg",8,12,10,22],"p-naess":["img/retratos.jpg",9,12,10,22],"p-nagarjuna":["img/retratos.jpg",0,13,10,22],"p-neruda":["img/retratos.jpg",1,13,10,22],"p-newton":["img/retratos.jpg",2,13,10,22],"p-nezahualcoyotl":["img/retratos.jpg",3,13,10,22],"p-nietzsche":["img/retratos.jpg",4,13,10,22],"p-nightingale":["img/retratos.jpg",5,13,10,22],"p-nishida":["img/retratos.jpg",6,13,10,22],"p-noether":["img/retratos.jpg",7,13,10,22],"p-ockham":["img/retratos.jpg",8,13,10,22],"p-pachacutec":["img/retratos.jpg",9,13,10,22],"p-pacificador":["img/retratos.jpg",0,14,10,22],"p-parmenides":["img/retratos.jpg",1,14,10,22],"p-pascal":["img/retratos.jpg",2,14,10,22],"p-pasteur":["img/retratos.jpg",3,14,10,22],"p-paz":["img/retratos.jpg",4,14,10,22],"p-pedrohispano":["img/retratos.jpg",5,14,10,22],"p-pestalozzi":["img/retratos.jpg",6,14,10,22],"p-piaget":["img/retratos.jpg",7,14,10,22],"p-pico":["img/retratos.jpg",8,14,10,22],"p-pirron":["img/retratos.jpg",9,14,10,22],"p-pitagoras":["img/retratos.jpg",0,15,10,22],"p-pizan":["img/retratos.jpg",1,15,10,22],"p-platon":["img/retratos.jpg",2,15,10,22],"p-protagoras":["img/retratos.jpg",3,15,10,22],"p-ptahhotep":["img/retratos.jpg",4,15,10,22],"p-rabia":["img/retratos.jpg",5,15,10,22],"p-ramana":["img/retratos.jpg",6,15,10,22],"p-ramanujan":["img/retratos.jpg",7,15,10,22],"p-rawls":["img/retratos.jpg",8,15,10,22],"p-rikyu":["img/retratos.jpg",9,15,10,22],"p-rousseau":["img/retratos.jpg",0,16,10,22],"p-rumi":["img/retratos.jpg",1,16,10,22],"p-russell":["img/retratos.jpg",2,16,10,22],"p-safo":["img/retratos.jpg",3,16,10,22],"p-sagan":["img/retratos.jpg",4,16,10,22],"p-sartre":["img/retratos.jpg",5,16,10,22],"p-schiller":["img/retratos.jpg",6,16,10,22],"p-schopenhauer":["img/retratos.jpg",7,16,10,22],"p-schweitzer":["img/retratos.jpg",8,16,10,22],"p-semmelweis":["img/retratos.jpg",9,16,10,22],"p-seneca":["img/retratos.jpg",0,17,10,22],"p-shankara":["img/retratos.jpg",1,17,10,22],"p-shuruppak":["img/retratos.jpg",2,17,10,22],"p-snorri":["img/retratos.jpg",3,17,10,22],"p-socrates":["img/retratos.jpg",4,17,10,22],"p-solon":["img/retratos.jpg",5,17,10,22],"p-sorjuana":["img/retratos.jpg",6,17,10,22],"p-spinoza":["img/retratos.jpg",7,17,10,22],"p-stebbing":["img/retratos.jpg",8,17,10,22],"p-stein":["img/retratos.jpg",9,17,10,22],"p-tagore":["img/retratos.jpg",0,18,10,22],"p-tales":["img/retratos.jpg",1,18,10,22],"p-teano":["img/retratos.jpg",2,18,10,22],"p-tecayehuatzin":["img/retratos.jpg",3,18,10,22],"p-teresa":["img/retratos.jpg",4,18,10,22],"p-tewhiti":["img/retratos.jpg",5,18,10,22],"p-thoreau":["img/retratos.jpg",6,18,10,22],"p-thorgeir":["img/retratos.jpg",7,18,10,22],"p-tlacaelel":["img/retratos.jpg",8,18,10,22],"p-tochihuitzin":["img/retratos.jpg",9,18,10,22],"p-tolstoi":["img/retratos.jpg",0,19,10,22],"p-tomas":["img/retratos.jpg",1,19,10,22],"p-torosentado":["img/retratos.jpg",2,19,10,22],"p-trasimaco":["img/retratos.jpg",3,19,10,22],"p-tristan":["img/retratos.jpg",4,19,10,22],"p-truth":["img/retratos.jpg",5,19,10,22],"p-turing":["img/retratos.jpg",6,19,10,22],"p-tutu":["img/retratos.jpg",7,19,10,22],"p-unaipon":["img/retratos.jpg",8,19,10,22],"p-vesalio":["img/retratos.jpg",9,19,10,22],"p-vitruvio":["img/retratos.jpg",0,20,10,22],"p-volva":["img/retratos.jpg",1,20,10,22],"p-vygotsky":["img/retratos.jpg",2,20,10,22],"p-weil":["img/retratos.jpg",3,20,10,22],"p-wittgenstein":["img/retratos.jpg",4,20,10,22],"p-wjames":["img/retratos.jpg",5,20,10,22],"p-wollstonecraft":["img/retratos.jpg",6,20,10,22],"p-zambrano":["img/retratos.jpg",7,20,10,22],"p-zaratustra":["img/retratos.jpg",8,20,10,22],"p-zerayacob":["img/retratos.jpg",9,20,10,22],"p-zhuangzi":["img/retratos.jpg",0,21,10,22]};
 
 // ---- src/00f-xp-art.js ----
 // Pinturas de los experimentos (lo genera tools/xp-sheet.py): id -> fila de img/experimentos.jpg
@@ -2121,7 +2143,7 @@ const XP_ART = {"china": 0, "descartes": 1, "escalera": 2, "giges": 3, "maquina"
 
 // ---- src/00g-escenas.js ----
 // Pensadores con una ilustración de un momento de su vida para la lección (img/esc-<id>.jpg)
-const ESC_ART = new Set(["agustin", "ajita", "alcenegro", "alfarabi", "algazali", "alhacen", "aljuarismi", "alkindi", "anselmo", "arendt", "aristoteles", "arquimedes", "aryabhata", "aud", "averroes", "avicena", "b-alce-negro-habla", "b-almanaque", "b-analectas", "b-apologia", "b-banquete_libro", "b-cantares", "b-cartas-estetica", "b-cien-mil-cantos", "b-ciudad_damas", "b-ciudadvirtuosa", "b-claros-bosque", "b-comentarios", "b-confesiones", "b-cosmos", "b-declaracion-mujer", "b-dhammapada", "b-edda", "b-eichmann", "b-elementos-libro", "b-ensayos", "b-espiritu-leyes", "b-etica", "b-fabrica-vesalio", "b-fedon", "b-fragmentos", "b-fragmentos-safo", "b-gathas", "b-genji", "b-gilgamesh-libro", "b-gran-ley", "b-hatata", "b-havamal", "b-himnos-inanna", "b-ilustracion", "b-interpretacion-suenos", "b-liber-abaci", "b-libertad", "b-lo-espiritual", "b-manifiesto", "b-masnavi", "b-meditaciones", "b-meneceo", "b-mensajero-sidereo", "b-metodo", "b-moradas", "b-notas-enfermeria", "b-notas-lovelace", "b-nuestra_america", "b-orbis-pictus-libro", "b-pedagogia", "b-pensamientos", "b-poema", "b-primavera-silenciosa-libro", "b-principe", "b-republica", "b-rerum-natura", "b-respuesta", "b-segundo_sexo", "b-sendas-oku", "b-shahnameh", "b-sisifo", "b-suma", "b-sutra-estrado", "b-taoteching", "b-teoria-justicia", "b-vindicacion", "b-zaratustra", "bacon", "banzhao", "basho", "beauvoir", "beethoven", "bodhidharma", "boole", "buda", "burzoe", "caceres", "cajal", "camus", "carson", "castellanos", "chatelet", "ciceron", "ciro", "comenio", "confucio", "copernico", "curie", "dante", "darwin", "democrito", "descartes", "dickinson", "diderot", "diogenes", "dogen", "egill", "einstein", "enheduanna", "epicteto", "epicuro", "ernestinerose", "euclides", "ferdousi", "feuerbach", "fibonacci", "frankl", "freire", "freud", "frida", "galeno", "galileo", "gandhi", "garcilaso", "gargi", "gilgamesh", "godel", "gouges", "guamanpoma", "hammurabi", "hegel", "heidegger", "heraclito", "hildegarda", "hipatia", "hipocrates", "hobbes", "hokusai", "huineng", "humboldt", "hume", "ibnjaldun", "incaroca", "janequeo", "joseph", "kabir", "kandinsky", "kant", "kierkegaard", "kimche", "king", "laozi", "lascasas", "lautaro", "leibniz", "leonardo", "leopold", "libai", "liliuokalani", "locke", "lovelace", "lovelock", "lucrecio", "maathai", "machi", "macuilxochitzin", "mahavira", "maimonides", "mandela", "mani", "maquiavelo", "marcoaurelio", "marti", "marx", "mencio", "mendes", "milarepa", "mill", "mirabai", "mistral", "montaigne", "montesquieu", "montessori", "mozi", "murasaki", "naess", "nagarjuna", "neruda", "newton", "nezahualcoyotl", "nietzsche", "nightingale", "nishida", "noether", "ockham", "pachacutec", "pacificador", "parmenides", "pascal", "pasteur", "paz", "pestalozzi", "piaget", "pico", "pirron", "pitagoras", "pizan", "platon", "protagoras", "ptahhotep", "rabia", "ramana", "ramanujan", "rawls", "rikyu", "rousseau", "rumi", "russell", "safo", "sagan", "sartre", "schiller", "schopenhauer", "schweitzer", "semmelweis", "seneca", "shankara", "shuruppak", "snorri", "socrates", "solon", "sorjuana", "spinoza", "stein", "tagore", "tales", "teano", "tecayehuatzin", "teresa", "tewhiti", "thoreau", "thorgeir", "tlacaelel", "tochihuitzin", "tolstoi", "tomas", "torosentado", "tristan", "truth", "turing", "tutu", "unaipon", "vesalio", "vitruvio", "volva", "vygotsky", "weil", "wittgenstein", "wjames", "wollstonecraft", "zambrano", "zaratustra", "zerayacob", "zhuangzi"]);
+const ESC_ART = new Set(["agustin", "ajita", "alcenegro", "alfarabi", "algazali", "alhacen", "aljuarismi", "alkindi", "anselmo", "arendt", "aristoteles", "arquimedes", "aryabhata", "aud", "averroes", "avicena", "b-alce-negro-habla", "b-almanaque", "b-analectas", "b-apologia", "b-banquete_libro", "b-cantares", "b-cartas-estetica", "b-cien-mil-cantos", "b-ciudad_damas", "b-ciudadvirtuosa", "b-claros-bosque", "b-comentarios", "b-confesiones", "b-cosmos", "b-declaracion-mujer", "b-dhammapada", "b-edda", "b-eichmann", "b-elementos-libro", "b-encomio-helena", "b-ensayos", "b-espiritu-leyes", "b-etica", "b-fabrica-vesalio", "b-fedon", "b-fragmentos", "b-fragmentos-safo", "b-gathas", "b-genji", "b-gilgamesh-libro", "b-gran-ley", "b-hatata", "b-havamal", "b-himnos-inanna", "b-ilustracion", "b-interpretacion-suenos", "b-liber-abaci", "b-libertad", "b-lo-espiritual", "b-manifiesto", "b-masnavi", "b-meditaciones", "b-meneceo", "b-mensajero-sidereo", "b-metodo", "b-moradas", "b-notas-enfermeria", "b-notas-lovelace", "b-nuestra_america", "b-orbis-pictus-libro", "b-pedagogia", "b-pensamientos", "b-pensar-proposito", "b-poema", "b-primavera-silenciosa-libro", "b-principe", "b-republica", "b-rerum-natura", "b-respuesta", "b-segundo_sexo", "b-sendas-oku", "b-shahnameh", "b-sisifo", "b-suma", "b-sutra-estrado", "b-taoteching", "b-teoria-justicia", "b-vindicacion", "b-zaratustra", "bacon", "banzhao", "barnum", "basho", "beauvoir", "beethoven", "bernays", "bodhidharma", "boole", "buda", "burzoe", "caceres", "cajal", "camus", "carson", "castellanos", "chatelet", "ciceron", "ciro", "comenio", "confucio", "copernico", "curie", "dante", "darwin", "democrito", "descartes", "dickinson", "diderot", "diogenes", "dogen", "egill", "einstein", "enheduanna", "epicteto", "epicuro", "ernestinerose", "euclides", "eutidemo", "ferdousi", "feuerbach", "fibonacci", "frankl", "freire", "freud", "frida", "galeno", "galileo", "gandhi", "garcilaso", "gargi", "gilgamesh", "godel", "gorgias", "gouges", "guamanpoma", "hammurabi", "hegel", "heidegger", "heraclito", "hildegarda", "hipatia", "hipocrates", "hobbes", "hokusai", "huineng", "humboldt", "hume", "ibnjaldun", "incaroca", "janequeo", "joseph", "kabir", "kandinsky", "kant", "kierkegaard", "kimche", "king", "laozi", "lascasas", "lautaro", "leibniz", "leonardo", "leopold", "libai", "liliuokalani", "locke", "lovelace", "lovelock", "lucrecio", "maathai", "machi", "macuilxochitzin", "mahavira", "maimonides", "mandela", "mani", "maquiavelo", "marcoaurelio", "marti", "marx", "mencio", "mendes", "milarepa", "mill", "mirabai", "mistral", "montaigne", "montesquieu", "montessori", "mozi", "murasaki", "naess", "nagarjuna", "neruda", "newton", "nezahualcoyotl", "nietzsche", "nightingale", "nishida", "noether", "ockham", "pachacutec", "pacificador", "parmenides", "pascal", "pasteur", "paz", "pedrohispano", "pestalozzi", "piaget", "pico", "pirron", "pitagoras", "pizan", "platon", "protagoras", "ptahhotep", "rabia", "ramana", "ramanujan", "rawls", "rikyu", "rousseau", "rumi", "russell", "safo", "sagan", "sartre", "schiller", "schopenhauer", "schweitzer", "semmelweis", "seneca", "shankara", "shuruppak", "snorri", "socrates", "solon", "sorjuana", "spinoza", "stebbing", "stein", "tagore", "tales", "teano", "tecayehuatzin", "teresa", "tewhiti", "thoreau", "thorgeir", "tlacaelel", "tochihuitzin", "tolstoi", "tomas", "torosentado", "trasimaco", "tristan", "truth", "turing", "tutu", "unaipon", "vesalio", "vitruvio", "volva", "vygotsky", "weil", "wittgenstein", "wjames", "wollstonecraft", "zambrano", "zaratustra", "zerayacob", "zhuangzi"]);
 
 // ---- src/01-data.js ----
 // ============================================================================
@@ -7632,6 +7654,267 @@ const DILEMAS = [
     f: ['Porque está de moda.', 'Porque los que no piensan así son malas personas.'] },
 ];
 
+// ---- src/01v-falacias.js ----
+// ============================================================================
+//  XXXIV · EL MERCADO DE LOS SOFISTAS
+//  Los sofistas de todos los tiempos venden argumentos tramposos, y quienes
+//  enseñaron a descubrirlos te ayudan. Incluye el catálogo de falacias que
+//  usan el cazador de falacias (06v) y el bestiario.
+// ============================================================================
+// cada falacia: nombre, nombre clásico, grupo, definición, cómo responder y tres ejemplos
+const FALACIAS = [
+  { id: 'ad-hominem', n: 'Ataque a la persona', l: 'ad hominem', g: 'Ataques', d: 'En lugar de discutir la idea, se ataca a quien la dice: su aspecto, su pasado, su edad o su forma de ser.',
+    r: 'Separa a la persona de la idea: aunque quien habla tuviera defectos, su argumento puede ser verdadero o falso.',
+    ej: ['¿Cómo vas a tener razón sobre el cambio climático, si ni siquiera terminaste la escuela?', 'No le hagas caso a la doctora: dicen que es antipática con sus vecinos.', 'Ese científico propone bajar el azúcar, pero es feo y aburrido, así que no puede tener razón.'] },
+  { id: 'hombre-paja', n: 'Hombre de paja', l: 'straw man', g: 'Ataques', d: 'Se deforma la idea del otro, haciéndola más tonta o extrema, para atacarla con facilidad.',
+    r: 'Pregunta: ¿es eso realmente lo que dijo? Repite su idea con sus palabras antes de criticarla.',
+    ej: ['Mi hermana dice que comamos menos carne. ¡Quiere prohibir todos los asados del mundo!', 'Pides más recreo: o sea, que no quieres estudiar nunca más.', 'El alcalde propone más carriles para bicicletas. ¡Quiere obligarnos a todos a vender el coche!'] },
+  { id: 'tu-quoque', n: 'Tú también', l: 'tu quoque', g: 'Ataques', d: 'Se rechaza una crítica diciendo que quien la hace también comete la misma falta.',
+    r: 'Que el otro sea incoherente no hace falsa su crítica: ambos pueden estar haciendo algo mal.',
+    ej: ['¿Me dices que no fume? ¡Tú fumabas a mi edad!', 'No me digas que tire la basura en su sitio: ayer tú dejaste una lata en el parque.', '¿Que copié en el examen? Tú también copiaste el año pasado.'] },
+  { id: 'culpa-asociacion', n: 'Culpa por asociación', l: 'guilt by association', g: 'Ataques', d: 'Se rechaza una idea porque también la defiende alguien que nos parece malo.',
+    r: 'Una idea no es buena o mala por quién más la sostiene: hay que examinarla por sí misma.',
+    ej: ['A ese dictador también le gustaban los perros. ¡No adoptes un perro!', 'Esa opinión la comparte un actor que me cae fatal, así que debe de ser falsa.', 'Un ladrón también defendía andar en bicicleta. No te fíes de las bicis.'] },
+  { id: 'falso-dilema', n: 'Falso dilema', l: 'false dilemma', g: 'Trampas de lógica', d: 'Se presentan solo dos opciones cuando en realidad hay más.',
+    r: 'Busca la tercera opción: casi nunca la vida se reduce a blanco o negro.',
+    ej: ['O estás conmigo, o estás contra mí.', 'O compras este móvil carísimo, o te quedarás sin amigos.', 'O apruebas todo con diez, o eres un fracasado.'] },
+  { id: 'pendiente', n: 'Pendiente resbaladiza', l: 'slippery slope', g: 'Trampas de lógica', d: 'Se afirma que un pequeño paso llevará sin remedio a una cadena de desastres, sin mostrar por qué.',
+    r: 'Pregunta por cada eslabón de la cadena: ¿de verdad uno lleva necesariamente al otro?',
+    ej: ['Si te dejo ver la tele diez minutos más, luego querrás verla toda la noche, suspenderás y acabarás sin trabajo.', 'Si permitimos los videojuegos en clase, pronto nadie sabrá leer.', 'Si hoy no hago la cama, mañana la casa será un basurero.'] },
+  { id: 'circular', n: 'Razonamiento circular', l: 'petitio principii', g: 'Trampas de lógica', d: 'La conclusión ya está escondida en las premisas: se da por probado lo que había que probar.',
+    r: 'Pide una razón independiente, que no repita con otras palabras lo que se quiere demostrar.',
+    ej: ['Este libro dice la verdad, porque en el libro pone que todo lo que dice es verdad.', 'Soy el mejor jugador porque nadie juega mejor que yo.', 'Es ilegal porque va contra la ley.'] },
+  { id: 'generalizacion', n: 'Generalización apresurada', l: 'hasty generalization', g: 'Trampas de lógica', d: 'Se saca una conclusión sobre todos a partir de muy pocos casos.',
+    r: 'Pregunta cuántos casos se observaron y si son representativos de todo el grupo.',
+    ej: ['Conocí a dos turistas maleducados de ese país: todos allí son maleducados.', 'Mi primo se cayó de la bici una vez: las bicicletas son peligrosísimas.', 'Probé un plato de verduras y no me gustó: odio todas las verduras.'] },
+  { id: 'composicion', n: 'Composición y división', l: 'composition', g: 'Trampas de lógica', d: 'Se cree que lo que vale para las partes vale para el todo, o al revés.',
+    r: 'Comprueba si la propiedad pasa de verdad de las partes al todo, o del todo a las partes.',
+    ej: ['Cada jugador de este equipo es muy bueno, así que el equipo será invencible.', 'Este pastel es muy rico, así que cada ingrediente, también la harina sola, será delicioso.', 'Cada ladrillo es ligero, así que la casa entera debe de pesar poco.'] },
+  { id: 'post-hoc', n: 'Después de, luego a causa de', l: 'post hoc ergo propter hoc', g: 'Falsas causas', d: 'Se cree que como algo pasó después de otra cosa, fue causado por ella.',
+    r: 'Que una cosa venga después de otra no prueba que la cause: busca otras explicaciones.',
+    ej: ['Me puse mis calcetines de la suerte y ganamos el partido: los calcetines nos hicieron ganar.', 'Cantó el gallo y salió el sol: el gallo hace salir el sol.', 'Tomé este jarabe y a la semana se me quitó el resfriado: el jarabe me curó.'] },
+  { id: 'correlacion', n: 'Correlación no es causa', l: 'cum hoc', g: 'Falsas causas', d: 'Como dos cosas suceden juntas, se cree que una causa la otra, cuando puede haber una tercera causa o pura coincidencia.',
+    r: 'Busca una tercera causa común: ¿qué otra cosa puede explicar las dos?',
+    ej: ['Cuando se venden más helados, hay más ahogados. ¡Los helados hacen que la gente se ahogue!', 'Los niños con los pies más grandes leen mejor: agrandar los pies mejora la lectura.', 'En los pueblos con más cigüeñas nacen más bebés: las cigüeñas traen a los bebés.'] },
+  { id: 'anecdota', n: 'Prueba anecdótica', l: 'anecdotal evidence', g: 'Falsas causas', d: 'Se usa una historia personal o un caso aislado en lugar de pruebas amplias y fiables.',
+    r: 'Un caso no es una estadística: pregunta qué dicen los estudios con muchos casos.',
+    ej: ['Mi abuelo fumó toda su vida y vivió hasta los noventa, así que fumar no hace daño.', 'A mi vecina este amuleto le curó el dolor de espalda, así que funciona.', 'Yo nunca uso casco y nunca me ha pasado nada: el casco no sirve.'] },
+  { id: 'autoridad', n: 'Falsa autoridad', l: 'ad verecundiam', g: 'Presiones', d: 'Se acepta algo porque lo dice alguien famoso o importante, aunque no sea experto en el tema.',
+    r: 'Pregunta: ¿es experto en esto en concreto? ¿Qué pruebas da, además de su fama?',
+    ej: ['Este futbolista famoso dice que esta crema cura las enfermedades del corazón, así que debe ser verdad.', 'Mi cantante favorita dice que la Tierra es plana.', 'Lo dijo un actor que hace de médico en una serie, así que es un buen consejo de salud.'] },
+  { id: 'ad-populum', n: 'Apelación a la mayoría', l: 'ad populum', g: 'Presiones', d: 'Se dice que algo es verdadero o bueno porque mucha gente lo cree o lo hace.',
+    r: 'Durante siglos casi todos creyeron que el Sol giraba alrededor de la Tierra: la mayoría puede equivocarse.',
+    ej: ['¡Millones de personas ya lo compraron! No pueden estar todos equivocados.', 'Todos en mi clase tienen esas zapatillas, así que son las mejores.', 'Si tanta gente cree en los horóscopos, por algo será.'] },
+  { id: 'emocion', n: 'Apelación a las emociones', l: 'ad misericordiam', g: 'Presiones', d: 'Se intenta convencer despertando lástima, miedo o ternura, en lugar de dar razones.',
+    r: 'Las emociones importan, pero pregunta: además de lo que siento, ¿qué razones hay?',
+    ej: ['Profe, tiene que aprobarme: si no, mi perrito se pondrá muy triste.', 'Si no compras este seguro, imagina a tu familia llorando bajo la lluvia.', 'Mira esta foto de un gatito: ahora firma la petición sin leerla.'] },
+  { id: 'fuerza', n: 'Apelación a la fuerza', l: 'ad baculum', g: 'Presiones', d: 'Se intenta imponer una idea con amenazas, en lugar de con razones.',
+    r: 'Una amenaza puede obligarte a callar, pero no hace verdadera una idea.',
+    ej: ['Vas a estar de acuerdo conmigo, o le cuento a todos tu secreto.', 'Esta es la mejor canción del mundo. Quien diga lo contrario, se queda fuera del grupo.', 'Yo soy el capitán, así que tengo razón. Y si no te gusta, no juegas.'] },
+  { id: 'tradicion', n: 'Apelación a la tradición', l: 'ad antiquitatem', g: 'Presiones', d: 'Se defiende algo solo porque siempre se ha hecho así.',
+    r: 'Que algo sea antiguo no lo hace bueno ni malo: pregunta por qué se hace y si sigue teniendo sentido.',
+    ej: ['Las chicas no juegan al fútbol: siempre ha sido así.', 'En esta familia siempre hemos votado a ese partido, así que es el bueno.', 'No cambiemos el horario: llevamos cincuenta años haciéndolo así.'] },
+  { id: 'novedad', n: 'Apelación a la novedad', l: 'ad novitatem', g: 'Presiones', d: 'Se cree que algo es mejor solo porque es nuevo o moderno.',
+    r: 'Lo nuevo no siempre es mejor: compara de verdad lo que hace cada cosa.',
+    ej: ['¡Es el modelo de este año! Tiene que ser mejor que el tuyo.', 'Esa dieta es la última moda, así que es la más sana.', 'Las ideas de los antiguos ya no sirven: son viejas.'] },
+  { id: 'naturaleza', n: 'Apelación a la naturaleza', l: 'appeal to nature', g: 'Presiones', d: 'Se dice que algo es bueno por ser «natural», o malo por ser «artificial».',
+    r: 'El veneno de serpiente es natural y las gafas son artificiales: «natural» no significa «bueno».',
+    ej: ['Este jarabe es cien por cien natural, así que no puede hacerte daño.', 'Las vacunas no son naturales, así que son malas.', 'Las setas del bosque son naturales: puedes comer cualquiera.'] },
+  { id: 'ignorancia', n: 'Apelación a la ignorancia', l: 'ad ignorantiam', g: 'Trampas de lógica', d: 'Se dice que algo es verdadero porque no se ha probado que sea falso, o al revés.',
+    r: 'La falta de pruebas no prueba nada: «no sabemos» es una respuesta honesta.',
+    ej: ['Nadie ha demostrado que los fantasmas no existan, así que existen.', 'No se ha probado que este producto sea seguro, así que seguro que es venenoso.', 'Nadie vio que yo me comiera las galletas, así que no fui yo.'] },
+  { id: 'carga-prueba', n: 'Inversión de la carga de la prueba', l: 'onus probandi', g: 'Trampas de lógica', d: 'Quien afirma algo no da pruebas, y exige a los demás que demuestren que es falso.',
+    r: 'Quien hace la afirmación es quien debe probarla.',
+    ej: ['Hay un dragón invisible en mi garaje. Demuéstrame que no.', 'Este amuleto da suerte. Si crees que no, pruébalo tú.', 'Los extraterrestres construyeron las pirámides. ¿Puedes demostrar lo contrario?'] },
+  { id: 'pista-falsa', n: 'Pista falsa', l: 'red herring', g: 'Trampas de palabras', d: 'Se cambia de tema con algo llamativo para no responder a la cuestión.',
+    r: 'Vuelve a la pregunta original: ¿qué tiene que ver esto con lo que estábamos discutiendo?',
+    ej: ['—¿Por qué no hiciste los deberes? —¡Mira qué bonito está el cielo hoy!', '—El río está contaminado por la fábrica. —Pero la fábrica patrocina al equipo del pueblo, que ganó la liga.', '—¿Rompiste el jarrón? —¿Sabías que los jarrones chinos son muy antiguos?'] },
+  { id: 'equivoco', n: 'Equívoco', l: 'equivocation', g: 'Trampas de palabras', d: 'Se usa una misma palabra con dos sentidos distintos en un mismo razonamiento.',
+    r: 'Señala la palabra que cambia de sentido y pide que se use siempre con el mismo.',
+    ej: ['Ese perro es padre, y es tuyo; luego ese perro es tu padre.', 'Las leyes se cumplen; la ley de la gravedad es una ley; luego la gravedad se puede incumplir si quieres.', 'Un ratón tiene cola; la cola de la tienda es larga; luego la tienda está llena de ratones.'] },
+  { id: 'pregunta-cargada', n: 'Pregunta cargada', l: 'loaded question', g: 'Trampas de palabras', d: 'La pregunta esconde una acusación: respondas sí o no, pareces culpable.',
+    r: 'No respondas con sí o no: señala lo que la pregunta da por supuesto.',
+    ej: ['¿Ya dejaste de copiar en los exámenes?', '¿Por qué eres siempre tan egoísta?', '¿Sigues mintiendo a tus padres?'] },
+  { id: 'escoces', n: 'Ningún verdadero escocés', l: 'no true Scotsman', g: 'Trampas de palabras', d: 'Cuando aparece un ejemplo contrario, se cambia la definición para excluirlo.',
+    r: 'Señala que se ha cambiado la definición para no aceptar el contraejemplo.',
+    ej: ['—Ningún aficionado de mi equipo grita insultos. —Pues ayer vi a uno. —Entonces no era un verdadero aficionado.', '—Los verdaderos artistas no cobran por su arte. —Picasso cobraba. —Entonces no era un verdadero artista.', '—A ningún niño le gusta el brócoli. —A mí me encanta. —Ningún niño de verdad, quiero decir.'] },
+  { id: 'costo-hundido', n: 'Costo hundido', l: 'sunk cost', g: 'Trampas de lógica', d: 'Se sigue con algo malo solo porque ya se invirtió mucho en ello.',
+    r: 'Lo gastado ya no vuelve: decide pensando en lo que viene, no en lo que ya pagaste.',
+    ej: ['La película es aburridísima, pero ya pagué la entrada, así que me quedo hasta el final aunque sufra.', 'Llevo tres años en este club que odio; no puedo dejarlo ahora.', 'Ya me comí medio plato aunque me cae mal, así que me lo termino.'] },
+];
+const FAL_BY_ID = Object.fromEntries(FALACIAS.map((f) => [f.id, f]));
+{
+  const Q = (q, ok, e, ...no) => ({ q, a: [ok, ...no], e });
+  ERAS.push({
+    id: 'falacias', num: 'XXXIV', name: 'El mercado de los sofistas', world: true,
+    place: 'Un mercado imaginario donde los sofistas de todos los tiempos venden argumentos tramposos', years: 'Del siglo V a. C. a hoy',
+    quote: { t: 'La sofística es una sabiduría aparente, pero no real.', a: 'Aristóteles' },
+    enemy: { one: 'Sombra del Sofisma', many: 'Sombras del Sofisma' },
+    story: 'Hay argumentos que parecen buenos y no lo son: son trampas, y se llaman falacias. Desde la Atenas de los sofistas hasta la publicidad de hoy, siempre ha habido quien quiere convencernos sin darnos buenas razones. En este mercado lleno de puestos, pregoneros y carteles, cada vendedor esconde una falacia. Aprende a descubrirlas: cazarlas es la mejor defensa de una mente libre. Al final te espera una filósofa que enseñó a pensar con claridad frente a la propaganda.',
+    sages: [
+      { id: 'gorgias', name: 'Gorgias de Leontinos', short: 'Gorgias', dates: 'c. 485 – c. 380 a. C.', epithet: 'El maestro de la palabra que hechiza',
+        look: lk(0x8a2a6a, 0xd8a838, 0xd0a07a, 0xe8e8e8, { beard: 0xe8e8e8, hat: 'none', acc: 'scroll' }), prop: 'podium',
+        intro: 'La palabra es un gran soberano: con un cuerpo pequeñísimo e invisible, hace cosas divinísimas. Puede quitar el miedo, borrar la tristeza y despertar la alegría. Y también puede engañar. ¿Te dejarás hechizar?',
+        defeat: 'No te dejaste hechizar. Has distinguido la belleza de un discurso de la verdad de sus razones.',
+        concept: { name: 'El poder de la palabra', text: 'Gorgias nació en Leontinos, en Sicilia, y llegó a Atenas en el año 427 a. C. como embajador de su ciudad. Sus discursos, llenos de ritmo y de rimas, dejaron a los atenienses boquiabiertos, y muchos jóvenes pagaron grandes sumas para aprender con él. En su «Encomio de Helena» se propuso defender lo indefendible: que Helena de Troya no tuvo culpa, porque quizás la arrastró la fuerza de la palabra, que actúa sobre el alma como las drogas sobre el cuerpo. Gorgias sabía que un discurso bello puede convencer sin dar buenas razones, despertando emociones. Platón escribió un diálogo con su nombre, donde Sócrates le pregunta si la retórica enseña lo justo o solo a parecer convincente. Aprender a distinguir la persuasión de la verdad es el primer paso para descubrir falacias.' },
+        q: [
+          Q('¿Qué dijo Gorgias que era la palabra?', 'Un gran soberano que hace cosas divinísimas', 'Puede quitar el miedo y también engañar.', 'Un ruido sin importancia', 'Algo que solo sirve para cantar', 'Un invento de los dioses del mar'),
+          Q('¿A quién defendió Gorgias en un famoso discurso?', 'A Helena de Troya', 'En el «Encomio de Helena».', 'A Aquiles', 'A Sócrates', 'A un perro'),
+          Q('¿De dónde era Gorgias?', 'De Leontinos, en Sicilia', 'Llegó a Atenas como embajador.', 'De Esparta', 'De Egipto', 'De Roma'),
+          Q('Un vendedor dice: «Si no compras este juguete, tu hijo llorará toda la noche». ¿Qué falacia usa?', 'Apelación a las emociones', 'Despierta lástima en lugar de dar razones.', 'Equívoco', 'Razonamiento circular', 'Composición'),
+          Q('¿Qué filósofo escribió un diálogo llamado «Gorgias»?', 'Platón', 'Sócrates discute con él sobre la retórica.', 'Aristóteles', 'Kant', 'Descartes'),
+          Q('Según Gorgias, ¿cómo actúa la palabra sobre el alma?', 'Como las drogas sobre el cuerpo', 'Puede curar o envenenar.', 'Como el agua sobre la piedra', 'No actúa en absoluto', 'Como la música sobre los pájaros'),
+        ] },
+      { id: 'trasimaco', name: 'Trasímaco de Calcedonia', short: 'Trasímaco', dates: 'siglo V a. C.', epithet: 'El sofista de la ley del más fuerte',
+        look: lk(0x6a2a1a, 0x2a2a2a, 0xc49372, 0x2a1a10, { beard: 0x2a1a10, hat: 'none', acc: 'staff' }), prop: 'throne',
+        intro: '¡Basta de tonterías, Sócrates! La justicia no es otra cosa que lo que conviene al más fuerte. Y si no estás de acuerdo, peor para ti. ¿Te atreves a discutir conmigo?',
+        defeat: 'Has resistido mis gritos. Una amenaza puede hacerte callar, pero no hace verdadera una idea.',
+        concept: { name: 'La justicia del más fuerte', text: 'Trasímaco fue un sofista y maestro de oratoria de Calcedonia, una ciudad junto al Bósforo. Lo conocemos sobre todo por el primer libro de «La República» de Platón: entra en la conversación «como una fiera», harto de las preguntas de Sócrates, y afirma que la justicia es lo que conviene al más fuerte, porque quienes mandan hacen las leyes a su favor. Sócrates le responde con paciencia, pregunta tras pregunta. Trasímaco también era famoso por enseñar a los oradores a despertar la lástima de los jueces. Con él aprendemos dos falacias: imponer una idea por la fuerza o la amenaza, y convencer moviendo la compasión en lugar de dar razones.' },
+        q: [
+          Q('¿Qué es la justicia según Trasímaco?', 'Lo que conviene al más fuerte', 'Los que mandan hacen las leyes a su favor.', 'Dar a cada uno lo suyo', 'La armonía del alma', 'Amar a los enemigos'),
+          Q('¿En qué libro de Platón aparece Trasímaco discutiendo con Sócrates?', 'En «La República»', 'En el primer libro.', 'En el «Fedón»', 'En el «Banquete»', 'En las «Leyes»'),
+          Q('«Esta es la mejor canción del mundo, y quien diga lo contrario se queda fuera del grupo». ¿Qué falacia es?', 'Apelación a la fuerza', 'Se impone una idea con amenazas.', 'Hombre de paja', 'Apelación a la novedad', 'Generalización apresurada'),
+          Q('¿Cómo entra Trasímaco en la conversación, según Platón?', 'Como una fiera', 'Harto de las preguntas de Sócrates.', 'Cantando', 'Dormido', 'Pidiendo perdón'),
+          Q('¿Qué enseñaba Trasímaco a los oradores?', 'A despertar la lástima de los jueces', 'Una forma de apelar a las emociones.', 'A nadar', 'A contar estrellas', 'A callar siempre'),
+          Q('¿Dónde estaba Calcedonia, la ciudad de Trasímaco?', 'Junto al Bósforo', 'Frente a Bizancio.', 'En Egipto', 'En Sicilia', 'En la India'),
+        ] },
+      { id: 'eutidemo', name: 'Eutidemo y Dionisodoro', short: 'Eutidemo', dates: 'siglo V a. C.', epithet: 'Los hermanos que ganaban cualquier discusión',
+        look: lk(0x2a6a5a, 0xe8c040, 0xd0a07a, 0x5a3a2a, { beard: 0x5a3a2a, hat: 'none', acc: 'none' }), prop: 'mirror',
+        intro: 'Mi hermano Dionisodoro y yo ganamos cualquier discusión, digas lo que digas. Dime: ese perro es padre, y ese perro es tuyo. ¿Entonces es tu padre? ¡Ja! ¿Ves qué fácil es enredarte?',
+        defeat: 'Has desatado nuestros nudos de palabras. Una misma palabra no puede cambiar de sentido a mitad de un razonamiento.',
+        concept: { name: 'Las trampas de las palabras', text: 'Eutidemo y su hermano Dionisodoro eran de Quíos y habían sido maestros de lucha y de combate con armas. Ya mayores, se dedicaron a otra lucha: la erística, el arte de ganar discusiones a toda costa. Platón los retrata en su diálogo «Eutidemo», donde enredan a un joven con preguntas tramposas: «¿Quién aprende, el que sabe o el que no sabe?». Respondas lo que respondas, pierdes. Su truco favorito era el equívoco: usar una palabra con dos sentidos distintos. «Ese perro es padre y es tuyo; luego es tu padre». «Tuyo» quiere decir que te pertenece, pero «tu padre» quiere decir otra cosa. Aristóteles estudió estos trucos en su libro «Refutaciones sofísticas», el primer catálogo de falacias de la historia.' },
+        q: [
+          Q('«Ese perro es padre y es tuyo; luego es tu padre». ¿Qué trampa es?', 'Un equívoco', '«Tuyo» se usa con dos sentidos distintos.', 'Apelación a la fuerza', 'Falsa autoridad', 'Prueba anecdótica'),
+          Q('¿Qué eran Eutidemo y Dionisodoro antes de dedicarse a discutir?', 'Maestros de lucha y combate con armas', 'Después cambiaron de lucha.', 'Médicos', 'Pescadores', 'Reyes'),
+          Q('¿Cómo se llama el arte de ganar discusiones a toda costa?', 'Erística', 'Ganar importa más que la verdad.', 'Mayéutica', 'Geometría', 'Ética'),
+          Q('¿Qué libro de Aristóteles es el primer catálogo de falacias?', 'Refutaciones sofísticas', 'Estudia los trucos de los sofistas.', 'Ética a Nicómaco', 'Poética', 'Física'),
+          Q('«Un ratón tiene cola; la cola de la tienda es larga; luego la tienda está llena de ratones». ¿Qué palabra cambia de sentido?', 'Cola', 'Una es parte del cuerpo; la otra, una fila de gente.', 'Ratón', 'Tienda', 'Larga'),
+          Q('¿De qué isla eran los dos hermanos?', 'De Quíos', 'En el mar Egeo.', 'De Creta', 'De Sicilia', 'De Chipre'),
+        ] },
+      { id: 'pedrohispano', name: 'Pedro Hispano', short: 'Pedro Hispano', dates: 'siglo XIII', epithet: 'El maestro que enseñó las falacias a Europa',
+        look: lk(0x3a2a5a, 0xe8e0d0, 0xe0c0a0, 0x6a6a6a, { hat: 'hood', acc: 'book' }), prop: 'lectern',
+        intro: 'En las universidades de mi tiempo, todos los estudiantes empezaban con mi librito de lógica. Lo primero era aprender a razonar bien, y a descubrir cuándo alguien razona mal. ¿Sabes cuántas clases de falacias contaba Aristóteles?',
+        defeat: 'Has razonado con orden. Distinguir las trampas que nacen de las palabras de las que nacen de las cosas es el comienzo de toda ciencia.',
+        concept: { name: 'Las falacias en la universidad', text: 'Pedro Hispano escribió hacia 1240 las «Summulae logicales», un manual de lógica que se usó durante más de trescientos años en las universidades de toda Europa: se copió a mano y se imprimió cientos de veces. Allí ordenaba las trece falacias de Aristóteles en dos grupos: seis nacen del lenguaje, como el equívoco o la ambigüedad, y siete nacen fuera del lenguaje, como confundir la causa o dar por probado lo que se quiere probar. Muchos historiadores lo identifican con el médico y papa Juan XXI, que murió en 1277 cuando se derrumbó el techo de su estudio en Viterbo, aunque todavía se discute si eran la misma persona. Gracias a manuales como el suyo, generaciones de estudiantes aprendieron que razonar bien se aprende.' },
+        q: [
+          Q('¿Cómo se llama el manual de lógica de Pedro Hispano?', 'Summulae logicales', 'Se usó más de trescientos años.', 'Summa theologiae', 'Novum organum', 'El arte de tener razón'),
+          Q('¿Cuántas falacias ordenó, siguiendo a Aristóteles?', 'Trece', 'Seis del lenguaje y siete fuera del lenguaje.', 'Dos', 'Cien', 'Mil'),
+          Q('«Este libro dice la verdad porque el propio libro dice que todo lo que dice es verdad». ¿Qué falacia es?', 'Razonamiento circular', 'Da por probado lo que había que probar.', 'Pista falsa', 'Apelación a la mayoría', 'Tú también'),
+          Q('¿Con qué papa se identifica a menudo a Pedro Hispano?', 'Con Juan XXI', 'Aunque todavía se discute.', 'Con Gregorio I', 'Con Pedro el apóstol', 'Con ninguno'),
+          Q('¿Dónde se usaban las Summulae logicales?', 'En las universidades de toda Europa', 'Era el primer libro de lógica de los estudiantes.', 'En los barcos piratas', 'En los mercados', 'Solo en China'),
+          Q('El equívoco, ¿de dónde nace según la división de Aristóteles?', 'Del lenguaje', 'Es una trampa de palabras.', 'De las cosas', 'De las estrellas', 'Del miedo'),
+        ] },
+      { id: 'barnum', name: 'Phineas Taylor Barnum', short: 'Barnum', dates: '1810 – 1891', epithet: 'El rey del espectáculo y del engaño',
+        look: lk(0x2a2a2a, 0xa82a2a, 0xf0d0b0, 0x5a3a2a, { hat: 'cap', acc: 'staff' }), prop: 'podium',
+        intro: '¡Pasen y vean! ¡La sirena de Fiyi! ¡El espectáculo más grande del mundo! Miles de personas ya han pagado su entrada: ¡no pueden estar todas equivocadas! ¿O sí?',
+        defeat: 'No te ha engañado mi feria. Que mucha gente crea algo, o que sea nuevo y sorprendente, no lo hace verdadero.',
+        concept: { name: 'Los trucos del espectáculo', text: 'P. T. Barnum fue un empresario estadounidense del espectáculo. En su museo de Nueva York exhibió en 1842 la «sirena de Fiyi», que en realidad era la parte de arriba de un mono cosida a la cola de un pez. Llenaba sus salas con carteles enormes y con el argumento de que todo el mundo hablaba de su espectáculo. Más tarde fundó un circo que llamó «El espectáculo más grande de la Tierra». Curiosamente, también escribió un libro, «Los engaños del mundo», para enseñar a la gente a descubrir a los charlatanes y a los falsos médiums, y como político defendió el derecho al voto de los afroamericanos. A Barnum se le atribuye la frase «cada minuto nace un tonto», pero no hay pruebas de que la dijera: ¡otra lección sobre no creer todo lo que se repite!' },
+        q: [
+          Q('¿Qué era en realidad la «sirena de Fiyi» de Barnum?', 'Un mono cosido a la cola de un pez', 'Un engaño de 1842.', 'Una sirena de verdad', 'Una muñeca de trapo', 'Un delfín'),
+          Q('«¡Miles de personas ya lo compraron, no pueden estar equivocadas!». ¿Qué falacia es?', 'Apelación a la mayoría', 'La mayoría también puede equivocarse.', 'Equívoco', 'Pendiente resbaladiza', 'Tú también'),
+          Q('¿Cómo llamó Barnum a su circo?', 'El espectáculo más grande de la Tierra', 'Fundado en el siglo XIX.', 'El circo del Sol', 'La feria de los sueños', 'El mercado de los sofistas'),
+          Q('¿Qué libro escribió Barnum para enseñar a descubrir charlatanes?', 'Los engaños del mundo', 'Contra los falsos médiums.', 'El arte de la guerra', 'Moby Dick', 'Propaganda'),
+          Q('¿Qué pasa con la frase «cada minuto nace un tonto», atribuida a Barnum?', 'No hay pruebas de que él la dijera', 'Una atribución falsa muy repetida.', 'La escribió en su testamento', 'La dijo ante el presidente', 'Es de Platón'),
+          Q('«¡Es el modelo de este año, así que es mejor!». ¿Qué falacia es?', 'Apelación a la novedad', 'Lo nuevo no siempre es mejor.', 'Apelación a la tradición', 'Razonamiento circular', 'Ataque a la persona'),
+        ] },
+      { id: 'bernays', name: 'Edward Bernays', short: 'Bernays', dates: '1891 – 1995', epithet: 'El padre de las relaciones públicas',
+        look: lk(0x3a3a4a, 0x8a8a9a, 0xf0d0b0, 0x3a2a1a, { hat: 'none', acc: 'book' }), prop: 'globe',
+        intro: 'No vendo productos: vendo deseos. Si un médico famoso dice que el desayuno debe ser abundante, todos querrán huevos con tocino. Si asocio un cigarrillo con la libertad, las mujeres querrán fumar. ¿Ves cómo funciona?',
+        defeat: 'Has visto la mano detrás del anuncio. Cuando alguien quiere convencerte, pregunta siempre quién paga y qué razones da.',
+        concept: { name: 'La fábrica del consentimiento', text: 'Edward Bernays nació en Viena y era sobrino de Sigmund Freud. En Nueva York inventó una profesión nueva: las relaciones públicas. Usaba ideas de la psicología para influir en lo que piensa la gente. En 1929, para una tabacalera, organizó que unas jóvenes fumaran en el desfile de Pascua de Nueva York presentando sus cigarrillos como «antorchas de la libertad»: asociaba el tabaco con la igualdad de las mujeres, aunque no tuvieran nada que ver. Para vender tocino, consiguió que muchos médicos recomendaran desayunos abundantes. En 1928 escribió un libro titulado «Propaganda». Vivió ciento tres años. Sus técnicas siguen en la publicidad y en la política: por eso conviene conocerlas, para pensar por nuestra cuenta.' },
+        q: [
+          Q('¿De quién era sobrino Edward Bernays?', 'De Sigmund Freud', 'Usaba la psicología para influir.', 'De Einstein', 'De Napoleón', 'De Barnum'),
+          Q('¿Cómo llamó Bernays a los cigarrillos en el desfile de 1929?', 'Antorchas de la libertad', 'Asociaba el tabaco con la igualdad.', 'Palitos de la suerte', 'Varitas mágicas', 'Flores de humo'),
+          Q('«Este futbolista famoso dice que esta crema cura el corazón». ¿Qué falacia es?', 'Falsa autoridad', 'No es experto en medicina.', 'Apelación a la fuerza', 'Equívoco', 'Costo hundido'),
+          Q('¿Qué profesión inventó Bernays?', 'Las relaciones públicas', 'Influir en la opinión de la gente.', 'La astronomía', 'La cirugía', 'El periodismo deportivo'),
+          Q('¿Cómo se titula el libro que Bernays publicó en 1928?', 'Propaganda', 'Sus técnicas siguen en la publicidad.', 'El capital', 'Walden', 'Cosmos'),
+          Q('¿Qué hizo Bernays para vender tocino?', 'Consiguió que muchos médicos recomendaran desayunos abundantes', 'Usó la autoridad de los médicos.', 'Regaló cerdos', 'Prohibió los cereales', 'Nada'),
+        ] },
+      { id: 'stebbing', boss: true, final: false, name: 'Susan Stebbing', short: 'Stebbing', dates: '1885 – 1943', epithet: 'La maestra del pensamiento claro',
+        look: lk(0x3a4a5a, 0x8a6a4a, 0xf0d8c0, 0x8a8a8a, { hat: 'longhair', acc: 'book' }), prop: 'chalkboard',
+        intro: 'Los sofistas de este mercado venden argumentos brillantes y vacíos. Yo enseño a desmontarlos. Una democracia necesita ciudadanos que piensen con claridad. ¿Estás preparado para el último examen?',
+        defeat: 'Has pensado con propósito. Quien sabe descubrir una falacia ya no es fácil de engañar: esa es la libertad de una mente clara.',
+        concept: { name: 'Pensar con propósito', text: 'Susan Stebbing fue una filósofa inglesa y, en 1933, la primera mujer catedrática de filosofía del Reino Unido. Escribió una introducción a la lógica moderna, pero quería que la lógica sirviera para la vida. En 1939, cuando la propaganda de los dictadores llenaba Europa, publicó «Pensar con propósito» («Thinking to Some Purpose»), un libro barato para todo el mundo. Allí analizaba discursos de políticos y anuncios de periódico, y mostraba sus trampas: palabras cargadas de emoción, falsos dilemas, ideas repetidas sin pensar, que ella llamaba «pensamiento enlatado». Decía que una democracia solo funciona si sus ciudadanos aprenden a pensar con claridad. Dirigió también una escuela para niñas y ayudó a refugiados que huían del nazismo.' },
+        q: [
+          Q('¿Qué fue Susan Stebbing en 1933?', 'La primera mujer catedrática de filosofía del Reino Unido', 'En la Universidad de Londres.', 'Reina de Inglaterra', 'Piloto de aviones', 'Campeona de ajedrez'),
+          Q('¿Cómo se titula su libro de 1939 para todo el mundo?', 'Pensar con propósito', '«Thinking to Some Purpose».', 'El segundo sexo', 'Propaganda', 'El príncipe'),
+          Q('¿Qué llamaba Stebbing «pensamiento enlatado»?', 'Ideas repetidas sin pensar', 'Frases hechas que ahorran pensar.', 'La comida en conserva', 'Pensar dentro de una caja', 'La lógica matemática'),
+          Q('«O estás conmigo, o estás contra mí». ¿Qué falacia es?', 'Falso dilema', 'Casi siempre hay más opciones.', 'Pista falsa', 'Prueba anecdótica', 'Equívoco'),
+          Q('Según Stebbing, ¿qué necesita una democracia?', 'Ciudadanos que piensen con claridad', 'Que no se dejen llevar por la propaganda.', 'Un rey fuerte', 'Muchos anuncios', 'Que nadie discuta'),
+          Q('«Mi abuelo fumó toda su vida y vivió noventa años, así que fumar no hace daño». ¿Qué falacia es?', 'Prueba anecdótica', 'Un caso no es una estadística.', 'Apelación a la tradición', 'Composición', 'Pregunta cargada'),
+          Q('«Mi hermana dice que comamos menos carne: ¡quiere prohibir todos los asados!». ¿Qué falacia es?', 'Hombre de paja', 'Deforma la idea para atacarla.', 'Apelación a la naturaleza', 'Circular', 'Novedad'),
+          Q('«Cantó el gallo y salió el sol: el gallo hace salir el sol». ¿Qué falacia es?', 'Después de, luego a causa de', 'Que algo venga después no prueba que lo cause.', 'Equívoco', 'Ad hominem', 'Costo hundido'),
+          Q('«Nadie ha demostrado que los fantasmas no existan, así que existen». ¿Qué falacia es?', 'Apelación a la ignorancia', 'La falta de pruebas no prueba nada.', 'Falsa autoridad', 'Tú también', 'Composición'),
+          Q('«¿Ya dejaste de copiar en los exámenes?». ¿Qué trampa esconde?', 'Una pregunta cargada', 'Respondas sí o no, pareces culpable.', 'Una pendiente resbaladiza', 'Un falso dilema de colores', 'Ninguna'),
+          Q('¿Quién defendió a Helena de Troya con el poder de la palabra?', 'Gorgias', 'En el «Encomio de Helena».', 'Trasímaco', 'Barnum', 'Bernays'),
+          Q('¿Quién dijo que la justicia es lo que conviene al más fuerte?', 'Trasímaco', 'En el primer libro de «La República».', 'Gorgias', 'Pedro Hispano', 'Stebbing'),
+        ] },
+    ],
+  });
+}
+
+Object.assign(LESSONS, {
+  gorgias: [
+    'Soy Gorgias, de Leontinos, en Sicilia. En el año 427 antes de Cristo llegué a Atenas como embajador, y mis discursos dejaron a todos con la boca abierta.',
+    'Hablaba con ritmo, con rimas y con frases que se respondían como espejos. Los jóvenes me pagaban fortunas por aprender a hablar así.',
+    'Escribí el Encomio de Helena para demostrar que podía defender lo indefendible. Dije que la palabra actúa sobre el alma como las drogas sobre el cuerpo: puede curar el miedo, o envenenar.',
+    'Ese es el secreto que quiero que aprendas: un discurso puede ser bellísimo y emocionante, y aun así no dar ni una sola buena razón.',
+    'Platón escribió un diálogo con mi nombre, donde Sócrates me pregunta si enseño la justicia o solo a parecer convincente. Mi pregunta para ti: ¿alguna vez te convenció algo solo porque sonaba bonito?',
+  ],
+  trasimaco: [
+    'Soy Trasímaco, de Calcedonia, junto al Bósforo. Fui maestro de oratoria y escribí un libro sobre cómo despertar la lástima de los jueces.',
+    'Platón cuenta que entré en una conversación de Sócrates como una fiera, harto de tanta pregunta, y grité: la justicia no es otra cosa que lo que conviene al más fuerte.',
+    'Pensaba que los que mandan hacen las leyes a su favor, y llaman justo a lo que les conviene. Muchos piensan lo mismo todavía hoy.',
+    'Pero fíjate en mi truco: a veces no daba razones, sino gritos y amenazas. Eso es una falacia: la apelación a la fuerza. Una amenaza puede hacerte callar, pero no hace verdadera una idea.',
+    'Y cuando quería conmover a un juez, contaba desgracias en lugar de argumentos: la apelación a las emociones. Mi pregunta para ti: ¿cuándo alguien intentó convencerte con miedo o con lástima?',
+  ],
+  eutidemo: [
+    'Somos Eutidemo y Dionisodoro, hermanos de la isla de Quíos. Primero fuimos maestros de lucha y de combate con armas. Ya mayores, descubrimos una lucha más divertida: la de las palabras.',
+    'Practicábamos la erística, el arte de ganar cualquier discusión, sea verdad o no. Platón nos retrató en un diálogo que lleva mi nombre.',
+    'Preguntábamos a los jóvenes: ¿quién aprende, el que sabe o el que no sabe? Si decían el que sabe, les demostrábamos que no; y si decían el que no sabe, también. ¡Siempre perdían!',
+    'Nuestro truco favorito era el equívoco: usar una palabra con dos sentidos. Ese perro es padre, y es tuyo; luego es tu padre. Tuyo significa que te pertenece, pero tu padre es otra cosa.',
+    'Aristóteles estudió nuestras trampas y escribió el primer catálogo de falacias. Mi pregunta para ti: ¿qué palabra conoces que tenga dos sentidos muy distintos?',
+  ],
+  pedrohispano: [
+    'Me llaman Pedro Hispano. Viví en el siglo trece y enseñé en las nuevas universidades de Europa, como la de París.',
+    'Hacia el año 1240 escribí las Summulae logicales, un pequeño manual de lógica. Durante más de trescientos años, casi todos los estudiantes de Europa empezaron con él.',
+    'Siguiendo a Aristóteles, ordené trece falacias en dos familias: seis nacen del lenguaje, como el equívoco, y siete nacen fuera del lenguaje, como confundir la causa o razonar en círculo.',
+    'Muchos dicen que yo fui también médico y papa, con el nombre de Juan XXI, y que morí en 1277 cuando se derrumbó el techo de mi estudio en Viterbo. Los historiadores todavía lo discuten.',
+    'Lo que sí sé es esto: razonar bien se aprende, como se aprende a leer. Mi pregunta para ti: ¿has visto alguna vez un razonamiento que daba vueltas en círculo?',
+  ],
+  barnum: [
+    'Soy Phineas Taylor Barnum, de Connecticut, en Estados Unidos. Fui el rey del espectáculo: museos de rarezas, ferias y un circo enorme.',
+    'En 1842 exhibí la sirena de Fiyi. Los carteles mostraban una bella sirena; dentro, la gente encontraba la parte de arriba de un mono cosida a la cola de un pez. ¡Y aun así pagaban por verla!',
+    'Mi mejor argumento era: todo el mundo habla de esto, miles ya lo han visto. Es la apelación a la mayoría. Y otro: ¡es lo más nuevo y sorprendente! Es la apelación a la novedad.',
+    'Pero ya mayor escribí un libro, Los engaños del mundo, para desenmascarar a charlatanes y falsos médiums. Y como político defendí el voto de los afroamericanos.',
+    'Me atribuyen la frase «cada minuto nace un tonto», pero no hay pruebas de que yo la dijera. Mi pregunta para ti: ¿compruebas de quién es una frase antes de repetirla?',
+  ],
+  bernays: [
+    'Soy Edward Bernays. Nací en Viena y era sobrino de Sigmund Freud. Mi familia se fue a Nueva York cuando yo era un bebé.',
+    'Inventé una profesión nueva: las relaciones públicas. Usaba la psicología de mi tío para influir en lo que la gente desea, compra y piensa.',
+    'En 1929, para una tabacalera, hice que unas jóvenes fumaran en el desfile de Pascua de Nueva York. Los periódicos hablaron de antorchas de la libertad. Asocié el cigarrillo con la igualdad de las mujeres, aunque no tenían nada que ver.',
+    'Para vender tocino, pedí a miles de médicos que dijeran que un desayuno abundante es sano. Usé su autoridad. Y en 1928 publiqué un libro con un título muy claro: Propaganda.',
+    'Viví ciento tres años, y mis técnicas siguen en los anuncios y en la política. Mi pregunta para ti: cuando ves un anuncio, ¿qué emoción intenta despertarte, y qué razones te da?',
+  ],
+  stebbing: [
+    'Soy Susan Stebbing, filósofa inglesa. De niña tenía una salud frágil y estudié mucho en casa. En 1933 fui la primera mujer catedrática de filosofía del Reino Unido.',
+    'Escribí sobre lógica moderna, pero no quería que la lógica se quedara en la universidad. Quería que sirviera para la vida de todos.',
+    'En 1939, cuando la propaganda de los dictadores llenaba Europa, publiqué Pensar con propósito, un libro barato para cualquier lector. Analicé discursos de políticos y anuncios de periódico, y mostré sus trampas.',
+    'Hablé del pensamiento enlatado: frases hechas que repetimos sin pensar, como latas de conserva. Son cómodas, pero nos ahorran la tarea de pensar.',
+    'Una democracia solo funciona si sus ciudadanos saben pensar con claridad. Mi pregunta para ti: ¿qué frase hecha repites a menudo sin haberla pensado?',
+  ],
+});
+
+Object.assign(FRASES, {
+  gorgias: [['La palabra es un gran soberano: con un cuerpo pequeñísimo e invisible, hace cosas divinísimas.', 'Encomio de Helena'], ['Nada existe; si algo existiera, no podría conocerse; y si pudiera conocerse, no podría comunicarse.', 'Sobre el no ser (resumen)']],
+  trasimaco: [['La justicia no es otra cosa que lo que conviene al más fuerte.', 'en La República de Platón'], ['Los dioses no ven las cosas humanas, pues no habrían descuidado el mayor de los bienes: la justicia.', 'fragmento']],
+  eutidemo: [['Ese perro es padre, y ese perro es tuyo; luego ese perro es tu padre.', 'en el Eutidemo de Platón'], ['¿Quién aprende, el que sabe o el que no sabe?', 'en el Eutidemo de Platón']],
+  pedrohispano: [['La dialéctica es el arte de las artes y la ciencia de las ciencias, que abre el camino a los principios de todos los métodos.', 'Summulae logicales']],
+  barnum: [['Toda multitud tiene un lado de plata.', 'atribuida'], ['Sin promoción, algo terrible ocurre: nada.', 'atribuida']],
+  bernays: [['La manipulación consciente e inteligente de los hábitos y opiniones de las masas es un elemento importante en la sociedad democrática.', 'Propaganda'], ['Si comprendemos el mecanismo y los motivos de la mente del grupo, ¿no es posible controlar y dirigir a las masas según nuestra voluntad sin que lo sepan?', 'Propaganda']],
+  stebbing: [['Hay pocas cosas más importantes en una democracia que la capacidad de pensar con claridad.', 'idea central de Pensar con propósito'], ['El pensamiento enlatado es cómodo: ahorra el trabajo de pensar.', 'idea central de Pensar con propósito']],
+});
+
 // ---- src/01z-cronologia.js ----
 // ============================================================================
 //  LA LÍNEA DEL TIEMPO: un solo viaje por todas las épocas, en orden cronológico,
@@ -7640,7 +7923,7 @@ const DILEMAS = [
 //  Los números romanos de cada época se reasignan según este orden.
 // ============================================================================
 const CHRONO = ['sumer', 'africa', 'india', 'persia', 'presocraticos', 'china', 'atenas', 'helenismo', 'medieval', 'islam', 'vikingos', 'japon',
-  'mexicas', 'incas', 'renacimiento', 'mapuche', 'modernidad', 'xix', 'latinoamerica', 'contemporanea', 'poetas', 'ciencia', 'ateos', 'teistas', 'pensadoras', 'justicia', 'misticos', 'mente', 'tierra', 'numeros', 'belleza', 'pueblos', 'cuidado']
+  'mexicas', 'incas', 'renacimiento', 'mapuche', 'modernidad', 'xix', 'latinoamerica', 'contemporanea', 'poetas', 'ciencia', 'ateos', 'teistas', 'pensadoras', 'justicia', 'misticos', 'mente', 'tierra', 'numeros', 'belleza', 'pueblos', 'cuidado', 'falacias']
   .map((id) => ERAS.findIndex((e) => e.id === id)).filter((i) => i >= 0);
 ERAS.forEach((e, i) => { if (!CHRONO.includes(i)) CHRONO.push(i); });
 // el botón principal dice cuántas épocas y pensadores hay (se calcula, para que no quede viejo)
@@ -7682,6 +7965,7 @@ const ERA_HOOK = {
   belleza: 'Un mundo temático: el arte y la pregunta por lo bello.',
   pueblos: 'Un mundo temático: las sabidurías de Norteamérica y Oceanía.',
   cuidado: 'Un mundo temático: curar, cuidar y respetar la vida.',
+  falacias: 'Un mundo temático: los sofistas de todos los tiempos y el arte de descubrir falacias.',
 };
 function nextEra(i) { const k = CHRONO.indexOf(i); return k >= 0 && k < CHRONO.length - 1 ? CHRONO[k + 1] : -1; }
 
@@ -7854,6 +8138,10 @@ const THEMES = [
     sky: [0x7ab0e8, 0xe8f4f0, 0xc8d8c8], sunDir: [0.4, 0.7, -0.5], sunCol: 0xfffaf0, sunInt: 2.5, sunDisk: 0xffffff,
     hemi: [0xe8f4ff, 0x7a8a7a, 0.85], fog: [0xe0ece8, 0.0065], exposure: 1.02, stars: false,
     accent: 0x6ad8b0, enemy: { col: 0x6ad8b0, core: 0x062a20, shell: 'octa' }, lampCol: 0xfff0d0,
+  },  { // XXXIV · El mercado de los sofistas: tarde de feria con farolillos
+    sky: [0x3a5aa8, 0xffb070, 0xe89a6a], sunDir: [-0.7, 0.18, -0.65], sunCol: 0xffc890, sunInt: 2.3, sunDisk: 0xffe0b0,
+    hemi: [0xffd8b8, 0x6a4a3a, 0.78], fog: [0xe8b090, 0.0068], exposure: 1.1, stars: false,
+    accent: 0xffc030, enemy: { col: 0xb070ff, core: 0x1a0a2a, shell: 'cube' }, lampCol: 0xffc070,
   },
 ];
 
@@ -9651,6 +9939,57 @@ const ERA_BUILDERS = [
     const mtn = farStd(W, 0x8ab08a, 0.45);
     for (let k = 0; k < 10; k++) { const x = -150 + k * 33 + (r() - 0.5) * 12, z = -140 - r() * 50, h = 10 + r() * 10, w = 50 + r() * 25; const m = mesh(new THREE.SphereGeometry(w, 12, 8, 0, TAU, 0, Math.PI / 2), mtn, x, -4, z, false, false); m.scale.set(1, h / w, 0.6); W.group.add(m); }
     brazier(W, -4, -34, 0xfff0d0); brazier(W, 4, -34, 0xfff0d0);
+  },  // ------------------------------------------------------------------ XXXIV · El mercado de los sofistas
+  function (W) {
+    const cob = texTiles('xxxiv', 0xc8a07a, 0x8a6a4a, 10, 0.18); cob.repeat.set(12, 18); ground(W, cob, [80, 120], 0.85);
+    const r = mulberry32(251);
+    const wood = std(0x7a5232, { roughness: 0.9 }); const dark = std(0x3a2a1a, { roughness: 0.9 });
+    const cloth = [0xc83a2a, 0xe8b040, 0x2a6aa8, 0x3a8a4a, 0x8a3aa8, 0xe86a2a];
+    // puestos con toldo de rayas: en ellos los pregoneros esconden sus falacias
+    W.falStalls = [];
+    const stall = (x, z, side, k) => {
+      const g = new THREE.Group(); g.position.set(x, 0, z); g.rotation.y = side > 0 ? -Math.PI / 2 : Math.PI / 2;
+      g.add(mesh(new THREE.BoxGeometry(3.2, 1.0, 1.2), wood, 0, 0.5, 0)); g.add(mesh(new THREE.BoxGeometry(3.4, 0.08, 1.4), dark, 0, 1.04, 0));
+      for (const [px, pz] of [[-1.6, -0.6], [1.6, -0.6], [-1.6, 0.9], [1.6, 0.9]]) g.add(mesh(new THREE.CylinderGeometry(0.06, 0.06, 2.9, 6), dark, px, 1.45, pz));
+      const c1 = std(cloth[k % 6], { roughness: 0.8 }), c2 = std(0xf4ecd8, { roughness: 0.8 });
+      for (let i = 0; i < 8; i++) g.add(withRot(mesh(new THREE.BoxGeometry(0.42, 0.05, 2.0), i % 2 ? c2 : c1, -1.47 + i * 0.42, 2.95, 0.15, false, false), 'x', -0.28));
+      // mercancía: frascos, telas, cajas
+      for (let i = 0; i < 6; i++) g.add(mesh(new THREE.CylinderGeometry(0.1, 0.12, 0.3 + r() * 0.2, 8), std(cloth[(k + i) % 6], { roughness: 0.3 }), -1.2 + i * 0.48, 1.2, -0.1 + (i % 2) * 0.3));
+      g.add(mesh(new THREE.BoxGeometry(0.9, 0.5, 0.7), wood, -1.0, 0.25, 1.2));
+      W.group.add(g); W.colliders.push({ t: 1, x, z, r: 1.7, h: 3 });
+      W.falStalls.push({ x: x - side * 1.7, z, sx: x, sz: z, k });
+    };
+    let k = 0;
+    for (const z of [27, 14, 1, -12, -25]) for (const side of [-1, 1]) { const x = side * 11; if (W._near(x, z, 1.6)) continue; stall(x, z, side, k++); }
+    // guirnaldas de banderines y farolillos cruzando la calle
+    for (const z of [30, 18, 6, -6, -18, -30]) {
+      for (let i = 0; i < 18; i++) { const x = -12 + i * (24 / 17); const y = 5.2 - Math.sin((i / 17) * Math.PI) * 1.1;
+        const fl = mesh(new THREE.ConeGeometry(0.22, 0.45, 3), std(cloth[(i + z) % 6 < 0 ? 0 : (i + Math.abs(z)) % 6], { roughness: 0.8 }), x, y - 0.25, z, false, false); fl.rotation.z = Math.PI; W.group.add(fl);
+        if (i % 4 === 2) W.group.add(mesh(new THREE.SphereGeometry(0.2, 10, 8), glow(0xffc070, 2.4), x, y - 0.5, z + 0.3, false, false)); }
+    }
+    // tarima de los oradores con atril y cortinas
+    if (!W._near(0, 8, 2.6)) { const g = new THREE.Group(); g.position.set(0, 0, 8);
+      g.add(mesh(new THREE.BoxGeometry(5, 0.6, 3), wood, 0, 0.3, 0)); addFloor(W, { kind: 'box', x: 0, z: 8, hw: 2.5, hd: 1.5, top: 0.6, th: 0.6 });
+      g.add(mesh(new THREE.BoxGeometry(0.7, 1.2, 0.5), dark, 0, 1.2, -0.6));
+      for (const sx of [-2.4, 2.4]) { g.add(mesh(new THREE.CylinderGeometry(0.08, 0.08, 4, 8), dark, sx, 2.6, -1.3)); g.add(mesh(new THREE.BoxGeometry(1.1, 3.4, 0.08), std(0x8a1a2a, { roughness: 0.7 }), sx * 0.85, 2.9, -1.3)); }
+      g.add(mesh(new THREE.BoxGeometry(5, 0.5, 0.1), std(0xe8b040, { metalness: 0.5, roughness: 0.4 }), 0, 4.6, -1.3));
+      W.group.add(g); }
+    // gran teatro de las máscaras al fondo
+    { const g = new THREE.Group(); g.position.set(0, 0, -60);
+      const wall = std(0xe0c8a0, { roughness: 0.8 });
+      g.add(mesh(new THREE.BoxGeometry(34, 13, 10), wall, 0, 6.5, 0, false, false));
+      for (let i = -3; i <= 3; i++) g.add(mesh(new THREE.CylinderGeometry(0.6, 0.7, 11, 12), std(0xf4ecd8), i * 4.6, 5.5, 5.4, false, false));
+      const ped = pediment(30, 4, 2, wall); ped.position.set(0, 13, 4.5); g.add(ped);
+      // máscaras de la comedia y la tragedia
+      for (const [sx, col] of [[-5, 0xffd36a], [5, 0xa8c8ff]]) { const m = mesh(new THREE.SphereGeometry(2.2, 18, 12, 0, Math.PI), glow(col, 0.8), sx, 14.5, 5.2, false, false); g.add(m);
+        for (const ex of [-0.7, 0.7]) g.add(mesh(new THREE.SphereGeometry(0.32, 10, 8), std(0x1a1a1a), sx + ex, 15.1, 7.2, false, false)); }
+      W.group.add(g); }
+    // carteles con signos de interrogación sobre postes
+    for (const [x, z] of [[-5, 22], [5, -4], [-5, -20], [5, 20]]) { if (W._near(x, z, 0.8)) continue; W.group.add(mesh(new THREE.CylinderGeometry(0.06, 0.06, 3, 6), dark, x, 1.5, z)); W.group.add(mesh(new THREE.BoxGeometry(1.2, 0.8, 0.06), std(0xf4ecd8), x, 3.1, z)); W.colliders.push({ t: 1, x, z, r: 0.2, h: 3 }); }
+    const roofs = farStd(W, 0xa8603a, 0.4); const walls = farStd(W, 0xe8d0a8, 0.4);
+    for (let k2 = 0; k2 < 14; k2++) { const x = -150 + k2 * 23 + (r() - 0.5) * 8, z = -110 - r() * 40, h = 8 + r() * 14, w = 10 + r() * 8;
+      W.group.add(mesh(new THREE.BoxGeometry(w, h, 8), walls, x, h / 2 - 1, z, false, false)); W.group.add(withRot(mesh(new THREE.ConeGeometry(w * 0.75, 5, 4), roofs, x, h + 1.5, z, false, false), 'y', Math.PI / 4)); }
+    brazier(W, -4, -34, 0xffc070); brazier(W, 4, -34, 0xffc070);
   },
 ];
 
@@ -9688,6 +10027,7 @@ function buildWorld(idx) {
   if (typeof buildZones === 'function') buildZones(W);
   if (typeof Agora !== 'undefined') { try { Agora.build(W); } catch (e) { console.warn('ágora', e); } }
   try { Orbes.build(W); } catch (e) { console.warn('orbes', e); }
+  if (W.falStalls) try { Falacias.build(W); } catch (e) { console.warn('falacias', e); }
 
   buildPortal(W);
   // puntos de aparición de enemigos
@@ -16486,6 +16826,116 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
   } catch (e) { /* herramientas sin debates */ }
 }
 
+// ============================================================================
+//  XXXIV · EL MERCADO DE LOS SOFISTAS: lugares, ciudadanos, encargos, anécdotas y libros
+// ============================================================================
+{
+  const PP = [[-17, 30], [17, 24], [17, 6], [-17, -2], [6, -40]];
+  const BB = [[16, -12], [-16, 16]];
+  const poi = (i, id, name, text, fact, q) => ({ id, at: PP[i], name, text, fact, q });
+  const book = (b, i) => ({ ...b, at: BB[i] });
+  POIS.push([
+    poi(0, 'casa-calias', 'La casa de Calias', 'Calias era el hombre más rico de Atenas y le encantaba recibir a los sofistas. Platón cuenta en su diálogo «Protágoras» que un día su casa estaba llena: Protágoras paseaba por el pórtico seguido de un coro de admiradores, Hipias respondía preguntas sentado en un trono, y Pródico, envuelto en mantas, explicaba la diferencia entre palabras parecidas desde la cama. El portero, harto de tanto sofista, le cerró la puerta en las narices a Sócrates.',
+      'Los sofistas cobraban por enseñar, y mucho. Protágoras, se decía, ganó más dinero que el escultor Fidias y otros diez escultores juntos.',
+      { q: '¿Quién recibía a los sofistas en su casa de Atenas?', a: ['Calias, el hombre más rico de Atenas', 'El rey de Persia', 'Sócrates', 'Nadie'], e: 'Lo cuenta Platón en el «Protágoras».' }),
+    poi(1, 'liceo-refutaciones', 'El Liceo y las Refutaciones', 'En el Liceo, su escuela de Atenas, Aristóteles escribió un pequeño libro llamado «Refutaciones sofísticas». Es el primer catálogo de falacias de la historia: argumentos que parecen buenos pero no lo son. Las dividió en dos familias: trece trampas, seis que nacen del lenguaje y siete que nacen fuera de él. Muchos nombres que usamos hoy, como «petición de principio», vienen de allí.',
+      'Aristóteles definió la sofística como «una sabiduría aparente, pero no real», y al sofista como alguien que gana dinero con una sabiduría que solo lo parece.',
+      { q: '¿Cuál es el primer catálogo de falacias de la historia?', a: ['Las «Refutaciones sofísticas» de Aristóteles', 'El Quijote', 'La Odisea', 'Un periódico de Londres'], e: 'Escrito en el Liceo de Atenas.' }),
+    poi(2, 'disputa-paris', 'Las disputas de París', 'En las universidades medievales, como la de París, los estudiantes aprendían discutiendo. En la «disputatio», un maestro planteaba una cuestión, un estudiante defendía una respuesta y otros le ponían objeciones. Ganaba quien detectaba las trampas del otro y respondía con distinciones precisas: «distingo: en un sentido sí, en otro no». Para eso estudiaban manuales como el de Pedro Hispano.',
+      'Algunas disputas duraban días enteros, y cualquier asistente podía levantarse a poner una objeción, incluso sobre temas muy curiosos.',
+      { q: '¿Cómo se llamaba el ejercicio de discutir en las universidades medievales?', a: ['La disputatio', 'La olimpiada', 'El torneo de caballeros', 'La siesta'], e: 'Ganaba quien detectaba las trampas del otro.' }),
+    poi(3, 'museo-barnum', 'El museo americano de Barnum', 'En el centro de Nueva York, el museo de Barnum atraía a miles de personas cada día con carteles gigantes, una banda de música tocando a todo volumen en el balcón y rarezas de todo el mundo, algunas verdaderas y otras falsas, como la «sirena de Fiyi». Para que la gente saliera y dejara sitio a otros, Barnum puso un cartel que decía «Por aquí, a la egresa». Muchos lo siguieron pensando que era un animal exótico… y se encontraron en la calle.',
+      '«Egresa» era solo una palabra rara para «salida». Barnum sabía que la curiosidad y la palabra misteriosa movían a la gente más que las razones.',
+      { q: '¿Qué encontraba quien seguía el cartel «Por aquí, a la egresa»?', a: ['La salida a la calle', 'Un animal exótico', 'Un tesoro', 'La sirena de Fiyi'], e: 'Una palabra misteriosa para «salida».' }),
+    poi(4, 'antorchas', 'El desfile de las antorchas', 'El domingo de Pascua de 1929, en la Quinta Avenida de Nueva York, un grupo de jóvenes encendió cigarrillos mientras desfilaba. Los periódicos lo contaron como un gesto por la libertad de las mujeres: «antorchas de la libertad». En realidad lo había organizado Edward Bernays para una empresa de tabaco que quería vender más a las mujeres. Fue una falsa asociación: unir un producto con un valor que nada tiene que ver con él.',
+      'Hoy sabemos que el tabaco causa graves enfermedades. La publicidad de cigarrillos está prohibida o limitada en muchos países.',
+      { q: '¿Quién organizó en secreto el desfile de las «antorchas de la libertad»?', a: ['Edward Bernays, para una empresa de tabaco', 'Las sufragistas', 'El alcalde de Nueva York', 'Nadie'], e: 'Una falsa asociación entre tabaco y libertad.' }),
+  ]);
+  NPCS.push([
+    wnpc(0, 'pregonero', 'Leandro', 'pregonero del mercado', sk(0xc84a2a, 0xe8c040, 0xd8b08a, 0x3a2a1a, { beard: 0x3a2a1a, hat: 'cap', acc: 'none' }), [
+      '¡Compre, compre! ¡El elixir que todo el mundo toma! ¿Y sabes por qué lo vendo tan bien? Porque nadie pregunta si funciona: solo preguntan si lo toma el vecino.',
+      'En este mercado cada puesto tiene su truco. Acércate a los carteles y descubre la falacia escondida en cada pregón.',
+      'Un buen pregonero no da razones: da gritos, prisas y miedo a quedarse sin nada. «¡Solo quedan tres!». Desconfía de las prisas.',
+    ]),
+    wnpc(1, 'verificadora', 'Inés', 'verificadora de noticias', sk(0x2a5a8a, 0xe8e8f0, 0xc49372, 0x2a1a10, { hat: 'longhair', acc: 'book' }), [
+      'Mi trabajo es comprobar lo que se dice en las noticias. Antes de compartir algo, pregunto tres cosas: ¿quién lo dice?, ¿qué pruebas da?, ¿qué dicen otras fuentes?',
+      'Una noticia falsa vuela mucho más rápido que su corrección. Por eso es mejor pensar un minuto antes de reenviar.',
+      'Las falacias no siempre vienen de mentirosos. A veces las decimos sin querer. Aprender a verlas también nos hace más honestos.',
+    ], true),
+    wnpc(2, 'abogada', 'Valeria', 'abogada defensora', sk(0x1a1a2a, 0xe8e8e8, 0xe0c0a0, 0x5a3a2a, { hat: 'longhair', acc: 'scroll' }), [
+      'En un juicio, quien acusa debe probar. Eso es la carga de la prueba: no le toca al acusado demostrar que es inocente.',
+      'Mi rival a veces ataca a mi cliente por su ropa o por su pasado. Yo le recuerdo al jurado que se juzgan los hechos, no a la persona.',
+      'Un buen argumento resiste la pregunta «¿y cómo lo sabes?». Uno tramposo se tambalea en cuanto la haces.',
+    ], true),
+  ]);
+  Object.assign(QUESTS, {
+    gorgias: { text: 'Visita la casa de Calias y escucha a Leandro, el pregonero. Luego dime con qué comparé la fuerza de la palabra.', needs: { pois: ['casa-calias'], npcs: ['pregonero'] },
+      riddle: { q: '¿Con qué comparó Gorgias la fuerza de la palabra sobre el alma?', a: ['Con las drogas sobre el cuerpo', 'Con el viento sobre el mar', 'Con el fuego', 'Con nada'] } },
+    trasimaco: { text: 'Escucha a Valeria, la abogada. Luego dime qué falacia es amenazar en lugar de dar razones.', needs: { pois: [], npcs: ['abogada'] },
+      riddle: { q: '¿Cómo se llama la falacia de imponer una idea con amenazas?', a: ['Apelación a la fuerza', 'Equívoco', 'Hombre de paja', 'Composición'] } },
+    eutidemo: { text: 'Visita el Liceo y las Refutaciones. Luego dime qué trampa usa una palabra con dos sentidos.', needs: { pois: ['liceo-refutaciones'], npcs: [] },
+      riddle: { q: '¿Cómo se llama usar una palabra con dos sentidos en el mismo razonamiento?', a: ['Equívoco', 'Generalización', 'Tradición', 'Novedad'] } },
+    pedrohispano: { text: 'Visita las disputas de París. Luego dime en cuántas familias se dividen las falacias de Aristóteles.', needs: { pois: ['disputa-paris'], npcs: [] },
+      riddle: { q: '¿En qué dos familias se dividen las falacias de Aristóteles?', a: ['Las que nacen del lenguaje y las que nacen fuera de él', 'Las grandes y las pequeñas', 'Las griegas y las latinas', 'Ninguna'] } },
+    barnum: { text: 'Visita mi museo americano y escucha a Inés, la verificadora. Luego dime qué era la «egresa».', needs: { pois: ['museo-barnum'], npcs: ['verificadora'] },
+      riddle: { q: '¿Qué era la «egresa» del museo de Barnum?', a: ['La salida', 'Un pájaro raro', 'Una sirena', 'Un dulce'] } },
+    bernays: { text: 'Visita el desfile de las antorchas. Luego dime qué producto se asoció con la libertad.', needs: { pois: ['antorchas'], npcs: [] },
+      riddle: { q: '¿Qué producto asoció Bernays con la libertad de las mujeres?', a: ['Los cigarrillos', 'Las bicicletas', 'Los libros', 'El pan'] } },
+    stebbing: { text: 'Escucha a Inés, la verificadora, y a Valeria, la abogada. Luego dime qué necesita una democracia.', needs: { pois: [], npcs: ['verificadora', 'abogada'] },
+      riddle: { q: '¿Qué necesita una democracia, según Stebbing?', a: ['Ciudadanos que piensen con claridad', 'Mucha propaganda', 'Un solo partido', 'Que nadie discuta'] } },
+  });
+  Object.assign(ANECDOTES, {
+    gorgias: ['Vivió más de cien años. Se cuenta que, cuando le preguntaron cómo lo había logrado, respondió que nunca había hecho nada solo por placer.', 'En Delfos se levantó una estatua suya, y se dice que era de oro macizo. ¡Así de bien le pagaban sus discursos!'],
+    trasimaco: ['Platón lo describe tan furioso que Sócrates dice que, si no lo hubiera mirado antes, se habría quedado mudo de miedo, como quien ve a un lobo.', 'Al final de la discusión, Trasímaco se ruboriza. Según Platón, es la primera vez que alguien lo vio sonrojarse… aunque hacía calor.'],
+    eutidemo: ['Sócrates, con ironía, dice al final del diálogo que quiere ser su alumno, porque su sabiduría es tan perfecta que se puede aprender en pocos días.', 'Un joven del diálogo, Ctesipo, termina usando sus propias trampas contra ellos, y los hermanos se quedan sin palabras.'],
+    pedrohispano: ['Se dice que como papa estaba tan ocupado en sus libros que mandó construir un estudio nuevo en su palacio de Viterbo. Al poco tiempo, el techo se derrumbó sobre él.', 'También escribió un libro de medicina, «El tesoro de los pobres», con remedios para quienes no podían pagar un médico.'],
+    barnum: ['Su museo de Nueva York se incendió en 1865. Barnum construyó otro… y también se quemó.', 'Ya mayor, fue alcalde de Bridgeport, en Connecticut, y luchó por el agua potable y el alumbrado de gas para la ciudad.'],
+    bernays: ['Para vender jabón, organizó concursos de escultura en barras de jabón para niños, que se hicieron muy populares.', 'En sus memorias contó que un periodista le dijo que el ministro de propaganda nazi usaba uno de sus libros. Bernays, que era judío, escribió que aquello lo había horrorizado.'],
+    stebbing: ['Sufría una enfermedad del oído que le causaba vértigos, pero dio clases y conferencias durante toda su vida.', 'Pidió que su libro se publicara en una colección barata, de bolsillo, para que pudieran comprarlo los trabajadores y no solo los profesores.'],
+  });
+  BOOKS.push([
+    book({ id: 'encomio-helena', author: 'gorgias', by: 'Gorgias de Leontinos', title: 'Encomio de Helena', year: 'c. 414 a. C.', kind: 'discurso',
+      parts: [
+        { t: 'Defender lo indefendible', x: 'Todos culpaban a Helena de la guerra de Troya. Gorgias se propone demostrar, como un juego, que no tuvo culpa.' },
+        { t: 'Cuatro causas', x: 'Helena se fue a Troya por una de cuatro causas: el destino de los dioses, la fuerza, la persuasión de la palabra o el amor. En ningún caso, dice Gorgias, sería culpable.' },
+        { t: 'La palabra como droga', x: 'La parte más famosa explica que la palabra actúa sobre el alma como las drogas sobre el cuerpo: unas curan, otras envenenan, otras hechizan.' },
+        { t: 'Un juego', x: 'Gorgias termina diciendo que escribió el discurso como un elogio de Helena y como un juego para sí mismo. ¡Un juego que muestra el poder de convencer!' },
+      ],
+      quote: 'La palabra es un gran soberano, que con un cuerpo pequeñísimo e invisible lleva a cabo obras divinísimas.',
+      q: { q: '¿Con qué compara Gorgias la palabra en el Encomio de Helena?', a: ['Con las drogas que actúan sobre el cuerpo', 'Con una espada', 'Con el agua', 'Con nada'], e: 'Puede curar, envenenar o hechizar.' } }, 0),
+    book({ id: 'pensar-proposito', author: 'stebbing', by: 'Susan Stebbing', title: 'Pensar con propósito', year: '1939', kind: 'ensayo',
+      parts: [
+        { t: 'Un libro para todos', x: 'Stebbing lo escribió para cualquier lector, en una colección barata, cuando la propaganda de los dictadores amenazaba Europa.' },
+        { t: 'Palabras cargadas', x: 'Muestra cómo los políticos y los periódicos usan palabras cargadas de emoción para que dejemos de pensar y solo sintamos.' },
+        { t: 'Pensamiento enlatado', x: 'Llama pensamiento enlatado a las frases hechas que repetimos sin examinar: son cómodas, pero nos ahorran la tarea de pensar.' },
+        { t: 'Pensar es un deber', x: 'En una democracia, pensar con claridad no es un lujo: es un deber de cada ciudadano, porque de ello depende la libertad de todos.' },
+      ],
+      quote: 'Hay pocas cosas más importantes en una democracia que la capacidad de pensar con claridad.',
+      q: { q: '¿Qué llamaba Stebbing «pensamiento enlatado»?', a: ['Frases hechas que repetimos sin pensar', 'La comida en lata', 'Los libros viejos', 'La música grabada'], e: 'Son cómodas, pero nos ahorran pensar.' } }, 1),
+  ]);
+  BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });
+  try {
+    VERSUS.push(
+      { id: 'socrates-trasimaco', a: 'socrates', b: 'trasimaco', q: '¿Qué es la justicia?', eje: null, va: 0, vb: 0,
+        turns: [
+          ['b', 'La justicia no es otra cosa que lo que conviene al más fuerte. Los que mandan hacen las leyes a su favor y lo llaman justo.'],
+          ['a', 'Dime, Trasímaco: ¿los gobernantes nunca se equivocan? Si se equivocan, a veces mandarán lo que no les conviene, y entonces lo justo será obedecer lo que les perjudica.'],
+          ['b', 'Un gobernante de verdad, en cuanto gobierna, no se equivoca. ¡Deja de enredarme con tus preguntas!'],
+          ['a', 'Un médico de verdad busca el bien del enfermo, no el suyo. Así también el verdadero gobernante busca el bien de los gobernados. Un grito no responde a esa razón.'],
+        ],
+        cierre: 'Trasímaco defiende que la justicia es el interés del poderoso. Sócrates le responde con preguntas y con la analogía del médico. Esta discusión abre «La República» de Platón.' },
+      { id: 'stebbing-bernays', a: 'stebbing', b: 'bernays', q: '¿Se debe guiar la opinión del público?', eje: null, va: 0, vb: 0,
+        turns: [
+          ['b', 'La gente no tiene tiempo de estudiarlo todo. Alguien debe organizar la opinión pública, como se organiza un ejército. Para eso estamos los expertos en persuasión.'],
+          ['a', 'Si otros piensan por nosotros, ¿quién controla a los que piensan? La democracia necesita ciudadanos que razonen, no masas que obedezcan.'],
+          ['b', 'Pero la gente se mueve por emociones y deseos. Es más eficaz hablarles a ellos que a la razón.'],
+          ['a', 'Precisamente por eso hay que enseñar a todos a reconocer las trampas. Quien ve el truco ya no es fácil de manejar.'],
+        ],
+        cierre: 'Bernays creía que unos pocos expertos debían dirigir la opinión pública. Stebbing defendía que cada ciudadano debe aprender a pensar con claridad. La discusión sigue viva en la era de las redes sociales.' },
+    );
+  } catch (e) { /* herramientas sin debates */ }
+}
+
 // ---- src/02z-guia.js ----
 // ============================================================================
 //  EL FILÓSOFO GUÍA (Filosofía para Seres Humanos)
@@ -16559,9 +17009,11 @@ const GUIDE_LINES = [
     'Toro Sentado, el Jefe Joseph, Alce Negro, Te Whiti, la reina Liliʻuokalani, David Unaipon y el Pacificador te esperan. Escucha sus historias: muchas no se escribieron, se contaron junto al fuego.'],
   ['Bienvenido a la casa de los cuidados. Curar y cuidar a otros es una de las formas más antiguas de sabiduría.',
     'Galeno, Vesalio, Semmelweis, Florence Nightingale, Pasteur, Ramón y Cajal y Albert Schweitzer te esperan. Y recuerda su primera lección: lávate las manos.'],
+  ['Bienvenido al mercado de los sofistas. Aquí cada vendedor esconde una trampa: una falacia, un argumento que parece bueno y no lo es.',
+    'Gorgias, Trasímaco, los hermanos Eutidemo y Dionisodoro, Pedro Hispano, Barnum y Bernays te esperan, y al final Susan Stebbing. Acércate a los puestos del mercado y caza las falacias de cada pregón.'],
 ];
 // dónde espera en cada época (junto al punto de llegada, en z = 31)
-const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5], 17: [2.8, 24.5], 18: [2.8, 24.5], 19: [2.8, 24.5], 20: [2.8, 24.5], 21: [2.8, 24.5], 22: [2.8, 26.5], 23: [2.8, 26.5], 24: [2.8, 26.5], 25: [2.8, 26.5], 26: [2.8, 26.5], 27: [2.8, 26.5], 28: [2.8, 26.5], 29: [2.8, 26.5], 30: [2.8, 26.5], 31: [2.8, 26.5], 32: [2.8, 26.5] };
+const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5], 17: [2.8, 24.5], 18: [2.8, 24.5], 19: [2.8, 24.5], 20: [2.8, 24.5], 21: [2.8, 24.5], 22: [2.8, 26.5], 23: [2.8, 26.5], 24: [2.8, 26.5], 25: [2.8, 26.5], 26: [2.8, 26.5], 27: [2.8, 26.5], 28: [2.8, 26.5], 29: [2.8, 26.5], 30: [2.8, 26.5], 31: [2.8, 26.5], 32: [2.8, 26.5], 33: [2.8, 26.5] };
 GUIDE_LINES.forEach((lines, i) => {
   if (!NPCS[i]) NPCS[i] = [];
   NPCS[i].unshift({ id: i === 0 ? 'guia' : 'guia-' + ERAS[i].id, name: 'El guía', role: 'Filosofía para Seres Humanos', portrait: 'guia', greeter: true,
@@ -17062,6 +17514,8 @@ const SONGS = [
   { bpm: 66, root: 50, scale: [0, 3, 5, 7, 10, 12, 15], prog: [0, 0, 3, 4], pad: 'warm', arp: 'lute', arpPat: [0, 1, 2, 1, 0, 2, 3, 2], lead: 'flute', kit: 'frame', seed: 341 },
   // XXXIII · La casa de los cuidados: calma y esperanza
   { bpm: 62, root: 52, scale: [0, 2, 4, 5, 7, 9, 11], prog: [0, 5, 3, 4], pad: 'warm', arp: 'bell', arpPat: [0, 4, 2, 4, 1, 4, 2, 4], lead: 'flute', kit: 'none', seed: 351 },
+  // XXXIV · El mercado de los sofistas: feria juguetona con clave y tambor
+  { bpm: 112, root: 55, scale: [0, 2, 3, 5, 7, 8, 10], prog: [0, 5, 3, 4], pad: 'warm', arp: 'harpsi', arpPat: [0, 2, 4, 2, 5, 4, 2, 1], lead: 'flute', kit: 'frame', seed: 361 },
 ];
 // volumen de cada capa según el modo
 const MIX = {
@@ -18752,6 +19206,7 @@ const MOTES = [
   { c: 0xffd8e0, up: 0.03, g: 0, i: 1.5, s: 0.1 },
   { c: 0xffc070, up: 0.06, g: 0, i: 1.7, s: 0.1 },
   { c: 0xf0fff8, up: 0.02, g: 0, i: 1.2, s: 0.09 },
+  { c: 0xffe070, up: 0.05, g: 0, i: 1.6, s: 0.1 },
 ];
 let moteAcc = 0;
 function ambientMotes(dt) {
@@ -21717,7 +22172,7 @@ setTimeout(() => Mision.paint(), 700);
 const TL_ROWS = [
   ['Grecia y Roma', ['presocraticos', 'atenas', 'helenismo']], ['Europa', ['medieval', 'renacimiento', 'modernidad', 'xix', 'contemporanea', 'vikingos']],
   ['Mesopotamia, Persia e islam', ['sumer', 'persia', 'islam']], ['India, China y Japón', ['india', 'china', 'japon']], ['África', ['africa']],
-  ['América', ['latinoamerica', 'mexicas', 'incas', 'mapuche']], ['Poesía y ciencia', ['poetas', 'ciencia']], ['Fe y duda', ['ateos', 'teistas']], ['Pensadoras y justicia', ['pensadoras', 'justicia']], ['Místicos', ['misticos']], ['Mente y Tierra', ['mente', 'tierra']], ['Números', ['numeros']], ['Arte y pueblos', ['belleza', 'pueblos']], ['Cuidados', ['cuidado']],
+  ['América', ['latinoamerica', 'mexicas', 'incas', 'mapuche']], ['Poesía y ciencia', ['poetas', 'ciencia']], ['Fe y duda', ['ateos', 'teistas']], ['Pensadoras y justicia', ['pensadoras', 'justicia']], ['Místicos', ['misticos']], ['Mente y Tierra', ['mente', 'tierra']], ['Números', ['numeros']], ['Arte y pueblos', ['belleza', 'pueblos']], ['Cuidados', ['cuidado']], ['Falacias', ['falacias']],
 ];
 const Tiempo = {
   list: null, sel: null,
@@ -22339,11 +22794,11 @@ const Debate = {
     this.ally = true; Duel.aidsUsed = true; achieve('aliado'); Audio.pickup();
     const btns = $('#d-answers').children; const wrong = Duel.opts.map((o, i) => (o.ok || btns[i].disabled ? -1 : i)).filter((i) => i >= 0); shuffle(wrong);
     wrong.slice(0, Math.min(2, wrong.length - 1)).forEach((i) => { btns[i].classList.add('gone'); btns[i].disabled = true; });
-    const d = SAGE_BY_ID()[a]; const q = this.quote(a);
+    const d = SAGE_BY_ID()[a].d; const q = this.quote(a);
     const el = $('#d-say'); el.innerHTML = '<span class="d-ally"></span>'; el.firstChild.textContent = `${d.short} acude en tu ayuda: «${q}»`;
     Voice.say(q, { data: { id: a } }); toast(`⚭ ${d.short} acude en tu ayuda`); this.paintAids();
   },
-  paintAids() { const b = $('#aid-ally'); if (!b) return; const s = Duel.sage; const a = s && this.allyFor(s); b.disabled = !a || this.ally || Duel.answered || !!this.dil; b.title = a ? 'Llama a ' + SAGE_BY_ID()[a].short : 'Vence antes a otros pensadores'; },
+  paintAids() { const b = $('#aid-ally'); if (!b) return; const s = Duel.sage; const a = s && this.allyFor(s); b.disabled = !a || this.ally || Duel.answered || !!this.dil; b.title = a ? 'Llama a ' + SAGE_BY_ID()[a].d.short : 'Vence antes a otros pensadores'; },
   // ---------- golpe crítico
   crit() {
     const el = $('#d-crit'); el.classList.remove('on'); void el.offsetWidth; el.classList.add('on'); this.punch = 1; achieve('critico');
@@ -22453,6 +22908,117 @@ const Debate = {
   const upd0 = Duel.update.bind(Duel);
   Duel.update = function (dt) { Debate.punch = Math.max(0, Debate.punch - dt * 1.8); upd0(dt); };
 }
+
+// ---- src/06v-falacias.js ----
+// ============================================================================
+//  CAZADOR DE FALACIAS Y BESTIARIO
+//  · En el mercado de los sofistas, cada puesto esconde un pregón tramposo:
+//    acércate, «Analizar», y elige qué falacia es. Si aciertas, la cazas.
+//  · El bestiario (Inicio → Falacias) explica las 26 falacias con ejemplos y
+//    cómo responder a cada una, y tiene un entrenamiento con todos los ejemplos,
+//    para aprender en cualquier momento, también fuera del juego.
+// ============================================================================
+const FAL_KEY = 'odisea-razon.falacias', FAL_BEST_KEY = 'odisea-razon.falacias-racha';
+ACH.push(
+  { id: 'cazador1', i: '🔎', n: 'Primera falacia', d: 'Caza tu primera falacia en el mercado de los sofistas.' },
+  { id: 'cazador10', i: '🕵', n: 'Cazador de falacias', d: 'Caza 10 falacias distintas.' },
+  { id: 'cazadortodas', i: '🏛', n: 'Bestiario completo', d: 'Caza todas las falacias del bestiario.' },
+  { id: 'entrenado', i: '🎯', n: 'Mente clara', d: 'Acierta 10 falacias seguidas en el entrenamiento.' },
+);
+const Falacias = {
+  caught: new Set(store.get(FAL_KEY, []) || []),
+  // tres opciones falsas, preferentemente del mismo grupo (para que pensar valga la pena)
+  options(f) {
+    const same = shuffle(FALACIAS.filter((x) => x.id !== f.id && x.g === f.g)); const other = shuffle(FALACIAS.filter((x) => x.id !== f.id && x.g !== f.g));
+    return shuffle([f, ...[...same.slice(0, 2), ...other].slice(0, 3)]);
+  },
+  catch(f) {
+    if (this.caught.has(f.id)) return false; this.caught.add(f.id); store.set(FAL_KEY, [...this.caught]);
+    achieve('cazador1'); if (this.caught.size >= 10) achieve('cazador10'); if (this.caught.size >= FALACIAS.length) achieve('cazadortodas');
+    return true;
+  },
+  explain(f) { return `${f.d} Cómo responder: ${f.r}`; },
+  // ---------- los puestos del mercado
+  build(W) {
+    if (!W.falStalls || !W.falStalls.length) return;
+    const order = shuffle([...FALACIAS]); let n = 0;
+    const next = () => { const f = order[n++ % order.length]; return { f, ej: pick(f.ej) }; };
+    W.spots = W.spots || [];
+    W.falStalls.forEach((p, i) => {
+      const st = { ...next(), done: false };
+      const sign = new THREE.Sprite(new THREE.SpriteMaterial({ transparent: true, depthWrite: false, toneMapped: false }));
+      sign.scale.set(2.4, 0.6, 1); sign.position.set(p.sx, 3.9, p.sz); W.group.add(sign);
+      const paint = () => { sign.material.map = labelTexture(st.done ? '✓ ' + st.f.n : '❓ Pregón tramposo', st.done ? 'Falacia cazada' : 'Analiza su argumento', st.done ? '#b8f0c8' : '#ffe3a3'); sign.material.needsUpdate = true; };
+      paint();
+      const ask = () => {
+        const ops = this.options(st.f).map((o) => [o.n, () => this.answer(st, o, paint)]);
+        XP.open('🔎 Cazador de falacias · puesto ' + (i + 1), '«' + st.ej + '»', 'El pregonero grita esto para convencerte. ¿Qué falacia esconde su argumento?', ops.map(([a, b]) => [a, b, 'ghost']));
+        Voice.say(st.ej);
+      };
+      W.spots.push({ x: p.x, z: p.z, r: 2.2, verb: 'Analizar', get label() { return st.done ? 'Ya cazaste esta falacia' : 'El pregón del puesto ' + (i + 1); }, on: () => !st.done && !W.zoneIn, act: ask });
+    });
+    const ex = (W.falStalls || []).length; if (ex) setTimeout(() => { if (world === W) toast(`🔎 Hay ${ex} puestos con pregones tramposos. Acércate y caza sus falacias.`); }, 4000);
+  },
+  answer(st, o, paint) {
+    const ok = o.id === st.f.id; const f = st.f;
+    if (ok) {
+      const nueva = this.catch(f); st.done = true; paint(); const pts = nueva ? 150 : 80; addScore(pts); updateHud();
+      Audio.correct(); buzz([20, 30]); popup(`+${pts}<small>falacia cazada</small>`, 'up');
+      setTimeout(() => XP.open('✓ ¡Falacia cazada!' + (nueva ? ' · nueva en tu bestiario' : ''), f.n + ' (' + f.l + ')', this.explain(f), [['Seguir', null], ['Abrir el bestiario', () => this.open()]]), 60);
+    } else {
+      Audio.wrong && Audio.wrong(); buzz([50, 40]);
+      const was = st.f; st.ej = pick(was.ej.filter((e) => e !== st.ej)) || st.ej;
+      setTimeout(() => XP.open('✗ No era esa', `Era: ${was.n}`, `«${o.n}» no encaja aquí. ${this.explain(was)} El pregonero tiene otro ejemplo: vuelve a analizarlo.`, [['Seguir', null]]), 60);
+    }
+  },
+  // ---------- el bestiario
+  open() { Panel.open('fa'); this.tab = this.tab || 'lista'; this.paint(); },
+  close() { Panel.close('fa'); },
+  paint() {
+    $('#fa-count').textContent = `${this.caught.size} de ${FALACIAS.length} falacias cazadas en el mercado de los sofistas`;
+    document.querySelectorAll('#fa-tabs button').forEach((b) => b.classList.toggle('on', b.dataset.t === this.tab));
+    $('#fa-items').hidden = this.tab !== 'lista'; $('#fa-train').hidden = this.tab !== 'entrena';
+    if (this.tab === 'lista') this.paintList(); else this.paintTrain();
+  },
+  paintList() {
+    const box = $('#fa-items'); box.innerHTML = '';
+    const groups = [...new Set(FALACIAS.map((f) => f.g))];
+    for (const g of groups) {
+      const h = document.createElement('h4'); h.className = 'fa-gh'; h.textContent = g; box.appendChild(h);
+      for (const f of FALACIAS.filter((x) => x.g === g)) {
+        const on = this.caught.has(f.id); const it = document.createElement('details'); it.className = 'fa-it' + (on ? ' got' : '');
+        it.innerHTML = '<summary><b></b><i></i><span class="fa-ok"></span></summary><p class="fa-d"></p><p class="fa-ex"></p><p class="fa-r"></p>';
+        it.querySelector('b').textContent = f.n; it.querySelector('i').textContent = f.l; it.querySelector('.fa-ok').textContent = on ? '✓ cazada' : '';
+        it.querySelector('.fa-d').textContent = f.d; it.querySelector('.fa-ex').textContent = '«' + f.ej[0] + '»'; it.querySelector('.fa-r').textContent = 'Cómo responder: ' + f.r;
+        box.appendChild(it);
+      }
+    }
+  },
+  // ---------- entrenamiento: ejemplos al azar de todas las falacias
+  paintTrain() {
+    const t = this.tr || (this.tr = { streak: 0 }); const box = $('#fa-train'); const best = store.get(FAL_BEST_KEY, 0) || 0;
+    if (!t.cur || t.answered === true && t.go) { const f = pick(FALACIAS); t.cur = { f, ej: pick(f.ej), ops: this.options(f) }; t.answered = false; t.go = false; }
+    const c = t.cur;
+    box.innerHTML = '<p class="fa-stk"></p><blockquote class="fa-q"></blockquote><p class="qd-note">¿Qué falacia es?</p><div class="fa-ops"></div><div class="fa-fb" hidden></div>';
+    box.querySelector('.fa-stk').textContent = `Racha: ${t.streak} · Mejor racha: ${best}`;
+    box.querySelector('.fa-q').textContent = '«' + c.ej + '»';
+    const ops = box.querySelector('.fa-ops');
+    c.ops.forEach((o) => { const b = document.createElement('button'); b.className = 'btn ghost'; b.textContent = o.n; b.addEventListener('click', () => this.trainAnswer(o, b)); ops.appendChild(b); });
+  },
+  trainAnswer(o, btn) {
+    const t = this.tr; if (t.answered) return; t.answered = true; const c = t.cur; const ok = o.id === c.f.id;
+    const box = $('#fa-train'); box.querySelectorAll('.fa-ops button').forEach((b) => { b.disabled = true; if (b.textContent === c.f.n) b.classList.add('right'); });
+    if (ok) { t.streak++; Audio.correct(); const best = store.get(FAL_BEST_KEY, 0) || 0; if (t.streak > best) store.set(FAL_BEST_KEY, t.streak); if (t.streak >= 10) achieve('entrenado'); }
+    else { btn.classList.add('wrong'); t.streak = 0; Audio.wrong && Audio.wrong(); }
+    const fb = box.querySelector('.fa-fb'); fb.hidden = false; fb.innerHTML = '<b></b><p></p><button class="btn primary">Siguiente</button>';
+    fb.querySelector('b').textContent = (ok ? '✓ Correcto: ' : '✗ Era: ') + c.f.n + ' (' + c.f.l + ')'; fb.querySelector('p').textContent = this.explain(c.f);
+    fb.querySelector('button').addEventListener('click', () => { Audio.click(); t.go = true; this.paintTrain(); });
+    box.querySelector('.fa-stk').textContent = `Racha: ${t.streak} · Mejor racha: ${store.get(FAL_BEST_KEY, 0) || 0}`;
+  },
+};
+on('#b-falacias', () => { Audio.click(); Falacias.open(); });
+on('#fa-x', () => Falacias.close());
+document.querySelectorAll('#fa-tabs button').forEach((b) => b.addEventListener('click', () => { Audio.click(); Falacias.tab = b.dataset.t; Falacias.paint(); }));
 
 </script>
 </body>
