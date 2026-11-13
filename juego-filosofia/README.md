@@ -13,7 +13,7 @@ ratón y `E` para interactuar.
 ## Qué puedes hacer
 
 - **37 épocas y 231 pensadoras y pensadores**, de Sumer a hoy, con lecciones narradas e ilustradas,
-  frases célebres, libros, lugares y debates. Vídeo de lo último: `marketing/novedades.mp4`.
+  frases célebres, libros, lugares y debates. Vídeo de lo último: [novedades.mp4](https://github.com/filosofiaparasereshumanos-ux/sofos-gpu/releases/download/videos/novedades.mp4) (todos los vídeos: [Release «videos»](https://github.com/filosofiaparasereshumanos-ux/sofos-gpu/releases/tag/videos)).
 
 - **El mercado de los sofistas** (época XXXIV): Gorgias, Trasímaco, Eutidemo y Dionisodoro, Pedro
   Hispano, Barnum, Bernays y Susan Stebbing. Cada puesto esconde un pregón tramposo: hay que
