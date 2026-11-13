@@ -72,9 +72,11 @@ const GUIDE_LINES = [
     'Galeno, Vesalio, Semmelweis, Florence Nightingale, Pasteur, Ramón y Cajal y Albert Schweitzer te esperan. Y recuerda su primera lección: lávate las manos.'],
   ['Bienvenido al mercado de los sofistas. Aquí cada vendedor esconde una trampa: una falacia, un argumento que parece bueno y no lo es.',
     'Gorgias, Trasímaco, los hermanos Eutidemo y Dionisodoro, Pedro Hispano, Barnum y Bernays te esperan, y al final Susan Stebbing. Acércate a los puestos del mercado y caza las falacias de cada pregón.'],
+  ['Bienvenido al observatorio del cosmos. Esta noche el cielo está despejado: mira la Vía Láctea sobre tu cabeza.',
+    'Kepler, Caroline Herschel, Henrietta Leavitt, Cecilia Payne, Chandrasekhar y Vera Rubin te esperan, y al final Stephen Hawking. Entra en el planetario para caminar entre los planetas, y usa el gran telescopio para abrir el atlas del cosmos.'],
 ];
 // dónde espera en cada época (junto al punto de llegada, en z = 31)
-const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5], 17: [2.8, 24.5], 18: [2.8, 24.5], 19: [2.8, 24.5], 20: [2.8, 24.5], 21: [2.8, 24.5], 22: [2.8, 26.5], 23: [2.8, 26.5], 24: [2.8, 26.5], 25: [2.8, 26.5], 26: [2.8, 26.5], 27: [2.8, 26.5], 28: [2.8, 26.5], 29: [2.8, 26.5], 30: [2.8, 26.5], 31: [2.8, 26.5], 32: [2.8, 26.5], 33: [2.8, 26.5] };
+const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5], 17: [2.8, 24.5], 18: [2.8, 24.5], 19: [2.8, 24.5], 20: [2.8, 24.5], 21: [2.8, 24.5], 22: [2.8, 26.5], 23: [2.8, 26.5], 24: [2.8, 26.5], 25: [2.8, 26.5], 26: [2.8, 26.5], 27: [2.8, 26.5], 28: [2.8, 26.5], 29: [2.8, 26.5], 30: [2.8, 26.5], 31: [2.8, 26.5], 32: [2.8, 26.5], 33: [2.8, 26.5], 34: [2.8, 26.5] };
 GUIDE_LINES.forEach((lines, i) => {
   if (!NPCS[i]) NPCS[i] = [];
   NPCS[i].unshift({ id: i === 0 ? 'guia' : 'guia-' + ERAS[i].id, name: 'El guía', role: 'Filosofía para Seres Humanos', portrait: 'guia', greeter: true,

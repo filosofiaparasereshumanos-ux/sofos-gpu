@@ -919,6 +919,18 @@ body.touch .gm.boss { width: 30px; height: 30px; }
 .fa-ops .btn.right { border-color: var(--right); background: rgba(92,196,154,0.25); } .fa-ops .btn.wrong { border-color: var(--wrong); background: rgba(214,92,92,0.25); }
 .fa-fb { border-top: 1px dashed var(--line); padding-top: 10px; margin-top: 6px; } .fa-fb p { line-height: 1.45; text-align: left; }
 @media (max-width: 520px) { .fa-ops { grid-template-columns: 1fr; } }
+/* ---------- atlas del cosmos ---------- */
+.cs-card { width: min(700px, 100%); } #cs-tabs { display: flex; justify-content: center; gap: 6px; margin: 8px 0 12px; flex-wrap: wrap; }
+#app #cs-cv, #cs-cv { position: static; width: 100% !important; height: 220px !important; border-radius: 12px; border: 1px solid rgba(143,184,255,0.35); display: block; background: #04060f; }
+.cs-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 8px 0; } .cs-nav span { font-family: var(--display); letter-spacing: 0.12em; color: #9ab8ff; }
+.cs-name { font-family: var(--display); font-size: 1.3rem; letter-spacing: 0.06em; color: #cfe0ff; margin: 6px 0 2px; text-align: center; }
+.cs-meta { text-align: center; color: #9ab8ff; font-size: 0.9rem; margin: 0 0 8px; }
+.cs-img, .cs-pimg { height: 180px; border-radius: 10px; background: #04060f center/cover no-repeat; margin: 8px 0; border: 1px solid rgba(143,184,255,0.25); }
+.cs-desc { line-height: 1.5; } .cs-objs { padding-left: 18px; line-height: 1.45; } .cs-objs li { margin: 6px 0; overflow: hidden; } .cs-th { float: left; width: 84px; height: 48px; margin: 2px 10px 4px 0; border-radius: 6px; background: center/cover no-repeat; border: 1px solid rgba(143,184,255,0.3); } .cs-objs b { color: #cfe0ff; }
+.cs-data { font-size: 0.92rem; color: #cfe0ff; line-height: 1.5; } .cs-facts { padding-left: 18px; line-height: 1.45; }
+.cs-weight { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 6px 0; } .cs-weight input { width: 90px; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); background: rgba(0,0,0,0.3); color: inherit; font: inherit; }
+.cs-cal { border-left: 3px solid #8fb8ff; padding: 6px 12px; margin: 10px 0; background: rgba(143,184,255,0.06); border-radius: 0 10px 10px 0; }
+.cs-cal .cs-date { display: block; font-family: var(--display); letter-spacing: 0.08em; color: #9ab8ff; font-size: 0.85rem; } .cs-cal b { color: #fff3d8; } .cs-cal p { margin: 4px 0; line-height: 1.4; } .cs-cal small { color: rgba(243,230,196,0.6); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
@@ -994,6 +1006,7 @@ body.touch .gm.boss { width: 30px; height: 30px; }
         <button class="on-av" id="b-tiempo"><b>⏳</b><span>Línea de tiempo</span><small>¿Quién vivió a la vez?</small></button>
         <button class="on-av" id="b-frases"><b>❝</b><span>Frases célebres</span><small>Tu colección</small></button>
         <button class="on-av" id="b-falacias"><b>🔎</b><span>Falacias</span><small>Bestiario y entrenamiento</small></button>
+        <button class="on-av" id="b-cosmos"><b>🔭</b><span>Cosmos</span><small>Atlas del universo</small></button>
       </div>
       <button class="more-b" id="b-more" aria-expanded="false">Más opciones ▾</button>
       <div class="minis" id="t-more" hidden>
@@ -1217,6 +1230,18 @@ body.touch .gm.boss { width: 30px; height: 30px; }
     <p class="qd-note" id="fa-count" style="text-align:center"></p>
     <div class="seg" id="fa-tabs"><button data-t="lista">Las falacias</button><button data-t="entrena">Entrenar</button></div>
     <div id="fa-items"></div><div id="fa-train" hidden></div>
+  </div></div>
+  <div id="cs" class="nb" hidden><div class="nb-card cs-card" role="dialog" aria-label="Atlas del cosmos">
+    <button class="ls-x pn-x" id="cs-x" aria-label="Cerrar">✕</button>
+    <div class="eyebrow" style="text-align:center">Del sistema solar al borde del universo</div><h3 class="av-h">Atlas del cosmos</h3>
+    <div class="seg" id="cs-tabs"><button data-t="escalas">Escalas</button><button data-t="planetas">Planetas</button><button data-t="calendario">Calendario cósmico</button></div>
+    <div id="cs-escalas">
+      <canvas id="cs-cv"></canvas>
+      <div class="cs-nav"><button class="btn ghost" id="cs-in">◀ Acercar</button><span id="cs-lvl"></span><button class="btn ghost" id="cs-out">Alejar ▶</button></div>
+      <h4 id="cs-name" class="cs-name"></h4><p class="cs-meta"><span id="cs-size"></span> · <span id="cs-light"></span></p>
+      <div class="cs-img" id="cs-img"></div><p id="cs-desc" class="cs-desc"></p><ul id="cs-objs" class="cs-objs"></ul>
+    </div>
+    <div id="cs-planetas" hidden></div><div id="cs-calendario" hidden></div>
   </div></div>
   <div id="tl" class="nb" hidden><div class="nb-card tl-card" role="dialog" aria-label="Línea de tiempo">
     <button class="ls-x pn-x" id="tl-x" aria-label="Cerrar">✕</button>

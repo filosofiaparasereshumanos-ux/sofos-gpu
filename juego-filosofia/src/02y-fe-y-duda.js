@@ -1132,3 +1132,105 @@
     );
   } catch (e) { /* herramientas sin debates */ }
 }
+
+// ============================================================================
+//  XXXV · EL OBSERVATORIO DEL COSMOS: lugares, ciudadanos, encargos, anécdotas y libros
+// ============================================================================
+{
+  const PP = [[-17, 30], [17, 24], [17, 6], [-17, -2], [6, -40]];
+  const BB = [[16, -12], [-16, 16]];
+  const poi = (i, id, name, text, fact, q) => ({ id, at: PP[i], name, text, fact, q });
+  const book = (b, i) => ({ ...b, at: BB[i] });
+  POIS.push([
+    poi(0, 'monte-wilson', 'El telescopio de Monte Wilson', 'En lo alto del Monte Wilson, en California, estaba el telescopio Hooker, con un espejo de dos metros y medio, el mayor del mundo en su época. La noche del 6 de octubre de 1923, Edwin Hubble fotografió la nebulosa de Andrómeda y encontró en ella una estrella cefeida. Usando la regla de Henrietta Leavitt calculó su distancia: estaba muchísimo más lejos que cualquier estrella de la Vía Láctea. Andrómeda era otra galaxia. De golpe, el universo se volvió inmenso.',
+      'En la placa de vidrio, Hubble tachó la letra N de «nova» y escribió con entusiasmo: «VAR!», de estrella variable. En 1929 mostró además que las galaxias se alejan unas de otras: el universo se expande.',
+      { q: '¿Qué demostró Hubble en 1923 con una cefeida de Andrómeda?', a: ['Que Andrómeda es otra galaxia', 'Que Andrómeda es un planeta', 'Que el Sol gira alrededor de la Tierra', 'Nada'], e: 'Usó la regla de Henrietta Leavitt.' }),
+    poi(1, 'atomo-primitivo', 'El átomo primitivo', 'En 1927, el sacerdote y físico belga Georges Lemaître propuso que el universo se expande, y en 1931 imaginó que todo empezó en un «átomo primitivo» que se fragmentó. Así nació la teoría que hoy llamamos del Big Bang. Hoy sabemos que hace unos 13.800 millones de años el universo era muy caliente y denso, y desde entonces se expande y se enfría.',
+      'El nombre «Big Bang», «gran explosión», lo inventó en 1949 el astrónomo Fred Hoyle por la radio, medio en broma, porque no creía en esa teoría. En 1965, Penzias y Wilson encontraron el eco del Big Bang: al principio pensaron que el ruido de su antena venía de excrementos de paloma.',
+      { q: '¿Quién propuso que el universo empezó en un «átomo primitivo»?', a: ['Georges Lemaître', 'Fred Hoyle', 'Galileo', 'Aristóteles'], e: 'El origen de la teoría del Big Bang.' }),
+    poi(2, 'pulsar-cambridge', 'El radiotelescopio de Cambridge', 'En 1967, Jocelyn Bell, una estudiante de doctorado, revisaba a mano metros y metros de papel con las señales de un radiotelescopio hecho de postes y cables en un campo de Cambridge. Encontró una señal extraña que se repetía con una regularidad perfecta, cada 1,33 segundos. Medio en broma la llamaron LGM-1: «hombrecitos verdes». Era un púlsar: una estrella de neutrones que gira muy rápido y lanza haces de radio como un faro.',
+      'El premio Nobel de 1974 por los púlsares se lo dieron a su director, no a ella. En 2018 Jocelyn Bell Burnell recibió un gran premio de tres millones de dólares y lo donó entero para becas de estudiantes de física con menos oportunidades.',
+      { q: '¿Qué es un púlsar?', a: ['Una estrella de neutrones que gira y emite haces como un faro', 'Un mensaje extraterrestre', 'Un planeta con anillos', 'Un cometa'], e: 'Lo descubrió Jocelyn Bell en 1967.' }),
+    poi(3, 'eht-m87', 'La primera foto de un agujero negro', 'Para fotografiar un agujero negro hace falta un telescopio del tamaño de la Tierra. Por eso el proyecto Event Horizon Telescope conectó radiotelescopios de varios continentes, desde Hawái hasta Chile y el Polo Sur. En 2019 publicaron la primera imagen de un agujero negro: un anillo de luz anaranjada alrededor de una sombra oscura, en el centro de la galaxia M87, a 55 millones de años luz. Su masa es de unos 6.500 millones de soles.',
+      'En 2022 el mismo equipo publicó la imagen del agujero negro del centro de nuestra galaxia, Sagitario A*, de unos 4 millones de veces la masa del Sol.',
+      { q: '¿Por qué hizo falta conectar telescopios de todo el mundo para fotografiar un agujero negro?', a: ['Para formar un telescopio virtual del tamaño de la Tierra', 'Para hacer una fiesta', 'Porque se rompió uno', 'No hizo falta'], e: 'El Event Horizon Telescope.' }),
+    poi(4, 'jwst', 'El telescopio James Webb', 'El 25 de diciembre de 2021 despegó el telescopio espacial James Webb. Su espejo de 6,5 metros está formado por 18 hexágonos de berilio cubiertos de oro, y tuvo que desplegarse en el espacio como un origami. Tiene un parasol del tamaño de una pista de tenis y trabaja a un millón y medio de kilómetros de la Tierra. Mira en luz infrarroja, y así puede ver galaxias que se formaron poco después del Big Bang y estudiar las atmósferas de planetas de otras estrellas.',
+      'Su parasol mantiene el telescopio a unos −230 °C, porque el calor brillaría en infrarrojo y le haría «ver» su propio calor en lugar de las estrellas.',
+      { q: '¿En qué tipo de luz mira el telescopio James Webb?', a: ['En luz infrarroja', 'Solo en luz verde', 'En luz de linterna', 'No mira'], e: 'Así ve las galaxias más lejanas.' }),
+  ]);
+  NPCS.push([
+    wnpc(0, 'astronauta', 'Ana', 'astronauta', sk(0xf0f0f0, 0x3a5a9a, 0xe0c0a0, 0x2a1a10, { hat: 'none', acc: 'none' }), [
+      'En la Estación Espacial Internacional, a unos 400 km de altura, das una vuelta a la Tierra cada noventa minutos. ¡Ves dieciséis amaneceres al día!',
+      'En el espacio el agua forma bolas que flotan, y para dormir te atas en un saco a la pared. Sin gravedad, los músculos y los huesos se debilitan: hay que hacer ejercicio dos horas al día.',
+      'Desde arriba no se ven fronteras. Solo un planeta azul y frágil, con una atmósfera tan fina como la piel de una manzana.',
+    ], true),
+    wnpc(1, 'radioastronoma', 'Amara', 'radioastrónoma', sk(0x8a5a2a, 0x2a2a2a, 0x6a4a3a, 0x1a1a1a, { hat: 'none', acc: 'book' }), [
+      'Los radiotelescopios escuchan el cielo en ondas de radio. Así descubrimos los púlsares, el eco del Big Bang y el gas frío donde nacen las estrellas.',
+      'El observatorio ALMA está en el desierto de Atacama, en Chile, a 5.000 metros de altura: allí el aire es tan seco y limpio que se ve el universo mejor que en casi ningún sitio.',
+      'El radiotelescopio más grande de una sola antena está en China: FAST, de 500 metros de diámetro, construido en un valle entre montañas.',
+    ], true),
+    wnpc(2, 'cometero', 'Tomás', 'astrónomo aficionado', sk(0x4a3a2a, 0x8a2a2a, 0xe8c8a8, 0x9a9a9a, { beard: 0x9a9a9a, hat: 'cap', acc: 'lens' }), [
+      'Los aficionados como yo descubrimos cometas, supernovas y asteroides. ¡El cielo es tan grande que cada par de ojos cuenta!',
+      'Las estrellas fugaces no son estrellas: son granos de polvo de cometa que arden al entrar en la atmósfera. Las Perseidas, en agosto, vienen del cometa Swift-Tuttle.',
+      'El cometa Halley vuelve cada 76 años. Yo lo vi en 1986. Volverá en 2061: ¿lo verás tú?',
+    ]),
+  ]);
+  Object.assign(QUESTS, {
+    kepler: { text: 'Entra en el planetario y visita Marte, el planeta que me enseñó las elipses. Luego dime qué forma tienen las órbitas.', needs: { pois: [], npcs: [] },
+      riddle: { q: '¿Qué forma tienen las órbitas de los planetas?', a: ['Elipses', 'Círculos', 'Triángulos', 'Rectas'] } },
+    cherschel: { text: 'Escucha a Tomás, el astrónomo aficionado. Luego dime cada cuántos años vuelve el cometa Halley.', needs: { pois: [], npcs: ['cometero'] },
+      riddle: { q: '¿Cada cuántos años vuelve el cometa Halley?', a: ['Unos 76', 'Cada año', 'Cada mil años', 'Nunca'] } },
+    leavitt: { text: 'Visita el telescopio de Monte Wilson. Luego dime qué galaxia midió Hubble con mi regla.', needs: { pois: ['monte-wilson'], npcs: [] },
+      riddle: { q: '¿Qué galaxia demostró Hubble que estaba fuera de la Vía Láctea?', a: ['Andrómeda', 'La Luna', 'El Sol', 'Marte'] } },
+    payne: { text: 'Visita el átomo primitivo y escucha a Amara, la radioastrónoma. Luego dime de qué están hechas sobre todo las estrellas.', needs: { pois: ['atomo-primitivo'], npcs: ['radioastronoma'] },
+      riddle: { q: '¿De qué están hechas sobre todo las estrellas?', a: ['De hidrógeno y helio', 'De hierro', 'De agua', 'De oro'] } },
+    chandrasekhar: { text: 'Visita el radiotelescopio de Cambridge. Luego dime qué es un púlsar.', needs: { pois: ['pulsar-cambridge'], npcs: [] },
+      riddle: { q: '¿Qué es un púlsar?', a: ['Una estrella de neutrones que gira como un faro', 'Un planeta', 'Un cometa', 'Una nube'] } },
+    rubin: { text: 'Visita el telescopio James Webb y escucha a Ana, la astronauta. Luego dime cuánta materia oscura hay respecto a la normal.', needs: { pois: ['jwst'], npcs: ['astronauta'] },
+      riddle: { q: '¿Cuánta materia oscura hay respecto a la materia normal?', a: ['Unas cinco veces más', 'La mitad', 'Nada', 'Igual'] } },
+    hawking: { text: 'Visita la primera foto de un agujero negro y escucha a Amara y a Tomás. Luego dime qué emiten los agujeros negros.', needs: { pois: ['eht-m87'], npcs: ['radioastronoma', 'cometero'] },
+      riddle: { q: '¿Qué emiten los agujeros negros, según Hawking?', a: ['Una débil radiación', 'Luz verde', 'Música', 'Nada en absoluto'] } },
+  });
+  Object.assign(ANECDOTES, {
+    kepler: ['Para ganar dinero hacía horóscopos, aunque decía que la astrología era la hija tonta de la astronomía, que alimenta a su madre sabia.', 'Su cuento «Somnium», sobre un viaje a la Luna, es considerado una de las primeras obras de ciencia ficción.'],
+    cherschel: ['Para ayudar a William a pulir un espejo durante dieciséis horas seguidas, sin que él soltara las manos, le daba de comer en la boca.', 'Uno de sus cometas, el 35P/Herschel-Rigollet, volvió a verse en 1939, casi siglo y medio después de que ella lo descubriera.'],
+    leavitt: ['Era tan meticulosa que se dice que tardaba días en estar segura de una sola estrella variable antes de anotarla.', 'Un cráter de la Luna y un asteroide llevan su nombre.'],
+    payne: ['Cuando era niña vio un meteoro, y decidió que quería ser astrónoma. Su madre, al principio, se preocupó.', 'Se casó con el astrónomo ruso Sergei Gaposchkin, y juntos estudiaron más de un millón de observaciones de estrellas variables.'],
+    chandrasekhar: ['Durante años condujo más de 150 kilómetros cada semana para dar clase a solo dos estudiantes. Los dos ganaron después el Nobel de Física.', 'Le encantaban Shakespeare y Beethoven, y escribió un libro sobre la belleza en el arte y en la ciencia.'],
+    rubin: ['En Monte Palomar no había baño para mujeres. Vera dibujó una falda de papel y la pegó en el muñequito de la puerta del baño de hombres.', 'Tuvo cuatro hijos, y los cuatro se dedicaron a la ciencia.'],
+    hawking: ['En 2009 organizó una fiesta para viajeros del tiempo, y envió las invitaciones solo después de la fiesta. No vino nadie: lo tomó como una prueba de que no se puede viajar al pasado.', 'Murió el 14 de marzo de 2018, el día del nacimiento de Einstein. Sus cenizas descansan en la abadía de Westminster, entre Newton y Darwin.'],
+  });
+  BOOKS.push([
+    book({ id: 'armonia-mundo', author: 'kepler', by: 'Johannes Kepler', title: 'La armonía del mundo', year: '1619', kind: 'tratado',
+      parts: [
+        { t: 'La música de las esferas', x: 'Desde Pitágoras se decía que los planetas producen una música. Kepler la buscó con matemáticas, comparando las velocidades de los planetas con los intervalos musicales.' },
+        { t: 'Cada planeta canta', x: 'Como cada planeta va más rápido cerca del Sol y más lento lejos, Kepler le asignó una pequeña melodía. La Tierra, decía, canta mi, fa, mi: miseria y hambre.' },
+        { t: 'La tercera ley', x: 'En este libro aparece su tercera ley: el cuadrado del tiempo que tarda un planeta en dar la vuelta es proporcional al cubo de su distancia al Sol.' },
+        { t: 'Un universo ordenado', x: 'Para Kepler, descubrir las leyes del cielo era como leer los pensamientos con que Dios había creado el mundo, escritos en lenguaje matemático.' },
+      ],
+      quote: 'La geometría existía antes de la creación.',
+      q: { q: '¿Qué ley de Kepler aparece en La armonía del mundo?', a: ['La tercera: relaciona el tiempo de la órbita con la distancia al Sol', 'La ley de la gravedad', 'La ley de la palanca', 'Ninguna'], e: 'Escrita en 1619.' } }, 0),
+    book({ id: 'breve-historia', author: 'hawking', by: 'Stephen Hawking', title: 'Breve historia del tiempo', year: '1988', kind: 'divulgación',
+      parts: [
+        { t: 'Una sola ecuación', x: 'Su editor le advirtió que cada ecuación del libro reduciría las ventas a la mitad. Hawking solo dejó una: E = mc².' },
+        { t: 'El universo se expande', x: 'Las galaxias se alejan unas de otras. Si retrocedemos en el tiempo, todo estuvo junto en un estado muy denso y caliente: el Big Bang.' },
+        { t: 'Agujeros negros no tan negros', x: 'Los agujeros negros atrapan incluso la luz, pero Hawking mostró que emiten una débil radiación y pueden evaporarse muy lentamente.' },
+        { t: 'La gran pregunta', x: 'El libro termina preguntando por qué existe el universo. Si lo descubriéramos, dice Hawking, sería el triunfo definitivo de la razón humana.' },
+      ],
+      quote: 'Recuerda mirar hacia las estrellas y no hacia tus pies.',
+      q: { q: '¿Cuántas ecuaciones dejó Hawking en Breve historia del tiempo?', a: ['Una: E = mc²', 'Mil', 'Ninguna', 'Cien'], e: 'Para que todos pudieran leerlo.' } }, 1),
+  ]);
+  BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });
+  try {
+    VERSUS.push(
+      { id: 'einstein-hawking', a: 'einstein', b: 'hawking', q: '¿Juega Dios a los dados con el universo?', eje: null, va: 0, vb: 0,
+        turns: [
+          ['a', 'La mecánica cuántica es impresionante, pero algo me dice que no es la última palabra. Estoy convencido de que Dios no juega a los dados con el universo.'],
+          ['b', 'Con todo respeto, profesor: los experimentos dicen que el azar cuántico es real. Y en los agujeros negros, Dios no solo juega a los dados: a veces los lanza donde no podemos verlos.'],
+          ['a', 'Un universo gobernado por el azar me parece incompleto. Buscaba leyes que no dejaran nada al capricho.'],
+          ['b', 'Quizás la naturaleza es más extraña de lo que imaginábamos. Pero sigue teniendo leyes, y podemos descubrirlas. Esa es la aventura.'],
+        ],
+        cierre: 'Einstein desconfiaba del azar de la mecánica cuántica. Hawking aceptó el azar e incluso lo llevó a los agujeros negros. La discusión sobre el azar y la información sigue abierta en la física de hoy.' },
+    );
+  } catch (e) { /* herramientas sin debates */ }
+}

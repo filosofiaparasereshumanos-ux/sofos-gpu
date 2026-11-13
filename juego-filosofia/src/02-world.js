@@ -170,6 +170,10 @@ const THEMES = [
     sky: [0x3a5aa8, 0xffb070, 0xe89a6a], sunDir: [-0.7, 0.18, -0.65], sunCol: 0xffc890, sunInt: 2.3, sunDisk: 0xffe0b0,
     hemi: [0xffd8b8, 0x6a4a3a, 0.78], fog: [0xe8b090, 0.0068], exposure: 1.1, stars: false,
     accent: 0xffc030, enemy: { col: 0xb070ff, core: 0x1a0a2a, shell: 'cube' }, lampCol: 0xffc070,
+  },  { // XXXV · El observatorio del cosmos: noche despejada en la montaña, bajo la Vía Láctea
+    sky: [0x02040e, 0x0a1430, 0x1a2a5a], sunDir: [0.3, 0.6, -0.5], sunCol: 0x9ab8ff, sunInt: 0.9, sunDisk: 0xdfe6ff,
+    hemi: [0x8aa8ff, 0x1a1a2a, 0.75], fog: [0x0a1430, 0.006], exposure: 1.25, stars: true, moon: true, noClouds: true,
+    accent: 0x8fb8ff, enemy: { col: 0x8fb8ff, core: 0x06102a, shell: 'octa' }, lampCol: 0xc8d8ff,
   },
 ];
 
@@ -2018,6 +2022,50 @@ const ERA_BUILDERS = [
     for (let k2 = 0; k2 < 14; k2++) { const x = -150 + k2 * 23 + (r() - 0.5) * 8, z = -110 - r() * 40, h = 8 + r() * 14, w = 10 + r() * 8;
       W.group.add(mesh(new THREE.BoxGeometry(w, h, 8), walls, x, h / 2 - 1, z, false, false)); W.group.add(withRot(mesh(new THREE.ConeGeometry(w * 0.75, 5, 4), roofs, x, h + 1.5, z, false, false), 'y', Math.PI / 4)); }
     brazier(W, -4, -34, 0xffc070); brazier(W, 4, -34, 0xffc070);
+  },  // ------------------------------------------------------------------ XXXV · El observatorio del cosmos
+  function (W) {
+    const tiles = texTiles('xxxv', 0x1a2a4a, 0x0e1a30, 8, 0.12); tiles.repeat.set(10, 16); ground(W, tiles, [80, 120], 0.5);
+    const r = mulberry32(261);
+    const white = std(0xeef2f8, { roughness: 0.5 }); const metal = std(0x8a96a8, { metalness: 0.7, roughness: 0.35 }); const brass = std(0xc8a050, { metalness: 0.8, roughness: 0.3 });
+    // constelaciones dibujadas con luz en el suelo
+    for (let i = 0; i < 70; i++) { const x = (r() - 0.5) * 34, z = -42 + r() * 76; if (W._near(x, z, 0.4)) continue; const st = mesh(new THREE.CircleGeometry(0.06 + r() * 0.1, 8), glow(0xdfe8ff, 2.2), x, 0.03, z, false, false); st.rotation.x = -Math.PI / 2; W.group.add(st); }
+    // cúpulas de observatorio a los lados
+    const dome = (x, z, k) => { if (W._near(x, z, 3.2 * k)) return; const g = new THREE.Group(); g.position.set(x, 0, z); g.scale.setScalar(k);
+      g.add(mesh(new THREE.CylinderGeometry(3, 3, 3.2, 24), white, 0, 1.6, 0)); g.add(mesh(new THREE.SphereGeometry(3, 24, 12, 0, TAU, 0, Math.PI / 2), std(0xd8e0ea, { metalness: 0.4, roughness: 0.4 }), 0, 3.2, 0));
+      g.add(withRot(mesh(new THREE.BoxGeometry(1, 0.2, 3.2), std(0x0a1020), 0, 5.2, 1.3, false, false), 'x', -0.6)); g.add(mesh(new THREE.BoxGeometry(1.2, 2.2, 0.1), std(0x2a3448), 0, 1.1, 3.0));
+      g.rotation.y = x > 0 ? -Math.PI / 2 : Math.PI / 2; W.group.add(g); W.colliders.push({ t: 1, x, z, r: 3.1 * k, h: 6 }); };
+    for (const [x, z, k] of [[-15, 28, 0.9], [15, 20, 0.8], [-15, -14, 1], [15, -26, 0.9]]) dome(x, z, k);
+    // el gran telescopio en el centro de la plaza
+    W.telescope = null;
+    if (!W._near(0, 10, 2.6)) { const g = new THREE.Group(); g.position.set(0, 0, 10);
+      g.add(mesh(new THREE.CylinderGeometry(1.2, 1.5, 0.6, 20), metal, 0, 0.3, 0)); g.add(mesh(new THREE.CylinderGeometry(0.3, 0.4, 2.4, 12), metal, 0, 1.7, 0));
+      const tube = new THREE.Group(); tube.position.set(0, 2.9, 0); tube.rotation.x = -0.75; g.add(tube);
+      tube.add(mesh(new THREE.CylinderGeometry(0.55, 0.45, 4.4, 20), white, 0, 1.2, 0)); tube.add(mesh(new THREE.CylinderGeometry(0.6, 0.6, 0.3, 20), brass, 0, 3.3, 0)); tube.add(mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.6, 10), brass, 0, -1.2, 0));
+      W.anim.push((t) => { tube.rotation.y = Math.sin(t * 0.1) * 0.4; });
+      W.group.add(g); W.colliders.push({ t: 1, x: 0, z: 10, r: 1.4, h: 3 }); W.telescope = { x: 0, z: 12.6 }; }
+    // esferas armilares y un pequeño sistema solar de bronce
+    for (const [x, z] of [[-6, 22], [6, -8]]) { if (W._near(x, z, 1)) continue; const g = new THREE.Group(); g.position.set(x, 0, z); g.add(mesh(new THREE.CylinderGeometry(0.15, 0.3, 1.4, 10), brass, 0, 0.7, 0));
+      for (let i = 0; i < 3; i++) { const ring = mesh(new THREE.TorusGeometry(0.8, 0.03, 6, 40), brass, 0, 2.2, 0, false, false); ring.rotation.set(i * 0.9, i * 0.6, 0); g.add(ring); }
+      g.add(mesh(new THREE.SphereGeometry(0.2, 12, 8), glow(0xffd36a, 2), 0, 2.2, 0)); W.anim.push((t) => { g.rotation.y = t * 0.3; }); W.group.add(g); W.colliders.push({ t: 1, x, z, r: 0.5, h: 3 }); }
+    // planetas luminosos flotando sobre la plaza
+    const pc = [0xb0a090, 0xe8c890, 0x4a8ad8, 0xd85a3a, 0xd8a878, 0xe8d0a0, 0x8ad8e8, 0x4a6ad8];
+    pc.forEach((c, i) => { const a = (i / pc.length) * TAU; const pl = mesh(new THREE.SphereGeometry(0.3 + (i === 4 || i === 5 ? 0.35 : 0.1), 16, 12), glow(c, 0.9), Math.cos(a) * 6, 6 + (i % 3), -20 + Math.sin(a) * 6, false, false); W.group.add(pl); W.anim.push((t) => { const b = a + t * (0.12 - i * 0.012); pl.position.set(Math.cos(b) * (4 + i * 0.9), 6 + Math.sin(t + i) * 0.3, -20 + Math.sin(b) * (4 + i * 0.9)); }); });
+    W.group.add(mesh(new THREE.SphereGeometry(1, 20, 14), glow(0xffd36a, 2.4), 0, 6.5, -20, false, false));
+    // gran observatorio al fondo, con la cúpula abierta
+    { const g = new THREE.Group(); g.position.set(0, 0, -60);
+      g.add(mesh(new THREE.BoxGeometry(30, 10, 12), white, 0, 5, 0, false, false));
+      g.add(mesh(new THREE.CylinderGeometry(9, 9, 4, 32), white, 0, 12, 0, false, false));
+      g.add(mesh(new THREE.SphereGeometry(9, 32, 16, 0, TAU, 0, Math.PI / 2), std(0xd8e0ea, { metalness: 0.5, roughness: 0.35 }), 0, 14, 0, false, false));
+      g.add(withRot(mesh(new THREE.BoxGeometry(3, 0.4, 10), std(0x050a18), 0, 21.5, 3.2, false, false), 'x', -0.55));
+      for (let k = -3; k <= 3; k++) g.add(mesh(new THREE.BoxGeometry(1.6, 3, 0.2), glow(0xc8d8ff, 0.6), k * 3.6, 5, 6.05, false, false));
+      W.group.add(g); }
+    // antenas de radio en las montañas lejanas
+    const dishM = farStd(W, 0xc8d0dc, 0.35);
+    for (let k = 0; k < 6; k++) { const x = -90 + k * 36, z = -120 - r() * 20; const g = new THREE.Group(); g.position.set(x, 0, z);
+      g.add(mesh(new THREE.CylinderGeometry(0.8, 1.2, 10, 8), dishM, 0, 5, 0, false, false)); g.add(withRot(mesh(new THREE.SphereGeometry(7, 20, 10, 0, TAU, 0, Math.PI / 3), dishM, 0, 13, 0, false, false), 'x', Math.PI * 0.75)); W.group.add(g); }
+    const mtn = farStd(W, 0x1a2440, 0.3);
+    for (let k = 0; k < 10; k++) { const x = -150 + k * 33 + (r() - 0.5) * 12, z = -150 - r() * 50, h = 14 + r() * 14, w = 45 + r() * 25; const m = mesh(new THREE.SphereGeometry(w, 12, 8, 0, TAU, 0, Math.PI / 2), mtn, x, -4, z, false, false); m.scale.set(1, h / w, 0.6); W.group.add(m); }
+    brazier(W, -4, -34, 0xc8d8ff); brazier(W, 4, -34, 0xc8d8ff);
   },
 ];
 
@@ -2044,7 +2092,7 @@ function buildWorld(idx) {
   const nB = W.group.children.length; ERA_BUILDERS[idx](W); const nE = W.group.children.length;
   addHorizon(W, idx); paintGround(W, idx); paintWalls(W, idx);
   if (G.settings.merge !== false) mergeStatic(W, nB, nE);
-  if (!th.indoor && idx !== 5) addClouds(W, idx);
+  if (!th.indoor && !th.noClouds && idx !== 5) addClouds(W, idx);
   if (idx === 0 || idx === 2) addGrass(W, idx, sp);
   // estaciones de los filósofos
   W.trials = []; W.gates = [];
@@ -2056,6 +2104,7 @@ function buildWorld(idx) {
   if (typeof Agora !== 'undefined') { try { Agora.build(W); } catch (e) { console.warn('ágora', e); } }
   try { Orbes.build(W); } catch (e) { console.warn('orbes', e); }
   if (W.falStalls) try { Falacias.build(W); } catch (e) { console.warn('falacias', e); }
+  if (W.telescope) try { Cosmos.build(W); } catch (e) { console.warn('cosmos', e); }
 
   buildPortal(W);
   // puntos de aparición de enemigos

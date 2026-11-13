@@ -129,7 +129,7 @@ setTimeout(() => Mision.paint(), 700);
 const TL_ROWS = [
   ['Grecia y Roma', ['presocraticos', 'atenas', 'helenismo']], ['Europa', ['medieval', 'renacimiento', 'modernidad', 'xix', 'contemporanea', 'vikingos']],
   ['Mesopotamia, Persia e islam', ['sumer', 'persia', 'islam']], ['India, China y Japón', ['india', 'china', 'japon']], ['África', ['africa']],
-  ['América', ['latinoamerica', 'mexicas', 'incas', 'mapuche']], ['Poesía y ciencia', ['poetas', 'ciencia']], ['Fe y duda', ['ateos', 'teistas']], ['Pensadoras y justicia', ['pensadoras', 'justicia']], ['Místicos', ['misticos']], ['Mente y Tierra', ['mente', 'tierra']], ['Números', ['numeros']], ['Arte y pueblos', ['belleza', 'pueblos']], ['Cuidados', ['cuidado']], ['Falacias', ['falacias']],
+  ['América', ['latinoamerica', 'mexicas', 'incas', 'mapuche']], ['Poesía y ciencia', ['poetas', 'ciencia']], ['Fe y duda', ['ateos', 'teistas']], ['Pensadoras y justicia', ['pensadoras', 'justicia']], ['Místicos', ['misticos']], ['Mente y Tierra', ['mente', 'tierra']], ['Números', ['numeros']], ['Arte y pueblos', ['belleza', 'pueblos']], ['Cuidados', ['cuidado']], ['Falacias', ['falacias']], ['Cosmos', ['cosmos']],
 ];
 const Tiempo = {
   list: null, sel: null,
