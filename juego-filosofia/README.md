@@ -68,6 +68,15 @@ ratón y `E` para interactuar.
   Buda y Luther King; Safo y Platón, Beauvoir y Aristóteles, Camus y Frankl, Al-Ghazali y Averroes…
   El jugador decide quién lo convence y su elección mueve el mapa filosófico.
 
+- **Debate tú** (Debates → «Debate tú»): discute tú con Nietzsche, Sócrates, Kant, Maquiavelo, Descartes o
+  Sartre. En cada ronda eliges entre un argumento sólido, uno flojo y una falacia; el pensador responde a lo
+  que dijiste con su voz, te explica por qué tu argumento fue fuerte o débil y al final juzga tu postura.
+
+- **El Libro de la Razón**: la historia que une las épocas. El Gran Sofista arrancó las páginas del libro de
+  los sabios y las repartió entre los maestros; cada maestro convencido devuelve su página. Capítulos con la
+  primera victoria y con 1, 3 y 6 páginas, y un debate final contra el Gran Sofista, que defiende que nada es
+  verdad. La tarjeta del libro está en la portada y en la pausa.
+
 - **Debates con emoción**: el pensador replica con su voz, cuerda de persuasión, cartas de argumento
   (ejemplo, pregunta socrática, falacia), golpe crítico, aliado, apuesta final, dilemas y revanchas.
 

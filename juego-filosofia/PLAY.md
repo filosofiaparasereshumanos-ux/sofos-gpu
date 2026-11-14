@@ -98,6 +98,7 @@ Marie Curie y muchos más.
 • Mira debatir a Platón con Aristóteles o a Hobbes con Rousseau, con sus voces, y decide quién te convence.
 • Misiones nuevas cada día y rachas con premios para tu avatar.
 • Línea de tiempo: descubre quién vivió a la vez en Grecia, China, la India o América.
+• Debate tú mismo contra Nietzsche, Sócrates o Kant eligiendo tus argumentos, y recupera el Libro de la Razón que robó el Gran Sofista.
 • Mira debatir a dos pensadores sobre Dios, el amor, la amistad, la muerte o el poder (Nietzsche contra Kant, Safo contra Platón, Camus contra Frankl…) y decide quién te convence.
 • Batallas épicas contra el maestro de cada época, viaje en el tiempo entre épocas, día y noche con lluvia, nieve o viento, pensadores que pasean y un evento nuevo cada semana.
 • Torneos de trivia en línea: abre una mesa de 2, 4 u 8 asientos, invita a los viajeros de tu época o a tus amigos por WhatsApp, y compitan en cuartos, semifinal y final.
