@@ -21,3 +21,7 @@ No hay recuperación de contraseña (no se pide correo). Si alguien la olvida, s
 
 ## Ágora: los votos de la pregunta del día
 Para que los votos de «la pregunta del día» se guarden durante el día y aparezcan las siluetas de quienes pasaron antes, pega una vez `tools/cuentas3.sql` en **SQL Editor → Run**. Crea la tabla `odisea_agora` y las funciones `odisea_agora_ver` y `odisea_agora_votar`. Sin este paso el ágora funciona igual, pero solo cuenta a los viajeros conectados en ese momento. Los votos de más de 3 días se borran solos.
+
+## Estadísticas anónimas (opcional)
+
+Para ver qué épocas cuestan más, pega una vez `tools/cuentas4.sql` en **SQL Editor → Run**. Crea la tabla `odisea_metricas` y las funciones `odisea_metricas_sumar` y `odisea_metricas_ver`. El juego envía cada minuto contadores por día, evento y época (entradas, debates ganados, derrotas, aciertos, fallos, guía inicial terminada o saltada, torneos), sin ningún identificador del jugador. Los resultados se ven en `estadisticas.html` (por ejemplo, https://filosofiaparasereshumanos-ux.github.io/sofos-gpu/juego-filosofia/estadisticas.html): la columna «Atasco» indica el porcentaje de debates perdidos en cada época. Los datos de más de 400 días se borran solos. Sin este paso el juego funciona igual y no envía nada.

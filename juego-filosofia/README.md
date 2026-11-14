@@ -33,6 +33,26 @@ ratón y `E` para interactuar.
 - **Elegir el mundo en una rueda**: carrusel circular con el paisaje de cada época de fondo; se recorre
   deslizando, con flechas o con la línea del tiempo, y muestra los pensadores vencidos.
 
+- **Batalla contra el maestro**: al debatir con el maestro de cada época el cielo se oscurece, caen relámpagos
+  y un anillo de piedras rúnicas gira a su alrededor; cada acierto rompe una. La barra «Voluntad del
+  maestro» marca tres fases: en la segunda hay menos tiempo y la tercera es el último argumento.
+
+- **Viaje en el tiempo**: al cambiar de época se cruza un túnel de luz con un reloj y los años que corren.
+
+- **Día, noche y clima**: en los mundos al aire libre el día avanza (atardecer, noche con estrellas en la
+  que el farol ilumina el camino, amanecer) y cambia el tiempo según el lugar: lluvia, nieve, niebla,
+  viento o arena del desierto. Se puede desactivar en Ajustes.
+
+- **Los pensadores pasean**: bajan de su tarima y dan unos pasos por el camino; al acercarte se detienen.
+
+- **Evento de la semana**: cada lunes un pensador destacado (sabiduría doble y estrella dorada) y dos
+  retos más, iguales para todos. Completarlos da +1000 y el logro «Viajero de la semana».
+
+- **Primer minuto guiado**: quien juega por primera vez ve una tarjeta de cuatro pasos que avanza sola.
+
+- **Estadísticas anónimas**: contadores por día y época, sin ningún dato del jugador, para ver dónde se
+  atasca la gente (página `estadisticas.html`; requiere `tools/cuentas4.sql`). Desactivables en Ajustes.
+
 - **Torneo de trivia en línea**: mesa de 2, 4 u 8 asientos; se invita a los viajeros de la época o a amigos
   por WhatsApp; todos responden a la vez (acierto + rapidez) en cuartos, semifinal y final, con podio.
 

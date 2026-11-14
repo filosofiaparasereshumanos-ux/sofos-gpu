@@ -1648,6 +1648,8 @@ body.touch .gm.boss { width: 30px; height: 30px; }
       <div class="row"><label>Auto-fire</label><div class="seg" id="s-auto"><button data-v="0">No</button><button data-v="1">Yes</button></div></div>
       <div class="row"><label>Vibration</label><div class="seg" id="s-vib"><button data-v="0">No</button><button data-v="1">Yes</button></div></div>
       <div class="row"><label>Open world</label><div class="seg" id="s-mundo"><button data-v="0">No</button><button data-v="1">Yes</button></div></div>
+      <div class="row"><label>Day, night and weather</label><div class="seg" id="s-clima"><button data-v="0">No</button><button data-v="1">Yes</button></div></div>
+      <div class="row"><label>Anonymous statistics <small>(they help improve the game and never record who you are)</small></label><div class="seg" id="s-metricas"><button data-v="0">No</button><button data-v="1">Yes</button></div></div>
       <div class="row"><label>Invert Y axis</label><div class="seg" id="s-invert"><button data-v="0">No</button><button data-v="1">Yes</button></div></div>
       <div class="btns"><button class="btn" data-back>Back</button></div>
     </div>
@@ -18915,7 +18917,7 @@ const G = {
   state: 'loading', prevScreen: null, eraIdx: 0, score: 0, frags: 0, hp: 100, maxHp: 100,
   stats: { correct: 0, wrong: 0, kills: 0, time: 0 }, eraStart: null,
   codex: new Set(store.get(CODEX_KEY, [])),
-  settings: Object.assign({ sens: 1, music: 0.7, sfx: 0.85, quality: IS_TOUCH ? 'mid' : 'high', invertY: false, voices: true, autofire: true, vibrate: true, trialDiff: 'normal' }, store.get(SET_KEY, {})),
+  settings: Object.assign({ sens: 1, music: 0.7, sfx: 0.85, quality: IS_TOUCH ? 'mid' : 'high', invertY: false, voices: true, autofire: true, vibrate: true, trialDiff: 'normal', clima: true, metricas: !(navigator.doNotTrack === '1' || window.doNotTrack === '1') }, store.get(SET_KEY, {})),
   streak: 0, bestStreak: 0,
   noLock: false, intentionalUnlock: false,
 };
@@ -20226,7 +20228,7 @@ function syncSettings() {
   document.querySelectorAll('#s-diff button').forEach((b) => b.classList.toggle('on', b.dataset.v === G.settings.trialDiff));
 }
 document.querySelectorAll('#s-diff button').forEach((b) => b.addEventListener('click', () => { G.settings.trialDiff = b.dataset.v; saveSettings(); syncSettings(); toast('The difficulty changes the questions of the debates and the evidence of the way.'); }));
-const TOGGLES = [['#s-voices', 'voices'], ['#s-auto', 'autofire'], ['#s-vib', 'vibrate'], ['#s-mundo', 'mundo']];
+const TOGGLES = [['#s-voices', 'voices'], ['#s-auto', 'autofire'], ['#s-vib', 'vibrate'], ['#s-mundo', 'mundo'], ['#s-clima', 'clima'], ['#s-metricas', 'metricas']];
 for (const [id, k] of TOGGLES) document.querySelectorAll(id + ' button').forEach((b) => b.addEventListener('click', () => {
   G.settings[k] = b.dataset.v === '1'; saveSettings(); syncSettings();
   if (k === 'voices') { if (G.settings.voices) Voice.say('Philosophy begins with awe.'); else Voice.stop(); }
@@ -20376,7 +20378,7 @@ function frame() {
   if (['play', 'duel', 'victory', 'talk', 'place', 'lesson'].includes(G.state)) lamp.visible = true;
   // llama de la lámpara
   const fl = lamp.userData.flame; fl.scale.set(1 + Math.sin(tAcc * 23) * 0.08, 1.6 + Math.sin(tAcc * 17) * 0.2, 1);
-  lamp.userData.light.intensity = (world && (world.theme.indoor || world.theme.stars) ? 5 : 2.5) * (0.9 + Math.sin(tAcc * 19) * 0.1);
+  lamp.userData.light.intensity = (world && (world.theme.indoor || world.theme.stars) ? 5 : 2.5) * (0.9 + Math.sin(tAcc * 19) * 0.1) * (typeof Clima !== 'undefined' ? Clima.lampK : 1);
   particles.update(dt);
   Audio.updateMusic();
   if (G.settings.quality !== 'low') composer.render(); else renderer.render(scene, camera);
@@ -25370,6 +25372,580 @@ const Guia = {
   document.head.appendChild(st);
 }
 if (location.hash === '#debug') window.__guia = Guia;
+
+// ---- src/07e-maestro.js ----
+// ============================================================================
+//  LA BATALLA DEL MAESTRO
+//  Cuando el debate es contra el maestro de una época, el mundo responde: el
+//  cielo se oscurece, caen relámpagos y un anillo de piedras rúnicas gira a su
+//  alrededor. Cada piedra es un argumento suyo: cada acierto rompe una. La barra
+//  «Voluntad del maestro» marca tres fases (en la segunda hay menos tiempo para
+//  pensar; la tercera es el último argumento).
+// ============================================================================
+// factores que el ambiente (07g) aplica a la niebla y la exposición
+const AMBK = { fog: 1, exp: 1 };
+const Maestro = {
+  on: false, s: null, g: null, stones: [], ph: 1, shake: 0, flashT: 4, k: 0,
+  T: {
+    will: 'Will of', ph: 'Phase', p2: ['Phase II', 'The master grows stronger: you\'ll have less time to think.'], p3: ['Final argument', 'One more right answer and you win them over.'],
+    p2s: ['Phase II', 'The master asks more of you: you\'ll have less time to think.'], p3s: ['Last step', 'One more right answer and you understand it.'],
+  },
+  phase(s) { const r = s.conv / s.maxConv; return s.conv <= 1 ? 3 : r > 0.6 ? 1 : 2; },
+  begin(s) {
+    if (this.on && this.s === s) return; this.end(true);
+    this.on = true; this.s = s; this.ph = this.phase(s); this.k = 0; this.flashT = 3 + Math.random() * 3;
+    const acc = new THREE.Color(world.theme.accent); const g = new THREE.Group(); g.position.set(s.pos.x, 0.06, s.pos.z);
+    const R = 1.9 * s.scale;
+    const ring = new THREE.Mesh(new THREE.RingGeometry(R, R + 0.18, 72), new THREE.MeshBasicMaterial({ color: acc.clone().multiplyScalar(2.2), transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false, fog: false }));
+    ring.rotation.x = -Math.PI / 2; g.add(ring);
+    const ring2 = new THREE.Mesh(new THREE.RingGeometry(R * 0.72, R * 0.72 + 0.06, 6), ring.material.clone()); ring2.rotation.x = -Math.PI / 2; g.add(ring2);
+    this.stones = [];
+    const geo = new THREE.OctahedronGeometry(0.26, 0);
+    for (let i = 0; i < s.conv; i++) {
+      const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: acc.clone().multiplyScalar(2.4), transparent: true, opacity: 0.95, toneMapped: false, fog: false }));
+      m.scale.set(0.8, 1.5, 0.8); g.add(m); this.stones.push(m);
+    }
+    this.geo = geo; this.ring = ring; this.ring2 = ring2; this.R = R; this.g = g; world.group.add(g);
+    this.bar(true); this.paintBar();
+    if (!this.raf) { let t0 = performance.now(); const loop = () => { const t = performance.now(); const dt = Math.min(0.1, (t - t0) / 1000); t0 = t; try { this.frame(dt); } catch (e) { console.warn('maestro', e); } this.raf = this.on || this.k > 0.001 ? requestAnimationFrame(loop) : 0; }; this.raf = requestAnimationFrame(loop); }
+  },
+  // el maestro ha perdido una piedra (o varias, con un golpe crítico)
+  sync() {
+    const s = this.s; if (!s || !this.g) return;
+    while (this.stones.length > Math.max(0, s.conv)) {
+      const m = this.stones.pop(); const p = m.getWorldPosition(new THREE.Vector3());
+      particles.emit(p, 40, { color: 0xffd36a, speed: 6, life: 0.9, size: 0.35, intensity: 3 });
+      particles.emit(p, 16, { color: world.theme.accent, speed: 3, life: 0.7, size: 0.5, intensity: 2.5 });
+      this.g.remove(m); m.material.dispose(); Audio.kill && Audio.kill(); this.shake = Math.max(this.shake, 0.25);
+    }
+    this.paintBar();
+  },
+  bar(show) {
+    let b = document.getElementById('mb-bar');
+    if (!b && show) {
+      b = document.createElement('div'); b.id = 'mb-bar'; b.innerHTML = '<div class="mb-l"><span class="mb-n"></span><span class="mb-p"></span></div><div class="mb-t"><i class="mb-f"></i><b></b><b></b></div>';
+      const card = document.querySelector('#duel .duel-card'); const head = card && card.querySelector('.duel-head'); if (head) head.after(b); else return;
+    }
+    if (b) b.hidden = !show;
+  },
+  paintBar() {
+    const s = this.s, b = document.getElementById('mb-bar'); if (!s || !b) return;
+    b.querySelector('.mb-n').textContent = `${this.T.will} ${s.data.short}`;
+    b.querySelector('.mb-p').textContent = `${this.T.ph} ${['I', 'II', 'III'][this.phase(s) - 1]}`;
+    b.querySelector('.mb-f').style.transform = `scaleX(${Math.max(0, s.conv / s.maxConv)})`;
+    b.className = 'ph' + this.phase(s);
+  },
+  banner(k) {
+    const sac = ERAS[G.eraIdx] && ERAS[G.eraIdx].sacred; const t = k === 3 ? (sac ? this.T.p3s : this.T.p3) : (sac ? this.T.p2s : this.T.p2);
+    let el = document.getElementById('mb-ban'); if (!el) { el = document.createElement('div'); el.id = 'mb-ban'; el.innerHTML = '<b></b><span></span>'; (document.getElementById('app') || document.body).appendChild(el); }
+    el.querySelector('b').textContent = t[0]; el.querySelector('span').textContent = t[1];
+    el.className = 'ph' + k; void el.offsetWidth; el.classList.add('on'); clearTimeout(this._bt); this._bt = setTimeout(() => el.classList.remove('on'), 2300);
+    Audio.tone(k === 3 ? 98 : 73, 1.6, { type: 'sawtooth', vol: 0.12, slide: 0.5, filter: 900 }); Audio.gong && Audio.gong(); buzz([40, 40, 90]);
+    this.thunder(); this.shake = 0.5;
+  },
+  thunder() {
+    const f = document.getElementById('mb-flash') || (() => { const d = document.createElement('div'); d.id = 'mb-flash'; (document.getElementById('app') || document.body).appendChild(d); return d; })();
+    f.classList.remove('on'); void f.offsetWidth; f.classList.add('on');
+    if (Audio.ctx) { Audio.noise(0.25, { vol: 0.16, freq: 2400, q: 0.6 }); Audio.noise(1.8, { vol: 0.22, freq: 160, q: 0.5, type: 'lowpass', when: 0.15 }); }
+    if (this.g) { const p = this.g.position; particles.emit(new THREE.Vector3(p.x + (Math.random() - 0.5) * 6, 9, p.z + (Math.random() - 0.5) * 6), 30, { color: 0xdfe8ff, speed: 7, life: 0.4, size: 0.4, intensity: 4 }); }
+  },
+  frame(dt) {
+    const s = this.s; const want = this.on ? 1 : 0; this.k += (want - this.k) * Math.min(1, dt * (this.on ? 1.2 : 2.5));
+    AMBK.fog = 1 + this.k * 0.7; AMBK.exp = 1 - this.k * 0.22;
+    if (!this.g || !s) return;
+    const t = performance.now() / 1000, ph = this.phase(s), n = this.stones.length;
+    const sp = ph === 1 ? 0.7 : ph === 2 ? 1.25 : 1.9;
+    this.stones.forEach((m, i) => { const a = t * sp + (i / Math.max(1, n)) * Math.PI * 2; m.position.set(Math.cos(a) * this.R, 2.1 * s.scale + Math.sin(t * 2 + i) * 0.25, Math.sin(a) * this.R); m.rotation.y = t * 2 + i; if (ph === 3) m.material.color.setRGB(2.6, 1.1 + Math.sin(t * 8) * 0.4, 0.5); });
+    this.ring.material.opacity = Math.min(0.85, this.k) * (0.65 + Math.sin(t * 3) * 0.2); this.ring.rotation.z = t * 0.3;
+    this.ring2.material.opacity = Math.min(0.6, this.k) * 0.7; this.ring2.rotation.z = -t * 0.5;
+    if (G.state === 'duel' && Duel.sage === s && Duel.intro <= 0) {
+      this.flashT -= dt; if (this.flashT <= 0) { this.flashT = (ph === 3 ? 3.5 : 6) + Math.random() * 5; this.thunder(); }
+      if (Math.random() < dt * 10) particles.emit(new THREE.Vector3(s.pos.x + (Math.random() - 0.5) * this.R * 2, 0.2, s.pos.z + (Math.random() - 0.5) * this.R * 2), 1, { color: world.theme.accent, speed: 0.6, up: 1.4, life: 1.6, size: 0.25, intensity: 2.5 });
+    }
+    if (this.shake > 0) { this.shake = Math.max(0, this.shake - dt); const a = this.shake * 0.06; camera.position.x += (Math.random() - 0.5) * a; camera.position.y += (Math.random() - 0.5) * a; }
+  },
+  end(now) {
+    this.on = false; this.bar(false);
+    const g = this.g; this.g = null; this.s = null; this.stones = [];
+    if (!g) return;
+    const fade = () => { g.parent && g.parent.remove(g); g.traverse((o) => { if (o.material) o.material.dispose(); if (o.geometry && o.geometry !== this.geo) o.geometry.dispose(); }); };
+    if (now) fade(); else { g.children.forEach((m) => { if (m.geometry === this.geo) particles.emit(m.getWorldPosition(new THREE.Vector3()), 30, { color: 0xffd36a, speed: 6, life: 1, size: 0.4, intensity: 3 }); }); fade(); }
+  },
+};
+// enganches con el debate
+{
+  const a0 = Duel.ask.bind(Duel);
+  Duel.ask = function () {
+    const s = this.sage; const boss = s && s.boss && !this._oracle;
+    if (boss && !(Maestro.on && Maestro.s === s)) Maestro.begin(s);
+    const before = boss ? Maestro.ph : 0;
+    a0();
+    if (!boss) return;
+    const ph = Maestro.phase(s);
+    if (ph >= 2) { const cut = ph === 2 ? 3 : 4; this.maxTime = Math.max(9, this.maxTime - cut); this.time = this.maxTime; this.lastTick = Math.ceil(this.time); }
+    if (ph > before && ph >= 2) Maestro.banner(ph);
+    Maestro.ph = ph; Maestro.paintBar();
+  };
+  const an0 = Duel.answer.bind(Duel);
+  Duel.answer = function (i) {
+    const s = this.sage; const was = this.answered; an0(i);
+    if (!s || !s.boss || !Maestro.on || was || !this.answered) return;
+    const ok = i >= 0 && this.opts[i] && this.opts[i].ok;
+    if (ok) Maestro.sync();
+    else { Maestro.shake = 0.6; const from = _v1.copy(s.pos); from.y += 2.4 * s.scale; const to = camera.position; for (let k = 1; k <= 6; k++) particles.emit(_v2.copy(from).lerp(to, k / 8), 6, { color: world.theme.enemy.col, speed: 1.5, life: 0.5, size: 0.4, intensity: 3 }); }
+  };
+  const c0 = Duel.close.bind(Duel);
+  Duel.close = function () { c0(); if (Maestro.on && G.state !== 'victory') Maestro.end(true); };
+  const w0 = Duel.win.bind(Duel);
+  Duel.win = function () { const boss = this.sage && this.sage.boss; w0(); if (boss) Maestro.end(false); };
+}
+{
+  const st = document.createElement('style');
+  st.textContent = '#mb-bar{margin:2px 0 8px}#mb-bar[hidden]{display:none}#mb-bar .mb-l{display:flex;justify-content:space-between;font-family:var(--display);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#ffcf8a;margin-bottom:4px}#mb-bar .mb-p{color:#fff0c8}'
+    + '#mb-bar .mb-t{position:relative;height:10px;border-radius:6px;background:rgba(0,0,0,.5);border:1px solid rgba(255,190,110,.55);overflow:hidden}#mb-bar .mb-f{position:absolute;inset:0;transform-origin:left;background:linear-gradient(90deg,#b0302a,#ff7a3a 60%,#ffd36a);box-shadow:0 0 12px rgba(255,120,60,.8);transition:transform .6s cubic-bezier(.3,1.4,.5,1)}'
+    + '#mb-bar .mb-t b{position:absolute;top:0;bottom:0;width:2px;background:rgba(0,0,0,.6)}#mb-bar .mb-t b:nth-of-type(1){left:60%}#mb-bar .mb-t b:nth-of-type(2){left:20%}'
+    + '#mb-bar.ph3 .mb-f{animation:mbPulse .8s ease-in-out infinite}@keyframes mbPulse{50%{filter:brightness(1.6)}}'
+    + '#mb-ban{position:absolute;left:50%;top:22%;transform:translate(-50%,-50%) scale(.6);opacity:0;z-index:60;pointer-events:none;text-align:center;white-space:nowrap}#mb-ban.on{animation:mbBan 2.3s cubic-bezier(.2,1.3,.4,1) forwards}'
+    + '#mb-ban b{display:block;font-family:var(--display,Georgia);font-size:clamp(2rem,9vw,3.6rem);letter-spacing:.12em;text-transform:uppercase;color:#ffe2a0;text-shadow:0 0 18px rgba(255,140,60,.9),0 3px 0 #5a2a08,0 0 40px rgba(255,90,40,.6)}#mb-ban.ph3 b{color:#fff;text-shadow:0 0 22px rgba(255,80,60,1),0 3px 0 #5a0a08,0 0 50px rgba(255,60,40,.8)}'
+    + '#mb-ban span{display:inline-block;margin-top:6px;padding:6px 14px;border-radius:999px;background:rgba(20,8,4,.75);border:1px solid rgba(255,170,90,.6);color:#ffe9c8;font-size:clamp(.8rem,3.4vw,1rem);white-space:normal;max-width:86vw}'
+    + '@keyframes mbBan{0%{opacity:0;transform:translate(-50%,-50%) scale(1.8)}12%{opacity:1;transform:translate(-50%,-50%) scale(1)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.03)}100%{opacity:0;transform:translate(-50%,-60%) scale(1)}}'
+    + '#mb-flash{position:absolute;inset:0;z-index:55;pointer-events:none;background:radial-gradient(circle at 50% 20%,rgba(235,240,255,.9),rgba(200,210,255,.35) 60%,rgba(0,0,0,0));opacity:0}#mb-flash.on{animation:mbFlash .7s ease-out}@keyframes mbFlash{0%{opacity:0}8%{opacity:.85}18%{opacity:.15}26%{opacity:.6}100%{opacity:0}}';
+  document.head.appendChild(st);
+}
+if (location.hash === '#debug') window.__maestro = Maestro;
+
+// ---- src/07f-tunel.js ----
+// ============================================================================
+//  EL VIAJE EN EL TIEMPO
+//  Al cambiar de época (desde la rueda de mundos, el portal o un enlace) se
+//  atraviesa un túnel de luz: estrellas que se estiran, un reloj que gira y los
+//  años que corren hasta la época de destino. Mientras tanto se construye el
+//  mundo nuevo, así la espera se convierte en parte del viaje.
+// ============================================================================
+const Tunel = {
+  el: null, on: false, built: false,
+  T: { k: 'Travelling through time', to: 'Heading to' },
+  build() {
+    if (this.el) return; const el = document.createElement('div'); el.id = 'tunel'; el.hidden = true;
+    el.innerHTML = '<canvas></canvas><div class="tn-c"><div class="tn-clock"><i></i><i class="m"></i></div><span class="tn-k"></span><b class="tn-y"></b><span class="tn-n"></span></div>';
+    (document.getElementById('app') || document.body).appendChild(el); this.el = el; this.cv = el.querySelector('canvas');
+  },
+  play(to, go) {
+    if (this.on || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) { go(); return; }
+    this.build(); const el = this.el; const from = world ? world.idx : -1; const E = ERAS[to]; if (!E) { go(); return; }
+    this.on = true; this.built = false; this.t0 = performance.now(); this.from = from; this.to = to; this.called = false; this.go = go;
+    el.querySelector('.tn-k').textContent = this.T.k; el.querySelector('.tn-n').textContent = `${this.T.to} ${E.num} · ${E.name}`;
+    this.yFrom = from >= 0 && ERAS[from] ? ERAS[from].years : ''; this.yTo = E.years; el.querySelector('.tn-y').textContent = this.yFrom || this.yTo;
+    // estrellas del túnel con el color de la época de destino
+    const th = (typeof THEMES !== 'undefined' && THEMES[to]) || null; this.acc = th ? '#' + new THREE.Color(th.accent).getHexString() : '#ffd36a';
+    this.stars = Array.from({ length: 260 }, () => ({ a: Math.random() * Math.PI * 2, z: Math.random(), s: 0.4 + Math.random() * 1.2, c: Math.random() < 0.3 }));
+    el.hidden = false; el.classList.remove('out'); void el.offsetWidth; el.classList.add('in');
+    Audio.init && Audio.init(); Audio.portal && Audio.portal(); buzz([15, 40, 15, 40, 60]);
+    const loop = () => { if (!this.on) return; try { this.frame(); } catch (e) { console.warn('tunnel', e); this.finish(); return; } requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
+  },
+  frame() {
+    const el = performance.now() - this.t0, cv = this.cv, c = cv.getContext('2d');
+    const W = cv.clientWidth || innerWidth, H = cv.clientHeight || innerHeight, dpr = Math.min(2, devicePixelRatio || 1);
+    if (cv.width !== Math.round(W * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+    c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const k = Math.min(1, el / 1200); const speed = 0.004 + k * k * 0.03;
+    c.fillStyle = 'rgba(6,5,14,0.32)'; c.fillRect(0, 0, W, H);
+    const cx = W / 2, cy = H / 2, R = Math.hypot(W, H) * 0.6;
+    const g = c.createRadialGradient(cx, cy, 0, cx, cy, R * 0.5); g.addColorStop(0, `rgba(255,236,190,${0.25 + k * 0.35})`); g.addColorStop(0.4, 'rgba(120,90,200,0.08)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    c.fillStyle = g; c.fillRect(0, 0, W, H);
+    c.lineCap = 'round';
+    for (const s of this.stars) {
+      const z0 = s.z; s.z += speed * (0.6 + s.z * 2); if (s.z > 1) { s.z = 0.02; s.a = Math.random() * Math.PI * 2; }
+      const r0 = Math.pow(z0, 2.2) * R, r1 = Math.pow(s.z, 2.2) * R; const ca = Math.cos(s.a), sa = Math.sin(s.a);
+      c.strokeStyle = s.c ? this.acc : `rgba(255,${230 - s.z * 60 | 0},${200 - s.z * 80 | 0},${0.4 + s.z * 0.6})`; c.lineWidth = s.s * (0.5 + s.z * 2.5);
+      c.beginPath(); c.moveTo(cx + ca * r0, cy + sa * r0); c.lineTo(cx + ca * (r1 + 2), cy + sa * (r1 + 2)); c.stroke();
+    }
+    // las agujas del reloj giran cada vez más deprisa
+    const hand = this.el.querySelectorAll('.tn-clock i'); const rot = (el / 1000) ** 2 * 720; hand[0].style.transform = `rotate(${rot}deg)`; hand[1].style.transform = `rotate(${rot * 12}deg)`;
+    if (el > 700) this.el.querySelector('.tn-y').textContent = this.yTo;
+    else if (this.yFrom && el > 250) this.el.querySelector('.tn-y').textContent = Math.random() < 0.5 ? this.yFrom : this.yTo;
+    if (!this.called && el > 650) { this.called = true; const f = this.go; this.go = null; setTimeout(() => { try { f(); } catch (e) { console.warn(e); this.finish(); } }, 0); }
+    const ready = this.built || (this.called && el > 3200 && G.state !== 'transition');
+    if ((ready && el > 1500) || el > 9000) this.finish();
+  },
+  finish() {
+    if (!this.on) return; this.on = false; const el = this.el; el.classList.remove('in'); el.classList.add('out');
+    setTimeout(() => { if (!this.on) el.hidden = true; }, 650);
+  },
+};
+// el mundo nuevo ya está listo: el túnel puede abrirse
+{ const s0 = startEra; startEra = function (idx, fresh) { s0(idx, fresh); if (Tunel.on) setTimeout(() => { Tunel.built = true; }, 120); }; }
+{
+  const so = startOdyssey;
+  startOdyssey = function (idx) {
+    const sv = store.get(SAVE_KEY, null);
+    if (sv && sv.eraIdx !== idx && ((sv.beaten && sv.beaten.length) || sv.score > 0) && !confirm(`You have an ongoing odyssey in "${ERAS[sv.eraIdx].name}». Want to travel now to «${ERAS[idx].name}»? Your code, your notebook and your achievements are preserved.`)) return;
+    Tunel.play(idx, () => { const c = window.confirm; window.confirm = () => true; try { so(idx); } finally { window.confirm = c; } });
+  };
+  const tt = travelTo;
+  travelTo = function (idx) { if (G.state === 'loading') return tt(idx); Tunel.play(idx, () => tt(idx)); };
+  const ep = enterPortal;
+  enterPortal = function () { const nx = nextEra(G.eraIdx); if (G.explore || nx < 0) return ep(); Tunel.play(nx, () => {}); Tunel.called = true; ep(); };
+}
+{
+  const st = document.createElement('style');
+  st.textContent = '#tunel{position:fixed;inset:0;z-index:200;background:#06050e;opacity:0;transition:opacity .45s ease}#tunel[hidden]{display:none}#tunel.in{opacity:1}#tunel.out{opacity:0;transition:opacity .6s ease}#tunel canvas{position:absolute;inset:0;width:100%;height:100%}'
+    + '#tunel .tn-c{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;color:#fff3d6;width:min(92vw,560px);text-shadow:0 2px 12px rgba(0,0,0,.8)}'
+    + '#tunel .tn-clock{position:relative;width:74px;height:74px;margin:0 auto 14px;border-radius:50%;border:2px solid rgba(255,211,106,.85);box-shadow:0 0 24px rgba(255,211,106,.55),inset 0 0 18px rgba(255,211,106,.35);background:radial-gradient(circle,rgba(40,28,10,.6),rgba(10,8,4,.2))}'
+    + '#tunel .tn-clock i{position:absolute;left:50%;bottom:50%;width:3px;height:24px;margin-left:-1.5px;border-radius:2px;background:#ffd36a;transform-origin:50% 100%}#tunel .tn-clock i.m{height:32px;width:2px;margin-left:-1px;background:#fff4dc}'
+    + '#tunel .tn-k{display:block;font-family:var(--display,Georgia);font-size:.78rem;letter-spacing:.3em;text-transform:uppercase;color:#ffd36a}'
+    + '#tunel .tn-y{display:block;margin:8px 0 6px;font-family:var(--display,Georgia);font-size:clamp(1.6rem,7vw,2.8rem);letter-spacing:.06em;color:#fff}'
+    + '#tunel .tn-n{display:block;font-size:clamp(.95rem,3.6vw,1.2rem);font-style:italic;color:#ffe9b8}';
+  document.head.appendChild(st);
+}
+if (location.hash === '#debug') window.__tunel = Tunel;
+
+// ---- src/07g-clima.js ----
+// ============================================================================
+//  DÍA, NOCHE Y CLIMA
+//  En los mundos al aire libre el día avanza: atardecer, noche con estrellas
+//  (el farol cobra sentido) y amanecer, en un ciclo de unos ocho minutos. Y el
+//  tiempo cambia según el lugar: lluvia, nieve, niebla, viento con hojas o
+//  arena del desierto. Aquí también se aplican los cambios de luz que piden
+//  otros momentos del juego (la batalla del maestro, en AMBK).
+// ============================================================================
+const CLIMA_DE = {
+  snow: ['vikingos', 'incas', 'japon', 'mapuche'],
+  sand: ['sumer', 'islam', 'persia', 'coran', 'biblia', 'africa', 'mexicas'],
+  none: ['cosmos'],
+};
+const Clima = {
+  lampK: 1, P: 480, NMAX: 0.78, w: null, wx: 'clear', wk: 0, wNext: 0, fogRef: null, base: null, t0: 0, toldNight: false, rainSnd: null,
+  I: { rain: '🌧', snow: '❄', fog: '🌫', wind: '🍃', sand: '🏜', clear: '☀', night: '🌙', dawn: '🌅' },
+  T: {
+    rain: 'It\'s starting to rain.', snow: 'It\'s starting to snow.', fog: 'The fog is rising.', wind: 'The wind picks up.', sand: 'The desert wind rises.',
+    clear: 'The sky clears.', night: 'Night falls: your lantern lights the way.', dawn: 'A new day dawns.',
+  },
+  outdoor() { const th = world && world.theme; return G.settings.clima !== false && !!(th && !th.indoor && !th.stars && !CLIMA_DE.none.includes(ERAS[world.idx].id)); },
+  options() {
+    const id = ERAS[world.idx].id; const o = [['clear', 3], ['fog', 0.8], ['wind', 1]];
+    if (CLIMA_DE.sand.includes(id)) o.push(['sand', 1.3]); else o.push(['rain', 1.3]);
+    if (CLIMA_DE.snow.includes(id)) o.push(['snow', 1.6]);
+    return o;
+  },
+  pick() { const o = this.options(); let t = o.reduce((a, b) => a + b[1], 0) * Math.random(); for (const [k, p] of o) { if ((t -= p) <= 0) return k; } return 'clear'; },
+  // un mundo recién construido: se guardan sus luces originales
+  attach() {
+    const W = world; this.w = W; this.t0 = performance.now() / 1000 - Math.random() * 60; this.toldNight = false;
+    const u = W.sky.material.uniforms; const hemi = W.group.children.find((o) => o.isHemisphereLight);
+    this.base = { top: u.top.value.clone(), hor: u.hor.value.clone(), bot: u.bot.value.clone(), disc: u.sunCol.value.clone(), sun: W.sun ? W.sun.intensity : 0, hemi, hemiI: hemi ? hemi.intensity : 0 };
+    this.wx = Math.random() < 0.6 ? 'clear' : this.pick(); this.wk = this.wx === 'clear' ? 0 : 1; this.want = this.wx; this.wNext = performance.now() / 1000 + 150 + Math.random() * 110;
+    this.fogRef = null; this.ensureFx();
+  },
+  ensureFx() {
+    if (this.fx && this.fx.parent === world.group) return;
+    const N = G.settings.quality === 'low' ? 260 : 620; const R = 16, H = 14;
+    const pos = new Float32Array(N * 6); for (let i = 0; i < N; i++) { const x = (Math.random() * 2 - 1) * R, y = Math.random() * H, z = (Math.random() * 2 - 1) * R; pos.set([x, y, z, x, y, z], i * 6); }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    const lines = new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: 0xb8c8e0, transparent: true, opacity: 0, depthWrite: false, fog: false }));
+    const pp = new Float32Array(N * 3); for (let i = 0; i < N; i++) pp.set([(Math.random() * 2 - 1) * R, Math.random() * H, (Math.random() * 2 - 1) * R], i * 3);
+    const g2 = new THREE.BufferGeometry(); g2.setAttribute('position', new THREE.BufferAttribute(pp, 3));
+    const dc = document.createElement('canvas'); dc.width = dc.height = 32; { const c = dc.getContext('2d'); const gr = c.createRadialGradient(16, 16, 0, 16, 16, 16); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(0.45, 'rgba(255,255,255,0.7)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); c.fillStyle = gr; c.fillRect(0, 0, 32, 32); }
+    const dot = new THREE.CanvasTexture(dc);
+    const pts = new THREE.Points(g2, new THREE.PointsMaterial({ color: 0xffffff, map: dot, size: 0.12, transparent: true, opacity: 0, depthWrite: false, fog: false }));
+    lines.frustumCulled = pts.frustumCulled = false; lines.visible = pts.visible = false;
+    const fx = new THREE.Group(); fx.add(lines); fx.add(pts); world.group.add(fx); this.fx = fx; this.lines = lines; this.pts = pts; this.N = N; this.R = R; this.H = H;
+  },
+  night(now) {
+    if (!this.outdoor()) return 0;
+    const p = (((now - this.t0) / this.P) % 1 + 1) % 1; const sm = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+    return p < 0.6 ? 0 : p < 0.7 ? sm(0.6, 0.7, p) : p < 0.9 ? 1 : 1 - sm(0.9, 1, p);
+  },
+  rain(on) {
+    if (!Audio.ctx) return; const c = Audio.ctx;
+    if (!this.rainSnd) {
+      const b = c.createBuffer(1, c.sampleRate * 2, c.sampleRate); const d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      const src = c.createBufferSource(); src.buffer = b; src.loop = true; const f = c.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 1500; const gn = c.createGain(); gn.gain.value = 0;
+      src.connect(f); f.connect(gn); gn.connect(Audio.sfx || c.destination); src.start(); this.rainSnd = { gn, f };
+    }
+    this.rainSnd.gn.gain.setTargetAtTime(on, c.currentTime, 0.6);
+  },
+  frame(dt) {
+    if (!world || !world.sky) return;
+    if (this.w !== world) this.attach();
+    const now = performance.now() / 1000, th = world.theme, B = this.base;
+    // tiempo: cambia cada pocos minutos, con transición suave
+    if (this.outdoor() && now > this.wNext && G.state === 'play') {
+      this.wNext = now + 150 + Math.random() * 120; const nx = this.wx === 'clear' ? this.pick() : (Math.random() < 0.6 ? 'clear' : this.pick());
+      if (nx !== this.wx) { this.want = nx; toast(this.I[nx] + ' ' + this.T[nx]); }
+    }
+    if (!this.outdoor()) this.want = 'clear';
+    if (this.want !== this.wx) { this.wk = Math.max(0, this.wk - dt / 8); if (this.wk <= 0) { this.wx = this.want; } }
+    else if (this.wx !== 'clear') this.wk = Math.min(1, this.wk + dt / 10);
+    const w = this.wx === 'clear' ? 0 : this.wk, wx = this.wx;
+    const n = this.night(now) * this.NMAX;
+    if (G.state === 'play' && this.outdoor()) {
+      if (n > 0.6 && !this.toldNight) { this.toldNight = true; toast(this.I.night + ' ' + this.T.night); }
+      if (n < 0.05 && this.toldNight) { this.toldNight = false; toast(this.I.dawn + ' ' + this.T.dawn); }
+    }
+    const wet = wx === 'rain' ? w : 0, haze = (wx === 'fog' ? w * 1.6 : 0) + wet * 0.6 + (wx === 'sand' ? w * 0.9 : 0) + (wx === 'snow' ? w * 0.5 : 0);
+    // cielo
+    const u = world.sky.material.uniforms, dusk = 4 * (n / this.NMAX) * (1 - n / this.NMAX) * 0.55;
+    const gray = new THREE.Color(wx === 'sand' ? 0xc8a878 : 0x8a929e), k = Math.min(1, wet * 0.7 + (wx === 'fog' ? w * 0.5 : 0) + (wx === 'sand' ? w * 0.55 : 0) + (wx === 'snow' ? w * 0.45 : 0));
+    u.top.value.copy(B.top).lerp(gray, k).lerp(_cN.top, n); u.hor.value.copy(B.hor).lerp(gray, k).lerp(_cN.dusk, dusk).lerp(_cN.hor, n); u.bot.value.copy(B.bot).lerp(_cN.bot, n);
+    u.sunCol.value.copy(B.disc).multiplyScalar((1 - n * 1.2) * (1 - k * 0.8));
+    if (world.sun) world.sun.intensity = B.sun * (1 - n * 0.85) * (1 - k * 0.5);
+    if (B.hemi) B.hemi.intensity = B.hemiI * (1 - n * 0.55) * (1 - k * 0.15);
+    this.lampK = 1 + n * 1.6;
+    // estrellas de noche
+    if (n > 0.02 && !world.stars && this.outdoor()) { world.stars = makeStars(900, world.idx + 3); world.stars.material.opacity = 0; world.group.add(world.stars); world._nightStars = true; }
+    if (world._nightStars && world.stars) world.stars.material.opacity = Math.max(0, n / this.NMAX - k) ;
+    // niebla y exposición (también los factores de otros momentos, AMBK)
+    const fog = scene.fog;
+    if (fog && fog !== this.fogRef) { this.fogRef = fog; this.fb = { d: fog.density, c: fog.color.clone(), e: renderer.toneMappingExposure, world: fog.color.getHex() === new THREE.Color(th.fog[0]).getHex() && Math.abs(fog.density - th.fog[1]) < 1e-6, bg: scene.background && scene.background.isColor ? scene.background.clone() : null }; }
+    if (fog && this.fb) {
+      const F = this.fb, isW = F.world && this.outdoor();
+      fog.density = F.d * (isW ? 1 + haze * 1.4 : 1) * AMBK.fog;
+      if (isW) { fog.color.copy(F.c).lerp(gray, k * 0.8).lerp(_cN.fog, n * 0.85); if (F.bg && scene.background && scene.background.isColor) scene.background.copy(F.bg).lerp(gray, k * 0.8).lerp(_cN.fog, n * 0.85); }
+      renderer.toneMappingExposure = F.e * (isW ? (1 - n * 0.1) * (1 - k * 0.06) : 1) * AMBK.exp;
+    }
+    // partículas: lluvia, nieve, viento, arena
+    this.ensureFx(); const cam = camera.position; this.fx.position.set(cam.x, Math.max(0, cam.y - 4), cam.z);
+    const L = this.lines, Pt = this.pts, R = this.R, H = this.H;
+    L.visible = wet > 0.01; Pt.visible = (wx === 'snow' || wx === 'wind' || wx === 'sand') && w > 0.01;
+    { const v = ['play', 'duel', 'talk', 'victory'].includes(G.state) ? Math.round(wet * 70) / 1000 : 0; if (v !== this._rv) { this._rv = v; this.rain(v); } }
+    if (L.visible) {
+      L.material.opacity = 0.42 * wet; const a = L.geometry.attributes.position.array; const sp = 20 * dt;
+      for (let i = 0; i < this.N; i++) { const j = i * 6; let y = a[j + 1] - sp; if (y < 0) { y += H; a[j] = (Math.random() * 2 - 1) * R; a[j + 2] = (Math.random() * 2 - 1) * R; } a[j + 1] = y; a[j + 3] = a[j] + 0.08; a[j + 4] = y + 0.7; a[j + 5] = a[j + 2]; }
+      L.geometry.attributes.position.needsUpdate = true;
+    }
+    if (Pt.visible) {
+      const m = Pt.material; m.color.set(wx === 'snow' ? 0xffffff : wx === 'sand' ? 0xe0c088 : 0x9ac870); m.size = wx === 'snow' ? 0.11 : wx === 'sand' ? 0.06 : 0.13; m.opacity = (wx === 'sand' ? 0.55 : 0.85) * w;
+      const a = Pt.geometry.attributes.position.array; const t = now;
+      for (let i = 0; i < this.N; i++) {
+        const j = i * 3;
+        if (wx === 'snow') { a[j + 1] -= (0.9 + (i % 5) * 0.12) * dt; a[j] += Math.sin(t * 0.8 + i) * 0.3 * dt; }
+        else { a[j] += (wx === 'sand' ? 9 : 4.5) * dt; a[j + 1] += Math.sin(t * 2 + i) * (wx === 'sand' ? 0.3 : 0.9) * dt - (wx === 'wind' ? 0.25 * dt : 0); }
+        if (a[j + 1] < 0) { a[j + 1] += H; } if (a[j + 1] > H) a[j + 1] -= H; if (a[j] > R) { a[j] -= 2 * R; a[j + 2] = (Math.random() * 2 - 1) * R; }
+      }
+      Pt.geometry.attributes.position.needsUpdate = true;
+    }
+  },
+};
+const _cN = { top: new THREE.Color(0x040818), hor: new THREE.Color(0x182246), bot: new THREE.Color(0x04050a), dusk: new THREE.Color(0xff8a50), fog: new THREE.Color(0x10162c) };
+{ let t0 = performance.now(); const loop = () => { const t = performance.now(); const dt = Math.min(0.1, (t - t0) / 1000); t0 = t; try { Clima.frame(dt); } catch (e) { if (!Clima._err) { Clima._err = true; console.warn('clima', e); } } requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+if (location.hash === '#debug') window.__clima = Clima;
+
+// ---- src/07h-paseo.js ----
+// ============================================================================
+//  LOS PENSADORES PASEAN
+//  Mientras nadie se les acerca, los filósofos no se quedan quietos: bajan de su
+//  tarima, dan unos pasos pensativos por el camino, se detienen a mirar algo y
+//  vuelven. Cuando el jugador se acerca, se paran y lo miran. El maestro de la
+//  época espera en su sitio.
+// ============================================================================
+const Paseo = {
+  NEAR: 7.5, SPEED: 0.75,
+  pick(s) {
+    const h = s.st.pos, side = Math.sign(h.x) || 1;
+    if (Math.hypot(s.pos.x - h.x, s.pos.z - h.z) > 1 && Math.random() < 0.45) return { x: h.x, z: h.z }; // vuelve a su tarima
+    return { x: h.x - side * (0.8 + Math.random() * 3.2), z: clamp(h.z + (Math.random() * 2 - 1) * 3.4, ARENA.z0 + 2, ARENA.z1 - 2) };
+  },
+  step(s, dt, player, inDuel, y0) {
+    if (s.boss || inDuel || !s.group.visible || !s.fig.group.visible || (s.state !== 'idle' && s.state !== 'defeated')) { s._walk = 0; return; }
+    const f = s.fig, d = Math.hypot(player.pos.x - s.pos.x, player.pos.z - s.pos.z);
+    const free = G.state === 'play' && d > this.NEAR;
+    let moving = false;
+    if (free) {
+      if (s._wait == null) s._wait = 0.5 + Math.random() * 3;
+      if (!s._wt) { s._wait -= dt; if (s._wait <= 0) s._wt = this.pick(s); }
+      else {
+        const dx = s._wt.x - s.pos.x, dz = s._wt.z - s.pos.z, L = Math.hypot(dx, dz);
+        if (L < 0.15) { s._wt = null; s._wait = 2 + Math.random() * 5; }
+        else {
+          s.yaw = y0;
+          const v = Math.min(L, this.SPEED * dt); s.pos.x += (dx / L) * v; s.pos.z += (dz / L) * v; moving = true;
+          const want = Math.atan2(dx, dz); let df = want - s.yaw; while (df > Math.PI) df -= TAU; while (df < -Math.PI) df += TAU;
+          s.yaw += df * Math.min(1, dt * 4); s.group.rotation.y = s.yaw;
+        }
+      }
+    }
+    // sobre la tarima o en el suelo
+    const r = Math.hypot(s.pos.x - s.st.pos.x, s.pos.z - s.st.pos.z);
+    s.pos.y = damp(s.pos.y, r < 2.5 ? 0.14 : 0, 10, dt);
+    s._walk = damp(s._walk || 0, moving ? 1 : 0, 6, dt);
+    const w = s._walk; if (w > 0.01) { const ph = s.t * 6.5; f.group.position.y += Math.abs(Math.sin(ph)) * 0.05 * w; f.body.rotation.z = Math.sin(ph) * 0.03 * w; f.armR.rotation.x += Math.sin(ph) * 0.35 * w; f.armL.rotation.x -= Math.sin(ph) * 0.35 * w; f.head.rotation.x += 0.12 * w; }
+    else f.body.rotation.z = 0;
+  },
+};
+{
+  const u0 = Sage.prototype.update;
+  Sage.prototype.update = function (dt, t, player, inDuel) { const y0 = this.yaw; u0.call(this, dt, t, player, inDuel); try { Paseo.step(this, dt, player, inDuel, y0); } catch (e) { if (!Paseo._err) { Paseo._err = true; console.warn('paseo', e); } } };
+}
+
+// ---- src/07i-semanal.js ----
+// ============================================================================
+//  EL EVENTO DE LA SEMANA
+//  Cada lunes cambia: un pensador destacado (vencerlo da el doble de sabiduría y
+//  lleva una estrella dorada en su mundo) y dos retos más. Son los mismos para
+//  todos los jugadores esa semana. Completar los tres da un premio grande y el
+//  logro «Viajero de la semana». La tarjeta está en la portada y lleva directo
+//  al pensador.
+// ============================================================================
+const SEM_KEY = 'odisea-razon.semana';
+const SEM_RETOS = [['win', 'Win 5 debates', 5], ['ok', 'Get 25 arguments right', 25], ['streak', 'Get a streak of 6 right answers', 6], ['boss', 'Win over the master of an era', 1], ['win3', 'Win 3 debates without a mistake', 3]];
+ACH.push({ id: 'semana', i: '⭐', n: 'Traveller of the week', d: 'Complete the three challenges of the weekly event.' });
+const Semana = {
+  T: { eye: 'Event of the week', left: (n) => n === 1 ? 'last day' : `${n} days left`, feat: (s) => `Beat ${s} · double wisdom`, go: 'Go now ▶', done: 'Completed!', star: (s) => `⭐ This week's featured thinker is ${s}: win their debate for double wisdom.`, x2: 'weekly double reward', fin: '⭐ Event of the week complete! +1000 wisdom.', hit: (t) => '⭐ ' + `Weekly challenge complete: ${t}` },
+  week() { return Oracle.weekKey(); },
+  left() { const d = new Date(); return 7 - ((d.getDay() + 6) % 7); },
+  pool() { if (!this._pool) { this._pool = []; ERAS.forEach((e, idx) => { if (e.sacred) return; for (const s of e.sages) if (!s.boss) this._pool.push({ s, idx }); }); } return this._pool; },
+  info() {
+    const wk = this.week(); if (this._wk === wk) return this._info;
+    const r = mulberry32(Juntos.hash('sem' + wk)); const P = this.pool(); const f = P[Math.floor(r() * P.length)];
+    const idx = SEM_RETOS.map((_, i) => i); for (let i = idx.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+    this._wk = wk; this._info = { wk, feat: f.s, idx: f.idx, retos: idx.slice(0, 2).map((i) => SEM_RETOS[i]) }; return this._info;
+  },
+  st() { let s = store.get(SEM_KEY, null); const wk = this.week(); if (!s || s.wk !== wk) s = { wk, feat: 0, n: {}, done: false }; return s; },
+  progress(s = this.st()) { const I = this.info(); return [s.feat ? 1 : 0, ...I.retos.map(([k, , n]) => Math.min(1, (s.n[k] || 0) / n))]; },
+  bump(k, v, max) {
+    const s = this.st(), I = this.info(); const R = I.retos.find((x) => x[0] === k); if (!R || s.done) return;
+    const before = s.n[k] || 0; s.n[k] = max ? Math.max(before, v) : before + v; if (before < R[2] && s.n[k] >= R[2]) toast(this.T.hit(R[1]));
+    this.save(s);
+  },
+  save(s) {
+    if (!s.done && this.progress(s).every((p) => p >= 1)) { s.done = true; try { addScore(1000); } catch (e) { /* fuera de una partida */ } setTimeout(() => toast(this.T.fin), 900); achieve('semana'); Audio.victory && Audio.victory(); }
+    store.set(SEM_KEY, s); this.paint();
+  },
+  paint() {
+    const card = this.card(); if (!card) return; const I = this.info(), s = this.st(), P = this.progress(s);
+    card.querySelector('.sm-eye').textContent = `⭐ ${this.T.eye} · ${s.done ? this.T.done : this.T.left(this.left())}`;
+    setMedal(card.querySelector('.medal'), I.feat.id, I.feat.short[0]);
+    card.querySelector('.sm-t').textContent = this.T.feat(I.feat.short); card.querySelector('.sm-e').textContent = ERAS[I.idx].name;
+    const rows = [[this.T.feat(I.feat.short).split(' · ')[0], P[0]], ...I.retos.map(([k, t, n], j) => [`${t}${n > 1 && P[j + 1] < 1 ? ` (${Math.min(n, s.n[k] || 0)}/${n})` : ''}`, P[j + 1]])];
+    const box = card.querySelector('.sm-r'); box.innerHTML = '';
+    for (const [t, p] of rows) { const r = document.createElement('span'); r.className = p >= 1 ? 'ok' : ''; r.textContent = (p >= 1 ? '✓ ' : '○ ') + t; box.appendChild(r); }
+    card.querySelector('.sm-go').textContent = this.T.go; card.classList.toggle('done', !!s.done);
+  },
+  card() {
+    let c = document.getElementById('sem-card'); if (c) return c; const anchor = document.getElementById('fr-dia'); if (!anchor) return null;
+    c = document.createElement('button'); c.id = 'sem-card'; c.innerHTML = '<span class="sm-eye"></span><span class="sm-m"><i class="medal"></i><span class="sm-tx"><b class="sm-t"></b><small class="sm-e"></small></span><span class="sm-go"></span></span><span class="sm-r"></span>';
+    anchor.before(c); c.addEventListener('click', () => this.go()); return c;
+  },
+  go() {
+    Audio.init && Audio.init(); Audio.click && Audio.click(); const I = this.info();
+    if (typeof Ir !== 'undefined') Ir.pend = { sage: I.feat.id, de: '', idx: I.idx };
+    G.travelFrom = 'title'; G.explore = false; travelTo(I.idx);
+  },
+  // estrella dorada sobre el pensador de la semana
+  mark() {
+    if (!world) return; const I = this.info(); if (world.idx !== I.idx) return; const s = sages.find((x) => x.data.id === I.feat.id); if (!s || s._star) return;
+    const cv = document.createElement('canvas'); cv.width = cv.height = 128; const c = cv.getContext('2d');
+    c.translate(64, 64); c.beginPath(); for (let i = 0; i < 10; i++) { const r = i % 2 ? 24 : 56, a = (i / 10) * Math.PI * 2 - Math.PI / 2; c.lineTo(Math.cos(a) * r, Math.sin(a) * r); } c.closePath();
+    const g = c.createRadialGradient(0, -8, 4, 0, 0, 60); g.addColorStop(0, '#fff6c8'); g.addColorStop(0.5, '#ffd36a'); g.addColorStop(1, '#c88a20'); c.fillStyle = g; c.shadowColor = '#ffb030'; c.shadowBlur = 14; c.fill(); c.lineWidth = 4; c.strokeStyle = '#7a4a10'; c.stroke();
+    const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace;
+    const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false, toneMapped: false })); sp.scale.setScalar(0.5); sp.position.y = 2.75 * s.scale + 0.95; s.group.add(sp); s._star = sp;
+    world.anim.push((t) => { sp.position.y = 2.75 * s.scale + 0.95 + Math.sin(t * 2.4) * 0.08; sp.material.rotation = Math.sin(t * 1.3) * 0.25; sp.visible = s.state !== 'defeated' || !this.st().feat; });
+  },
+};
+{
+  const w0 = Duel.win.bind(Duel);
+  Duel.win = function () {
+    const s = this.sage; w0(); if (!s) return;
+    try {
+      const I = Semana.info(), st = Semana.st();
+      if (s.data.id === I.feat.id) { const b = s.boss ? 500 : 250; addScore(b); popup(`+${b}<small>⭐ ${Semana.T.x2}</small>`); if (!st.feat) { st.feat = 1; Semana.save(st); toast(Semana.T.hit(Semana.T.feat(I.feat.short).split(' · ')[0])); } }
+      Semana.bump('win', 1); if (s.boss) Semana.bump('boss', 1); if (!s._wrongs) Semana.bump('win3', 1);
+    } catch (e) { console.warn('semana', e); }
+  };
+  const a0 = Duel.answer.bind(Duel);
+  Duel.answer = function (i) { const was = this.answered; a0(i); if (was || !this.answered || this._oracle) return; try { if (i >= 0 && this.opts[i] && this.opts[i].ok) { Semana.bump('ok', 1); Semana.bump('streak', G.streak, true); } } catch (e) { /* nada */ } };
+  const e0 = enterEra;
+  enterEra = function () {
+    const was = G.state; e0(); if (was !== 'intro' || G.state !== 'play') return;
+    try { Semana.mark(); const I = Semana.info(); if (world.idx === I.idx && !Semana.st().feat) setTimeout(() => toast(Semana.T.star(I.feat.short)), 2600); } catch (e) { console.warn('semana', e); }
+  };
+}
+setTimeout(() => { try { Semana.paint(); } catch (e) { console.warn('semana', e); } }, 800);
+{
+  const st = document.createElement('style');
+  st.textContent = '#sem-card{display:block;width:min(440px,92vw);margin:10px auto 0;padding:10px 14px 11px;text-align:left;border-radius:14px;cursor:pointer;color:#fff4dc;font-family:var(--body,Georgia);background:linear-gradient(150deg,rgba(90,60,14,.85),rgba(30,20,8,.88));border:1.5px solid var(--gold,#d8b25a);box-shadow:0 0 0 0 rgba(255,211,106,.4),0 6px 22px rgba(0,0,0,.45);animation:smGlow 2.8s ease-in-out infinite}'
+    + '@keyframes smGlow{50%{box-shadow:0 0 22px rgba(255,211,106,.45),0 6px 22px rgba(0,0,0,.45)}}#sem-card.done{animation:none;opacity:.85}'
+    + '#sem-card .sm-eye{display:block;font-family:var(--display,Georgia);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-bright,#ffd36a)}'
+    + '#sem-card .sm-m{display:flex;align-items:center;gap:10px;margin:6px 0 6px}#sem-card .medal{width:42px;height:42px;flex:none;font-size:1.1rem}#sem-card .sm-tx{flex:1;min-width:0}#sem-card .sm-t{display:block;font-size:1rem;color:#ffe9b0;line-height:1.2}#sem-card .sm-e{display:block;font-size:.78rem;opacity:.8}'
+    + '#sem-card .sm-go{flex:none;font-family:var(--display,Georgia);font-size:.74rem;letter-spacing:.06em;padding:6px 10px;border-radius:999px;background:linear-gradient(180deg,#ffe9a8,#e2b04e);color:#1a1206}'
+    + '#sem-card .sm-r{display:flex;flex-direction:column;gap:2px;font-size:.8rem;opacity:.92}#sem-card .sm-r .ok{color:#9fe08a}';
+  document.head.appendChild(st);
+}
+if (location.hash === '#debug') window.__semana = Semana;
+
+// ---- src/07j-hud.js ----
+// ============================================================================
+//  HUD ORDENADO EN EL CELULAR (vertical)
+//  Arriba a la izquierda, una tarjeta con la época y el objetivo en dos líneas
+//  (al tocarla se lee entero). Arriba a la derecha, una fila de botones redondos
+//  (foto, pantalla completa, pausa) y debajo la sabiduría y los fragmentos.
+//  «Jugar en línea» pasa bajo los marcadores para no tapar el nombre de la época
+//  y la ruta de los pensadores baja un poco para que nada se pise.
+// ============================================================================
+{
+  const st = document.createElement('style');
+  st.textContent = '@media (max-width:760px) and (orientation:portrait){'
+    + 'body.touch .hud-tl{top:calc(10px + var(--sat));left:calc(10px + var(--sal));max-width:calc(100% - 172px);box-sizing:border-box;padding:6px 10px 7px;border-radius:12px;background:linear-gradient(180deg,rgba(14,10,6,.66),rgba(14,10,6,.44));border:1px solid rgba(216,178,90,.35);pointer-events:auto;cursor:pointer}'
+    + 'body.touch .hud-era{font-size:.6rem;letter-spacing:.1em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'
+    + 'body.touch .hud-obj{font-size:.78rem;line-height:1.25;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}'
+    + 'body.touch .hud-tl.open .hud-obj{display:block;-webkit-line-clamp:unset}'
+    + 'body.touch .hud-tr{top:calc(58px + var(--sat));right:calc(10px + var(--sar));gap:10px;padding:3px 10px 4px;border-radius:12px;background:rgba(14,10,6,.5);border:1px solid rgba(216,178,90,.3)}'
+    + 'body.touch #tfs{top:calc(10px + var(--sat));right:calc(58px + var(--sar))}body.touch #tpause{top:calc(10px + var(--sat));right:calc(10px + var(--sar))}'
+    + 'body.touch #b-foto{top:calc(10px + var(--sat));left:auto;right:calc(106px + var(--sar));width:40px;height:40px;font-size:1.1rem}'
+    + 'body.touch #mp-badge{top:calc(100px + var(--sat));left:auto;right:calc(10px + var(--sar));transform:none;font-size:.72rem;padding:3px 10px}'
+    + 'body.touch #path{top:calc(134px + var(--sat))}'
+    + 'body.touch .hud-bl{padding:5px 8px 6px;border-radius:10px;background:rgba(14,10,6,.45);box-sizing:border-box}'
+    + 'body.touch #hud::before{height:calc(170px + var(--sat))}'
+    + '}';
+  document.head.appendChild(st);
+  const tl = document.querySelector('.hud-tl');
+  if (tl) tl.addEventListener('click', () => { if (IS_TOUCH) { tl.classList.toggle('open'); clearTimeout(tl._t); if (tl.classList.contains('open')) tl._t = setTimeout(() => tl.classList.remove('open'), 6000); } });
+}
+
+// ---- src/07k-metricas.js ----
+// ============================================================================
+//  ESTADÍSTICAS ANÓNIMAS
+//  Solo contadores por día: cuántas veces se entra en cada época, cuántos debates
+//  se ganan o se pierden en ella, cuántos completan la guía inicial… Sin ningún
+//  identificador del jugador, sin apodos ni respuestas: no se puede saber quién
+//  hizo qué. Sirven para ver dónde se atasca la gente y mejorar esas partes.
+//  Se envían agrupados cada minuto. Se pueden desactivar en Ajustes y respetan
+//  «No rastrear» del navegador. Sin la función en Supabase (tools/cuentas4.sql)
+//  no hacen nada.
+// ============================================================================
+const Metricas = {
+  q: new Map(), off: false,
+  ok() { return !this.off && G.settings.metricas !== false && typeof CUENTA_CFG !== 'undefined' && location.protocol === 'https:'; },
+  hit(ev, era) {
+    if (G.settings.metricas === false) return;
+    const e = String(era == null ? (world ? ERAS[world.idx].id : '') : era); const k = ev + '|' + e; this.q.set(k, (this.q.get(k) || 0) + 1);
+    if (this.q.size > 40) this.flush();
+  },
+  flush(beacon) {
+    if (!this.q.size) return; if (!this.ok()) { this.q.clear(); return; }
+    const lote = [...this.q].map(([k, n]) => { const [e, era] = k.split('|'); return { e, era, n }; }); this.q.clear();
+    try {
+      fetch(CUENTA_CFG.url + '/rest/v1/rpc/odisea_metricas_sumar', { method: 'POST', keepalive: !!beacon, headers: { apikey: CUENTA_CFG.key, Authorization: 'Bearer ' + CUENTA_CFG.key, 'Content-Type': 'application/json' }, body: JSON.stringify({ p_lote: lote }) })
+        .then((r) => { if (r.status === 404) this.off = true; }).catch(() => {});
+    } catch (e) { /* sin red */ }
+  },
+};
+setInterval(() => Metricas.flush(), 60000);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') Metricas.flush(true); });
+// qué se cuenta
+Metricas.hit('sesion', '');
+{
+  const e0 = enterEra; enterEra = function () { const was = G.state; e0(); if (was === 'intro' && G.state === 'play') Metricas.hit('entra'); };
+  const w0 = Duel.win.bind(Duel); Duel.win = function () { const s = this.sage; w0(); if (s) Metricas.hit(s.boss ? 'maestro' : 'vence'); };
+  const g0 = gameOver; gameOver = function () { g0(); Metricas.hit('derrota'); };
+  const a0 = Duel.answer.bind(Duel); Duel.answer = function (i) { const was = this.answered; a0(i); if (!was && this.answered && !this._oracle) Metricas.hit(i < 0 ? 'tiempo' : this.opts[i] && this.opts[i].ok ? 'acierto' : 'fallo'); };
+  const f0 = Guia.finish.bind(Guia); Guia.finish = function (win) { if (Guia.step >= 0) Metricas.hit(win ? 'guia_fin' : 'guia_salta', ''); f0(win); };
+  const p0 = enterPortal; enterPortal = function () { Metricas.hit('portal'); p0(); };
+  if (typeof Trivia !== 'undefined' && Trivia.start) { const t0 = Trivia.start.bind(Trivia); Trivia.start = function () { Metricas.hit('torneo', ''); return t0(); }; }
+}
+if (location.hash === '#debug') window.__metricas = Metricas;
 
 </script>
 </body>

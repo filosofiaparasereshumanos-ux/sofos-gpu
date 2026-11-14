@@ -6,7 +6,7 @@ const G = {
   state: 'loading', prevScreen: null, eraIdx: 0, score: 0, frags: 0, hp: 100, maxHp: 100,
   stats: { correct: 0, wrong: 0, kills: 0, time: 0 }, eraStart: null,
   codex: new Set(store.get(CODEX_KEY, [])),
-  settings: Object.assign({ sens: 1, music: 0.7, sfx: 0.85, quality: IS_TOUCH ? 'mid' : 'high', invertY: false, voices: true, autofire: true, vibrate: true, trialDiff: 'normal' }, store.get(SET_KEY, {})),
+  settings: Object.assign({ sens: 1, music: 0.7, sfx: 0.85, quality: IS_TOUCH ? 'mid' : 'high', invertY: false, voices: true, autofire: true, vibrate: true, trialDiff: 'normal', clima: true, metricas: !(navigator.doNotTrack === '1' || window.doNotTrack === '1') }, store.get(SET_KEY, {})),
   streak: 0, bestStreak: 0,
   noLock: false, intentionalUnlock: false,
 };
@@ -1317,7 +1317,7 @@ function syncSettings() {
   document.querySelectorAll('#s-diff button').forEach((b) => b.classList.toggle('on', b.dataset.v === G.settings.trialDiff));
 }
 document.querySelectorAll('#s-diff button').forEach((b) => b.addEventListener('click', () => { G.settings.trialDiff = b.dataset.v; saveSettings(); syncSettings(); toast('La dificultad cambia las preguntas de los debates y las pruebas del camino.'); }));
-const TOGGLES = [['#s-voices', 'voices'], ['#s-auto', 'autofire'], ['#s-vib', 'vibrate'], ['#s-mundo', 'mundo']];
+const TOGGLES = [['#s-voices', 'voices'], ['#s-auto', 'autofire'], ['#s-vib', 'vibrate'], ['#s-mundo', 'mundo'], ['#s-clima', 'clima'], ['#s-metricas', 'metricas']];
 for (const [id, k] of TOGGLES) document.querySelectorAll(id + ' button').forEach((b) => b.addEventListener('click', () => {
   G.settings[k] = b.dataset.v === '1'; saveSettings(); syncSettings();
   if (k === 'voices') { if (G.settings.voices) Voice.say('La filosofía comienza con el asombro.'); else Voice.stop(); }
@@ -1467,7 +1467,7 @@ function frame() {
   if (['play', 'duel', 'victory', 'talk', 'place', 'lesson'].includes(G.state)) lamp.visible = true;
   // llama de la lámpara
   const fl = lamp.userData.flame; fl.scale.set(1 + Math.sin(tAcc * 23) * 0.08, 1.6 + Math.sin(tAcc * 17) * 0.2, 1);
-  lamp.userData.light.intensity = (world && (world.theme.indoor || world.theme.stars) ? 5 : 2.5) * (0.9 + Math.sin(tAcc * 19) * 0.1);
+  lamp.userData.light.intensity = (world && (world.theme.indoor || world.theme.stars) ? 5 : 2.5) * (0.9 + Math.sin(tAcc * 19) * 0.1) * (typeof Clima !== 'undefined' ? Clima.lampK : 1);
   particles.update(dt);
   Audio.updateMusic();
   if (G.settings.quality !== 'low') composer.render(); else renderer.render(scene, camera);
