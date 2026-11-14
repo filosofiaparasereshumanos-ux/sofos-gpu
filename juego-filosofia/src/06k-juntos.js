@@ -79,8 +79,11 @@ const Juntos = {
     if (!this.welcomed) { this.welcomed = true; setTimeout(() => toast('🌍 Estás en línea: verás a otros viajeros de esta época. Toca el letrero de arriba para cambiar tu avatar.'), 1500); }
   },
   paintBadge() {
-    const b = $('#mp-badge'); b.hidden = !this.on; if (!this.on) return;
+    const b = $('#mp-badge'); if (!this.on) { b.hidden = true; return; }
     const n = [...this.R.values()].filter((r) => r.e === G.eraIdx).length;
+    // solo en el mundo (nunca encima de conversaciones o paneles) y sin el aviso de «0 viajeros» en el mundo abierto
+    const busy = this.net === 'reconnect' || this.net === 'connecting' || this.net === 'error';
+    const hide = G.state !== 'play' || (this.mode !== 'grupo' && n === 0 && !busy); if (b.hidden !== hide) b.hidden = hide;
     const tag = this.mode === 'grupo' ? `👥 Grupo ${this.code}` : '🌍 Mundo abierto';
     b.textContent = this.net === 'reconnect' || this.net === 'connecting' ? `${tag} · conectando…` : this.net === 'error' ? `${tag} · sin conexión` : `${tag} · ${n} ${n === 1 ? 'viajero' : 'viajeros'} aquí`;
     $('#mp-emo').hidden = !(G.state === 'play');
@@ -126,6 +129,7 @@ const Juntos = {
     if (!this.on) { // sin conexión: el letrero invita a jugar en línea
       const b = $('#mp-badge'); const show = G.state === 'play' && Sala.ok(); if (b.hidden === show) b.hidden = !show; if (show && b.textContent !== '🌍 Jugar en línea') b.textContent = '🌍 Jugar en línea'; return; }
     const playing = G.state === 'play' && world && world.idx === G.eraIdx;
+    if ((this.badgeT = (this.badgeT || 0) - dt) <= 0) { this.badgeT = 0.4; this.paintBadge(); }
     // mi posición: 3 veces por segundo al moverme, cada 4 s si estoy quieto
     this.sendT -= dt; const p = player.pos; const moved = !this.last || Math.hypot(p.x - this.last[0], p.z - this.last[1]) > 0.15 || Math.abs(player.yaw - this.last[2]) > 0.12;
     const nowS = performance.now(); if (MRT.joined && this.sendT <= 0 && (moved || this.sendT < -8 || nowS - (this.lastSent || 0) > 7000)) { this.lastSent = nowS;
