@@ -359,4 +359,4 @@ on('#b-logros', () => { openSub('logros'); renderLogros(); });
 // ============================================================================
 //  ARRANQUE
 // ============================================================================
-boot().then(() => { refreshTitleExtras(); Fame.init(); if (typeof Reto !== 'undefined') Reto.boot(); if (typeof Sala !== 'undefined') Sala.boot(); });
+boot().then(() => { refreshTitleExtras(); Fame.init(); if (typeof Reto !== 'undefined') Reto.boot(); if (typeof Sala !== 'undefined') Sala.boot(); if (typeof Ir !== 'undefined') Ir.boot(); });

@@ -54,7 +54,9 @@ const APP_HEAD = `<meta name="theme-color" content="#120d07">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Odisea de la Razón · ¿Te atreves a pensar?">
 <meta property="og:description" content="Conversa y debate con Sócrates, Hipatia, Sor Juana y 228 pensadores más en 37 épocas, de Sumer a nuestros días. Explora el mundo junto a otros viajeros y debate con ellos. Gratis, en el navegador.">
-<meta property="og:image" content="https://filosofiaparasereshumanos-ux.github.io/sofos-gpu/juego-filosofia/marketing/portada-titulo.jpg">
+<meta property="og:image" content="https://filosofiaparasereshumanos-ux.github.io/sofos-gpu/juego-filosofia/marketing/vista-previa.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 `;
 const a = page(read('src/template.html'), `const NARR_INDEX = ${narr};\n` + join_(parts3d), 'El primer juego educativo completo de filosofía, ciencia e historia: conversa y debate con 231 pensadoras y pensadores en 37 épocas, de Sumer a nuestros días. Gratis, en el navegador.', APP_HEAD);
