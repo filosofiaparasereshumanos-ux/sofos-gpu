@@ -12280,7 +12280,7 @@ const BOOKS = [
     { id: 'fedon', author: 'platon', by: 'Plato', title: 'Phaedo', year: 'towards 380 B.C.', kind: 'dialog', at: [14, 11],
       parts: [
         { t: 'The Last Day of Socrates', x: 'Phaedo tells a friend how Socrates\' last day was in Athens prison. His disciples weep, but Socrates is calm and conversing with them. He asks them why a philosopher should fear death, if his whole life has been a preparation for it.' },
-        { t: 'Philosopher is learning to die', x: 'For Socrates, the body distracts the soul with desires, fears and sensations. The philosopher tries to think with the soul alone, as free as possible from the body. Death is the separation of soul and body, so that the philosopher should not fear it: it is what he always sought.' },
+        { t: 'To philosophise is to learn how to die', x: 'For Socrates, the body distracts the soul with desires, fears and sensations. The philosopher tries to think with the soul alone, as free as possible from the body. Death is the separation of soul and body, so that the philosopher should not fear it: it is what he always sought.' },
         { t: 'Tests of immortality', x: 'Socrates offers arguments that the soul is immortal. The opposites are born of opposites, and life is born of death. Learning is remembering what the soul has already seen before birth, the Ideas. And the soul resembles the Ideas: it is simple, invisible and does not decompose.' },
         { t: 'The hemlock', x: 'In the evening, Socrates bathes, says goodbye to his family and drinks the hemlock without trembling. Ask your friends not to cry. His last words are: Criton, we owe a rooster to Asclepio; pay it and don\'t forget it. Thus he died, says Phaedo, the wisest and the most righteous of men.' },
       ],
@@ -26460,7 +26460,7 @@ const PO_KEY = 'odisea-razon.posturas';
 ACH.push({ id: 'polemista', i: '🗣', n: 'Debater', d: 'Win one of your own debates with a strong position.' });
 const Postura = {
   T: {
-    tabs: ['🎧 Escuchar debates', '🗣 Your debate'], h: 'Your debate', note: 'A thinker defends their idea and you reply. Choose your arguments well, and watch out for fallacies.',
+    tabs: ['🎧 Escuchar debates', '🗣 Your debate', '👥 Mesas redondas'], h: 'Your debate', note: 'A thinker defends their idea and you reply. Choose your arguments well, and watch out for fallacies.',
     you: 'You', solidez: 'Strength of your position', next: 'Next', verdict: 'See the verdict', again: 'Try again', back: '◂ Otros pensadores', round: (i, n) => `Round ${i} of ${n}`,
     ok: '✓ Strong argument', meh: '~ Argumento flojo', bad: (f) => `✗ Falacia: ${f}`, best: (s, m) => `Your best result: ${s} of ${m}`, todo: 'Not tried yet',
     lv: { alto: 'Strong position', medio: 'Debatable position', bajo: 'Weak position' }, pick: 'Choose your answer:', pts: (n) => `+${n} wisdom`,
@@ -26470,8 +26470,8 @@ const Postura = {
   // ---------------------------------------------------------------- pestañas
   ensure() {
     const card = document.querySelector('#vs .vs-card'); if (!card || document.getElementById('po')) return;
-    const tabs = document.createElement('div'); tabs.id = 'vs-tabs'; tabs.innerHTML = '<button data-t="0"></button><button data-t="1"></button>';
-    tabs.querySelectorAll('button').forEach((b, i) => { b.textContent = this.T.tabs[i]; b.addEventListener('click', () => { Audio.click && Audio.click(); this.tab(i); }); });
+    const tabs = document.createElement('div'); tabs.id = 'vs-tabs'; tabs.innerHTML = '<button data-t="0"></button><button data-t="2"></button><button data-t="1"></button>';
+    tabs.querySelectorAll('button').forEach((b) => { const i = +b.dataset.t; b.textContent = this.T.tabs[i]; b.addEventListener('click', () => { Audio.click && Audio.click(); this.tab(i); }); });
     card.insertBefore(tabs, card.querySelector('#vs-list'));
     const po = document.createElement('div'); po.id = 'po'; po.hidden = true;
     po.innerHTML = '<div id="po-list"><div class="eyebrow" style="text-align:center"></div><h3 class="av-h"></h3><p class="qd-note" style="text-align:center"></p><div id="po-items"></div></div>'
@@ -26486,9 +26486,9 @@ const Postura = {
   },
   tab(i) {
     this.ensure(); this.gen++; Voice.stop(); this.mode = i;
-    document.querySelectorAll('#vs-tabs button').forEach((b, k) => b.classList.toggle('on', k === i));
-    $('#vs-list').hidden = i !== 0; $('#vs-play').hidden = true; $('#po').hidden = i !== 1;
-    if (i === 0) Versus.list(); else this.list();
+    document.querySelectorAll('#vs-tabs button').forEach((b) => b.classList.toggle('on', +b.dataset.t === i));
+    $('#vs-list').hidden = i !== 0; $('#vs-play').hidden = true; $('#po').hidden = i !== 1; if (typeof Mesa !== 'undefined') Mesa.show(i === 2);
+    if (i === 0) Versus.list(); else if (i === 1) this.list();
   },
   list() {
     const S = SAGE_BY_ID(), B = this.best(); $('#po-list').hidden = false; $('#po-play').hidden = true; const box = $('#po-items'); box.innerHTML = '';
@@ -26504,7 +26504,7 @@ const Postura = {
   open(P, onEnd) {
     if ($('#vs').hidden) Panel.open('vs'); this.ensure();
     document.getElementById('vs-tabs').hidden = !!P.final; $('#vs-list').hidden = true; $('#vs-play').hidden = true; $('#po').hidden = false;
-    document.querySelectorAll('#vs-tabs button').forEach((b, k) => b.classList.toggle('on', k === 1)); this.play(P, onEnd);
+    document.querySelectorAll('#vs-tabs button').forEach((b) => b.classList.toggle('on', b.dataset.t === '1')); if (typeof Mesa !== 'undefined') Mesa.show(false); this.play(P, onEnd);
   },
   play(P, onEnd) {
     this.P = P; this.i = 0; this.sc = 0; this.picks = []; this.onEnd = onEnd || null; this.W = this.who(P);
@@ -26568,7 +26568,7 @@ const Postura = {
 }
 {
   const st = document.createElement('style');
-  st.textContent = '#vs-tabs{display:flex;gap:6px;margin:0 34px 10px 0}#vs-tabs[hidden]{display:none}#vs-tabs button{flex:1;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--parchment);border-radius:10px;padding:8px 6px;font:inherit;font-size:.86rem;cursor:pointer}#vs-tabs button.on{background:linear-gradient(180deg,#ffe9a8,#e2b04e);color:#1a1206;border-color:#ffe9a8}'
+  st.textContent = '#vs-tabs{display:flex;gap:5px;margin:0 34px 10px 0}#vs-tabs[hidden]{display:none}#vs-tabs button{flex:1;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--parchment);border-radius:10px;padding:7px 4px;font:inherit;font-size:.78rem;line-height:1.2;cursor:pointer}#vs-tabs button.on{background:linear-gradient(180deg,#ffe9a8,#e2b04e);color:#1a1206;border-color:#ffe9a8}'
     + '#po[hidden],#po-list[hidden],#po-play[hidden]{display:none}.po-item em{display:block;font-style:normal;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--gold,#d8b25a)}.po-item .po-st{font-style:normal;color:#ffd36a;font-size:.9rem;letter-spacing:-.05em}'
     + '.po-back{border:0;background:none;color:var(--gold,#d8b25a);font:inherit;font-size:.85rem;cursor:pointer;padding:0 0 6px}.po-back[hidden]{display:none}'
     + '.po-head{display:flex;align-items:center;gap:12px;margin:0 30px 8px 0}.po-head .medal{width:54px;height:54px;flex:none;font-size:1.3rem}.po-head b{display:block;font-family:var(--display);font-weight:normal;color:var(--gold-bright,#ffd36a);font-size:1.15rem}.po-head span{display:block;font-size:.95rem;color:#f3e6c4}'
@@ -26710,6 +26710,196 @@ setTimeout(() => { try { Historia.paintCard(); } catch (e) { console.warn('histo
   document.head.appendChild(st);
 }
 if (location.hash === '#debug') window.__historia = Historia;
+
+// ---- src/07q-mesas-datos.js ----
+// ============================================================================
+//  MESAS REDONDAS: cuatro pensadores, cuatro posturas, una misma pregunta.
+//  Tres rondas (cada uno presenta su idea, responde a otro y cierra) y el
+//  jugador elige qué postura lo convence más. Cada asiento tiene su propia voz.
+//  (datos sin dependencias: también los leen las herramientas de voz)
+// ============================================================================
+const MESAS = [
+  { id: 'dios', q: 'Does God exist? How could we know?', tema: 'dios', sabios: ['tomas', 'pascal', 'spinoza', 'russell'],
+    posturas: { tomas: 'Reason can prove that God exists', pascal: 'God is felt with the heart', spinoza: 'God is the whole of Nature', russell: 'There is not enough evidence: better to doubt' },
+    turns: [
+      ['tomas', 'Look at the world: everything that moves is moved by something else, and everything that exists has a cause. We cannot go back to infinity. Reason arrives at a first cause, and that is what everyone calls God.'],
+      ['pascal', 'I admire your five ways, Thomas, but I know no one who was ever converted by an argument. It is the heart that feels God, not reason. The heart has its reasons, which reason does not know.'],
+      ['spinoza', 'You both picture God as a king outside the world. I say: God, that is, Nature. God is not beyond things: he is the infinite substance of which everything is part, you and I included.'],
+      ['russell', 'Gentlemen, each of you offers me a different God: a cause, a feeling, the whole of nature. I ask something simpler: what is the evidence? Without it, the honest thing is to suspend judgement.'],
+      ['tomas', 'Russell, here is your proof: if everything depended on something else, nothing would exist. Some reality must exist by itself. That is not a feeling: it is logic.'],
+      ['russell', 'And if everything needs a cause, what is the cause of God? If God can do without one, so could the universe. Your argument stops exactly where it suits you.'],
+      ['spinoza', 'Russell is right against the God who rewards and punishes, made in the image of our fears. But not against mine: the necessary order of nature exists, and knowing it brings a calm joy.'],
+      ['pascal', 'Spinoza, your God is admirable, but he does not listen to me. I am not looking for a substance: I am looking for someone. And to you, Russell: not betting is also a bet. We must choose, and I choose with the heart.'],
+      ['tomas', 'Let reason and faith join hands. Reason shows that God exists; faith tells us who he is.'],
+      ['pascal', 'Man is a thinking reed. Let us think, yes, but without forgetting that reason’s last step is to recognise that there are infinitely many things beyond it.'],
+      ['spinoza', 'Not to weep, not to laugh, but to understand. Whoever understands nature loves God, even without praying.'],
+      ['russell', 'I prefer honest doubt to a doubtful certainty. And no one should be persecuted for what they believe or do not believe.'],
+    ],
+    cierre: 'Thomas trusts reason to reach God; Pascal, the heart; Spinoza identifies God with nature; Russell asks for evidence and chooses doubt. Four paths that remain open.' },
+  { id: 'felicidad', q: 'What is happiness?', tema: 'felicidad', sabios: ['aristoteles', 'epicuro', 'epicteto', 'buda'],
+    posturas: { aristoteles: 'Living with virtue and developing the best in you', epicuro: 'Simple pleasures and a soul without fear', epicteto: 'Caring only about what depends on you', buda: 'Extinguishing the thirst of craving' },
+    turns: [
+      ['aristoteles', 'We all seek happiness, but it is not a passing pleasure: it is a whole life well lived. We are happy when we develop the best in ourselves, reason and virtue, in the company of friends.'],
+      ['epicuro', 'I would put it more simply: happiness is freedom from pain in the body and from trouble in the soul. Bread, water, friends and conversation. Whoever is not content with little is content with nothing.'],
+      ['epicteto', 'I was a slave, and I learned something: some things depend on us and others do not. It is not things that make us suffer, but what we think about them. Happy is the one who cares only about what depends on them.'],
+      ['buda', 'Everything changes, and clinging to what changes makes us suffer. True peace comes when the thirst of craving is extinguished, along a middle way, without excess or self-punishment.'],
+      ['aristoteles', 'Buddha, Epictetus: it worries me that you ask so little of the world. Without health, without friends, without a just city, it is hard to be happy. Virtue also needs a little good fortune.'],
+      ['epicteto', 'If your happiness depends on fortune, it will always be in danger. They can chain my leg, but not my will. No one can take that from me.'],
+      ['epicuro', 'I agree with you, Epictetus, about not living in fear. But there is no need for so much hardness: a calm pleasure and a sincere friendship are goods of the happy life too.'],
+      ['buda', 'Even calm pleasure passes, Epicurus. If you cling to it, you will suffer when you lose it. Enjoy without grasping, like water running through your fingers.'],
+      ['aristoteles', 'One swallow does not make a summer, nor does one happy day make a happy life. Happiness is built through habits.'],
+      ['epicuro', 'And let us not forget friendship: of all that wisdom gives us for a happy life, it is the greatest.'],
+      ['epicteto', 'Do not ask for things to happen as you wish: wish them to happen as they do, and you will live in peace.'],
+      ['buda', 'Each of us must make our own effort: teachers only point the way.'],
+    ],
+    cierre: 'Aristotle links happiness to virtue; Epicurus, to calm pleasure and friendship; Epictetus, to mastering what depends on us; the Buddha, to freedom from craving. Many people take a little from each.' },
+  { id: 'estado', q: 'Why do we obey the state?', tema: 'moral', sabios: ['hobbes', 'locke', 'rousseau', 'marx'],
+    posturas: { hobbes: 'Out of fear of chaos: we need a strong power', locke: 'To protect our natural rights', rousseau: 'Because the law comes from the will of all', marx: 'The state serves the ruling class' },
+    turns: [
+      ['hobbes', 'Without a common power to keep us in check, we would live in a war of all against all. We obey because, in exchange, the sovereign gives us peace and security.'],
+      ['locke', 'I do not believe nature is a war. We are born with rights: life, liberty and property. We create government to protect them, and if it violates them, the people may resist.'],
+      ['rousseau', 'Obeying a master is not freedom. The only legitimate law is the one born of the general will: when I obey a law that I helped to make, I remain free.'],
+      ['marx', 'You speak of the state as if it belonged to everyone. But in a society divided into classes, the state mainly protects those who own the factories and the land.'],
+      ['hobbes', 'Locke, if the people can rebel whenever they dislike the government, we will return to chaos. Peace needs a power that is not questioned.'],
+      ['locke', 'A power that cannot be questioned can become worse than chaos. That is why power must be divided and rulers, too, must be subject to the law.'],
+      ['rousseau', 'And you, Marx, are right about one thing: unequal property corrupted society. The first man who fenced off a piece of land and said “this is mine” founded inequality.'],
+      ['marx', 'That is why changing the laws is not enough: we must change who owns what is produced. Only then will the state stop being a tool of some against others.'],
+      ['hobbes', 'My fear comes from having seen civil war. Whoever has lived through it values peace above almost everything.'],
+      ['locke', 'The end of law is not to abolish freedom, but to preserve and enlarge it.'],
+      ['rousseau', 'Man is born free, and everywhere he is in chains. The task is to turn those chains into a just pact.'],
+      ['marx', 'Philosophers have only interpreted the world in various ways. The point is to change it.'],
+    ],
+    cierre: 'Hobbes obeys for security; Locke, to protect rights; Rousseau, because the law comes from everyone; Marx distrusts the state in an unequal society. Today’s democracies mix ideas from all four.' },
+  { id: 'amor', q: 'What is love?', tema: 'amor', sabios: ['platon', 'safo', 'agustin', 'beauvoir'],
+    posturas: { platon: 'A ladder towards Beauty', safo: 'A sweet and bitter force that sweeps us away', agustin: 'The love that orders a whole life', beauvoir: 'The meeting of two freedoms' },
+    turns: [
+      ['platon', 'Love is the desire for the beauty we lack. It begins with one person, but it invites us to climb: from beautiful bodies to souls, and from there to Beauty itself.'],
+      ['safo', 'Eros shakes me like the wind in the oaks. When I see you, my voice breaks and a fire runs under my skin. Love is sweet and bitter: it is not explained, it is suffered and sung.'],
+      ['agustin', 'I loved much and badly, seeking in creatures what I only found in God. Love, and do what you will: if love is right, everything else falls into order.'],
+      ['beauvoir', 'For centuries women were asked to make a man their whole world. Authentic love is not losing yourself in the other: it is the meeting of two freedoms that help each other grow.'],
+      ['platon', 'Sappho, your fire is the beginning, but if you stay in it, love chains you. Love well guided makes us better.'],
+      ['safo', 'Plato, you speak of love like a philosopher who never trembled. I prefer a love that leaves me breathless to one that explains eternity to me.'],
+      ['beauvoir', 'Augustine, I understand that you seek a love without limits. But I do not want human love to be only a step towards something else. To love one real, free person is already a great deal.'],
+      ['agustin', 'I do not despise human love, Simone: I put it in order. Whoever loves God loves people better, because they do not ask of them what only God can give.'],
+      ['platon', 'Love is the best teacher: it drives us to seek what we do not have.'],
+      ['safo', 'Someone will remember us in another time. What is loved does not wholly die.'],
+      ['agustin', 'My love is my weight: it carries me wherever I go.'],
+      ['beauvoir', 'To love is to want the other’s freedom, not to possess them.'],
+    ],
+    cierre: 'Plato sees love as a ladder towards Beauty; Sappho, as a force that sweeps us away; Augustine, as the centre that orders life; Beauvoir, as the meeting of two freedoms.' },
+  { id: 'muerte', q: 'How should we look at death?', tema: 'sentido', sabios: ['socrates', 'epicuro', 'montaigne', 'heidegger'],
+    posturas: { socrates: 'Without fear: it may be a blessing', epicuro: 'Death is nothing to us', montaigne: 'To philosophise is to learn how to die', heidegger: 'Knowing we will die makes us authentic' },
+    turns: [
+      ['socrates', 'They sentenced me to death and I was not afraid. To fear death is to think yourself wise when you are not: no one knows whether it is not the greatest of blessings. Either it is a dreamless sleep, or a journey to another place.'],
+      ['epicuro', 'Look at death calmly, for it is nothing to us. While we exist, death is not here; when death comes, we no longer exist. Why fear what we will never feel?'],
+      ['montaigne', 'I prefer to look at it closely, every day, like a neighbour. Let us strip it of its strangeness and get used to it. Whoever learns how to die unlearns how to be a slave.'],
+      ['heidegger', 'Most people flee from death by talking about anything else. But we are beings towards death, and accepting it changes life: it forces us to choose what truly matters.'],
+      ['epicuro', 'Montaigne, Heidegger: thinking about death so much can embitter life. It is enough to understand it once to take away its power.'],
+      ['montaigne', 'On the contrary, my friend: the more I know it, the less it frightens me and the more I savour life. I want death to find me planting my cabbages.'],
+      ['heidegger', 'Socrates understood something: he lived in such a way that he did not need to flee. That is living authentically, knowing oneself to be finite.'],
+      ['socrates', 'I know only that I know nothing, not even about death. That is why I do not fear it: I fear more living an unexamined life.'],
+      ['socrates', 'It is time to go: I to die, and you to live. Which of us goes to the better fate, only the god knows.'],
+      ['epicuro', 'Whoever learns to live well also learns to die well.'],
+      ['montaigne', 'Let death find me busy living.'],
+      ['heidegger', 'No one can die for us, and no one can live for us.'],
+    ],
+    cierre: 'Socrates faces death with serenity and humility; Epicurus disarms it with reason; Montaigne makes friends with it; Heidegger turns it into a call to live authentically.' },
+  { id: 'verdad', q: 'Can we know the truth?', tema: 'verdad', sabios: ['platon', 'descartes', 'hume', 'nietzsche'],
+    posturas: { platon: 'Yes: reason goes beyond appearances', descartes: 'Yes, if we doubt methodically', hume: 'Only as far as experience reaches', nietzsche: 'There are no facts: only perspectives' },
+    turns: [
+      ['platon', 'We live like prisoners in a cave, watching shadows. But we can get out: reason leads us from appearances to the Ideas, which are the truth that does not change.'],
+      ['descartes', 'To reach the truth we must doubt everything, at least once in our lives. And in the middle of doubt I found something certain: I think, therefore I am. On that rock one can build.'],
+      ['hume', 'Look inside your minds: there are only impressions and the ideas we copy from them. We can know a great deal, but only as far as experience reaches. Beyond that, there are only words.'],
+      ['nietzsche', 'There are no facts, only interpretations. What you call truth is a perspective that has forgotten it is one. The more eyes we use to look at something, the more complete our view will be.'],
+      ['descartes', 'Hume, if everything comes from experience, where does the certainty of mathematics come from? Two plus three is five, even if I am dreaming.'],
+      ['hume', 'Mathematics only relates ideas to one another. But no reasoning proves that the sun will rise tomorrow: we expect it out of habit.'],
+      ['platon', 'Nietzsche, if everything is interpretation, so is your sentence. Without a truth that does not depend on us, how do we tell the wise from the charlatan?'],
+      ['nietzsche', 'Ah, Plato: you invented another world because this one seemed too little to you. I do not deny that some perspectives are better than others: the ones that make us stronger and more lucid.'],
+      ['platon', 'Leaving the cave hurts, but the light is worth it.'],
+      ['descartes', 'It is not enough to have a good mind: the main thing is to use it well.'],
+      ['hume', 'Be a philosopher, but amid all your philosophy, remain a human being.'],
+      ['nietzsche', 'Convictions are more dangerous enemies of truth than lies.'],
+    ],
+    cierre: 'Plato trusts the reason that leaves the cave; Descartes, methodical doubt; Hume, experience and its limits; Nietzsche, the many perspectives. Four ways of searching for the truth.' },
+];
+
+// ---- src/07r-mesas.js ----
+// ============================================================================
+//  MESAS REDONDAS (pestaña del panel de Debates): cuatro pensadores sentados en
+//  círculo discuten la misma pregunta, cada uno con su voz. El que habla se
+//  ilumina. Al final eliges la postura que más te convence.
+// ============================================================================
+ACH.push({ id: 'mesa', i: '👥', n: 'Round table', d: 'Listen to a round table of four thinkers and choose a position.' });
+const Mesa = {
+  T: { h: 'Round tables', note: 'Four thinkers, four positions and a single question. Listen to them and choose the one that convinces you most.', step: (i, n) => `${i} de ${n}`, next: 'Next', vote: 'Which position convinces you most?', none: 'None entirely: I’ll take something from each', ask: 'You have heard all four. There is no right answer: which position convinces you most?', back: '◂ Otras mesas', more: 'Another table', chose: (n) => `You chose ${n}’s position. `, mixed: 'You chose to keep something from each. ', pts: '+80 wisdom · your choice was saved in your Notebook.', seen: '✓ ' },
+  show(on) { this.ensure(); this.gen = (this.gen || 0) + 1; document.getElementById('mesa').hidden = !on; if (on) this.list(); },
+  ensure() {
+    if (document.getElementById('mesa')) return; const card = document.querySelector('#vs .vs-card'); if (!card) return;
+    const el = document.createElement('div'); el.id = 'mesa'; el.hidden = true;
+    el.innerHTML = '<div id="ms-list"><div class="eyebrow" style="text-align:center"></div><h3 class="av-h"></h3><p class="qd-note" style="text-align:center"></p><div id="ms-items"></div></div>'
+      + '<div id="ms-play" hidden><button class="po-back ms-back"></button><h3 class="vs-q" id="ms-q"></h3><div id="ms-seats"></div><div class="vs-bubble ms-bubble"><b id="ms-who"></b><p id="ms-text" aria-live="polite"></p><small id="ms-step"></small></div><div class="btns" id="ms-vote" hidden></div><p id="ms-end" hidden></p><div class="btns"><button class="btn primary" id="ms-next"></button></div></div>';
+    card.appendChild(el); el.querySelector('.eyebrow').textContent = '👥'; el.querySelector('h3').textContent = this.T.h; el.querySelector('.qd-note').textContent = this.T.note;
+    el.querySelector('.ms-back').textContent = this.T.back; el.querySelector('.ms-back').addEventListener('click', () => { Audio.click && Audio.click(); this.gen++; Voice.stop(); this.list(); });
+    $('#ms-next').addEventListener('click', () => { Audio.click && Audio.click(); if (this.done) { this.list(); return; } this.next(false); });
+  },
+  key(M) { return 'mesa-' + M.id; },
+  voted(M) { const x = (store.get(XP_KEY, {}) || {})[this.key(M)]; return !!(x && x.el && x.el.length); },
+  list() {
+    const S = SAGE_BY_ID(); $('#ms-list').hidden = false; $('#ms-play').hidden = true; const box = $('#ms-items'); box.innerHTML = '';
+    for (const M of MESAS) {
+      const b = document.createElement('button'); b.className = 'vs-item ms-item'; b.innerHTML = '<span class="ms-faces"></span><span><b></b><small></small></span>';
+      const f = b.querySelector('.ms-faces'); for (const id of M.sabios) { const m = document.createElement('i'); m.className = 'medal'; setMedal(m, id, S[id].d.short[0]); f.appendChild(m); }
+      b.querySelector('b').textContent = (this.voted(M) ? this.T.seen : '') + M.q; b.querySelector('small').textContent = M.sabios.map((id) => S[id].d.short).join(' · ');
+      b.addEventListener('click', () => { Audio.click && Audio.click(); this.play(M); }); box.appendChild(b);
+    }
+  },
+  play(M) {
+    const S = SAGE_BY_ID(); this.M = M; this.i = 0; this.done = false; this.D = Object.fromEntries(M.sabios.map((id) => [id, S[id].d]));
+    $('#ms-list').hidden = true; $('#ms-play').hidden = false; $('#ms-q').textContent = M.q; $('#ms-vote').hidden = true; $('#ms-end').hidden = true; $('#ms-next').hidden = false;
+    const seats = $('#ms-seats'); seats.innerHTML = '';
+    M.sabios.forEach((id) => { const s = document.createElement('div'); s.className = 'ms-seat'; s.dataset.id = id; s.innerHTML = '<i class="medal"></i><b></b><small></small>'; setMedal(s.querySelector('.medal'), id, this.D[id].short[0]); s.querySelector('b').textContent = this.D[id].short; s.querySelector('small').textContent = M.posturas[id]; seats.appendChild(s); });
+    this.turn();
+  },
+  turn() {
+    const gen = ++this.gen; const [id, text] = this.M.turns[this.i]; const d = this.D[id];
+    document.querySelectorAll('.ms-seat').forEach((s) => s.classList.toggle('on', s.dataset.id === id));
+    $('#ms-who').textContent = d.short; $('#ms-text').textContent = text; $('#ms-step').textContent = this.T.step(this.i + 1, this.M.turns.length);
+    $('#ms-next').textContent = this.i < this.M.turns.length - 1 ? this.T.next : this.T.vote;
+    const parts = narrSplit(text); let k = 0;
+    const say = () => { if (gen !== this.gen) return; if (k >= parts.length) return setTimeout(() => { if (gen === this.gen) this.next(true); }, 700); Voice.utter(parts[k++], { data: d, boss: false }, 1, say); };
+    say();
+  },
+  next(auto) {
+    if (this.i < this.M.turns.length - 1) { this.i++; this.turn(); return; }
+    if (auto && !$('#ms-vote').hidden) return;
+    this.gen++; Voice.stop(); document.querySelectorAll('.ms-seat').forEach((s) => s.classList.remove('on'));
+    $('#ms-who').textContent = ''; $('#ms-text').textContent = this.T.ask; $('#ms-step').textContent = ''; $('#ms-next').hidden = true;
+    const box = $('#ms-vote'); box.hidden = false; box.innerHTML = '';
+    for (const id of this.M.sabios) { const b = document.createElement('button'); b.className = 'btn primary ms-v'; b.innerHTML = '<b></b><small></small>'; b.querySelector('b').textContent = this.D[id].short; b.querySelector('small').textContent = this.M.posturas[id]; b.addEventListener('click', () => { Audio.click && Audio.click(); this.vote(id); }); box.appendChild(b); }
+    const n = document.createElement('button'); n.className = 'btn ghost'; n.textContent = this.T.none; n.addEventListener('click', () => { Audio.click && Audio.click(); this.vote(''); }); box.appendChild(n);
+  },
+  vote(id) {
+    const M = this.M, first = !this.voted(M);
+    xpRecord(this.key(M), M.q, id ? `${this.D[id].short}: ${M.posturas[id]}` : this.T.none);
+    $('#ms-vote').hidden = true; const e = $('#ms-end'); e.hidden = false; e.textContent = (id ? this.T.chose(this.D[id].short) : this.T.mixed) + M.cierre;
+    if (id) document.querySelectorAll('.ms-seat').forEach((s) => s.classList.toggle('on', s.dataset.id === id));
+    if (first) { try { addScore(80); } catch (err) { /* fuera de una partida */ } toast(this.T.pts); }
+    achieve('mesa'); try { Mision.hit('versus'); } catch (err) { /* nada */ }
+    this.done = true; const nb = $('#ms-next'); nb.hidden = false; nb.textContent = this.T.more;
+  },
+};
+{
+  const st = document.createElement('style');
+  st.textContent = '#mesa[hidden],#ms-list[hidden],#ms-play[hidden]{display:none}.ms-item{grid-template-columns:auto 1fr!important;text-align:left!important}.ms-faces{display:grid;grid-template-columns:repeat(2,30px);gap:3px}.ms-faces .medal{width:30px;height:30px;font-size:.75rem}'
+    + '#ms-seats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:6px 0 10px}.ms-seat{text-align:center;padding:6px 4px;border-radius:12px;border:1px solid rgba(216,178,90,.25);background:rgba(255,255,255,.03);transition:transform .3s,box-shadow .3s,border-color .3s,opacity .3s;opacity:.65}'
+    + '.ms-seat .medal{width:48px;height:48px;margin:0 auto 4px;font-size:1.1rem}.ms-seat b{display:block;font-family:var(--display);font-weight:normal;font-size:.8rem;color:var(--gold-bright,#ffd36a)}.ms-seat small{display:block;font-size:.66rem;line-height:1.25;color:#e8dcc0;margin-top:2px}'
+    + '.ms-seat.on{opacity:1;transform:translateY(-3px) scale(1.04);border-color:#ffd36a;box-shadow:0 0 16px rgba(255,211,106,.45)}.ms-seat.on .medal{box-shadow:0 0 0 3px rgba(255,211,106,.6)}'
+    + '#ms-vote{flex-direction:column}.ms-v{display:block;width:100%;text-align:left}.ms-v b{display:block}.ms-v small{display:block;font-size:.78rem;opacity:.85;font-family:var(--body);text-transform:none;letter-spacing:0}#ms-end{line-height:1.5;color:#f3e6c4}';
+  document.head.appendChild(st);
+}
+// al cerrar el panel, las mesas también se callan
+{ const x0 = Versus.close.bind(Versus); Versus.close = function () { Mesa.gen = (Mesa.gen || 0) + 1; x0(); }; }
+if (location.hash === '#debug') window.__mesa = Mesa;
 
 </script>
 </body>

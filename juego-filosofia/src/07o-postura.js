@@ -8,7 +8,7 @@ const PO_KEY = 'odisea-razon.posturas';
 ACH.push({ id: 'polemista', i: '🗣', n: 'Polemista', d: 'Gana con una postura sólida un debate en el que participas tú.' });
 const Postura = {
   T: {
-    tabs: ['🎧 Escuchar debates', '🗣 Debate tú'], h: 'Debate tú', note: 'Un pensador defiende su idea y tú le respondes. Elige bien tus argumentos: cuidado con las falacias.',
+    tabs: ['🎧 Escuchar debates', '🗣 Debate tú', '👥 Mesas redondas'], h: 'Debate tú', note: 'Un pensador defiende su idea y tú le respondes. Elige bien tus argumentos: cuidado con las falacias.',
     you: 'Tú', solidez: 'Solidez de tu postura', next: 'Siguiente', verdict: 'Ver el veredicto', again: 'Volver a intentarlo', back: '◂ Otros pensadores', round: (i, n) => `Ronda ${i} de ${n}`,
     ok: '✓ Argumento sólido', meh: '~ Argumento flojo', bad: (f) => `✗ Falacia: ${f}`, best: (s, m) => `Tu mejor resultado: ${s} de ${m}`, todo: 'Sin intentar',
     lv: { alto: 'Postura sólida', medio: 'Postura discutible', bajo: 'Postura débil' }, pick: 'Elige tu respuesta:', pts: (n) => `+${n} sabiduría`,
@@ -18,8 +18,8 @@ const Postura = {
   // ---------------------------------------------------------------- pestañas
   ensure() {
     const card = document.querySelector('#vs .vs-card'); if (!card || document.getElementById('po')) return;
-    const tabs = document.createElement('div'); tabs.id = 'vs-tabs'; tabs.innerHTML = '<button data-t="0"></button><button data-t="1"></button>';
-    tabs.querySelectorAll('button').forEach((b, i) => { b.textContent = this.T.tabs[i]; b.addEventListener('click', () => { Audio.click && Audio.click(); this.tab(i); }); });
+    const tabs = document.createElement('div'); tabs.id = 'vs-tabs'; tabs.innerHTML = '<button data-t="0"></button><button data-t="2"></button><button data-t="1"></button>';
+    tabs.querySelectorAll('button').forEach((b) => { const i = +b.dataset.t; b.textContent = this.T.tabs[i]; b.addEventListener('click', () => { Audio.click && Audio.click(); this.tab(i); }); });
     card.insertBefore(tabs, card.querySelector('#vs-list'));
     const po = document.createElement('div'); po.id = 'po'; po.hidden = true;
     po.innerHTML = '<div id="po-list"><div class="eyebrow" style="text-align:center"></div><h3 class="av-h"></h3><p class="qd-note" style="text-align:center"></p><div id="po-items"></div></div>'
@@ -34,9 +34,9 @@ const Postura = {
   },
   tab(i) {
     this.ensure(); this.gen++; Voice.stop(); this.mode = i;
-    document.querySelectorAll('#vs-tabs button').forEach((b, k) => b.classList.toggle('on', k === i));
-    $('#vs-list').hidden = i !== 0; $('#vs-play').hidden = true; $('#po').hidden = i !== 1;
-    if (i === 0) Versus.list(); else this.list();
+    document.querySelectorAll('#vs-tabs button').forEach((b) => b.classList.toggle('on', +b.dataset.t === i));
+    $('#vs-list').hidden = i !== 0; $('#vs-play').hidden = true; $('#po').hidden = i !== 1; if (typeof Mesa !== 'undefined') Mesa.show(i === 2);
+    if (i === 0) Versus.list(); else if (i === 1) this.list();
   },
   list() {
     const S = SAGE_BY_ID(), B = this.best(); $('#po-list').hidden = false; $('#po-play').hidden = true; const box = $('#po-items'); box.innerHTML = '';
@@ -52,7 +52,7 @@ const Postura = {
   open(P, onEnd) {
     if ($('#vs').hidden) Panel.open('vs'); this.ensure();
     document.getElementById('vs-tabs').hidden = !!P.final; $('#vs-list').hidden = true; $('#vs-play').hidden = true; $('#po').hidden = false;
-    document.querySelectorAll('#vs-tabs button').forEach((b, k) => b.classList.toggle('on', k === 1)); this.play(P, onEnd);
+    document.querySelectorAll('#vs-tabs button').forEach((b) => b.classList.toggle('on', b.dataset.t === '1')); if (typeof Mesa !== 'undefined') Mesa.show(false); this.play(P, onEnd);
   },
   play(P, onEnd) {
     this.P = P; this.i = 0; this.sc = 0; this.picks = []; this.onEnd = onEnd || null; this.W = this.who(P);
@@ -116,7 +116,7 @@ const Postura = {
 }
 {
   const st = document.createElement('style');
-  st.textContent = '#vs-tabs{display:flex;gap:6px;margin:0 34px 10px 0}#vs-tabs[hidden]{display:none}#vs-tabs button{flex:1;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--parchment);border-radius:10px;padding:8px 6px;font:inherit;font-size:.86rem;cursor:pointer}#vs-tabs button.on{background:linear-gradient(180deg,#ffe9a8,#e2b04e);color:#1a1206;border-color:#ffe9a8}'
+  st.textContent = '#vs-tabs{display:flex;gap:5px;margin:0 34px 10px 0}#vs-tabs[hidden]{display:none}#vs-tabs button{flex:1;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--parchment);border-radius:10px;padding:7px 4px;font:inherit;font-size:.78rem;line-height:1.2;cursor:pointer}#vs-tabs button.on{background:linear-gradient(180deg,#ffe9a8,#e2b04e);color:#1a1206;border-color:#ffe9a8}'
     + '#po[hidden],#po-list[hidden],#po-play[hidden]{display:none}.po-item em{display:block;font-style:normal;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--gold,#d8b25a)}.po-item .po-st{font-style:normal;color:#ffd36a;font-size:.9rem;letter-spacing:-.05em}'
     + '.po-back{border:0;background:none;color:var(--gold,#d8b25a);font:inherit;font-size:.85rem;cursor:pointer;padding:0 0 6px}.po-back[hidden]{display:none}'
     + '.po-head{display:flex;align-items:center;gap:12px;margin:0 30px 8px 0}.po-head .medal{width:54px;height:54px;flex:none;font-size:1.3rem}.po-head b{display:block;font-family:var(--display);font-weight:normal;color:var(--gold-bright,#ffd36a);font-size:1.15rem}.po-head span{display:block;font-size:.95rem;color:#f3e6c4}'

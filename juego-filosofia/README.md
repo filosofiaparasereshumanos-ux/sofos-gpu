@@ -68,6 +68,11 @@ ratón y `E` para interactuar.
   Buda y Luther King; Safo y Platón, Beauvoir y Aristóteles, Camus y Frankl, Al-Ghazali y Averroes…
   El jugador decide quién lo convence y su elección mueve el mapa filosófico.
 
+- **Mesas redondas** (Debates → «Mesas redondas»): cuatro pensadores discuten la misma pregunta en tres
+  rondas, cada uno con su voz, y el jugador elige la postura que lo convence: ¿Existe Dios? (Tomás, Pascal,
+  Spinoza, Russell), ¿Qué es la felicidad?, ¿Por qué obedecemos al Estado?, ¿Qué es el amor?, ¿Cómo mirar
+  la muerte? y ¿Podemos conocer la verdad?
+
 - **Debate tú** (Debates → «Debate tú»): discute tú con Nietzsche, Sócrates, Kant, Maquiavelo, Descartes o
   Sartre. En cada ronda eliges entre un argumento sólido, uno flojo y una falacia; el pensador responde a lo
   que dijiste con su voz, te explica por qué tu argumento fue fuerte o débil y al final juzga tu postura.
