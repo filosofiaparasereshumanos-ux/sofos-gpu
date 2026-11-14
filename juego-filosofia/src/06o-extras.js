@@ -31,7 +31,7 @@ const Versus = {
       const b = document.createElement('button'); b.className = 'vs-item'; const done = this.voted(v);
       b.innerHTML = '<i class="medal"></i><span><b></b><small></small></span><i class="medal"></i>';
       const ms = b.querySelectorAll('.medal'); setMedal(ms[0], v.a, S[v.a].d.short[0]); setMedal(ms[1], v.b, S[v.b].d.short[0]);
-      b.querySelector('b').textContent = `${S[v.a].d.short} y ${S[v.b].d.short}`; b.querySelector('small').textContent = (done ? '✓ ' : '') + v.q;
+      b.querySelector('b').textContent = `${S[v.a].d.short} · ${S[v.b].d.short}`; b.querySelector('small').textContent = (done ? '✓ ' : '') + v.q;
       b.addEventListener('click', () => { Audio.click(); this.play(v); }); box.appendChild(b);
     }
     const n = VERSUS.filter((v) => this.voted(v)).length; $('#vs-count').textContent = `${n} de ${VERSUS.length} debates vistos`;

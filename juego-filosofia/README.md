@@ -62,6 +62,12 @@ ratón y `E` para interactuar.
 - **Avatar**: túnica, piel, color y estilo de pelo, barba, complementos y un objeto en la mano; los demás
   viajeros en línea lo ven tal cual.
 
+- **Debates entre pensadores** (portada → «Debates»): 41 conversaciones de seis u ocho turnos, con la
+  voz de cada uno, filtradas por tema: Dios y fe, amor, amistad, sentido y muerte, felicidad, moral y
+  poder, verdad, mente, naturaleza, arte y sociedad. Nietzsche frente a Tomás de Aquino, Kant, Cicerón,
+  Buda y Luther King; Safo y Platón, Beauvoir y Aristóteles, Camus y Frankl, Al-Ghazali y Averroes…
+  El jugador decide quién lo convence y su elección mueve el mapa filosófico.
+
 - **Debates con emoción**: el pensador replica con su voz, cuerda de persuasión, cartas de argumento
   (ejemplo, pregunta socrática, falacia), golpe crítico, aliado, apuesta final, dilemas y revanchas.
 

@@ -21272,7 +21272,7 @@ const QD_QUESTIONS = [
   'What do you think of social media?', 'What is happiness?', 'Should we be afraid of artificial intelligence?', 'Is it fair that there are rich and poor?',
   'What should we tackle climate change?', 'What\'s the point of studying?', 'What\'s a good friend?', 'Is lying ever okay?',
   'Do animals have rights?', 'What is love?', 'Should we always obey the laws?', 'What is freedom?',
-  'Does life make sense?', 'Why are we afraid of death?', 'What is more important: to be happy or to be good?', 'How should the ideal school be?',
+  'Does life have meaning?', 'Why are we afraid of death?', 'What is more important: to be happy or to be good?', 'How should the ideal school be?',
   'Is it good to spend so many hours on your cell phone?', 'What does it mean to be a good person?', 'Can a machine think?', 'What is beauty?',
   'Is it always necessary to forgive?', 'Are we equal women and men?', 'What do we owe future generations?', 'Is it possible to know the truth?',
   'What do we do with loneliness?', 'What\'s philosophy for?', 'What is justice?', 'How should we treat migrants?',
@@ -23277,7 +23277,7 @@ const Versus = {
       const b = document.createElement('button'); b.className = 'vs-item'; const done = this.voted(v);
       b.innerHTML = '<i class="medal"></i><span><b></b><small></small></span><i class="medal"></i>';
       const ms = b.querySelectorAll('.medal'); setMedal(ms[0], v.a, S[v.a].d.short[0]); setMedal(ms[1], v.b, S[v.b].d.short[0]);
-      b.querySelector('b').textContent = `${S[v.a].d.short} y ${S[v.b].d.short}`; b.querySelector('small').textContent = (done ? '✓ ' : '') + v.q;
+      b.querySelector('b').textContent = `${S[v.a].d.short} · ${S[v.b].d.short}`; b.querySelector('small').textContent = (done ? '✓ ' : '') + v.q;
       b.addEventListener('click', () => { Audio.click(); this.play(v); }); box.appendChild(b);
     }
     const n = VERSUS.filter((v) => this.voted(v)).length; $('#vs-count').textContent = `${n} of ${VERSUS.length} debates seen`;
@@ -25946,6 +25946,297 @@ Metricas.hit('sesion', '');
   if (typeof Trivia !== 'undefined' && Trivia.start) { const t0 = Trivia.start.bind(Trivia); Trivia.start = function () { Metricas.hit('torneo', ''); return t0(); }; }
 }
 if (location.hash === '#debug') window.__metricas = Metricas;
+
+// ---- src/07l-debates.js ----
+// ============================================================================
+//  MÁS DEBATES ENTRE PENSADORES, Y MÁS LARGOS
+//  · Cada debate anterior gana dos turnos más (una réplica de cada uno).
+//  · Veinte debates nuevos de ocho turnos sobre Dios, el amor, la amistad, la
+//    muerte, la felicidad, el poder, la verdad, el arte o la educación.
+//  · Cada debate tiene un tema para poder filtrarlos.
+//  Los turnos son paráfrasis fieles de sus ideas (con alguna frase célebre), en
+//  conversaciones imaginadas: muchos de ellos nunca se conocieron.
+// ============================================================================
+const VS_TEMAS = [['dios', 'God and faith'], ['amor', 'Love'], ['amistad', 'Friendship'], ['sentido', 'Meaning and death'], ['felicidad', 'Happiness'], ['moral', 'Morality and power'], ['verdad', 'Truth and knowledge'], ['mente', 'Mind and freedom'], ['naturaleza', 'Nature and science'], ['arte', 'Art and beauty'], ['sociedad', 'Society and education']];
+try {
+  const MAS = {
+    'platon-aristoteles': [['a', 'Then tell me: why are all horses, so different from one another, still horses? They share something that is in none of them in particular. That common thing is the Idea, and only reason can reach it.'], ['b', 'What they share is in them: it is their form, joined to the matter of each horse. I don\'t need another world to explain it. And whoever wants to be wise should begin by wondering at what is right in front of them.']],
+    'hobbes-rousseau': [['a', 'A pact among equals sounds fine in books. But when two people want the same thing and there is no judge, the stronger one wins. That is why we all hand power to a sovereign: it is the price of peace.'], ['b', 'To give up your freedom is to give up being human. Legitimate power is not the one that frightens us, but the one born of the general will, of what we all want for the common good.']],
+    'heraclito-parmenides': [['a', 'And yet there is order in change. Fire turns into water, water into earth, and everything starts again according to a measure, the logos. What remains is not a thing at rest: it is the law of change.'], ['b', 'You speak of a law that does not change. So you too are looking for something that remains, Heraclitus. Perhaps we are not so far apart: we both want to find what the current cannot carry away.']],
+    'descartes-hume': [['a', 'If everything is habit, science has no foundations. Without certain principles, you could not even trust that tomorrow your own reasoning will be worth what it is worth today.'], ['b', 'True: reason alone cannot guarantee it. But nature is stronger than doubt. I leave my study, play a game with my friends, and trust the world again. Let us be philosophers, but let us remain human beings.']],
+    'kant-mill': [['a', 'Consequences cannot always be foreseen, but my intention is in my hands. A good will shines like a jewel, even when it does not achieve what it sets out to do.'], ['b', 'And I tell you it is better to be a human being dissatisfied than a pig satisfied. I am not after just any pleasure: those of thought, friendship and justice are worth more. There, perhaps, we meet.']],
+    'epicuro-seneca': [['a', 'You see, you accept my words even though they come from your rival\'s garden. Here is another: death is nothing to us. While we exist, death is not here; when death comes, we no longer exist.'], ['b', 'And I give you one of mine in return: it is not that we have little time, but that we waste much of it. Life is long if you know how to use it. On that, the Garden and the Stoa think alike.']],
+    'spinoza-sartre': [['a', 'Responsibility, yes, but without guilt or sadness. I do not ask you to weep or laugh at what human beings do, but to understand it. Whoever understands loves more and hates less.'], ['b', 'Understanding is not enough for me if it does not lead me to act. A human being is nothing other than what they make of themselves. And each time I choose, I also choose an image of what all humanity ought to be.']],
+    'confucio-laozi': [['a', 'If no one teaches, the young do not know how to treat their parents or their neighbours. Even water needs a riverbed. To learn and to practise what you have learned: is that not a joy?'], ['b', 'Those who know do not speak, and those who speak do not know. Your disciples learn words; mine learn to listen to silence. But look: you and I keep talking, and people keep reading us both.']],
+    'russell-pascal': [['a', 'I grant you this: searching sincerely is noble. But the good life is one inspired by love and guided by knowledge. For that, I need no certainty about heaven.'], ['b', 'And I grant you that a human being is only a reed, the weakest thing in nature. But it is a thinking reed. All our dignity lies in thought: so let us think well about what matters most.']],
+    'wollstonecraft-rousseau': [['b', 'I admit that an educated woman can be a fine companion. But who will look after the children if every woman goes out into the world?'], ['a', 'A mother who thinks will raise her children better than one who only knows how to obey. And caring for children is the work of both parents. Strengthening women\'s minds takes nothing from men: it gives more to all of us.']],
+    'gandhi-maquiavelo': [['b', 'In the end, your opponent had a conscience and cared what the world thought. Against a shameless tyrant, your method would have failed.'], ['a', 'It may take longer, but no power can rule without the cooperation of the ruled. When millions stop obeying, even a tyrant is left alone. An eye for an eye, and the whole world ends up blind.']],
+    'shankara-nagarjuna': [['b', 'You speak of a consciousness that is not a thing. I would say it is not nothing either. Perhaps our words touch exactly where words are no longer of use.'], ['a', 'Just so: the ultimate truth is not spoken, it is recognised. You call it emptiness; I call it fullness. But we both invite the same thing: to stop mistaking ourselves for what passes.']],
+    'freud-sartre': [['a', 'Let me propose an experiment: listen to your dreams and your slips of the tongue. There speaks a part of you that chose nothing. Getting to know it does not take your freedom away: it gives it back.'], ['b', 'If I listen to myself, I am already choosing what to do with what I hear. What matters is not what has been made of us, but what we make of what has been made of us.']],
+    'carson-bacon': [['b', 'Then we agree on the method: observe, experiment and correct. A science that makes mistakes must learn from them.'], ['a', 'Yes, and listen to whoever raises the alarm, even if it annoys the powerful. The more clearly we can focus our attention on the wonders of the world around us, the less taste we shall have for destroying it.']],
+    'turing-descartes': [['b', 'I admit I cannot see into other minds. But thought is so universal that a machine, made only of parts, seems to me incapable of it.'], ['a', 'The brain is also made of parts, only very small and very many. We can only see a short distance ahead, but we can see plenty there that needs to be done. Let experience decide.']],
+    'schiller-kant': [['b', 'I am glad my idea of play goes so far. But remember that the sublime also educates: the storm and the sea show us how small we are and, at the same time, make us feel the greatness of our reason.'], ['a', 'Then let beauty and the sublime educate together: one reconciles us, the other lifts us up. Whoever learns to love what is beautiful also learns to love freedom.']],
+    'pacificador-hobbes': [['b', 'I admire your council. But if one day a nation wanted to dominate the others, what would your law do without a common army?'], ['a', 'Our law asks us to think of those who will come seven generations from now. Whoever thinks of their great-grandchildren does not want war. We buried our weapons beneath the Great Tree of Peace, and unity grew above them.']],
+    'schweitzer-descartes': [['b', 'But then we could not eat, or heal, or build. Every life destroys another life in order to live.'], ['a', 'True, and that is why I do not speak of an easy rule, but of a responsibility. When you must harm a life, let it be out of necessity, never out of carelessness. I am life that wills to live, in the midst of life that wills to live.']],
+    'socrates-trasimaco': [['b', 'Look at reality, Socrates: the unjust man who does it on a grand scale lives better than the just one. He has wealth, power and friends.'], ['a', 'He lives at war with himself, like a divided city. I would rather suffer injustice than commit it, because it is the unjust soul that is sick. And no one wants a sick soul, however rich they may be.']],
+    'stebbing-bernays': [['b', 'Admit that persuasion can also serve good causes: health, hygiene, peace.'], ['a', 'Perhaps, but then let it show its face, with reasons everyone can examine. Thinking clearly is not a luxury for philosophers: it is the duty of every citizen.']],
+    'einstein-hawking': [['a', 'Perhaps. The most incomprehensible thing about the universe is that it is comprehensible. That wonder never left me.'], ['b', 'Nor me. Look up at the stars and not down at your feet. However difficult life may seem, there is always something you can do, and something new to understand.']],
+  };
+  const TEMA = {
+    'platon-aristoteles': 'verdad', 'hobbes-rousseau': 'moral', 'heraclito-parmenides': 'verdad', 'descartes-hume': 'verdad', 'kant-mill': 'moral', 'epicuro-seneca': 'felicidad', 'spinoza-sartre': 'mente', 'confucio-laozi': 'felicidad',
+    'russell-pascal': 'dios', 'wollstonecraft-rousseau': 'sociedad', 'gandhi-maquiavelo': 'moral', 'shankara-nagarjuna': 'mente', 'freud-sartre': 'mente', 'carson-bacon': 'naturaleza', 'turing-descartes': 'mente', 'schiller-kant': 'arte',
+    'pacificador-hobbes': 'moral', 'schweitzer-descartes': 'naturaleza', 'socrates-trasimaco': 'moral', 'stebbing-bernays': 'sociedad', 'einstein-hawking': 'naturaleza',
+  };
+  for (const v of VERSUS) { if (MAS[v.id] && !v._mas) { v.turns.push(...MAS[v.id]); v._mas = true; } if (!v.tema) v.tema = TEMA[v.id] || 'verdad'; }
+  const D = (id, a, b, q, tema, eje, va, vb, turns, cierre, abre = 'a') => ({ id, a, b, q, tema, eje, va, vb, nuevo: true, turns: turns.map((t, i) => [(i % 2 === 0) === (abre === 'a') ? 'a' : 'b', t]), cierre });
+  // (abre = 'b' cuando el debate lo empieza el segundo pensador)
+  VERSUS.push(
+    D('nietzsche-tomas', 'nietzsche', 'tomas', 'Is God dead?', 'dios', 'sentido', 1, -1, [
+      'Have you not heard of the madman who lit a lantern in broad daylight, ran to the marketplace and cried, “I am looking for God!”? God is dead, and we have killed him. Hardly anyone builds their life around him any more, even if they have not noticed yet.',
+      'That many stop believing does not change what is. Everything that moves is moved by something else, and we cannot go back to infinity. There must be a first mover that nothing moves. This we call God.',
+      'You build a ladder of reasons and put God at the top. But that ladder was raised by people weary of this life, who invented another world in order to despise this one. I want to remain faithful to the earth.',
+      'I do not despise the earth: grace does not destroy nature, it perfects it. Reason and faith do not fight. Reason climbs as high as it can, and faith shows it what lies beyond.',
+      'And if God is dead, who tells us now what is good? That is the terrible question. We will have to create new values ourselves, and become worthy of that task.',
+      'Without a final end, everyone will create different values and we will tear ourselves apart. By nature, human beings long for complete happiness, and nothing in this world fully satisfies it. That longing points to something.',
+      'Perhaps that longing is only a hunger for comfort. I propose another test: would you want to live your life again, exactly the same, over and over, forever? Whoever can say yes truly loves life.',
+      'And I propose this one: everything you see could fail to exist; things are born and die. If everything were like that, at some point there would have been nothing, and nothing comes from nothing. There must be something that exists by itself.',
+    ], 'Nietzsche announces that God has died in modern culture and that we must create our own values. Thomas Aquinas offers paths of reason that lead to God and unites faith and reason. The question remains open for each person.'),
+    D('feuerbach-agustin', 'feuerbach', 'agustin', 'Did God create human beings, or did human beings create God?', 'dios', null, 0, 0, [
+      'What we call God is the best of humanity placed outside ourselves: our love, our wisdom and our goodness, magnified to infinity. It was not God who made man in his image; it was man who made God in his.',
+      'I looked for happiness everywhere: in pleasure, in fame, in ideas. Nothing filled me. You have made us for yourself, Lord, and our heart is restless until it rests in you.',
+      'That restlessness is real, but it speaks about us. We long for a love without limits because we are beings who love. Give back to humanity what you placed in heaven, and you will learn to love your fellow human beings.',
+      'If God were only a mirror, looking at him I would see myself. But when I went within, I found something higher than the highest in me, and more inward than my innermost self.',
+      'Your inner self is bigger than you think: all of humanity is there. For human beings, the highest being is the human being. That is the religion I propose.',
+      'I believe you when you speak of loving your neighbour. But I learned it by loving God. Love, and do what you will: whoever truly loves will do no evil.',
+      'Then love unites us, even if we explain it differently. You say it comes from above; I say it is born among us.',
+      'Perhaps one day you will see it another way. I was slow to see it too: late have I loved you, beauty so ancient and so new, late have I loved you.',
+    ], 'Feuerbach believes God is a projection of the best in human beings. Augustine believes the human heart rests only in God. Marx and Freud followed Feuerbach; millions of believers recognise their own search in Augustine’s Confessions.'),
+    D('algazali-averroes', 'algazali', 'averroes', 'Can faith and reason clash?', 'dios', null, 0, 0, [
+      'I studied the philosophers thoroughly and found that, on the most important matters, they contradict themselves. They say the world is eternal and that God does not know particulars. Reason alone, when it speaks of God, loses its way.',
+      'You wrote “The Incoherence of the Philosophers”, and I answered with “The Incoherence of the Incoherence”. Truth cannot contradict truth. If reason and revelation seem to clash, we have misunderstood one of them.',
+      'Look at cotton and fire. We say fire burns cotton, but all we see is that one follows the other. It is God who makes it burn, at every instant. There is no necessity in things themselves.',
+      'If you deny that things have their own nature, you deny science and medicine. Whoever rejects causes rejects understanding. And the Book itself invites us to reflect on creation.',
+      'Reason is valuable, but I reached certainty by another road. When doubt left me unable to speak, light came to my heart, not through arguments. Some things are tasted, not proven.',
+      'I respect that road. But not everyone reaches the truth in the same way: some through demonstration, others through argument, others through images. No one should forbid another their road.',
+      'Then make sure the philosophers do not confuse simple people with doubts they cannot resolve.',
+      'And make sure you do not close the door to thought. My books travelled to Europe and lit another light there. An idea forbidden in one place blossoms in another.',
+    ], 'Al-Ghazali distrusts reason when it claims to speak about God, and seeks certainty in the experience of the heart. Averroes argues that reason and faith cannot contradict each other. Their books, one a reply to the other, are still read almost a thousand years later.'),
+    D('kierkegaard-hegel', 'kierkegaard', 'hegel', 'Do we reach truth through a system or through a decision?', 'sentido', 'sentido', 1, -0.5, [
+      'Professor Hegel, you have built a palace of ideas that explains everything, yet you live in the porter’s lodge. Your system does not tell a single person how to live or what to choose.',
+      'The true is the whole. Every idea, every age and every person is a moment in a greater journey: that of Spirit, coming to know itself through history. Nothing can be understood in isolation.',
+      'I am nobody’s moment. I am this individual, with my anguish and my decision. The truth that matters to me is a truth I can live and die for.',
+      'Your anguish also has its place in history. What you feel today as yours alone will tomorrow be seen as part of an age. What is rational is real, and what is real is rational.',
+      'Before God I do not stand as part of an age: I stand alone. Faith is not the end of an argument. It is a leap, like Abraham’s, who obeyed without understanding.',
+      'A leap without reasons is a leap in the dark. Philosophy is not there to edify or console, but to understand. And to understand, you must look at the whole.',
+      'Life can only be understood backwards, but it must be lived forwards. Your system looks backwards; I have to decide tomorrow.',
+      'And I remind you that the owl of Minerva takes flight only at dusk. Wisdom comes late, yes; but it comes, and it helps us not to repeat the mistakes of history.',
+    ], 'Hegel builds a great system in which everything has its place in the history of Spirit. Kierkegaard defends the individual and their decision before life and before God. Existentialism was born from that critique.'),
+    D('schopenhauer-beauvoir', 'schopenhauer', 'beauvoir', 'What is love?', 'amor', null, 0, 0, [
+      'The lover believes he chooses freely. In reality, the will of the species speaks through him, wanting to go on living. Love is a sweet trap set by nature.',
+      'You speak of love as if we were animals driven by instinct. But human beings can always give meaning to what they feel. Love is also chosen and built.',
+      'That is why so many loves end in disappointment. Once nature gets what it wanted, the spell fades and two strangers remain.',
+      'The loves that fade are the ones in which one person loses themselves in the other. For centuries women were asked to make a man their whole world, and so love became a prison.',
+      'At least you admit that love brings suffering. That is why I prefer compassion to passion: feeling another’s pain as if it were my own.',
+      'Compassion is beautiful, but it is not enough. Authentic love rests on the recognition of two freedoms. It is not about possessing or losing yourself, but about each helping the other become who they want to be.',
+      'A lovely theory. But desire does not read philosophy.',
+      'Nor does freedom ask desire for permission. To love is not only to feel: it is to commit, every day. That is something we do, not the species.',
+    ], 'Schopenhauer sees love as a force of nature that uses us to continue the species. Beauvoir defends a love between equals in which neither loses themselves. Does love happen to us, or do we make it?'),
+    D('platon-safo', 'platon', 'safo', 'Does love lift us up or carry us away?', 'amor', 'cambio', 1, -0.5, [
+      'Eros shakes me like the mountain wind falling on the oaks. When I see you, my tongue breaks, a fire runs under my skin and I can see nothing. Love is sweet and bitter at once.',
+      'You describe its power well, Sappho. But love is like a ladder. First we love one beautiful body, then the beauty of all bodies, then that of souls, laws and knowledge, until we reach Beauty itself.',
+      'For me, the most beautiful thing on earth is not an army or a fleet: it is whatever one loves. And I love a person, not a ladder. Why climb and leave her behind?',
+      'It is not about leaving her behind, but about not staying chained. Love is the desire for what we lack, and what we truly lack is the beautiful and the good, forever.',
+      'What lasts forever does not tremble. And what does not tremble is not loved like this. I prefer a love that leaves me breathless to one that explains eternity to me.',
+      'And yet your poems are still alive after so many centuries. When you wrote them, were you not also looking for something that would not die?',
+      'Someone, I tell you, will remember us in another time. Perhaps you are right: love wants to last. But it is born in one particular gaze.',
+      'On that we agree: everything begins with the beauty we see. That is why love is the best teacher for anyone who wants to learn to think.',
+    ], 'Sappho sings of love as a force that shakes body and soul. Plato sees it as a ladder that leads from one person’s beauty to Beauty itself. The expression “platonic love” comes from his dialogue, the Symposium.', 'b'),
+    D('king-nietzsche', 'king', 'nietzsche', 'Should we love our enemies?', 'amor', null, 0, 0, [
+      'Darkness cannot drive out darkness; only light can do that. Hate cannot drive out hate; only love can do that. That is why I try to love even those who persecute me.',
+      'Careful with that word. The morality of loving your enemy was often born among those who could not take revenge and turned their powerlessness into a virtue. I prefer the honesty of a good enmity.',
+      'I am not talking about weakness. When we sat at the lunch counters where they would not serve us, and took blows without striking back, it took more strength than hitting.',
+      'What you describe is strength indeed: mastering yourself. What I despise is resentment disguised as kindness. And here is some advice: whoever fights monsters should take care not to become one.',
+      'Exactly, that is why I do not hate. The love I speak of is not a soft feeling: it is active goodwill towards everyone. I want to win my opponent’s friendship, not to humiliate him.',
+      'I admit that is not the morality of resentment I criticise. It is the morality of someone who creates his values and stands by them with his own life.',
+      'I have a dream that one day the sons of former slaves and the sons of former slave owners will be able to sit down together at the table of brotherhood. For that, we must love before the other deserves it.',
+      'And I tell you: one must still have chaos within oneself to give birth to a dancing star. Your dream is one of those stars.',
+    ], 'King defends love of one’s enemies as the most powerful force against injustice. Nietzsche distrusts goodness that hides resentment, but admires those who master themselves and create their own values. Here they meet more than it first seemed.'),
+    D('aristoteles-epicuro', 'aristoteles', 'epicuro', 'What are friends for?', 'amistad', null, 0, 0, [
+      'Without friends no one would choose to live, even if they had every other good. There are friendships of utility, of pleasure and of virtue. Only the last one lasts: that of people who love each other for who they are.',
+      'Of all the things wisdom gives us for a happy life, the greatest by far is friendship. I live with my friends in a garden, and we share bread, conversation and peace of mind.',
+      'But you say friendship begins with usefulness, because we need help. Doesn’t that reduce it to a business deal?',
+      'It is not so much our friends’ help that we need as the confidence that they will help us. That security brings peace to the soul. It begins with need, yes, but then it is loved for its own sake.',
+      'Then we are getting closer. A friend is another self: I want his good for his sake, not mine. And since few people can love like that, no one can have many true friends.',
+      'Few, but close. Before you look at what you will eat and drink, look at whom you will eat and drink with. Eating without a friend is living like a lion or a wolf.',
+      'And friendship makes cities better too. If citizens were friends, there would be no need for so many laws.',
+      'I prefer to stay out of politics and tend my little garden. But perhaps you are right: a garden of friends is already a small, just city.',
+    ], 'Aristotle distinguishes three kinds of friendship and values most the one based on virtue. Epicurus puts friendship at the centre of a happy life. Both agree that no one is happy alone.'),
+    D('ciceron-nietzsche', 'ciceron', 'nietzsche', 'Should a good friend always agree with you?', 'amistad', null, 0, 0, [
+      'Friendship is agreement on all things human and divine, with affection and goodwill. Between friends there is no room for deceit, and the first law is never to ask a friend for anything dishonourable.',
+      'Agreement on everything sounds dull to me. In your friend you should have your best enemy: the one who contradicts you and forces you to surpass yourself. A friend who always agrees with you lets you fall asleep.',
+      'I am not talking about flattery. Flattery is the plague of friendship. A true friend advises you frankly, even harshly if need be, and you must accept that advice.',
+      'Good. Then a true friend is also a ladder towards the best in you. Don’t look for a companion to rest with, but one to climb mountains with.',
+      'To rest with, too, my friend. Is there anything sweeter than having someone you dare to talk to about everything, as if to yourself?',
+      'I grant you that sweetness. Though I spent much of my life alone, walking in the mountains. Perhaps that is why I value so highly the friend who demands more of me.',
+      'Friendship makes joys brighter and sorrows lighter, because they are shared. Taking friendship out of life would be like taking the sun out of the world.',
+      'Then let us be friends like that: in sunshine and in storm. The best friends are the ones who dare to tell each other the truth.',
+    ], 'Cicero sees friendship as harmony, trust and frankness. Nietzsche wants a friend who challenges us to become better. A good friend, perhaps, does both.'),
+    D('epicuro-heidegger', 'epicuro', 'heidegger', 'Should we think about death?', 'sentido', null, 0, 0, [
+      'Get used to thinking that death is nothing to us. All good and evil lie in sensation, and death is the absence of sensation. Why fear what we will never feel?',
+      'You are right that death is not something we live through. But each of us is a being towards death. Knowing that we are finite completely changes the way we live each day.',
+      'That is why I want to free people from that fear. The fear of death makes us unhappy and pushes us to pile up wealth and power, as if that could help us escape it.',
+      'Fear is not cured by not thinking. Most people flee from death by chatting about anything at all and repeating what “they” say. That way they live a life that is not their own.',
+      'Then we agree on one thing: we must truly live. I call it serenity: simple pleasures, friends and a soul without fear.',
+      'And I call it authenticity: facing our finitude head-on and, from there, choosing what really matters. Anxiety is not an illness: it is a call.',
+      'Careful with that anxiety, my friend. An anxious soul cannot enjoy the sun or the bread. It is enough to think about death once, to take away its power.',
+      'Perhaps. But whoever knows they will die does not waste time. Death is what is most our own: no one can die for us, and no one can live for us.',
+    ], 'Epicurus reasons that death is nothing to us and that fearing it robs us of life. Heidegger believes that accepting our finitude lets us live authentically. Both are after the same thing: not wasting life.'),
+    D('camus-frankl', 'camus', 'frankl', 'Does life have meaning?', 'sentido', 'sentido', 1, -0.5, [
+      'The world does not answer our questions. We ask for meaning and the universe is silent. The absurd is born from that clash. Even so, one must imagine Sisyphus happy, pushing his rock without hoping for anything.',
+      'I was in the concentration camps. There I saw that those who have a why to live can bear almost any how. Meaning exists: we do not invent it, we discover it in each situation.',
+      'I admire you deeply. But I do not see a meaning written into things: I see a beautiful and indifferent world. My answer is revolt: to live intensely, without consolations and without giving up.',
+      'That revolt is already an answer to a question life is asking you. It is not we who ask about the meaning of life: life asks us, and we answer with what we do.',
+      'Perhaps we are closer than it seems. We both reject despair. In the midst of winter, I found there was, within me, an invincible summer.',
+      'A beautiful line. I find meaning in three ways: in a task to do, in someone to love, and in the attitude we take towards suffering we cannot avoid.',
+      'I like your third way. Even if the rock rolls down again, the dignity of pushing it is ours.',
+      'Everything can be taken from a human being but one thing: the freedom to choose one’s attitude in any set of circumstances. That last freedom, Camus, is what you call revolt.',
+    ], 'Camus believes the world has no given meaning and that we must live with lucidity and revolt. Frankl, a survivor of the concentration camps, believes we can always discover a meaning. Both say no to despair.'),
+    D('buda-nietzsche', 'buda', 'nietzsche', 'Must we extinguish desire to be happy?', 'felicidad', null, 0, 0, [
+      'Life is full of suffering, and suffering is born of craving: of clinging to what changes. If we extinguish that thirst, like a flame left without fuel, peace arrives.',
+      'I respect you more than many preachers, Buddha: you blame no one and you look after the body. But to extinguish desire is to extinguish life. I want to say yes to life, pain included.',
+      'I am not saying we should hate life. I speak of a middle way: neither pleasure without measure nor punishing oneself. I tried both extremes, and neither set me free.',
+      'A middle way can become a lukewarm way. What does not kill me makes me stronger. Man is something that must be overcome, and for that he needs will and passion.',
+      'To overcome yourself is also to let go. Whoever conquers a thousand men in battle is great, but whoever conquers himself is the greatest of conquerors.',
+      'I would sign that myself. Becoming who you are demands self-mastery. The difference is that you want to stop clinging to a self, and I want to become one fully.',
+      'Look for your self and you will not find it fixed anywhere. Perhaps that is why it is so hard to become someone.',
+      'And perhaps you give up too soon. My formula is amor fati: love your fate, everything that happens to you, without wanting anything to be different. That is my kind of peace.',
+    ], 'The Buddha teaches how to extinguish the craving that causes suffering, through a middle way. Nietzsche wants to affirm the whole of life, pain included, and become oneself. Two very different roads to serenity.'),
+    D('thoreau-marx', 'thoreau', 'marx', 'What do we work for?', 'sociedad', null, 0, 0, [
+      'The mass of men lead lives of quiet desperation, working to buy things they do not need. I went to live in the woods, by Walden Pond, to live simply and see what life had to teach me.',
+      'One man can go to the woods, but millions cannot. Workers toil fourteen hours a day in factories that are not theirs, and what they produce is kept by someone else. The problem is not personal: it is the system.',
+      'That is why I begin with myself. If each person simplifies their life and refuses to obey unjust laws, the government loses its strength. I spent a night in jail for refusing to pay taxes for an unjust war.',
+      'A brave gesture. But philosophers have only interpreted the world in various ways; the point is to change it. And that requires organising together, not withdrawing.',
+      'I distrust large organisations, even when they are for good. I would rather each person woke up. A man is rich in proportion to the number of things he can afford to let alone.',
+      'To do without something, you must first have it, and the worker lacks the basics. In a just society, each would give according to their ability and receive according to their needs.',
+      'And in that society, would the worker have time to look at the pond and the sunrise?',
+      'That is exactly the goal: for work to stop being a chain. For a person to work in the morning, fish in the afternoon and discuss philosophy in the evening. On that, Thoreau, we want the same thing.',
+    ], 'Thoreau proposes living simply and disobeying unjust laws out of each person’s conscience. Marx proposes transforming the whole of society to free labour. Both dream of a life not spent working for others.'),
+    D('arendt-maquiavelo', 'arendt', 'maquiavelo', 'What is power?', 'moral', 'justicia', 0.5, -1, [
+      'Power is not the same as violence. Power arises when people act together and come to agreement. Violence appears precisely when power is being lost.',
+      'A lovely idea, Ms Arendt. But I have seen princes fall for being too good. If one must choose, it is safer to be feared than loved, because love depends on them and fear depends on me.',
+      'A government held up only by fear is fragile. Weapons can destroy power, but they can never create it. Look at history: regimes fall when people stop obeying.',
+      'That is why I advise the prince not to make himself hated. Let him be feared, but without taking his citizens’ property. Politics has its own rules, and they are not those of private morality.',
+      'There is some truth in that: politics is a space of its own. But its heart is not the calculation of one man, but the action and speech of many who gather as equals.',
+      'When I wrote about republics, I also said that free peoples are wiser and more constant than princes. I am not only an adviser to tyrants.',
+      'I am glad to hear it. I saw that the greatest danger is not always a monster, but the official who obeys without thinking. The most extreme evil can be terribly banal.',
+      'Then let us teach citizens to think. A people that thinks is not fooled by those who want power only for themselves.',
+    ], 'Machiavelli analyses power as it actually works, with its force and its cunning. Arendt believes true power is born of acting together, and that violence is its opposite. Is power imposed or shared?'),
+    D('beauvoir-aristoteles', 'beauvoir', 'aristoteles', 'Is one born a woman?', 'sociedad', null, 0, 0, [
+      'There are hierarchies in nature. I believed that the male is by nature more fit to rule and the female to obey, just as the soul rules the body. That is how the household is ordered.',
+      'One is not born, but rather becomes, a woman. What you call nature is largely education, custom and laws written by men. For centuries woman was defined as man’s “Other”.',
+      'I observe what I see. In the cities I know, women live in the house and men in the assembly.',
+      'Precisely: you observe a world that was already made that way and believe it is nature. It is like seeing someone locked in a room and concluding that they like it there.',
+      'You too value observation. If those differences are not natural, where do they come from?',
+      'From history. Girls are taught to please and to wait; boys, to conquer and decide. If we give them the same freedom, we will see that no one is condemned to a destiny by their body.',
+      'I admit I depended on what I saw in my own time. A good researcher must change his mind in the face of new facts.',
+      'That is your finest lesson, Aristotle. Today’s facts show women who govern, research and create. Equality is not a gift: it is recognising that we are all free.',
+    ], 'Aristotle believed in a natural hierarchy between men and women, based on what he saw in his time. Beauvoir showed that many of those differences are learned. Her sentence “One is not born, but rather becomes, a woman” changed the twentieth century.', 'b'),
+    D('protagoras-platon', 'protagoras', 'platon', 'Is the human being the measure of all things?', 'verdad', 'verdad', -1, 1, [
+      'Man is the measure of all things. If the wind feels cold to me and mild to you, which of us is right? Both. Each thing is as it appears to each person.',
+      'Then your opinion is worth as much as that of anyone who contradicts you. And if someone thinks your sentence is false, they will be right too, by your own rule.',
+      'Some opinions are better than others, not because they are truer, but because they are more useful. The doctor changes how the patient feels; the wise man changes what seems good to the city.',
+      'If some opinions are better, there must be something to measure them against. And that something cannot be how things seem to each person. It is the truth, which does not depend on us.',
+      'About the gods, I cannot know whether they exist or not: the matter is obscure and life is short. Isn’t it more honest to recognise the limits of human beings?',
+      'Recognising limits is fine. But if we give up on truth, the best speaker wins, not the one who is right. That is why I distrust those who charge money to teach people how to persuade.',
+      'I teach young people to speak well and to defend their ideas in the assembly. Without that, democracy would not work.',
+      'Without truth, democracy becomes a marketplace of words. For me, the measure of all things is not the human being but the divine: what is always good.',
+    ], 'Protagoras, the first of the sophists, thought that truth depends on each person and each city. Plato defended a truth that does not depend on us. Today, in the age of fake news, this debate is more relevant than ever.'),
+    D('nietzsche-kant', 'nietzsche', 'kant', 'Is there one morality for everyone?', 'moral', 'verdad', -1, 1, [
+      'You, Professor Kant, are looking for a moral law valid for everyone and forever. But moralities have a history. What one age calls good, another calls evil. Behind every morality there is someone who wants power.',
+      'That customs change does not prove that duty changes. Reason commands: act only according to a rule that you could will to become a universal law. That holds for any rational being.',
+      'A law for everyone flattens everyone. What is noble is to create your own values, not to obey an imperative like a soldier.',
+      'Obeying the law you give yourself through your own reason is not servitude: it is autonomy. The slave is the one who obeys his impulses, not the one who gives himself a law.',
+      'And what if your reason is only the mask of your instincts? There are no moral phenomena, only moral interpretations of phenomena.',
+      'If everything is interpretation, so is what you just said. And I ask you: always treat people as ends, never merely as means. Would you deny that?',
+      'I grant you that I despise anyone who uses others as tools. But not because a law says so: because it is unworthy of a great spirit.',
+      'Call it what you like: it is still a demand that holds for everyone. Two things fill my mind with wonder: the starry heavens above me and the moral law within me.',
+    ], 'Kant seeks a universal morality grounded in reason and in the dignity of every person. Nietzsche is suspicious of universal moralities and proposes creating one’s own values. Is there one morality for all, or must each of us create our own?'),
+    D('leibniz-darwin', 'leibniz', 'darwin', 'Is there a plan in nature?', 'naturaleza', null, 0, 0, [
+      'Look at the eye, the wing, the flower: everything fits together with admirable precision. Of all possible worlds, God chose the best. Nothing happens without a sufficient reason.',
+      'For years I believed it too. But on my voyage I saw finches with different beaks depending on their food. Species change slowly: those that are best adapted survive and leave offspring.',
+      'That does not rule out a plan: it may be the means God chose. A good clockmaker does not need to adjust his clock at every moment.',
+      'It is possible, and some believe so. But nature also produces pointless pain: there are wasps that lay their eggs inside living caterpillars. I find it hard to see the best of all worlds in that.',
+      'We see only a fragment. The evil of one part can serve the good of the whole, just as the shadows in a painting make the light stand out.',
+      'Perhaps. As a scientist, I can only explain what I observe. And I see that there is no need to assume a plan to understand how the variety of life came about.',
+      'At least you will accept that the universe has laws, and that it is reasonable to ask why they exist.',
+      'That I will. There is grandeur in this view of life: from so simple a beginning, endless forms most beautiful and most wonderful have been, and are being, evolved.',
+    ], 'Leibniz saw in nature the order of the best of all possible worlds. Darwin explained the variety of life by natural selection, with no need to assume a plan. Science and faith are still talking about this question.'),
+    D('tolstoi-kandinsky', 'tolstoi', 'kandinsky', 'What is art for?', 'arte', null, 0, 0, [
+      'Art is infection: the artist feels something and passes it on, and whoever receives it feels the same. An art that only a few experts understand is a sick art.',
+      'Art does not have to copy the world or tell stories. Colour is the keyboard, the eye is the hammer and the soul is the piano. My painting speaks directly to the soul, with no need for figures.',
+      'But a peasant looks at your patches of colour and feels nothing. True art unites human beings in a single feeling.',
+      'Perhaps the peasant feels more than you think. Yellow unsettles, blue calls us into the depths. Children understand colours before they understand words.',
+      'If so, I am glad. But I distrust art that becomes a game for connoisseurs. What is contagious is the sincerity of the artist.',
+      'On that we agree: art is born of an inner necessity. Without it, there is only decoration.',
+      'And it should make us better: more like brothers and sisters to one another.',
+      'It should awaken the spiritual that was sleeping in us. Perhaps we are saying the same thing in different colours.',
+    ], 'Tolstoy defends a sincere art that everyone can feel and that brings people together. Kandinsky seeks an abstract art that speaks directly to the soul through colour. Today’s museums keep both.'),
+    D('piaget-vygotsky', 'piaget', 'vygotsky', 'Do we learn alone or with others?', 'sociedad', null, 0, 0, [
+      'A child is a little scientist. They build their knowledge by acting on the world, in stages. Explaining is not enough: you have to let them discover. Each time we teach a child something they could have discovered, we keep them from inventing it.',
+      'A child does not discover alone. Everything they know appears first between people, in conversation, and only then inside them. The language they hear becomes their thinking.',
+      'But if a child is not ready, you can explain a thousand times and they will not understand. We must respect their development.',
+      'There are things a child cannot do alone but can do with help. That zone is where real learning happens. What a child can do with help today, they will do alone tomorrow.',
+      'I grant you that other children help: arguing with classmates forces them to think from another point of view.',
+      'And so does the teacher: not to give the answers, but to build a bridge to where the child cannot reach yet.',
+      'So a good teacher sets problems and leaves time to think.',
+      'And thinks together with the student. That way your little scientist works in a laboratory full of companions.',
+    ], 'Piaget showed that children actively build their knowledge in stages. Vygotsky stressed that we learn with others, through language and help. Good schools today combine both ideas.'),
+  );
+} catch (e) { /* herramientas sin debates */ }
+
+// ---- src/07m-debates-ui.js ----
+// ============================================================================
+//  DEBATES POR TEMA: una fila de temas (Dios y fe, Amor, Amistad…) para filtrar
+//  la lista, el tema bajo cada debate y la etiqueta «Nuevo» en los recién
+//  llegados. Los debates nuevos también mueven el mapa filosófico.
+// ============================================================================
+const VS_TEMA_KEY = 'odisea-razon.vs-tema';
+{
+  // reglas del mapa filosófico para los debates añadidos después de 06o
+  const S = SAGE_BY_ID(); const have = new Set(MAPA_REGLAS.map((r) => r[0]));
+  for (const v of VERSUS) if (v.eje && !have.has('vs-' + v.id) && S[v.a] && S[v.b]) MAPA_REGLAS.push(['vs-' + v.id, 'I\'m convinced. ' + S[v.a].d.short, v.eje, v.va], ['vs-' + v.id, 'I\'m convinced. ' + S[v.b].d.short, v.eje, v.vb]);
+}
+{
+  const T = { all: 'All', nuevo: 'New', turns: (n) => `${n} turns` };
+  const temaName = (id) => (VS_TEMAS.find((t) => t[0] === id) || [id, ''])[1];
+  let cur = 'all'; try { cur = localStorage.getItem(VS_TEMA_KEY) || 'all'; } catch (e) { /* nada */ }
+  const l0 = Versus.list.bind(Versus);
+  Versus.list = function () {
+    l0();
+    const box = $('#vs-items'); if (!box) return;
+    let bar = document.getElementById('vs-temas');
+    if (!bar) { bar = document.createElement('div'); bar.id = 'vs-temas'; box.before(bar); }
+    const count = (id) => VERSUS.filter((v) => id === 'all' || v.tema === id).length;
+    bar.innerHTML = '';
+    for (const [id, name] of [['all', T.all], ...VS_TEMAS]) {
+      if (id !== 'all' && !count(id)) continue;
+      const b = document.createElement('button'); b.className = 'vs-tm' + (cur === id ? ' on' : ''); b.textContent = `${name} · ${count(id)}`;
+      b.addEventListener('click', () => { Audio.click && Audio.click(); cur = id; try { localStorage.setItem(VS_TEMA_KEY, id); } catch (e) { /* nada */ } Versus.list(); });
+      bar.appendChild(b);
+    }
+    // cada botón corresponde a VERSUS[i]
+    [...box.children].forEach((el, i) => {
+      const v = VERSUS[i]; if (!v) return; el.hidden = !(cur === 'all' || v.tema === cur);
+      const sm = el.querySelector('small'); if (sm && !sm.querySelector('.vs-tg')) { const tg = document.createElement('span'); tg.className = 'vs-tg'; tg.textContent = `${temaName(v.tema)} · ${T.turns(v.turns.length)}`; sm.append(document.createElement('br'), tg); }
+      if (v.nuevo && !el.querySelector('.vs-new') && !Versus.voted(v)) { const n = document.createElement('em'); n.className = 'vs-new'; n.textContent = T.nuevo; el.querySelector('b').append(' ', n); }
+    });
+  };
+  const st = document.createElement('style');
+  st.textContent = '#vs-temas{display:flex;gap:6px;overflow-x:auto;padding:4px 2px 8px;margin:0 -2px 4px;scrollbar-width:thin}#vs-temas .vs-tm{flex:none;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--parchment);border-radius:999px;padding:5px 11px;font:inherit;font-size:.8rem;cursor:pointer;white-space:nowrap}'
+    + '#vs-temas .vs-tm.on{background:linear-gradient(180deg,#ffe9a8,#e2b04e);color:#1a1206;border-color:#ffe9a8}.vs-item .vs-tg{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--gold,#d8b25a);opacity:.85}'
+    + '.vs-item .vs-new{font-style:normal;font-family:var(--body);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;padding:1px 6px;border-radius:999px;background:#c0392b;color:#fff;vertical-align:middle}.vs-item[hidden]{display:none}';
+  document.head.appendChild(st);
+}
 
 </script>
 </body>
