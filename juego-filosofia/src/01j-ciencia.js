@@ -5,7 +5,7 @@
 ERAS.push({
   id: 'ciencia', num: 'XIX', name: 'El taller de los científicos', world: true,
   place: 'Siracusa, Padua, Londres, París y Berna', years: 'Del siglo III a.C. al siglo XX',
-  quote: { t: 'Nada en la vida debe ser temido, solo comprendido. Ahora es el momento de comprender más, para temer menos.', a: 'Marie Curie' },
+  quote: { t: 'Nada en la vida debe ser temido, solo comprendido. Ahora es el momento de comprender más, para temer menos.', a: 'atribuida a Marie Curie' },
   enemy: { one: 'Sombra del Dogma', many: 'Sombras del Dogma' },
   story: 'La ciencia nació de la filosofía: los primeros científicos se llamaban filósofos de la naturaleza. En este taller trabajan quienes cambiaron nuestra manera de conocer el mundo: observando, midiendo, experimentando y, sobre todo, haciéndose preguntas.',
   sages: [
@@ -57,7 +57,7 @@ ERAS.push({
     { id: 'curie', name: 'Marie Curie', short: 'Curie', dates: '1867 – 1934', epithet: 'La científica de los dos Nobel', female: true,
       look: lk(0x2a2a2a, 0x5a5a5a, 0xe8c8a8, 0x6a5a4a, { hat: 'none', acc: 'lens' }), prop: 'fire',
       intro: 'Trabajé años en un cobertizo helado separando toneladas de mineral para encontrar unos gramos de un elemento nuevo que brillaba en la oscuridad. ¿Cuánto esfuerzo vale una pregunta?',
-      defeat: 'Nada en la vida debe ser temido, solo comprendido. Has comprendido, y por eso has vencido tu miedo.',
+      defeat: 'Hay que tener perseverancia y, sobre todo, confianza en uno mismo. Has comprendido, y por eso has vencido tu miedo.',
       concept: { name: 'La perseverancia y la radiactividad', text: 'Marie Curie, nacida en Varsovia como Maria Skłodowska, investigó la radiactividad, palabra que ella misma inventó, y descubrió con Pierre Curie el polonio y el radio. Fue la primera mujer en ganar un Premio Nobel y la única persona premiada en dos ciencias distintas: Física (1903) y Química (1911).' },
       q: [
         { q: '¿Qué fenómeno investigó Marie Curie y bautizó con un nombre?', a: ['La radiactividad', 'La electricidad', 'La gravedad', 'El magnetismo'], e: 'La emisión de energía de ciertos elementos.' },
@@ -65,7 +65,7 @@ ERAS.push({
         { q: '¿Cuántos Premios Nobel ganó Marie Curie?', a: ['Dos, en Física y en Química', 'Uno', 'Ninguno', 'Cinco'], e: 'La única persona premiada en dos ciencias distintas.' },
         { q: '¿En qué ciudad nació Marie Curie?', a: ['Varsovia', 'París', 'Viena', 'Londres'], e: 'Tuvo que irse a París para poder estudiar en la universidad.' },
         { q: '¿Qué hizo Marie Curie durante la Primera Guerra Mundial?', a: ['Organizó unidades móviles de rayos X para los heridos', 'Fabricó armas', 'Se escondió', 'Escribió novelas'], e: 'Las llamaron «las pequeñas Curie».' },
-        { q: '¿Qué frase es de Marie Curie?', a: ['Nada en la vida debe ser temido, solo comprendido', 'Pienso, luego existo', 'Dios ha muerto', 'Conócete a ti mismo'], e: 'Comprender es la mejor medicina contra el miedo.' },
+        { q: '¿Qué frase se atribuye a Marie Curie?', a: ['Nada en la vida debe ser temido, solo comprendido', 'Pienso, luego existo', 'Dios ha muerto', 'Conócete a ti mismo'], e: 'No se sabe dónde la dijo, pero resume su actitud.' },
         { q: '¿Por qué tuvo que emigrar Marie Curie para estudiar?', a: ['Porque en la Polonia ocupada las mujeres no podían entrar a la universidad', 'Porque no le gustaba su país', 'Porque era rica', 'Porque la expulsaron por mala alumna'], e: 'Estudió primero en una «universidad volante» clandestina.' },
         { q: '¿Qué ocurrió con su hija Irène?', a: ['También ganó el Premio Nobel de Química', 'Fue reina', 'Fue astronauta', 'Escribió la Biblia'], e: 'En 1935, junto a su marido Frédéric Joliot.' },
       ] },
@@ -98,7 +98,7 @@ Object.assign(LESSONS, {
     'Para mí, las matemáticas no estaban lejos de la vida: servían para entender el agua, las palancas y los barcos. Mi pregunta para ti: ¿qué problema de tu vida diaria podrías resolver si lo midieras con cuidado?',
   ],
   galileo: [
-    'Soy Galileo Galilei, nacido en Pisa en 1564. Fui profesor de matemáticas en Padua y en Florencia. Me gustaba más hacer experimentos que repetir lo que decían los libros antiguos.',
+    'Soy Galileo Galilei, nacido en Pisa en 1564. Fui profesor de matemáticas en Pisa y en Padua, y luego matemático de la corte de Florencia. Me gustaba más hacer experimentos que repetir lo que decían los libros antiguos.',
     'Aristóteles enseñaba que los cuerpos pesados caen más rápido. Yo hice rodar bolas por planos inclinados y medí su movimiento: sin el aire, todos los cuerpos caen igual de rápido. La experiencia y las matemáticas valían más que la autoridad.',
     'En 1609 construí un telescopio y lo apunté al cielo. Vi montañas en la Luna, cuatro lunas girando alrededor de Júpiter, las fases de Venus y miles de estrellas invisibles. Todo indicaba que Copérnico tenía razón: la Tierra gira alrededor del Sol.',
     'Escribí que el gran libro de la naturaleza está escrito en lenguaje matemático. Pero mis ideas chocaban con la interpretación de la Iglesia de entonces. En 1633 la Inquisición me juzgó y me obligó a retractarme. Viví mis últimos años encerrado en mi casa, ciego, pero seguí escribiendo.',
@@ -116,7 +116,7 @@ Object.assign(LESSONS, {
     'En la Sorbona estudié física y matemáticas y conocí a Pierre Curie. Juntos investigamos unos rayos misteriosos que emitía el uranio. Yo llamé radiactividad a ese fenómeno.',
     'Durante años trabajamos en un cobertizo helado, removiendo toneladas de mineral para separar unos pocos gramos de dos elementos nuevos: el polonio, por mi patria, y el radio, que brillaba en la oscuridad.',
     'En 1903 recibí el Nobel de Física, con Pierre y Henri Becquerel; fui la primera mujer en ganarlo. En 1911 recibí el de Química. En la Primera Guerra Mundial organicé coches con rayos X para atender a los soldados heridos. Mi trabajo con la radiación, sin saber aún lo peligrosa que era, dañó mi salud.',
-    'Escribí: nada en la vida debe ser temido, solo comprendido. Mi pregunta para ti: ¿qué miedo tuyo desaparecería si lo comprendieras mejor?',
+    'Se me atribuye esta frase: nada en la vida debe ser temido, solo comprendido. Mi pregunta para ti: ¿qué miedo tuyo desaparecería si lo comprendieras mejor?',
   ],
   einstein: [
     'Soy Albert Einstein. Nací en Ulm, Alemania, en 1879. No me gustaba la escuela de memorizar, pero me apasionaban las preguntas. A los dieciséis años me pregunté qué vería si viajara montado en un rayo de luz.',

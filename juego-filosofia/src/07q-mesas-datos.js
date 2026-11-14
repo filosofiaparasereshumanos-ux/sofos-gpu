@@ -83,7 +83,7 @@ const MESAS = [
       ['epicuro', 'Montaigne, Heidegger: tanto pensar en la muerte puede amargar la vida. Basta con entenderla una vez para quitarle su poder.'],
       ['montaigne', 'Al contrario, amigo: cuanto más la conozco, menos me asusta y más saboreo la vida. Quiero que la muerte me encuentre plantando mis coles.'],
       ['heidegger', 'Sócrates entendió algo: vivió de tal modo que no tuvo que huir. Eso es vivir de forma auténtica, sabiéndose finito.'],
-      ['socrates', 'Yo solo sé que no sé nada, ni siquiera sobre la muerte. Por eso no la temo: temo más vivir sin examinar mi vida.'],
+      ['socrates', 'No sé lo bastante sobre lo que hay tras la muerte, y reconozco que no lo sé. Por eso no la temo: temo más vivir sin examinar mi vida.'],
       ['socrates', 'Es hora de irnos: yo a morir y vosotros a vivir. Quién va a mejor suerte, solo el dios lo sabe.'],
       ['epicuro', 'Quien aprende a vivir bien aprende también a morir bien.'],
       ['montaigne', 'Que la muerte me encuentre ocupado en vivir.'],

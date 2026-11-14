@@ -76,7 +76,7 @@ const BOOKS = [
       parts: [
         { t: 'Nunca es pronto para filosofar', x: 'Epicuro escribe a su amigo Meneceo: que nadie, siendo joven, tarde en filosofar, ni siendo viejo se canse de hacerlo. Nunca es demasiado pronto ni demasiado tarde para cuidar la salud del alma. La filosofía es la medicina que nos hace felices.' },
         { t: 'No temer a los dioses ni a la muerte', x: 'Los dioses existen, pero viven felices y no se ocupan de castigarnos. Y la muerte no es nada para nosotros: todo bien y todo mal está en la sensación, y la muerte es privación de sensación. Mientras existimos, la muerte no está; cuando llega, ya no existimos.' },
-        { t: 'Clases de deseos', x: 'Unos deseos son naturales y necesarios, como comer o tener amigos. Otros son naturales pero no necesarios, como los manjares refinados. Y otros son vanos, como la fama o el lujo sin fin. El sabio satisface los primeros y aprende a prescindir de los últimos.' },
+        { t: 'Clases de deseos', x: 'Unos deseos son naturales y necesarios, como comer o beber cuando tenemos sed. Otros son naturales pero no necesarios, como los manjares refinados. Y otros son vanos, como la fama o el lujo sin fin. El sabio satisface los primeros y aprende a prescindir de los últimos.' },
         { t: 'El placer sereno', x: 'Cuando decimos que el placer es el fin, no hablamos de los placeres de los derrochadores, sino de no sufrir dolor en el cuerpo ni turbación en el alma. Pan y agua dan el mayor placer a quien tiene hambre. La prudencia es el mayor bien, y de ella nacen las demás virtudes.' },
       ],
       quote: 'La muerte no es nada para nosotros: cuando nosotros somos, ella no es; y cuando ella es, nosotros ya no somos.',
@@ -88,7 +88,7 @@ const BOOKS = [
         { t: 'Al empezar el día', x: 'Dite al amanecer: hoy me encontraré con un entrometido, un ingrato, un insolente. Pero nadie puede dañarme de verdad, y no puedo enfadarme con quien es mi pariente. Hemos nacido para colaborar, como los pies, las manos o los párpados.' },
         { t: 'Todo pasa', x: 'Piensa en cuántos emperadores, sabios y ciudades han desaparecido. Todo es pasajero: lo que hoy es fama mañana es olvido. Por eso vive cada día como si fuera el último, sin agitación, sin pereza y sin fingimiento, de acuerdo con la naturaleza y la razón.' },
       ],
-      quote: 'Tienes poder sobre tu mente, no sobre los acontecimientos. Date cuenta de esto y encontrarás la fuerza.',
+      quote: 'Si algo externo te aflige, no es eso lo que te perturba, sino tu juicio sobre ello; y borrar ese juicio está en tu poder.',
       q: { q: 'Según las Meditaciones, ¿qué es lo único que depende de nosotros?', a: ['Nuestro propio juicio sobre las cosas', 'La fama y la salud', 'Lo que hacen los demás', 'El destino del Imperio'], e: 'No nos turban las cosas, sino nuestras opiniones sobre ellas.' } },
   ],
   [ // IV · Edad Media
@@ -96,7 +96,7 @@ const BOOKS = [
       parts: [
         { t: 'Una vida contada a Dios', x: 'Agustín escribe su autobiografía como una larga conversación con Dios. Confiesa sus errores y alaba a Dios por haberle guiado. Es una de las primeras autobiografías de la historia, y muestra a alguien que se examina por dentro con una sinceridad nueva.' },
         { t: 'Las peras robadas', x: 'De adolescente, Agustín robó peras de un huerto con unos amigos. No tenía hambre: las tiraron a los cerdos. Lo hizo solo por el gusto de hacer lo prohibido. Al recordarlo se pregunta por qué amamos el mal, y descubre lo inquieto y dividido que está el corazón humano.' },
-        { t: 'Toma y lee', x: 'En un jardín de Milán, angustiado, Agustín oye a un niño cantar: toma y lee, toma y lee. Abre las cartas de San Pablo al azar y lee una frase que le cambia la vida. Así cuenta su conversión al cristianismo, a los treinta y dos años.' },
+        { t: 'Toma y lee', x: 'En un jardín de Milán, angustiado, Agustín oye a un niño cantar: toma y lee, toma y lee. Abre las cartas de San Pablo al azar y lee una frase que le cambia la vida. Así cuenta su conversión al cristianismo, a los treinta y un años.' },
         { t: '¿Qué es el tiempo?', x: 'Si nadie me lo pregunta, lo sé; si quiero explicárselo a quien me lo pregunta, no lo sé. El pasado ya no es y el futuro aún no es. Agustín concluye que el tiempo está en el alma: el pasado es memoria, el presente es atención y el futuro es espera.' },
       ],
       quote: 'Nos hiciste, Señor, para ti, y nuestro corazón está inquieto hasta que descanse en ti.',

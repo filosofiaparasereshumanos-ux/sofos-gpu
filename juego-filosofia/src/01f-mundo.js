@@ -289,7 +289,7 @@ ERAS.push(
           { q: '¿Qué virtud confuciana manda respetar y cuidar a los padres?', a: ['La piedad filial (xiao)', 'El wu wei', 'La ahimsa', 'La ataraxia'], e: 'Base del orden familiar y social.' },
           { q: '¿Qué es la «rectificación de los nombres»?', a: ['Que las palabras correspondan a la realidad y cada uno cumpla su papel', 'Cambiar de nombre cada año', 'Prohibir ciertas palabras', 'Traducir los clásicos'], e: 'Que el gobernante gobierne como gobernante y el padre actúe como padre.' },
           { q: '¿Qué sistema chino, inspirado en el confucianismo, elegía a los funcionarios por mérito?', a: ['Los exámenes imperiales', 'La herencia de sangre', 'El sorteo como en Atenas', 'La guerra'], e: 'Duró más de mil años.' },
-          { q: '¿Qué discípulo de Confucio defendió que el ser humano es bueno por naturaleza?', a: ['Mencio', 'Xunzi', 'Laozi', 'Mozi'], e: 'Xunzi, en cambio, pensaba que es malo y se corrige con la educación.' },
+          { q: '¿Qué seguidor de Confucio, nacido un siglo después de su muerte, defendió que el ser humano es bueno por naturaleza?', a: ['Mencio', 'Xunzi', 'Laozi', 'Mozi'], e: 'Xunzi, en cambio, pensaba que es malo y se corrige con la educación.' },
           { q: '¿En qué estado chino nació Confucio?', a: ['Lu', 'Qin', 'Chu', 'Han'], e: 'En la actual provincia de Shandong.' },
           { q: '¿Qué gran muralla empezó a unificar el primer emperador, Qin Shi Huang?', a: ['La Gran Muralla China', 'El muro de Adriano', 'El muro de Berlín', 'Las murallas de Troya'], e: 'También quemó libros confucianos.' },
         ] },
@@ -552,7 +552,7 @@ Object.assign(LESSONS, {
     'Fui funcionario y viajé muchos años por los reinos de China buscando un gobernante que aplicara mis ideas. Ninguno lo hizo del todo. Entonces me dediqué a enseñar a todos los que quisieran aprender, ricos o pobres. Se dice que tuve tres mil discípulos.',
     'Mi enseñanza central es el ren: la humanidad, la benevolencia. Se cultiva con el estudio, con el respeto a los ritos, el li, y con la piedad filial, el xiao. La persona noble, el junzi, no lo es por su sangre, sino por su carácter.',
     'Un discípulo me preguntó si había una palabra que sirviera de guía para toda la vida. Respondí: reciprocidad. Lo que no quieras para ti, no lo hagas a los demás. El buen gobierno no se impone por miedo, sino por el ejemplo.',
-    'Mis discípulos recogieron mis palabras en las Analectas. Durante más de dos mil años, los funcionarios chinos estudiaron mis ideas para aprobar los exámenes imperiales. Recuerda mi primera frase: aprender y practicar lo aprendido, ¿no es un placer?',
+    'Mis discípulos recogieron mis palabras en las Analectas. Durante más de mil años, los funcionarios chinos estudiaron mis ideas para aprobar los exámenes imperiales. Recuerda mi primera frase: aprender y practicar lo aprendido, ¿no es un placer?',
   ],
   gargi: [
     'Soy Gargi Vachaknavi, hija del sabio Vachaknu. Viví hace casi tres mil años en el reino de Videha, en el norte de la India. Estudié los Vedas y fui reconocida como filósofa en una época en que pocas mujeres podían serlo.',

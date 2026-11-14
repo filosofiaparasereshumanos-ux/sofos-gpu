@@ -122,7 +122,7 @@ const DIALOGOS = {
         objecion: 'Pero si los sentidos engañan, ¿cómo descubres el engaño? Cuando un palo dentro del agua parece quebrado, ¿no lo descubres también tocándolo, con otro sentido?',
         respuestas: [
           DR('Los sentidos se corrigen entre sí, pero es la razón la que compara y juzga cuál acierta.', 'b', 'Excelente: le das a cada uno su papel sin abandonar tu postura.'),
-          DR('Es cierto: los sentidos también enseñan. Quizá la razón los necesita para empezar.', 'b', 'Revisas tu postura con honestidad. Así pensará tu alumno Aristóteles.'),
+          DR('Es cierto: los sentidos también enseñan. Quizá la razón los necesita para empezar.', 'b', 'Revisas tu postura con honestidad. Así pensará mi alumno Aristóteles.'),
           DR('Porque sí.', 'd', '«Porque sí» no es una razón.'),
           DR('Tocarlo también engaña: todo engaña y nada se puede saber.', 'f', 'Saltas al extremo sin razones; y si nada se puede saber, tampoco eso.', 'pendiente resbaladiza'),
         ],
@@ -315,7 +315,7 @@ Object.assign(DIALOGOS, {
     ],
   },
   descartes: {
-    tesis: 'Solo la razón nos da certezas: los sentidos pueden engañarnos siempre.',
+    tesis: 'Solo la razón nos da certezas: los sentidos a veces nos engañan, y no es prudente fiarse de quien nos ha engañado una vez.',
     posturas: [
       { t: 'Estoy de acuerdo: la certeza viene de la razón.', eje: 'razon',
         razones: [
@@ -485,7 +485,7 @@ Object.assign(DIALOGOS, {
           DR('Eso nunca me va a pasar.', 'd', 'Puede que no, pero el caso sirve para poner a prueba la regla.'),
           DR('Si una vez se puede mentir, entonces siempre se puede.', 'f', 'De una excepción no se sigue que todo valga.', 'pendiente resbaladiza'),
         ],
-        cierre: 'El caso del asesino en la puerta me lo planteó Benjamin Constant. Has visto que una ética del deber necesita también juicio para aplicarse.' },
+        cierre: 'El caso del asesino en la puerta me lo planteó Benjamin Constant, y le respondí que ni así se puede mentir. Muchos kantianos no me siguen ahí: una ética del deber necesita juicio.' },
       { t: 'No estoy de acuerdo: importan las consecuencias.', eje: 'consecuencias',
         razones: [
           DR('Lo que hace buena una acción es el bien que produce: aliviar el sufrimiento importa más que cumplir reglas.', 'b', 'Buena razón: es la idea de los utilitaristas como Mill.'),
@@ -519,7 +519,7 @@ Object.assign(DIALOGOS, {
     ],
   },
   hume: {
-    tesis: 'Todo lo que sabemos viene de la experiencia, y ni siquiera la causa la vemos: solo vemos que una cosa sigue a otra.',
+    tesis: 'Todas nuestras ideas vienen de la experiencia, y ni siquiera la causa la vemos: solo vemos que una cosa sigue a otra.',
     posturas: [
       { t: 'Estoy de acuerdo: todo viene de la experiencia.', eje: 'experiencia',
         razones: [
@@ -715,7 +715,7 @@ Object.assign(DIALOGOS, {
           DR('Nada: las cosas son como son.', 'd', 'La historia muestra que muchas cosas cambiaron.'),
           DR('Todo, porque nada es real.', 'f', 'Que algo sea construido no significa que no sea real.', 'pendiente resbaladiza'),
         ],
-        cierre: 'Saber qué se puede cambiar es el primer paso hacia la libertad. Que nada nos defina antes de vivir.' },
+        cierre: 'Saber qué se puede cambiar es el primer paso hacia la libertad. Querer ser libre es querer libres a los demás.' },
     ],
   },
   freire: {
@@ -940,7 +940,7 @@ Object.assign(DIALOGOS, {
           DR('Los malos no son felices y punto.', 'd', 'Afirmas sin razones.'),
           DR('Entonces da igual ser bueno o malo.', 'f', 'Sacas una conclusión que no se sigue de la objeción.', 'non sequitur'),
         ],
-        cierre: 'Somos lo que hacemos repetidamente. La excelencia, entonces, no es un acto, sino un hábito.' },
+        cierre: 'Nos hacemos justos haciendo cosas justas, y valientes haciendo cosas valientes. La virtud, entonces, se aprende con el hábito.' },
       { t: 'No estoy de acuerdo: cada uno decide qué lo hace feliz.', eje: 'crear',
         razones: [
           DR('Las personas son muy distintas: a una la hace feliz viajar, a otra la tranquilidad de su casa.', 'b', 'Buena razón: la diversidad de formas de vida.'),
@@ -1330,7 +1330,7 @@ Object.assign(DIALOGOS, {
           DR('No recuerdo ninguna.', 'd', 'Seguro hay alguna; la pregunta pedía pensarlo.'),
           DR('Las decisiones las toman siempre los demás.', 'f', 'Contradices tu propia postura.', 'contradicción'),
         ],
-        cierre: 'Libres en situación: así lo dijo el propio Sartre en sus últimos años. Has pensado tu libertad con los pies en la tierra.' },
+        cierre: 'Libres en situación: así lo dijo el propio Sartre, que con los años dio cada vez más peso a las circunstancias. Has pensado tu libertad con los pies en la tierra.' },
     ],
   },
   mill: {
@@ -1585,7 +1585,7 @@ Object.assign(DIALOGOS, {
           DR('Mejor que no hablen.', 'd', 'Evitar el diálogo no es una forma de pensarlo.'),
           DR('El que tenga más amigos gana la discusión.', 'f', 'La popularidad no decide la verdad.', 'falacia de popularidad'),
         ],
-        cierre: 'Has imaginado un diálogo entre fe y razón con respeto. Así se conversaba en la Córdoba de Averroes, entre musulmanes, judíos y cristianos.' },
+        cierre: 'Has imaginado un diálogo entre fe y razón con respeto. Así lo intentaron en al-Ándalus pensadores como el musulmán Averroes y el judío Maimónides.' },
     ],
   },
   spinoza: {

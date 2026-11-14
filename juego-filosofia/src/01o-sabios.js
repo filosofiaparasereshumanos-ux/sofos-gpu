@@ -31,16 +31,16 @@
   add('helenismo', {
     id: 'epicteto', name: 'Epicteto', short: 'Epicteto', dates: 'c. 50 – 135', epithet: 'El esclavo que enseñó a ser libre',
     look: lk(0xb8a888, 0x5a4a3a, 0xc49372, 0x6a5a4a, { beard: 0x6a5a4a, acc: 'staff' }), prop: 'scales',
-    intro: 'Nací esclavo, y cojo. Pero nadie, ni mi amo, pudo quitarme lo único que de verdad es mío: lo que pienso y cómo respondo. ¿Sabes distinguir lo que depende de ti?',
+    intro: 'Fui esclavo, y cojo. Pero nadie, ni mi amo, pudo quitarme lo único que de verdad es mío: lo que pienso y cómo respondo. ¿Sabes distinguir lo que depende de ti?',
     defeat: 'Has aprendido la gran lección estoica: ocúpate de lo que depende de ti y suelta con calma lo que no.',
-    concept: { name: 'Lo que depende de mí', text: 'Epicteto fue esclavo en Roma antes de ser un gran maestro estoico. Su enseñanza central divide la vida en dos: lo que depende de nosotros (nuestros juicios, deseos y acciones) y lo que no (el cuerpo, la fama, lo que hacen los demás). Sufrimos, decía, no por las cosas, sino por las opiniones que tenemos sobre ellas. Su discípulo Arriano recogió sus lecciones en el «Enquiridión», un manual de bolsillo que leyó Marco Aurelio y que hoy inspira a la psicología cognitiva.' },
+    concept: { name: 'Lo que depende de mí', text: 'Epicteto fue esclavo en Roma antes de ser un gran maestro estoico. Su enseñanza central divide la vida en dos: lo que depende de nosotros (nuestros juicios, deseos y acciones) y lo que no (el cuerpo, la fama, lo que hacen los demás). Sufrimos, decía, no por las cosas, sino por las opiniones que tenemos sobre ellas. Su discípulo Arriano recogió sus lecciones en las «Disertaciones» y en el «Enquiridión», un manual de bolsillo. Marco Aurelio leyó sus lecciones, que hoy inspiran a la terapia cognitiva.' },
     q: [
       Q('¿Cuál es la enseñanza central de Epicteto?', 'Distinguir lo que depende de nosotros de lo que no', 'Ocúpate de tus juicios y acciones; acepta lo demás.', 'Buscar siempre el placer', 'Dudar de todo', 'Obedecer siempre al más fuerte'),
       Q('¿Cuál era la condición de Epicteto en su juventud?', 'Era esclavo', 'Fue esclavo en Roma y después hombre libre y maestro.', 'Era emperador', 'Era general', 'Era un rico mercader'),
       Q('Según Epicteto, ¿qué nos hace sufrir?', 'No las cosas, sino las opiniones que tenemos sobre ellas', 'Cambiar el juicio cambia la emoción.', 'Solo el dolor físico', 'Los dioses', 'La mala suerte'),
       Q('¿Cómo se llama el manual que reúne sus enseñanzas?', 'Enquiridión', 'Significa «lo que se tiene a mano»: un manual de bolsillo.', 'La República', 'El Príncipe', 'Meditaciones'),
       Q('¿Qué emperador filósofo admiró y leyó a Epicteto?', 'Marco Aurelio', 'Lo cita con gratitud en sus Meditaciones.', 'Nerón', 'Julio César', 'Augusto'),
-      Q('¿Qué disciplina actual se inspira en Epicteto?', 'La psicología cognitiva', 'Trabaja con la idea de que nuestros pensamientos influyen en nuestras emociones.', 'La astronomía', 'La química', 'La arquitectura'),
+      Q('¿Qué disciplina actual se inspira en Epicteto?', 'La terapia cognitiva de la psicología', 'Trabaja con la idea de que nuestros pensamientos influyen en nuestras emociones.', 'La astronomía', 'La química', 'La arquitectura'),
     ] }, 'hipatia');
 
   // ---------------------------------------------------------------- Medieval
@@ -86,7 +86,7 @@
       Q('¿De dónde era Copérnico?', 'De Polonia', 'Trabajó en Frombork, junto al mar Báltico.', 'De Italia', 'De Grecia', 'De Egipto'),
       Q('¿Qué movimiento de la Tierra explica el día y la noche, según Copérnico?', 'La rotación sobre sí misma', 'Una vuelta completa cada día.', 'El movimiento del Sol', 'La traslación', 'Ninguno'),
       Q('¿Qué científicos continuaron la idea de Copérnico?', 'Kepler, Galileo y Newton', 'Juntos fundaron la astronomía moderna.', 'Platón y Aristóteles', 'Tales y Pitágoras', 'Agustín y Tomás'),
-      Q('¿Qué significa hoy un «giro copernicano»?', 'Un cambio de perspectiva que lo transforma todo', 'Kant usó la expresión para su propia filosofía.', 'Un baile antiguo', 'Un error de cálculo', 'Un tipo de reloj'),
+      Q('¿Qué significa hoy un «giro copernicano»?', 'Un cambio de perspectiva que lo transforma todo', 'Kant comparó su filosofía con el cambio de Copérnico.', 'Un baile antiguo', 'Un error de cálculo', 'Un tipo de reloj'),
     ] }, 'maquiavelo');
 
   // ---------------------------------------------------------------- Siglo XIX
@@ -291,13 +291,13 @@
   add('ciencia', {
     id: 'darwin', name: 'Charles Darwin', short: 'Darwin', dates: '1809 – 1882', epithet: 'El viajero que explicó la evolución',
     look: lk(0x4a3a2a, 0x2a1a10, 0xf0d0b0, 0xe8e8e8, { beard: 0xe8e8e8, hat: 'bald', acc: 'book' }), prop: 'globe',
-    intro: 'Di la vuelta al mundo en el barco Beagle. En las islas Galápagos vi pinzones con picos distintos en cada isla. ¿Por qué? Esa pregunta cambió mi vida y la de la ciencia.',
+    intro: 'Di la vuelta al mundo en el barco Beagle. En las islas Galápagos vi sinsontes y tortugas distintos en cada isla. ¿Por qué? Esa pregunta cambió mi vida y la de la ciencia.',
     defeat: 'Has observado como Darwin: con paciencia, los pequeños cambios a lo largo del tiempo explican la asombrosa variedad de la vida.',
     concept: { name: 'La evolución por selección natural', text: 'Charles Darwin viajó cinco años alrededor del mundo en el barco Beagle, también por las costas de Chile y Argentina y por las islas Galápagos. Observó que los seres vivos varían y que, en cada ambiente, los que tienen rasgos más favorables sobreviven y se reproducen más, transmitiendo esos rasgos. A lo largo de muchísimo tiempo, esa «selección natural» produce nuevas especies. Lo explicó en «El origen de las especies» (1859). Su teoría mostró que todos los seres vivos estamos emparentados en un gran árbol de la vida.' },
     q: [
       Q('¿Qué teoría propuso Darwin?', 'La evolución de las especies por selección natural', 'Los rasgos favorables se transmiten y se acumulan.', 'La gravitación universal', 'La relatividad', 'El heliocentrismo'),
       Q('¿Cómo se llamaba el barco en que Darwin dio la vuelta al mundo?', 'Beagle', 'El viaje duró cinco años.', 'Titanic', 'Santa María', 'Argo'),
-      Q('¿Qué aves de las Galápagos le dieron pistas?', 'Los pinzones, con picos distintos en cada isla', 'Cada pico se adapta a un alimento.', 'Los pingüinos', 'Los loros', 'Las águilas'),
+      Q('¿Qué aves de las Galápagos le dieron pistas?', 'Los sinsontes, distintos en cada isla', 'Los famosos pinzones solo los entendió después, con ayuda del ornitólogo John Gould.', 'Los pingüinos', 'Los loros', 'Las águilas'),
       Q('¿Cómo se llama su libro más famoso?', 'El origen de las especies', 'Publicado en 1859.', 'Principia', 'Walden', 'El capital'),
       Q('¿Qué países sudamericanos recorrió Darwin en su viaje?', 'Chile y Argentina, entre otros', 'Vivió un terremoto en Chile.', 'Ninguno', 'Solo Brasil', 'Solo México'),
       Q('¿Qué imagen usó Darwin para mostrar que los seres vivos están emparentados?', 'Un gran árbol de la vida', 'Todas las especies comparten ancestros.', 'Una escalera', 'Una pirámide', 'Un reloj'),
@@ -434,7 +434,7 @@ Object.assign(LESSONS, {
   darwin: [
     'Soy Charles Darwin, de Inglaterra. De niño coleccionaba escarabajos, y mi padre temía que no sirviera para nada.',
     'A los veintidós años me embarqué en el Beagle. Viajé cinco años: vi la selva de Brasil, los fósiles de Argentina y un terremoto en Chile.',
-    'En las islas Galápagos encontré pinzones con picos diferentes en cada isla: unos para romper semillas, otros para comer insectos.',
+    'En las islas Galápagos vi que los sinsontes y las tortugas cambiaban de una isla a otra. Más tarde, el ornitólogo John Gould me mostró que mis pinzones eran especies distintas, con picos para semillas o para insectos.',
     'Pensé durante veinte años antes de publicar: los seres vivos varían, y los que mejor se adaptan sobreviven y dejan más descendientes. Es la selección natural.',
     'Todos los seres vivos estamos emparentados en un gran árbol de la vida. Mi pregunta para ti: ¿cómo te has adaptado tú a un cambio difícil?',
   ],

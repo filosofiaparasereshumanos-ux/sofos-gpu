@@ -21,7 +21,7 @@ const ERAS = [
         concept: { name: 'Arjé', text: 'El principio originario del que todo procede y al que todo vuelve. Para Tales, ese principio era el agua: así nace la pregunta filosófica por la naturaleza (physis).' },
         q: [
           { q: '¿Qué elemento consideraba Tales el arjé de todas las cosas?', a: ['El agua', 'El fuego', 'El aire', 'Lo ápeiron'], e: 'Quizá porque todo lo vivo necesita humedad y las semillas son húmedas.' },
-          { q: '¿Qué fenómeno se dice que Tales predijo?', a: ['Un eclipse de sol', 'La aparición de un cometa', 'Una gran inundación', 'Una lluvia de meteoros'], e: 'Heródoto cuenta que predijo el eclipse del 585 a.C., que detuvo una batalla entre lidios y medos.' },
+          { q: '¿Qué fenómeno se dice que Tales predijo?', a: ['Un eclipse de sol', 'La aparición de un cometa', 'Una gran inundación', 'Una lluvia de meteoros'], e: 'Heródoto cuenta que predijo un eclipse (hoy fechado en el 585 a.C.) que detuvo una batalla entre lidios y medos.' },
           { q: '¿De qué ciudad jonia era Tales?', a: ['Mileto', 'Éfeso', 'Atenas', 'Esparta'], e: 'Mileto, en la costa de Asia Menor, fue la cuna de la primera escuela filosófica.' },
           { q: '¿Qué palabra griega designa el principio originario que buscaban los primeros filósofos?', a: ['Arjé', 'Telos', 'Ágape', 'Polis'], e: 'Arjé significa a la vez «origen» y «principio que gobierna».' },
           { q: 'Según Aristóteles, ¿cómo demostró Tales que un filósofo podía enriquecerse?', a: ['Alquilando las prensas de aceite antes de una gran cosecha', 'Cobrando por enseñar retórica', 'Vendiendo mapas de las estrellas', 'Descubriendo una mina de plata'], e: 'Previó una gran cosecha de aceitunas y alquiló todas las prensas: el primer «monopolio» de la historia.' },
@@ -60,7 +60,7 @@ const ERAS = [
           { q: '¿Cómo llama Heráclito a la ley racional que ordena el cambio?', a: ['Logos', 'Nous', 'Ápeiron', 'Átomo'], e: 'El Logos es común a todos, aunque la mayoría vive como si tuviera un pensamiento privado.' },
           { q: 'Para Heráclito, la realidad se sostiene en...', a: ['La lucha y la unidad de los contrarios', 'La inmovilidad absoluta del ser', 'Cuatro raíces y dos fuerzas', 'El vacío y los átomos'], e: 'Día y noche, frío y calor: los opuestos se necesitan mutuamente.' },
           { q: '¿Cuál de estas frases es de Heráclito?', a: ['«La guerra es padre de todas las cosas»', '«El hombre es la medida de todas las cosas»', '«Solo sé que no sé nada»', '«Pienso, luego existo»'], e: 'El conflicto (pólemos) es la fuerza que genera la realidad.' },
-          { q: '¿Qué expresión griega resume la doctrina de que todo fluye?', a: ['Panta rei', 'Gnothi seauton', 'Ataraxia', 'Epojé'], e: 'Πάντα ῥεῖ: todo fluye, nada permanece.' },
+          { q: '¿Qué expresión griega resume la doctrina de que todo fluye?', a: ['Panta rei', 'Gnothi seauton', 'Ataraxia', 'Epojé'], e: 'Πάντα ῥεῖ: todo fluye. La fórmula no aparece en sus fragmentos: es un resumen posterior de su pensamiento.' },
         ],
       },
       {
@@ -113,7 +113,7 @@ const ERAS = [
         id: 'socrates', name: 'Sócrates', short: 'Sócrates', dates: '470 – 399 a.C.', epithet: 'El tábano de Atenas',
         look: { robe: 0xb8ad97, robe2: 0x6d6250, skin: 0xbf9070, hair: 0xdedad2, beard: 0xdedad2, hat: 'bald', acc: 'cup' },
         prop: 'hemlock',
-        intro: 'Yo solo sé que no sé nada. ¿Y tú? Examinemos juntos lo que crees saber.',
+        intro: 'Lo que no sé, tampoco creo saberlo. ¿Y tú? Examinemos juntos lo que crees saber.',
         defeat: 'Has dado a luz la verdad que llevabas dentro. Mi mayéutica ha funcionado contigo.',
         concept: { name: 'Mayéutica', text: 'El arte de «dar a luz» ideas mediante preguntas. Sócrates, como su madre partera, no da la verdad: ayuda a que el otro la descubra.' },
         q: [
@@ -235,7 +235,7 @@ const ERAS = [
         prop: 'throne',
         intro: 'Gobierno un imperio, pero solo soy dueño de mis juicios. Veamos si tú dominas los tuyos.',
         defeat: 'Has distinguido lo que depende de ti y lo que no. Eres libre, aunque el mundo arda.',
-        concept: { name: 'Dicotomía del control', text: 'Distinguir lo que depende de nosotros (juicios, deseos, acciones) de lo que no (salud, fama, fortuna). Vivir conforme a la razón y la naturaleza es la única virtud.' },
+        concept: { name: 'Lo que depende de nosotros', text: 'Distinguir lo que depende de nosotros (juicios, deseos, acciones) de lo que no (salud, fama, fortuna). Vivir conforme a la razón y la naturaleza: la virtud es el único bien.' },
         q: [
           { q: '¿Cómo se titula la obra que Marco Aurelio escribió para sí mismo?', a: ['Meditaciones', 'Cartas a Lucilio', 'Enquiridión', 'De la brevedad de la vida'], e: 'Notas en griego escritas durante sus campañas militares.' },
           { q: '¿A qué escuela pertenecía Marco Aurelio?', a: ['Estoicismo', 'Epicureísmo', 'Cinismo', 'Escepticismo'], e: 'Es uno de los tres grandes estoicos romanos, con Séneca y Epicteto.' },
@@ -263,7 +263,7 @@ const ERAS = [
         id: 'agustin', name: 'Agustín de Hipona', short: 'Agustín', dates: '354 – 430', epithet: 'El Doctor de la Gracia',
         look: { robe: 0x2c2a33, robe2: 0xc9a227, skin: 0x8f6446, hair: 0x2a2420, beard: 0x2a2420, hat: 'mitre', acc: 'book' },
         prop: 'lectern',
-        intro: 'Nuestro corazón está inquieto hasta que descansa en la verdad. ¿Está inquieto tu entendimiento?',
+        intro: 'Nuestro corazón está inquieto hasta que descansa en Dios. ¿Busca también tu entendimiento la verdad?',
         defeat: 'Toma y lee: tu camino continúa. Que la luz interior te guíe.',
         concept: { name: 'Iluminación', text: 'La verdad no se fabrica: el alma la encuentra al mirar dentro de sí, iluminada por Dios. «No salgas fuera; en el interior del hombre habita la verdad.»' },
         q: [
@@ -508,7 +508,7 @@ const ERAS = [
           { q: '¿Qué obra de 1781 examina los límites del conocimiento?', a: ['Crítica de la razón pura', 'Crítica de la razón práctica', 'Fenomenología del espíritu', 'Discurso del método'], e: '¿Qué puedo conocer? es su gran pregunta.' },
           { q: '¿Cómo llama Kant a la cosa en sí, que no podemos conocer?', a: ['Noúmeno', 'Fenómeno', 'Mónada', 'Idea innata'], e: 'Solo conocemos las cosas tal como se nos aparecen.' },
           { q: 'Según Kant, ¿qué son el espacio y el tiempo?', a: ['Formas a priori de la sensibilidad', 'Sustancias reales', 'Ilusiones de los sentidos', 'Creaciones divinas externas'], e: 'Son condiciones que el sujeto pone para que algo se le aparezca.' },
-          { q: '¿Cómo llamó Kant a su inversión de la relación entre sujeto y objeto?', a: ['Giro copernicano', 'Salto de fe', 'Doble verdad', 'Duda metódica'], e: 'Como Copérnico, cambia el punto de vista para explicar mejor.' },
+          { q: '¿Cómo se conoce la inversión de Kant entre sujeto y objeto, que él comparó con Copérnico?', a: ['Giro copernicano', 'Salto de fe', 'Doble verdad', 'Duda metódica'], e: 'Como Copérnico, cambia el punto de vista para explicar mejor.' },
           { q: '¿Qué tipo de juicios busca Kant como fundamento de la ciencia?', a: ['Sintéticos a priori', 'Analíticos a posteriori', 'Hipotéticos', 'Retóricos'], e: 'Amplían el conocimiento y son universales y necesarios.' },
           { q: '¿En qué ciudad vivió Kant toda su vida?', a: ['Königsberg', 'Berlín', 'Viena', 'Jena'], e: 'Hoy Kaliningrado. Sus vecinos ponían el reloj en hora con sus paseos.' },
           { q: 'Según el imperativo categórico, debemos tratar a la humanidad siempre...', a: ['Como un fin, nunca solo como un medio', 'Como medio para la felicidad', 'Según la costumbre', 'Según el placer'], e: 'Es la fórmula de la humanidad: la dignidad de las personas.' },

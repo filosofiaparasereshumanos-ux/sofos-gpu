@@ -85,7 +85,7 @@
       { q: '¿Qué arte consideraba Schopenhauer el más alto?', a: ['La música', 'La arquitectura', 'La pintura', 'La danza'], e: 'Porque expresa directamente la voluntad misma.' },
       { q: '¿En qué basaba Schopenhauer la moral?', a: ['En la compasión por el sufrimiento de los demás', 'En el miedo al castigo', 'En la obediencia', 'En el interés propio'], e: 'Incluía también a los animales.' },
       { q: '¿Qué sabiduría oriental admiraba Schopenhauer?', a: ['El budismo y las Upanishads de la India', 'El confucianismo militar', 'La astrología', 'Ninguna'], e: 'Tenía una estatua de Buda en su escritorio.' },
-      { q: '¿A qué filósofo admirado criticaba Schopenhauer con dureza?', a: ['A Hegel', 'A Platón', 'A Kant', 'A Buda'], e: 'Incluso dio clases a la misma hora que Hegel… y casi nadie fue a las suyas.' },
+      { q: '¿A qué filósofo, el más famoso de su época, despreciaba Schopenhauer?', a: ['A Hegel', 'A Platón', 'A Buda', 'A Confucio'], e: 'Incluso dio clases a la misma hora que Hegel… y casi nadie fue a las suyas.' },
       { q: '¿A qué filósofo influyó mucho Schopenhauer en su juventud?', a: ['A Nietzsche', 'A Sócrates', 'A Tomás de Aquino', 'A Confucio'], e: 'Nietzsche lo llamó su educador.' },
     ] }, 'kierkegaard');
 }
@@ -121,7 +121,7 @@ Object.assign(LESSONS, {
   ],
   schopenhauer: [
     'Soy Arthur Schopenhauer. Nací en Danzig en 1788, hijo de un rico comerciante. Mi padre quería que siguiera sus negocios, pero yo elegí la filosofía.',
-    'Leí a Kant y pensé que detrás del mundo que vemos hay algo que él no se atrevió a nombrar: la voluntad. Una fuerza ciega que empuja a la planta a crecer, al animal a cazar y a nosotros a desear sin descanso.',
+    'Leí a Kant, que llamó a lo que hay detrás del mundo que vemos «cosa en sí». Yo le puse nombre: la voluntad. Una fuerza ciega que empuja a la planta a crecer, al animal a cazar y a nosotros a desear sin descanso.',
     'Por eso la vida oscila como un péndulo entre el dolor y el aburrimiento: sufrimos mientras deseamos, y nos aburrimos cuando conseguimos. Parece triste, pero no termina ahí.',
     'Hay salidas. El arte, sobre todo la música, nos libera un momento del deseo. La compasión nos hace sentir el dolor del otro como nuestro, y es la base de toda moral, también con los animales. Y la sabiduría de la India y del Buda enseña a no dejarse arrastrar por la voluntad.',
     'Di clases a la misma hora que Hegel, el filósofo más famoso de Berlín, y casi nadie vino a las mías. Tardé décadas en ser leído. Mi pregunta para ti: ¿qué música te hace olvidar por un momento todo lo que deseas?',

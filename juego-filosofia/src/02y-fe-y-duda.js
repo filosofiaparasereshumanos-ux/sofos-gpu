@@ -145,7 +145,7 @@
     teresa: ['Una vez, cruzando un río, mi carreta volcó y caí al agua. Me quejé a Dios, y sentí que me decía: «Así trato a mis amigos». Le respondí: «¡Por eso tienes tan pocos!».', 'Escribí que Dios también anda entre los pucheros, en la cocina. Para mí, la oración no estaba lejos de la vida diaria.'],
     leibniz: ['Fui diplomático, bibliotecario, historiador e ingeniero de minas. Escribí unas quince mil cartas a más de mil personas.', 'Intenté reconciliar a católicos y protestantes, y también quise una lengua universal hecha de símbolos lógicos, para que las discusiones se resolvieran calculando: «¡Calculemos!».'],
     weil: ['De pequeña, con mi hermano André, que luego sería un gran matemático, recitábamos a Racine en el tren para impresionar a los pasajeros.', 'Una vez di parte de mi sueldo de profesora a los obreros en huelga. Para mí, pensar y actuar no podían ir separados.'],
-    pascal: ['Para probar la presión del aire, mi cuñado subió un barómetro al Puy de Dôme, una montaña de Francia: allá arriba, el mercurio bajó. ¡El aire pesa!', 'En mis últimos años organicé en París una de las primeras líneas de transporte público: carrozas con horario fijo que cualquiera podía tomar por cinco céntimos.'],
+    pascal: ['Para probar la presión del aire, mi cuñado subió un barómetro al Puy de Dôme, una montaña de Francia: allá arriba, el mercurio bajó. ¡El aire pesa!', 'En mis últimos años organicé en París una de las primeras líneas de transporte público: carrozas con horario fijo que cualquiera podía tomar por cinco sueldos.'],
   });
   BOOKS.push([
     { id: 'pensamientos', author: 'pascal', by: 'Blaise Pascal', title: 'Pensamientos', year: '1670', kind: 'reflexiones', at: BB[0],

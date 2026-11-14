@@ -45,12 +45,12 @@ Object.assign(QUESTS, {
   lovelace: { text: 'Visita la máquina analítica y escucha a Charles Babbage. Luego dime qué no puede hacer la máquina, según mis notas.', needs: { pois: ['analitica'], npcs: ['babbage'] },
     riddle: { q: 'Según Ada Lovelace, ¿qué no puede hacer la máquina analítica?', a: ['Crear algo por sí misma: solo hace lo que se le ordena', 'Sumar', 'Leer tarjetas perforadas', 'Moverse con vapor'] } },
   curie: { text: 'Visita mi cobertizo de París y escucha a mi hija Irène. Luego dime qué hay que hacer con lo que nos da miedo.', needs: { pois: ['cobertizo'], npcs: ['radiologa'] },
-    riddle: { q: 'Según Marie Curie, ¿qué hay que hacer con lo que nos da miedo?', a: ['Comprenderlo', 'Huir siempre', 'Ignorarlo', 'Prohibirlo'] } },
+    riddle: { q: 'Según una frase atribuida a Marie Curie, ¿qué hay que hacer con lo que nos da miedo?', a: ['Comprenderlo', 'Huir siempre', 'Ignorarlo', 'Prohibirlo'] } },
 });
 
 Object.assign(ANECDOTES, {
   arquimedes: ['Diseñé espejos para quemar las velas de los barcos romanos que atacaban Siracusa, concentrando la luz del sol. Al menos eso cuentan; los científicos todavía discuten si era posible.', 'Escribí un libro, El contador de arena, para calcular cuántos granos de arena cabrían en todo el universo. Quería demostrar que ningún número es demasiado grande para la razón.'],
-  galileo: ['De joven, en la catedral de Pisa, cronometré con mi propio pulso el balanceo de una lámpara y descubrí que tardaba lo mismo en ir y volver, fuera grande o pequeño el balanceo. De ahí salió el péndulo para los relojes.', 'Escribí mi gran libro en forma de diálogo entre tres personajes, en italiano y no en latín, para que cualquiera pudiera leerlo.'],
+  galileo: ['Según mi discípulo Viviani, de joven, en la catedral de Pisa, cronometré con mi propio pulso el balanceo de una lámpara y descubrí que tardaba lo mismo en ir y volver, fuera grande o pequeño el balanceo. De ahí salió el péndulo para los relojes.', 'Escribí mi gran libro en forma de diálogo entre tres personajes, en italiano y no en latín, para que cualquiera pudiera leerlo.'],
   lovelace: ['De niña diseñé una máquina voladora: estudié las alas de los pájaros y escribí un libro de vuelo. Tenía doce años.', 'Firmé mis famosas notas solo con mis iniciales, A. A. L. En mi tiempo, una mujer matemática no era tomada en serio.'],
   curie: ['Cuando murió Pierre en un accidente, ocupé su cátedra en la Sorbona: fui la primera mujer profesora de esa universidad. Empecé mi primera clase exactamente en la frase donde él había terminado.', 'Llevaba un tubo de radio en el bolsillo de la bata porque me gustaba su brillo. Entonces no sabíamos lo dañina que era la radiación.'],
   einstein: ['Nunca llevaba calcetines: decía que el dedo gordo siempre acababa haciéndoles un agujero.', 'En 1952 me ofrecieron ser presidente de Israel. Lo rechacé: dije que sabía algo de la naturaleza, pero casi nada de las personas.'],

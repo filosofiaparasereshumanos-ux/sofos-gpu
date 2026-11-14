@@ -6,7 +6,7 @@ const LESSONS = {
   tales: [
     'Soy Tales, de Mileto, una ciudad griega de la costa de Asia Menor. Viví hace unos veintiséis siglos y muchos dicen que fui el primer filósofo.',
     'Antes de mí, el mundo se explicaba con mitos: el rayo era la ira de Zeus y la tormenta, el capricho de Poseidón. Yo me hice otra pregunta: ¿de qué está hecho todo? ¿Cuál es el principio, el arjé, del que todo nace?',
-    'Mi respuesta fue el agua. Observé que todo lo vivo necesita humedad y que las semillas son húmedas. Vi que el agua puede ser hielo, líquido o vapor. Si cambia tantas veces de forma, quizá todo sea agua transformada.',
+    'Mi respuesta fue el agua. Aristóteles supuso que lo pensé porque todo lo vivo necesita humedad y las semillas son húmedas. Vi que el agua puede ser hielo, líquido o vapor. Si cambia tantas veces de forma, quizá todo sea agua transformada.',
     'Lo importante no fue tanto mi respuesta como el método: buscar una explicación natural, con razones que otros pudieran discutir y corregir. Así nació la filosofía: el paso del mito al logos.',
     'También fui un hombre práctico. Se dice que predije un eclipse de sol y que medí la altura de las pirámides por su sombra. Y para callar a quienes decían que la filosofía no sirve, alquilé todas las prensas de aceite antes de una gran cosecha.',
     'Mis discípulos no se conformaron con mi respuesta. Anaximandro propuso lo ilimitado, el ápeiron, y Anaxímenes, el aire. Eso es lo que espero de ti: que no aceptes mi respuesta sin examinarla. Pregunta siempre por el principio de las cosas.',
@@ -14,8 +14,8 @@ const LESSONS = {
   pitagoras: [
     'Soy Pitágoras, nacido en la isla de Samos. En Crotona, al sur de Italia, fundé una comunidad de hombres y mujeres que vivían juntos para estudiar, purificarse y buscar la armonía.',
     'Para nosotros, el principio de todas las cosas es el número. No el agua ni el aire, sino la proporción y la medida, que dan forma a todo lo que existe.',
-    'Lo descubrí escuchando. Si pulsas una cuerda y luego su mitad, oyes una octava: una razón de dos a uno. La quinta es de tres a dos y la cuarta, de cuatro a tres. La belleza del sonido es matemática.',
-    'Si la música es número, el cosmos también lo es. Los astros giran según proporciones y producen una música de las esferas que no oímos porque suena desde que nacimos. Por eso llamé al universo kosmos, que significa orden.',
+    'Se cuenta que lo descubrí escuchando. Si pulsas una cuerda y luego su mitad, oyes una octava: una razón de dos a uno. La quinta es de tres a dos y la cuarta, de cuatro a tres. La belleza del sonido es matemática.',
+    'Si la música es número, el cosmos también lo es. Los astros giran según proporciones y producen una música de las esferas que no oímos porque suena desde que nacimos. Por eso, se dice, fui el primero en llamar al universo kosmos, que significa orden.',
     'Creíamos que el alma es inmortal y que transmigra de un cuerpo a otro, incluso al de los animales. Para purificarla seguíamos reglas estrictas: silencio, estudio, vida sencilla. Y nada de habas.',
     'Nuestra mayor crisis vino de nuestra propia ciencia: la diagonal de un cuadrado no puede expresarse como una razón de números enteros. Así aparecieron los irracionales. Aun así, la idea de que la naturaleza está escrita en números llegó hasta Galileo y la ciencia moderna.',
   ],
@@ -48,7 +48,7 @@ const LESSONS = {
     'El oráculo de Delfos dijo que no había nadie más sabio que yo. Me sorprendió, porque yo sabía que no sabía nada. Interrogué a políticos, poetas y artesanos, y descubrí que creían saber lo que no sabían. Mi única sabiduría era reconocer mi ignorancia.',
     'Por eso recorría el ágora haciendo preguntas: ¿qué es la justicia? ¿Qué es la valentía? Con ironía fingía no saber, para que el otro mostrara sus contradicciones. Después, con la mayéutica, el arte de mi madre, le ayudaba a dar a luz la verdad que llevaba dentro.',
     'Buscaba definiciones universales: qué es la justicia en todos los casos, no un ejemplo suelto. Y creía que quien conoce el bien lo practica. Nadie obra mal a sabiendas: el mal nace de la ignorancia, y por eso la virtud puede enseñarse.',
-    'Mi lema venía del templo de Delfos: conócete a ti mismo. Una vida sin examen no merece ser vivida. Me llamaban el tábano de Atenas, porque picaba a la ciudad para que no se durmiera.',
+    'Mi lema venía del templo de Delfos: conócete a ti mismo. Una vida sin examen no merece ser vivida. Yo mismo me comparé con un tábano que pica a Atenas, como a un caballo perezoso, para que no se duerma.',
     'Me acusaron de corromper a los jóvenes y de no creer en los dioses de la ciudad, y me condenaron a beber cicuta. Pude huir, pero preferí obedecer las leyes. Morí conversando con mis amigos sobre la inmortalidad del alma. Que mi vida te enseñe que la filosofía es una forma de vivir.',
   ],
   platon: [
@@ -78,7 +78,7 @@ const LESSONS = {
   epicuro: [
     'Soy Epicuro de Samos. En Atenas compré un huerto, el Jardín, y allí fundé una comunidad de amigos en la que también eran bienvenidas las mujeres y los esclavos.',
     'La filosofía sirve para una cosa: vivir felices. Y la felicidad es el placer. Pero no me malinterpretes: no hablo del desenfreno, sino de la ausencia de dolor en el cuerpo y de turbación en el alma, la ataraxia.',
-    'Hay deseos naturales y necesarios, como comer, beber o tener amigos. Otros son naturales pero no necesarios, como los manjares. Y otros son vanos, como la fama o el poder. El sabio cultiva los primeros: con pan, agua y amigos puede ser tan feliz como un dios.',
+    'Hay deseos naturales y necesarios, como comer, beber o abrigarse. Otros son naturales pero no necesarios, como los manjares. Y otros son vanos, como la fama o el poder. El sabio cultiva los primeros: con pan, agua y amigos puede ser tan feliz como un dios.',
     'Cuatro miedos nos amargan, y un cuádruple remedio los cura: los dioses no deben temerse, la muerte no es nada para nosotros, el bien es fácil de conseguir y el dolor es fácil de soportar.',
     '¿Por qué no temer a la muerte? Porque todo bien y todo mal están en la sensación, y la muerte es privación de sensación. Cuando nosotros estamos, la muerte no está; y cuando la muerte está, nosotros ya no estamos.',
     'Mi física viene de Demócrito: todo son átomos y vacío. Añadí una pequeña desviación de los átomos para que haya libertad. El poeta Lucrecio cantó mis ideas en Roma. Vive con sencillez, rodeado de amigos y sin miedo.',
@@ -105,7 +105,7 @@ const LESSONS = {
     'Busqué la verdad dentro de mí. Si me engaño, existo, porque para equivocarme tengo que ser. Siglos antes que Descartes, encontré en la propia mente una certeza.',
     'No salgas fuera; vuelve a ti mismo: en el interior del hombre habita la verdad. Las verdades eternas no las fabrica nuestra mente: las ve gracias a una luz divina que la ilumina.',
     'También pensé el tiempo. Si nadie me lo pregunta, sé lo que es; si quiero explicarlo, no lo sé. El pasado ya no es y el futuro aún no es: el tiempo vive en el alma, como memoria, atención y espera.',
-    'Cuando los godos saquearon Roma escribí La ciudad de Dios: dos amores fundaron dos ciudades, el amor de sí y el amor de Dios. Fui obispo de Hipona durante más de treinta años. Nuestro corazón está inquieto hasta que descansa en la verdad.',
+    'Cuando los godos saquearon Roma escribí La ciudad de Dios: dos amores fundaron dos ciudades, el amor de sí y el amor de Dios. Fui obispo de Hipona durante más de treinta años. Nuestro corazón está inquieto hasta que descansa en Dios.',
   ],
   averroes: [
     'Soy Ibn Rushd, al que llamáis Averroes, nacido en Córdoba, en al-Ándalus. Fui juez, médico de la corte y, sobre todo, un lector apasionado de Aristóteles.',
