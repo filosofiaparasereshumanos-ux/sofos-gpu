@@ -9,7 +9,7 @@
  "Lección": "Lesson",
  "Lámpara": "Lamp",
  "Impulso": "Dash",
- "Saltar": "Jump",
+ "Saltar": "Skip",
  "Pantalla completa": "Full screen",
  "Pausa": "Pause",
  "Maestro de la época": "Master of the era",
@@ -750,5 +750,18 @@
  "Tú": "You",
  "🏛 ¡Vencí a ⟦0⟧ en Odisea de la Razón! ¿Te atreves? Entra directo aquí:": "🏛 I defeated ⟦0⟧ in Odyssey of Reason! Dare to try? Jump straight in here:",
  "📜 Comprendí a ⟦0⟧ en Odisea de la Razón. Entra directo aquí:": "📜 I understood ⟦0⟧ in Odyssey of Reason. Jump straight in here:",
- "📲 Comparte tu victoria": "📲 Share your victory"
+ "📲 Comparte tu victoria": "📲 Share your victory",
+ "Primeros pasos": "First steps",
+ "🏛 ¡Tu primer pensador! Ya sabes jugar: explora, descubre lugares y debate con todos.": "🏛 Your first thinker! Now you know how to play: explore, discover places and debate everyone.",
+ "Camina": "Walk",
+ "Mueve el joystick de la izquierda o toca el suelo donde quieras ir.": "Move the joystick on the left or tap the ground where you want to go.",
+ "Camina con W A S D y mira con el ratón.": "Walk with W A S D and look around with the mouse.",
+ "Busca a un pensador": "Find a thinker",
+ "Toca el botón dorado «Ir a…»: te lleva caminando hasta el primero.": "Tap the golden «Go to…» button: it walks you to the first one.",
+ "Pulsa E para caminar solo hasta el primero, o sigue la luz dorada.": "Press E to walk to the first one automatically, or follow the golden light.",
+ "Habla y desafíalo": "Talk and challenge them",
+ "Cuando estés cerca, toca «Hablar» y elige «Te desafío a un debate».": "When you are close, tap «Talk» and choose «I challenge you to a debate».",
+ "Cuando estés cerca, pulsa E y elige «Te desafío a un debate».": "When you are close, press E and choose «I challenge you to a debate».",
+ "Gana el debate": "Win the debate",
+ "Elige la respuesta correcta para convencerlo. ¡Tú puedes!": "Choose the right answer to convince them. You can do it!"
 }

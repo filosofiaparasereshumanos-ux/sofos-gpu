@@ -1089,8 +1089,16 @@ $('#b-clesson').addEventListener('click', () => { const s = Duel._won; closeConc
 //  HUD Y AVISOS
 // ============================================================================
 function addScore(n) { G.score += n; }
+// los avisos hacen cola: en el teléfono se ve uno a la vez (dos en el ordenador), sin amontonarse
+const TOAST_Q = [];
 function toast(msg) {
-  const box = $('#toasts'); const el = document.createElement('div'); el.className = 'toast';
+  msg = String(msg ?? ''); if (!msg) return; const box = $('#toasts');
+  if (TOAST_Q.some((q) => q.m === msg) || [...box.children].some((c) => c.dataset.m === msg && !c.classList.contains('fade'))) return;
+  TOAST_Q.push({ m: msg, t: performance.now() }); if (TOAST_Q.length > 6) TOAST_Q.splice(0, TOAST_Q.length - 6); pumpToasts();
+}
+function pumpToasts() { const box = $('#toasts'); const lim = IS_TOUCH ? 1 : 2; while (TOAST_Q.length && box.querySelectorAll('.toast:not(.fade)').length < lim) { const q = TOAST_Q.shift(); if (performance.now() - q.t > 9000) continue; showToast(q.m, TOAST_Q.length); } } // un aviso que esperó demasiado ya no viene a cuento
+function showToast(msg, waiting) {
+  const box = $('#toasts'); const el = document.createElement('div'); el.className = 'toast'; el.dataset.m = msg;
   // el emoji del principio va destacado en un círculo dorado
   const m = String(msg).match(/^((?:\p{Extended_Pictographic}|\p{Regional_Indicator})(?:\uFE0F|\u200D|\p{Extended_Pictographic}|\p{Regional_Indicator})*)\s*/u);
   if (m) { const i = document.createElement('span'); i.className = 'ti'; i.textContent = m[1]; const t = document.createElement('span'); t.textContent = msg.slice(m[0].length); el.append(i, t); } else el.textContent = msg;
@@ -1098,8 +1106,7 @@ function toast(msg) {
   // siempre por debajo de la ruta de los pensadores y del letrero de arriba (no se tapan)
   let top = 0; for (const id of ['path', 'h-obj', 'trialcard']) { const e = document.getElementById(id); if (!e || e.hidden || !e.offsetParent) continue; const r = e.getBoundingClientRect(); if (r.height && r.top < innerHeight * 0.45) top = Math.max(top, r.bottom + (id === 'path' ? 26 : 10)); }
   if (top) box.style.setProperty('top', top + 'px', 'important'); else box.style.removeProperty('top');
-  while (box.children.length > (IS_TOUCH ? 2 : 3)) box.firstChild.remove();
-  setTimeout(() => el.classList.add('fade'), 3800); setTimeout(() => el.remove(), 4500);
+  const life = waiting ? 3300 : 4300; setTimeout(() => el.classList.add('fade'), life); setTimeout(() => { el.remove(); pumpToasts(); }, life + 650);
 }
 let crossT = 0;
 function flashCross() { const c = $('#crosshair'); c.classList.add('hit'); clearTimeout(crossT); crossT = setTimeout(() => c.classList.remove('hit'), 90); }

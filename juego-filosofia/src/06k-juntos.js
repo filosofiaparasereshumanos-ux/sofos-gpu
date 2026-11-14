@@ -70,7 +70,7 @@ const Juntos = {
   autoPublic(dt) {
     if (this.mode === 'grupo') return;
     const inEra = !!world && world.idx === G.eraIdx && ['play', 'talk', 'place', 'lesson', 'duel', 'victory', 'concept', 'paused'].includes(G.state);
-    if (inEra && G.state === 'play' && G.settings.mundo === undefined && Sala.ok()) this.askMundo();
+    if (inEra && G.state === 'play' && G.settings.mundo === undefined && Sala.ok() && ((G.codex.size > 0 && (this.winT = (this.winT || 0) + dt) > 8) || (this.playT = (this.playT || 0) + dt) > 240)) this.askMundo(); // se ofrece después de la primera victoria
     const want = this.publicOn() && inEra ? 'mundo-pub-' + ERAS[G.eraIdx].id : '';
     if (want === this.chan) { this.wantT = 0; return; }
     this.wantT += dt; if (this.wantT < (want ? 1 : 6)) return; this.wantT = 0;
