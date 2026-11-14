@@ -73,7 +73,7 @@ function postura(p) {
   ${body}<h2>Para pensar</h2><ol class="act"><li>Elige una ronda y escribe una respuesta mejor que las tres.${lines(4)}</li></ol>
   <div class="clave"><h2>Solucionario (para el docente)</h2><ol>${key}</ol></div>${pie}</section>`;
 }
-const EPOCAS = { antiguedad: 'Antigüedad', oriente: 'Asia y América', renacimiento: 'Renacimiento', barroco: 'Barroco', 'siglo-xviii-xix': 'Siglos XVIII y XIX', 'siglo-xx': 'Siglo XX' };
+const EPOCAS = { antiguedad: 'Antigüedad', oriente: 'Asia, África y América', renacimiento: 'Renacimiento', barroco: 'Barroco', 'siglo-xviii-xix': 'Siglos XVIII y XIX', 'siglo-xx': 'Siglo XX' };
 function obras(lista, titulo) {
   const L = 'ABCD'; const ord = (o, i) => { const k = i % 4; const a = [...o.q.a.slice(1)]; a.splice(k, 0, o.q.a[0]); return [a, k]; };
   const body = lista.map((o, i) => { const [a] = ord(o, i); return `<div class="obra">${o.img ? `<img src="img/obras/${esc(o.img)}" alt="">` : '<div class="sin">Imagen no incluida: obra con derechos de autor.</div>'}<div><b>${i + 1}. ${esc(o.titulo)}</b><br><span class="datos">${esc(o.autor)} · ${esc(o.fecha)} · ${esc(o.tecnica)} · ${esc(o.lugar)}</span><p>${esc(o.texto)}</p><p><i>${esc(o.q.q)}</i><br>${a.map((x, j) => `${L[j]}) ${esc(x)}`).join('&nbsp;&nbsp; ')}</p>${o.credito ? `<small>Imagen: ${esc(o.credito)}</small>` : ''}</div></div>`; }).join('');

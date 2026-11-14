@@ -247,6 +247,248 @@ const OBRAS = [
   "cuadro": 1
  },
  {
+  "id": "piedra-sol",
+  "img": "piedra-sol.jpg",
+  "epoca": "oriente",
+  "titulo": "Piedra del Sol («Calendario azteca»)",
+  "autor": "Cultura mexica",
+  "fecha": "Hacia 1502–1521",
+  "tecnica": "Basalto tallado (unos 3,6 m de diámetro y unas 24 toneladas)",
+  "lugar": "Museo Nacional de Antropología, Ciudad de México",
+  "texto": "Este gran disco de piedra fue hallado en 1790 bajo la plaza principal de Ciudad de México, la antigua Tenochtitlan. Aunque se le llama «calendario», no servía para consultar fechas: es un monumento ceremonial que representa la concepción mexica del tiempo y de las eras del mundo, con los signos de los 20 días alrededor. La identidad del rostro central se discute (el Sol, Tonatiuh, o la Tierra, Tlaltecuhtli), y originalmente estaba pintado.",
+  "q": {
+   "q": "¿Qué cultura talló la Piedra del Sol?",
+   "a": [
+    "La mexica (azteca)",
+    "La maya",
+    "La inca",
+    "La olmeca"
+   ]
+  },
+  "credito": "Juan Carlos Fonseca Mata · CC BY-SA 4.0 · Wikimedia Commons",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Piedra_del_Sol_-_Sala_Mexica_del_Museo_Nacional_de_Antropolog%C3%ADa.jpg"
+ },
+ {
+  "id": "maqamat",
+  "img": "maqamat.jpg",
+  "epoca": "oriente",
+  "titulo": "Maqamat de al-Hariri: cortejo con estandartes",
+  "autor": "Yahya ibn Mahmud al-Wasiti (ilustrador); texto de al-Hariri",
+  "fecha": "1237",
+  "tecnica": "Tinta, pigmentos y oro sobre papel (manuscrito)",
+  "lugar": "Biblioteca Nacional de Francia, París (ms. Arabe 5847)",
+  "texto": "Las «Maqamat» de al-Hariri (hacia 1100) son cincuenta relatos llenos de juegos de palabras sobre Abu Zayd, un pícaro elocuente que engaña a todos con su ingenio. En 1237, en Bagdad, el calígrafo y pintor al-Wasiti copió el texto e ilustró el manuscrito con escenas llenas de vida, como este cortejo de jinetes con estandartes y trompetas. Es una de las obras maestras de la pintura árabe medieval y muestra que el arte islámico también representó figuras humanas en los libros.",
+  "q": {
+   "q": "¿Quién protagoniza los relatos de las «Maqamat»?",
+   "a": [
+    "Abu Zayd, un pícaro elocuente",
+    "Un rey guerrero de Persia",
+    "Un monje cristiano",
+    "Un dragón que habla"
+   ]
+  },
+  "credito": "The Yorck Project · Public domain · Wikimedia Commons",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Yahy%C3%A2_ibn_Mahm%C3%BBd_al-W%C3%A2sit%C3%AE_005.jpg"
+ },
+ {
+  "id": "ardabil",
+  "img": "ardabil.jpg",
+  "epoca": "oriente",
+  "titulo": "Alfombra de Ardabil",
+  "autor": "Maqsud de Kashán (nombre en la inscripción)",
+  "fecha": "1539–1540",
+  "tecnica": "Nudos de lana sobre urdimbre de seda (unos 10,5 × 5,3 m)",
+  "lugar": "Victoria and Albert Museum, Londres",
+  "texto": "Es una de las alfombras más antiguas fechadas del mundo y una obra maestra del Irán safávida; se cree que procede del santuario del jeque Safi al-Din en Ardabil. Tiene más de 26 millones de nudos y un gran medallón central del que cuelgan dos lámparas de tamaño diferente, quizá para corregir la perspectiva al mirarla desde un extremo. Su inscripción, que cita un poema de Hafez, dice: «No tengo refugio en el mundo salvo tu umbral», y la firma «obra del siervo del umbral, Maqsud de Kashán».",
+  "q": {
+   "q": "¿De qué material son los nudos de la alfombra de Ardabil?",
+   "a": [
+    "De lana",
+    "De oro",
+    "De plástico",
+    "De algodón de azúcar"
+   ]
+  },
+  "credito": "Google Art Project · Public domain · Wikimedia Commons",
+  "fuente": "https://commons.wikimedia.org/wiki/File:The_Ardabil_Carpet_-_Google_Art_Project.jpg"
+ },
+ {
+  "id": "patio-leones",
+  "img": "patio-leones.jpg",
+  "epoca": "oriente",
+  "titulo": "Patio de los Leones de la Alhambra",
+  "autor": "Arquitectos y artesanos nazaríes, durante el reinado de Muhammad V",
+  "fecha": "Hacia 1362–1391",
+  "tecnica": "Arquitectura: columnas de mármol, yeserías y fuente con doce leones de mármol",
+  "lugar": "La Alhambra, Granada",
+  "texto": "Este patio formaba parte del palacio privado de los sultanes nazaríes de Granada, el último reino islámico de la península ibérica. Unas 124 finas columnas sostienen arcos decorados con yeserías tan delicadas que parecen encaje, y en el centro doce leones de piedra sostienen una fuente; un poema de Ibn Zamrak grabado en ella elogia el agua y al sultán. La arquitectura combina agua, luz y geometría para crear la imagen de un jardín paradisíaco.",
+  "q": {
+   "q": "¿Qué sostienen los doce leones del patio?",
+   "a": [
+    "Una fuente",
+    "Un trono",
+    "Una campana",
+    "Un reloj"
+   ]
+  },
+  "credito": "Jebulon · CC0 · Wikimedia Commons",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Fountain_patio_de_los_Leones_Alhambra_Granada_Spain.jpg"
+ },
+ {
+  "id": "taj-mahal",
+  "img": "taj-mahal.jpg",
+  "epoca": "oriente",
+  "titulo": "Taj Mahal",
+  "autor": "Encargado por el emperador mogol Sha Jahan; arquitecto principal atribuido: Ustad Ahmad Lahauri",
+  "fecha": "Hacia 1632–1653",
+  "tecnica": "Arquitectura: mármol blanco con incrustaciones de piedras semipreciosas",
+  "lugar": "Agra (India)",
+  "texto": "El emperador Sha Jahan lo mandó construir como mausoleo para su esposa Mumtaz Mahal, muerta en 1631 al dar a luz. Su simetría casi perfecta, la gran cúpula, los cuatro minaretes y el jardín dividido en cuatro partes evocan, según muchos estudiosos, el paraíso descrito en el Corán. Se cuenta que el emperador quiso construir otro mausoleo de mármol negro enfrente, pero no hay pruebas que lo confirmen.",
+  "q": {
+   "q": "¿Para quién se construyó el Taj Mahal?",
+   "a": [
+    "Como tumba de Mumtaz Mahal, esposa de Sha Jahan",
+    "Como palacio para un rey de Francia",
+    "Como templo para un dios griego",
+    "Como fortaleza contra los romanos"
+   ]
+  },
+  "credito": "Yann (editado por King of Hearts) · CC BY-SA 4.0 · Wikimedia Commons",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Taj_Mahal,_Agra,_India_edit2.jpg"
+ },
+ {
+  "id": "cabeza-ife",
+  "img": "cabeza-ife.jpg",
+  "epoca": "oriente",
+  "titulo": "Cabeza de un rey (ooni) de Ife",
+  "autor": "Artista yoruba anónimo (Ife)",
+  "fecha": "Siglo XIV o principios del XV",
+  "tecnica": "Latón (aleación de cobre) fundido a la cera perdida (unos 35 cm)",
+  "lugar": "Museo Británico, Londres",
+  "texto": "Esta cabeza se halló en 1939 cerca del palacio de Ife, en la actual Nigeria, ciudad sagrada y antiguo centro del pueblo yoruba; probablemente representa a un gobernante (ooni) con una corona de cuentas y penacho. Las finas líneas verticales del rostro y el naturalismo de sus rasgos muestran un dominio técnico excepcional del metal. Cuando se descubrieron cabezas así en el siglo XX, algunos europeos se negaron a creer que fueran africanas: un prejuicio que la investigación desmintió por completo.",
+  "q": {
+   "q": "¿Qué técnica se usó para hacer la cabeza de Ife?",
+   "a": [
+    "Fundición a la cera perdida",
+    "Pintura al óleo",
+    "Tallado en hielo",
+    "Fotografía"
+   ]
+  },
+  "credito": "Vassil · CC0 · Wikimedia Commons",
+  "fuente": "https://commons.wikimedia.org/wiki/File:British_Museum_Room_25_Head_of_a_king_Ife_17022019_5147.jpg"
+ },
+ {
+  "id": "mascara-idia",
+  "img": "mascara-idia.jpg",
+  "epoca": "oriente",
+  "titulo": "Máscara de la reina madre Idia",
+  "autor": "Artista anónimo del gremio de talladores de marfil del reino de Benín",
+  "fecha": "Siglo XVI",
+  "tecnica": "Marfil tallado con incrustaciones de hierro y cobre (24,5 cm)",
+  "lugar": "Museo Británico, Londres",
+  "texto": "Esta pequeña máscara se suele identificar con Idia, madre del oba (rey) Esigie de Benín, en la actual Nigeria, a quien se atribuye un papel decisivo en la defensa del reino. El oba la llevaba en la cintura durante ciertas ceremonias; en la tiara aparecen cabezas de portugueses, con quienes Benín comerciaba entonces. Fue llevada a Londres tras la expedición militar británica de 1897, y hoy forma parte del debate sobre la restitución de los bronces de Benín, que Nigeria reclama.",
+  "q": {
+   "q": "¿Qué aparece representado en la tiara de la máscara?",
+   "a": [
+    "Cabezas de portugueses",
+    "Estrellas y planetas",
+    "Caballos alados",
+    "Letras latinas"
+   ]
+  },
+  "credito": "Andreas Praefcke · Public domain · Wikimedia Commons",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Idia_mask_BM_Af1910_5-13_1.jpg"
+ },
+ {
+  "id": "nok",
+  "img": "nok.jpg",
+  "epoca": "oriente",
+  "titulo": "Figura sedente nok",
+  "autor": "Cultura nok (actual Nigeria)",
+  "fecha": "Entre el 900 a. C. y el 300 d. C. aprox. (fecha discutida)",
+  "tecnica": "Terracota (arcilla cocida)",
+  "lugar": "Museo del Louvre, París (pabellón de las Sesiones)",
+  "texto": "La cultura nok, que vivió en el centro de la actual Nigeria, creó algunas de las esculturas de arcilla más antiguas del África subsahariana. Esta figura apoya la cabeza sobre la rodilla, y como otras piezas nok tiene rasgos muy reconocibles: ojos triangulares o semicirculares con la pupila perforada, cejas arqueadas y peinados muy elaborados. No sabemos con certeza para qué servían; además, el saqueo de yacimientos para el mercado del arte ha destruido mucha información arqueológica.",
+  "q": {
+   "q": "¿Qué rasgo es típico de las esculturas nok?",
+   "a": [
+    "Ojos con la pupila perforada",
+    "Bigotes de oro",
+    "Cuatro caras",
+    "Un casco de soldado romano"
+   ]
+  },
+  "credito": "Marie-Lan Nguyen · Public domain · Wikimedia Commons",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Nok_sculpture_Louvre_70-1998-11-1.jpg"
+ },
+ {
+  "id": "cabeza-olmeca",
+  "img": "cabeza-olmeca.jpg",
+  "epoca": "oriente",
+  "titulo": "Cabeza colosal olmeca n.º 1 («El Rey»)",
+  "autor": "Cultura olmeca (San Lorenzo, Veracruz)",
+  "fecha": "Hacia 1200–900 a. C.",
+  "tecnica": "Basalto tallado (unos 2,9 m de altura)",
+  "lugar": "Museo de Antropología de Xalapa, Veracruz (México)",
+  "texto": "Los olmecas, una de las primeras civilizaciones de Mesoamérica, tallaron al menos diecisiete cabezas gigantes de basalto, una piedra traída desde montañas situadas a decenas de kilómetros. Cada una tiene rasgos propios y un tocado ajustado, por lo que se piensa que eran retratos de gobernantes. Cómo transportaron bloques de varias toneladas sin animales de tiro ni ruedas sigue siendo motivo de investigación.",
+  "q": {
+   "q": "¿A quién representaban probablemente las cabezas colosales olmecas?",
+   "a": [
+    "A gobernantes",
+    "A dioses griegos",
+    "A astronautas",
+    "A jugadores de fútbol modernos"
+   ]
+  },
+  "credito": "Mesoamerican · CC BY-SA 4.0 · Wikimedia Commons",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Olmec_Head_No._1_at_Xalapa,_Veracruz,_Mexico.jpg"
+ },
+ {
+  "id": "moche",
+  "img": "moche.jpg",
+  "epoca": "oriente",
+  "titulo": "Vasija retrato moche",
+  "autor": "Cultura moche (costa norte del Perú)",
+  "fecha": "Hacia 50–800 d. C.",
+  "tecnica": "Cerámica moldeada, con detalles modelados a mano y pintada, con asa-estribo",
+  "lugar": "Walters Art Museum, Baltimore",
+  "texto": "Los moches, que vivieron en la costa desértica del norte del Perú, no tenían escritura, pero dejaron miles de vasijas de cerámica con escenas de su mundo. Las vasijas retrato reproducen rostros con tanto detalle que se ha llegado a identificar a la misma persona en varias piezas, a distintas edades. El asa en forma de estribo, hueca, servía también de pico para verter el líquido.",
+  "q": {
+   "q": "¿Qué tienen de especial las vasijas retrato moches?",
+   "a": [
+    "Reproducen rostros individuales con gran detalle",
+    "Están hechas de oro macizo",
+    "Tienen textos escritos en latín",
+    "Representan solo animales imaginarios"
+   ]
+  },
+  "credito": "Walters Art Museum · Public domain · Wikimedia Commons",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Moche_-_Portrait_Vessel_-_Walters_482827.jpg"
+ },
+ {
+  "id": "puerta-sol",
+  "img": "puerta-sol.jpg",
+  "epoca": "oriente",
+  "titulo": "Puerta del Sol de Tiwanaku",
+  "autor": "Cultura tiwanaku",
+  "fecha": "Hacia 500–1000 d. C. (fecha discutida)",
+  "tecnica": "Bloque monolítico de andesita tallado (unos 3 × 4 m)",
+  "lugar": "Tiwanaku, cerca del lago Titicaca (Bolivia)",
+  "texto": "Esta puerta está tallada en un solo bloque de piedra en Tiwanaku, capital de una de las grandes culturas de los Andes. En el centro aparece una figura con báculos en las manos, a menudo llamada «dios de los báculos», rodeada de figuras aladas que parecen correr hacia ella. Se ha propuesto que el friso sea un calendario, pero esa idea no está demostrada; tampoco se sabe con seguridad si la puerta está hoy en su lugar original.",
+  "q": {
+   "q": "¿Qué figura ocupa el centro de la Puerta del Sol?",
+   "a": [
+    "Una figura con báculos en las manos",
+    "Un caballo",
+    "Un barco",
+    "Un león con alas de mariposa"
+   ]
+  },
+  "credito": "jmage · CC BY 2.0 · Wikimedia Commons",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Puerta_del_Sol_en_Tiwanaku_(Bolivia).jpg"
+ },
+ {
   "id": "arnolfini",
   "img": "arnolfini.jpg",
   "epoca": "renacimiento",
@@ -447,26 +689,26 @@ const OBRAS = [
   "fuente": "https://commons.wikimedia.org/wiki/File:The_Garden_of_Earthly_Delights_by_Bosch_High_Resolution.jpg"
  },
  {
-  "id": "piedra-sol",
-  "img": "piedra-sol.jpg",
-  "epoca": "oriente",
-  "titulo": "Piedra del Sol («Calendario azteca»)",
-  "autor": "Cultura mexica",
-  "fecha": "Hacia 1502–1521",
-  "tecnica": "Basalto tallado (unos 3,6 m de diámetro y unas 24 toneladas)",
-  "lugar": "Museo Nacional de Antropología, Ciudad de México",
-  "texto": "Este gran disco de piedra fue hallado en 1790 bajo la plaza principal de Ciudad de México, la antigua Tenochtitlan. Aunque se le llama «calendario», no servía para consultar fechas: es un monumento ceremonial que representa la concepción mexica del tiempo y de las eras del mundo, con los signos de los 20 días alrededor. La identidad del rostro central se discute (el Sol, Tonatiuh, o la Tierra, Tlaltecuhtli), y originalmente estaba pintado.",
+  "id": "anguissola",
+  "img": "anguissola.jpg",
+  "epoca": "renacimiento",
+  "titulo": "Autorretrato ante el caballete",
+  "autor": "Sofonisba Anguissola",
+  "fecha": "1556",
+  "tecnica": "Óleo sobre lienzo (66 × 57 cm)",
+  "lugar": "Museo del Castillo de Łańcut (Polonia)",
+  "texto": "Sofonisba Anguissola, nacida en Cremona, fue una de las primeras pintoras del Renacimiento reconocidas en toda Europa; más tarde trabajó en la corte de Felipe II en España. Aquí se retrata a sí misma pintando una Virgen con el Niño: era una forma de decir «soy pintora», en una época en que a las mujeres se les cerraban los talleres y el estudio del desnudo. Se autorretrató muchas veces, algo poco habitual entonces.",
   "q": {
-   "q": "¿Qué cultura talló la Piedra del Sol?",
+   "q": "¿En qué corte trabajó Sofonisba Anguissola?",
    "a": [
-    "La mexica (azteca)",
-    "La maya",
-    "La inca",
-    "La olmeca"
+    "La de Felipe II de España",
+    "La de Luis XIV de Francia",
+    "La del emperador de China",
+    "La de Isabel II de Inglaterra"
    ]
   },
-  "credito": "Juan Carlos Fonseca Mata · CC BY-SA 4.0 · Wikimedia Commons",
-  "fuente": "https://commons.wikimedia.org/wiki/File:Piedra_del_Sol_-_Sala_Mexica_del_Museo_Nacional_de_Antropolog%C3%ADa.jpg"
+  "credito": "Reproducción de dominio público · Public domain · Wikimedia Commons",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Sofonisba_Anguissola,_Selvportr%C3%A6t_ved_staffeliet,_1556,_Museum_Castle_in_%C5%81a%C5%84cut.jpg"
  },
  {
   "id": "vocacion-mateo",
@@ -579,6 +821,50 @@ const OBRAS = [
   },
   "credito": "Rijksmuseum · Public domain · Wikimedia Commons",
   "fuente": "https://commons.wikimedia.org/wiki/File:The_Night_Watch_-_HD.jpg"
+ },
+ {
+  "id": "judit-holofernes",
+  "img": "judit-holofernes.jpg",
+  "epoca": "barroco",
+  "titulo": "Judit decapitando a Holofernes",
+  "autor": "Artemisia Gentileschi",
+  "fecha": "Hacia 1620–1621",
+  "tecnica": "Óleo sobre lienzo (146,5 × 108 cm)",
+  "lugar": "Galería de los Uffizi, Florencia",
+  "texto": "Artemisia Gentileschi fue una de las pintoras más importantes del Barroco y la primera mujer admitida en la Academia de las Artes del Dibujo de Florencia (1616). Pinta la escena bíblica de Judit, que salva a su pueblo matando al general enemigo, con un realismo y una luz violenta heredados de Caravaggio. Muchos ven en la obra un eco de su propia vida, pues años antes había denunciado ante un tribunal una violación, pero esa lectura es una interpretación, no algo que el cuadro diga por sí mismo.",
+  "q": {
+   "q": "¿De qué pintor tomó Artemisia Gentileschi el contraste violento de luz y sombra?",
+   "a": [
+    "Caravaggio",
+    "Rafael",
+    "Monet",
+    "El Bosco"
+   ]
+  },
+  "credito": "Google Art Project · Public domain · Wikimedia Commons",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Artemisia_Gentileschi_-_Giuditta_decapita_Oloferne_-_Google_Art_Project.jpg"
+ },
+ {
+  "id": "leyster",
+  "img": "leyster.jpg",
+  "epoca": "barroco",
+  "titulo": "Autorretrato",
+  "autor": "Judith Leyster",
+  "fecha": "Hacia 1630",
+  "tecnica": "Óleo sobre lienzo (74,6 × 65,1 cm)",
+  "lugar": "National Gallery of Art, Washington",
+  "texto": "Judith Leyster fue una de las pocas mujeres que lograron ser maestras en el gremio de pintores de Haarlem (1633) y tener su propio taller con aprendices. Se pinta girándose hacia nosotros con naturalidad, pincel en mano, como si la hubiéramos interrumpido mientras pinta a un músico. Tras su muerte, muchas de sus obras se atribuyeron durante siglos a Frans Hals, hasta que a finales del siglo XIX se identificó su monograma.",
+  "q": {
+   "q": "¿A qué pintor se atribuyeron durante siglos muchas obras de Judith Leyster?",
+   "a": [
+    "A Frans Hals",
+    "A Velázquez",
+    "A Miguel Ángel",
+    "A Van Gogh"
+   ]
+  },
+  "credito": "National Gallery of Art, Washington · CC0 · Wikimedia Commons",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Judith_Leyster,_Self-Portrait,_c._1630,_NGA_37003.jpg"
  },
  {
   "id": "tres-mayo",
@@ -756,6 +1042,72 @@ const OBRAS = [
   },
   "credito": "Tammy Lo · CC BY 2.0 · Wikimedia Commons",
   "fuente": "https://commons.wikimedia.org/wiki/File:The_Thinker,_Mus%C3%A9e_Rodin,_Paris_September_2013_002.jpg"
+ },
+ {
+  "id": "vigee-lebrun",
+  "img": "vigee-lebrun.jpg",
+  "epoca": "siglo-xviii-xix",
+  "titulo": "Autorretrato con sombrero de paja",
+  "autor": "Élisabeth Vigée Le Brun",
+  "fecha": "Después de 1782",
+  "tecnica": "Óleo sobre lienzo (97,8 × 70,5 cm)",
+  "lugar": "National Gallery, Londres",
+  "texto": "Élisabeth Vigée Le Brun fue la retratista favorita de la reina María Antonieta y una de las pintoras más solicitadas de la Europa del siglo XVIII. En este autorretrato, inspirado en un cuadro de Rubens que vio en Amberes, se presenta al aire libre, con la paleta en la mano y una luz suave sobre el rostro. Al estallar la Revolución francesa en 1789 huyó de París y trabajó durante años en Italia, Austria y Rusia.",
+  "q": {
+   "q": "¿De qué reina fue retratista Élisabeth Vigée Le Brun?",
+   "a": [
+    "María Antonieta",
+    "Isabel la Católica",
+    "Cleopatra",
+    "Victoria de Inglaterra"
+   ]
+  },
+  "credito": "National Gallery, London · Public domain · Wikimedia Commons",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Self-portrait_in_a_Straw_Hat_by_Elisabeth-Louise_Vig%C3%A9e-Lebrun.jpg"
+ },
+ {
+  "id": "bano-nino",
+  "img": "bano-nino.jpg",
+  "epoca": "siglo-xviii-xix",
+  "titulo": "El baño del niño",
+  "autor": "Mary Cassatt",
+  "fecha": "1893",
+  "tecnica": "Óleo sobre lienzo (100,3 × 66,1 cm)",
+  "lugar": "Art Institute of Chicago",
+  "texto": "Mary Cassatt, estadounidense afincada en París, fue la única artista de su país que expuso con los impresionistas. Pinta un momento corriente, una mujer lavando los pies a una niña, visto desde arriba y con un encuadre recortado que recuerda a las estampas japonesas que tanto admiraba. Cassatt convirtió la vida cotidiana de las mujeres y los niños en un tema digno de la gran pintura.",
+  "q": {
+   "q": "¿Con qué grupo de pintores expuso Mary Cassatt en París?",
+   "a": [
+    "Con los impresionistas",
+    "Con los cubistas",
+    "Con los surrealistas",
+    "Con los pintores del Renacimiento"
+   ]
+  },
+  "credito": "Art Institute of Chicago · Public domain · Wikimedia Commons",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Mary_Cassatt_-_The_Child%27s_Bath_-_1910.2_-_Art_Institute_of_Chicago.jpg"
+ },
+ {
+  "id": "cuna-morisot",
+  "img": "cuna-morisot.jpg",
+  "epoca": "siglo-xviii-xix",
+  "titulo": "La cuna",
+  "autor": "Berthe Morisot",
+  "fecha": "1872",
+  "tecnica": "Óleo sobre lienzo (56 × 46 cm)",
+  "lugar": "Museo de Orsay, París",
+  "texto": "Berthe Morisot fue una de las fundadoras del impresionismo y presentó este cuadro en la primera exposición del grupo, en 1874. Representa a su hermana Edma contemplando a su hija dormida tras un velo transparente, pintado con pinceladas ligeras. La mirada de la madre y la diagonal entre los dos rostros convierten una escena tranquila en una reflexión sobre el cuidado y la atención.",
+  "q": {
+   "q": "¿En qué exposición presentó Berthe Morisot «La cuna»?",
+   "a": [
+    "En la primera exposición impresionista (1874)",
+    "En la Exposición Universal de 1992",
+    "En el Museo del Prado en 1600",
+    "En una feria de arte en Nueva York en 1950"
+   ]
+  },
+  "credito": "Google Art Project · Public domain · Wikimedia Commons",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Berthe_Morisot_-_The_Cradle_-_Google_Art_Project.jpg"
  },
  {
   "id": "beso",
