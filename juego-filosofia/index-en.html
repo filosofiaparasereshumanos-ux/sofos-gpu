@@ -27283,6 +27283,168 @@ const Jesus = {
   };
 }
 
+// ---- src/07y-biblia-juegos.js ----
+// ============================================================================
+//  MÁS CAMINO DE LA BIBLIA: tres lugares nuevos (el valle de Elá, Belén y la
+//  tumba vacía) y tres juegos: la honda de David, la historia de David en orden
+//  y «La tumba vacía»: comparar lo que cuenta cada uno de los cuatro evangelios.
+//  Las citas siguen las referencias de la Biblia de Jerusalén.
+// ============================================================================
+const BJ = {
+  T: {
+    honda: '🎯 Play: David\'s sling', orden: '📜 Play: David\'s story in order', tumba: '🕯 Play: the empty tomb in the four gospels', menu: '🎮 Bible games',
+    hH: 'David\'s sling', hIntro: 'Goliath is advancing through the valley. Tap «Throw» when the white marker passes over the golden band. You have five stones, like David in 1 Samuel 17:40.', throw: 'Throw', hit: 'Right on the forehead!', miss: 'Too early or too late.', stones: (n) => `Stones: ${n}`,
+    hWin: 'According to the story, David told him: «You come against me with sword, spear and javelin, but I come against you in the name of the Lord of hosts» (1 Samuel 17:45). The story became the symbol of the small one who defeats the mighty.', hLose: 'Out of stones. Try again!',
+    oH: 'David\'s story in order', oIntro: 'Tap the moments of David\'s life in the order in which the books of Samuel and Kings tell them.', oOk: 'Well ordered!', oNo: 'That moment comes later. Try another.', oWin: 'You have put David\'s life in order! Shepherd, warrior, king, repentant sinner and poet: the Bible shows him with his lights and his shadows.',
+    tH: 'The empty tomb in the four gospels', tIntro: 'All four gospels say the tomb was empty, but each with its own details. Do you know what each one says?', tEnd: 'The four accounts agree on the essentials: the empty tomb on the first day of the week and some women as the first witnesses. They differ in the details, and scholars compare those differences to understand how the memories of the first communities were handed down.',
+    again: 'Play again', close: 'Close', next: 'Next', score: (a, b) => `${a} de ${b}`, pts: (n) => `+${n} wisdom`,
+  },
+  ORDEN: [
+    ['The prophet Samuel anoints the young shepherd David', '1 Samuel 16'],
+    ['David defeats the giant Goliath', '1 Samuel 17'],
+    ['Friendship with Jonathan and flight from King Saul', '1 Samuel 18–26'],
+    ['David is proclaimed king of Judah and then of all Israel', '2 Samuel 2–5'],
+    ['He conquers Jerusalem and brings the ark of the covenant there', '2 Samuel 5–6'],
+    ['He sins with Bathsheba and the prophet Nathan rebukes him', '2 Samuel 11–12'],
+    ['His son Absalom rebels against him', '2 Samuel 15–18'],
+    ['Solomon succeeds David as king', '1 Reyes 1–2'],
+  ],
+  TUMBA: [
+    ['According to Mark, who went to the tomb?', 'Mary Magdalene, Mary the mother of James, and Salome', ['Only Mary Magdalene', 'Peter and John', 'Mary Magdalene and the other Mary'], 'Mark 16:1.'],
+    ['According to Mark, whom did they find inside the tomb?', 'A young man dressed in a white robe', ['Two men in dazzling clothes', 'An angel sitting on the stone', 'Jesus, who looked like the gardener'], 'Mark 16:5.'],
+    ['According to Matthew, what happened when the women arrived?', 'An earthquake, and an angel rolled away the stone and sat on it', ['The disciples were already there', 'The stone was sealed', 'Nothing: all was silent'], 'Matthew 28:2.'],
+    ['According to Matthew, which women went to see the tomb?', 'Mary Magdalene and the other Mary', ['Joanna and Susanna', 'Martha and Mary of Bethany', 'Salome and Mary, the mother of Jesus'], 'Matthew 28:1.'],
+    ['According to Luke, what did the two men ask the women?', '«Why do you look for the living among the dead?»', ['«Where are you going so early?»', '«Who moved the stone?»', '«Where are the disciples?»'], 'Luke 24:5.'],
+    ['According to Luke, which disciple ran to the tomb after hearing the women?', 'Peter', ['Thomas', 'Judas', 'Matthew'], 'Luke 24:12.'],
+    ['According to John, who went alone to the tomb while it was still dark?', 'Mary Magdalene', ['Salome', 'Joanna', 'Mary, the mother of Jesus'], 'John 20:1.'],
+    ['According to John, whom did Mary Magdalene mistake Jesus for?', 'The gardener', ['A soldier', 'An angel', 'Peter'], 'John 20:15-16: when she hears her name she recognizes him and says to him «Rabbouni!», which means «Teacher».'],
+  ],
+  build() {
+    if (document.getElementById('bj')) return;
+    const el = document.createElement('div'); el.id = 'bj'; el.className = 'nb'; el.hidden = true;
+    el.innerHTML = '<div class="nb-card bj-card" role="dialog"><button class="ls-x pn-x" id="bj-x" aria-label="✕">✕</button><div class="eyebrow">The Way of the Bible</div><h3 class="bj-h"></h3><p class="bj-p"></p><div class="bj-body"></div><div class="btns bj-btns"></div></div>';
+    document.body.appendChild(el); el.querySelector('#bj-x').addEventListener('click', () => this.close());
+  },
+  open(game) { this.build(); Panel.open('bj'); Audio.init && Audio.init(); this.game = game; this[game](); },
+  close() { this.stop = true; Panel.close('bj'); },
+  ui(h, p) { const el = document.getElementById('bj'); el.querySelector('.bj-h').textContent = h; el.querySelector('.bj-p').textContent = p; el.querySelector('.bj-body').innerHTML = ''; el.querySelector('.bj-btns').innerHTML = ''; return el; },
+  btn(label, fn, cls = 'btn primary') { const b = document.createElement('button'); b.className = cls; b.textContent = label; b.addEventListener('click', () => { Audio.click && Audio.click(); fn(); }); document.querySelector('#bj .bj-btns').appendChild(b); return b; },
+  reward(key, n) { const k = 'odisea-razon.biblia-juegos'; const s = store.get(k, {}) || {}; if (s[key]) return; s[key] = 1; store.set(k, s); try { addScore(n); } catch (e) { /* fuera de una partida */ } toast(this.T.pts(n)); },
+  // --------------------------------------------------------- la honda de David
+  honda() {
+    const el = this.ui(this.T.hH, this.T.hIntro); const body = el.querySelector('.bj-body');
+    body.innerHTML = '<canvas class="bj-cv" width="600" height="320"></canvas><div class="bj-stat"><span class="bj-st"></span><b class="bj-msg"></b></div>';
+    const cv = body.querySelector('canvas'), c = cv.getContext('2d'); let stones = 5, phase = 0, flying = null, done = false; this.stop = false;
+    const zone = () => [0.42 - 0.06 * (5 - stones) * 0.3, 0.58 + 0.06 * (5 - stones) * 0.3].map((v, i) => i ? Math.min(0.62, v) : Math.max(0.38, v));
+    const st = () => { body.querySelector('.bj-st').textContent = this.T.stones(stones); };
+    const msg = (t, ok) => { const m = body.querySelector('.bj-msg'); m.textContent = t; m.className = 'bj-msg ' + (ok ? 'ok' : 'no'); };
+    const draw = (t) => {
+      c.clearRect(0, 0, 600, 320); const g = c.createLinearGradient(0, 0, 0, 320); g.addColorStop(0, '#e9c98a'); g.addColorStop(1, '#a8834a'); c.fillStyle = g; c.fillRect(0, 0, 600, 320);
+      c.fillStyle = '#8a6a3a'; c.beginPath(); c.moveTo(0, 250); c.quadraticCurveTo(300, 200, 600, 250); c.lineTo(600, 320); c.lineTo(0, 320); c.fill();
+      // Goliat (silueta) que se acerca poco a poco
+      const gx = 470 - (5 - stones) * 18, gs = 1 + (5 - stones) * 0.06; c.save(); c.translate(gx, 250); c.scale(gs, gs); c.fillStyle = '#3a2a1a';
+      c.fillRect(-22, -150, 44, 110); c.beginPath(); c.arc(0, -168, 20, 0, Math.PI * 2); c.fill(); c.fillRect(-30, -40, 22, 40); c.fillRect(8, -40, 22, 40); c.fillStyle = '#b8a070'; c.fillRect(-24, -192, 48, 10); c.fillRect(30, -190, 6, 150); c.restore();
+      // David
+      c.fillStyle = '#5a4a2a'; c.fillRect(80, 190, 20, 50); c.beginPath(); c.arc(90, 180, 11, 0, Math.PI * 2); c.fill();
+      // la honda gira; la «fase» marca el punto de suelta
+      const a = t * 7; c.strokeStyle = '#2a1a0a'; c.lineWidth = 2; c.beginPath(); c.moveTo(98, 195); c.lineTo(98 + Math.cos(a) * 34, 175 + Math.sin(a) * 34); c.stroke();
+      c.fillStyle = '#ddd'; c.beginPath(); c.arc(98 + Math.cos(a) * 34, 175 + Math.sin(a) * 34, 5, 0, Math.PI * 2); c.fill();
+      // barra de precisión
+      phase = (Math.sin(t * 2.6) + 1) / 2; const [z0, z1] = zone();
+      c.fillStyle = 'rgba(0,0,0,.35)'; c.fillRect(150, 22, 300, 16); c.fillStyle = '#ffd36a'; c.fillRect(150 + z0 * 300, 22, (z1 - z0) * 300, 16); c.fillStyle = '#fff'; c.fillRect(150 + phase * 300 - 2, 16, 4, 28);
+      if (flying) { const k = Math.min(1, (performance.now() - flying.t0) / 600); const x = 110 + (flying.x - 110) * k, y = 170 + (flying.y - 170) * k - Math.sin(k * Math.PI) * 60; c.fillStyle = '#eee'; c.beginPath(); c.arc(x, y, 5, 0, Math.PI * 2); c.fill(); if (k >= 1) flying = null; }
+    };
+    const loop = () => { if (this.stop || this.game !== 'honda' || document.getElementById('bj').hidden) return; draw(performance.now() / 1000); requestAnimationFrame(loop); };
+    st(); loop();
+    const shoot = () => {
+      if (done || flying || stones <= 0) return; const [z0, z1] = zone(); const ok = phase >= z0 && phase <= z1; stones--; st();
+      const gx = 470 - (4 - stones) * 18; flying = { t0: performance.now(), x: ok ? gx : gx + (phase < z0 ? -60 : 40), y: ok ? 82 : 140 };
+      if (ok) { done = true; Audio.correct && Audio.correct(); buzz([30, 40, 80]); msg(this.T.hit, true); setTimeout(() => { el.querySelector('.bj-p').textContent = this.T.hWin; this.reward('honda', 60); el.querySelector('.bj-btns').innerHTML = ''; this.btn(this.T.again, () => this.honda(), 'btn'); this.btn(this.T.close, () => this.close()); }, 900); }
+      else { Audio.wrong && Audio.wrong(); msg(this.T.miss, false); if (stones <= 0) { done = true; setTimeout(() => { msg(this.T.hLose, false); el.querySelector('.bj-btns').innerHTML = ''; this.btn(this.T.again, () => this.honda()); }, 700); } }
+    };
+    this.btn(this.T.throw, shoot); cv.addEventListener('pointerdown', shoot);
+  },
+  // --------------------------------------------------------- la historia de David en orden
+  orden() {
+    const el = this.ui(this.T.oH, this.T.oIntro); const body = el.querySelector('.bj-body'); let next = 0, errors = 0;
+    const box = document.createElement('div'); box.className = 'bj-cards'; body.appendChild(box);
+    const done = document.createElement('ol'); done.className = 'bj-done'; body.prepend(done);
+    shuffle(this.ORDEN.map((x, i) => [x, i])).forEach(([[t, ref], i]) => {
+      const b = document.createElement('button'); b.className = 'bj-c'; b.innerHTML = '<b></b><small></small>'; b.querySelector('b').textContent = t; b.querySelector('small').textContent = ref;
+      b.addEventListener('click', () => {
+        if (i === next) { next++; Audio.correct && Audio.correct(); const li = document.createElement('li'); li.textContent = `${t} (${ref})`; done.appendChild(li); b.remove();
+          if (next === this.ORDEN.length) { el.querySelector('.bj-p').textContent = this.T.oWin + (errors ? '' : ' ✓'); this.reward('orden', 60); this.btn(this.T.again, () => this.orden(), 'btn'); this.btn(this.T.close, () => this.close()); } }
+        else { errors++; Audio.wrong && Audio.wrong(); b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); toast(this.T.oNo); }
+      });
+      box.appendChild(b);
+    });
+  },
+  // --------------------------------------------------------- la tumba vacía
+  tumba() {
+    const el = this.ui(this.T.tH, this.T.tIntro); const Q = this.TUMBA; let i = 0, ok = 0;
+    const show = () => {
+      const [q, right, wrong, ref] = Q[i]; const body = el.querySelector('.bj-body'); body.innerHTML = `<p class="bj-q"></p><div class="bj-ans"></div><p class="bj-fb" hidden></p><small class="bj-n"></small>`;
+      body.querySelector('.bj-q').textContent = q; body.querySelector('.bj-n').textContent = this.T.score(i + 1, Q.length); el.querySelector('.bj-btns').innerHTML = '';
+      shuffle([right, ...wrong]).forEach((t) => { const b = document.createElement('button'); b.className = 'ans'; b.textContent = t; b.addEventListener('click', () => {
+        const good = t === right; if (good) { ok++; Audio.correct && Audio.correct(); } else { Audio.wrong && Audio.wrong(); }
+        body.querySelectorAll('.ans').forEach((x) => { x.disabled = true; if (x.textContent === right) x.classList.add('right'); else if (x === b) x.classList.add('wrong'); });
+        const fb = body.querySelector('.bj-fb'); fb.hidden = false; fb.textContent = (good ? '✓ ' : '✗ ') + `${right}. ${ref}`;
+        this.btn(i < Q.length - 1 ? this.T.next : this.T.score(ok, Q.length), () => { i++; if (i < Q.length) show(); else end(); });
+      }); body.querySelector('.bj-ans').appendChild(b); });
+    };
+    const end = () => { const body = el.querySelector('.bj-body'); body.innerHTML = ''; el.querySelector('.bj-p').textContent = `${this.T.score(ok, Q.length)}. ${this.T.tEnd}`; if (ok >= 6) this.reward('tumba', 80); el.querySelector('.bj-btns').innerHTML = ''; this.btn(this.T.again, () => this.tumba(), 'btn'); this.btn(this.T.close, () => this.close()); };
+    show();
+  },
+  menu() {
+    const el = this.ui(this.T.menu, ''); const body = el.querySelector('.bj-body');
+    for (const g of ['honda', 'orden', 'tumba']) { const b = document.createElement('button'); b.className = 'vs-item bj-m'; b.textContent = this.T[g]; b.addEventListener('click', () => { Audio.click && Audio.click(); this.game = g; this[g](); }); body.appendChild(b); }
+  },
+};
+// botones de juego en los lugares y en la pausa (solo en el camino de la Biblia)
+{
+  const o0 = Places.open.bind(Places);
+  Places.open = function (poi) {
+    o0(poi); const foot = document.querySelector('#place .ls-foot'); if (!foot) return; foot.querySelectorAll('.bj-play').forEach((b) => b.remove());
+    for (const g of (poi && poi.juego) || []) { const b = document.createElement('button'); b.className = 'aid bj-play'; b.textContent = BJ.T[g]; b.addEventListener('click', () => { Audio.click && Audio.click(); Places.close(); setTimeout(() => BJ.open(g), 80); }); foot.prepend(b); }
+  };
+  const btns = document.getElementById('b-pcodex') && document.getElementById('b-pcodex').parentNode;
+  if (btns) { const b = document.createElement('button'); b.className = 'btn'; b.id = 'b-pbiblia'; b.hidden = true; b.textContent = BJ.T.menu; b.addEventListener('click', () => { Audio.click && Audio.click(); resumeGame(); setTimeout(() => BJ.open('menu'), 60); }); btns.insertBefore(b, document.getElementById('b-psettings') || null); }
+  setInterval(() => { const b = document.getElementById('b-pbiblia'); if (b) b.hidden = !(world && ERAS[world.idx] && ERAS[world.idx].id === 'biblia'); }, 700);
+}
+{
+  const st = document.createElement('style');
+  st.textContent = '#bj{z-index:66}.bj-h{font-family:var(--display);font-weight:normal;color:#ffe2a0;margin:2px 34px 6px 0;font-size:1.25rem}.bj-p{line-height:1.5;color:#f3e6c4}'
+    + '.bj-cv{width:100%;border-radius:10px;display:block;touch-action:manipulation;cursor:pointer}.bj-stat{display:flex;justify-content:space-between;margin:6px 0;font-size:.9rem}.bj-msg.ok{color:#8ff0c4}.bj-msg.no{color:#ff9a8a}'
+    + '.bj-cards{display:grid;gap:6px;margin-top:8px}.bj-c{text-align:left;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--parchment);font:inherit;cursor:pointer}.bj-c b{display:block;font-weight:normal}.bj-c small{color:var(--gold,#d8b25a);font-size:.75rem}'
+    + '.bj-c.shake{animation:bjShake .35s}@keyframes bjShake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}.bj-done{margin:6px 0;padding-left:22px;color:#8ff0c4;font-size:.9rem}.bj-done li{margin:3px 0}'
+    + '.bj-q{font-size:1.05rem;color:#fff4dc}.bj-ans .ans{width:100%;margin:4px 0;text-align:left}.bj-fb{margin:8px 0;color:#f3e6c4;font-size:.92rem}.bj-n{color:var(--parchment-dim,#bfae8e)}.bj-m{display:block;width:100%;text-align:left;margin:6px 0}';
+  document.head.appendChild(st);
+}
+if (location.hash === '#debug') window.__bj = BJ;
+
+// ---- src/07y-biblia-lugares.js ----
+// ============================================================================
+//  TRES LUGARES MÁS EN EL CAMINO DE LA BIBLIA: el valle de Elá, Belén y la
+//  tumba vacía (los juegos de 07y-biblia-juegos.js se abren desde aquí).
+// ============================================================================
+{
+  const bi = ERAS.findIndex((e) => e.id === 'biblia');
+  if (bi >= 0 && POIS[bi]) POIS[bi].push(
+    { id: 'valle-ela', at: [17, -26], name: 'The Valley of Elah', juego: ['honda', 'orden'],
+      text: 'According to the first book of Samuel (chapter 17), the armies of Israel and the Philistines faced each other in the Valley of Elah. Every day the giant Goliath challenged the Israelites. The young shepherd David, who was bringing food to his brothers, offered to fight armed only with his sling and five smooth stones from the stream.',
+      fact: 'Another passage, 2 Samuel 21:19, says that Goliath was killed by Elhanan, one of David\'s warriors. Scholars debate how the two accounts are related.',
+      q: { q: 'According to 1 Samuel 17, what did David face Goliath with?', a: ['A sling and stones', 'A sword and shield', 'A bow and arrows', 'A spear'], e: '1 Samuel 17:40: he chose five smooth stones from the stream.' } },
+    { id: 'belen', at: [8, 30], name: 'Bethlehem',
+      text: 'According to the gospels of Matthew and Luke, Jesus was born in Bethlehem of Judea, the city of David. Luke says he was laid in a manger because there was no room for them in the lodging, and that some shepherds came to see him; Matthew tells of the visit of wise men from the East guided by a star. Over the grotto pointed out by tradition stands the Church of the Nativity, one of the oldest churches in the world.',
+      fact: 'Our calendar was worked out in the sixth century by the monk Dionysius Exiguus, who was off by a few years: historians place the birth of Jesus around 6 or 4 BC, before the death of King Herod.',
+      q: { q: 'Which gospels tell of Jesus\' birth in Bethlehem?', a: ['Mateo and Lucas', 'Mark and John', 'Only John', 'None'], e: 'Mark and John begin their accounts with Jesus already an adult.' } },
+    { id: 'tumba-vacia', at: [-17, -31], name: 'The Empty Tomb', juego: ['tumba'],
+      text: 'According to all four gospels, on the first day of the week, very early in the morning, some women who followed Jesus went to the tomb and found it empty. For Christians it is the sign of the resurrection and the heart of their faith. Tradition places the tomb in today\'s Church of the Holy Sepulchre in Jerusalem.',
+      fact: 'In the oldest ending of the Gospel of Mark (16:8), the women flee from the tomb full of fear and say nothing to anyone. Verses 9 to 20 were added later, as the notes in study Bibles explain.',
+      q: { q: 'According to the gospels, who first found the tomb empty?', a: ['Some women, among them Mary Magdalene', 'The Roman soldiers', 'The chief priests', 'Pilate'], e: 'All four gospels agree that Mary Magdalene was there.' } },
+  );
+}
+
 </script>
 </body>
 </html>
