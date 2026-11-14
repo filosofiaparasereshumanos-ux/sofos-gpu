@@ -15,6 +15,7 @@ const BJ = {
     jH: 'Jonás y el gran pez', jIntro: 'El libro de Jonás tiene solo cuatro capítulos. ¿Recuerdas lo que cuenta?', jEnd: 'El libro de Jonás es un relato breve y lleno de ironía: el profeta huye, los extranjeros se convierten y Dios se muestra compasivo con todos. Muchos estudiosos lo leen como una narración que enseña sobre la misericordia, más que como una crónica.',
     rH: 'La historia de Rut', rIntro: 'Rut era una extranjera que no quiso abandonar a su suegra. ¿Recuerdas su historia?', rEnd: 'El libro de Rut cuenta la lealtad de una extranjera que llega a ser antepasada del rey David. El evangelio de Mateo la nombra en la genealogía de Jesús (Mateo 1,5).',
     plagas: '🐸 Jugar: las diez plagas en orden', jonas: '🐋 Jugar: Jonás y el gran pez', rut: '🌾 Jugar: la historia de Rut',
+    cardS: 'David y Goliat, la tumba vacía, las plagas, Jonás, Rut…',
     again: 'Jugar otra vez', close: 'Cerrar', next: 'Siguiente', score: (a, b) => `${a} de ${b}`, pts: (n) => `+${n} sabiduría`,
   },
   ORDEN: [
@@ -167,3 +168,15 @@ const BJ = {
   document.head.appendChild(st);
 }
 if (location.hash === '#debug') window.__bj = BJ;
+// tarjeta en la portada, debajo de la del museo
+{
+  const card = () => {
+    if (document.getElementById('bj-tcard')) return; const anchor = document.getElementById('mu-tcard') || document.getElementById('lib-card'); if (!anchor) return;
+    const c = document.createElement('button'); c.id = 'bj-tcard'; c.innerHTML = '<b>📖</b><span><strong></strong><small></small></span>';
+    c.querySelector('strong').textContent = BJ.T.menu.replace(/^\S+\s/, ''); c.querySelector('small').textContent = BJ.T.cardS;
+    anchor.after(c); c.addEventListener('click', () => { Audio.init && Audio.init(); Audio.click && Audio.click(); BJ.open('menu'); });
+  };
+  setTimeout(card, 50);
+  const st = document.createElement('style'); st.textContent = '#bj-tcard{display:flex;align-items:center;gap:10px;width:min(440px,92vw);margin:8px auto 0;padding:9px 14px;border-radius:12px;border:1px solid rgba(216,178,90,.55);background:linear-gradient(150deg,rgba(60,40,14,.8),rgba(24,16,8,.85));color:#fff4dc;font-family:var(--body,Georgia);text-align:left;cursor:pointer}#bj-tcard b{font-size:1.5rem}#bj-tcard span{display:flex;flex-direction:column}#bj-tcard small{color:#d8c8a0}';
+  document.head.appendChild(st);
+}

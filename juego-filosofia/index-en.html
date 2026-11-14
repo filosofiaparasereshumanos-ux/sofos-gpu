@@ -27301,6 +27301,7 @@ const BJ = {
     jH: 'Jonah and the great fish', jIntro: 'The book of Jonah has only four chapters. Do you remember what it tells?', jEnd: 'The book of Jonah is a short story full of irony: the prophet runs away, the foreigners repent, and God shows compassion to everyone. Many scholars read it as a story that teaches about mercy rather than as a chronicle.',
     rH: 'The story of Ruth', rIntro: 'Ruth was a foreigner who would not abandon her mother-in-law. Do you remember her story?', rEnd: 'The book of Ruth tells of the loyalty of a foreign woman who became an ancestor of King David. The Gospel of Matthew names her in the genealogy of Jesus (Matthew 1:5).',
     plagas: '🐸 Play: the ten plagues in order', jonas: '🐋 Play: Jonah and the great fish', rut: '🌾 Play: the story of Ruth',
+    cardS: 'David and Goliath, the empty tomb, the plagues, Jonah, Ruth…',
     again: 'Play again', close: 'Close', next: 'Next', score: (a, b) => `${a} de ${b}`, pts: (n) => `+${n} wisdom`,
   },
   ORDEN: [
@@ -27453,6 +27454,18 @@ const BJ = {
   document.head.appendChild(st);
 }
 if (location.hash === '#debug') window.__bj = BJ;
+// tarjeta en la portada, debajo de la del museo
+{
+  const card = () => {
+    if (document.getElementById('bj-tcard')) return; const anchor = document.getElementById('mu-tcard') || document.getElementById('lib-card'); if (!anchor) return;
+    const c = document.createElement('button'); c.id = 'bj-tcard'; c.innerHTML = '<b>📖</b><span><strong></strong><small></small></span>';
+    c.querySelector('strong').textContent = BJ.T.menu.replace(/^\S+\s/, ''); c.querySelector('small').textContent = BJ.T.cardS;
+    anchor.after(c); c.addEventListener('click', () => { Audio.init && Audio.init(); Audio.click && Audio.click(); BJ.open('menu'); });
+  };
+  setTimeout(card, 50);
+  const st = document.createElement('style'); st.textContent = '#bj-tcard{display:flex;align-items:center;gap:10px;width:min(440px,92vw);margin:8px auto 0;padding:9px 14px;border-radius:12px;border:1px solid rgba(216,178,90,.55);background:linear-gradient(150deg,rgba(60,40,14,.8),rgba(24,16,8,.85));color:#fff4dc;font-family:var(--body,Georgia);text-align:left;cursor:pointer}#bj-tcard b{font-size:1.5rem}#bj-tcard span{display:flex;flex-direction:column}#bj-tcard small{color:#d8c8a0}';
+  document.head.appendChild(st);
+}
 
 // ---- src/07y-biblia-lugares.js ----
 // ============================================================================
