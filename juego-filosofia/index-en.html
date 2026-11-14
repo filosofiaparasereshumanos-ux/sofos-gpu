@@ -3117,7 +3117,7 @@ ERAS.push(
           { q: 'Which Beauvoir novel won the Goncourt Prize in 1954?', a: ['The mandarins', 'The guest', 'The broken woman', 'Memories of a formal young woman'], e: 'Retracts postwar intellectuals.' },
           { q: 'What did Beauvoir write about existentialistic ethics in 1947?', a: ['For a moral of ambiguity', 'Criticism of practical reason', 'Nicomachean Ethics', 'Beyond good and evil'], e: 'To want to be free is also to want the freedom of others.' },
           { q: 'What subject did Beauvoir study in a 1970 essay, then little dealt with by philosophy?', a: ['Old age', 'Space travel', 'The Cold War', 'Football'], e: 'He denounced how society separates the elders.' },
-          { q: 'What position did Beauvoir obtain in the difficult philosophy exam of 1929, being one of the youngest?', a: ['The second, right after Sartre', 'The Last', 'The first, ahead of all', 'Not submitted'], e: 'I was 21.' },
+          { q: 'What position did Beauvoir obtain in the difficult philosophy exam of 1929, being one of the youngest?', a: ['The second, right after Sartre', 'The last chapter', 'The first, ahead of all', 'Not submitted'], e: 'I was 21.' },
         ],
       },
       {
@@ -3882,7 +3882,7 @@ ERAS.push(
           { q: 'What 20th century leader was inspired by the ahimsa for nonviolent struggle?', a: ['Mahatma Gandhi', 'Napoleon', 'Lautaro', 'Julius Caesar'], e: 'He led India\'s independence.' },
           { q: 'Some Jainist monks wear a cloth before their mouths. Why?', a: ['To not swallow insects unintentionally', 'By the cold', 'By fashion', 'Not to talk.'], e: 'They carry the ahimsa to the smallest beings.' },
           { q: 'Why did Mahavira quit when she was 30?', a: ['To his life as a prince and to his property', 'To his tongue', 'In his name.', 'To study'], e: 'He lived twelve years as an ascetic.' },
-          { q: 'What other teacher did Mahavira agree with at the same time and region?', a: ['Buddha', 'Confucius', 'Jesus.', 'Mohammed'], e: 'They both taught in the Ganges Valley.' },
+          { q: 'What other teacher did Mahavira agree with at the same time and region?', a: ['Buddha', 'Confucius', 'Jesus', 'Mohammed'], e: 'They both taught in the Ganges Valley.' },
         ] },
       { id: 'nagarjuna', name: 'Nagarjuna', short: 'Nagarjuna', dates: 'c. 150 – 250', epithet: 'The philosopher of emptiness',
         look: lk(0xb04a2a, 0xf0a040, 0xa8754f, 0x1a1410, { hat: 'bald', acc: 'book' }), prop: 'mirror',
@@ -8259,6 +8259,20 @@ Object.assign(FRASES, {
           Q('What instrument did David play, according to the Bible?', 'The lyre or harp', 'To calm King Saul.', 'The Electric Guitar', 'The piano', 'Your battery'),
           Q('What do scholars think about the authors of the Psalms?', 'That there are songs by various authors and times', 'Tradition attributes many to David.', 'That only one man wrote them in one day', 'They\'re modern', 'That they don\'t exist'),
         ] },
+      { id: 'jesus', name: 'Jesus of Nazareth', short: 'Jesus', dates: 'c. 4 a. C. – c. 30 d. C.', epithet: 'The teacher from Galilee',
+        look: lk(0xe8e0cc, 0x3a5a8a, 0xb8865a, 0x3a2a1a, { beard: 0x3a2a1a, hat: 'longhair', acc: 'none' }), prop: 'water',
+        intro: '“Peace be with you.” (John 20:19)',
+        defeat: '“I give you a new commandment: love one another; you must love one another just as I have loved you.” (John 13:34)',
+        concept: { name: 'The Kingdom of God and love of neighbour', text: 'Jesus of Nazareth was a Jewish teacher from Galilee who lived in the first century and died by crucifixion in Jerusalem under the Roman governor Pontius Pilate. Almost all historians agree that he existed: non-Christian authors such as Flavius Josephus and Tacitus also mention him. He proclaimed the Kingdom of God and taught in parables; he summed up the Law as loving God and one’s neighbour, and asked people to love even their enemies. For Christians he is the Son of God, who rose from the dead; for Judaism, a Jewish teacher of his time; for Islam, Isa, a great prophet. In the game, Jesus only speaks words taken from the Gospels, quoted with chapter and verse (references as in the Jerusalem Bible).' },
+        q: [
+          Q('Which parable answers the question “And who is my neighbour?”', 'The Good Samaritan', 'Luke 10:25-37.', 'The Sower', 'The Talents', 'The Prodigal Son'),
+          Q('According to Matthew 22:37-39, what are the two greatest commandments?', 'To love God and to love your neighbour as yourself', 'Jesus gives this answer to a teacher of the Law.', 'Not to kill and not to steal', 'To keep the Sabbath and to fast', 'To honour your parents and pay taxes'),
+          Q('What language did Jesus usually speak, according to historians?', 'Aramaic', 'Mark preserves some of his words in Aramaic, such as “Talitha kum” (Mark 5:41).', 'Latin', 'Classical Greek', 'Arabic'),
+          Q('According to Matthew 5:44, what does Jesus ask regarding enemies?', 'To love them and pray for those who persecute us', '“Love your enemies and pray for those who persecute you.”', 'To take revenge on them', 'To always avoid them', 'To ignore them'),
+          Q('According to John 8:7, what does Jesus say to those who want to stone a woman?', 'Let the one without sin cast the first stone', 'The woman caught in adultery (John 8:1-11).', 'That the law must be carried out', 'That the high priest should decide', 'That she should be expelled from the city'),
+          Q('In which chapters of Matthew is the Sermon on the Mount?', 'Chapters 5 to 7', 'It includes the Beatitudes and the Lord’s Prayer.', 'Chapter 1', 'The last chapter', 'It is in Genesis'),
+          Q('What do almost all historians say about Jesus of Nazareth?', 'That he existed and was crucified under Pontius Pilate', 'Non-Christian authors such as Tacitus and Flavius Josephus also mention him.', 'That he is a character invented in the Middle Ages', 'That he lived in Rome', 'That he wrote the Gospels'),
+        ] },
       { id: 'mateo', name: 'Matthew', short: 'Matthew', dates: 'siglo I', epithet: 'The evangelist of the Sermon on the Mount',
         look: lk(0x3a6a3a, 0xa83a2a, 0xd0a07a, 0x4a3a2a, { beard: 0x4a3a2a, hat: 'none', acc: 'quill' }), prop: 'lectern',
         intro: 'I was charging taxes, and people despised me. Jesus looked at me and said: follow me. My gospel tells his teachings, like the Sermon on the Mount. Do we hear that?',
@@ -8349,6 +8363,14 @@ Object.assign(LESSONS, {
     'The book of Psalms gathers one hundred and fifty songs. Tradition attributes many of them to me; scholars think that the book brings together poems from various authors and epochs.',
     'There are psalms of joy, fear, forgiveness and trust: The Lord is my shepherd; I shall not want. My question to you: what emotion would you like to turn into a song?',
   ],
+  jesus: [
+    '“The time has come and the kingdom of God is close at hand. Repent, and believe the gospel.” (Mark 1:15)',
+    '“How blessed are the poor in spirit: the kingdom of Heaven is theirs. Blessed are those who mourn: they shall be comforted. Blessed are those who hunger and thirst for uprightness: they shall have their fill. Blessed are the merciful: they shall have mercy shown them. Blessed are the peacemakers: they shall be recognised as children of God.” (Matthew 5:3-9, selection)',
+    '“You must love the Lord your God with all your heart, with all your soul, and with all your mind. This is the greatest and the first commandment. The second resembles it: You must love your neighbour as yourself.” (Matthew 22:37-39)',
+    '“But I say this to you, love your enemies and pray for those who persecute you.” (Matthew 5:44) “So always treat others as you would like them to treat you.” (Matthew 7:12)',
+    '“Which of these three, do you think, proved himself a neighbour to the man who fell into the bandits’ hands?” He replied, “The one who showed pity towards him.” Jesus said to him, “Go, and do the same yourself.” (Luke 10:36-37)',
+    '“In truth I tell you, in so far as you did this to one of the least of these brothers of mine, you did it to me.” (Matthew 25:40)',
+  ],
   mateo: [
     'I\'m Mateo, also called Levi. I collected taxes in Capernaum for the Romans, and people considered me a sinner. Jesus passed by my table and said to me: follow me. I got up and followed him.',
     'My gospel begins with the genealogy of Jesus from Abraham. I wanted to show the Jews in my community that Jesus fulfills the promises of the Scriptures.',
@@ -8389,9 +8411,10 @@ Object.assign(LESSONS, {
 Object.assign(FRASES, {
   moises: [['Listen, Israel: the Lord is our God, the Lord is one.', 'Deuteronomy 6:4'], ['You won\'t kill.', 'Exodus 20:13']],
   david: [['The Lord is my shepherd; I shall not want.', 'Psalm 23:1'], ['The heavens tell the glory of God.', 'Psalm 19:1']],
+  jesus: [['Ask, and it will be given to you; search, and you will find; knock, and the door will be opened to you.', 'Matthew 7:7'], ['You are light for the world.', 'Matthew 5:14'], ['Let the one among you who is guiltless be the first to throw a stone at her.', 'John 8:7'], ['The Sabbath was made for man, not man for the Sabbath.', 'Mark 2:27'], ['Father, forgive them; they do not know what they are doing.', 'Luke 23:34']],
   mateo: [['Blessed are those who work for peace, for they will be called children of God.', 'Matthew 5:9'], ['Whatever you want men to do to you, do to them also.', 'Matthew 7:12']],
   marcos: [['You will love your neighbor as yourself.', 'Mark 12:31'], ['The Sabbath was made for man, and not man for the Sabbath.', 'Mark 2:27']],
-  lucas: [['Ask and it will be given to you; seek and you will find; call and it will be opened to you.', 'Luke 11:9'], ['Do not judge, and you will not be judged.', 'Luke 6:37']],
+  lucas: [['Ask, and it will be given to you; search, and you will find; knock, and the door will be opened to you.', 'Luke 11:9'], ['Do not judge, and you will not be judged.', 'Luke 6:37']],
   juan: [['In the beginning it was the Word.', 'John 1:1'], ['Love each other.', 'John 13:34'], ['The truth will set you free.', 'John 8:32']],
   pablo: [['Love is patient, it is helpful; love is not envious.', '1 Corintios 13:4'], ['Now faith, hope and love remain; but the greatest of them is love.', '1 Corintios 13:13']],
 });
@@ -9025,6 +9048,7 @@ function stationPositions(n) {
   // los pensadores esperan repartidos por la plaza, cada uno junto a su escenario
   if (n === 3) return [[-12, 16], [12, 2], [-12, -12]];
   if (n === 5) return [[-12, 22], [12, 12], [-12, 2], [12, -8], [-12, -18]];
+  if (n === 7) return [[-12, 22], [12, 15], [-12, 9], [12, -3], [-12, -10], [12, -15], [-12, -22]]; // el camino de la Biblia
   if (n >= 6) return [[-12, 24], [12, 16], [-12, 7], [12, -2], [-12, -11], [12, -20]].slice(0, n);
   return [[-12, 20], [12, 8], [-12, -4], [12, -16]];
 }
@@ -17874,6 +17898,7 @@ const VERSUS_NARR = (v) => v.turns.map((t) => t[1]); // lo que se graba con la v
   Object.assign(QUESTS, {
     moises: { text: 'Visit Mount Sinai. Then tell me how many commandments I received.', needs: { pois: ['sinai'], npcs: [] }, riddle: { q: 'How many commandments are there on the tablets of the Law?', a: ['Ten', 'Seven', 'Three', 'One hundred'] } },
     david: { text: 'Visit the temple of Jerusalem. Then tell me which city I made my capital.', needs: { pois: ['jerusalen-templo'], npcs: [] }, riddle: { q: 'Which city did David make his capital?', a: ['Jerusalem', 'Bethlehem', 'Nazareth', 'Rome'] } },
+    jesus: { text: '“Come after me and I will make you fishers of people.” (Matthew 4:19)', needs: { pois: ['mar-galilea'], npcs: ['pescador-galilea'] }, riddle: { q: 'According to Matthew 4:18, what were Peter and Andrew doing for a living when Jesus called them?', a: ['Fishermen', 'Tax collectors', 'Carpenters', 'Soldiers'] } },
     mateo: { text: 'Listen to Eliezer, the scribe. Then tell me what “evangelius” means.', needs: { pois: [], npcs: ['escriba-qumran'] }, riddle: { q: 'What does “evangelius” mean?', a: ['Good news', 'Book', 'Law', 'Singing'] } },
     marcos: { text: 'Visit the Sea of Galilee and listen to Simon, the fisherman. Then tell me which tongue Jesus spoke.', needs: { pois: ['mar-galilea'], npcs: ['pescador-galilea'] }, riddle: { q: 'What language did Jesus speak?', a: ['Aramaic', 'Latin', 'English', 'Japanese'] } },
     lucas: { text: 'Visit the caves of Qumran. Then tell me how the manuscripts were found.', needs: { pois: ['qumran'], npcs: [] }, riddle: { q: 'Who found the Dead Sea manuscripts?', a: ['A young shepherd looking for a goat', 'A king', 'An astronaut', 'No one'] } },
@@ -27196,6 +27221,67 @@ MESAS.push(
   {"id": "arte", "q": "What is art for?", "tema": "arte", "sabios": ["platon", "aristoteles", "basho", "tolstoi"], "posturas": {"platon": "A copy of a copy: keep an eye on it", "aristoteles": "Imitation teaches us and purifies us", "basho": "Catching the moment when heart and nature meet", "tolstoi": "Passing on feelings and uniting people"}, "turns": [["platon", "The carpenter makes a bed by looking at the Idea of a bed; the painter only copies the carpenter's bed. Art is a copy of a copy, far from the truth. And poets stir up passions we ought to govern."], ["aristoteles", "Imitation is natural to us from childhood, and it is how we learn. That is why we enjoy looking at accurate pictures of things that are unpleasant to see in reality. And tragedy, by arousing pity and fear, brings about the catharsis of those emotions."], ["basho", "An old pond / a frog jumps in / the sound of water. That is my art: a moment when nature and the heart meet. Learn about the pine from the pine, and about the bamboo from the bamboo."], ["tolstoi", "Art is passing on to others a feeling you have lived through, so that they are infected by it. If it is sincere, it unites people. An art that only a few rich people understand has forgotten why it exists."], ["aristoteles", "Master Plato, the poet tells not what has happened but what could happen. That is why poetry is more philosophical than history: it speaks of the universal, not only of the particular."], ["platon", "Aristotle, I admit poetry has its charm. If someone shows that it is not only pleasant but useful to the city and to human life, we will gladly welcome it back. Until then, I remain wary."], ["tolstoi", "Basho, a peasant can feel your few words just as a sage can. That is true art, not the kind that needs academies and critics before anyone can understand it."], ["basho", "Tolstoy, the peasant feels it, yes. But writing with lightness takes a great deal of looking. Do not follow in the footsteps of the ancients: seek what they sought."], ["platon", "Beautiful things are difficult."], ["aristoteles", "Art imitates nature and sometimes completes what nature cannot bring to a finish."], ["basho", "The months and days are travelers of a hundred generations, and the years that come and go are travelers too."], ["tolstoi", "Art is not mere pleasure: it is a means of union among human beings."]], "cierre": "Plato distrusts art because it strays from the truth; Aristotle defends it because it teaches and purifies us; Basho seeks in it the moment and nature; Tolstoy, a shared feeling that unites people."},
   {"id": "sentido", "q": "What gives life meaning?", "tema": "sentido", "sabios": ["kierkegaard", "tagore", "camus", "frankl"], "posturas": {"kierkegaard": "A truth to live and die for", "tagore": "Harmony with the world and with others", "camus": "Living with passion even though the world is silent", "frankl": "What you do, what you love, and how you face suffering"}, "turns": [["kierkegaard", "A truth that holds for everyone is not enough for me. I need to find a truth that is true for me, the idea for which I can live and die. The crowd cannot give you that: each of us must choose ourselves."], ["tagore", "The same stream of life that runs through my veins night and day runs through the world and dances in rhythmic measures. Meaning is not locked inside me: it lies in harmony with nature, with others and with the infinite."], ["camus", "There is only one truly serious philosophical problem: judging whether life is or is not worth living. We ask for meaning and the world is silent. From that clash the absurd is born, which is not an end but a starting point."], ["frankl", "I was in Auschwitz. There I saw that whoever has a why to live can bear almost any how. Meaning is found by creating something, by loving someone, or by choosing our attitude toward suffering we cannot avoid."], ["camus", "Kierkegaard, when the world falls silent, you leap into faith. I call that philosophical suicide. I prefer to stay with what I know and live in revolt, with lucidity and passion."], ["kierkegaard", "Camus, staying to live in despair is also a choice. Life can only be understood backwards, but it must be lived forwards. At some point you have to take the leap."], ["frankl", "Camus, I admire your revolt, but meaning is not invented: it is discovered. What matters is not what we expect from life, but what life expects from us. Every situation asks us a question."], ["tagore", "Frankl, you are right: meaning calls to us from outside. God is not in the closed temple, but where the tiller is tilling the hard ground and the pathmaker is breaking stones."], ["kierkegaard", "To venture causes anxiety, but not to venture is to lose oneself."], ["tagore", "Let life be beautiful like summer flowers and death like autumn leaves."], ["camus", "The struggle itself toward the heights is enough to fill a heart. One must imagine Sisyphus happy."], ["frankl", "Everything can be taken from a person but one thing: the last of the human freedoms, to choose one's attitude."]], "cierre": "Kierkegaard seeks a truth to live for; Tagore, harmony with the world; Camus, lucid revolt in the face of the absurd; Frankl, a meaning that can be discovered even in suffering."},
 );
+
+// ---- src/07x-jesus.js ----
+// ============================================================================
+//  JESÚS DE NAZARET (en el camino de la Biblia): por respeto, solo habla con
+//  palabras de los evangelios, citadas con capítulo y versículo (según la
+//  Biblia de Jerusalén). Su conversación tiene opciones propias y, si alguna
+//  parte del juego intentara ponerle en la boca otra frase, su voz se calla.
+// ============================================================================
+const Jesus = {
+  ID: 'jesus',
+  T: { words: 'Listen to his words', beat: 'The Beatitudes', samar: 'The parable of the Good Samaritan', quote: '❝ A saying from the Gospels', bye: 'Goodbye', quest: 'His task' },
+  // todo lo que puede decir: lo que está escrito en sus datos (intro, despedida, lección, frases y encargo)
+  ok(text) {
+    if (!this.allowed) {
+      const S = SAGE_BY_ID()[this.ID]; if (!S) return false; const d = S.d;
+      const all = [d.intro, d.defeat, ...(LESSONS[this.ID] || []), ...((FRASES[this.ID] || []).map((f) => f[0])), (QUESTS[this.ID] || {}).text || ''].join('   ');
+      this.allowed = all;
+    }
+    const t = String(text || '').trim(); return !!t && this.allowed.includes(t);
+  },
+  is(who) { return !!(who && who.data && who.data.id === this.ID); },
+};
+// la voz: solo palabras de los evangelios
+{
+  const s0 = Voice.say.bind(Voice), u0 = Voice.utter.bind(Voice);
+  Voice.say = function (text, who) { if (Jesus.is(who) && !Jesus.ok(text)) return; return s0(text, who); };
+  Voice.utter = function (text, who, rate, onend) { if (Jesus.is(who) && !Jesus.ok(text)) { if (onend) setTimeout(onend, 300); return; } return u0(text, who, rate, onend); };
+}
+// la conversación: saludo y opciones propias
+{
+  const o0 = Talk.open.bind(Talk);
+  Talk.open = function (sage) { o0(sage); if (sage && sage.data && sage.data.id === Jesus.ID) { this.say(sage.data.intro); this.options(); } };
+  const op0 = Talk.options;
+  Talk.options = function () {
+    const d = this.data;
+    if (this.npc || !d || d.id !== Jesus.ID) return op0.call(this);
+    this.mode = 'main'; $('#tk-quest').hidden = true; const s = this.sage, L = LESSONS[Jesus.ID] || [], F = FRASES[Jesus.ID] || [];
+    const ops = []; const q = this.quest();
+    if (s.state === 'idle' && q && !questDone(d.id)) ops.push([Jesus.T.quest, () => this.showQuest(), 'quest']);
+    if (s.state === 'idle') ops.push([SACRED_TXT.test, () => { this.close(true); Duel.start(s); }, 'duel']);
+    ops.push([Jesus.T.words, () => { this.close(true); Lesson.open(d, s); }]);
+    if (L[1]) ops.push([Jesus.T.beat, () => this.say(L[1])]);
+    if (L[4]) ops.push([Jesus.T.samar, () => this.say(L[4])]);
+    if (F.length) ops.push([Jesus.T.quote, () => { this.fq = ((this.fq ?? -1) + 1) % F.length; const f = F[this.fq]; this.say(f[0], { silent: true }); Voice.say(f[0], s); $('#tk-text').textContent = `«${f[0]}» (${f[1]})`; }]);
+    ops.push([Jesus.T.bye, () => this.close(), 'bye']);
+    this.renderOps(ops);
+  };
+}
+// el repaso (modo sagrado): siempre empieza con su saludo y responde solo con frases de los evangelios
+{
+  const sy0 = Duel.say.bind(Duel);
+  Duel.say = function (t) { sy0(t); if (this.sage && this.sage.data.id === Jesus.ID && /^«/.test(t)) $('#d-say').textContent = t; };
+  const st0 = Duel.start.bind(Duel);
+  Duel.start = function (s) { if (s && s.data && s.data.id === Jesus.ID) s._met = false; return st0(s); };
+  const a0 = Duel.answer.bind(Duel);
+  Duel.answer = function (i) {
+    const s = this.sage, was = this.answered; a0(i);
+    if (!s || s.data.id !== Jesus.ID || was || !this.answered) return;
+    const q = Debate.quote(Jesus.ID); const el = $('#d-say'); if (q && el) { el.textContent = '«' + q + '»'; Voice.say(q, s); }
+  };
+}
 
 </script>
 </body>

@@ -393,6 +393,7 @@ function stationPositions(n) {
   // los pensadores esperan repartidos por la plaza, cada uno junto a su escenario
   if (n === 3) return [[-12, 16], [12, 2], [-12, -12]];
   if (n === 5) return [[-12, 22], [12, 12], [-12, 2], [12, -8], [-12, -18]];
+  if (n === 7) return [[-12, 22], [12, 15], [-12, 9], [12, -3], [-12, -10], [12, -15], [-12, -22]]; // el camino de la Biblia
   if (n >= 6) return [[-12, 24], [12, 16], [-12, 7], [12, -2], [-12, -11], [12, -20]].slice(0, n);
   return [[-12, 20], [12, 8], [-12, -4], [12, -16]];
 }
