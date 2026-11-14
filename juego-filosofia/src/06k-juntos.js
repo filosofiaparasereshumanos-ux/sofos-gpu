@@ -53,7 +53,7 @@ const Juntos = {
     MRT.connect(chan, {
       pos: (d) => this.rPos(d), adios: (d) => this.drop(d.id), emo: (d) => this.rEmo(d),
       reto: (d) => this.rReto(d), acepta: (d) => this.rAcepta(d), rechaza: (d) => { if (d.to === this.id && this.duel && this.duel.wait) { this.duel = null; this.paintMeet(); toast(`${d.name} no quiso esta vez.`); } },
-      dres: (d) => this.rRes(d), lec: (d) => { if (typeof Escucha !== 'undefined') Escucha.rLec(d); }, tor: (d) => { if (typeof Torneo !== 'undefined') Torneo.rx(d); },
+      dres: (d) => this.rRes(d), lec: (d) => { if (typeof Escucha !== 'undefined') Escucha.rLec(d); }, tor: (d) => { if (typeof Torneo !== 'undefined') Torneo.rx(d); }, triv: (d) => { if (typeof Trivia !== 'undefined') Trivia.rx(d); },
     }, (s) => { this.net = s; this.paintBadge(); if (s === 'ok') this.sendT = 0; });
     this.net = 'connecting'; this.paintBadge();
   },
@@ -128,7 +128,7 @@ const Juntos = {
     const playing = G.state === 'play' && world && world.idx === G.eraIdx;
     // mi posición: 3 veces por segundo al moverme, cada 4 s si estoy quieto
     this.sendT -= dt; const p = player.pos; const moved = !this.last || Math.hypot(p.x - this.last[0], p.z - this.last[1]) > 0.15 || Math.abs(player.yaw - this.last[2]) > 0.12;
-    if (MRT.joined && this.sendT <= 0 && (moved || this.sendT < -8)) {
+    const nowS = performance.now(); if (MRT.joined && this.sendT <= 0 && (moved || this.sendT < -8 || nowS - (this.lastSent || 0) > 7000)) { this.lastSent = nowS;
       this.name = this.myName();
       MRT.send('pos', { id: this.myId(), n: this.name, l: this.lookStr(), rk: typeof Rango !== 'undefined' ? Rango.n() : 0, e: G.eraIdx, x: +p.x.toFixed(2), y: +p.y.toFixed(2), z: +p.z.toFixed(2), r: +player.yaw.toFixed(2), zn: world && world.zoneIn ? world.zoneIn.id : world && world.cave && world.cave.in ? 'cueva' : '', s: playing ? 1 : 0, v: typeof Agora !== 'undefined' ? Agora.mine(G.eraIdx) : 0, ls: typeof Escucha !== 'undefined' ? Escucha.mine() : '' });
       // cuantos más viajeros hay en la época, menos a menudo se envía la posición (cuida el plan gratuito de mensajes)

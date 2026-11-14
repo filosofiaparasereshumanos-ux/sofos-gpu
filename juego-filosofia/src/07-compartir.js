@@ -48,7 +48,9 @@ const Ir = {
   boot() {
     const P = new URLSearchParams(location.search); const ir = (P.get('ir') || '').toLowerCase(), mundo = (P.get('mundo') || '').toLowerCase(); if (!ir && !mundo) return;
     const de = Sala.clean(P.get('de') || '') || '';
-    try { P.delete('ir'); P.delete('mundo'); P.delete('de'); const q = P.toString(); history.replaceState(null, '', location.pathname + (q ? '?' + q : '') + location.hash); } catch (e) { /* nada */ }
+    // invitación a una mesa de trivia: se activa el modo en línea para poder sentarse
+    const mesa = P.get('mesa') || ''; if (/^[A-Za-z0-9]{6,12}$/.test(mesa) && typeof Trivia !== 'undefined') { Trivia.pendHost = mesa; if (G.settings.mundo !== true) { G.settings.mundo = true; saveSettings(); syncSettings(); } Juntos.asked = true; Juntos.welcomed = true; P.delete('mesa'); }
+    try { P.delete('ir'); P.delete('mundo'); P.delete('de'); P.delete('mesa'); const q = P.toString(); history.replaceState(null, '', location.pathname + (q ? '?' + q : '') + location.hash); } catch (e) { /* nada */ }
     let idx = -1, sage = '';
     if (/^[a-z0-9_-]{2,30}$/.test(ir)) { const S = SAGE_BY_ID()[ir]; if (S) { idx = S.idx; sage = ir; } }
     if (idx < 0 && /^[a-z0-9_-]{2,30}$/.test(mundo)) idx = ERAS.findIndex((e) => e.id === mundo);
