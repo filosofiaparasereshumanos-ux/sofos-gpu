@@ -79,7 +79,7 @@ try {
       'Ante Dios no estoy como parte de una época: estoy solo. La fe no es el final de un razonamiento. Es un salto, como el de Abraham, que obedeció sin entender.',
       'Un salto sin razones es un salto a ciegas. La filosofía no está para edificar ni consolar, sino para comprender. Y para comprender hay que mirar el conjunto.',
       'La vida solo se puede comprender mirando hacia atrás, pero hay que vivirla hacia adelante. Su sistema mira hacia atrás; yo tengo que decidir mañana.',
-      'Y yo te recuerdo que el búho de Minerva levanta el vuelo al anochecer. La sabiduría llega tarde, sí; pero llega, y nos ayuda a no repetir los errores de la historia.',
+      'Y yo te recuerdo que la lechuza de Minerva levanta el vuelo al anochecer. La sabiduría llega tarde, sí; pero llega, y nos ayuda a no repetir los errores de la historia.',
     ], 'Hegel construye un gran sistema donde todo tiene su lugar en la historia del Espíritu. Kierkegaard defiende al individuo y su decisión ante la vida y ante Dios. De esa crítica nació el existencialismo.'),
     D('schopenhauer-beauvoir', 'schopenhauer', 'beauvoir', '¿Qué es el amor?', 'amor', null, 0, 0, [
       'El enamorado cree que elige libremente. En realidad, a través de él habla la voluntad de la especie, que quiere seguir viviendo. El amor es una trampa dulce de la naturaleza.',
