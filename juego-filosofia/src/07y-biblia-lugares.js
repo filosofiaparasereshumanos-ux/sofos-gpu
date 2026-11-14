@@ -19,3 +19,6 @@
       q: { q: 'Según los evangelios, ¿quiénes encontraron primero el sepulcro vacío?', a: ['Unas mujeres, entre ellas María Magdalena', 'Los soldados romanos', 'Los sumos sacerdotes', 'Pilato'], e: 'Los cuatro evangelios coinciden en que María Magdalena estaba allí.' } },
   );
 }
+
+// el monte Sinaí abre el juego de las plagas
+{ const bi = ERAS.findIndex((e) => e.id === 'biblia'); const p = bi >= 0 && (POIS[bi] || []).find((x) => x.id === 'sinai'); if (p) p.juego = ['plagas']; }

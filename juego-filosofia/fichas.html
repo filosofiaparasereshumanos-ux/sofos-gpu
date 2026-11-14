@@ -22,6 +22,7 @@
   table { width: 100%; border-collapse: collapse; margin-top: 6px; font-size: .9rem; } th, td { border: 1px solid #bbb; padding: 6px 8px; vertical-align: top; text-align: left; } td { height: 64px; }
   .ronda { margin: 14px 0; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; } .ronda p { margin: 4px 0; }
   .op { display: grid; grid-template-columns: 26px 1fr 160px; gap: 6px; margin: 6px 0; } .op span:last-child { border-bottom: 1px solid #bbb; font-size: .75rem; color: var(--mut); }
+  .obra { display: grid; grid-template-columns: 200px 1fr; gap: 16px; margin: 14px 0; page-break-inside: avoid; } .obra img { width: 100%; border: 1px solid var(--line); } .obra .sin { border: 1px dashed #bbb; padding: 20px 10px; font-size: .8rem; color: var(--mut); text-align: center; } .obra small { color: var(--mut); font-size: .72rem; }
   .clave { page-break-before: always; } .clave li { margin: 6px 0; font-size: .9rem; }
   footer { font-size: .75rem; color: var(--mut); margin-top: 18px; }
   @media print { .bar { display: none; } body { background: #fff; } main { padding: 0; max-width: none; } .ficha { border: 0; border-radius: 0; padding: 0; page-break-after: always; } }
@@ -29,7 +30,7 @@
 </head>
 <body>
 <div class="bar"><b>Fichas para el aula</b>
-  <select id="tipo"><option value="versus">Debates entre dos pensadores</option><option value="mesas">Mesas redondas</option><option value="posturas">Debate tú (con solucionario)</option></select>
+  <select id="tipo"><option value="versus">Debates entre dos pensadores</option><option value="mesas">Mesas redondas</option><option value="posturas">Debate tú (con solucionario)</option><option value="obras">Museo de obras maestras (con solucionario)</option></select>
   <select id="item"></select>
   <button id="imp">Imprimir</button>
 </div>
@@ -72,11 +73,20 @@ function postura(p) {
   ${body}<h2>Para pensar</h2><ol class="act"><li>Elige una ronda y escribe una respuesta mejor que las tres.${lines(4)}</li></ol>
   <div class="clave"><h2>Solucionario (para el docente)</h2><ol>${key}</ol></div>${pie}</section>`;
 }
+const EPOCAS = { antiguedad: 'Antigüedad', oriente: 'Asia y América', renacimiento: 'Renacimiento', barroco: 'Barroco', 'siglo-xviii-xix': 'Siglos XVIII y XIX', 'siglo-xx': 'Siglo XX' };
+function obras(lista, titulo) {
+  const L = 'ABCD'; const ord = (o, i) => { const k = i % 4; const a = [...o.q.a.slice(1)]; a.splice(k, 0, o.q.a[0]); return [a, k]; };
+  const body = lista.map((o, i) => { const [a] = ord(o, i); return `<div class="obra">${o.img ? `<img src="img/obras/${esc(o.img)}" alt="">` : '<div class="sin">Imagen no incluida: obra con derechos de autor.</div>'}<div><b>${i + 1}. ${esc(o.titulo)}</b><br><span class="datos">${esc(o.autor)} · ${esc(o.fecha)} · ${esc(o.tecnica)} · ${esc(o.lugar)}</span><p>${esc(o.texto)}</p><p><i>${esc(o.q.q)}</i><br>${a.map((x, j) => `${L[j]}) ${esc(x)}`).join('&nbsp;&nbsp; ')}</p>${o.credito ? `<small>Imagen: ${esc(o.credito)}</small>` : ''}</div></div>`; }).join('');
+  const key = lista.map((o, i) => `<li>${esc(o.titulo)}: ${L[ord(o, i)[1]]}) ${esc(o.q.a[0])}</li>`).join('');
+  return `<section class="ficha"><div class="eyebrow">Museo de obras maestras</div><h1>${esc(titulo)}</h1><p class="who">Observa cada obra, lee su ficha y responde la pregunta.</p>${body}
+  <h2>Para pensar</h2><ol class="act"><li>Elige la obra que más te impresione. Descríbela como si se la contaras a alguien que no puede verla.${lines(4)}</li><li>¿Qué tiene de bello? ¿Es bello lo mismo para todos? Responde con un argumento.${lines(4)}</li></ol>
+  <div class="clave"><h2>Solucionario (para el docente)</h2><ol>${key}</ol></div>${pie}</section>`;
+}
 function fill() {
-  const t = $('#tipo').value; const L = D[t]; const it = $('#item'); it.innerHTML = '<option value="*">Todas</option>' + L.map((x, i) => `<option value="${i}">${esc(t === 'posturas' ? n(x.id) + ': ' + x.q : x.q)}</option>`).join('');
+  const t = $('#tipo').value; const it = $('#item'); if (t === 'obras') { it.innerHTML = '<option value="*">Todas</option>' + Object.entries(EPOCAS).map(([k, v]) => `<option value="${k}">${v}</option>`).join(''); it.value = 'antiguedad'; render(); return; } const L = D[t]; it.innerHTML = '<option value="*">Todas</option>' + L.map((x, i) => `<option value="${i}">${esc(t === 'posturas' ? n(x.id) + ': ' + x.q : x.q)}</option>`).join('');
   it.value = '0'; render();
 }
-function render() { const t = $('#tipo').value, v = $('#item').value; const f = t === 'versus' ? versus : t === 'mesas' ? mesa : postura; const L = D[t]; $('#out').innerHTML = (v === '*' ? L : [L[+v]]).map(f).join(''); }
+function render() { const t = $('#tipo').value, v = $('#item').value; if (t === 'obras') { const L = v === '*' ? D.obras : D.obras.filter((o) => o.epoca === v); $('#out').innerHTML = obras(L, v === '*' ? 'Todas las obras' : EPOCAS[v]); return; } const f = t === 'versus' ? versus : t === 'mesas' ? mesa : postura; const L = D[t]; $('#out').innerHTML = (v === '*' ? L : [L[+v]]).map(f).join(''); }
 $('#tipo').onchange = fill; $('#item').onchange = render; $('#imp').onclick = () => print();
 const q = new URLSearchParams(location.search); if (q.get('tipo') && D[q.get('tipo')]) $('#tipo').value = q.get('tipo'); fill();
 </script>
