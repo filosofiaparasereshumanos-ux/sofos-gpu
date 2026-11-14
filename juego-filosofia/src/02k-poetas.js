@@ -28,7 +28,7 @@ NPCS.push([
   wnpc(1, 'derviche', 'Ahmet', 'derviche de Konya', sk(0xf4f0e8, 0x6a4a3a, 0xc49372, 0x1a1410, { beard: 0x1a1410, hat: 'cap', acc: 'none' }), [
     'Al girar, pongo la mano derecha hacia el cielo para recibir, y la izquierda hacia la tierra para dar. Yo solo soy el puente.',
     'Mi gorro alto de fieltro representa la lápida del ego, y mi falda blanca, su mortaja. Girando, morimos un poco a lo pequeño de nosotros.',
-    'Rumi decía: la herida es el lugar por donde entra la luz. Cuando sufrimos, también podemos abrirnos.',
+    'A Rumi se le atribuye esta idea: la herida es el lugar por donde entra la luz. Cuando sufrimos, también podemos abrirnos.',
   ]),
   wnpc(2, 'maestra-elqui', 'Rosa', 'maestra rural del valle de Elqui', sk(0x5a4a3a, 0xd8d4cc, 0xc49372, 0x3a2a20, { hat: 'longhair', acc: 'book' }), [
     'Enseño en una escuela rural, como Gabriela. Algunos niños caminan horas para llegar. Cuando llegan, lo primero es darles de comer.',

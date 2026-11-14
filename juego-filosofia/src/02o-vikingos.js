@@ -10,7 +10,7 @@ POIS.push([
     { q: '¿Qué había en el centro de la casa larga vikinga?', a: ['Un fuego largo para cocinar y calentarse', 'Una piscina', 'Un altar de oro', 'Una escalera'], e: 'El hogar era el corazón de la casa.' }),
   wpoi(2, 'drakkar', 'Los barcos del Norte', 'Los barcos vikingos eran largos, ligeros y flexibles, con vela y remos. Podían navegar en mar abierto y también remontar ríos poco profundos. Con ellos llegaron a Islandia, a Groenlandia y, hacia el año 1000, a Terranova, en América.',
     'Leif Erikson llegó a América unos quinientos años antes que Colón. Llamó a esa tierra Vinland.',
-    { q: '¿Hasta dónde llegaron los barcos vikingos hacia el año 1000?', a: ['Hasta América del Norte', 'Hasta Australia', 'Hasta la Luna', 'Solo hasta Dinamarca'], e: 'A Terranova, que llamaron Vinland.' }),
+    { q: '¿Hasta dónde llegaron los barcos vikingos hacia el año 1000?', a: ['Hasta América del Norte', 'Hasta Australia', 'Hasta la Luna', 'Solo hasta Dinamarca'], e: 'A Terranova, en la región que llamaron Vinland.' }),
   wpoi(3, 'runas', 'La piedra rúnica', 'Los nórdicos escribían con runas, un alfabeto de trazos rectos fácil de tallar en piedra o madera. Levantaban piedras rúnicas para recordar a sus muertos, contar viajes o celebrar obras, como un puente construido para todos.',
     'El alfabeto rúnico se llama futhark, por el sonido de sus seis primeras letras.',
     { q: '¿Para qué servían muchas piedras rúnicas?', a: ['Para recordar a personas y hechos importantes', 'Para afilar espadas', 'Para jugar', 'Para cocinar'], e: 'Eran monumentos de memoria.' }),

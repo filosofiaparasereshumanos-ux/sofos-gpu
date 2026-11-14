@@ -63,7 +63,7 @@
     lucrecio: ['San Jerónimo contó, siglos después, que me volví loco por un filtro de amor y que escribí mi poema en los momentos de lucidez. Probablemente es una historia inventada para desacreditarme.', 'Mi poema empieza con un himno a Venus, la diosa del amor. Curioso, en un poema que dice que los dioses no se ocupan de nosotros: para mí era un símbolo de la fuerza de la naturaleza.'],
     diderot: ['Era tan pobre que no podía darle una dote a mi hija. La emperatriz Catalina de Rusia compró mi biblioteca… y me pagó un sueldo para que yo mismo la cuidara mientras viviera.', 'Escribí un ensayo sobre la bata vieja que tuve que cambiar por una lujosa: con la bata nueva, todo mi cuarto me pareció pobre y terminé cambiando todos mis muebles. Lo llaman el «efecto Diderot».'],
     feuerbach: ['Perdí mi puesto en la universidad por un libro sobre la muerte y la inmortalidad, que publiqué sin firmar. Todos supieron igual que era mío.', 'Viví muchos años en un pueblo, en la fábrica de porcelana de la familia de mi esposa. Desde allí escribí libros que se discutían en toda Europa.'],
-    ernestinerose: ['En el sur de Estados Unidos, un periódico escribió que yo era «mil veces peor que una infiel». Seguí dando la conferencia.', 'Me llamaban «la reina de las tribunas». Recorrí veintitrés estados hablando, cuando casi no había mujeres que hablaran en público.'],
+    ernestinerose: ['En Bangor, en el estado de Maine, un periódico me llamó «atea» y dijo que yo era «mil veces» peor que las peores mujeres. Seguí dando mis conferencias.', 'Me llamaban «la reina de las tribunas». Recorrí veintitrés estados hablando, cuando casi no había mujeres que hablaran en público.'],
     sagan: ['El disco de oro que va en las sondas Voyager lleva saludos en cincuenta y cinco idiomas, música de Bach y de Chuck Berry, y el sonido de un beso.', 'En mi novela «Contacto», una científica recibe un mensaje de las estrellas. Se hizo película, con Jodie Foster.'],
     russell: ['A los ochenta y nueve años volví a la cárcel, por una semana, por protestar contra las armas nucleares sentado en una calle de Londres.', 'Cuando me preguntaron qué diría si después de morir me encontrara frente a Dios, respondí: «Le diría: no me diste pruebas suficientes».'],
   });
@@ -80,7 +80,7 @@
     { id: 'cosmos', author: 'sagan', by: 'Carl Sagan', title: 'Cosmos', year: '1980', kind: 'divulgación científica', at: BB[1],
       parts: [
         { t: 'Las costas del océano cósmico', x: 'Sagan empieza en la orilla del mar: hasta hace poco solo nos habíamos mojado los pies en el océano del cosmos. Ahora empezamos a explorarlo con naves y telescopios.' },
-        { t: 'El calendario cósmico', x: 'Si toda la historia del universo cupiera en un año, los dinosaurios aparecerían el 25 de diciembre y toda la historia humana ocuparía los últimos segundos del 31 de diciembre.' },
+        { t: 'El calendario cósmico', x: 'Si toda la historia del universo cupiera en un año, los dinosaurios aparecerían el 24 de diciembre y toda la historia humana ocuparía los últimos segundos del 31 de diciembre.' },
         { t: 'Somos polvo de estrellas', x: 'Los átomos de nuestro cuerpo se fabricaron dentro de estrellas que estallaron hace miles de millones de años. Somos una forma en que el cosmos se conoce a sí mismo.' },
         { t: '¿Quién habla por la Tierra?', x: 'El libro termina pidiendo cuidar el planeta y evitar la guerra nuclear: la ciencia nos da poder, y necesitamos sabiduría para usarlo bien.' },
       ],
@@ -140,9 +140,9 @@
   });
   Object.assign(ANECDOTES, {
     anselmo: ['Cuando era abad, los monjes jóvenes me pedían consejos de educación. Les decía que un árbol al que se le atan las ramas con fuerza crece torcido: a los alumnos hay que guiarlos con libertad y con cariño.', 'Discutí con dos reyes de Inglaterra y tuve que exiliarme dos veces. Nunca dejé de escribirles con respeto.'],
-    maimonides: ['Escribí a mi hermano que en un día atendía a pacientes desde la mañana hasta la noche, y que muchas veces tenía que examinarlos acostado, de tan cansado.', 'Mi tratado sobre el asma recomienda dormir bien, comer con moderación y tener buen ánimo. Un consejo que sigue valiendo.'],
+    maimonides: ['Escribí a mi traductor, Samuel ibn Tibbon, que en un día atendía a pacientes desde la mañana hasta la noche, y que muchas veces tenía que examinarlos acostado, de tan cansado.', 'Mi tratado sobre el asma recomienda dormir bien, comer con moderación y tener buen ánimo. Un consejo que sigue valiendo.'],
     algazali: ['De joven, unos bandidos me robaron mis apuntes. Les supliqué que me los devolvieran; el jefe se rió y me dijo: «¿Qué clase de saber es el tuyo, si te lo pueden robar?». Desde entonces memoricé todo.', 'Antes de morir pedí mi mortaja, la besé y dije: «Escucho y obedezco». Murió conmigo una gran pregunta, pero no la paz.'],
-    teresa: ['Una vez, cruzando un río, mi carreta volcó y caí al agua. Me quejé a Dios, y sentí que me decía: «Así trato a mis amigos». Le respondí: «¡Por eso tienes tan pocos!».', 'Escribí que Dios también anda entre los pucheros, en la cocina. Para mí, la oración no estaba lejos de la vida diaria.'],
+    teresa: ['Cuenta la tradición que una vez, cruzando un río, mi carreta volcó y caí al agua. Me quejé a Dios, y sentí que me decía: «Así trato a mis amigos». Le respondí: «¡Por eso tienes tan pocos!».', 'Escribí que Dios también anda entre los pucheros, en la cocina. Para mí, la oración no estaba lejos de la vida diaria.'],
     leibniz: ['Fui diplomático, bibliotecario, historiador e ingeniero de minas. Escribí unas quince mil cartas a más de mil personas.', 'Intenté reconciliar a católicos y protestantes, y también quise una lengua universal hecha de símbolos lógicos, para que las discusiones se resolvieran calculando: «¡Calculemos!».'],
     weil: ['De pequeña, con mi hermano André, que luego sería un gran matemático, recitábamos a Racine en el tren para impresionar a los pasajeros.', 'Una vez di parte de mi sueldo de profesora a los obreros en huelga. Para mí, pensar y actuar no podían ir separados.'],
     pascal: ['Para probar la presión del aire, mi cuñado subió un barómetro al Puy de Dôme, una montaña de Francia: allá arriba, el mercurio bajó. ¡El aire pesa!', 'En mis últimos años organicé en París una de las primeras líneas de transporte público: carrozas con horario fijo que cualquiera podía tomar por cinco sueldos.'],
@@ -217,7 +217,7 @@
     wnpc(1, 'sufragista', 'Kate', 'sufragista', sk(0xe8e8e8, 0x6a3a7a, 0xf4dcc8, 0x8a5a3a, { hat: 'longhair', acc: 'scroll' }), [
       'Juntamos firmas puerta por puerta, en el campo y en la ciudad. El rollo de papel era tan largo que lo desenrollamos por el piso del Parlamento.',
       'Nos decían que votar no era cosa de mujeres. Ahora parece increíble, ¿verdad? Muchas cosas injustas parecieron normales durante siglos.',
-      'Lleva esta cinta violeta, blanca y verde: son los colores de las sufragistas. Dignidad, pureza y esperanza.',
+      'Lleva esta cinta violeta, blanca y verde: son los colores de las sufragistas británicas: dignidad, pureza y esperanza.',
     ], true),
     wnpc(2, 'obrero', 'Pierre', 'obrero tipógrafo', sk(0x4a4a5a, 0x2a2a2a, 0xe0c0a0, 0x2a1a10, { beard: 0x2a1a10, hat: 'cap', acc: 'none' }), [
       'Trabajo catorce horas al día. Una señora que se llama Flora Tristán vino al taller a hablarnos de unirnos. Al principio nos reímos de ella.',
@@ -233,7 +233,7 @@
     gouges: { text: 'Habla con Kate, la sufragista, y visita el lugar del primer voto. Luego dime qué declaración escribí.', needs: { pois: ['sufragio'], npcs: ['sufragista'] },
       riddle: { q: '¿Qué declaración escribió Olympe de Gouges?', a: ['La de los derechos de la mujer y de la ciudadana', 'La de independencia', 'La de guerra', 'Ninguna'] } },
     truth: { text: 'Visita la iglesia de Akron, donde hablé en 1851. Luego dime qué pregunta hice.', needs: { pois: ['akron'], npcs: [] },
-      riddle: { q: '¿Qué preguntó Sojourner Truth en Akron?', a: ['¿Acaso no soy una mujer?', '¿Qué hora es?', '¿Dónde está el rey?', '¿Quién ganó?'] } },
+      riddle: { q: '¿Con qué pregunta se recuerda el discurso de Sojourner Truth en Akron?', a: ['¿Acaso no soy una mujer?', '¿Qué hora es?', '¿Dónde está el rey?', '¿Quién ganó?'] } },
     tristan: { text: 'Escucha a Pierre, el obrero tipógrafo. Luego dime qué propuse en La unión obrera.', needs: { pois: [], npcs: ['obrero'] },
       riddle: { q: '¿Qué propuso Flora Tristán?', a: ['Que los trabajadores de todos los países se unieran', 'Que se prohibieran los talleres', 'Que volviera el rey', 'Que nadie leyera'] } },
     stein: { text: 'Visita la casa del exilio y escucha a Lucía, la maestra. Luego dime qué estudié en mi tesis.', needs: { pois: ['la-piece'], npcs: ['maestra-lucia'] },
@@ -275,7 +275,7 @@
     poi(0, 'seisachtheia', 'La sacudida de las cargas', 'En la Atenas antigua, cuando un campesino pedía un préstamo, ponía piedras en su campo para marcar la deuda. Si no podía pagar, perdía la tierra, y él y su familia podían ser vendidos como esclavos. Solón mandó arrancar esas piedras de los campos y anuló las deudas. Los atenienses llamaron a su reforma «la sacudida de las cargas».',
       'Solón escribió en un poema que había liberado la tierra negra, «antes esclava y ahora libre», y que había traído de vuelta a atenienses vendidos en tierras lejanas.',
       { q: '¿Qué marcaban las piedras en los campos de Atenas antes de Solón?', a: ['Que el campo estaba hipotecado por una deuda', 'Una tumba', 'Un templo', 'Un tesoro'], e: 'Solón las mandó arrancar.' }),
-    poi(1, 'senado', 'El Senado romano', 'En la Curia, el edificio donde se reunía el Senado de Roma, los senadores discutían las leyes sentados en bancos de madera. En noviembre del año 63 a. C., Cicerón denunció allí a Catilina, que estaba presente. Los senadores que estaban a su lado se apartaron de él, dejándolo solo en su banco.',
+    poi(1, 'senado', 'El Senado romano', 'En la Curia, el edificio donde se reunía el Senado de Roma, los senadores discutían las leyes sentados en bancos de madera. En noviembre del año 63 a. C., en una sesión del Senado reunida en el templo de Júpiter Estator, Cicerón denunció a Catilina, que estaba presente. Los senadores que estaban a su lado se apartaron de él, dejándolo solo en su banco.',
       'La palabra «senado» viene del latín «senex», anciano: era el consejo de los mayores.',
       { q: '¿De qué palabra latina viene «senado»?', a: ['De «senex», anciano', 'De «sol»', 'De «sena», cena', 'De «signum», señal'], e: 'Era el consejo de los mayores.' }),
     poi(2, 'junta-valladolid', 'La Junta de Valladolid', 'Entre 1550 y 1551, el emperador Carlos V suspendió las nuevas conquistas en América y reunió en Valladolid a un grupo de juristas y teólogos para decidir si eran justas. Juan Ginés de Sepúlveda defendió la guerra contra los pueblos indígenas; Bartolomé de las Casas, durante cinco días, leyó un enorme alegato a favor de su libertad.',
@@ -322,7 +322,7 @@
   Object.assign(ANECDOTES, {
     solon: ['Cuando el tirano Pisístrato tomó el poder en Atenas, yo ya era muy viejo. Me puse la armadura y salí a la puerta de mi casa para mostrar que no estaba de acuerdo. Me dejaron en paz por mi edad.', 'Un amigo me preguntó si había dado a Atenas las mejores leyes. Le respondí: «Las mejores que podían aceptar».'],
     ciceron: ['Mi apellido viene de «cicer», garbanzo. Me aconsejaron cambiarlo para hacer carrera política. Dije que lo haría más famoso que los apellidos más nobles. Lo logré.', 'Cuando me exiliaron de Roma, me deprimí tanto que mis cartas de esa época están llenas de quejas. Ni los grandes oradores son de piedra.'],
-    lascasas: ['Crucé el océano Atlántico unas catorce veces, en barcos de madera, para defender a los indígenas ante la corte. Viví noventa y dos años y seguí escribiendo hasta el final.', 'Intenté fundar una comunidad pacífica en Venezuela, con campesinos españoles e indígenas trabajando juntos. Fracasó, y me sentí tan derrotado que me encerré años en un convento a estudiar.'],
+    lascasas: ['Crucé el océano Atlántico unas catorce veces, en barcos de madera, para defender a los indígenas ante la corte. Viví ochenta y dos años y seguí escribiendo hasta el final.', 'Intenté fundar una comunidad pacífica en Venezuela, con campesinos españoles e indígenas trabajando juntos. Fracasó, y me sentí tan derrotado que me encerré años en un convento a estudiar.'],
     montesquieu: ['Mientras escribía, me paseaba por mi jardín con un bastón, en bata, y los visitantes a veces me confundían con el jardinero.', 'Mis «Cartas persas» se publicaron sin mi nombre en Ámsterdam. Todo París adivinó quién las había escrito, y se vendieron tanto que los libreros pedían a otros autores: «escríbanme unas cartas persas».'],
     gandhi: ['Escribía todos los días, y cuando se me cansaba la mano derecha, escribía con la izquierda. Cada lunes era mi día de silencio: no decía ni una palabra.', 'En Londres, en 1931, fui a ver al rey vestido con mi ropa sencilla de algodón. Un periodista me preguntó si no iba poco vestido. Le respondí: «El rey llevaba ropa suficiente para los dos».'],
     king: ['Saqué notas muy normales en la clase de oratoria del seminario. Luego, mis discursos movieron a millones. Nunca hay que desanimarse por una mala nota.', 'La parte más famosa de mi discurso, «Tengo un sueño», no estaba en el papel. Una cantante, Mahalia Jackson, me gritó desde atrás: «¡Cuéntales del sueño, Martin!». Y improvisé.'],
@@ -411,13 +411,13 @@
   BOOKS.push([
     book({ id: 'sutra-estrado', author: 'huineng', by: 'Huineng', title: 'El Sutra del estrado', year: 'siglo VIII', kind: 'texto zen',
       parts: [
-        { t: 'Un leñador', x: 'El sutra empieza con la vida de Huineng, el leñador pobre y analfabeto que se convirtió en el sexto patriarca del Chan. Es el único texto budista chino al que se llamó «sutra», como a las palabras del Buda.' },
+        { t: 'Un leñador', x: 'El sutra empieza con la vida de Huineng, el leñador pobre y analfabeto que se convirtió en el sexto patriarca del Chan. Es uno de los pocos textos escritos en China que reciben el nombre de «sutra», como las palabras del Buda.' },
         { t: 'El poema del espejo', x: 'Cuenta el concurso de poemas: uno decía que la mente es un espejo que hay que limpiar del polvo; Huineng respondió que desde el principio no hay ni una cosa donde se pose el polvo.' },
         { t: 'Súbito', x: 'Huineng enseña que la naturaleza de Buda está en todos, ricos y pobres, letrados o no. Por eso el despertar puede llegar de golpe, como cuando se enciende una lámpara en un cuarto oscuro.' },
         { t: 'Sin apego', x: 'La práctica, dice, consiste en no aferrarse a ningún pensamiento: dejar que pasen como nubes, sin rechazarlos ni perseguirlos.' },
       ],
       quote: 'Desde el principio no hay ni una cosa: ¿dónde se posaría el polvo?',
-      q: { q: '¿Por qué el Sutra del estrado es especial?', a: ['Es el único texto chino al que se llamó «sutra», como a las palabras del Buda', 'Porque es el más corto del mundo', 'Porque lo escribió un emperador', 'Porque está en latín'], e: 'Recoge las enseñanzas de Huineng.' } }, 0),
+      q: { q: '¿Por qué el Sutra del estrado es especial?', a: ['Es de los pocos textos escritos en China llamados «sutra», como las palabras del Buda', 'Porque es el más corto del mundo', 'Porque lo escribió un emperador', 'Porque está en latín'], e: 'Recoge las enseñanzas de Huineng.' } }, 0),
     book({ id: 'cien-mil-cantos', author: 'milarepa', by: 'Milarepa', title: 'Los cien mil cantos', year: 'siglos XI – XII', kind: 'poesía mística',
       parts: [
         { t: 'Canciones en las cuevas', x: 'Milarepa no escribía tratados: cantaba. Sus discípulos recogieron sus canciones, improvisadas para cazadores, pastores, ladrones, demonios y reyes.' },
@@ -480,7 +480,7 @@
       'Cuando un pueblo vecino se incendió, los niños de Stans, que no tenían nada, pidieron recibir a otros huérfanos y compartir con ellos su pan.',
       { q: '¿Qué pidieron los huérfanos de Stans cuando se incendió un pueblo vecino?', a: ['Recibir a otros huérfanos y compartir su pan', 'Irse de vacaciones', 'Más juguetes', 'Nada'], e: 'Habían aprendido a cuidarse entre ellos.' }),
     poi(2, 'casa-bambini', 'La Casa de los Niños', 'El 6 de enero de 1907, en el barrio pobre de San Lorenzo, en Roma, Maria Montessori abrió la primera «Casa dei Bambini» para unos cincuenta niños pequeños que pasaban el día solos mientras sus padres trabajaban. Puso mesas y sillas ligeras de su tamaño, estantes bajos y materiales para tocar. Los niños, que al principio lloraban y peleaban, empezaron a concentrarse y a trabajar con calma.',
-      'Montessori observó que un niña de tres años repitió más de cuarenta veces un ejercicio de encajar cilindros, sin distraerse, y salió de él feliz y descansada.',
+      'Montessori observó que una niña de tres años repitió más de cuarenta veces un ejercicio de encajar cilindros, sin distraerse, y salió de él feliz y descansada.',
       { q: '¿Cómo eran los muebles de la Casa de los Niños?', a: ['Ligeros y del tamaño de los niños', 'Enormes y pesados', 'De hierro', 'No había muebles'], e: 'Para que los niños pudieran moverlos solos.' }),
     poi(3, 'divan', 'El diván de Berggasse 19', 'Durante casi cincuenta años, Freud recibió a sus pacientes en su consulta de la calle Berggasse, número 19, en Viena. Los pacientes se recostaban en un diván cubierto con una alfombra persa, y Freud se sentaba detrás, donde no lo veían, para que hablaran con libertad. La sala estaba llena de estatuillas antiguas de Egipto, Grecia y Roma, que él coleccionaba.',
       'El diván viajó con Freud cuando huyó a Londres en 1938, y hoy se puede ver en su casa museo de esa ciudad.',
@@ -524,7 +524,7 @@
     comenio: ['Me ofrecieron organizar las escuelas de Suecia, de Inglaterra e incluso, según una vieja historia, me invitaron a dirigir la universidad de Harvard en América. Pero mi lugar estaba con mi pueblo en el exilio.', 'Inventé un juego de teatro escolar para enseñar latín: los alumnos representaban escenas en lugar de memorizar listas. Los padres venían a verlos como a una función.'],
     pestalozzi: ['Era tan desordenado con mi ropa que una vez llegué a una reunión con los zapatos atados con paja. Los niños se reían, y yo con ellos.', 'Un joven alemán, Friedrich Fröbel, pasó dos años conmigo en Yverdon. Después inventó el jardín de infancia, el «kindergarten».'],
     montessori: ['Cuando estudiaba medicina, los compañeros no me dejaban entrar a la sala de disección con ellos. Tenía que hacer mis prácticas sola, de noche, entre los cadáveres.', 'Fui propuesta tres veces para el Premio Nobel de la Paz. Pensaba que educar bien a los niños era la manera más segura de construir la paz.'],
-    freud: ['Fumaba muchos puros al día; decía que lo ayudaban a pensar. Alguien me preguntó si eso tenía un significado oculto, y dicen que respondí: «A veces un puro es solo un puro».', 'Cuando los nazis quemaron mis libros, comenté: «En la Edad Media me habrían quemado a mí; ahora se conforman con quemar mis libros». No sabía lo que vendría después.'],
+    freud: ['Fumaba muchos puros al día; decía que lo ayudaban a pensar. Alguien me preguntó si eso tenía un significado oculto, y se cuenta que respondí: «A veces un puro es solo un puro», aunque no hay pruebas de que yo lo dijera.', 'Cuando los nazis quemaron mis libros, comenté: «En la Edad Media me habrían quemado a mí; ahora se conforman con quemar mis libros». No sabía lo que vendría después.'],
     piaget: ['Iba a todas partes en bicicleta, con boina y pipa, y pasaba los veranos escribiendo en una granja de los Alpes rodeado de papeles.', 'Jugaba a las canicas con niños de Ginebra para estudiar cómo entendían las reglas. Los pequeños creían que las reglas eran eternas; los mayores sabían que se pueden cambiar si todos están de acuerdo.'],
     vygotsky: ['De joven, como era judío, solo podía entrar a la universidad por una lotería. Gané. Mi madre me había dicho que esa suerte había que aprovecharla bien.', 'Escribía tan rápido y tanto que mis amigos decían que dormía con un lápiz en la mano. Sabía que tenía poco tiempo.'],
     wjames: ['Mis alumnos recuerdan que daba clases paseando por el aula, haciendo bromas y a veces preguntándoles a ellos qué pensaban. Era raro en un profesor de Harvard de entonces.', 'Viajé a Brasil de joven en una expedición científica por el Amazonas. Me enfermé de viruela y casi me quedo ciego unos días. Ahí decidí que no sería naturalista.'],
@@ -557,9 +557,9 @@
       'Después dibujó su «Naturgemälde», un gran cuadro de la montaña con los nombres de las plantas escritos a la altura donde crecen.',
       { q: '¿Qué entendió Humboldt en el Chimborazo?', a: ['Cómo la vida cambia con la altura', 'Que la montaña era de oro', 'Que no había plantas', 'Nada'], e: 'Lo dibujó en su Naturgemälde.' }),
     poi(1, 'lobo', 'El fuego verde', 'En una montaña de Arizona, un joven guardabosques y sus compañeros vieron una manada de lobos cruzando un río. Dispararon. Cuando Aldo Leopold llegó junto a una vieja loba, vio morir en sus ojos un fuego verde y feroz. Años después escribió que en ese momento supo que había algo en esos ojos que solo la loba y la montaña conocían.',
-      'En el parque de Yellowstone, cuando en 1995 volvieron a soltarse lobos, los ciervos dejaron de comer las orillas de los ríos, crecieron árboles y volvieron castores y pájaros.',
+      'En el parque de Yellowstone volvieron a soltarse lobos en 1995. Muchos científicos creen que, al cambiar la conducta de los ciervos, ayudaron a que crecieran árboles en las orillas y volvieran castores y pájaros, aunque aún se discute cuánto.',
       { q: '¿Qué pasó en Yellowstone cuando volvieron los lobos en 1995?', a: ['Crecieron árboles en las orillas y volvieron castores y pájaros', 'Desaparecieron todos los árboles', 'Nada', 'Se secó el río'], e: 'Todo está conectado.' }),
-    poi(2, 'primavera-silenciosa', 'El pueblo sin pájaros', 'El libro de Rachel Carson empieza con una fábula: un pueblo en el que todo vivía en armonía, hasta que un polvo blanco cayó sobre los tejados y los campos. Las gallinas no tenían pollitos, los manzanos no daban fruta, y en primavera no cantaba ningún pájaro. «Nadie había hecho magia; la gente lo había hecho por sí misma.»',
+    poi(2, 'primavera-silenciosa', 'El pueblo sin pájaros', 'El libro de Rachel Carson empieza con una fábula: un pueblo en el que todo vivía en armonía, hasta que un polvo blanco cayó sobre los tejados y los campos. Las gallinas no tenían pollitos, los manzanos no daban fruta, y en primavera no cantaba ningún pájaro. «Ninguna brujería, ninguna acción enemiga había silenciado el renacer de la vida en este mundo herido. La gente lo había hecho por sí misma.»',
       'Carson aclaró que ese pueblo no existía, pero que cada una de esas desgracias ya había ocurrido en algún lugar real.',
       { q: '¿Qué cae sobre el pueblo en la fábula de Rachel Carson?', a: ['Un polvo blanco: el pesticida', 'Nieve', 'Ceniza de un volcán', 'Harina'], e: 'Y los pájaros dejan de cantar.' }),
     poi(3, 'seringal', 'El seringal de Xapuri', 'En la selva de Acre, en Brasil, los seringueiros recorren cada día senderos que unen cientos de árboles de caucho. Hacen cortes finos en la corteza y recogen la savia blanca, el látex, en pequeñas tazas, sin matar al árbol. Un árbol bien cuidado puede dar látex durante décadas. Allí vivió y luchó Chico Mendes.',
@@ -636,11 +636,11 @@
     poi(0, 'postulados', 'Los cinco postulados', 'Euclides empezó su geometría con cinco postulados. Los cuatro primeros son muy sencillos: por dos puntos pasa una recta, una recta se puede prolongar, se puede trazar un círculo, todos los ángulos rectos son iguales. El quinto, el de las paralelas, es más largo y complicado. Durante dos mil años, muchos matemáticos intentaron demostrarlo a partir de los otros.',
       'En el siglo XIX, Gauss, Lobachevski y Bolyai descubrieron que, si se cambia el quinto postulado, aparecen geometrías nuevas y coherentes. Einstein usó una de ellas para describir el universo.',
       { q: '¿Qué pasó al cambiar el quinto postulado de Euclides?', a: ['Aparecieron geometrías nuevas y coherentes', 'Todo se volvió falso', 'Nada', 'Desapareció la geometría'], e: 'Las geometrías no euclidianas.' }),
-    poi(1, 'conejos', 'El problema de los conejos', 'En el Liber abaci, Fibonacci propone: una pareja de conejos se pone en un corral. Cada mes, cada pareja adulta tiene una nueva pareja, que empieza a reproducirse al segundo mes. ¿Cuántas parejas habrá al cabo de un año? Mes a mes salen 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233.',
+    poi(1, 'conejos', 'El problema de los conejos', 'En el Liber abaci, Fibonacci propone: una pareja de conejos se pone en un corral. Cada mes, cada pareja adulta tiene una nueva pareja, que empieza a reproducirse al segundo mes. ¿Cuántas parejas habrá al cabo de un año? Mes a mes salen 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233… En el libro, como la primera pareja ya cría el primer mes, la respuesta es 377.',
       'Si divides un número de la sucesión entre el anterior, el resultado se acerca a 1,618…, el número áureo, que muchos artistas han usado buscando proporciones armoniosas.',
       { q: '¿A qué número se acerca la división de dos números seguidos de la sucesión de Fibonacci?', a: ['Al número áureo, 1,618…', 'A cero', 'A cien', 'A pi'], e: 'La proporción áurea.' }),
     poi(2, 'taxi-1729', 'El taxi 1729', 'Un día, el matemático Hardy fue a visitar a Ramanujan, enfermo en un hospital de Londres. Le comentó que había llegado en un taxi con un número aburrido: 1729. Ramanujan respondió enseguida: «No, Hardy, es un número muy interesante: es el menor número que se puede escribir como suma de dos cubos de dos maneras distintas». En efecto: 1729 es 1 al cubo más 12 al cubo, y también 9 al cubo más 10 al cubo.',
-      'Desde entonces, a los números así se los llama «números taxicab». Hardy decía que cada número entero era un amigo personal de Ramanujan.',
+      'Desde entonces, a los números así se los llama «números taxicab». Littlewood, colega de Hardy, decía que cada número entero era un amigo personal de Ramanujan.',
       { q: '¿Qué tiene de especial el número 1729?', a: ['Es el menor que es suma de dos cubos de dos maneras', 'Es el mayor número primo', 'Es el año de la Revolución Francesa', 'Nada'], e: '1³ + 12³ = 9³ + 10³.' }),
     poi(3, 'puentes-konigsberg', 'Los siete puentes de Königsberg', 'La ciudad de Königsberg tenía un río con dos islas y siete puentes. Sus habitantes se preguntaban si era posible dar un paseo cruzando cada puente una sola vez. En 1736, el matemático Leonhard Euler demostró que no: dibujó las zonas de tierra como puntos y los puentes como líneas, y vio que el paseo es imposible cuando más de dos puntos tienen un número impar de líneas.',
       'Así nació la teoría de grafos, que hoy usan los mapas de tu teléfono para buscar el mejor camino, y las redes sociales para saber quién conoce a quién.',
@@ -652,7 +652,7 @@
   NPCS.push([
     wnpc(0, 'contable', 'Lucas', 'contable de un mercader', sk(0x6a3a2a, 0x3a2a1a, 0xe0c0a0, 0x3a2a1a, { hat: 'cap', acc: 'book' }), [
       'Antes hacía las cuentas con números romanos y un ábaco. Para multiplicar MCMXLVII por XXIII tardaba una tarde entera.',
-      'Con las cifras nuevas que trajo Fibonacci, y con el cero, lo hago en unos minutos. Al principio algunos gremios las prohibieron, por miedo a que fuera fácil falsificarlas.',
+      'Con las cifras nuevas que difundió Fibonacci, y con el cero, lo hago en unos minutos. Al principio algunos gremios las prohibieron, por miedo a que fuera fácil falsificarlas.',
       'El cero es un número muy extraño: no vale nada, pero a la derecha de otro lo multiplica por diez. Nada, que lo cambia todo.',
     ]),
     wnpc(1, 'descifradora', 'Joan', 'descifradora de Bletchley', sk(0x3a4a3a, 0x2a2a2a, 0xf4dcc8, 0x8a5a3a, { hat: 'longhair', acc: 'none' }), [
@@ -694,11 +694,11 @@
       parts: [
         { t: 'Definiciones', x: 'Un punto es lo que no tiene partes. Una línea es una longitud sin anchura. Con definiciones así de simples empieza el libro más influyente de la matemática.' },
         { t: 'El triángulo equilátero', x: 'La primera proposición enseña a construir un triángulo equilátero con solo una regla y un compás: dos círculos que se cortan.' },
-        { t: 'Pitágoras', x: 'El primer libro termina con el teorema de Pitágoras: en un triángulo rectángulo, el cuadrado de la hipotenusa es igual a la suma de los cuadrados de los catetos.' },
+        { t: 'Pitágoras', x: 'Al final del primer libro está el teorema de Pitágoras, seguido de su recíproco: en un triángulo rectángulo, el cuadrado de la hipotenusa es igual a la suma de los cuadrados de los catetos.' },
         { t: 'Infinitos primos', x: 'En el libro noveno demuestra que los números primos no se acaban nunca. Y en el último construye los cinco sólidos regulares.' },
       ],
       quote: 'Lo que había que demostrar.',
-      q: { q: '¿Con qué teorema termina el primer libro de los Elementos?', a: ['Con el teorema de Pitágoras', 'Con el de Gödel', 'Con el de Noether', 'Con ninguno'], e: 'Sobre los triángulos rectángulos.' } }, 0),
+      q: { q: '¿Qué famoso teorema aparece al final del primer libro de los Elementos?', a: ['Con el teorema de Pitágoras', 'Con el de Gödel', 'Con el de Noether', 'Con ninguno'], e: 'Sobre los triángulos rectángulos.' } }, 0),
     book({ id: 'liber-abaci', author: 'fibonacci', by: 'Fibonacci', title: 'Liber abaci', year: '1202', kind: 'tratado de cálculo',
       parts: [
         { t: 'Las nueve cifras de los indios', x: 'El libro empieza: «Las nueve cifras de los indios son estas: 9 8 7 6 5 4 3 2 1. Con ellas, y con el signo 0, que los árabes llaman zephirum, se escribe cualquier número».' },
@@ -707,7 +707,7 @@
         { t: 'Un cambio lento', x: 'Las nuevas cifras tardaron siglos en imponerse. Algunas ciudades las prohibieron en documentos oficiales, porque un 0 podía convertirse fácilmente en un 6 o un 9.' },
       ],
       quote: 'Con estas nueve cifras y con el signo 0 se escribe cualquier número.',
-      q: { q: '¿Cómo llamaban los árabes al cero, según Fibonacci?', a: ['Zephirum', 'Nihil', 'Alfa', 'Ómega'], e: 'De ahí vienen «cifra» y «cero».' } }, 1),
+      q: { q: '¿Cómo llamaban los árabes al cero, según Fibonacci?', a: ['Zephirum', 'Nihil', 'Alfa', 'Ómega'], e: 'Viene del árabe «sifr», vacío, de donde salen también «cifra» y «cero».' } }, 1),
   ]);
   BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });
 
@@ -761,7 +761,7 @@
       'Hoy es quizás la imagen japonesa más reproducida del mundo, y se dice que inspiró al músico Debussy para su obra «El mar».',
       { q: '¿Qué técnica usó Hokusai para La gran ola?', a: ['Grabado en madera, con un bloque para cada color', 'Pintura al óleo', 'Fotografía', 'Mosaico'], e: 'Se hacían miles de copias baratas.' }),
     poi(2, 'novena', 'El estreno de la Novena', 'El 7 de mayo de 1824, en el teatro de la Puerta de Carintia de Viena, se estrenó la Novena Sinfonía de Beethoven. Él estaba en el escenario marcando el ritmo, pero ya no oía nada. Cuando terminó la música, siguió de espaldas al público, mirando la partitura. Una joven cantante, Caroline Unger, lo tomó del brazo y lo hizo girar: el teatro entero aplaudía y agitaba sombreros y pañuelos para que él pudiera ver la ovación.',
-      'La partitura original de la Novena es hoy Patrimonio de la Humanidad de la Unesco.',
+      'La partitura original de la Novena forma parte hoy del registro Memoria del Mundo de la Unesco.',
       { q: '¿Cómo supo Beethoven que el público aplaudía su Novena?', a: ['Una cantante lo hizo girar para que viera la ovación', 'Lo escuchó con claridad', 'Se lo contaron al día siguiente', 'Nunca lo supo'], e: 'Agitaban sombreros y pañuelos.' }),
     poi(3, 'casa-azul', 'La Casa Azul', 'En Coyoacán, en la Ciudad de México, hay una casa pintada de un azul intenso. Allí nació Frida Kahlo, allí vivió con Diego Rivera y allí murió. En el patio hay plantas, una pirámide con esculturas antiguas y, dentro, su caballete, su silla de ruedas, sus pinceles y los corsés que tuvo que usar por su columna, que ella también pintaba.',
       'Desde 1958 es un museo. En la cocina, con las paredes de colores, todavía se ven escritos los nombres de Frida y Diego con pequeños jarritos de barro.',
@@ -805,9 +805,9 @@
     vitruvio: ['Conté la historia de Arquímedes y la corona del rey: cómo descubrió en la bañera que podía medir el volumen con el agua, y salió corriendo gritando «¡Eureka!». Gracias a mí la conoces.', 'Escribí que el arquitecto debe saber de todo: dibujo, geometría, historia, filosofía, música, medicina, derecho y astronomía. ¡Nada menos!'],
     hokusai: ['Una vez, ante el gobernante de Japón, pinté una curva azul en un largo papel, mojé las patas de un gallo en pintura roja y lo dejé caminar encima. Dije: «hojas de arce flotando en un río».', 'Pinté en un festival un retrato enorme de un monje budista, de más de doscientos metros cuadrados, con escobas como pinceles. La gente lo miraba desde los tejados.'],
     beethoven: ['Me mudé de casa en Viena más de sesenta veces. Los caseros se quejaban de mi desorden y de que tocaba el piano a cualquier hora.', 'Para seguir sintiendo la música ya sordo, apoyaba una varilla de madera entre los dientes y el piano: así sentía las vibraciones.'],
-    tolstoi: ['A los ochenta y dos años me escapé de casa en secreto, de noche, para vivir con sencillez. Me enfermé en el tren y morí en la casa del jefe de una pequeña estación.', 'Durante muchos años fui vegetariano y no permitía que se cazara en mi finca. Decía que mientras haya mataderos habrá campos de batalla.'],
-    kandinsky: ['Durante un tiempo vivía en Múnich con mis amigos pintores y hacíamos una revista llamada «El jinete azul». A mí me gustaban los caballos y a Franz Marc el azul.', 'En la Bauhaus hice una encuesta a todos: ¿qué color le corresponde al triángulo, al cuadrado y al círculo? La mayoría respondió: amarillo, rojo y azul.'],
-    frida: ['Para que mi padre no se preocupara, de niña escondía mi pierna más delgada con varias medias. Después, en mis cuadros, la mostré sin vergüenza.', 'En mi primera exposición en México, en 1953, estaba tan enferma que no podía levantarme. Me llevaron en mi cama, en una ambulancia, y recibí a todos acostada.'],
+    tolstoi: ['A los ochenta y dos años me escapé de casa en secreto, de noche, para vivir con sencillez. Me enfermé en el tren y morí en la casa del jefe de una pequeña estación.', 'Durante muchos años fui vegetariano y no permitía que se cazara en mi finca. Se me atribuye la frase: mientras haya mataderos habrá campos de batalla.'],
+    kandinsky: ['Durante un tiempo vivía en Múnich con mis amigos pintores y hicimos un almanaque llamado «El jinete azul». A los dos nos encantaba el azul; a Franz Marc, los caballos, y a mí, los jinetes.', 'En la Bauhaus hice una encuesta a todos: ¿qué color le corresponde al triángulo, al cuadrado y al círculo? La mayoría respondió: amarillo, rojo y azul.'],
+    frida: ['Para que mi padre no se preocupara, de niña escondía mi pierna más delgada con varias medias. Después, en mis cuadros, la mostré sin vergüenza.', 'En mi primera exposición individual en México, en 1953, estaba tan enferma que no podía levantarme. Me llevaron en mi cama, en una ambulancia, y recibí a todos acostada.'],
     schiller: ['Mi amigo Goethe contó que una vez, en mi casa, sintió un olor terrible en mi escritorio: yo guardaba manzanas podridas en un cajón, porque su olor me ayudaba a escribir.', 'Mi obra Guillermo Tell, con el héroe que dispara a una manzana sobre la cabeza de su hijo, se convirtió en símbolo de la libertad de Suiza.'],
   });
   BOOKS.push([
@@ -838,14 +838,14 @@
       'En la copa del árbol vigila un águila, que avisa si se acerca un peligro. De ahí viene la expresión «enterrar el hacha de guerra».',
       { q: '¿De dónde viene la expresión «enterrar el hacha de guerra»?', a: ['De las armas enterradas bajo el Árbol de la Paz', 'De un cuento de piratas', 'De Roma', 'De nada'], e: 'Una tradición haudenosaunee.' }),
     poi(1, 'bisontes', 'Las grandes manadas', 'A principios del siglo XIX, decenas de millones de bisontes recorrían las praderas de Norteamérica. Los pueblos de las llanuras vivían de ellos y usaban casi todo el animal: carne, piel, huesos, tendones. En pocas décadas, la caza masiva por parte de colonos y comerciantes, a veces alentada para debilitar a los pueblos originarios, los dejó casi extinguidos: hacia 1890 quedaban menos de mil.',
-      'Gracias al trabajo de conservación, hoy vuelven a vivir en libertad varios cientos de miles de bisontes, y muchas naciones originarias los han traído de vuelta a sus tierras.',
+      'Gracias al trabajo de conservación, hoy vuelven a vivir cientos de miles de bisontes, la mayoría en ranchos y unas decenas de miles en manadas libres, y muchas naciones originarias los han traído de vuelta a sus tierras.',
       { q: '¿Cuántos bisontes quedaban hacia 1890?', a: ['Menos de mil', 'Decenas de millones', 'Cien millones', 'Ninguno nunca existió'], e: 'Tras la caza masiva.' }),
     poi(2, 'parihaka', 'Parihaka', 'En una colina al pie del monte Taranaki, en Nueva Zelanda, estaba la aldea de Parihaka. Cada mes, el día dieciocho, miles de maoríes se reunían para escuchar a Te Whiti y a Tohu. Llevaban una pluma blanca de albatros en el pelo, símbolo de paz. Cuando llegaron los soldados en 1881, encontraron a dos mil personas sentadas en silencio y a niños que cantaban y ofrecían pan.',
       'Cada 5 de noviembre se recuerda la invasión de Parihaka. La pluma blanca sigue siendo un símbolo de resistencia pacífica en Nueva Zelanda.',
       { q: '¿Qué símbolo de paz llevaban los habitantes de Parihaka?', a: ['Una pluma blanca de albatros', 'Una corona de oro', 'Una espada', 'Una bandera roja'], e: 'Todavía es símbolo de resistencia pacífica.' }),
-    poi(3, 'iolani', 'El palacio ʻIolani', 'En Honolulu se alza el palacio ʻIolani, el único palacio real en territorio de Estados Unidos. Tenía luz eléctrica y teléfono antes que la Casa Blanca. En 1895, la reina Liliʻuokalani estuvo encerrada casi ocho meses en una habitación del piso de arriba. Para pasar el tiempo, cosió una colcha con su historia y compuso canciones.',
+    poi(3, 'iolani', 'El palacio ʻIolani', 'En Honolulu se alza el palacio ʻIolani, el único palacio real en territorio de Estados Unidos. Tuvo luz eléctrica antes que la Casa Blanca, y teléfono desde muy pronto. En 1895, la reina Liliʻuokalani estuvo encerrada casi ocho meses en una habitación del piso de arriba. Para pasar el tiempo, cosió una colcha con su historia y compuso canciones.',
       'La colcha de la reina, con mensajes y fechas bordadas, todavía se conserva y se exhibe en el palacio.',
-      { q: '¿Qué tenía el palacio ʻIolani antes que la Casa Blanca?', a: ['Luz eléctrica y teléfono', 'Un zoológico', 'Un ascensor de oro', 'Nada'], e: 'Era un palacio muy moderno.' }),
+      { q: '¿Qué tenía el palacio ʻIolani antes que la Casa Blanca?', a: ['Luz eléctrica', 'Un zoológico', 'Un ascensor de oro', 'Nada'], e: 'Era un palacio muy moderno.' }),
     poi(4, 'uluru', 'Uluru', 'En el centro de Australia se alza Uluru, una enorme roca de arenisca que cambia de color con la luz: rojo encendido al atardecer, morado al anochecer. Para el pueblo anangu es un lugar sagrado, lleno de historias del «Tiempo del Sueño», cuando los seres ancestrales crearon el mundo. En 1985 el gobierno devolvió la propiedad de Uluru a los anangu.',
       'Desde 2019 está prohibido escalar la roca, por respeto a sus guardianes tradicionales.',
       { q: '¿Qué pasó en 2019 en Uluru?', a: ['Se prohibió escalar la roca, por respeto a los anangu', 'Se construyó un hotel encima', 'Se pintó de azul', 'Nada'], e: 'Es un lugar sagrado.' }),
@@ -898,7 +898,7 @@
         { t: 'Las madres de los clanes', x: 'Las madres de los clanes eligen a los jefes, y pueden quitarles el cargo si no cumplen con su deber. Las mujeres tienen un papel central.' },
         { t: 'La piel de siete palmos', x: 'Se dice que los jefes deben tener una piel de siete palmos de grosor, para no ofenderse con las críticas, y pensar siempre en las generaciones que vendrán.' },
       ],
-      quote: 'En cada deliberación, pensad en el bienestar de las siete generaciones futuras.',
+      quote: 'Tened siempre presentes no solo a los de ahora, sino a las generaciones que vendrán, cuyos rostros aún están bajo la tierra.',
       q: { q: '¿Con qué se recordaba la Gran Ley de la Paz?', a: ['Con cinturones de cuentas de concha, llamados wampum', 'Con libros de papel', 'Con piedras talladas en latín', 'No se recordaba'], e: 'Sus dibujos ayudan a recitarla.' } }, 0),
     book({ id: 'alce-negro-habla', author: 'alcenegro', by: 'Alce Negro y John Neihardt', title: 'Alce Negro habla', year: '1932', kind: 'testimonio y visión',
       parts: [
@@ -937,11 +937,11 @@
       'Cuidar no es solo dar medicinas. Es lavar, acomodar una almohada, abrir la ventana, sonreír. Todo eso también cura.',
     ], true),
     wnpc(1, 'boticario', 'Matías', 'boticario', sk(0x5a4a3a, 0x2a2a2a, 0xe0c0a0, 0x6a6a6a, { beard: 0x6a6a6a, hat: 'cap', acc: 'none' }), [
-      'Paracelso decía: todo es veneno, nada es veneno; solo la dosis hace el veneno. Una medicina en exceso daña, y un veneno en una pizca puede curar.',
+      'Paracelso decía: todo es veneno y nada está libre de veneno; solo la dosis hace el veneno. Una medicina en exceso daña, y un veneno en una pizca puede curar.',
       'Muchas medicinas vienen de plantas: la aspirina, de la corteza del sauce; la quinina, de un árbol de los Andes que los pueblos originarios ya usaban.',
       'Nunca tomes una medicina sin saber qué es y cuánto tomar. La farmacia es un lugar de ciencia, no de magia.',
     ]),
-    wnpc(2, 'partera-dolores', 'Dolores', 'partera-dolores', sk(0x8a5a4a, 0xe8e0d0, 0xc49372, 0x3a2a1a, { hat: 'longhair', acc: 'none' }), [
+    wnpc(2, 'partera-dolores', 'Dolores', 'partera', sk(0x8a5a4a, 0xe8e0d0, 0xc49372, 0x3a2a1a, { hat: 'longhair', acc: 'none' }), [
       'He ayudado a nacer a más de dos mil niños en este pueblo. Muchos de los que ahora son abuelos, los recibí yo en mis manos.',
       'Mi abuela, que también era partera, ya decía que había que lavarse bien las manos con jabón antes de tocar a una madre. ¡Sabía más que muchos médicos de su tiempo!',
       'Cada nacimiento es distinto, y cada uno me sigue emocionando como el primero.',
@@ -963,7 +963,7 @@
   });
   Object.assign(ANECDOTES, {
     galeno: ['Era tan orgulloso que escribí un libro sobre cómo reconocer a los médicos charlatanes, y otro sobre mis propios libros, para que nadie me atribuyera obras falsas.', 'Cuando la peste llegó a Roma, en tiempos de Marco Aurelio, describí sus síntomas con tanto detalle que hoy los historiadores creen que fue viruela.'],
-    vesalio: ['Para estudiar un esqueleto completo, una noche saqué en secreto, hueso por hueso, el cuerpo de un ajusticiado colgado fuera de la ciudad de Lovaina. Luego dije que lo había traído de París.', 'Morí a los cincuenta años, al volver de una peregrinación a Jerusalén: mi barco sufrió una tormenta y llegué enfermo a la isla griega de Zante.'],
+    vesalio: ['Para estudiar un esqueleto completo, una noche saqué en secreto, hueso por hueso, el cuerpo de un ajusticiado colgado fuera de la ciudad de Lovaina. Luego dije que lo había traído de París.', 'Morí a los cuarenta y nueve años, al volver de una peregrinación a Jerusalén: mi barco sufrió una tormenta y llegué enfermo a la isla griega de Zante.'],
     semmelweis: ['Escribí cartas furiosas a los médicos que me rechazaban, llamándolos asesinos. No me ayudó: tener razón no basta, también hay que saber convencer.', 'Hoy en Budapest hay una universidad de medicina con mi nombre, y mi cara aparece en sellos y monedas de Hungría.'],
     nightingale: ['Tenía una lechuza mascota llamada Atenea, que había rescatado en Grecia. La llevaba a todas partes en el bolsillo.', 'Fui la primera mujer admitida en la Real Sociedad de Estadística británica. Decía que para entender los pensamientos de Dios hay que estudiar estadística.'],
     pasteur: ['A los cuarenta y cinco años sufrí un derrame cerebral que me dejó medio cuerpo paralizado. Seguí trabajando, y mis mayores descubrimientos llegaron después.', 'Se dice que limpiaba los platos y los cubiertos con una servilleta antes de comer, por miedo a los microbios, incluso en las cenas elegantes.'],
@@ -987,7 +987,7 @@
         { t: 'Ruido y luz', x: 'El ruido innecesario daña al enfermo, y la luz del sol lo ayuda. Hay que poner la cama donde pueda ver el cielo por la ventana.' },
         { t: 'Observar', x: 'La lección más importante para una enfermera es aprender qué observar, cómo observar y qué síntomas indican mejoría o peligro.' },
       ],
-      quote: 'Lo primero que debe hacer un hospital es no hacer daño a los enfermos.',
+      quote: 'La primera regla de la enfermería es mantener el aire que respira el enfermo tan puro como el de afuera, sin enfriarlo.',
       q: { q: '¿Qué es lo primero que pide Nightingale para la habitación de un enfermo?', a: ['Aire puro, como el de afuera', 'Oscuridad total', 'Mucho ruido', 'Cerrar las ventanas siempre'], e: 'La ventilación salva vidas.' } }, 1),
   ]);
   BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });
@@ -1002,7 +1002,7 @@
           ['b', 'Cuidado, Schiller: si la belleza tiene un fin, deja de ser pura. La rosa es bella aunque no sirva para nada.'],
           ['a', 'Precisamente porque no sirve para nada, nos libera de la necesidad. Por eso el ser humano solo es plenamente humano cuando juega.'],
         ],
-        cierre: 'Kant definió la belleza como un placer libre y desinteresado. Schiller vio en ese libre juego un camino para educar a la humanidad. Discípulo y maestro, juntos, dieron forma a la estética moderna.' },
+        cierre: 'Kant definió la belleza como un placer libre y desinteresado. Schiller vio en ese libre juego un camino para educar a la humanidad. El lector entusiasta y el maestro, juntos, dieron forma a la estética moderna.' },
       { id: 'pacificador-hobbes', a: 'pacificador', b: 'hobbes', q: '¿Cómo se construye la paz?', eje: null, va: 0, vb: 0,
         turns: [
           ['b', 'Sin un poder que inspire miedo a todos, los seres humanos viven en guerra de todos contra todos. La paz necesita un soberano fuerte, con la espada en la mano.'],
@@ -1035,9 +1035,9 @@
     poi(0, 'casa-calias', 'La casa de Calias', 'Calias era el hombre más rico de Atenas y le encantaba recibir a los sofistas. Platón cuenta en su diálogo «Protágoras» que un día su casa estaba llena: Protágoras paseaba por el pórtico seguido de un coro de admiradores, Hipias respondía preguntas sentado en un trono, y Pródico, envuelto en mantas, explicaba la diferencia entre palabras parecidas desde la cama. El portero, harto de tanto sofista, le cerró la puerta en las narices a Sócrates.',
       'Los sofistas cobraban por enseñar, y mucho. Protágoras, se decía, ganó más dinero que el escultor Fidias y otros diez escultores juntos.',
       { q: '¿Quién recibía a los sofistas en su casa de Atenas?', a: ['Calias, el hombre más rico de Atenas', 'El rey de Persia', 'Sócrates', 'Nadie'], e: 'Lo cuenta Platón en el «Protágoras».' }),
-    poi(1, 'liceo-refutaciones', 'El Liceo y las Refutaciones', 'En el Liceo, su escuela de Atenas, Aristóteles escribió un pequeño libro llamado «Refutaciones sofísticas». Es el primer catálogo de falacias de la historia: argumentos que parecen buenos pero no lo son. Las dividió en dos familias: trece trampas, seis que nacen del lenguaje y siete que nacen fuera de él. Muchos nombres que usamos hoy, como «petición de principio», vienen de allí.',
+    poi(1, 'liceo-refutaciones', 'El Liceo y las Refutaciones', 'En Atenas, Aristóteles, que luego fundaría el Liceo, escribió un pequeño libro llamado «Refutaciones sofísticas». Es el primer catálogo de falacias de la historia: argumentos que parecen buenos pero no lo son. Las dividió en dos familias: trece trampas, seis que nacen del lenguaje y siete que nacen fuera de él. Muchos nombres que usamos hoy, como «petición de principio», vienen de allí.',
       'Aristóteles definió la sofística como «una sabiduría aparente, pero no real», y al sofista como alguien que gana dinero con una sabiduría que solo lo parece.',
-      { q: '¿Cuál es el primer catálogo de falacias de la historia?', a: ['Las «Refutaciones sofísticas» de Aristóteles', 'El Quijote', 'La Odisea', 'Un periódico de Londres'], e: 'Escrito en el Liceo de Atenas.' }),
+      { q: '¿Cuál es el primer catálogo de falacias de la historia?', a: ['Las «Refutaciones sofísticas» de Aristóteles', 'El Quijote', 'La Odisea', 'Un periódico de Londres'], e: 'Escrito por Aristóteles en Atenas.' }),
     poi(2, 'disputa-paris', 'Las disputas de París', 'En las universidades medievales, como la de París, los estudiantes aprendían discutiendo. En la «disputatio», un maestro planteaba una cuestión, un estudiante defendía una respuesta y otros le ponían objeciones. Ganaba quien detectaba las trampas del otro y respondía con distinciones precisas: «distingo: en un sentido sí, en otro no». Para eso estudiaban manuales como el de Pedro Hispano.',
       'Algunas disputas duraban días enteros, y cualquier asistente podía levantarse a poner una objeción, incluso sobre temas muy curiosos.',
       { q: '¿Cómo se llamaba el ejercicio de discutir en las universidades medievales?', a: ['La disputatio', 'La olimpiada', 'El torneo de caballeros', 'La siesta'], e: 'Ganaba quien detectaba las trampas del otro.' }),
@@ -1193,7 +1193,7 @@
   });
   Object.assign(ANECDOTES, {
     kepler: ['Para ganar dinero hacía horóscopos, aunque decía que la astrología era la hija tonta de la astronomía, que alimenta a su madre sabia.', 'Su cuento «Somnium», sobre un viaje a la Luna, es considerado una de las primeras obras de ciencia ficción.'],
-    cherschel: ['Para ayudar a William a pulir un espejo durante dieciséis horas seguidas, sin que él soltara las manos, le daba de comer en la boca.', 'Uno de sus cometas, el 35P/Herschel-Rigollet, volvió a verse en 1939, casi siglo y medio después de que ella lo descubriera.'],
+    cherschel: ['Para ayudar a William a pulir un espejo durante dieciséis horas seguidas, sin que él soltara las manos, le daba de comer en la boca.', 'Uno de sus cometas, el 35P/Herschel-Rigollet, volvió a verse en 1939, siglo y medio después de que ella lo descubriera.'],
     leavitt: ['Era tan meticulosa que se dice que tardaba días en estar segura de una sola estrella variable antes de anotarla.', 'Un cráter de la Luna y un asteroide llevan su nombre.'],
     payne: ['Cuando era niña vio un meteoro, y decidió que quería ser astrónoma. Su madre, al principio, se preocupó.', 'Se casó con el astrónomo ruso Sergei Gaposchkin, y juntos estudiaron más de un millón de observaciones de estrellas variables.'],
     chandrasekhar: ['Durante años condujo más de 150 kilómetros cada semana para dar clase a solo dos estudiantes. Los dos ganaron después el Nobel de Física.', 'Le encantaban Shakespeare y Beethoven, y escribió un libro sobre la belleza en el arte y en la ciencia.'],
@@ -1217,7 +1217,7 @@
         { t: 'Agujeros negros no tan negros', x: 'Los agujeros negros atrapan incluso la luz, pero Hawking mostró que emiten una débil radiación y pueden evaporarse muy lentamente.' },
         { t: 'La gran pregunta', x: 'El libro termina preguntando por qué existe el universo. Si lo descubriéramos, dice Hawking, sería el triunfo definitivo de la razón humana.' },
       ],
-      quote: 'Recuerda mirar hacia las estrellas y no hacia tus pies.',
+      quote: 'Si encontráramos la respuesta, sería el triunfo definitivo de la razón humana, porque entonces conoceríamos el pensamiento de Dios.',
       q: { q: '¿Cuántas ecuaciones dejó Hawking en Breve historia del tiempo?', a: ['Una: E = mc²', 'Mil', 'Ninguna', 'Cien'], e: 'Para que todos pudieran leerlo.' } }, 1),
   ]);
   BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });
@@ -1288,11 +1288,11 @@
     pablo: { text: 'Visita la Biblia de Gutenberg. Luego dime cuál es el libro más traducido de la historia.', needs: { pois: ['biblia-gutenberg'], npcs: [] }, riddle: { q: '¿Cuál es el libro más traducido de la historia?', a: ['La Biblia', 'Un diccionario', 'Un libro de cocina', 'Ninguno'] } },
   });
   Object.assign(ANECDOTES, {
-    moises: ['Según el Éxodo, cuando bajó del Sinaí su rostro brillaba tanto que tuvo que cubrirlo con un velo. Por una mala traducción latina de esa palabra, algunos artistas, como Miguel Ángel, lo esculpieron con cuernos.', 'La tradición dice que murió a los ciento veinte años, mirando la tierra prometida desde el monte Nebo, sin llegar a entrar.'],
+    moises: ['Según el Éxodo, cuando bajó del Sinaí su rostro brillaba tanto que tuvo que cubrirlo con un velo. Por una mala traducción latina de esa palabra, algunos artistas, como Miguel Ángel, lo esculpieron con cuernos.', 'Según el Deuteronomio, murió a los ciento veinte años, después de mirar la tierra prometida desde el monte Nebo, sin llegar a entrar.'],
     david: ['Según la Biblia, bailó con todas sus fuerzas delante del arca cuando la llevaron a Jerusalén, y su esposa Mical se burló de él.', 'Su hijo Salomón, famoso por su sabiduría, construyó el primer templo de Jerusalén.'],
     mateo: ['Su evangelio fue el más citado y usado por los primeros cristianos; por eso se puso el primero del Nuevo Testamento.', 'Solo él cuenta la visita de los magos de Oriente guiados por una estrella.'],
     marcos: ['Algunos piensan que el joven que huyó desnudo dejando su sábana, en el arresto de Jesús, era el propio Marcos firmando discretamente su obra.', 'Venecia lo tomó como patrón: el león alado de san Marcos es todavía el símbolo de la ciudad.'],
-    lucas: ['Una antigua leyenda dice que Lucas pintó el primer retrato de María; por eso es patrón de los pintores, además de los médicos.', 'Escribe en el griego más elegante de todo el Nuevo Testamento.'],
+    lucas: ['Una antigua leyenda dice que Lucas pintó el primer retrato de María; por eso es patrón de los pintores, además de los médicos.', 'Escribe en uno de los griegos más elegantes de todo el Nuevo Testamento.'],
     juan: ['Una tradición cuenta que, ya muy anciano, solo repetía: «Hijitos, amaos los unos a los otros». Cuando le preguntaron por qué, respondió que eso bastaba.', 'El último libro de la Biblia, el Apocalipsis, lleva el nombre de un Juan que escribió en la isla de Patmos.'],
     pablo: ['Según los Hechos, en Atenas discutió con filósofos estoicos y epicúreos en el Areópago.', 'Viajó unos dieciséis mil kilómetros, naufragó tres veces y fabricaba tiendas de campaña para ganarse la vida.'],
   });
@@ -1365,7 +1365,7 @@
   Object.assign(ANECDOTES, {
     iqra: ['Según la tradición, la revelación llegaba a veces como el sonido de una campana, y en los días más fríos el Profeta sudaba al recibirla.', 'La sura 96 también se llama Al-Alaq, «el coágulo», por uno de sus primeros versículos sobre la creación del ser humano.'],
     fatiha: ['En muchas lenguas del mundo musulmán, «leer la Fátiha» por alguien significa rezar por él.', 'Aunque la Fátiha es la primera sura del libro, no fue la primera en ser revelada.'],
-    yusuf: ['En el Corán, cuando José es tentado, las mujeres de la ciudad se cortan las manos con sus cuchillos al ver su belleza, distraídas mientras pelan fruta.', 'José es en el Corán un profeta, y su historia se considera un consuelo para los momentos difíciles.'],
+    yusuf: ['En el Corán, la mujer que tentó a José invita a las damas de la ciudad y da un cuchillo a cada una; al verlo, se cortan las manos, asombradas por su belleza. Los comentaristas añaden que pelaban fruta.', 'José es en el Corán un profeta, y su historia se considera un consuelo para los momentos difíciles.'],
     maryam: ['En el Corán, Jesús recién nacido habla desde la cuna para defender la inocencia de su madre.', 'La sura 3 lleva el nombre de la familia de María, la familia de Imrán.'],
     kahf: ['Los durmientes de la caverna también aparecen en una leyenda cristiana, los Siete Durmientes de Éfeso.', 'Según la sura, un perro acompañaba a los jóvenes y dormía con las patas extendidas a la entrada de la cueva.'],
     rahman: ['Muchos recitadores famosos son conocidos sobre todo por su interpretación de esta sura.', 'La sura habla de dos jardines y de otros dos más, con fuentes, frutos y frescura: imágenes muy queridas en tierras de desierto.'],

@@ -232,7 +232,7 @@ try {
       'Debe despertar lo espiritual que dormía en nosotros. Quizás estemos diciendo lo mismo con colores distintos.',
     ], 'Tolstói defiende un arte sincero que todos puedan sentir y que una a las personas. Kandinsky busca un arte abstracto que hable directamente al alma con el color. Los museos de hoy guardan a los dos.'),
     D('piaget-vygotsky', 'piaget', 'vygotsky', '¿Se aprende solo o con los demás?', 'sociedad', null, 0, 0, [
-      'El niño es un pequeño científico. Construye su conocimiento actuando sobre el mundo, por etapas. No basta con explicarle: hay que dejarle descubrir. Cada vez que le enseñamos algo que podría descubrir, le impedimos inventarlo.',
+      'El niño es un pequeño científico. Construye su conocimiento actuando sobre el mundo, por etapas. No basta con explicarle: hay que dejarle descubrir. Cada vez que le enseñamos antes de tiempo algo que podría descubrir, le impedimos inventarlo.',
       'El niño no descubre solo. Todo lo que sabe aparece primero entre personas, en la conversación, y luego dentro de él. El lenguaje que oye se convierte en su pensamiento.',
       'Pero si el niño no está preparado, puedes explicarle mil veces y no lo entenderá. Hay que respetar su desarrollo.',
       'Hay cosas que el niño no puede hacer solo, pero sí con ayuda. Ahí, en esa zona, ocurre el aprendizaje de verdad. Lo que hoy hace con ayuda, mañana lo hará solo.',

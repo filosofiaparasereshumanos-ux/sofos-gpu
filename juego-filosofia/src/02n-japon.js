@@ -53,7 +53,7 @@ Object.assign(ANECDOTES, {
   dogen: ['Antes de viajar a China me preguntaba: si todos ya tenemos la naturaleza de Buda, ¿para qué meditar? Ningún maestro de Japón supo responderme. Por eso crucé el mar.', 'Volví de China sin reliquias, sin libros y sin estatuas. Dije que solo traía las manos vacías, y que había aprendido que los ojos son horizontales y la nariz vertical.'],
   rikyu: ['Pedí a mi hijo que barriera el jardín. Lo dejó perfecto, sin una sola hoja. Entonces sacudí un arce y dejé caer algunas hojas sobre el camino: así estaba completo.', 'Un invitado trajo un cuenco carísimo y presumía de él. Lo serví con normalidad. Después, otro trajo un cuenco roto y reparado, y lo traté como un tesoro: lo que importa es la historia y el cuidado.'],
   basho: ['Mi cabaña de Edo se quemó en un incendio. Me salvé metiéndome en el río, con una estera mojada sobre la cabeza. Desde entonces sentí que mi casa verdadera era el camino.', 'Tuve muchos discípulos, pero les decía que no copiaran mis poemas. Les pedía que aprendieran del pino mirando el pino, y del bambú mirando el bambú.'],
-  nishida: ['Suspendí el examen de ingreso a la universidad por enfermedad y tuve que estudiar como alumno de segunda categoría. Me sentí humillado, pero seguí leyendo filosofía cada noche.', 'Escribía en mi diario las horas que había meditado cada día. A veces anotaba solo: hoy, nada. También eso era parte del camino.'],
+  nishida: ['Dejé el bachillerato sin terminarlo, y en la Universidad de Tokio solo me admitieron como alumno especial, de segunda categoría. Me sentí humillado, pero seguí leyendo filosofía cada noche.', 'Escribía en mi diario las horas que había meditado cada día. A veces anotaba solo: hoy, nada. También eso era parte del camino.'],
 });
 
 BOOKS.push([
@@ -64,7 +64,7 @@ BOOKS.push([
       { t: 'Todo pasa', x: 'Con los años, las personas que Genji ama envejecen o mueren, y él mismo va perdiendo su brillo. La novela no esconde la tristeza: muestra que la belleza y el tiempo van siempre juntos.' },
       { t: 'Mono no aware', x: 'Siglos después, el estudioso Motoori Norinaga dijo que el corazón de la obra es el mono no aware: la capacidad de conmoverse ante las cosas. Leer a Genji es aprender a sentir con delicadeza.' },
     ],
-    quote: 'Las flores del cerezo son más hermosas porque sabemos que caerán.',
+    quote: 'Las novelas nacen de cosas de este mundo que uno no quiere que se olviden nunca.',
     q: { q: '¿Qué gran sentimiento recorre La historia de Genji?', a: ['El mono no aware: la emoción ante lo pasajero', 'La sed de venganza', 'El amor al dinero', 'El miedo a los dragones'], e: 'La belleza y el tiempo van juntos.' } },
   { id: 'sendas-oku', author: 'basho', by: 'Matsuo Bashō', title: 'Sendas de Oku', year: '1694', kind: 'diario de viaje', at: B2[1],
     parts: [

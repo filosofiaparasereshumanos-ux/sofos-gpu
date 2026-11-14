@@ -38,7 +38,7 @@
           Q('¿De qué está hecho todo, según Lucrecio?', 'De átomos que se mueven en el vacío', 'Igual que para Demócrito y Epicuro.', 'De ideas eternas', 'De números', 'Del aliento de los dioses'),
           Q('¿Qué miedo quería quitar Lucrecio a las personas?', 'El miedo a la muerte y a los castigos de los dioses', 'Conocer la naturaleza da serenidad.', 'El miedo a los perros', 'El miedo al mar', 'El miedo a hablar en público'),
           Q('¿Qué pasó con el poema de Lucrecio durante la Edad Media?', 'Se perdió y fue redescubierto en 1417 en un monasterio', 'Lo encontró el humanista Poggio Bracciolini.', 'Se leía en todas las escuelas', 'Lo quemó Lucrecio', 'Nunca existió'),
-          Q('¿Qué escribió Lucrecio para quitar el miedo a la muerte?', 'Que donde estamos nosotros no está la muerte, y donde está la muerte ya no estamos', 'Una idea que viene de Epicuro.', 'Que la muerte es un castigo', 'Que nunca moriremos', 'Que hay que temerla siempre'),
+          Q('¿Qué escribió Lucrecio para quitar el miedo a la muerte?', 'Que la muerte no es nada para nosotros', '«Nada es la muerte para nosotros», una idea que viene de Epicuro.', 'Que la muerte es un castigo', 'Que nunca moriremos', 'Que hay que temerla siempre'),
         ] },
       { id: 'diderot', name: 'Denis Diderot', short: 'Diderot', dates: '1713 – 1784', epithet: 'El editor que quiso reunir todo el saber',
         look: lk(0x8a6a4a, 0x4a2a1a, 0xe0c0a0, 0x6a4a3a, { hat: 'none', acc: 'book' }), prop: 'lectern',
@@ -138,7 +138,7 @@
         look: lk(0xe8e0d0, 0x3a4a6a, 0xd0a07a, 0x2a1a10, { beard: 0x2a1a10, hat: 'turban', acc: 'book' }), prop: 'scales',
         intro: 'Nací en Córdoba y fui médico del sultán en El Cairo. Escribí para los que estaban perplejos: los que creían, pero también amaban la razón. ¿Eres tú uno de ellos?',
         defeat: 'Has encontrado tu guía. Fe y razón no son enemigas: la verdad es una sola, aunque la busquemos por dos caminos.',
-        concept: { name: 'La Guía de perplejos', text: 'Maimónides fue un rabino, médico y filósofo judío nacido en Córdoba, en Al-Ándalus. Su familia huyó de la persecución y se instaló en Egipto, donde fue médico de la corte del sultán Saladino. En la «Guía de perplejos», escrita en árabe, intenta reconciliar la Biblia con la filosofía de Aristóteles: enseña que muchas palabras sobre Dios son metáforas y que de Dios sabemos más bien lo que no es (teología negativa). También escribió una gran obra de leyes judías y tratados de medicina sobre la dieta y la salud.' },
+        concept: { name: 'La Guía de perplejos', text: 'Maimónides fue un rabino, médico y filósofo judío nacido en Córdoba, en Al-Ándalus. Su familia huyó de la persecución y se instaló en Egipto, donde fue médico de la corte del sultán en tiempos de Saladino. En la «Guía de perplejos», escrita en árabe, intenta reconciliar la Biblia con la filosofía de Aristóteles: enseña que muchas palabras sobre Dios son metáforas y que de Dios sabemos más bien lo que no es (teología negativa). También escribió una gran obra de leyes judías y tratados de medicina sobre la dieta y la salud.' },
         q: [
           Q('¿Cómo se llama la gran obra filosófica de Maimónides?', 'Guía de perplejos', 'Para quienes dudaban entre la fe y la filosofía.', 'Suma teológica', 'El Corán', 'Las Confesiones'),
           Q('¿En qué ciudad nació Maimónides?', 'En Córdoba, en Al-Ándalus', 'Como Averroes, su contemporáneo.', 'En Jerusalén', 'En Bagdad', 'En Roma'),
@@ -245,10 +245,10 @@ Object.assign(LESSONS, {
     'Empecé creyendo en un Dios lejano y terminé pensando que la naturaleza se explica sola. Mi pregunta para ti: ¿quién decide qué puedes leer y pensar?',
   ],
   feuerbach: [
-    'Soy Ludwig Feuerbach, de Baviera. Estudié teología y luego filosofía con Hegel en Berlín. Le escribí: «Dios fue mi primer pensamiento, la razón el segundo y el ser humano el tercero y último».',
+    'Soy Ludwig Feuerbach, de Baviera. Estudié teología y luego filosofía con Hegel en Berlín. Años después resumí mi camino: «Dios fue mi primer pensamiento, la razón el segundo y el ser humano el tercero y último».',
     'Me pregunté de dónde vienen las ideas de los dioses. Y vi que los dioses se parecen siempre a quienes los adoran.',
     'Tomamos lo mejor de nosotros, el amor, la sabiduría, la justicia, lo hacemos infinito y lo ponemos fuera, en el cielo. Luego nos sentimos pequeños frente a él.',
-    'Por eso digo que la teología es antropología: hablar de Dios es hablar del ser humano. Por decirlo, perdí mi puesto en la universidad y viví en el campo.',
+    'Por eso digo que la teología es antropología: hablar de Dios es hablar del ser humano. Ya antes, por un libro contra la inmortalidad del alma, había perdido mi futuro en la universidad, y viví en el campo.',
     'No quería quitarle nada a nadie, sino devolver al ser humano su grandeza. Mi pregunta para ti: ¿qué cualidad que admiras podrías cultivar más en ti?',
   ],
   ernestinerose: [

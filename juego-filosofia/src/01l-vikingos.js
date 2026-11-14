@@ -28,7 +28,7 @@ ERAS.push({
       look: lk(0x4a3a2a, 0x7a2a2a, 0xe0c0a0, 0x2a1a10, { beard: 0x2a1a10, hat: 'none', acc: 'none' }), prop: 'lyre',
       intro: 'Fui guerrero y poeta. Cuando perdí a mi hijo, quise morir; pero compuse un poema, y el poema me devolvió la vida. ¿Sabes qué hacer con tu tristeza?',
       defeat: 'Has comprendido: la palabra puede curar. Quien pone su dolor en un canto ya no lo carga solo.',
-      concept: { name: 'La poesía que consuela', text: 'Egill Skallagrímsson fue un escaldo, un poeta islandés, y también un guerrero de carácter difícil. Su poema «La pérdida de los hijos» (Sonatorrek) nació cuando su hijo se ahogó: Egill se encerró sin comer, decidido a morir, y su hija lo convenció de componer un poema. Al crearlo, recuperó las ganas de vivir. Es uno de los primeros grandes poemas sobre el duelo.' },
+      concept: { name: 'La poesía que consuela', text: 'Egill Skallagrímsson fue un escaldo, un poeta islandés, y también un guerrero de carácter difícil. Su poema «La pérdida de los hijos» (Sonatorrek) nació cuando su hijo se ahogó: Egill se encerró sin comer, decidido a morir, y su hija lo convenció de componer un poema. Al crearlo, recuperó las ganas de vivir. Es uno de los grandes poemas sobre el duelo de la literatura nórdica.' },
       q: [
         { q: '¿Qué era un escaldo?', a: ['Un poeta de la corte o del pueblo nórdico', 'Un barco de guerra', 'Un juez', 'Un herrero'], e: 'Los escaldos componían poemas muy elaborados.' },
         { q: '¿Qué poema compuso Egill tras la muerte de su hijo?', a: ['Sonatorrek, la pérdida de los hijos', 'La Völuspá', 'El Hávamál', 'La Ilíada'], e: 'Uno de los grandes poemas del duelo.' },

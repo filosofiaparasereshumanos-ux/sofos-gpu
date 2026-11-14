@@ -13,7 +13,7 @@ ERAS.push({
       look: lk(0xf4efe2, 0x2a4a8a, 0xb8875f, 0x1a1410, { hat: 'longhair', acc: 'scroll' }), prop: 'stars',
       intro: 'Soy la suma sacerdotisa de Ur. Antes que yo, nadie había firmado un texto con su nombre. Yo escribí «yo» en el barro. ¿Te atreves tú a hablar con tu propia voz?',
       defeat: 'Has hablado con voz propia. Que tu nombre quede escrito, como el mío, en el barro y en la memoria.',
-      concept: { name: 'La voz propia: escribir en primera persona', text: 'Enheduanna, hija del rey Sargón de Acad y suma sacerdotisa del dios Luna en Ur, compuso himnos a la diosa Inanna y a los templos de Sumer y los firmó con su nombre. Es la primera autora conocida de la historia, y en sus versos aparece algo nuevo: un «yo» que habla de su dolor, su exilio y su fe.' },
+      concept: { name: 'La voz propia: escribir en primera persona', text: 'Enheduanna, hija del rey Sargón de Acad y suma sacerdotisa del dios Luna en Ur, compuso, según la tradición, himnos a la diosa Inanna y a los templos de Sumer que llevan su nombre. Los conocemos por copias de siglos después, y algunos expertos discuten su autoría, pero se la considera la primera autora conocida de la historia, y en sus versos aparece algo nuevo: un «yo» que habla de su dolor, su exilio y su fe.' },
       q: [
         { q: '¿Por qué se considera a Enheduanna la primera autora de la historia?', a: ['Porque es la primera persona conocida que firmó sus textos con su nombre', 'Porque inventó el alfabeto', 'Porque escribió la Biblia', 'Porque fundó la primera biblioteca'], e: 'Vivió hacia el siglo XXIII a.C., unos 1.500 años antes de Homero.' },
         { q: '¿Quién era el padre de Enheduanna?', a: ['Sargón de Acad, el primer gran conquistador de Mesopotamia', 'Hammurabi', 'Gilgamesh', 'Ciro el Grande'], e: 'Sargón unió las ciudades de Sumer y Acad.' },
@@ -28,7 +28,7 @@ ERAS.push({
       look: lk(0xe8dcc4, 0x8a5a2a, 0xb8875f, 0xd8d4cc, { beard: 0xd8d4cc, acc: 'staff' }), prop: 'tablet',
       intro: 'Hijo mío, escucha mis consejos, no los descuides. Son los más antiguos que se han escrito. ¿Sabrás tú vivir con prudencia?',
       defeat: 'Has escuchado como un buen hijo escucha a su padre. Lleva mis consejos contigo: no son viejos, son antiguos.',
-      concept: { name: 'La sabiduría práctica', text: 'Las Instrucciones de Shuruppak, escritas hacia el 2500 a.C., son los consejos de un padre a su hijo Ziusudra, el héroe sumerio del diluvio. Es uno de los textos de sabiduría más antiguos del mundo: consejos sobre la prudencia, la honradez, la palabra y la vida en familia.' },
+      concept: { name: 'La sabiduría práctica', text: 'Las Instrucciones de Shuruppak, escritas hacia el 2500 a.C., ponen en boca de un sabio legendario los consejos a su hijo Ziusudra, el héroe sumerio del diluvio. Es uno de los textos de sabiduría más antiguos del mundo: consejos sobre la prudencia, la honradez, la palabra y la vida en familia.' },
       q: [
         { q: '¿Qué son las Instrucciones de Shuruppak?', a: ['Consejos de un padre a su hijo, uno de los textos de sabiduría más antiguos', 'Un código de leyes', 'Un mapa de las estrellas', 'Una epopeya de héroes'], e: 'Se escribieron hacia el 2500 a.C.' },
         { q: '¿A quién da sus consejos Shuruppak?', a: ['A su hijo Ziusudra', 'A Gilgamesh', 'A Hammurabi', 'Al rey de Babilonia'], e: 'Ziusudra es el héroe del diluvio en la tradición sumeria.' },
@@ -100,7 +100,7 @@ Object.assign(LESSONS, {
     'Soy Gilgamesh, rey de Uruk. El poema dice que era dos tercios dios y un tercio hombre. Era fuerte, hermoso… y arrogante. Mi pueblo sufría mis caprichos y pidió ayuda a los dioses.',
     'Los dioses crearon a Enkidu, un hombre salvaje que vivía con los animales. Luchamos, y al terminar la pelea nos hicimos amigos. Juntos vencimos al gigante Humbaba en el bosque de los cedros y al Toro del Cielo. Por primera vez, no estaba solo.',
     'Entonces Enkidu enfermó y murió. Lo lloré siete días y siete noches, hasta que vi que no despertaría. Y tuve miedo: ¿también yo moriré así? Dejé mi ciudad y recorrí el mundo buscando el secreto de la vida eterna.',
-    'La tabernera Siduri me dijo: cuando los dioses crearon a los hombres, les dieron la muerte y se quedaron con la vida; tú llena tu vientre, alégrate, cuida al niño que te da la mano y alegra a quien te ama. Utnapishtim, el que sobrevivió al diluvio, me dio una planta de juventud, pero una serpiente me la robó.',
+    'La tabernera Siduri me dijo: cuando los dioses crearon a los hombres, les dieron la muerte y se quedaron con la vida; tú llena tu vientre, alégrate, cuida al niño que te da la mano y alegra a quien te ama. Utnapishtim, el que sobrevivió al diluvio, me reveló dónde crecía una planta de juventud. La saqué del fondo del agua, pero una serpiente me la robó.',
     'Volví a Uruk con las manos vacías. Y al mirar las murallas que había construido, comprendí: no venceré a la muerte, pero puedo vivir bien, cuidar de los míos y dejar algo que perdure. Esa es mi pregunta para ti: si tu vida tiene fin, ¿qué harás con ella?',
   ],
 });

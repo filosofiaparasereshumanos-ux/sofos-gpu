@@ -53,7 +53,7 @@ Object.assign(ANECDOTES, {
   ciro: ['Heródoto cuenta que, de niño, un rey quiso hacerme desaparecer y fui criado por un pastor. Jugando con otros niños, me eligieron rey del juego… y así me descubrieron.', 'Mi tumba en Pasargada es una pequeña casa de piedra. Dicen que tenía escrito: «Oh, hombre, soy Ciro, que dio un imperio a los persas. No me envidies esta poca tierra que cubre mi cuerpo».'],
   mani: ['Cuando quería explicar algo difícil, lo pintaba. En Persia, durante siglos, a un gran pintor se le llamaba «un nuevo Mani».', 'Viajé hasta la India por mar para conocer a los maestros budistas y aprender de ellos.'],
   burzoe: ['Pedí al rey, como única recompensa por mi viaje, que pusiera al principio del libro un capítulo contando mi propia vida. Así mi nombre viajó junto a las fábulas.', 'Una fábula del libro cuenta que un cuervo, una rata, una tortuga y una gacela, siendo tan distintos, se salvaron unos a otros por ser amigos. Es mi favorita.'],
-  ferdousi: ['Mi héroe Rostam vivió setecientos años y mató a un dragón, pero el pasaje que más hace llorar es cuando, sin saberlo, se enfrenta a su propio hijo, Sohrab.', 'Para escribir mi libro usé un viejo libro de los reyes en persa medio, que otros habían reunido antes que yo. Ninguna obra grande nace de la nada.'],
+  ferdousi: ['Mi héroe Rostam vivió setecientos años y mató a un dragón, pero el pasaje que más hace llorar es cuando, sin saberlo, se enfrenta a su propio hijo, Sohrab.', 'Para escribir mi libro usé un libro de los reyes en prosa persa, que otros habían reunido antes que yo a partir de viejas crónicas. Ninguna obra grande nace de la nada.'],
 });
 
 BOOKS.push([

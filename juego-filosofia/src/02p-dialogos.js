@@ -778,7 +778,7 @@ Object.assign(DIALOGOS, {
     posturas: [
       { t: 'Estoy de acuerdo: la vida diaria también enseña.', eje: 'experiencia',
         razones: [
-          DR('Al cocinar ves cómo el huevo se endurece en el aceite y el azúcar se deshace en el agua: son preguntas sobre la naturaleza.', 'b', 'Buena razón: es el mismo ejemplo que daba Sor Juana en su Respuesta a sor Filotea.'),
+          DR('Al cocinar ves que el huevo se fríe y se une en el aceite, y en cambio se deshace en el almíbar: son preguntas sobre la naturaleza.', 'b', 'Buena razón: es el mismo ejemplo que daba Sor Juana en su Respuesta a sor Filotea.'),
           DR('Muchas personas que nunca fueron a la universidad saben pensar con mucha sabiduría sobre la vida.', 'b', 'Buena razón: separas la sabiduría de los títulos.'),
           DR('Porque Sor Juana fue la mujer más inteligente de su siglo.', 'f', 'Su genio no prueba por sí solo que esta idea sea verdadera.', 'falacia de autoridad'),
           DR('Porque leer libros es aburrido.', 'd', 'Que algo te aburra no dice nada sobre lo que enseña.'),
@@ -820,11 +820,11 @@ Object.assign(DIALOGOS, {
           DR('No sé, nada.', 'd', 'Seguro hay algo: la pregunta pedía pensarlo un poco.'),
           DR('Lo que se aprende en casa no es saber.', 'f', 'Contradices tu propia postura sin dar razones.', 'contradicción'),
         ],
-        cierre: 'Has unido la biblioteca y la cocina. «Yo no estudio para saber más, sino para ignorar menos.»' },
+        cierre: 'Has unido la biblioteca y la cocina. Sor Juana decía que estudiaba «solo por ver si con estudiar ignoro menos».' },
     ],
   },
   hipatia: {
-    tesis: 'Defiende tu derecho a pensar, porque incluso pensar de manera errónea es mejor que no pensar.',
+    tesis: 'Defiende tu derecho a pensar, porque incluso pensar de manera errónea es mejor que no pensar. (La frase se atribuye a Hipatia, pero es moderna.)',
     posturas: [
       { t: 'Estoy de acuerdo: es mejor pensar y equivocarse.', eje: 'razon',
         razones: [
@@ -1645,7 +1645,7 @@ Object.assign(DIALOGOS, {
         razones: [
           DR('Las flores son hermosas justamente porque se marchitan pronto.', 'b', 'Buena razón: es la imagen de la poesía de Nezahualcóyotl.'),
           DR('Saber que el tiempo es poco me ayuda a no desperdiciarlo en peleas sin sentido.', 'b', 'Buena razón: unes la idea con la vida práctica.'),
-          DR('Porque Nezahualcóyotl aparece en un billete de México.', 'f', 'Estar en un billete no prueba una idea.', 'falacia de autoridad'),
+          DR('Porque Nezahualcóyotl apareció en un billete de México.', 'f', 'Estar en un billete no prueba una idea.', 'falacia de autoridad'),
           DR('Porque es triste, y lo triste suele ser verdad.', 'd', 'Que algo sea triste no lo hace verdadero.'),
         ],
         objecion: 'Pero si todo pasa, ¿para qué esforzarse? ¿Para qué construir algo, si al final desaparecerá?',

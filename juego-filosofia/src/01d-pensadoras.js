@@ -67,9 +67,9 @@ const PENSADORAS = [
       { q: 'Según Christine, si las mujeres sabían menos que los hombres, era por...', a: ['La falta de educación', 'Su naturaleza inferior', 'La voluntad de Dios', 'El clima'], e: 'Si se las educara igual, aprenderían igual.' },
       { q: '¿Por qué se considera a Christine la primera escritora profesional de Europa?', a: ['Porque vivió de su escritura para mantener a su familia', 'Porque escribió el primer libro impreso', 'Porque fue la primera en saber leer', 'Porque fue reina'], e: 'Enviudó joven y escribió por encargo de reyes y nobles.' },
       { q: '¿En qué país vivió y escribió Christine, aunque nació en Venecia?', a: ['Francia', 'Inglaterra', 'España', 'Alemania'], e: 'Su padre fue astrólogo y médico del rey Carlos V de Francia.' },
-      { q: '¿Cómo se llama el debate literario que Christine provocó criticando el «Roman de la Rose»?', a: ['La querella de las mujeres', 'La querella de los universales', 'La disputa de Valladolid', 'La guerra de los cien años'], e: 'Un debate de siglos sobre el valor de las mujeres.' },
+      { q: '¿Cómo se llama el largo debate sobre el valor de las mujeres que Christine animó al criticar el «Roman de la Rose»?', a: ['La querella de las mujeres', 'La querella de los universales', 'La disputa de Valladolid', 'La guerra de los cien años'], e: 'Un debate de siglos sobre el valor de las mujeres.' },
       { q: '¿A qué heroína dedicó Christine su último poema, en 1429?', a: ['Juana de Arco', 'Isabel la Católica', 'Cleopatra', 'Safo'], e: 'Lo escribió cuando Juana aún vivía.' },
-      { q: '¿Qué artista renacentista inventó la imprenta que difundió los libros hacia 1450?', a: ['Johannes Gutenberg', 'Leonardo da Vinci', 'Brunelleschi', 'Galileo'], e: 'Aunque Christine escribió antes, en manuscritos iluminados.' },
+      { q: '¿Quién desarrolló en Europa, hacia 1450, la imprenta de tipos móviles?', a: ['Johannes Gutenberg', 'Leonardo da Vinci', 'Brunelleschi', 'Galileo'], e: 'Aunque Christine escribió antes, en manuscritos iluminados.' },
     ] } },
 ];
 for (const p of PENSADORAS) {

@@ -17,7 +17,7 @@
     look: lk(0xf0ece0, 0x3a6a8a, 0xd0a07a, 0xd8d8d8, { beard: 0xd8d8d8, hat: 'bald', acc: 'scroll' }), prop: 'water',
     intro: 'Antes de mí, la gente creía que las enfermedades eran castigos de los dioses. Yo preferí observar al enfermo, escucharlo y buscar las causas en la naturaleza. ¿Tú qué harías?',
     defeat: 'Has pensado como un médico: observar con calma, buscar causas reales y, sobre todo, no hacer daño.',
-    concept: { name: 'Observar y no dañar', text: 'Hipócrates, nacido en la isla de Cos, separó la medicina de la magia: enseñó que las enfermedades tienen causas naturales que se pueden observar, como la alimentación, el clima o el agua. Sus discípulos anotaban con cuidado los síntomas y la evolución de cada enfermo. A su escuela se atribuye el juramento hipocrático, que todavía inspira a los médicos, y el principio «primero, no dañar». También enseñó que «la vida es breve y el arte es largo».' },
+    concept: { name: 'Observar y no dañar', text: 'Hipócrates, nacido en la isla de Cos, separó la medicina de la magia: enseñó que las enfermedades tienen causas naturales que se pueden observar, como la alimentación, el clima o el agua. Sus discípulos anotaban con cuidado los síntomas y la evolución de cada enfermo. A su escuela se atribuye el juramento hipocrático, que todavía inspira a los médicos, y la máxima «ayudar o, al menos, no dañar», que luego se resumió en latín como «primero, no dañar». También enseñó que «la vida es breve y el arte es largo».' },
     q: [
       Q('¿Por qué se llama a Hipócrates «padre de la medicina»?', 'Porque explicó las enfermedades por causas naturales, no por castigos divinos', 'Separó la medicina de la magia y la superstición.', 'Porque inventó las vacunas', 'Porque fue el primer cirujano del corazón', 'Porque descubrió los virus'),
       Q('¿Qué principio se asocia a la tradición de Hipócrates?', 'Primero, no dañar', 'Antes de curar, el médico debe evitar hacer daño.', 'El fin justifica los medios', 'Todo fluye', 'Pienso, luego existo'),
@@ -232,7 +232,7 @@
     id: 'mandela', name: 'Nelson Mandela', short: 'Mandela', dates: '1918 – 2013', epithet: 'El preso que eligió el perdón',
     look: lk(0xd8a040, 0x8a5a1a, 0x5a3820, 0xd8d8d8, { hat: 'none', acc: 'none' }), prop: 'podium',
     intro: 'Pasé veintisiete años en prisión por luchar contra el apartheid. Cuando salí, podía elegir la venganza. Elegí la reconciliación. ¿Qué habrías hecho tú?',
-    defeat: 'Has elegido como Mandela: el resentimiento es como beber veneno y esperar que muera tu enemigo. La paz se construye con valentía.',
+    defeat: 'Has elegido como Mandela: el rencor te encadena a quien te hizo daño; el perdón te deja libre. La paz se construye con valentía.',
     concept: { name: 'Reconciliación y ubuntu', text: 'Nelson Mandela luchó contra el apartheid, el sistema que separaba y oprimía a las personas negras en Sudáfrica. Pasó veintisiete años en prisión, buena parte en la isla de Robben. Al salir, en 1990, no buscó la venganza, sino la reconciliación entre todos los sudafricanos, y en 1994 fue elegido el primer presidente negro del país. Recibió el Premio Nobel de la Paz junto a Frederik de Klerk. Su vida encarna el ubuntu africano: «soy porque somos». Decía que la educación es el arma más poderosa para cambiar el mundo.' },
     q: [
       Q('¿Contra qué sistema luchó Mandela?', 'El apartheid, que separaba y oprimía a las personas negras', 'En Sudáfrica.', 'La monarquía inglesa', 'La esclavitud en Brasil', 'El Imperio romano'),
@@ -425,7 +425,7 @@ Object.assign(LESSONS, {
     'Escribí los himnos de la India y de Bangladés, pero advertí contra el nacionalismo que divide. Mi pregunta para ti: ¿dónde aprendes tú con más alegría?',
   ],
   newton: [
-    'Soy Isaac Newton. Nací en una granja de Inglaterra, el día de Navidad, tan pequeño que dicen que cabía en una jarra.',
+    'Soy Isaac Newton. Nací en una granja de Inglaterra el día de Navidad de 1642 según el calendario inglés de entonces (el 4 de enero de 1643 en el nuestro), tan pequeño que dicen que cabía en una jarra.',
     'Cuando una peste cerró la universidad, volví a casa. En esos meses de encierro hice mis mayores descubrimientos: sobre la luz, el cálculo y la gravedad.',
     'Me pregunté por qué la manzana cae y la Luna no. Comprendí que la misma fuerza actúa en las dos: la Luna también cae, pero va tan rápido que da vueltas.',
     'Formulé tres leyes del movimiento y la ley de la gravitación universal. Con ellas se explican las mareas, las órbitas y el vuelo de una piedra.',

@@ -74,6 +74,6 @@ BOOKS.push([
       { t: 'Más allá de los números', x: 'Ada imagina que la máquina podría operar con cualquier símbolo, incluso componer música, si se traducen las notas a números. Pero advierte: la máquina no tiene pretensión de originar nada; solo puede hacer lo que sabemos ordenarle.' },
     ],
     quote: 'La máquina analítica teje patrones algebraicos igual que el telar de Jacquard teje flores y hojas.',
-    q: { q: '¿Qué describe Ada Lovelace en la nota G?', a: ['El primer algoritmo para una máquina, que calcula los números de Bernoulli', 'Un poema de su padre', 'Un viaje a Italia', 'Una receta de cocina'], e: 'Por eso se la considera la primera programadora.' } },
+    q: { q: '¿Qué describe Ada Lovelace en la nota G?', a: ['El primer algoritmo publicado para una máquina, que calcula los números de Bernoulli', 'Un poema de su padre', 'Un viaje a Italia', 'Una receta de cocina'], e: 'Por eso a menudo se la llama la primera programadora, aunque Babbage ya había esbozado programas.' } },
 ]);
 BOOKS[BOOKS.length - 1].forEach((b) => { b.q.book = b.title; });

@@ -2,9 +2,9 @@
 //  XVI · SUMER Y MESOPOTAMIA: lugares, ciudadanos, encargos, anécdotas y libros
 // ============================================================================
 POIS.push([
-  wpoi(0, 'zigurat', 'El zigurat de Ur', 'En el centro de Ur se levanta el gran zigurat, una montaña artificial de ladrillos de barro con terrazas escalonadas y una escalera monumental. En lo alto estaba el templo del dios Luna, Nanna. Los sumerios creían que los zigurats unían el cielo y la tierra. Enheduanna fue la suma sacerdotisa de este templo.',
+  wpoi(0, 'zigurat', 'El zigurat de Ur', 'En el centro de Ur se levanta el gran zigurat, una montaña artificial de ladrillos de barro con terrazas escalonadas y una escalera monumental. En lo alto estaba el templo del dios Luna, Nanna. Los sumerios creían que los zigurats unían el cielo y la tierra. Siglos antes de que se levantara, Enheduanna había sido suma sacerdotisa de Nanna en Ur.',
     'Se construyó hacia el 2100 a.C. con millones de ladrillos, unidos con betún, el asfalto natural que brotaba del suelo.',
-    { q: '¿A qué dios estaba dedicado el zigurat de Ur?', a: ['A Nanna, el dios Luna', 'A Zeus', 'A Ra, el Sol', 'A Inti'], e: 'Enheduanna fue su suma sacerdotisa.' }),
+    { q: '¿A qué dios estaba dedicado el zigurat de Ur?', a: ['A Nanna, el dios Luna', 'A Zeus', 'A Ra, el Sol', 'A Inti'], e: 'Siglos antes de construirse, Enheduanna fue suma sacerdotisa de Nanna.' }),
   wpoi(1, 'edubba', 'La casa de las tablillas', 'Los sumerios llamaban a la escuela edubba, la casa de las tablillas. Allí los niños, y alguna niña, aprendían durante años a escribir con una caña sobre barro húmedo, copiando listas de palabras, problemas de matemáticas, proverbios y los himnos de Enheduanna.',
     'Se conservan tablillas de alumnos con errores corregidos por el maestro, y hasta quejas de estudiantes castigados por llegar tarde.',
     { q: '¿Qué era la edubba sumeria?', a: ['La escuela, la casa de las tablillas', 'El palacio del rey', 'Un mercado', 'Un barco'], e: 'Allí se formaban los escribas.' }),

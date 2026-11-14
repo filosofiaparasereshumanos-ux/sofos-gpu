@@ -64,7 +64,7 @@
           Q('¿Con quién empieza el evangelio de Marcos?', 'Con Juan el Bautista', 'Sin infancia ni genealogía.', 'Con Abraham', 'Con Adán y Eva', 'Con el rey David'),
           Q('Según la tradición, ¿la predicación de qué apóstol recogió Marcos?', 'La de Pedro', 'Que había sido pescador.', 'La de Pablo', 'La de Judas', 'La de Tomás'),
           Q('¿Cuál es el símbolo tradicional de Marcos?', 'El león', 'Por la voz que clama en el desierto.', 'El águila', 'El toro', 'El hombre alado'),
-          Q('¿Qué otros evangelios usaron a Marcos como fuente?', 'Mateo y Lucas', 'Por eso se llaman sinópticos los tres.', 'Juan y Pablo', 'Ninguno', 'El Corán'),
+          Q('¿Qué otros evangelios usaron a Marcos como fuente?', 'Mateo y Lucas', 'Los tres se parecen tanto que se llaman sinópticos: se pueden leer en columnas paralelas.', 'Juan y Pablo', 'Ninguno', 'El Corán'),
         ] },
       { id: 'lucas', name: 'Lucas', short: 'Lucas', dates: 'siglo I', epithet: 'El médico que escribió dos libros',
         look: lk(0x8a5a3a, 0x3a5a8a, 0xd0a07a, 0x5a3a2a, { beard: 0x5a3a2a, hat: 'none', acc: 'book' }), prop: 'lectern',
@@ -163,7 +163,7 @@ Object.assign(LESSONS, {
     'Según los Hechos, camino de Damasco una luz me derribó y oí una voz. Quedé ciego unos días. Cuando recuperé la vista, mi vida había cambiado.',
     'Viajé por Asia Menor, Grecia y hasta Roma, en barco y a pie. Naufragué, estuve en la cárcel, y fundé comunidades entre los no judíos. Les escribía cartas para aconsejarlas.',
     'Trece cartas llevan mi nombre; los estudiosos consideran seguro que siete son mías. Escritas hacia los años cincuenta, son los textos cristianos más antiguos que se conservan.',
-    'En la primera carta a los Corintios escribí: el amor es paciente, es servicial. Ya no hay judío ni griego, ni esclavo ni libre. Mi pregunta para ti: ¿qué puede unir a personas muy distintas?',
+    'En la primera carta a los Corintios escribí: el amor es paciente, es servicial. Y a los Gálatas: ya no hay judío ni griego, ni esclavo ni libre. Mi pregunta para ti: ¿qué puede unir a personas muy distintas?',
   ],
 });
 

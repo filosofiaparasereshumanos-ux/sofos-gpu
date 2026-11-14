@@ -116,8 +116,8 @@ const LESSONS = {
     'En vida sufrí el destierro y vi quemar mis libros. Pero, traducidos al latín y al hebreo, llegaron a París y Oxford, y Tomás de Aquino discutió conmigo. Gracias a esta tradición, Europa recuperó al Aristóteles completo.',
   ],
   ockham: [
-    'Soy Guillermo, del pueblo de Ockham, en Inglaterra. Fui fraile franciscano y maestro en Oxford, y me llamaron el Doctor Invencible.',
-    'Mi principio más famoso es la navaja: no deben multiplicarse los entes sin necesidad. Entre dos explicaciones, prefiere la más sencilla, la que no inventa cosas innecesarias.',
+    'Soy Guillermo, del pueblo de Ockham, en Inglaterra. Fui fraile franciscano y estudié y enseñé en Oxford, aunque nunca llegué a ser maestro titular; me llamaron el Doctor Invencible.',
+    'Mi principio más famoso es la navaja. Yo escribí: no hay que suponer la pluralidad sin necesidad; después otros lo resumieron como no multiplicar los entes sin necesidad. Entre dos explicaciones, prefiere la más sencilla, la que no inventa cosas innecesarias.',
     'Con esa navaja entré en la querella de los universales. ¿Existe la humanidad como algo real, además de cada ser humano concreto? Yo digo que no. Solo existen individuos. Los universales son nombres con los que agrupamos lo semejante.',
     'Conocemos primero las cosas singulares, por intuición directa. La ciencia trata de conceptos y proposiciones sobre ellas, no de esencias misteriosas separadas.',
     'La fe y la razón deben separarse. Las verdades de fe no pueden demostrarse con la razón: se aceptan por revelación. Esa separación dejó a la filosofía y al estudio de la naturaleza un campo propio de investigación.',

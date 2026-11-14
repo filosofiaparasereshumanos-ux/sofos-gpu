@@ -165,7 +165,7 @@
       { id: 'montesquieu', name: 'Charles de Montesquieu', short: 'Montesquieu', dates: '1689 – 1755', epithet: 'El que separó los poderes',
         look: lk(0x6a2a3a, 0x2a1a20, 0xf0d0b0, 0xe8e8e8, { hat: 'wig', acc: 'quill' }), prop: 'scales',
         intro: 'Todo el que tiene poder tiende a abusar de él. ¿Cómo evitarlo? Mi respuesta es sencilla: que el poder frene al poder.',
-        defeat: 'Has repartido bien los poderes. Una ley debe ser como la muerte, que no perdona a nadie.',
+        defeat: 'Has repartido bien los poderes. Para que no se pueda abusar del poder, es preciso que el poder frene al poder.',
         concept: { name: 'La separación de poderes', text: 'Montesquieu fue un barón y jurista francés, dueño de viñedos cerca de Burdeos. En las «Cartas persas» (1721) se burló de la sociedad francesa a través de los ojos de dos viajeros persas. En «Del espíritu de las leyes» (1748), tras años de viajes y estudios, propuso que el poder del Estado se divida en tres: el legislativo, que hace las leyes; el ejecutivo, que gobierna; y el judicial, que juzga. Si un mismo hombre o grupo tiene los tres, no hay libertad. Por eso, «el poder debe frenar al poder». Esta idea inspiró la Constitución de Estados Unidos y muchas constituciones de América Latina.' },
         q: [
           Q('¿En qué tres poderes propuso dividir el Estado Montesquieu?', 'Legislativo, ejecutivo y judicial', 'Para que ninguno tenga todo el poder.', 'Rey, iglesia y ejército', 'Norte, sur y centro', 'Ricos, pobres y nobles'),
@@ -212,7 +212,7 @@
           Q('¿Qué dice el «principio de diferencia»?', 'Las desigualdades solo son aceptables si benefician a los que están peor', 'Junto con igualdad de oportunidades.', 'Todos deben ser idénticos', 'Los ricos deciden todo', 'No hay que ayudar a nadie'),
           Q('¿Cómo llamó Rawls a su teoría?', 'Justicia como equidad', 'Fairness, en inglés.', 'Justicia del más fuerte', 'Justicia divina', 'Justicia rápida'),
           Q('¿Cuál es el primer principio de Rawls?', 'Iguales libertades básicas para todos', 'Antes que cualquier otra cosa.', 'Que mande el más rico', 'Que no haya leyes', 'Que todos ganen lo mismo'),
-          Q('¿En qué universidad enseñó Rawls?', 'En Harvard', 'Durante casi cuarenta años.', 'En Atenas', 'En Salamanca', 'En Bolonia'),
+          Q('¿En qué universidad enseñó Rawls?', 'En Harvard', 'Durante más de treinta años.', 'En Atenas', 'En Salamanca', 'En Bolonia'),
           Q('¿Qué hizo Solón con los esclavizados por deudas?', 'Los liberó y anuló sus deudas', 'La «sacudida de las cargas».', 'Los vendió', 'Los olvidó', 'Los mandó a la guerra'),
           Q('¿Quién dijo que la verdadera ley es la recta razón conforme a la naturaleza?', 'Cicerón', 'El gran orador romano.', 'Nerón', 'Maquiavelo', 'Hobbes'),
           Q('¿Quién debatió en Valladolid defendiendo a los pueblos indígenas?', 'Bartolomé de las Casas', 'En 1550, contra Sepúlveda.', 'Hernán Cortés', 'Cristóbal Colón', 'Felipe II'),
@@ -235,7 +235,7 @@
         look: lk(0xc85a2a, 0x8a3a1a, 0xa07050, 0x1a1410, { beard: 0x1a1410, hat: 'bald', acc: 'staff' }), prop: 'cave',
         intro: 'El emperador me preguntó cuánto mérito había ganado construyendo templos. Le dije: ninguno. Me preguntó quién era yo. Le dije: no lo sé. ¿Y tú, sabes quién eres?',
         defeat: 'Has mirado directamente tu mente. El camino no está en las palabras de los libros, sino en ver tu propia naturaleza.',
-        concept: { name: 'Mirar directamente la mente', text: 'Bodhidharma fue un monje budista venido del oeste, probablemente de la India, que según la tradición llevó a China la escuela Chan, que en Japón se llamaría Zen. Es más leyenda que historia. Se cuenta que el emperador Wu le preguntó qué mérito había ganado por construir templos, y él respondió: «Ninguno». También que meditó nueve años frente a la pared de una cueva cerca del monasterio de Shaolin. Su enseñanza se resume así: una transmisión especial fuera de las escrituras, que no depende de las palabras, que apunta directamente a la mente y permite ver la propia naturaleza.' },
+        concept: { name: 'Mirar directamente la mente', text: 'Bodhidharma fue un monje budista venido del oeste, probablemente de la India, que según la tradición llevó a China la escuela Chan, que en Japón se llamaría Zen. Es más leyenda que historia. Se cuenta que el emperador Wu le preguntó qué mérito había ganado por construir templos, y él respondió: «Ninguno». También que meditó nueve años frente a la pared de una cueva cerca del monasterio de Shaolin. La tradición posterior resumió su enseñanza así: una transmisión especial fuera de las escrituras, que no depende de las palabras, que apunta directamente a la mente y permite ver la propia naturaleza.' },
         q: [
           Q('¿Qué escuela budista llevó Bodhidharma a China, según la tradición?', 'El Chan, que en Japón se llamó Zen', 'Es considerado su primer patriarca.', 'El yoga', 'El taoísmo', 'El confucianismo'),
           Q('¿Qué respondió Bodhidharma al emperador que preguntó por su mérito?', '«Ninguno»', 'Construir templos no basta para despertar.', '«Muchísimo»', '«Un palacio en el cielo»', '«Pregúntale a otro»'),
@@ -248,7 +248,7 @@
         look: lk(0x8a6a3a, 0x5a4a2a, 0xc49372, 0x1a1410, { hat: 'bald', acc: 'none' }), prop: 'mirror',
         intro: 'Yo era un leñador pobre y no sabía leer. Un día escuché a alguien recitar un sutra en el mercado, y algo se abrió en mí. ¿Sabes dónde se posa el polvo?',
         defeat: 'Has visto con claridad. Desde el principio no hay ni una cosa: ¿dónde podría posarse el polvo?',
-        concept: { name: 'El despertar súbito', text: 'Huineng fue un leñador del sur de China que no sabía leer. Al oír recitar el Sutra del Diamante, decidió ir al monasterio del quinto patriarca del Chan, donde lo pusieron a descascarar arroz. Cuando el maestro pidió a sus monjes un poema que mostrara su comprensión, el monje principal escribió que la mente es como un espejo que hay que limpiar siempre del polvo. Huineng, que pidió que alguien escribiera su respuesta, dijo: «Desde el principio no hay ni una cosa: ¿dónde se posaría el polvo?». El maestro le dio a él su manto: fue el sexto patriarca. Enseñó que el despertar puede ser súbito, porque la naturaleza de Buda ya está en todos. Sus enseñanzas se reunieron en el «Sutra del estrado».' },
+        concept: { name: 'El despertar súbito', text: 'Según el Sutra del estrado, Huineng fue un leñador del sur de China que no sabía leer. Al oír recitar el Sutra del Diamante, decidió ir al monasterio del quinto patriarca del Chan, donde lo pusieron a descascarar arroz. Cuando el maestro pidió a sus monjes un poema que mostrara su comprensión, el monje principal escribió que la mente es como un espejo que hay que limpiar siempre del polvo. Huineng, que pidió que alguien escribiera su respuesta, dijo: «Desde el principio no hay ni una cosa: ¿dónde se posaría el polvo?». El maestro le dio a él su manto: fue el sexto patriarca. Enseñó que el despertar puede ser súbito, porque la naturaleza de Buda ya está en todos. Sus enseñanzas se reunieron en el «Sutra del estrado».' },
         q: [
           Q('¿A qué se dedicaba Huineng antes de ser monje?', 'Era leñador', 'Pobre y sin saber leer.', 'Era emperador', 'Era general', 'Era banquero'),
           Q('¿Qué trabajo le dieron en el monasterio?', 'Descascarar arroz', 'Lejos de los monjes estudiosos.', 'Dirigir a los monjes', 'Enseñar a leer', 'Cuidar caballos'),
@@ -287,7 +287,7 @@
         look: lk(0xc82a5a, 0xe8b048, 0xa07050, 0x1a1410, { hat: 'braids', acc: 'none' }), prop: 'flower',
         intro: 'Era princesa, y me exigían vivir encerrada en el palacio. Yo prefería bailar descalza en los templos y cantar a mi amado Krishna. ¿Qué harías tú por lo que amas?',
         defeat: 'Has escuchado mi canción. El amor verdadero no conoce muros, ni castas, ni palacios.',
-        concept: { name: 'El camino del amor', text: 'Mirabai fue una princesa rajput del norte de la India, poeta y devota del dios Krishna. Desde niña sintió por él un amor total. Casada con un príncipe, se negó a seguir las costumbres de la corte: cantaba y bailaba en los templos junto a la gente común, sin importar la casta. Su familia política la persiguió; la leyenda cuenta que intentaron envenenarla y que el veneno se volvió néctar. Al final dejó el palacio y vivió como peregrina en Vrindavan y en Dwarka. Sus canciones, llamadas «bhajan», se cantan todavía. Representa el camino de la «bhakti», la devoción amorosa.' },
+        concept: { name: 'El camino del amor', text: 'Mirabai fue una princesa rajput del norte de la India, poeta y devota del dios Krishna. Desde niña sintió por él un amor total. Casada con un príncipe, se negó a seguir las costumbres de la corte: cantaba y bailaba en los templos junto a la gente común, sin importar la casta. Su familia política la persiguió; la leyenda cuenta que intentaron envenenarla y que el veneno se volvió néctar. Al final dejó el palacio y vivió como peregrina en Vrindavan y en Dwarka. Las canciones que se le atribuyen, llamadas «bhajan», se cantan todavía. Representa el camino de la «bhakti», la devoción amorosa.' },
         q: [
           Q('¿A qué dios amaba y cantaba Mirabai?', 'A Krishna', 'Desde que era niña.', 'A Zeus', 'A Odín', 'A Ra'),
           Q('¿Qué hacía Mirabai en los templos?', 'Cantaba y bailaba junto a la gente común', 'Sin importar la casta.', 'Recaudaba impuestos', 'Daba órdenes', 'Dormía'),
@@ -358,7 +358,7 @@ Object.assign(LESSONS, {
     'Nací esclavizada en el estado de Nueva York, con el nombre de Isabella. Me vendieron varias veces. Mi primera lengua fue el neerlandés de los colonos.',
     'En 1826, mi amo no cumplió su promesa de liberarme. Así que me fui caminando, con mi bebé en brazos. Más tarde, gané un juicio para recuperar a mi hijo Peter, vendido ilegalmente.',
     'En 1843 sentí que debía viajar y decir la verdad. Me puse un nombre nuevo: Sojourner Truth, la viajera de la verdad.',
-    'En Akron, en 1851, unos hombres decían que las mujeres eran débiles. Yo había arado, sembrado y cargado tanto como cualquier hombre. Y pregunté: ¿acaso no soy una mujer?',
+    'En Akron, en 1851, unos hombres decían que las mujeres eran débiles. Yo había arado, sembrado y cargado tanto como cualquier hombre. Años después, una versión de mi discurso lo resumió en una pregunta: ¿acaso no soy una mujer?',
     'Nunca aprendí a leer, pero hablé ante miles y conocí al presidente Lincoln. Mi pregunta para ti: ¿qué verdad dirías tú, aunque te temblara la voz?',
   ],
   tristan: [
@@ -387,7 +387,7 @@ Object.assign(LESSONS, {
     'Hacia el año 594 antes de Cristo, Atenas estaba a punto de la guerra civil. Los pobres que no pagaban sus deudas perdían sus tierras y eran vendidos como esclavos.',
     'Decreté la sacudida de las cargas: anulé esas deudas, liberé a los esclavizados y prohibí que nadie fuera prenda de un préstamo. Los ricos se quejaron, y los pobres querían más.',
     'Escribí las leyes en tablas de madera giratorias, para que todos las leyeran. Y me fui a viajar diez años, para que no me pidieran cambiarlas a cada rato.',
-    'En Lidia, el rico rey Creso me preguntó si él era el hombre más feliz. Le dije: no llames feliz a nadie antes de ver su final. Mi pregunta para ti: ¿qué hace que una ley sea justa para todos?',
+    'Cuenta Heródoto que en Lidia el rico rey Creso me preguntó si él era el hombre más feliz. Le dije: no llames feliz a nadie antes de ver su final. Mi pregunta para ti: ¿qué hace que una ley sea justa para todos?',
   ],
   ciceron: [
     'Soy Marco Tulio Cicerón, de Arpino. Mi familia no era noble, así que en Roma me llamaban «hombre nuevo». Llegué lejos con una sola arma: la palabra.',

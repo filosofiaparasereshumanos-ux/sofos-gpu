@@ -9,7 +9,7 @@ ERAS.push({
   enemy: { one: 'Sombra de la Prisa', many: 'Sombras de la Prisa' },
   story: 'En Japón, la filosofía no solo se escribió en libros: se practicó sentándose en silencio, sirviendo una taza de té, caminando por los caminos y escribiendo poemas de tres versos. Aquí aprenderás a mirar lo pequeño, a aceptar lo que pasa y a estar presente en cada instante.',
   sages: [
-    { id: 'murasaki', name: 'Murasaki Shikibu', short: 'Murasaki', dates: 'c. 973 – c. 1014', epithet: 'La autora de la primera gran novela', female: true,
+    { id: 'murasaki', name: 'Murasaki Shikibu', short: 'Murasaki', dates: 'c. 973 – c. 1014', epithet: 'La autora de una de las primeras grandes novelas', female: true,
       look: lk(0x8a3a7a, 0xe8a8c8, 0xf0dcc8, 0x0a0a0a, { hat: 'longhair', acc: 'scroll' }), prop: 'lectern',
       intro: 'En la corte de Kioto escribí la historia del príncipe Genji, y en ella todo florece y se marchita. ¿Sabes conmoverte ante lo que no dura?',
       defeat: 'Has sentido la belleza de lo que pasa. Las flores del cerezo son hermosas precisamente porque caen.',
@@ -43,7 +43,7 @@ ERAS.push({
       look: lk(0x4a4a3a, 0x8a7a5a, 0xe0c098, 0x3a3a3a, { hat: 'cap', acc: 'cup' }), prop: 'cafe',
       intro: 'En mi pequeña casa de té, el samurái y el campesino se inclinan igual para entrar. Ichigo ichie: este encuentro no se repetirá. ¿Lo vivirás con todo tu corazón?',
       defeat: 'Has comprendido el camino del té: la belleza está en lo sencillo, lo imperfecto y lo compartido.',
-      concept: { name: 'Wabi y el camino del té', text: 'Sen no Rikyū perfeccionó la ceremonia del té en Japón. Prefirió los cuencos sencillos y un poco imperfectos, las casas de té pequeñas y la calma: la estética wabi. En la ceremonia, todos son iguales, y cada encuentro es único: ichigo ichie, «una vez, un encuentro».' },
+      concept: { name: 'Wabi y el camino del té', text: 'Sen no Rikyū perfeccionó la ceremonia del té en Japón. Prefirió los cuencos sencillos y un poco imperfectos, las casas de té pequeñas y la calma: la estética wabi. En la ceremonia, todos son iguales, y cada encuentro es único: la idea que siglos después se resumió en el lema ichigo ichie, «una vez, un encuentro».' },
       q: [
         { q: '¿Qué significa «ichigo ichie»?', a: ['Una vez, un encuentro: cada momento es único', 'Uno contra uno', 'Comer una vez al día', 'Un té, un euro'], e: 'Por eso hay que vivir cada encuentro con plenitud.' },
         { q: '¿Qué arte perfeccionó Sen no Rikyū?', a: ['La ceremonia del té', 'La guerra con espadas', 'La pintura al óleo', 'La navegación'], e: 'El chadō, el camino del té.' },
@@ -60,7 +60,7 @@ ERAS.push({
       defeat: 'Has caminado conmigo. Cada día es un viaje, y el viaje mismo es tu casa.',
       concept: { name: 'El haiku y el instante', text: 'Matsuo Bashō es el gran maestro del haiku, un poema breve de tres versos que captura un instante de la naturaleza. Vivió con sencillez y recorrió Japón a pie. Su diario de viaje, Sendas de Oku, mezcla prosa y poemas. Para él, poesía y vida son un mismo camino.' },
       q: [
-        { q: '¿Qué es un haiku?', a: ['Un poema breve de tres versos que capta un instante', 'Una novela larga', 'Una canción de guerra', 'Un tipo de té'], e: 'Tradicionalmente de 5, 7 y 5 sílabas.' },
+        { q: '¿Qué es un haiku?', a: ['Un poema breve de tres versos que capta un instante', 'Una novela larga', 'Una canción de guerra', 'Un tipo de té'], e: 'Tradicionalmente de 5, 7 y 5 sonidos (en japonés se cuentan moras, no sílabas).' },
         { q: '¿Qué animal aparece en el haiku más famoso de Bashō?', a: ['Una rana que salta al estanque', 'Un tigre', 'Un dragón', 'Un caballo'], e: 'Viejo estanque, se zambulle una rana, ruido del agua.' },
         { q: '¿Cómo se llama el famoso diario de viaje de Bashō?', a: ['Sendas de Oku', 'La historia de Genji', 'El libro del té', 'Shōbōgenzō'], e: 'Cuenta su viaje a pie por el norte de Japón en 1689.' },
         { q: '¿De dónde viene el nombre «Bashō»?', a: ['De un platanero que sus discípulos plantaron junto a su cabaña', 'De su padre', 'De un río', 'De un emperador'], e: 'Bashō significa platanero.' },
@@ -72,7 +72,7 @@ ERAS.push({
     { id: 'nishida', name: 'Kitarō Nishida', short: 'Nishida', dates: '1870 – 1945', epithet: 'El filósofo del camino de Kioto', boss: true,
       look: lk(0x2a2a3a, 0x5a5a6a, 0xe0c098, 0x3a3a3a, { beard: 0x3a3a3a, acc: 'book' }), prop: 'garden',
       intro: 'Uní la meditación zen con la filosofía de Occidente. Antes de que digas yo y el mundo, hay una experiencia pura donde los dos son uno. ¿Te atreves a pensar desde la nada?',
-      defeat: 'Has recorrido todo el camino. La filosofía no empieza solo con el asombro, sino también con la tristeza honda de la vida; y de ella nace la sabiduría.',
+      defeat: 'Has recorrido todo el camino. Para mí, la filosofía no nace tanto del asombro como de la tristeza honda de la vida; y de ella nace la sabiduría.',
       concept: { name: 'La experiencia pura y la nada', text: 'Kitarō Nishida, fundador de la Escuela de Kioto, unió la tradición zen con la filosofía europea. En Indagación del bien (1911) habla de la experiencia pura: el momento, como al escuchar música absortos, en que aún no separamos el sujeto que conoce del objeto conocido. Más tarde pensó la realidad como un «lugar» de la nada absoluta, donde todo encuentra su sitio.' },
       q: [
         { q: '¿Qué escuela de filosofía fundó Kitarō Nishida?', a: ['La Escuela de Kioto', 'La Escuela de Atenas', 'La Escuela de Fráncfort', 'La Escuela de Salamanca'], e: 'Unió el pensamiento oriental y el occidental.' },
@@ -80,7 +80,7 @@ ERAS.push({
         { q: '¿Cómo se llama el primer gran libro de Nishida?', a: ['Indagación del bien', 'Crítica de la razón pura', 'Sendas de Oku', 'La república'], e: 'Publicado en 1911.' },
         { q: '¿Qué práctica hizo Nishida durante años, además de estudiar filosofía?', a: ['La meditación zen', 'El boxeo', 'La navegación', 'La alquimia'], e: 'Meditó durante más de diez años.' },
         { q: '¿Qué paseo de Kioto lleva el nombre de los paseos de Nishida?', a: ['El camino del filósofo', 'La avenida de los reyes', 'El puente de la ciencia', 'La calle del té'], e: 'Tetsugaku no michi, junto a un canal lleno de cerezos.' },
-        { q: 'Según Nishida, ¿de dónde nace la filosofía, además del asombro?', a: ['De la tristeza profunda de la vida', 'Del aburrimiento', 'Del dinero', 'De la guerra'], e: 'Nishida perdió a varios de sus hijos y a su esposa.' },
+        { q: 'Según Nishida, ¿de dónde debe nacer la filosofía, más que del asombro?', a: ['De la tristeza profunda de la vida', 'Del aburrimiento', 'Del dinero', 'De la guerra'], e: 'Nishida perdió a varios de sus hijos y a su esposa.' },
         { q: '¿Qué tradiciones unió Nishida en su pensamiento?', a: ['El zen japonés y la filosofía europea', 'La astrología y la química', 'El fútbol y la música', 'La cocina y la pintura'], e: 'Leyó a William James, Hegel y Bergson, entre otros.' },
         { q: '¿Cómo llamó Nishida al «lugar» donde todo existe?', a: ['La nada absoluta', 'El paraíso', 'El mercado', 'La caverna'], e: 'Una nada que no es vacío, sino lo que acoge todas las cosas.' },
       ] },
@@ -106,7 +106,7 @@ Object.assign(LESSONS, {
     'Soy Sen no Rikyū. Nací en Sakai, una ciudad de comerciantes, en 1522. Desde joven me enamoró el arte de preparar y servir el té.',
     'Fui maestro del té de los dos señores más poderosos de Japón, Oda Nobunaga y Toyotomi Hideyoshi. Hideyoshi tenía una sala de té cubierta de oro. Yo prefería otra cosa: una cabaña de madera y barro de apenas dos tatamis.',
     'Mi casa de té tenía una puerta tan baja que todos, el señor y el comerciante, tenían que agacharse para entrar. Los samuráis dejaban fuera sus espadas. Dentro, todos eran iguales ante una taza de té.',
-    'Elegía cuencos sencillos, a veces con grietas, hechos a mano por alfareros humildes. A esa belleza tranquila, sencilla e imperfecta la llamamos wabi. Y enseñaba a mis discípulos ichigo ichie: una vez, un encuentro. Este momento nunca se repetirá.',
+    'Elegía cuencos sencillos, a veces con grietas, hechos a mano por alfareros humildes. A esa belleza tranquila, sencilla e imperfecta la llamamos wabi. Y enseñaba a mis discípulos lo que siglos después se resumió como ichigo ichie: una vez, un encuentro. Este momento nunca se repetirá.',
     'Al final de mi vida perdí el favor de Hideyoshi y murió conmigo una época. Pero el camino del té sigue vivo. Mi pregunta para ti: ¿qué encuentro de hoy podrías vivir como si fuera único, porque de verdad lo es?',
   ],
   basho: [
@@ -120,7 +120,7 @@ Object.assign(LESSONS, {
     'Soy Kitarō Nishida. Nací en 1870, cerca del mar del Japón. En mi juventud, Japón se abría al mundo y llegaban los libros de los filósofos europeos: Kant, Hegel, William James.',
     'Durante más de diez años practiqué la meditación zen, mientras estudiaba filosofía occidental. Quería unir dos caminos: la experiencia silenciosa del zen y el pensamiento riguroso de Europa.',
     'En 1911 publiqué Indagación del bien. Allí hablo de la experiencia pura: cuando escuchas una música hermosa tan absorto que no hay un tú que escucha y una música escuchada, solo hay música. Para mí, esa unidad es más real que la separación entre sujeto y objeto.',
-    'Mi vida tuvo mucho dolor: perdí a varios de mis hijos y a mi esposa. Escribí que la filosofía no nace solo del asombro, sino también de la tristeza profunda de la vida. Más tarde pensé la realidad como un lugar de la nada absoluta: una nada que no es vacío, sino el espacio que acoge todas las cosas.',
+    'Mi vida tuvo mucho dolor: perdí a varios de mis hijos y a mi esposa. Escribí que la filosofía no nace del asombro, como decían los griegos, sino de la tristeza profunda de la vida. Más tarde pensé la realidad como un lugar de la nada absoluta: una nada que no es vacío, sino el espacio que acoge todas las cosas.',
     'Cada día paseaba junto a un canal de Kioto lleno de cerezos, pensando. Hoy ese paseo se llama el camino del filósofo. Mi pregunta para ti: ¿has vivido alguna vez un momento en que te olvidaste de ti mismo porque estabas completamente dentro de lo que hacías?',
   ],
 });

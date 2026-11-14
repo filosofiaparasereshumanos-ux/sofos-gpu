@@ -298,7 +298,7 @@ const ERAS = [
         id: 'ockham', name: 'Guillermo de Ockham', short: 'Ockham', dates: 'c. 1287 – 1347', epithet: 'El Doctor Invencible',
         look: { robe: 0x6d5b45, robe2: 0xd8cfb8, skin: 0xc49372, hair: 0x6b5340, beard: false, hat: 'hood', acc: 'book' },
         prop: 'razor',
-        intro: 'No multipliques los entes sin necesidad. Responde con lo justo, ni una palabra más.',
+        intro: 'No hay que suponer la pluralidad sin necesidad. Responde con lo justo, ni una palabra más.',
         defeat: 'Tu respuesta fue la más simple, y la verdadera. La navaja corta a tu favor.',
         concept: { name: 'Navaja de Ockham', text: 'Entre explicaciones posibles, preferir la más simple: no deben multiplicarse los entes sin necesidad. Los universales no son cosas, sino nombres.' },
         q: [

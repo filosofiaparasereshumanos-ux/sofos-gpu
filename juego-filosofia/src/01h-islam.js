@@ -27,7 +27,7 @@ ERAS.push({
       look: lk(0x4a3a2a, 0x2a2a2a, 0xb8875f, 0x1a1410, { hat: 'hood', acc: 'lamp' }), prop: 'fire',
       intro: 'Dicen que una vez corrí por Basora con una antorcha y un cubo de agua: quería quemar el paraíso y apagar el infierno. ¿Sabes por qué?',
       defeat: 'Has comprendido que lo más valioso se ama por sí mismo, no por el premio ni por miedo al castigo.',
-      concept: { name: 'El amor desinteresado', text: 'Rabia de Basora fue una mujer liberada de la esclavitud que se convirtió en una de las grandes místicas del sufismo. Enseñó que hay que amar a Dios por sí mismo, no por la recompensa del paraíso ni por miedo al infierno: el amor verdadero no hace cálculos.' },
+      concept: { name: 'El amor desinteresado', text: 'Rabia de Basora fue, según la tradición, una mujer liberada de la esclavitud que se convirtió en una de las grandes místicas del sufismo. Enseñó que hay que amar a Dios por sí mismo, no por la recompensa del paraíso ni por miedo al infierno: el amor verdadero no hace cálculos.' },
       q: [
         { q: '¿Qué enseñó Rabia de Basora sobre el amor a Dios?', a: ['Que hay que amarlo por sí mismo, no por premio ni por miedo', 'Que hay que amarlo para ganar el paraíso', 'Que no se puede amar a Dios', 'Que solo los sacerdotes pueden amarlo'], e: 'Un amor sin cálculos.' },
         { q: '¿Para qué llevaba Rabia una antorcha y un cubo de agua, según la leyenda?', a: ['Para quemar el paraíso y apagar el infierno', 'Para apagar un incendio', 'Para cocinar', 'Para alumbrar el templo'], e: 'Así nadie amaría a Dios por interés ni por miedo.' },

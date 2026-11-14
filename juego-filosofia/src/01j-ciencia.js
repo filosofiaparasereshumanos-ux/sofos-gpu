@@ -9,13 +9,13 @@ ERAS.push({
   enemy: { one: 'Sombra del Dogma', many: 'Sombras del Dogma' },
   story: 'La ciencia nació de la filosofía: los primeros científicos se llamaban filósofos de la naturaleza. En este taller trabajan quienes cambiaron nuestra manera de conocer el mundo: observando, midiendo, experimentando y, sobre todo, haciéndose preguntas.',
   sages: [
-    { id: 'arquimedes', name: 'Arquímedes de Siracusa', short: 'Arquímedes', dates: 'c. 287 – 212 a.C.', epithet: 'El que gritó ¡Eureka!',
+    { id: 'arquimedes', name: 'Arquímedes de Siracusa', short: 'Arquímedes', dates: 'c. 287 – 212 a.C.', epithet: 'El sabio de la palanca',
       look: lk(0xf2efe6, 0x2a5a8a, 0xc49372, 0xd8d4cc, { beard: 0xd8d4cc, hat: 'bald', acc: 'staff' }), prop: 'sphere',
       intro: 'Dadme un punto de apoyo y moveré el mundo. ¿Crees que con la razón y una buena palanca se puede mover lo imposible?',
       defeat: '¡Eureka! Lo has encontrado. Recuerda: un buen problema se resuelve mejor en la bañera que en la prisa.',
       concept: { name: 'Las matemáticas para entender la naturaleza', text: 'Arquímedes, matemático e inventor griego de Siracusa, descubrió el principio de flotación, explicó la palanca y calculó con gran precisión el número pi. Unió como nadie las matemáticas puras y la solución de problemas reales.' },
       q: [
-        { q: '¿Qué gritó Arquímedes al descubrir, en la bañera, cómo comprobar la corona del rey?', a: ['¡Eureka!', '¡Ya está!', '¡Tierra!', '¡Viva el rey!'], e: 'Significa «¡Lo encontré!».' },
+        { q: 'Según la anécdota que contó Vitruvio dos siglos después, ¿qué gritó Arquímedes en la bañera?', a: ['¡Eureka!', '¡Ya está!', '¡Tierra!', '¡Viva el rey!'], e: 'Significa «¡Lo encontré!».' },
         { q: '¿Qué explica el principio de Arquímedes?', a: ['Por qué los objetos flotan o se hunden en un líquido', 'Por qué cae la lluvia', 'Por qué gira la Tierra', 'Cómo se forman las nubes'], e: 'Un cuerpo sumergido recibe un empuje igual al peso del agua que desaloja.' },
         { q: '¿Qué dijo Arquímedes sobre la palanca?', a: ['Dadme un punto de apoyo y moveré el mundo', 'La palanca no sirve para nada', 'Solo los dioses usan palancas', 'Con la palanca se vuela'], e: 'Con una palanca lo bastante larga, una pequeña fuerza mueve un gran peso.' },
         { q: '¿Qué número calculó Arquímedes con gran precisión?', a: ['Pi, la relación entre la circunferencia y el diámetro', 'El cero', 'El número de estrellas', 'La edad del universo'], e: 'Lo acotó entre 3 + 10/71 y 3 + 1/7.' },
@@ -39,13 +39,13 @@ ERAS.push({
         { q: '¿Qué descubrió Galileo sobre la caída de los cuerpos?', a: ['Que, sin aire, caen igual de rápido aunque pesen distinto', 'Que los pesados caen siempre antes', 'Que los ligeros flotan', 'Que no caen'], e: 'Contra lo que enseñaba Aristóteles.' },
         { q: '¿Qué vio Galileo en la superficie de la Luna?', a: ['Montañas y cráteres', 'Ciudades', 'Mares de agua', 'Nada, era lisa'], e: 'La Luna no era una esfera perfecta.' },
       ] },
-    { id: 'lovelace', name: 'Ada Lovelace', short: 'Lovelace', dates: '1815 – 1852', epithet: 'La primera programadora', female: true,
+    { id: 'lovelace', name: 'Ada Lovelace', short: 'Lovelace', dates: '1815 – 1852', epithet: 'La pionera de la programación', female: true,
       look: lk(0x4a2a5a, 0xd8d4cc, 0xe0b896, 0x3a2418, { hat: 'longhair', acc: 'book' }), prop: 'gears',
       intro: 'Imaginé que una máquina de engranajes podría componer música si sabíamos darle las instrucciones. ¿Puede una máquina pensar, o solo hace lo que le decimos?',
       defeat: 'Has unido poesía y matemáticas, como yo quería. La imaginación también es una forma de ciencia.',
-      concept: { name: 'La ciencia poética y las máquinas', text: 'Ada Lovelace, matemática inglesa, escribió en 1843 unas notas sobre la máquina analítica de Charles Babbage que incluyen el primer algoritmo pensado para una máquina: por eso se la considera la primera programadora. Intuyó que esas máquinas podrían manejar no solo números, sino también símbolos y música, y defendió una «ciencia poética».' },
+      concept: { name: 'La ciencia poética y las máquinas', text: 'Ada Lovelace, matemática inglesa, escribió en 1843 unas notas sobre la máquina analítica de Charles Babbage que incluyen el primer algoritmo detallado publicado para una máquina: por eso a menudo se la llama la primera programadora, aunque los historiadores lo discuten, pues Babbage ya había esbozado programas. Intuyó que esas máquinas podrían manejar no solo números, sino también símbolos y música, y defendió una «ciencia poética».' },
       q: [
-        { q: '¿Por qué se considera a Ada Lovelace la primera programadora?', a: ['Porque escribió el primer algoritmo pensado para una máquina', 'Porque inventó internet', 'Porque fabricó el primer teléfono', 'Porque construyó un robot'], e: 'Para calcular los números de Bernoulli.' },
+        { q: '¿Por qué se suele llamar a Ada Lovelace la primera programadora?', a: ['Porque publicó el primer algoritmo detallado para una máquina', 'Porque inventó internet', 'Porque fabricó el primer teléfono', 'Porque construyó un robot'], e: 'Para calcular los números de Bernoulli.' },
         { q: '¿Sobre qué máquina escribió sus famosas notas?', a: ['La máquina analítica de Charles Babbage', 'La máquina de vapor de Watt', 'La imprenta', 'El telar de Jacquard'], e: 'Una calculadora mecánica que nunca llegó a construirse entera.' },
         { q: '¿Quién era el padre de Ada Lovelace?', a: ['El poeta Lord Byron', 'Isaac Newton', 'Charles Darwin', 'El rey de Inglaterra'], e: 'Su madre la educó en matemáticas para alejarla de la poesía, pero ella unió ambas.' },
         { q: '¿Qué intuyó Ada que podrían hacer esas máquinas en el futuro?', a: ['Manejar símbolos y hasta componer música', 'Solo sumar', 'Volar', 'Nada útil'], e: 'Una idea adelantada a su tiempo.' },
@@ -92,8 +92,8 @@ ERAS.push({
 Object.assign(LESSONS, {
   arquimedes: [
     'Soy Arquímedes, de Siracusa, una ciudad griega en la isla de Sicilia. Viví hace más de dos mil doscientos años. Fui matemático, físico, ingeniero e inventor.',
-    'El rey Hierón me pidió averiguar si su corona era de oro puro sin romperla. Mientras me bañaba, vi que el agua subía al entrar mi cuerpo. Salí corriendo gritando ¡eureka!, lo encontré: midiendo el agua desalojada podía comparar la corona con un bloque de oro del mismo peso.',
-    'De ahí viene mi principio: un cuerpo sumergido recibe un empuje hacia arriba igual al peso del líquido que desaloja. Por eso flotan los barcos. También expliqué la palanca: dadme un punto de apoyo y moveré el mundo.',
+    'Cuenta el romano Vitruvio, dos siglos después, que el rey Hierón me pidió averiguar si su corona era de oro puro sin romperla, y que, al bañarme, vi que el agua subía al entrar mi cuerpo y salí corriendo gritando ¡eureka!, lo encontré: midiendo el agua desalojada podía comparar la corona con un bloque de oro del mismo peso.',
+    'Mi principio lo expliqué en mi libro Sobre los cuerpos flotantes: un cuerpo sumergido recibe un empuje hacia arriba igual al peso del líquido que desaloja. Por eso flotan los barcos. También expliqué la palanca: dadme un punto de apoyo y moveré el mundo.',
     'Calculé el número pi con gran precisión, encontré el volumen de la esfera y diseñé máquinas para defender mi ciudad del ataque romano. Cuando los romanos entraron en Siracusa, un soldado me mató mientras dibujaba círculos en la arena. Mis últimas palabras, dicen, fueron: no perturbes mis círculos.',
     'Para mí, las matemáticas no estaban lejos de la vida: servían para entender el agua, las palancas y los barcos. Mi pregunta para ti: ¿qué problema de tu vida diaria podrías resolver si lo midieras con cuidado?',
   ],
@@ -107,7 +107,7 @@ Object.assign(LESSONS, {
   lovelace: [
     'Soy Augusta Ada King, condesa de Lovelace. Nací en Londres en 1815. Mi padre era el poeta Lord Byron, a quien nunca conocí. Mi madre me hizo estudiar matemáticas para que no me volviera poeta como él.',
     'A los diecisiete años conocí a Charles Babbage, que diseñaba máquinas de calcular hechas de engranajes. Su máquina analítica, que nunca llegó a construirse entera, podría seguir instrucciones escritas en tarjetas perforadas, como los telares de Jacquard.',
-    'Traduje un artículo sobre la máquina y le añadí mis propias notas, más largas que el artículo. En ellas escribí paso a paso cómo la máquina podría calcular unos números llamados de Bernoulli. Es el primer algoritmo pensado para una máquina: por eso dicen que fui la primera programadora.',
+    'Traduje un artículo sobre la máquina y le añadí mis propias notas, más largas que el artículo. En ellas escribí paso a paso cómo la máquina podría calcular unos números llamados de Bernoulli. Es el primer algoritmo detallado que se publicó para una máquina: por eso muchos dicen que fui la primera programadora, aunque Babbage ya había esbozado otros.',
     'Fui más allá: imaginé que la máquina podría manejar cualquier símbolo, no solo números, e incluso componer música. Pero también advertí que la máquina no crea nada por sí misma: solo hace lo que sabemos ordenarle.',
     'Llamaba a mi forma de pensar ciencia poética: la imaginación es la facultad que descubre. Mi pregunta para ti, que vives rodeado de máquinas: ¿pueden pensar, o solo obedecen? ¿Y cómo lo sabrías?',
   ],
