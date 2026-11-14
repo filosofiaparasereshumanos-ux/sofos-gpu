@@ -75,7 +75,7 @@ sola, sin subir una versión nueva a Play.
 Debate con 231 filósofas y filósofos en 37 épocas, de Sumer a hoy.
 
 **Completa:**
-Odisea de la Razón es un viaje en 3D por la historia del pensamiento. Camina por la
+Odisea de la Razón es un viaje en 3D por la historia del pensamiento. Elige tu mundo en una rueda de 37 épocas y camina por la
 Atenas de Sócrates, la Persia de Zaratustra, la Bagdad de la Casa de la Sabiduría, la
 Tenochtitlan de los poetas nahuas o el Japón del zen, y debate con 231 pensadoras y
 pensadores: Hipatia, Sor Juana, Confucio, Avicena, Simone de Beauvoir, Paulo Freire,
@@ -93,15 +93,17 @@ Marie Curie y muchos más.
 • Vive 11 experimentos filosóficos: la caverna de Platón, el tranvía, la habitación china, la máquina de experiencias…
 • Vota en la pregunta del día de cada época y descubre cuántos viajeros piensan como tú.
 • Comparte tu perfil filosófico («Pienso como Descartes») y sácate fotos con los pensadores.
-• Gana accesorios para tu avatar con tus logros.
+• Crea tu avatar: peinados, barbas, sombreros, gafas, objetos en la mano y accesorios que se ganan con logros.
 • Siéntate con otros viajeros a escuchar la lección de un pensador, como en la Academia, y comparen qué piensa cada uno.
 • Mira debatir a Platón con Aristóteles o a Hobbes con Rousseau, con sus voces, y decide quién te convence.
 • Misiones nuevas cada día y rachas con premios para tu avatar.
 • Línea de tiempo: descubre quién vivió a la vez en Grecia, China, la India o América.
+• Torneos de trivia en línea: abre una mesa de 2, 4 u 8 asientos, invita a los viajeros de tu época o a tus amigos por WhatsApp, y compitan en cuartos, semifinal y final.
 • Torneos de debate relámpago: con tres o más viajeros en la misma época, todos defienden la misma tesis y votan la mejor razón.
 • Mundo abierto: encuentra a otros viajeros en la misma época, salúdalos con gestos y rétalos a un duelo o a un debate. Sin chat libre.
 • Consulta cada día al Oráculo de Delfos y compite en el ranking mundial.
 • Reta a tus amigos con un enlace: las mismas diez preguntas, gana quien sepa más.
+• Comparte por WhatsApp un pensador o la época donde estás: tu amigo entra directo ahí.
 • Para docentes: modo aula con seguimiento del curso, trivia en vivo para proyectar, grupos privados y guía didáctica.
 
 Gratis, sin anuncios. Una propuesta de Filosofía para Seres Humanos.

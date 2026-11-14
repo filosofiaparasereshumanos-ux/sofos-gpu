@@ -25,6 +25,23 @@ ratón y `E` para interactuar.
   se sella un pasaporte planetario con datos reales; el **atlas del cosmos** (Inicio → Cosmos)
   recorre ocho escalas hasta el universo observable, con báscula cósmica y calendario cósmico.
 
+- **El camino de la Biblia y el jardín del Corán** (épocas XXXVI y XXXVII): Moisés, David, los cuatro
+  evangelistas y Pablo; y siete estaciones con las suras más conocidas y cómo se reunió el Libro. Aquí no
+  se «vence»: se pone a prueba lo aprendido («✓ Comprendido»). Por respeto a la tradición islámica, en el
+  jardín del Corán no se representa a ningún profeta: cada estación es un atril con un medallón geométrico.
+
+- **Elegir el mundo en una rueda**: carrusel circular con el paisaje de cada época de fondo; se recorre
+  deslizando, con flechas o con la línea del tiempo, y muestra los pensadores vencidos.
+
+- **Torneo de trivia en línea**: mesa de 2, 4 u 8 asientos; se invita a los viajeros de la época o a amigos
+  por WhatsApp; todos responden a la vez (acierto + rapidez) en cuartos, semifinal y final, con podio.
+
+- **Compartir por WhatsApp**: desde la conversación con un pensador o desde la pausa. El enlace
+  (`?ir=socrates`, `?mundo=cosmos`) abre el juego directamente frente a ese pensador o en ese mundo.
+
+- **Avatar**: túnica, piel, color y estilo de pelo, barba, complementos y un objeto en la mano; los demás
+  viajeros en línea lo ven tal cual.
+
 - **Debates con emoción**: el pensador replica con su voz, cuerda de persuasión, cartas de argumento
   (ejemplo, pregunta socrática, falacia), golpe crítico, aliado, apuesta final, dilemas y revanchas.
 
