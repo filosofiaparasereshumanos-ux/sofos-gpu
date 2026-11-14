@@ -36,6 +36,8 @@ Metricas.hit('sesion', '');
   const a0 = Duel.answer.bind(Duel); Duel.answer = function (i) { const was = this.answered; a0(i); if (!was && this.answered && !this._oracle) Metricas.hit(i < 0 ? 'tiempo' : this.opts[i] && this.opts[i].ok ? 'acierto' : 'fallo'); };
   const f0 = Guia.finish.bind(Guia); Guia.finish = function (win) { if (Guia.step >= 0) Metricas.hit(win ? 'guia_fin' : 'guia_salta', ''); f0(win); };
   const p0 = enterPortal; enterPortal = function () { Metricas.hit('portal'); p0(); };
+  // qué opinan los jugadores: votos de los debates entre pensadores y de las mesas redondas (sin ningún dato personal)
+  const v0 = Versus.vote.bind(Versus); Versus.vote = function (pick) { const v = this.v; if (v) Metricas.hit(pick ? (pick === this.A.short ? 'vs_a' : 'vs_b') : 'vs_ambos', v.id); return v0(pick); };
   if (typeof Trivia !== 'undefined' && Trivia.start) { const t0 = Trivia.start.bind(Trivia); Trivia.start = function () { Metricas.hit('torneo', ''); return t0(); }; }
 }
 if (location.hash === '#debug') window.__metricas = Metricas;

@@ -54,6 +54,7 @@ const Mesa = {
   },
   vote(id) {
     const M = this.M, first = !this.voted(M);
+    if (typeof Metricas !== 'undefined') Metricas.hit(id ? 'mesa_' + 'abcd'[M.sabios.indexOf(id)] : 'mesa_ninguna', M.id);
     xpRecord(this.key(M), M.q, id ? `${this.D[id].short}: ${M.posturas[id]}` : this.T.none);
     $('#ms-vote').hidden = true; const e = $('#ms-end'); e.hidden = false; e.textContent = (id ? this.T.chose(this.D[id].short) : this.T.mixed) + M.cierre;
     if (id) document.querySelectorAll('.ms-seat').forEach((s) => s.classList.toggle('on', s.dataset.id === id));

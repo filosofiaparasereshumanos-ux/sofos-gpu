@@ -100,7 +100,7 @@ const Postura = {
     $('#po-log').appendChild(sum);
     const B = this.best(); const prev = B[P.id]; if (prev == null || s > prev) { const gain = (s - Math.max(0, prev || 0)) * 25; B[P.id] = s; store.set(PO_KEY, B); if (gain > 0) { try { addScore(gain); } catch (e) { /* fuera de una partida */ } toast(this.T.pts(gain)); } }
     if (lv === 'alto') achieve('polemista'); try { Mision.hit('versus'); } catch (e) { /* nada */ }
-    if (typeof Metricas !== 'undefined') Metricas.hit('postura_' + lv, P.id === 'sofista' ? 'sofista' : '');
+    if (typeof Metricas !== 'undefined') Metricas.hit('postura_' + lv, P.id);
     const nb = $('#po-next'); nb.hidden = true;
     const btns = document.createElement('div'); btns.className = 'btns';
     const again = document.createElement('button'); again.className = 'btn ghost'; again.textContent = this.T.again; again.addEventListener('click', () => { Audio.click && Audio.click(); this.play(P, this.onEnd); }); btns.appendChild(again);

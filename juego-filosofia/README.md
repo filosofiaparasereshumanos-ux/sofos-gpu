@@ -50,6 +50,15 @@ ratón y `E` para interactuar.
 
 - **Primer minuto guiado**: quien juega por primera vez ve una tarjeta de cuatro pasos que avanza sola.
 
+- **Para docentes**: `fichas.html` genera fichas imprimibles de cada debate, mesa redonda y «Debate tú»
+  (con actividades y solucionario), y `estadisticas.html` muestra qué épocas cuestan más y qué opinan los
+  jugadores en debates, mesas, «Debate tú» y el juicio de Sócrates. Si cambian los debates, regenerar
+  `aula-datos.js` con `node tools/datos-aula.mjs`.
+
+- **Accesibilidad**: tamaño de letra (normal, grande, muy grande) y letra más legible para dislexia en Ajustes.
+
+- **El juicio de Sócrates**: escena jugable según la Apología, el Critón y el Fedón, con el jurado votando.
+
 - **Estadísticas anónimas**: contadores por día y época, sin ningún dato del jugador, para ver dónde se
   atasca la gente (página `estadisticas.html`; requiere `tools/cuentas4.sql`). Desactivables en Ajustes.
 

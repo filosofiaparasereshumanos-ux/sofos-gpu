@@ -8,6 +8,7 @@
 <style>
   :root { --bg: #14100a; --card: #1f1810; --line: #4a3a20; --gold: #e2b04e; --tx: #f3e6c4; --mut: #b8a888; --ok: #8fd36a; --bad: #ff8a70; }
   body { margin: 0; background: var(--bg); color: var(--tx); font: 15px/1.45 Georgia, serif; }
+  h3 { font-size: 1rem; margin: 18px 0 6px; color: var(--tx); }
   main { max-width: 980px; margin: 0 auto; padding: 24px 16px 60px; }
   h1 { font-size: 1.5rem; color: var(--gold); margin: 0 0 4px; }
   p.sub { color: var(--mut); margin: 0 0 18px; }
@@ -26,6 +27,11 @@
   .meter { display: inline-block; width: 60px; height: 6px; border-radius: 3px; background: #33281a; vertical-align: middle; margin-left: 6px; overflow: hidden; }
   .meter i { display: block; height: 100%; background: var(--gold); }
   #msg { color: var(--mut); padding: 20px 0; }
+  .h2 { color: var(--gold); font-size: 1.2rem; margin: 30px 0 4px; } a { color: var(--gold); }
+  .op { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; margin: 8px 0; }
+  .op b { display: block; margin-bottom: 6px; } .op small { color: var(--mut); }
+  .seg { display: flex; height: 22px; border-radius: 6px; overflow: hidden; font-size: .75rem; } .seg i { display: flex; align-items: center; justify-content: center; font-style: normal; color: #1a1206; white-space: nowrap; overflow: hidden; }
+  .leg { display: flex; flex-wrap: wrap; gap: 10px; font-size: .8rem; color: var(--mut); margin-top: 4px; } .leg span::before { content: ''; display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 4px; background: var(--c); }
 </style>
 </head>
 <body>
@@ -36,7 +42,11 @@
   <div class="kpis" id="kpis"></div>
   <div class="wrap"><table><thead><tr id="hd"></tr></thead><tbody id="tb"></tbody></table></div>
   <p id="msg">Cargando…</p>
+  <h2 class="h2">¿Qué opinan los jugadores?</h2>
+  <p class="sub">Votos anónimos en los debates entre pensadores, las mesas redondas, «Debate tú» y el juicio de Sócrates. Sirven para empezar una conversación en clase. Las fichas para imprimir de cada debate están en <a href="fichas.html">fichas.html</a>.</p>
+  <div id="opina"></div>
 </main>
+<script src="aula-datos.js"></script>
 <script>
 const URL_ = 'https://xmslbqzmztcaoddchzsz.supabase.co', KEY = 'sb_publishable_5yoU56-AIWpkIelBPgeqPw_ydkMGEdk';
 const COLS = [['era', 'Época'], ['entra', 'Entradas'], ['vence', 'Debates ganados'], ['maestro', 'Maestros'], ['derrota', 'Derrotas'], ['atasco', 'Atasco'], ['acierto', 'Aciertos'], ['fallo', 'Fallos'], ['tiempo', 'Sin tiempo'], ['precision', 'Precisión']];
@@ -53,7 +63,7 @@ async function load() {
     const g = (tot.guia_fin || 0) + (tot.guia_salta || 0);
     document.getElementById('kpis').innerHTML = [[fmt(tot.sesion), 'Partidas abiertas'], [fmt(tot.entra), 'Entradas en épocas'], [fmt((tot.vence || 0) + (tot.maestro || 0)), 'Debates ganados'], [g ? Math.round((tot.guia_fin || 0) / g * 100) + ' %' : '—', 'Terminan la guía inicial'], [fmt(tot.torneo), 'Torneos de trivia']].map(([v, k]) => `<div class="kpi"><b>${v}</b><span>${k}</span></div>`).join('');
     document.getElementById('msg').textContent = rows.length ? '' : 'Todavía no hay datos en este periodo.';
-    paint();
+    paint(); opina(data);
   } catch (e) { document.getElementById('msg').textContent = e.message; }
 }
 function paint() {
@@ -65,6 +75,25 @@ function paint() {
     return `<td>${fmt(o[k])}</td>`;
   }).join('') + '</tr>').join('');
   document.querySelectorAll('#hd th').forEach((th) => th.onclick = () => { sortK = th.dataset.k; paint(); });
+}
+const COL = ['#e2b04e', '#7ad09a', '#8fb8ff', '#ff9a8a', '#c8a8ff'];
+function bar(parts, title, note) {
+  const tot = parts.reduce((a, p) => a + p[1], 0); if (!tot) return '';
+  return `<div class="op"><b>${title}</b><div class="seg">${parts.map((p, i) => p[1] ? `<i style="width:${p[1] / tot * 100}%;background:${COL[i]}">${Math.round(p[1] / tot * 100)} %</i>` : '').join('')}</div><div class="leg">${parts.map((p, i) => `<span style="--c:${COL[i]}">${p[0]}: ${p[1]}</span>`).join('')}</div>${note ? `<small>${note}</small>` : ''}</div>`;
+}
+function opina(data) {
+  const A = typeof AULA_DATOS !== 'undefined' ? AULA_DATOS : null; const box = document.getElementById('opina'); if (!A) { box.textContent = ''; return; }
+  const c = {}; for (const x of data) c[x.evento + '|' + x.era] = Number(x.n);
+  const g = (e, era) => c[e + '|' + era] || 0; const nm = (id) => (A.sabios[id] ? A.sabios[id].n : id); let h = '';
+  const vs = A.versus.map((v) => [v, g('vs_a', v.id) + g('vs_b', v.id) + g('vs_ambos', v.id)]).filter((x) => x[1]).sort((a, b) => b[1] - a[1]);
+  if (vs.length) h += '<h3>Debates entre pensadores</h3>' + vs.map(([v]) => bar([['Convence ' + nm(v.a), g('vs_a', v.id)], ['Convence ' + nm(v.b), g('vs_b', v.id)], ['Los dos tienen razón', g('vs_ambos', v.id)]], v.q)).join('');
+  const ms = A.mesas.filter((m) => 'abcd'.split('').some((k) => g('mesa_' + k, m.id)) || g('mesa_ninguna', m.id));
+  if (ms.length) h += '<h3>Mesas redondas</h3>' + ms.map((m) => bar([...m.sabios.map((id, i) => [nm(id), g('mesa_' + 'abcd'[i], m.id)]), ['Ninguna del todo', g('mesa_ninguna', m.id)]], m.q)).join('');
+  const ps = [...A.posturas.map((p) => p.id), 'sofista'].filter((id) => g('postura_alto', id) + g('postura_medio', id) + g('postura_bajo', id));
+  if (ps.length) h += '<h3>Debate tú: ¿con qué solidez argumentan?</h3>' + ps.map((id) => bar([['Sólida', g('postura_alto', id)], ['Discutible', g('postura_medio', id)], ['Débil', g('postura_bajo', id)]], id === 'sofista' ? 'El Gran Sofista (final de la historia)' : nm(id), 'Si la mayoría saca «débil», conviene repasar en clase las falacias de esa ronda.')).join('');
+  const ju = [['Fueron Sócrates', g('juicio_fiel', '')], ['A medias', g('juicio_medio', '')], ['No fueron Sócrates', g('juicio_lejos', '')]];
+  h += bar(ju, 'El juicio de Sócrates', '«Fueron Sócrates» = eligieron siempre lo que dijo Sócrates según Platón, aunque eso los llevara a la cicuta.');
+  box.innerHTML = h || '<p class="sub">Todavía no hay votos en este periodo.</p>';
 }
 document.querySelectorAll('#dias button').forEach((b) => b.onclick = () => { dias = +b.dataset.d; document.querySelectorAll('#dias button').forEach((x) => x.classList.toggle('on', x === b)); load(); });
 load();
