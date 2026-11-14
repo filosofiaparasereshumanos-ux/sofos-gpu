@@ -725,5 +725,15 @@
  "¡Eres campeón del torneo!": "You are the tournament champion!",
  "Quedaste fuera esta vez": "You are out this time",
  "Eres espectador en esta ronda": "You are watching this round",
- "Miras cómo juegan los demás.": "You are watching the others play."
+ "Miras cómo juegan los demás.": "You are watching the others play.",
+ "Época ⟦0⟧ de ⟦1⟧": "Era ⟦0⟧ of ⟦1⟧",
+ "Viajar aquí": "Travel here",
+ "Empezar desde el principio": "Start from the beginning",
+ "☰ Ver como lista": "☰ Show as a list",
+ "◎ Ver la rueda": "◎ Show the wheel",
+ "● Aquí vas": "● You are here",
+ "✓ Completada": "✓ Completed",
+ "🏛 ⟦0⟧ de ⟦1⟧ vencidos": "🏛 ⟦0⟧ of ⟦1⟧ defeated",
+ "Desliza para recorrer las épocas": "Swipe to travel through the eras",
+ "Pensadores de esta época": "Thinkers of this era"
 }
