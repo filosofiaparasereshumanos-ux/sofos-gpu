@@ -1,0 +1,26 @@
+name: publicar-videos
+
+# Sube los vídeos promocionales a una Release (descargas) para que no
+# ocupen espacio en la web de GitHub Pages.
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/philosophy-fps-game-3v1tjg]
+    paths: [.github/workflows/videos-release.yml]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: juego-filosofia/marketing
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: videos
+          name: Vídeos de Odisea de la Razón
+          target_commitish: claude/philosophy-fps-game-3v1tjg
+          body: Tráileres y vídeos promocionales del juego (se descargan aquí para no cargar la web).
+          files: juego-filosofia/marketing/*.mp4

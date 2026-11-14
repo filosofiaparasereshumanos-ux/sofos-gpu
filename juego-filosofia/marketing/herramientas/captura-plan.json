@@ -1,0 +1,12 @@
+[
+ {"name":"g1_athens","era":1,"n":54,"path":[-2,20,-3.5,9,0.05,0.5,-0.05]},
+ {"name":"g2_alex","era":2,"n":45,"path":[0,22,0,13,-0.25,0.15,-0.04]},
+ {"name":"g3_city","era":7,"n":45,"path":[0,24,0,14,0.3,-0.2,-0.02]},
+ {"name":"g4_mex","era":9,"n":45,"path":[0,24,0,12,-0.15,0.15,-0.03]},
+ {"name":"g5_china","era":12,"n":45,"path":[3,22,3,12,0.2,-0.2,-0.04]},
+ {"name":"g6_india","era":13,"n":45,"path":[0,24,0,13,0.25,-0.15,-0.04]},
+ {"name":"g7_cathedral","era":3,"n":45,"path":[0,22,0,12,0,0.2,0.02]},
+ {"name":"b1_book","era":1,"n":40,"target":"book","ti":0,"ang":0.6,"from":7,"to":2.4,"interact":true,"extra":40},
+ {"name":"c1_quest","era":13,"n":40,"target":"citizen","ti":0,"ang":-0.5,"from":7,"to":2.4,"interact":true,"extra":30},
+ {"name":"d1_duel","era":1,"n":36,"target":"socrates","ang":0.9,"from":7,"to":3,"duel":"socrates","extra":75,"answerAt":30}
+]

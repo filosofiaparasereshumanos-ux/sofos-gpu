@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guía para docentes · Odisea de la Razón</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Marcellus+SC&display=swap" rel="stylesheet">
+<style>
+:root { --ink: #2a1d10; --soft: #6a5232; --gold: #a8782a; --line: #e2d3b2; --bg: #fdf8ee; }
+* { box-sizing: border-box; }
+html { background: #e9e0cc; } body { margin: 0; color: var(--ink); font: 17px/1.5 "EB Garamond", Georgia, serif; }
+main { max-width: 820px; margin: 0 auto; background: var(--bg); padding: 48px 56px; }
+h1, h2, h3 { font-family: "Marcellus SC", Georgia, serif; font-weight: normal; color: #3a2610; line-height: 1.2; }
+h1 { font-size: 2.4rem; margin: 0; text-align: center; } h2 { font-size: 1.45rem; border-bottom: 2px solid var(--gold); padding-bottom: 4px; margin: 34px 0 12px; break-after: avoid; }
+h3 { font-size: 1.1rem; margin: 18px 0 6px; break-after: avoid; }
+.cover { text-align: center; } .cover img { width: 110px; } .eyebrow { letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); font-size: 0.8rem; }
+.lead { font-size: 1.15rem; text-align: center; color: var(--soft); max-width: 600px; margin: 10px auto; }
+.nums { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 22px 0; }
+.nums div { border: 1px solid var(--line); border-radius: 10px; padding: 10px 6px; text-align: center; background: #fff; }
+.nums b { display: block; font-family: "Marcellus SC", serif; font-size: 1.8rem; color: var(--gold); line-height: 1.1; font-weight: normal; } .nums span { font-size: 0.85rem; color: var(--soft); }
+table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; font-size: 0.92rem; } th, td { text-align: left; vertical-align: top; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+th { font-family: "Marcellus SC", serif; font-weight: normal; color: var(--gold); border-bottom: 2px solid var(--gold); } tr { break-inside: avoid; } small { color: var(--soft); }
+.box { border: 1px solid var(--line); border-left: 4px solid var(--gold); background: #fff; border-radius: 8px; padding: 10px 14px; margin: 10px 0; break-inside: avoid; }
+.steps { counter-reset: s; list-style: none; padding: 0; } .steps li { counter-increment: s; position: relative; padding-left: 38px; margin: 8px 0; }
+.steps li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--gold); color: #fff; text-align: center; font-family: "Marcellus SC", serif; line-height: 26px; }
+.cols { columns: 2; font-size: 0.92rem; } .cols li { margin: 3px 0; break-inside: avoid; }
+.modes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } .modes .box { margin: 0; }
+.modes h3 { margin-top: 0; } .tag { display: inline-block; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #fff; background: var(--gold); border-radius: 999px; padding: 1px 8px; }
+code, .k { font-family: inherit; background: #f3e8cf; border-radius: 4px; padding: 0 4px; }
+.foot { text-align: center; color: var(--soft); margin-top: 36px; font-size: 0.9rem; }
+@media (max-width: 640px) { main { padding: 24px 16px; } .nums, .modes { grid-template-columns: 1fr 1fr; } .modes { grid-template-columns: 1fr; } }
+@media print { html, body { background: #fff; } main { max-width: none; padding: 0; background: #fff; } .pb { break-before: page; } a { color: inherit; text-decoration: none; } }
+@page { size: A4; margin: 16mm 15mm; }
+</style></head><body><main>
+<section class="cover">
+  <img src="img/logo-fpsh.png" alt="Filosofía para Seres Humanos">
+  <div class="eyebrow">Guía para docentes</div>
+  <h1>Odisea de la Razón</h1>
+  <p class="lead">Un videojuego gratuito para aprender filosofía, ciencia e historia dialogando con los grandes pensadores. Funciona en el navegador del celular o del computador, sin instalar nada.</p>
+  <p><b>filosofiaparasereshumanos-ux.github.io/sofos-gpu</b></p>
+  <div class="nums"><div><b>37</b><span>épocas</span></div><div><b>231</b><span>pensadoras y pensadores</span></div><div><b>41</b><span>diálogos socráticos</span></div><div><b>11</b><span>experimentos mentales</span></div></div>
+</section>
+
+<h2>1. Qué es y para quién</h2>
+<p>En Odisea de la Razón cada estudiante recorre 37 épocas, de Sumer a nuestros días, y además las sabidurías de África, la India, China, Japón, el islam, los vikingos, los mexicas, los incas y el pueblo mapuche. En cada época conversa con sus pensadores: les hace preguntas, escucha sus lecciones, encuentra sus libros y los vence en debates de preguntas. Al final de cada época cruza un portal hacia la siguiente.</p>
+<p>Pero el juego no se queda en la memoria: en los <b>diálogos socráticos</b> cada estudiante toma postura frente a una tesis, da razones, responde a una objeción y recibe una devolución sobre la calidad de su argumento (razones buenas, débiles y falacias con su nombre). En los <b>experimentos mentales</b> vive situaciones como la caverna de Platón o el dilema del tranvía y decide qué haría. Con todo eso se dibuja su <b>mapa filosófico</b>: cómo piensa en seis grandes preguntas.</p>
+<div class="box"><b>Edad recomendada:</b> desde los 11 o 12 años (6.º básico / 1.º de secundaria) hasta la educación media y los primeros años de universidad. Los textos son breves y el juego se adapta solo a celulares sencillos.</div>
+
+<h2>2. Empezar en cinco minutos</h2>
+<ol class="steps">
+  <li>Abre <b>filosofiaparasereshumanos-ux.github.io/sofos-gpu</b> en el celular o en el computador.</li>
+  <li>Toca el gran botón <b>JUGAR</b> y elige <b>«Empezar en Sumer»</b> (el viaje completo, en orden) o cualquier otra época.</li>
+  <li>Camina con el joystick (celular) o con las teclas <span class="k">W A S D</span> y el ratón (computador). Acércate a un pensador y toca <span class="k">Hablar</span> o pulsa <span class="k">E</span>.</li>
+  <li>Elige <b>«Dialoguemos: ¿qué piensas tú?»</b> para el diálogo socrático, o <b>«Te desafío a un debate»</b> para las preguntas.</li>
+  <li>El avance se guarda solo en el aparato. Con una cuenta (usuario y contraseña) se recupera en cualquier otro.</li>
+</ol>
+
+<h2>3. Seis maneras de usarlo en clase</h2>
+<div class="modes">
+  <div class="box"><span class="tag">15 min · toda la clase</span><h3>Trivia en vivo</h3><p><b>En vivo → Crear sala.</b> Proyecta la pantalla: aparece un código de 4 letras. Cada estudiante entra desde su celular con el código y un apodo. Las preguntas salen en el proyector, se responde desde el celular, hay puntos por acertar rápido y un podio al final. Ideal para abrir o cerrar una unidad.</p></div>
+  <div class="box"><span class="tag">tarea · seguimiento</span><h3>Tarea con código de clase</h3><p><b>Modo aula → Soy docente.</b> Elige los pensadores (o épocas enteras) y qué deben hacer con cada uno. Obtienes un código de clase y las instrucciones para compartir. Cada estudiante entra con el código y, al terminar, te envía su entrega (o te llega sola si ambos tienen cuenta). Ves una tabla con el avance de cada uno.</p></div>
+  <div class="box"><span class="tag">debate · pensamiento crítico</span><h3>Diálogo socrático y mapa de la clase</h3><p>Pide que dialoguen con tres pensadores y entreguen. La entrega trae su mapa filosófico: en <b>📽 Proyectar en clase</b> ves el mapa de todo el curso y la pregunta que más los divide, lista para debatir en grupos.</p></div>
+  <div class="box"><span class="tag">detonante · 10 min</span><h3>Experimento mental</h3><p>Antes de la clase, cada estudiante vive un experimento (por ejemplo el anillo de Giges) y escribe su respuesta en el <b>Cuaderno del filósofo</b>. En clase se comparan las decisiones. Ver la tabla del punto 5.</p></div>
+  <div class="box"><span class="tag">sin celulares</span><h3>Debate en el proyector y fichas</h3><p><b>Modo aula → Proyector y fichas.</b> Proyecta preguntas para equipos que responden con tarjetas A-B-C-D, o imprime una ficha por pensador con su idea central, preguntas, una pregunta para debatir y el solucionario.</p></div>
+  <div class="box"><span class="tag">casa · recreo</span><h3>Mundo abierto, grupos y retos</h3><p><b>Mundo abierto:</b> al entrar a una época se ven los avatares de quienes estén ahí; pueden saludarse con gestos y, al encontrarse, retarse a un duelo de tres preguntas o a un <b>debate filosófico</b> (misma tesis, cada uno da su razón y responde a la objeción; al final ven las razones del otro). Si alguien escucha la lección de un pensador, los demás lo ven sentado frente a él y pueden sentarse también; al terminar, cada uno elige su postura y ve la de los demás. Cada época tiene además una estela con <b>la pregunta del día</b> para votar. Con tres o más estudiantes en la misma época aparece <b>«Abrir torneo de debate»</b>: dos rondas con la misma tesis para todos, cada uno elige su mejor razón y se vota la mejor razón de los demás sin ver de quién es. <b>Para la clase, usen un grupo privado</b> (En vivo → Grupo privado): solo se ven quienes tengan el código. <b>Reta a un amigo</b> genera un enlace con las mismas diez preguntas.</p></div>
+</div>
+
+<h2>4. Una clase de 45 minutos: la caverna de Platón</h2>
+<table><tr><th style="width:22%">Momento</th><th>Qué hacen</th></tr>
+<tr><td><b>Inicio · 8 min</b></td><td>Trivia <b>En vivo</b> de 5 preguntas sobre «La Atenas clásica» para activar lo que saben.</td></tr>
+<tr><td><b>Experiencia · 12 min</b></td><td>En parejas, entran a la época VI (Atenas), buscan la entrada de la caverna junto a Platón y bajan hasta los prisioneros. Deciden si liberarse y salir a la luz.</td></tr>
+<tr><td><b>Diálogo · 10 min</b></td><td>Cada pareja dialoga con Platón (<i>«Dialoguemos»</i>): toma postura, da una razón y responde a su objeción. Leen juntos la devolución sobre sus argumentos.</td></tr>
+<tr><td><b>Debate · 10 min</b></td><td>Proyecta el mapa de la clase o la pregunta: <i>¿qué «sombras» de la caverna vemos hoy?</i> (redes sociales, publicidad, prejuicios). Dos grupos con posturas distintas se responden.</td></tr>
+<tr><td><b>Cierre · 5 min</b></td><td>Cada estudiante escribe en el <b>Cuaderno del filósofo</b> qué idea cambió o se reforzó, y entrega la tarea con el código de clase.</td></tr></table>
+
+<h2>5. Los experimentos mentales</h2>
+<p>Se entra por un portal de luz junto al pensador indicado. Las decisiones quedan en el Cuaderno y mueven el mapa filosófico.</p>
+<table><tr><th style="width:28%">Experimento</th><th style="width:36%">Qué se vive</th><th>Pregunta para la clase</th></tr>
+<tr><td><b>La caverna de Platón</b><br><small>VII · La Atenas Clásica · junto a Platón</small></td><td>Bajar por la caverna hasta los prisioneros y decidir si salir a la luz.</td><td>¿Cómo sabemos que lo que vemos es la realidad? ¿Qué «sombras» nos rodean hoy (redes, publicidad)?</td></tr>
+<tr><td><b>El anillo de Giges</b><br><small>VII · La Atenas Clásica · junto a Platón</small></td><td>Volverse invisible y decidir qué hacer con una bolsa de monedas y con el palacio.</td><td>¿Serías justo si nadie te viera? ¿Por qué ser justos?</td></tr>
+<tr><td><b>El barco de Teseo</b><br><small>VII · La Atenas Clásica · junto a Aristóteles</small></td><td>Cambiar las tablas del barco una a una y ver cómo el carpintero arma otro con las viejas.</td><td>¿Qué nos hace ser la misma persona a lo largo de la vida?</td></tr>
+<tr><td><b>El río de Heráclito</b><br><small>V · Los Presocráticos · junto a Heráclito</small></td><td>Entrar tres veces al río: cada vez cambia de color y de corriente.</td><td>¿Todo cambia? ¿Qué permanece en ti desde que eras niño?</td></tr>
+<tr><td><b>La máquina de experiencias</b><br><small>VIII · Helenismo y Roma · junto a Epicuro</small></td><td>Decidir si conectarse a una máquina que da la vida perfecta… y probarla.</td><td>¿Basta con sentirse bien para ser feliz? ¿Por qué importa que las cosas sean reales?</td></tr>
+<tr><td><b>El sueño de la mariposa</b><br><small>VI · La China Clásica · junto a Zhuangzi</small></td><td>Ser una mariposa que salta de flor en flor hasta despertar como Zhuangzi.</td><td>¿Cómo sabemos que no estamos soñando?</td></tr>
+<tr><td><b>La habitación de Descartes</b><br><small>XVII · La Modernidad · junto a Descartes</small></td><td>Dudar de todo lo que hay en la habitación hasta llegar a «pienso, luego existo».</td><td>¿Hay algo de lo que no podamos dudar?</td></tr>
+<tr><td><b>El dilema del tranvía</b><br><small>XVIII · El Siglo XIX · junto a Mill</small></td><td>Decidir en la palanca y en el puente qué hacer con un tranvía sin frenos.</td><td>¿Importan solo las consecuencias, o hay cosas que nunca se deben hacer?</td></tr>
+<tr><td><b>La roca de Sísifo</b><br><small>XX · La Época Contemporánea · junto a Camus</small></td><td>Empujar la roca hasta la cima… y verla caer.</td><td>¿Puede tener sentido una tarea que se repite? ¿Dónde está el sentido de la vida?</td></tr>
+<tr><td><b>La escalera de Wittgenstein</b><br><small>XX · La Época Contemporánea · junto a Wittgenstein</small></td><td>Subir por proposiciones y tirar la escalera al llegar arriba.</td><td>¿Qué no se puede decir con palabras? ¿Para qué sirve la filosofía?</td></tr>
+<tr><td><b>La habitación china</b><br><small>XXII · El taller de los científicos · junto a Ada Lovelace</small></td><td>Responder tarjetas en chino siguiendo un libro de reglas, sin saber chino.</td><td>¿Entiende una inteligencia artificial lo que dice?</td></tr></table>
+
+<h2 class="pb">6. Los 41 diálogos socráticos</h2>
+<p>Cada diálogo propone una tesis con tres posturas posibles (de acuerdo, en desacuerdo, depende). No hay una única respuesta correcta: se valora la calidad de las razones. Se supera con una buena razón y una buena respuesta a la objeción.</p>
+<table><tr><th style="width:26%">Pensador</th><th>Tesis que propone</th></tr>
+<tr><td><b>Zera Yacob</b><br><small>II · África</small></td><td>«Todo lo que se dice, aunque lo digan los sabios o los libros sagrados, debe examinarse con la razón que el Creador dio a cada ser humano.»</td></tr>
+<tr><td><b>Tutu</b><br><small>II · África</small></td><td>«Ubuntu: una persona es persona a través de otras personas. Mi humanidad está atada a la tuya.»</td></tr>
+<tr><td><b>Buda</b><br><small>III · La India</small></td><td>«El sufrimiento nace del deseo y del apego: quien deja de aferrarse, se libera.»</td></tr>
+<tr><td><b>Heráclito</b><br><small>V · Los Presocráticos</small></td><td>«Todo fluye: nada permanece igual, ni siquiera tú.»</td></tr>
+<tr><td><b>Demócrito</b><br><small>V · Los Presocráticos</small></td><td>«Por convención lo dulce, por convención lo amargo; en realidad, solo hay átomos y vacío. Los sentidos nos engañan: la verdad la descubre la razón.»</td></tr>
+<tr><td><b>Laozi</b><br><small>VI · La China Clásica</small></td><td>«Nada en el mundo es más blando que el agua, y sin embargo vence a lo más duro: quien fluye con el cambio, sin forzarlo, es más fuerte.»</td></tr>
+<tr><td><b>Confucio</b><br><small>VI · La China Clásica</small></td><td>«Una buena persona se forma con el estudio, el ejemplo y el respeto a las tradiciones.»</td></tr>
+<tr><td><b>Protágoras</b><br><small>VII · La Atenas Clásica</small></td><td>«El ser humano es la medida de todas las cosas: lo que a cada uno le parece verdadero, es verdadero para él.»</td></tr>
+<tr><td><b>Sócrates</b><br><small>VII · La Atenas Clásica</small></td><td>«Nadie hace el mal a sabiendas: quien obra mal, lo hace por ignorancia de lo que de verdad le conviene.»</td></tr>
+<tr><td><b>Platón</b><br><small>VII · La Atenas Clásica</small></td><td>«Lo que vemos con los ojos son sombras: la verdad solo se alcanza con la razón.»</td></tr>
+<tr><td><b>Aristóteles</b><br><small>VII · La Atenas Clásica</small></td><td>«Todo ser humano busca la felicidad, y la felicidad es vivir según lo mejor de nosotros: la virtud, que se aprende con el hábito.»</td></tr>
+<tr><td><b>Diógenes</b><br><small>VIII · Helenismo y Roma</small></td><td>«Es más rico quien menos necesita: casi todo lo que deseamos son costumbres y convenciones que nos hacen esclavos.»</td></tr>
+<tr><td><b>Epicuro</b><br><small>VIII · Helenismo y Roma</small></td><td>«La justicia no existe por sí misma: es un pacto entre las personas para no hacerse daño unas a otras.»</td></tr>
+<tr><td><b>Séneca</b><br><small>VIII · Helenismo y Roma</small></td><td>«No es que tengamos poco tiempo, sino que perdemos mucho. La vida es larga si sabes usarla.»</td></tr>
+<tr><td><b>Hipatia</b><br><small>VIII · Helenismo y Roma</small></td><td>«Defiende tu derecho a pensar, porque incluso pensar de manera errónea es mejor que no pensar.»</td></tr>
+<tr><td><b>Marco Aurelio</b><br><small>VIII · Helenismo y Roma</small></td><td>«No son las cosas las que nos perturban, sino lo que pensamos de ellas: lo que depende de ti es tu manera de mirar.»</td></tr>
+<tr><td><b>Agustín</b><br><small>IX · La Edad Media</small></td><td>«El mal no es una cosa: es la voluntad que se aparta del bien.»</td></tr>
+<tr><td><b>Averroes</b><br><small>IX · La Edad Media</small></td><td>«La verdad no puede contradecir a la verdad: si la razón y la fe parecen chocar, es que hemos entendido mal una de las dos.»</td></tr>
+<tr><td><b>Maquiavelo</b><br><small>XV · Renacimiento y Revolución Científica</small></td><td>«Un gobernante debe saber no ser bueno cuando la situación lo exige: lo que importa son los resultados.»</td></tr>
+<tr><td><b>Montaigne</b><br><small>XV · Renacimiento y Revolución Científica</small></td><td>«¿Qué sé yo? Cada pueblo llama bárbaro a lo que no es su costumbre; quizá sabemos mucho menos de lo que creemos.»</td></tr>
+<tr><td><b>Hobbes</b><br><small>XVII · La Modernidad</small></td><td>«Sin un Estado fuerte que imponga leyes, la vida humana sería una guerra de todos contra todos: obedecemos por miedo, y gracias a eso vivimos en paz.»</td></tr>
+<tr><td><b>Descartes</b><br><small>XVII · La Modernidad</small></td><td>«Solo la razón nos da certezas: los sentidos pueden engañarnos siempre.»</td></tr>
+<tr><td><b>Spinoza</b><br><small>XVII · La Modernidad</small></td><td>«Los seres humanos se creen libres porque conocen sus deseos, pero ignoran las causas que los mueven: ser libre es comprender esas causas.»</td></tr>
+<tr><td><b>Hume</b><br><small>XVII · La Modernidad</small></td><td>«Todo lo que sabemos viene de la experiencia, y ni siquiera la causa la vemos: solo vemos que una cosa sigue a otra.»</td></tr>
+<tr><td><b>Rousseau</b><br><small>XVII · La Modernidad</small></td><td>«El ser humano nace bueno y es la sociedad, con su desigualdad y su vanidad, la que lo corrompe.»</td></tr>
+<tr><td><b>Kant</b><br><small>XVII · La Modernidad</small></td><td>«Obra solo según una regla que puedas querer que valga para todos: el deber vale por sí mismo, no por sus consecuencias.»</td></tr>
+<tr><td><b>Schopenhauer</b><br><small>XVIII · El Siglo XIX</small></td><td>«La vida oscila como un péndulo entre el dolor de desear y el aburrimiento de tener; solo el arte y la compasión nos liberan un momento.»</td></tr>
+<tr><td><b>Kierkegaard</b><br><small>XVIII · El Siglo XIX</small></td><td>«La vida solo puede entenderse mirando hacia atrás, pero hay que vivirla hacia delante: elegir, sin certezas, es lo que nos hace ser nosotros mismos.»</td></tr>
+<tr><td><b>Marx</b><br><small>XVIII · El Siglo XIX</small></td><td>«Los filósofos no han hecho más que interpretar el mundo de distintos modos; de lo que se trata es de transformarlo.»</td></tr>
+<tr><td><b>Mill</b><br><small>XVIII · El Siglo XIX</small></td><td>«La única razón para limitar la libertad de alguien contra su voluntad es evitar que dañe a otros; sobre sí mismo, cada uno es soberano.»</td></tr>
+<tr><td><b>Nietzsche</b><br><small>XVIII · El Siglo XIX</small></td><td>«No hay hechos, solo interpretaciones.»</td></tr>
+<tr><td><b>Nezahualcóyotl</b><br><small>XIX · América Latina</small></td><td>«¿Acaso de veras se vive en la tierra? No para siempre aquí: solo un poco. Todo pasa, por eso hay que cantar mientras dura.»</td></tr>
+<tr><td><b>Sor Juana</b><br><small>XIX · América Latina</small></td><td>«Si Aristóteles hubiera guisado, mucho más hubiera escrito: también la cocina y la vida diaria enseñan filosofía, no solo los libros.»</td></tr>
+<tr><td><b>Freire</b><br><small>XIX · América Latina</small></td><td>«Nadie educa a nadie, nadie se educa solo: las personas se educan entre sí, mediatizadas por el mundo.»</td></tr>
+<tr><td><b>Sartre</b><br><small>XX · La Época Contemporánea</small></td><td>«El ser humano está condenado a ser libre: no hay naturaleza ni destino que decida por ti; eres lo que haces con tu vida.»</td></tr>
+<tr><td><b>Beauvoir</b><br><small>XX · La Época Contemporánea</small></td><td>«No se nace mujer: se llega a serlo. Mucho de lo que llamamos «natural» lo construye la sociedad.»</td></tr>
+<tr><td><b>Camus</b><br><small>XX · La Época Contemporánea</small></td><td>«La vida no tiene un sentido dado de antemano: hay que vivirla con lucidez y rebeldía.»</td></tr>
+<tr><td><b>Arendt</b><br><small>XX · La Época Contemporánea</small></td><td>«El mayor mal del mundo lo cometen personas comunes que no piensan: es la banalidad del mal.»</td></tr>
+<tr><td><b>Heidegger</b><br><small>XX · La Época Contemporánea</small></td><td>«Casi siempre vivimos distraídos, haciendo lo que «se» hace. Solo quien asume que va a morir puede vivir una vida verdaderamente propia.»</td></tr>
+<tr><td><b>Mistral</b><br><small>XXI · El jardín de los poetas</small></td><td>«Muchas cosas pueden esperar, el niño no: ahora mismo se están formando sus huesos, su sangre y sus sentidos.»</td></tr>
+<tr><td><b>Galileo</b><br><small>XXII · El taller de los científicos</small></td><td>«En las cuestiones de la naturaleza vale más la observación de uno solo que la autoridad de mil sabios.»</td></tr></table>
+
+<h2 class="pb">7. Pensamiento crítico: el mercado de los sofistas</h2>
+<p>En la época «El mercado de los sofistas» el alumnado conoce a Gorgias, Trasímaco, Eutidemo y Dionisodoro, Pedro Hispano, Barnum, Bernays y Susan Stebbing. Cada puesto del mercado esconde un <b>pregón tramposo</b>: hay que acercarse, pulsar «Analizar» y elegir qué falacia es. Las falacias cazadas se guardan en el <b>Bestiario de falacias</b> (Inicio → Falacias), que explica las 26 falacias con ejemplos y cómo responder a cada una, y tiene un modo <b>Entrenar</b> con rachas, útil también sin jugar.</p>
+<div class="modes">
+  <div class="box"><span class="tag">20 min · por equipos</span><h3>Cazadores de anuncios</h3><p>Cada equipo trae dos anuncios, titulares o mensajes de redes. Con el bestiario abierto, identifican la falacia y la «responden» con la frase de «Cómo responder».</p></div>
+  <div class="box"><span class="tag">10 min · competencia</span><h3>Racha de la clase</h3><p>Proyecta el modo Entrenar. La clase vota la respuesta en voz alta o con tarjetas; se anota la mejor racha del grupo y se intenta superarla otro día.</p></div>
+  <div class="box"><span class="tag">escritura</span><h3>Inventa tu pregón</h3><p>Cada estudiante escribe un pregón tramposo para un producto imaginario usando una falacia; sus compañeros deben descubrir cuál es.</p></div>
+  <div class="box"><span class="tag">debate</span><h3>Stebbing contra Bernays</h3><p>Tras ver su debate en el juego, discutid: ¿quién debe guiar la opinión pública? ¿Cómo nos protegemos de la propaganda en las redes?</p></div>
+</div>
+<table><tr><th style="width:24%">Falacia</th><th style="width:40%">Qué es</th><th>Ejemplo del juego</th></tr>
+<tr><td><b>Ataque a la persona</b><br><small>ad hominem · Ataques</small></td><td>En lugar de discutir la idea, se ataca a quien la dice: su aspecto, su pasado, su edad o su forma de ser.</td><td><i>«¿Cómo vas a tener razón sobre el cambio climático, si ni siquiera terminaste la escuela?»</i></td></tr>
+<tr><td><b>Hombre de paja</b><br><small>straw man · Ataques</small></td><td>Se deforma la idea del otro, haciéndola más tonta o extrema, para atacarla con facilidad.</td><td><i>«Mi hermana dice que comamos menos carne. ¡Quiere prohibir todos los asados del mundo!»</i></td></tr>
+<tr><td><b>Tú también</b><br><small>tu quoque · Ataques</small></td><td>Se rechaza una crítica diciendo que quien la hace también comete la misma falta.</td><td><i>«¿Me dices que no fume? ¡Tú fumabas a mi edad!»</i></td></tr>
+<tr><td><b>Culpa por asociación</b><br><small>guilt by association · Ataques</small></td><td>Se rechaza una idea porque también la defiende alguien que nos parece malo.</td><td><i>«A ese dictador también le gustaban los perros. ¡No adoptes un perro!»</i></td></tr>
+<tr><td><b>Falso dilema</b><br><small>false dilemma · Trampas de lógica</small></td><td>Se presentan solo dos opciones cuando en realidad hay más.</td><td><i>«O estás conmigo, o estás contra mí.»</i></td></tr>
+<tr><td><b>Pendiente resbaladiza</b><br><small>slippery slope · Trampas de lógica</small></td><td>Se afirma que un pequeño paso llevará sin remedio a una cadena de desastres, sin mostrar por qué.</td><td><i>«Si te dejo ver la tele diez minutos más, luego querrás verla toda la noche, suspenderás y acabarás sin trabajo.»</i></td></tr>
+<tr><td><b>Razonamiento circular</b><br><small>petitio principii · Trampas de lógica</small></td><td>La conclusión ya está escondida en las premisas: se da por probado lo que había que probar.</td><td><i>«Este libro dice la verdad, porque en el libro pone que todo lo que dice es verdad.»</i></td></tr>
+<tr><td><b>Generalización apresurada</b><br><small>hasty generalization · Trampas de lógica</small></td><td>Se saca una conclusión sobre todos a partir de muy pocos casos.</td><td><i>«Conocí a dos turistas maleducados de ese país: todos allí son maleducados.»</i></td></tr>
+<tr><td><b>Composición y división</b><br><small>composition · Trampas de lógica</small></td><td>Se cree que lo que vale para las partes vale para el todo, o al revés.</td><td><i>«Cada jugador de este equipo es muy bueno, así que el equipo será invencible.»</i></td></tr>
+<tr><td><b>Después de, luego a causa de</b><br><small>post hoc ergo propter hoc · Falsas causas</small></td><td>Se cree que como algo pasó después de otra cosa, fue causado por ella.</td><td><i>«Me puse mis calcetines de la suerte y ganamos el partido: los calcetines nos hicieron ganar.»</i></td></tr>
+<tr><td><b>Correlación no es causa</b><br><small>cum hoc · Falsas causas</small></td><td>Como dos cosas suceden juntas, se cree que una causa la otra, cuando puede haber una tercera causa o pura coincidencia.</td><td><i>«Cuando se venden más helados, hay más ahogados. ¡Los helados hacen que la gente se ahogue!»</i></td></tr>
+<tr><td><b>Prueba anecdótica</b><br><small>anecdotal evidence · Falsas causas</small></td><td>Se usa una historia personal o un caso aislado en lugar de pruebas amplias y fiables.</td><td><i>«Mi abuelo fumó toda su vida y vivió hasta los noventa, así que fumar no hace daño.»</i></td></tr>
+<tr><td><b>Falsa autoridad</b><br><small>ad verecundiam · Presiones</small></td><td>Se acepta algo porque lo dice alguien famoso o importante, aunque no sea experto en el tema.</td><td><i>«Este futbolista famoso dice que esta crema cura las enfermedades del corazón, así que debe ser verdad.»</i></td></tr>
+<tr><td><b>Apelación a la mayoría</b><br><small>ad populum · Presiones</small></td><td>Se dice que algo es verdadero o bueno porque mucha gente lo cree o lo hace.</td><td><i>«¡Millones de personas ya lo compraron! No pueden estar todos equivocados.»</i></td></tr>
+<tr><td><b>Apelación a las emociones</b><br><small>ad misericordiam · Presiones</small></td><td>Se intenta convencer despertando lástima, miedo o ternura, en lugar de dar razones.</td><td><i>«Profe, tiene que aprobarme: si no, mi perrito se pondrá muy triste.»</i></td></tr>
+<tr><td><b>Apelación a la fuerza</b><br><small>ad baculum · Presiones</small></td><td>Se intenta imponer una idea con amenazas, en lugar de con razones.</td><td><i>«Vas a estar de acuerdo conmigo, o le cuento a todos tu secreto.»</i></td></tr>
+<tr><td><b>Apelación a la tradición</b><br><small>ad antiquitatem · Presiones</small></td><td>Se defiende algo solo porque siempre se ha hecho así.</td><td><i>«Las chicas no juegan al fútbol: siempre ha sido así.»</i></td></tr>
+<tr><td><b>Apelación a la novedad</b><br><small>ad novitatem · Presiones</small></td><td>Se cree que algo es mejor solo porque es nuevo o moderno.</td><td><i>«¡Es el modelo de este año! Tiene que ser mejor que el tuyo.»</i></td></tr>
+<tr><td><b>Apelación a la naturaleza</b><br><small>appeal to nature · Presiones</small></td><td>Se dice que algo es bueno por ser «natural», o malo por ser «artificial».</td><td><i>«Este jarabe es cien por cien natural, así que no puede hacerte daño.»</i></td></tr>
+<tr><td><b>Apelación a la ignorancia</b><br><small>ad ignorantiam · Trampas de lógica</small></td><td>Se dice que algo es verdadero porque no se ha probado que sea falso, o al revés.</td><td><i>«Nadie ha demostrado que los fantasmas no existan, así que existen.»</i></td></tr>
+<tr><td><b>Inversión de la carga de la prueba</b><br><small>onus probandi · Trampas de lógica</small></td><td>Quien afirma algo no da pruebas, y exige a los demás que demuestren que es falso.</td><td><i>«Hay un dragón invisible en mi garaje. Demuéstrame que no.»</i></td></tr>
+<tr><td><b>Pista falsa</b><br><small>red herring · Trampas de palabras</small></td><td>Se cambia de tema con algo llamativo para no responder a la cuestión.</td><td><i>«—¿Por qué no hiciste los deberes? —¡Mira qué bonito está el cielo hoy!»</i></td></tr>
+<tr><td><b>Equívoco</b><br><small>equivocation · Trampas de palabras</small></td><td>Se usa una misma palabra con dos sentidos distintos en un mismo razonamiento.</td><td><i>«Ese perro es padre, y es tuyo; luego ese perro es tu padre.»</i></td></tr>
+<tr><td><b>Pregunta cargada</b><br><small>loaded question · Trampas de palabras</small></td><td>La pregunta esconde una acusación: respondas sí o no, pareces culpable.</td><td><i>«¿Ya dejaste de copiar en los exámenes?»</i></td></tr>
+<tr><td><b>Ningún verdadero escocés</b><br><small>no true Scotsman · Trampas de palabras</small></td><td>Cuando aparece un ejemplo contrario, se cambia la definición para excluirlo.</td><td><i>«—Ningún aficionado de mi equipo grita insultos. —Pues ayer vi a uno. —Entonces no era un verdadero aficionado.»</i></td></tr>
+<tr><td><b>Costo hundido</b><br><small>sunk cost · Trampas de lógica</small></td><td>Se sigue con algo malo solo porque ya se invirtió mucho en ello.</td><td><i>«La película es aburridísima, pero ya pagué la entrada, así que me quedo hasta el final aunque sufra.»</i></td></tr></table>
+
+<h2>8. Debates con emoción y dilemas</h2>
+<p>En los duelos, el pensador replica con su voz, una <b>cuerda de persuasión</b> muestra quién va ganando y antes de responder se puede elegir el <b>tipo de argumento</b>: ejemplo, pregunta socrática o detectar una falacia. Cada pensador cae ante uno y resiste otro: es una buena excusa para hablar de cómo se argumenta. A veces aparece un <b>dilema</b> sin respuesta correcta: se elige una postura y luego hay que elegir la razón que la sostiene con coherencia (las trampas son falacias o razones del bando contrario).</p>
+<div class="box"><b>Para clase:</b> elegid un dilema, dividid el grupo según su postura y pedid a cada mitad que encuentre la mejor razón… y la mejor razón del otro bando.</div>
+<ul class="cols"><li>¿Es correcto mentir para salvar a un amigo?</li><li>¿Deberían prohibirse las redes sociales a los menores de 16 años?</li><li>¿Es mejor una vida feliz pero ignorante, o una vida sabia pero triste?</li><li>¿Deben las leyes obedecerse aunque sean injustas?</li><li>¿Debería el dinero repartirse por igual entre todos?</li><li>¿Tienen derechos los animales?</li><li>¿Una máquina podrá algún día pensar de verdad?</li><li>¿Es preferible la seguridad a la libertad?</li><li>¿Somos libres de verdad o todo está determinado?</li><li>¿Es justo castigar a alguien para dar ejemplo a los demás?</li><li>¿Debemos ayudar primero a los cercanos o a quien más lo necesita?</li><li>¿Es la belleza algo objetivo o depende de quien mira?</li><li>¿Debemos decir siempre lo que pensamos?</li><li>¿Hay que cuidar la naturaleza por ella misma o por nosotros?</li></ul>
+
+<h2>9. El observatorio del cosmos</h2>
+<p>La época «El observatorio del cosmos» reúne a Kepler, Caroline Herschel, Henrietta Leavitt, Cecilia Payne, Chandrasekhar, Vera Rubin y Stephen Hawking. Junto a Kepler hay un portal al <b>planetario</b>: se camina entre el Sol y los planetas en órbita y cada uno abre su ficha con datos reales y sella el <b>pasaporte planetario</b>. El <b>Atlas del cosmos</b> (gran telescopio o Inicio → Cosmos) recorre 8 escalas, de la Tierra y la Luna al universo observable, la ficha de cada planeta con la <b>báscula cósmica</b> (cuánto pesarías allí) y el <b>calendario cósmico</b>.</p>
+<div class="modes">
+  <div class="box"><span class="tag">ciencias · 15 min</span><h3>¿Cuánto pesarías en Júpiter?</h3><p>Con la báscula cósmica, cada estudiante calcula su peso en tres mundos y explica por qué cambia: masa y gravedad no son lo mismo.</p></div>
+  <div class="box"><span class="tag">pasillo · toda la clase</span><h3>El calendario cósmico en una cuerda</h3><p>Tended una cuerda de 12 metros (un metro por mes) y colgad los hitos del calendario cósmico. Los seres humanos ocupan… ¡el último milímetro!</p></div>
+  <div class="box"><span class="tag">filosofía de la ciencia</span><h3>Cuando la verdad parece imposible</h3><p>Payne, Chandrasekhar y Rubin descubrieron cosas que casi nadie creía. ¿Qué hace falta para cambiar de idea ante las pruebas?</p></div>
+  <div class="box"><span class="tag">escala · 10 min</span><h3>Del aula al universo</h3><p>Recorred las escalas del atlas y pedid que comparen: si el Sol fuera una naranja en el aula, ¿dónde estaría Próxima Centauri?</p></div>
+</div>
+
+<h2>10. Los libros sagrados: la Biblia y el Corán</h2>
+<p>Dos épocas recorren los libros sagrados de judíos, cristianos y musulmanes: <b>El camino de la Biblia</b> (Moisés y la Torá, David y los Salmos, los cuatro evangelistas y Pablo) y <b>El jardín del Corán</b> (la primera revelación, la Fátiha, las suras de José, María, la Caverna y Ar-Rahmán, y cómo se reunió el Libro). Cada estación explica qué dice el texto, cómo lo lee la tradición creyente y, cuando corresponde, qué piensan los estudiosos sobre cómo se escribió.</p>
+<p>En estas dos épocas <b>no se vence a nadie</b>: el debate se convierte en «Pon a prueba lo que aprendiste» y cada personaje queda «Comprendido». No hay burlas, apuestas ni coronas de victoria. Por respeto a la tradición islámica, en el jardín del Corán <b>no se representa a ningún profeta</b>: cada estación es un atril con un medallón geométrico y una voz narradora.</p>
+<div class="modes">
+  <div class="box"><span class="tag">comparación · 20 min</span><h3>Personajes compartidos</h3><p>José, Moisés, María y Jesús aparecen en la Biblia y en el Corán. Pide que comparen cómo cuenta cada libro la historia de José: ¿qué coincide y qué cambia?</p></div>
+  <div class="box"><span class="tag">historia del libro</span><h3>¿Cómo llega un texto hasta hoy?</h3><p>Copistas de Qumrán, la imprenta de Gutenberg, la memoria de los hafiz y el manuscrito de Birmingham: ¿cómo se conserva y transmite un texto durante siglos?</p></div>
+</div>
+<div class="box"><b>Para un aula diversa:</b> presenta estas épocas como conocimiento cultural, no como catequesis ni como crítica. Distingue siempre entre lo que dice el texto, lo que cree la tradición y lo que piensan los estudiosos, como hace el juego, y deja espacio para que cada estudiante hable desde sus propias convicciones o sin ellas.</div>
+
+<h2>11. Qué evaluar</h2>
+<table><tr><th style="width:26%">Criterio</th><th>Dónde se ve</th></tr>
+<tr><td><b>Conocimiento</b></td><td>Pensadores vencidos en debate, lugares visitados y libros leídos: columnas de la tabla de entregas del Modo aula.</td></tr>
+<tr><td><b>Argumentación</b></td><td>En el Cuaderno del filósofo: la postura de cada diálogo, la razón elegida (buena, débil o falacia) y la respuesta a la objeción.</td></tr>
+<tr><td><b>Pensamiento propio</b></td><td>Lo que escriben en el Cuaderno después de cada diálogo y experimento (se puede copiar o descargar como texto).</td></tr>
+<tr><td><b>Postura filosófica</b></td><td>El mapa filosófico: no se califica «bien» o «mal», sirve para conversar y para formar grupos de debate.</td></tr></table>
+<div class="box"><b>Sugerencia:</b> pide que, en una posición donde eligieron una falacia, expliquen con sus palabras por qué esa razón no sirve. Reconocer una falacia propia es un gran aprendizaje.</div>
+
+<h2>12. Privacidad y seguridad</h2>
+<ul>
+  <li>El progreso se guarda <b>en el aparato</b> de cada estudiante. No se piden correos ni datos personales.</li>
+  <li>La cuenta es opcional: solo usuario y contraseña, para recuperar el avance en otro aparato y para el ranking.</li>
+  <li><b>En vivo</b>, los <b>grupos privados</b> y el <b>mundo abierto</b> usan solo apodos (con filtro de palabras ofensivas), <b>no tienen chat</b> (solo gestos predefinidos) y no guardan nada: solo viajan las respuestas y las posiciones mientras se juega. El mundo abierto se activa solo si el estudiante acepta la primera vez y se desactiva en Ajustes; cualquiera puede <b>silenciar</b> a otro viajero. Quien crea una sala puede sacar a cualquier participante.</li>
+  <li>Las entregas del Modo aula llevan un código de verificación: si alguien modifica su texto, el juego lo detecta.</li>
+</ul>
+
+<h2>13. Preguntas frecuentes</h2>
+<h3>¿Funciona sin internet?</h3><p>Una vez abierto, sí: el juego se guarda en el aparato. Los modos <b>En vivo</b>, el <b>mundo abierto</b>, los grupos, las cuentas y el ranking necesitan conexión.</p>
+<h3>¿Y en celulares antiguos?</h3><p>El juego baja la calidad gráfica solo si el aparato va lento. También se puede elegir calidad baja en «Ajustes».</p>
+<h3>¿Se puede instalar como aplicación?</h3><p>Sí: en el menú, «Instalar» lo deja en la pantalla de inicio como una app, sin pasar por la tienda.</p>
+<h3>¿Cuántos estudiantes pueden jugar En vivo a la vez?</h3><p>Una clase completa: lo probamos con 25 jugadores a la vez sin problemas.</p>
+
+<h2 class="pb">Anexo · Las 37 épocas y sus pensadores</h2>
+<table><tr><th style="width:8%">N.º</th><th style="width:32%">Época</th><th>Pensadoras y pensadores</th></tr>
+<tr><td><b>I</b></td><td>Sumer y Mesopotamia<br><small>Del siglo XXVI al XVIII a.C.</small></td><td>Enheduanna · Shuruppak · Hammurabi · Gilgamesh</td></tr>
+<tr><td><b>II</b></td><td>África<br><small>Del siglo XXIV a.C. a hoy</small></td><td>Ptahhotep · Ibn Jaldún · Zera Yacob · Mandela · Maathai · Tutu</td></tr>
+<tr><td><b>III</b></td><td>La India<br><small>Siglos VIII a.C. – III d.C.</small></td><td>Gargi · Mahavira · Nagarjuna · Aryabhata · Buda</td></tr>
+<tr><td><b>IV</b></td><td>La antigua Persia<br><small>Del siglo VI a. C. al siglo XI</small></td><td>Zaratustra · Ciro · Mani · Burzoe · Ferdousí</td></tr>
+<tr><td><b>V</b></td><td>Los Presocráticos<br><small>Siglos VII – V a.C.</small></td><td>Tales · Pitágoras · Teano · Heráclito · Demócrito · Parménides</td></tr>
+<tr><td><b>VI</b></td><td>La China Clásica<br><small>Siglos VI a.C. – II d.C.</small></td><td>Laozi · Mozi · Mencio · Ban Zhao · Zhuangzi · Confucio</td></tr>
+<tr><td><b>VII</b></td><td>La Atenas Clásica<br><small>Siglos V – IV a.C.</small></td><td>Protágoras · Sócrates · Hipócrates · Platón · Aristóteles</td></tr>
+<tr><td><b>VIII</b></td><td>Helenismo y Roma<br><small>Siglo IV a.C. – siglo III d.C.</small></td><td>Diógenes · Epicuro · Pirrón · Séneca · Epicteto · Hipatia · Marco Aurelio</td></tr>
+<tr><td><b>IX</b></td><td>La Edad Media<br><small>Siglos IV – XIV</small></td><td>Agustín · Hildegarda · Averroes · Dante · Ockham · Tomás de Aquino</td></tr>
+<tr><td><b>X</b></td><td>El islam clásico<br><small>Siglos VIII – XI</small></td><td>Al-Kindi · Rabia · Al-Juarismi · Al-Farabi · Alhacén · Avicena</td></tr>
+<tr><td><b>XI</b></td><td>Los vikingos y el Norte<br><small>Del siglo IX al siglo XIII</small></td><td>La vidente · Egill · Aud · Thorgeir · Snorri</td></tr>
+<tr><td><b>XII</b></td><td>El Japón del zen<br><small>Del siglo XI al siglo XX</small></td><td>Murasaki · Dōgen · Rikyū · Bashō · Nishida</td></tr>
+<tr><td><b>XIII</b></td><td>Los Mexicas<br><small>Siglos XIV – XVI</small></td><td>Tochihuitzin · Macuilxochitzin · Tecayehuatzin · Tlacaélel</td></tr>
+<tr><td><b>XIV</b></td><td>Los Incas<br><small>Siglos XV – XVII</small></td><td>Inca Roca · Garcilaso · Guamán Poma · Pachacútec</td></tr>
+<tr><td><b>XV</b></td><td>Renacimiento y Revolución Científica<br><small>Siglos XV – XVII</small></td><td>Christine · Leonardo · Pico · Copérnico · Maquiavelo · Montaigne · Bacon</td></tr>
+<tr><td><b>XVI</b></td><td>El Pueblo Mapuche<br><small>Una tradición viva</small></td><td>La machi · El kimche · Janequeo · Lautaro</td></tr>
+<tr><td><b>XVII</b></td><td>La Modernidad<br><small>Siglos XVII – XVIII</small></td><td>Hobbes · Descartes · Spinoza · Locke · Hume · Rousseau · Kant</td></tr>
+<tr><td><b>XVIII</b></td><td>El Siglo XIX<br><small>Siglo XIX</small></td><td>Hegel · Schopenhauer · Kierkegaard · Thoreau · Marx · Mill · Nietzsche</td></tr>
+<tr><td><b>XIX</b></td><td>América Latina<br><small>Siglos XV – XXI</small></td><td>Nezahualcóyotl · Sor Juana · Martí · Octavio Paz · Castellanos · Freire</td></tr>
+<tr><td><b>XX</b></td><td>La Época Contemporánea<br><small>Siglos XX – XXI</small></td><td>Wittgenstein · Frankl · Sartre · Beauvoir · Camus · Arendt · Heidegger</td></tr>
+<tr><td><b>XXI</b></td><td>El jardín de los poetas<br><small>Del siglo VII a.C. al siglo XX</small></td><td>Safo · Li Bai · Rumi · Dickinson · Tagore · Mistral · Neruda</td></tr>
+<tr><td><b>XXII</b></td><td>El taller de los científicos<br><small>Del siglo III a.C. al siglo XX</small></td><td>Arquímedes · Galileo · Newton · Darwin · Lovelace · Curie · Einstein</td></tr>
+<tr><td><b>XXIII</b></td><td>Los librepensadores<br><small>Del siglo VI a. C. al siglo XX</small></td><td>Ajita · Lucrecio · Diderot · Feuerbach · Ernestine Rose · Sagan · Russell</td></tr>
+<tr><td><b>XXIV</b></td><td>La casa de la fe<br><small>Del siglo XI al siglo XX</small></td><td>Anselmo · Maimónides · Al-Ghazali · Teresa de Ávila · Leibniz · Simone Weil · Pascal</td></tr>
+<tr><td><b>XXV</b></td><td>Las pensadoras<br><small>Del siglo XVIII al siglo XX</small></td><td>Du Châtelet · Wollstonecraft · Olympe de Gouges · Sojourner Truth · Flora Tristán · Edith Stein · Zambrano</td></tr>
+<tr><td><b>XXVI</b></td><td>La asamblea de la justicia<br><small>Del siglo VI a. C. al siglo XX</small></td><td>Solón · Cicerón · Las Casas · Montesquieu · Gandhi · Luther King · Rawls</td></tr>
+<tr><td><b>XXVII</b></td><td>La montaña de los místicos<br><small>Del siglo V al siglo XX</small></td><td>Bodhidharma · Huineng · Milarepa · Kabir · Mirabai · Ramana · Shankara</td></tr>
+<tr><td><b>XXVIII</b></td><td>La escuela de la mente<br><small>Del siglo XVII al siglo XX</small></td><td>Comenio · Pestalozzi · Montessori · Freud · Piaget · Vygotsky · William James</td></tr>
+<tr><td><b>XXIX</b></td><td>El bosque de la Tierra<br><small>Del siglo XVIII al siglo XXI</small></td><td>Humboldt · Leopold · Rachel Carson · Chico Mendes · Næss · Berta Cáceres · Lovelock</td></tr>
+<tr><td><b>XXX</b></td><td>La torre de los números<br><small>Del siglo III a. C. al siglo XX</small></td><td>Euclides · Fibonacci · Boole · Ramanujan · Emmy Noether · Gödel · Turing</td></tr>
+<tr><td><b>XXXI</b></td><td>El taller de la belleza<br><small>Del siglo I a. C. al siglo XX</small></td><td>Vitruvio · Hokusai · Beethoven · Tolstói · Kandinsky · Frida Kahlo · Schiller</td></tr>
+<tr><td><b>XXXII</b></td><td>La gran asamblea de los pueblos<br><small>De tiempos antiguos al siglo XX</small></td><td>Toro Sentado · Jefe Joseph · Alce Negro · Te Whiti · Liliʻuokalani · Unaipon · El Pacificador</td></tr>
+<tr><td><b>XXXIII</b></td><td>La casa de los cuidados<br><small>Del siglo II al siglo XX</small></td><td>Galeno · Vesalio · Semmelweis · Nightingale · Pasteur · Ramón y Cajal · Schweitzer</td></tr>
+<tr><td><b>XXXIV</b></td><td>El mercado de los sofistas<br><small>Del siglo V a. C. a hoy</small></td><td>Gorgias · Trasímaco · Eutidemo · Pedro Hispano · Barnum · Bernays · Stebbing</td></tr>
+<tr><td><b>XXXV</b></td><td>El observatorio del cosmos<br><small>Del siglo XVII a hoy</small></td><td>Kepler · Caroline Herschel · Leavitt · Cecilia Payne · Chandrasekhar · Vera Rubin · Hawking</td></tr>
+<tr><td><b>XXXVI</b></td><td>El camino de la Biblia<br><small>Del siglo XIII a. C. al siglo I</small></td><td>Moisés · David · Mateo · Marcos · Lucas · Juan · Pablo</td></tr>
+<tr><td><b>XXXVII</b></td><td>El jardín del Corán<br><small>Siglo VII</small></td><td>Iqra · Al-Fátiha · Yusuf · Maryam · Al-Kahf · Ar-Rahmán · El Mushaf</td></tr></table>
+<p class="foot">Odisea de la Razón es un proyecto de <b>Filosofía para Seres Humanos</b> · filosofiaparasereshumanos.com<br>Juego gratuito: filosofiaparasereshumanos-ux.github.io/sofos-gpu</p>
+</main></body></html>

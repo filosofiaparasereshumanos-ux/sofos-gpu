@@ -1,0 +1,650 @@
+[
+[
+"(?<![A-Za-zÀ-ÿ])Tabanus(?![A-Za-zÀ-ÿ])",
+"Gadfly"
+],
+[
+"(?<![A-Za-zÀ-ÿ])tábano(?![A-Za-zÀ-ÿ])",
+"gadfly"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Jenofonte(?![A-Za-zÀ-ÿ])",
+"Xenophon"
+],
+[
+"Ethics to Nicomachus",
+"Nicomachean Ethics"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Nicomachus Ethics(?![A-Za-zÀ-ÿ])",
+"Nicomachean Ethics"
+],
+[
+"I just know I don't know anything",
+"I only know that I know nothing"
+],
+[
+"I only know I don't know anything",
+"I only know that I know nothing"
+],
+[
+"I just know that I don't know anything",
+"I only know that I know nothing"
+],
+[
+"(?<![A-Za-zÀ-ÿ])May[eé]utic(a|s)?(?![A-Za-zÀ-ÿ])",
+"Maieutics"
+],
+[
+"(?<![A-Za-zÀ-ÿ])may[eé]utic(a|s)?(?![A-Za-zÀ-ÿ])",
+"maieutics"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Hipatia(?![A-Za-zÀ-ÿ])",
+"Hypatia"
+],
+[
+"(?<![A-Za-zÀ-ÿ])S[oó]crates(?![A-Za-zÀ-ÿ])",
+"Socrates"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Plat[oó]n(?![A-Za-zÀ-ÿ])",
+"Plato"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Arist[oó]teles(?![A-Za-zÀ-ÿ])",
+"Aristotle"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Her[aá]clito(?![A-Za-zÀ-ÿ])",
+"Heraclitus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Pit[aá]goras(?![A-Za-zÀ-ÿ])",
+"Pythagoras"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Demócrito(?![A-Za-zÀ-ÿ])",
+"Democritus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Parménides(?![A-Za-zÀ-ÿ])",
+"Parmenides"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Protágoras(?![A-Za-zÀ-ÿ])",
+"Protagoras"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Epicuro(?![A-Za-zÀ-ÿ])",
+"Epicurus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Diógenes(?![A-Za-zÀ-ÿ])",
+"Diogenes"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Séneca(?![A-Za-zÀ-ÿ])",
+"Seneca"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Epicteto(?![A-Za-zÀ-ÿ])",
+"Epictetus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Tomás de Aquino(?![A-Za-zÀ-ÿ])",
+"Thomas Aquinas"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Agustín(?![A-Za-zÀ-ÿ])",
+"Augustine"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Maquiavelo(?![A-Za-zÀ-ÿ])",
+"Machiavelli"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Confucio(?![A-Za-zÀ-ÿ])",
+"Confucius"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Mencio(?![A-Za-zÀ-ÿ])",
+"Mencius"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Avicena(?![A-Za-zÀ-ÿ])",
+"Avicenna"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Alhacén(?![A-Za-zÀ-ÿ])",
+"Alhazen"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Al-Juarismi(?![A-Za-zÀ-ÿ])",
+"Al-Khwarizmi"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Ibn Jaldún(?![A-Za-zÀ-ÿ])",
+"Ibn Khaldun"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Copérnico(?![A-Za-zÀ-ÿ])",
+"Copernicus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Arquímedes(?![A-Za-zÀ-ÿ])",
+"Archimedes"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Hipócrates(?![A-Za-zÀ-ÿ])",
+"Hippocrates"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Zaratustra(?![A-Za-zÀ-ÿ])",
+"Zarathustra"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Ferdousí(?![A-Za-zÀ-ÿ])",
+"Ferdowsi"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Ciro(?![A-Za-zÀ-ÿ])",
+"Cyrus"
+],
+[
+"Difficulty of the discussions",
+"Debate difficulty"
+],
+[
+">Difficult<",
+">Hard<"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Reason Odyssey(?![A-Za-zÀ-ÿ])",
+"Odyssey of Reason"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Odyssey of the Reason(?![A-Za-zÀ-ÿ])",
+"Odyssey of Reason"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Wisdom House(?![A-Za-zÀ-ÿ])",
+"House of Wisdom"
+],
+[
+"(?<![A-Za-zÀ-ÿ])the Cave of Plato(?![A-Za-zÀ-ÿ])",
+"Plato's cave"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Plato's Cavern(?![A-Za-zÀ-ÿ])",
+"Plato's Cave"
+],
+[
+"(?<![A-Za-zÀ-ÿ])cavern(?![A-Za-zÀ-ÿ])",
+"cave"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Cavern(?![A-Za-zÀ-ÿ])",
+"Cave"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Sisyphus Rock(?![A-Za-zÀ-ÿ])",
+"Sisyphus's rock"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Giges ring(?![A-Za-zÀ-ÿ])",
+"ring of Gyges"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Giges(?![A-Za-zÀ-ÿ])",
+"Gyges"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Teseo(?![A-Za-zÀ-ÿ])",
+"Theseus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Zhuangzi(?![A-Za-zÀ-ÿ])",
+"Zhuangzi"
+],
+[
+"(?<![A-Za-zÀ-ÿ])philosophers? for human beings(?![A-Za-zÀ-ÿ])",
+"Filosofía para Seres Humanos"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Philosophy for Human Beings(?![A-Za-zÀ-ÿ])",
+"Filosofía para Seres Humanos"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Tales(?![A-Za-zÀ-ÿ])",
+"Thales"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Mileto(?![A-Za-zÀ-ÿ])",
+"Miletus"
+],
+[
+"Éfeso",
+"Ephesus"
+],
+[
+"Zenón",
+"Zeno"
+],
+[
+"Glaucón",
+"Glaucon"
+],
+[
+"Alejandría",
+"Alexandria"
+],
+[
+"Empédocles",
+"Empedocles"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Anaximandro(?![A-Za-zÀ-ÿ])",
+"Anaximander"
+],
+[
+"Anaxímenes",
+"Anaximenes"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Leucipo(?![A-Za-zÀ-ÿ])",
+"Leucippus"
+],
+[
+"Sísifo",
+"Sisyphus"
+],
+[
+"Fenáreta",
+"Phaenarete"
+],
+[
+"Perictíone",
+"Perictione"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Teeteto(?![A-Za-zÀ-ÿ])",
+"Theaetetus"
+],
+[
+"Fedón",
+"Phaedo"
+],
+[
+"Epojé",
+"Epoché"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Abdera(?![A-Za-zÀ-ÿ])",
+"Abdera"
+],
+[
+"Pirrón",
+"Pyrrho"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Marco Aurelio(?![A-Za-zÀ-ÿ])",
+"Marcus Aurelius"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Ockham(?![A-Za-zÀ-ÿ])",
+"Ockham"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Nezahualcóyotl(?![A-Za-zÀ-ÿ])",
+"Nezahualcoyotl"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Averroes(?![A-Za-zÀ-ÿ])",
+"Averroes"
+],
+[
+"Elea\\b",
+"Elea"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Jerusalén(?![A-Za-zÀ-ÿ])",
+"Jerusalem"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Egipto(?![A-Za-zÀ-ÿ])",
+"Egypt"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Crotona(?![A-Za-zÀ-ÿ])",
+"Croton"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Cos(?![A-Za-zÀ-ÿ])",
+"Kos"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Estagira(?![A-Za-zÀ-ÿ])",
+"Stagira"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Liceo(?![A-Za-zÀ-ÿ])",
+"Lyceum"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Academia de Platón(?![A-Za-zÀ-ÿ])",
+"Plato's Academy"
+],
+[
+"(?<![A-Za-zÀ-ÿ])[Nn]ext development (zone|area)(?![A-Za-zÀ-ÿ])",
+"zone of proximal development"
+],
+[
+"(?<![A-Za-zÀ-ÿ])[Nn]ear development (zone|area)(?![A-Za-zÀ-ÿ])",
+"Zone of proximal development"
+],
+[
+"(?<![A-Za-zÀ-ÿ])the Peacekeeper(?![A-Za-zÀ-ÿ])",
+"the Peacemaker"
+],
+[
+"(?<![A-Za-zÀ-ÿ])The Peacekeeper(?![A-Za-zÀ-ÿ])",
+"The Peacemaker"
+],
+[
+"(?<![A-Za-zÀ-ÿ])[Ii] won't fight anymore forever(?![A-Za-zÀ-ÿ])",
+"I will fight no more forever"
+],
+[
+"(?<![A-Za-zÀ-ÿ])game drive(?![A-Za-zÀ-ÿ])",
+"play drive"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Game Drive(?![A-Za-zÀ-ÿ])",
+"Play Drive"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Trasimac(us|o)(?![A-Za-zÀ-ÿ])",
+"Thrasymachus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Thrasimac(us|o)(?![A-Za-zÀ-ÿ])",
+"Thrasymachus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Trasímaco(?![A-Za-zÀ-ÿ])",
+"Thrasymachus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Discards(?![A-Za-zÀ-ÿ])",
+"Descartes"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Encomio de Helena(?![A-Za-zÀ-ÿ])",
+"Encomium of Helen"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Encomium of Helena(?![A-Za-zÀ-ÿ])",
+"Encomium of Helen"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Helena of Troy(?![A-Za-zÀ-ÿ])",
+"Helen of Troy"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Helena de Troya(?![A-Za-zÀ-ÿ])",
+"Helen of Troy"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Fedon(?![A-Za-zÀ-ÿ])",
+"Phaedo"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Banket(?![A-Za-zÀ-ÿ])",
+"Symposium"
+],
+[
+"(?<![A-Za-zÀ-ÿ])divinous(?![A-Za-zÀ-ÿ])",
+"divine"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Eutidemo(?![A-Za-zÀ-ÿ])",
+"Euthydemus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Dionisodoro(?![A-Za-zÀ-ÿ])",
+"Dionysodorus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Pedro Hispano(?![A-Za-zÀ-ÿ])",
+"Peter of Spain"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Leontinos(?![A-Za-zÀ-ÿ])",
+"Leontini"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Calcedonia(?![A-Za-zÀ-ÿ])",
+"Chalcedon"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Quíos(?![A-Za-zÀ-ÿ])",
+"Chios"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Calias(?![A-Za-zÀ-ÿ])",
+"Callias"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Sumulae logicales(?![A-Za-zÀ-ÿ])",
+"Summulae logicales"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Caroline Herschel(?![A-Za-zÀ-ÿ])",
+"Caroline Herschel"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Cecilia Payne-Gaposchkin(?![A-Za-zÀ-ÿ])",
+"Cecilia Payne-Gaposchkin"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Andromeda galaxy(?![A-Za-zÀ-ÿ])",
+"Andromeda galaxy"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Sagittarius A\\\\*(?![A-Za-zÀ-ÿ])",
+"Sagittarius A*"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Magellan Clouds(?![A-Za-zÀ-ÿ])",
+"Magellanic Clouds"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Clouds of Magellan(?![A-Za-zÀ-ÿ])",
+"Magellanic Clouds"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Cloud of Magellan(?![A-Za-zÀ-ÿ])",
+"Magellanic Cloud"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Mount Olympus(?![A-Za-zÀ-ÿ])",
+"Olympus Mons"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Big Bang(?![A-Za-zÀ-ÿ])",
+"Big Bang"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Brief history of time(?![A-Za-zÀ-ÿ])",
+"A Brief History of Time"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Brief History of Time(?![A-Za-zÀ-ÿ])",
+"A Brief History of Time"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Thinking with purpose(?![A-Za-zÀ-ÿ])",
+"Thinking to Some Purpose"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Think with purpose(?![A-Za-zÀ-ÿ])",
+"Thinking to Some Purpose"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Thinking with Purpose(?![A-Za-zÀ-ÿ])",
+"Thinking to Some Purpose"
+],
+[
+"(?<![A-Za-zÀ-ÿ])The harmony of the world(?![A-Za-zÀ-ÿ])",
+"The Harmony of the World"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Tycho Brahe(?![A-Za-zÀ-ÿ])",
+"Tycho Brahe"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Lambaréné(?![A-Za-zÀ-ÿ])",
+"Lambaréné"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Sermon of the Mountain(?![A-Za-zÀ-ÿ])",
+"Sermon on the Mount"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Yibril(?![A-Za-zÀ-ÿ])",
+"Jibril"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Uzmán(?![A-Za-zÀ-ÿ])",
+"Uthman"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Uzman(?![A-Za-zÀ-ÿ])",
+"Uthman"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Jadiya(?![A-Za-zÀ-ÿ])",
+"Khadija"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Mahoma(?![A-Za-zÀ-ÿ])",
+"Muhammad"
+],
+[
+"(?<![A-Za-zÀ-ÿ])La Meca(?![A-Za-zÀ-ÿ])",
+"Mecca"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Hégira(?![A-Za-zÀ-ÿ])",
+"Hijra"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Hegira(?![A-Za-zÀ-ÿ])",
+"Hijra"
+],
+[
+"(?<![A-Za-zÀ-ÿ])hach(?![A-Za-zÀ-ÿ])",
+"hajj"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Al-Jidr(?![A-Za-zÀ-ÿ])",
+"Al-Khidr"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Yaqub(?![A-Za-zÀ-ÿ])",
+"Yaqub"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Zayd ibn Thabit(?![A-Za-zÀ-ÿ])",
+"Zayd ibn Thabit"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Qumrán(?![A-Za-zÀ-ÿ])",
+"Qumran"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Casiodoro de Reina(?![A-Za-zÀ-ÿ])",
+"Casiodoro de Reina"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Tanaj(?![A-Za-zÀ-ÿ])",
+"Tanakh"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Vulgata(?![A-Za-zÀ-ÿ])",
+"Vulgate"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Fedón(?![A-Za-zÀ-ÿ])",
+"Phaedo"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Corintios(?![A-Za-zÀ-ÿ])",
+"Corinthians"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Gálatas(?![A-Za-zÀ-ÿ])",
+"Galatians"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Areópago(?![A-Za-zÀ-ÿ])",
+"Areopagus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Cafarnaúm(?![A-Za-zÀ-ÿ])",
+"Capernaum"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Caná(?![A-Za-zÀ-ÿ])",
+"Cana"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Nebo(?![A-Za-zÀ-ÿ])",
+"Nebo"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Deuteronomio(?![A-Za-zÀ-ÿ])",
+"Deuteronomy"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Éxodo(?![A-Za-zÀ-ÿ])",
+"Exodus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Levítico(?![A-Za-zÀ-ÿ])",
+"Leviticus"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Números(?![A-Za-zÀ-ÿ])",
+"Numbers"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Génesis(?![A-Za-zÀ-ÿ])",
+"Genesis"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Yabal al-Nur(?![A-Za-zÀ-ÿ])",
+"Jabal al-Nur"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Saná(?![A-Za-zÀ-ÿ])",
+"Sanaa"
+],
+[
+"(?<![A-Za-zÀ-ÿ])tayuid(?![A-Za-zÀ-ÿ])",
+"tajwid"
+],
+[
+"(?<![A-Za-zÀ-ÿ])Mushaf(?![A-Za-zÀ-ÿ])",
+"Mushaf"
+],
+[
+"The Lord is my shepherd, I am not lacking",
+"The Lord is my shepherd; I shall not want"
+],
+[
+"The Lord is my shepherd, nothing is lacking",
+"The Lord is my shepherd; I shall not want"
+]
+]
