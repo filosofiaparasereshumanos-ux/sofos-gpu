@@ -73,4 +73,4 @@ const Mesa = {
 }
 // al cerrar el panel, las mesas también se callan
 { const x0 = Versus.close.bind(Versus); Versus.close = function () { Mesa.gen = (Mesa.gen || 0) + 1; x0(); }; }
-if (location.hash === '#debug') window.__mesa = Mesa;
+if (location.hash === '#debug') { window.__mesa = Mesa; window.__datos = { MESAS, POSTURAS, HISTORIA }; }
