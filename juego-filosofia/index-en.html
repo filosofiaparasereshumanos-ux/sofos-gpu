@@ -26905,6 +26905,223 @@ const Mesa = {
 { const x0 = Versus.close.bind(Versus); Versus.close = function () { Mesa.gen = (Mesa.gen || 0) + 1; x0(); }; }
 if (location.hash === '#debug') { window.__mesa = Mesa; window.__datos = { MESAS, POSTURAS, HISTORIA }; }
 
+// ---- src/07s-juicio-datos.js ----
+// ============================================================================
+//  EL JUICIO DE SÓCRATES (Atenas, 399 a.C.), según la Apología, el Critón y el
+//  Fedón de Platón. El jugador es Sócrates: en cada momento elige entre lo que
+//  dijo de verdad (k:'socratico'), ceder para salvarse (k:'ceder') o responder
+//  con soberbia (k:'soberbio'). El jurado de unos quinientos ciudadanos vota.
+//  Ser fiel a Sócrates no salva la vida: esa es la lección.
+//  (datos sin dependencias: también los leen las herramientas de voz)
+// ============================================================================
+const JUICIO_VOCES = {
+  meleto: { id: 'meleto', name: 'Meletus', short: 'Meletus', epithet: 'Young poet, chief accuser' },
+  anito: { id: 'anito', name: 'Anytus', short: 'Anytus', epithet: 'Democratic politician, accuser' },
+  licon: { id: 'licon', name: 'Lycon', short: 'Lycon', epithet: 'Orator, accuser' },
+  criton: { id: 'criton', name: 'Crito', short: 'Crito', epithet: 'Lifelong friend' },
+};
+const JO = (k, t, r, why) => ({ k, t, r, why });
+const JUICIO = {
+  intro: [
+    'Athens, spring of 399 BC. A jury of about five hundred citizens, chosen by lot, takes its seats in the court. Today a seventy-year-old man who never wrote a book is on trial: Socrates.',
+    'Three citizens accuse him: Meletus, a young poet; Anytus, an influential politician; and Lycon, an orator. You are Socrates. Each time you speak, choose: will you say what you truly think, or what would save you?',
+  ],
+  acusacion: { who: 'meleto', say: 'This is our charge: Socrates is guilty of corrupting the young and of not recognising the gods the city recognises, but other new divinities. We ask for the death penalty.' },
+  defensa: [
+    { who: 'meleto', say: 'The young follow you through the streets and learn from you to mock their elders. You corrupt them, Socrates.', opts: [
+      JO('socratico', 'Tell me, Meletus: if I corrupt the young, who makes them better? The judges, the council, the assembly, every Athenian except me? With horses it is the other way round: few know how to improve them. Clearly you have never cared about the young.', 'Meletus stammers and cannot answer. Some judges smile; others are annoyed to see an accuser humiliated.', 'This is the defence in the Apology (24d-26a): Socrates questions Meletus until he shows that he never seriously thought about education.'),
+      JO('ceder', 'Judges, you who are the wisest in Greece, know that I am a poor harmless old man. Have pity on me.', 'Several judges nod, flattered. But your students look at one another, puzzled: that is not the Socrates they know.', 'Socrates refused to flatter the jury: he said he would speak only the truth, without ornament (Apology 17b-c).'),
+      JO('soberbio', 'Meletus is an ignorant, envious man. He does not even deserve an answer.', 'Protests ring out in the court. Insulting is not arguing, and the jury notices.', 'Socrates refuted Meletus with questions, not insults: his weapon was dialogue.'),
+    ] },
+    { who: 'anito', say: 'You go around the city asking everyone questions, making fools of politicians, poets and craftsmen. Who do you think you are? The wisest man in Athens?', opts: [
+      JO('socratico', 'My friend Chaerephon asked the oracle at Delphi whether anyone was wiser than me, and the priestess answered that no one was. To understand this, I questioned those who seemed wise, and discovered that they thought they knew what they did not know. I, at least, do not think I know what I do not know.', 'A murmur runs through the court. Some admire your honesty; others feel you have just called them ignorant.', 'This is the story of the oracle that Socrates tells in the Apology (20e-23b): his wisdom is recognising the limits of his knowledge.'),
+      JO('ceder', 'If you acquit me, I promise to stop asking questions and never philosophise again.', 'Many judges look satisfied. But at the back of the court, young Plato lowers his head.', 'Socrates said exactly the opposite: “I respect you, Athenians, but I will obey the god rather than you, and as long as I live I will not stop philosophising” (Apology 29d).'),
+      JO('soberbio', 'I am wiser than all of you put together, and you know it.', 'Booing fills the court. You have confirmed what your accusers feared.', 'Socrates never claimed to know more than anyone: he said his only advantage was knowing that he did not know.'),
+    ] },
+    { who: 'meleto', say: 'And besides, you are an atheist. You say a divine voice speaks to you, a daimon. You do not believe in the gods of the city.', opts: [
+      JO('socratico', 'Your charge says that I believe in divine things, and at the same time that I believe in no god. Can anyone believe in horse-related things and not believe in horses? You contradict yourself, Meletus.', 'Meletus gets tangled in his own charge. But an accuser’s contradictions do not always change the votes.', 'This is the argument of the Apology (27b-e): Meletus’ charge contradicts itself.'),
+      JO('ceder', 'I will make every sacrifice you ask and never speak of my inner voice again.', 'Some judges are reassured. But you have denied something that mattered greatly to Socrates.', 'Socrates never gave up his daimon, the voice that warned him when he was about to go wrong (Apology 31c-d).'),
+      JO('soberbio', 'The city’s gods are fairy tales for children.', 'The court erupts in shouting. You have just given your accusers exactly what they wanted to hear.', 'Socrates took part in the city’s religion; the charge of impiety was largely political.'),
+    ] },
+    { who: 'licon', say: 'It is customary for the accused to bring his wife and children, weeping, to move the judges. Will you not do the same, Socrates?', opts: [
+      JO('socratico', 'I have three sons, but I will not bring them here to beg. It would be unworthy of me and of you. A judge is not here to grant favours, but to judge according to the law.', 'A long silence falls. Some judges respect you for it; others take it as disrespect.', 'Socrates refused such scenes: he considered them unworthy of justice (Apology 34c-35c).'),
+      JO('ceder', 'Bring my children. Look at their tears, judges, and have pity on their father.', 'The children cry and several judges are moved. But you have done exactly what Socrates said he would never do.', 'Socrates explicitly refused to bring his children to arouse pity (Apology 34c-d).'),
+      JO('soberbio', 'Do as you please. I do not care what this crowd thinks.', 'Contempt comes at a price: several judges who were hesitating decide against you.', 'Socrates respected the jury, even if he did not flatter it: he spoke frankly, not with contempt.'),
+    ] },
+  ],
+  veredicto: { culpable: 'The jury finds you guilty. The margin is small: if about thirty votes had gone the other way, you would have been acquitted.', absuelto: 'The jury acquits you. You live… but to save yourself you said things Socrates would never have said.' },
+  pena: { who: 'meleto', say: 'You are guilty now. We ask for death. According to the law, you must now propose another penalty, and the jury will choose between the two.', opts: [
+    JO('socratico', 'For what I have done for Athens, the fair thing would be to feed me in the Prytaneum, like the Olympic champions. But since I must propose a penalty, my friends Plato, Crito, Critobulus and Apollodorus offer to pay a fine of thirty minas.', 'Part of the jury is outraged: it seems you are mocking the court. But that is what Socrates said.', 'This is the counter-proposal in the Apology (36d-38b): first, ironically, the Prytaneum; then a fine guaranteed by his friends.'),
+    JO('ceder', 'I propose exile. I will leave Athens and never philosophise anywhere again.', 'Many judges breathe a sigh of relief: perhaps this is what some expected from the start.', 'Socrates rejected exile: “The unexamined life is not worth living” (Apology 37c-38a).'),
+    JO('soberbio', 'I propose nothing. Sentence me to death, if you dare.', 'Your defiance convinces the undecided. The vote will be harsh.', 'Socrates did propose a penalty: he did not seek death, but he did not give up his principles either.'),
+  ] },
+  sentencia: { muerte: 'The jury votes for death, and this time by a wider margin than before. You will drink the hemlock.', destierro: 'The jury accepts exile. You will live far from Athens, in silence.' },
+  despedida: { who: 'socrates', say: 'Now it is time to go: I to die, and you to live. Which of us goes to the better thing, no one knows except the god.' },
+  carcel: { who: 'criton', say: 'Socrates, almost thirty days have passed while the sacred ship returned from Delos. Everything is ready: the guards are bribed and I have friends in Thessaly who will take you in. Escape tonight, I beg you.', opts: [
+    JO('socratico', 'Dear Crito, one must never answer injustice with injustice. All my life I accepted the laws of Athens; if I flee now, I break that agreement just when it no longer suits me.', 'Crito weeps in silence. He knows he will not be able to convince you.', 'This is the argument of the Crito (49b-54d): Socrates imagines the Laws speaking to him and reminding him of the agreement he made with the city.'),
+    JO('ceder', 'You are right, Crito. Let us leave tonight.', 'You escape in the darkness towards Thessaly. You are still alive, but you have contradicted everything you taught.', 'In the Crito, Socrates rejects escape: it would mean committing one injustice to avoid another.'),
+    JO('soberbio', 'Let them keep their city. I will leave and laugh at them from afar.', 'Crito looks at you in surprise: that bitterness is not yours.', 'Socrates neither fled nor held a grudge: even in prison he kept talking calmly about justice.'),
+  ] },
+  final: [
+    { who: 'narr', say: 'At sunset, the servant of the Eleven brought the hemlock. Socrates drank it calmly while his friends wept, and he asked them to be serene.' },
+    { who: 'socrates', say: 'Crito, we owe a cock to Asclepius. Pay it and do not forget.' },
+    { who: 'narr', say: 'Such was the end, Plato tells us in the Phaedo, of the best of all the men of his time whom we knew, and also the wisest and most just.' },
+  ],
+  finales: {
+    fiel: 'You were truly Socrates: you preferred truth to life, and consistency to comfort. That is why, almost two thousand four hundred years later, we still remember him.',
+    medio: 'Sometimes you were Socrates, and sometimes you chose what suited you. Ask yourself: what would it have cost you to be consistent to the end?',
+    lejos: 'You saved yourself, or let pride carry you away, but you were not Socrates. He thought it worse to commit an injustice than to suffer one, and he lived and died by that idea.',
+  },
+  nota: 'To learn more: almost everything we know about the trial comes from Plato’s Apology, Crito and Phaedo, and from Xenophon’s Apology. Plato was present at the trial, but not on the day of the death, because he was ill.',
+};
+
+// ---- src/07t-juicio.js ----
+// ============================================================================
+//  EL JUICIO DE SÓCRATES: escena jugable. Tú eres Sócrates ante el jurado.
+//  Los votos se ven en una barra de quinientos jueces. Elegir como Sócrates
+//  (la verdad) no salva la vida: el juego mide tu «coherencia socrática».
+// ============================================================================
+ACH.push({ id: 'juicio', i: '⚖', n: 'An examined life', d: 'Live the trial of Socrates, staying true to him to the end.' });
+const Juicio = {
+  T: {
+    eye: 'Athens, 399 BC', h: 'The trial of Socrates', next: 'Continue', vote: 'Let the jury vote', you: 'Socrates (you)', guilty: 'Guilty', inno: 'Innocent', death: 'Death', alt: 'Your proposal',
+    coh: 'Socratic consistency', again: 'Live it again', close: 'Close', start: '⚖ Live the trial of Socrates', startS: 'You are Socrates before five hundred judges',
+    kinds: { socratico: '✓ This is what Socrates said', ceder: '~ You gave in to save yourself', soberbio: '✗ Arrogance, not philosophy' }, narr: 'Narrator', jurado: 'The jury of Athens',
+    lv: { fiel: 'You were Socrates', medio: 'Half a Socrates', lejos: 'You were not Socrates' }, talk: '⚖ Vivir mi juicio',
+  },
+  build() {
+    if (document.getElementById('juicio')) return;
+    const el = document.createElement('div'); el.id = 'juicio'; el.className = 'nb'; el.hidden = true;
+    el.innerHTML = '<div class="nb-card ju-card" role="dialog"><button class="ls-x pn-x" id="ju-x" aria-label="✕">✕</button><div class="eyebrow"></div><h3 class="ju-h"></h3>'
+      + '<div class="ju-jury" hidden><div class="ju-bar"><i class="ju-g"></i><i class="ju-i"></i></div><div class="ju-n"><span class="ju-gn"></span><span class="ju-in"></span></div></div>'
+      + '<div class="ju-who"><i class="medal"></i><b></b></div><p class="ju-say"></p><div class="ju-fb" hidden><b></b><span></span></div><div class="ju-opts"></div><div class="ju-end" hidden></div><div class="btns"><button class="btn primary" id="ju-next"></button></div></div>';
+    document.body.appendChild(el); el.querySelector('.eyebrow').textContent = this.T.eye; el.querySelector('.ju-h').textContent = this.T.h;
+    el.querySelector('#ju-x').addEventListener('click', () => { Audio.click && Audio.click(); this.close(); });
+    el.querySelector('#ju-next').addEventListener('click', () => { Audio.click && Audio.click(); const f = this.nextFn; this.nextFn = null; if (f) f(); });
+  },
+  open() { this.build(); Panel.open('juicio'); Audio.init && Audio.init(); this.restart(); },
+  restart() { this.coh = 0; this.inno = 236; this.k = 0; this.path = []; this.play(); },
+  close() { this.gen = (this.gen || 0) + 1; Voice.stop(); Panel.close('juicio'); },
+  who(id) { if (id === 'narr') return null; if (id === 'socrates') { const S = SAGE_BY_ID().socrates; return { data: S.d, boss: false }; } return { data: JUICIO_VOCES[id], boss: false }; },
+  speak(id, text, after) {
+    const gen = (this.gen = (this.gen || 0) + 1); const parts = narrSplit(text); let k = 0; const w = this.who(id);
+    const say = () => { if (gen !== this.gen) return; if (k >= parts.length) { if (after) after(); return; } Voice.utter(parts[k++], w, 1, say); }; say();
+  },
+  show(id, text, btn, fn) {
+    const el = document.getElementById('juicio'), m = el.querySelector('.ju-who .medal');
+    const name = id === 'narr' ? this.T.narr : id === 'socrates' ? this.T.you : JUICIO_VOCES[id].name;
+    if (id === 'socrates') setMedal(m, 'socrates', 'S'); else { setMedal(m, '', id === 'narr' ? '☉' : JUICIO_VOCES[id].short[0]); }
+    m.classList.toggle('ju-acc', id !== 'narr' && id !== 'socrates');
+    el.querySelector('.ju-who b').textContent = name; el.querySelector('.ju-say').textContent = text; el.querySelector('.ju-opts').innerHTML = ''; el.querySelector('.ju-fb').hidden = true;
+    const nb = $('#ju-next'); nb.hidden = !btn; if (btn) { nb.textContent = btn; this.nextFn = fn; }
+    this.speak(id, text);
+  },
+  jury(show, g, i, labels) {
+    const j = document.querySelector('#juicio .ju-jury'); j.hidden = !show; if (!show) return;
+    const L = labels || [this.T.guilty, this.T.inno]; const tot = g + i || 1;
+    j.querySelector('.ju-g').style.width = (g / tot * 100) + '%'; j.querySelector('.ju-i').style.width = (i / tot * 100) + '%';
+    j.querySelector('.ju-gn').textContent = `${L[0]}: ${g}`; j.querySelector('.ju-in').textContent = `${L[1]}: ${i}`;
+  },
+  count(g, i, labels, done) { // los votos se cuentan poco a poco
+    const t0 = performance.now(), D = 2600; Audio.tone && Audio.tone(110, 2.4, { type: 'sine', vol: 0.1, slide: 1.4 });
+    const step = () => { const e = Math.min(1, (performance.now() - t0) / D); this.jury(true, Math.round(g * e), Math.round(i * e), labels); if (e < 1) requestAnimationFrame(step); else { Audio.gong && Audio.gong(); done && done(); } };
+    step();
+  },
+  ask(scene, onPick) {
+    this.show(scene.who, scene.say, null);
+    const box = document.querySelector('#juicio .ju-opts'); box.innerHTML = '';
+    shuffle([...scene.opts]).forEach((o, k) => { const b = document.createElement('button'); b.className = 'ans ju-o'; b.innerHTML = `<span class="k">${'ABC'[k]}</span><span></span>`; b.lastChild.textContent = o.t; b.addEventListener('click', () => this.pick(o, onPick)); box.appendChild(b); });
+  },
+  pick(o, onPick) {
+    const el = document.getElementById('juicio'); el.querySelector('.ju-opts').innerHTML = ''; this.path.push(o.k);
+    if (o.k === 'socratico') { this.coh++; Audio.correct && Audio.correct(); } else if (o.k === 'soberbio') { Audio.wrong && Audio.wrong(); } else Audio.click && Audio.click();
+    // Sócrates (tú) dice su frase con su voz; luego, la reacción
+    let done = false; const react = () => { if (done) return; done = true;
+      el.querySelector('.ju-say').textContent = o.r; el.querySelector('.ju-who b').textContent = this.T.jurado; setMedal(el.querySelector('.ju-who .medal'), '', '⚖'); el.querySelector('.ju-who .medal').classList.remove('ju-acc');
+      const fb = el.querySelector('.ju-fb'); fb.hidden = false; fb.className = 'ju-fb ' + o.k; fb.querySelector('b').textContent = this.T.kinds[o.k]; fb.querySelector('span').textContent = o.why;
+      const nb = $('#ju-next'); nb.hidden = false; nb.textContent = this.T.next; this.nextFn = () => onPick(o);
+      this.speak('narr', o.r);
+    };
+    this.show('socrates', o.t, this.T.next, react); this.speak('socrates', o.t, react);
+  },
+  play() {
+    const J = JUICIO; this.jury(false); document.querySelector('#juicio .ju-end').hidden = true;
+    const seq = [...J.intro.map((t) => () => this.show('narr', t, this.T.next, next))]; let i = 0;
+    const next = () => { if (i < seq.length) seq[i++](); };
+    seq.push(() => this.show(J.acusacion.who, J.acusacion.say, this.T.next, next));
+    J.defensa.forEach((sc) => seq.push(() => this.ask(sc, (o) => { this.inno += o.k === 'socratico' ? -4 : o.k === 'ceder' ? 18 : -20; next(); })));
+    seq.push(() => this.verdict());
+    next();
+  },
+  verdict() {
+    const inno = Math.max(120, Math.min(380, this.inno)), g = 500 - inno; const guilty = g > inno;
+    this.show('narr', this.T.vote + '…', null);
+    this.count(g, inno, null, () => {
+      if (!guilty) { this.show('narr', JUICIO.veredicto.absuelto, this.T.next, () => this.end('absuelto')); return; }
+      this.show('narr', JUICIO.veredicto.culpable, this.T.next, () => this.ask(JUICIO.pena, (o) => this.sentence(o)));
+    });
+  },
+  sentence(o) {
+    const J = JUICIO;
+    if (o.k === 'ceder') { this.count(180, 320, [this.T.death, this.T.alt], () => this.show('narr', J.sentencia.destierro, this.T.next, () => this.end('destierro'))); return; }
+    const d = o.k === 'socratico' ? [360, 140] : [400, 100];
+    this.show('narr', this.T.vote + '…', null);
+    this.count(d[0], d[1], [this.T.death, this.T.alt], () => this.show('narr', J.sentencia.muerte, this.T.next, () => this.show(J.despedida.who, J.despedida.say, this.T.next, () => this.ask(J.carcel, (c) => {
+      if (c.k === 'ceder') { this.end('fuga'); return; }
+      const F = J.final; let k = 0; this.jury(false);
+      const step = () => { if (k < F.length) { const s = F[k++]; this.show(s.who, s.say, this.T.next, step); } else this.end('cicuta'); }; step();
+    }))));
+  },
+  end(how) {
+    const J = JUICIO, n = this.path.length, c = this.coh; const lv = c === n && how === 'cicuta' ? 'fiel' : c >= n - 2 ? 'medio' : 'lejos';
+    const el = document.getElementById('juicio'); el.querySelector('.ju-opts').innerHTML = ''; el.querySelector('.ju-fb').hidden = true; this.jury(false);
+    const e = el.querySelector('.ju-end'); e.hidden = false; e.className = 'ju-end ' + lv;
+    e.innerHTML = '<span class="ju-lv"></span><b class="ju-c"></b><small class="ju-nota"></small>';
+    e.querySelector('.ju-lv').textContent = this.T.lv[lv]; e.querySelector('.ju-c').textContent = `${this.T.coh}: ${c} / ${n}`; e.querySelector('.ju-nota').textContent = J.nota;
+    this.show('narr', J.finales[lv], this.T.again, () => this.restart());
+    if (lv === 'fiel') { achieve('juicio'); try { addScore(300); } catch (er) { /* fuera de una partida */ } }
+    if (typeof Metricas !== 'undefined') Metricas.hit('juicio_' + lv, '');
+  },
+};
+// accesos: en la conversación con Sócrates y en la lista de «Debate tú»
+{
+  const r0 = Talk.renderOps.bind(Talk);
+  Talk.renderOps = function (ops) {
+    try {
+      const d = this.data, bye = ops.findIndex((o) => o[2] === 'bye' && o[0] === 'Adiós');
+      if (this.mode === 'main' && d && this.sage && bye >= 0) {
+        const extra = [];
+        if (d.id === 'socrates') extra.push([Juicio.T.talk, () => { this.close(); Juicio.open(); }, 'quest']);
+        const P = (typeof POSTURAS !== 'undefined') && POSTURAS.find((x) => x.id === d.id);
+        if (P) extra.push([Postura.T.talk, () => { this.close(); Postura.open(P); }, 'quest']);
+        if (extra.length) ops = [...ops.slice(0, bye), ...extra, ...ops.slice(bye)];
+      }
+    } catch (e) { console.warn('talk', e); }
+    return r0(ops);
+  };
+  Postura.T.talk = '🗣 Discute conmigo';
+  const l0 = Postura.list.bind(Postura);
+  Postura.list = function () {
+    l0(); const box = $('#po-items'); if (!box) return;
+    const b = document.createElement('button'); b.className = 'vs-item po-item ju-item'; b.innerHTML = '<i class="medal"></i><span><b></b><small></small></span><i class="po-st">⚖</i>';
+    setMedal(b.querySelector('.medal'), 'socrates', 'S'); b.querySelector('b').textContent = Juicio.T.start; b.querySelector('small').textContent = Juicio.T.startS;
+    b.addEventListener('click', () => { Audio.click && Audio.click(); Panel.close('vs'); Juicio.open(); }); box.prepend(b);
+  };
+}
+{
+  const st = document.createElement('style');
+  st.textContent = '#juicio{z-index:66}.ju-card{background:linear-gradient(170deg,#241a10,#120c06);border-color:#c8a050}.ju-h{font-family:var(--display);font-weight:normal;color:#ffe2a0;margin:2px 34px 10px 0;font-size:1.3rem}'
+    + '.ju-jury{margin:0 0 10px}.ju-jury[hidden]{display:none}.ju-bar{display:flex;height:14px;border-radius:7px;overflow:hidden;background:rgba(255,255,255,.08);border:1px solid rgba(216,178,90,.4)}.ju-bar i{display:block;height:100%;transition:width .1s linear}.ju-g{background:linear-gradient(90deg,#8a2a22,#d0503a)}.ju-i{background:linear-gradient(90deg,#3a8a5a,#7ad09a);margin-left:auto}'
+    + '.ju-n{display:flex;justify-content:space-between;font-size:.82rem;margin-top:4px;font-family:var(--display);letter-spacing:.06em}.ju-gn{color:#ff9a8a}.ju-in{color:#9fe0b8}'
+    + '.ju-who{display:flex;align-items:center;gap:10px;margin:6px 0 4px}.ju-who .medal{width:46px;height:46px;font-size:1.1rem}.ju-who .medal.ju-acc{background:radial-gradient(circle at 40% 35%,#6a4a3a,#2a1a12 70%);color:#ffd0b0}.ju-who b{font-family:var(--display);font-weight:normal;color:var(--gold-bright,#ffd36a);letter-spacing:.06em}'
+    + '.ju-say{font-size:1.05rem;line-height:1.55;color:#f6ead0;margin:4px 0 10px;min-height:3em}.ju-opts .ju-o{width:100%;margin:5px 0;text-align:left}'
+    + '.ju-fb{margin:4px 0 10px;padding:8px 10px;border-radius:10px;border-left:3px solid;font-size:.9rem;line-height:1.4}.ju-fb b{display:block;font-weight:normal;font-family:var(--display);font-size:.8rem;letter-spacing:.06em}.ju-fb.socratico{border-color:#5cc49a;background:rgba(92,196,154,.08)}.ju-fb.socratico b{color:#8ff0c4}.ju-fb.ceder{border-color:#d8b25a;background:rgba(216,178,90,.07)}.ju-fb.ceder b{color:#ffd36a}.ju-fb.soberbio{border-color:#e06a5a;background:rgba(224,106,90,.08)}.ju-fb.soberbio b{color:#ff9a8a}'
+    + '.ju-end{text-align:center;padding:12px;border-radius:12px;border:1px solid;margin:6px 0}.ju-end[hidden]{display:none}.ju-end .ju-lv{display:block;font-family:var(--display);letter-spacing:.14em;text-transform:uppercase}.ju-end .ju-c{display:block;font-weight:normal;font-size:1.1rem;margin:4px 0}.ju-end .ju-t{display:none}.ju-end .ju-nota{display:block;font-size:.78rem;opacity:.8;margin-top:6px;line-height:1.4}'
+    + '.ju-end.fiel{border-color:#5cc49a;color:#8ff0c4;background:rgba(92,196,154,.08)}.ju-end.medio{border-color:#d8b25a;color:#ffd36a;background:rgba(216,178,90,.07)}.ju-end.lejos{border-color:#e06a5a;color:#ff9a8a;background:rgba(224,106,90,.08)}.ju-item{border-color:rgba(255,211,106,.6)!important}';
+  document.head.appendChild(st);
+}
+if (location.hash === '#debug') window.__juicio = Juicio;
+
 </script>
 </body>
 </html>
