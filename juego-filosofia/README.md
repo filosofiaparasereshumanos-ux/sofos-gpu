@@ -58,6 +58,8 @@ ratón y `E` para interactuar.
 - **Accesibilidad**: tamaño de letra (normal, grande, muy grande) y letra más legible para dislexia en Ajustes.
 
 - **El juicio de Sócrates**: escena jugable según la Apología, el Critón y el Fedón, con el jurado votando.
+- **Museo de obras maestras** (`src/07z-museo*.js`, `img/obras/`): 41 obras famosas, desde la Venus de Willendorf hasta Mondrian, con ficha, imagen libre de Wikimedia Commons (autor y licencia en cada ficha) y juego de preguntas. Se entra desde «El taller de la belleza» y desde la portada. Guernica, Dalí y Frida aparecen sin imagen por derechos de autor.
+- **Más camino de la Biblia** (`src/07y-biblia-*.js`): el valle de Elá, Belén y la tumba vacía, con tres juegos (la honda de David, la historia de David en orden y la tumba vacía en los cuatro evangelios), citando la Biblia de Jerusalén.
 
 - **Estadísticas anónimas**: contadores por día y época, sin ningún dato del jugador, para ver dónde se
   atasca la gente (página `estadisticas.html`; requiere `tools/cuentas4.sql`). Desactivables en Ajustes.
