@@ -142,4 +142,4 @@ const Juicio = {
     + '.ju-end.fiel{border-color:#5cc49a;color:#8ff0c4;background:rgba(92,196,154,.08)}.ju-end.medio{border-color:#d8b25a;color:#ffd36a;background:rgba(216,178,90,.07)}.ju-end.lejos{border-color:#e06a5a;color:#ff9a8a;background:rgba(224,106,90,.08)}.ju-item{border-color:rgba(255,211,106,.6)!important}';
   document.head.appendChild(st);
 }
-if (location.hash === '#debug') window.__juicio = Juicio;
+if (location.hash === '#debug') { window.__juicio = Juicio; window.__juicioD = JUICIO; }
