@@ -58,24 +58,25 @@ def caption(im, big, col, small, k):
     return Image.alpha_composite(im, ov).convert('RGB')
 # ---------------------------------------------------------------- texto dinámico (palabra a palabra, al ritmo de la voz)
 VJ = json.load(open(os.path.join(VOZ, 'voz.json')))
-WORDS = []  # (inicio, fin, palabra)
-for name, text in VJ['lines']:
+WORDS = []  # (inicio, fin, palabra, frase)
+for li, (name, text) in enumerate(VJ['lines']):
     t0 = VT[name] + 0.08; dur = max(0.5, VJ['dur'][name] - 0.25); ws = text.replace('…', ' ').split()
     tot = sum(len(w) + 2 for w in ws); t = t0
     for w in ws:
-        d = dur * (len(w) + 2) / tot; WORDS.append((t, t + d, w)); t += d
+        d = dur * (len(w) + 2) / tot; WORDS.append((t, t + d, w, li)); t += d
 KEY = {'sócrates', 'falacia', 'razones', 'ganas', 'justicia', 'torneo', 'amigos', 'whatsapp', 'rápido', 'mundos', 'pensadores', 'gratis', 'muerte', 'preguntas', 'jóvenes', 'dioses', 'quinientos', 'clemencia', 'huir', 'cárcel', 'final', 'puntaje', 'rival', 'filosofía', 'arte', 'historia', 'ciencia', 'atreves'}
 def hyper(im, tt):
-    cur = [i for i, (a, b, w) in enumerate(WORDS) if a <= tt < b + 0.15]
+    cur = [i for i, (a, b, w, li) in enumerate(WORDS) if a <= tt < b + 0.15]
     if not cur: return im
-    i = cur[-1]; g0 = (i // 3) * 3; grp = WORDS[g0:g0 + 3]
+    i = cur[-1]; li = WORDS[i][3]; first = next(j for j, x in enumerate(WORDS) if x[3] == li)
+    g0 = first + ((i - first) // 3) * 3; grp = [x for x in WORDS[g0:g0 + 3] if x[3] == li]
     im = im.convert('RGBA'); ov = Image.new('RGBA', (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(ov)
     f = font(F_BLACK, 104); sp = 40
     clean = lambda w: w.strip('«»¿?¡!.,:;').upper()
-    widths = [d.textlength(clean(w), font=f) for _, _, w in grp]; total = sum(widths) + sp * (len(grp) - 1)
-    scale = min(1, (W - 170) / max(1, total)); f = font(F_BLACK, int(104 * scale)); widths = [d.textlength(clean(w), font=f) for _, _, w in grp]; total = sum(widths) + sp * (len(grp) - 1)
+    widths = [d.textlength(clean(w), font=f) for _, _, w, _ in grp]; total = sum(widths) + sp * (len(grp) - 1)
+    scale = min(1, (W - 170) / max(1, total)); f = font(F_BLACK, int(104 * scale)); widths = [d.textlength(clean(w), font=f) for _, _, w, _ in grp]; total = sum(widths) + sp * (len(grp) - 1)
     x = (W - total) / 2; y = 500
-    for j, (a, b, w) in enumerate(grp):
+    for j, (a, b, w, _) in enumerate(grp):
         if tt < a: break  # las palabras aparecen cuando se dicen
         k = min(1, (tt - a) / 0.14); pop = 1 + 0.12 * (1 - k) ** 2; live = a <= tt < b
         word = clean(w); hot = live or word.lower() in KEY
