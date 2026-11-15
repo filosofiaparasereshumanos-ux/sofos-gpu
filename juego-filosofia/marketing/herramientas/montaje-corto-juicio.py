@@ -50,11 +50,43 @@ def caption(im, big, col, small, k):
     im = im.convert('RGBA'); ov = Image.new('RGBA', (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(ov); a = min(1, k * 5)
     for y in range(0, 560): d.line([(0, y), (W, y)], fill=(6, 4, 2, int(225 * (1 - y / 560) * a)))
     pop = 1 + 0.12 * max(0, 1 - k * 6)  # pequeño golpe de escala al entrar
-    lines, fb = wrap(d, big, F_BLACK, int(104 * pop), W - 90); y = 175 if len(lines) == 1 else 130
+    lines, fb = wrap(d, big, F_BLACK, int(104 * pop), W - 90); y = (175 if len(lines) == 1 else 130) - int(60 * max(0, 1 - k * 4) ** 2)
     for ln in lines:
         d.text((W / 2, y), ln, font=fb, fill=col + (int(255 * a),), anchor='mm', stroke_width=5, stroke_fill=(15, 8, 2, int(255 * a))); y += int(fb.size * 1.12)
     if small:
         fs = fit(d, small, F_SERIF_B, 58, W - 120); d.text((W / 2, y + 30), small, font=fs, fill=CREAM + (int(240 * a),), anchor='mm', stroke_width=2, stroke_fill=(15, 8, 2, int(200 * a)))
+    return Image.alpha_composite(im, ov).convert('RGB')
+# ---------------------------------------------------------------- texto dinámico (palabra a palabra, al ritmo de la voz)
+VJ = json.load(open(os.path.join(VOZ, 'voz.json')))
+WORDS = []  # (inicio, fin, palabra)
+for name, text in VJ['lines']:
+    t0 = VT[name] + 0.08; dur = max(0.5, VJ['dur'][name] - 0.25); ws = text.replace('…', ' ').split()
+    tot = sum(len(w) + 2 for w in ws); t = t0
+    for w in ws:
+        d = dur * (len(w) + 2) / tot; WORDS.append((t, t + d, w)); t += d
+KEY = {'sócrates', 'falacia', 'razones', 'ganas', 'justicia', 'torneo', 'amigos', 'whatsapp', 'rápido', 'mundos', 'pensadores', 'gratis', 'muerte', 'preguntas', 'jóvenes', 'dioses', 'quinientos', 'clemencia', 'huir', 'cárcel', 'final', 'puntaje', 'rival', 'filosofía', 'arte', 'historia', 'ciencia', 'atreves'}
+def hyper(im, tt):
+    cur = [i for i, (a, b, w) in enumerate(WORDS) if a <= tt < b + 0.15]
+    if not cur: return im
+    i = cur[-1]; g0 = (i // 3) * 3; grp = WORDS[g0:g0 + 3]
+    im = im.convert('RGBA'); ov = Image.new('RGBA', (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(ov)
+    f = font(F_BLACK, 104); sp = 40
+    clean = lambda w: w.strip('«»¿?¡!.,:;').upper()
+    widths = [d.textlength(clean(w), font=f) for _, _, w in grp]; total = sum(widths) + sp * (len(grp) - 1)
+    scale = min(1, (W - 170) / max(1, total)); f = font(F_BLACK, int(104 * scale)); widths = [d.textlength(clean(w), font=f) for _, _, w in grp]; total = sum(widths) + sp * (len(grp) - 1)
+    x = (W - total) / 2; y = 500
+    for j, (a, b, w) in enumerate(grp):
+        if tt < a: break  # las palabras aparecen cuando se dicen
+        k = min(1, (tt - a) / 0.14); pop = 1 + 0.12 * (1 - k) ** 2; live = a <= tt < b
+        word = clean(w); hot = live or word.lower() in KEY
+        col = (255, 214, 90, 255) if live else ((255, 255, 255, 255) if not hot else (150, 225, 255, 255))
+        ff = font(F_BLACK, int(f.size * (pop if live else 1)))
+        cx = x + widths[j] / 2; dy = int(18 * (1 - k))
+        if live:  # caja de color detrás de la palabra que suena
+            bw = d.textlength(word, font=ff) + 34; d.rounded_rectangle([cx - bw / 2, y - ff.size * 0.62 + dy, cx + bw / 2, y + ff.size * 0.62 + dy], radius=18, fill=(20, 12, 4, 170))
+        d.text((cx + 5, y + 6 + dy), word, font=ff, fill=(0, 0, 0, 160), anchor='mm')
+        d.text((cx, y + dy), word, font=ff, fill=col, anchor='mm', stroke_width=7, stroke_fill=(10, 6, 2, 255))
+        x += widths[j] + sp
     return Image.alpha_composite(im, ov).convert('RGB')
 def end_card(bg_path, k):
     bg = Image.open(bg_path).convert('RGB').resize((W, H)).filter(ImageFilter.GaussianBlur(20)); bg = ImageEnhance.Brightness(bg).enhance(0.32); d = ImageDraw.Draw(bg)
@@ -80,6 +112,7 @@ for i in range(n):
         if tt - a < 0.12 and a > 0: im = Image.blend(im, Image.new('RGB', (W, H), (255, 240, 200)), 0.5 * (1 - (tt - a) / 0.12))
     else:
         im = end_card(last, tt - 30.3)
+    im = hyper(im, tt)
     im.save(os.path.join(TMP, f'{i:05d}.jpg'), quality=90)
 V = json.load(open(os.path.join(VOZ, 'voz.json'))); ins = []; fl = []
 for j, (name, _) in enumerate(V['lines']):
