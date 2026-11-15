@@ -61,7 +61,7 @@ def end_card(bg_path, k):
     bg = Image.open(bg_path).convert('RGB').resize((W, H)).filter(ImageFilter.GaussianBlur(20)); bg = ImageEnhance.Brightness(bg).enhance(0.32); d = ImageDraw.Draw(bg)
     lg = Image.open(LOGO).convert('RGBA'); lg.thumbnail((300, 300)); bg.paste(lg, ((W - lg.width) // 2, 300), lg)
     a = min(1, k * 3)
-    rows = [('ODISEA', F_BLACK, 130, GOLD), ('DE LA RAZÓN', F_BLACK, 110, GOLD), ('Recorrido narrado · gratis', F_SERIF_B, 64, CREAM), ('', F_SERIF, 30, CREAM), ('Odisea de la Razón', F_BLACK, 74, CREAM), ('Gratis · en el navegador · link en la bio', F_SERIF, 46, CREAM)]
+    rows = [('ODISEA', F_BLACK, 130, GOLD), ('DE LA RAZÓN', F_BLACK, 110, GOLD), ('Recorrido narrado · gratis', F_SERIF_B, 64, CREAM), ('', F_SERIF, 30, CREAM), ('Aprende mientras te mueves', F_BLACK, 62, CREAM), ('Gratis · en el navegador · link en la bio', F_SERIF, 46, CREAM)]
     y = 820
     for txt, f, s, col in rows:
         if txt: fo = fit(d, txt, f, s, W - 100); d.text((W / 2, y), txt, font=fo, fill=tuple(int(c * a) for c in col), anchor='mm', stroke_width=3 if f == F_BLACK else 0, stroke_fill=(10, 6, 2))
