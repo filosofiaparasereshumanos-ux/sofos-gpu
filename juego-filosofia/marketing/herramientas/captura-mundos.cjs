@@ -18,7 +18,12 @@ const FPS = 12; const LIST = (IDS || 'sumer,atenas,islam,mexicas,japon,renacimie
     await p.waitForTimeout(5500); await hide();
     const dir = path.join(OUT, String(++shot).padStart(2, '0') + '-' + id); fs.mkdirSync(dir, { recursive: true });
     for (let k = 0; k < 20; k++) {
-      await p.evaluate((k) => { const d = window.__dbg; const t = k / 19; const side = (k % 2) * 0; d.player.pos.set(Math.sin(t * 1.4 - 0.7) * 6, d.player.pos.y, 26 - t * 12); d.player.yaw = -Math.sin(t * 1.4 - 0.7) * 0.35; d.player.pitch = 0.1 - t * 0.06; d.input.auto = false; d.input.walk = null; }, k);
+      // la cámara gira despacio alrededor de un pensador del mundo, a la altura de su cara
+      await p.evaluate((k) => { const d = window.__dbg; const L = d.sages.filter((s) => !s.boss); const s = L[Math.min(L.length - 1, 1)] || d.sages[0]; const t = k / 19;
+        const side = s.pos.x < 0 ? 1 : -1; const a = side * (0.25 + t * 0.7) - (side < 0 ? Math.PI : 0); const R = 2.0 - t * 0.45;
+        const x = s.pos.x + Math.cos(a) * R * side * -1 + side * 0.0, z = s.pos.z + 1.2 + Math.sin(t * 1.2) * 0.8;
+        const px = s.pos.x + side * R * Math.cos(0.5 - t * 0.6), pz = s.pos.z + R * Math.sin(0.5 - t * 0.6) + 0.6;
+        d.player.pos.set(px, d.player.pos.y, pz); d.player.yaw = Math.atan2(-(s.pos.x - px), -(s.pos.z - pz)); d.player.pitch = 0.1; d.input.auto = false; d.input.walk = null; }, k);
       await p.waitForTimeout(1000 / FPS); await p.screenshot({ path: path.join(dir, String(k).padStart(4, '0') + '.jpg'), type: 'jpeg', quality: 88 });
     }
     console.log(id);
