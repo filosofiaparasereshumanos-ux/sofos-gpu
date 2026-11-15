@@ -23,7 +23,7 @@ SEG = [
     ('panel', 5.9, 7.6, 'CAMINA, CORRE O PEDALEA', BLUE, 'El juego avanza solo'),
     ('sumer-0', 7.6, 10.0, 'SIN TOCAR NADA', GOLD, 'La cámara camina por ti'),
     ('sumer-1', 10.0, 12.2, 'CADA PENSADOR TE HABLA', GOLD, 'con su propia voz'),
-    ('atenas-0', 12.2, 14.3, 'VISITAS LOS LUGARES', GOLD, 'El Partenón, el zigurat de Ur…'),
+    ('atenas-0', 12.2, 14.3, 'DE TODAS LAS ÉPOCAS', GOLD, 'Hipócrates, Epicteto, David…'),
     ('atenas-1', 14.3, 16.4, '37 MUNDOS', GOLD, 'De Sumer a nuestros días'),
     ('biblia-0', 16.4, 18.5, '+230 PENSADORES', GOLD, 'Filosofía, ciencia, arte y fe'),
     ('cosmos-0', 18.5, 20.7, 'CON SUBTÍTULOS', GOLD, 'Pausa · saltar · mundo siguiente'),
