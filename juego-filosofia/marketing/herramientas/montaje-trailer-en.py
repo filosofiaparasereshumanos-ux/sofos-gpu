@@ -38,7 +38,7 @@ SEG = [
     ('RUN', 32.5, 37.4, 'THE GAME PLAYS ITSELF', BLUE, 'Narrated tour'),
     ([REC['sumer-1'], CINE['hipatia'], REC['atenas-1'], CINE['sorjuana'], REC['biblia-0']], 37.4, 43.2, '230+ THINKERS', GOLD, 'In their own voices'),
     ([TOR['museo'], REC['cosmos-0']], 43.2, 45.6, 'ART · SCIENCE · FAITH', GOLD, 'Masterpieces museum · the cosmos'),
-    ([CINE['nietzsche']], 45.6, 48.9, '', GOLD, ''),
+    ('NIETZ', 45.6, 48.9, '', GOLD, ''),
     ('DARE', 48.9, 51.6, '', GOLD, ''),
 ]
 def font(p, s): return ImageFont.truetype(p, s)
@@ -103,6 +103,11 @@ def hyper(im, tt, y=1180):
         x += widths[j] + sp
     return Image.alpha_composite(im, ov).convert('RGB')
 # ---------------------------------------------------------------- special scenes
+NIE = Image.open(os.path.join(D, 'img', 'nietzsche3.jpg')).convert('RGB')  # hecho a partir de su fotografía real (dominio público)
+def nietz(k):
+    im = cover(NIE, k * 1.6, drift=-20); fl = max(0, 1 - abs(k - 0.25) * 14) + 0.7 * max(0, 1 - abs(k - 0.62) * 18)  # relámpagos
+    if fl > 0: im = Image.blend(im, ImageEnhance.Brightness(im).enhance(2.2), min(1, fl))
+    d = ImageDraw.Draw(im); d.rectangle([0, H - 110, W, H], fill=(0, 0, 0)); return im
 HOM = Image.open(os.path.join(D, 'img', 'hombre.jpg')).convert('RGB'); FAMI = Image.open(os.path.join(D, 'img', 'familia.jpg')).convert('RGB')
 TV_RECT = (270, 392, 546, 563)
 PIP = [p for n in ('sumer-1', 'atenas-1', 'biblia-0', 'cosmos-0') for p in REC[n]]
@@ -156,6 +161,7 @@ for i in range(n):
         src, a, b, big, col, small = seg; k = (tt - a) / max(0.01, b - a)
         if src == 'TITLE': im = title(tt, a)
         elif src == 'DARE': im = dare(tt, a)
+        elif src == 'NIETZ': im = nietz(k)
         elif src == 'FAM': im = caption(fam(k), big, col, small, tt - a)
         elif src == 'RUN': im = caption(run(k), big, col, small, tt - a)
         else:
@@ -167,7 +173,7 @@ for i in range(n):
             im = caption(im, big, col, small, tt - a if m == 1 else tt - a)
             if big in ('FALLACY!', 'GUILTY') and tt - a < 0.3: im = Image.blend(im, Image.new('RGB', (W, H), (255, 40, 30)), 0.4 * (1 - (tt - a) / 0.3))
             if big == 'SOLID ARGUMENT' and tt - a < 0.3: im = Image.blend(im, Image.new('RGB', (W, H), (90, 255, 140)), 0.35 * (1 - (tt - a) / 0.3))
-        if tt - a < 0.1 and a > 0 and src not in ('TITLE', 'DARE'): im = Image.blend(im, Image.new('RGB', (W, H), (255, 240, 200)), 0.5 * (1 - (tt - a) / 0.1))
+        if tt - a < 0.1 and a > 0 and src not in ('TITLE', 'DARE', 'NIETZ'): im = Image.blend(im, Image.new('RGB', (W, H), (255, 240, 200)), 0.5 * (1 - (tt - a) / 0.1))
     # in the panels the words go just under the headline; on full-screen scenes, lower
     panel = seg is not None and isinstance(seg[0], list) and (seg[0][0] in (SOC.get('pregunta'), SOC.get('falacia'), SOC.get('bueno'), JUI.get('acusacion'), JUI.get('votacion'), JUI.get('muerte'), TOR.get('llena'), TOR.get('pregunta2'), TOR.get('museo')))
     im = hyper(im, tt, 500 if panel else 1180)
@@ -177,9 +183,9 @@ for i in range(n):
     im.save(os.path.join(TMP, f'{i:05d}.jpg'), quality=90)
 ins = []; fl = []
 for j, (name, _) in enumerate(VJ['lines']):
-    ins += ['-i', os.path.join(D, 'voz', name + '.wav')]; ms = int(VT[name] * 1000); fl.append(f'[{j + 2}:a]aresample=44100,volume=2.1,adelay={ms}|{ms}[v{j}]')
+    ins += ['-i', os.path.join(D, 'voz', name + '.wav')]; ms = int(VT[name] * 1000); fl.append(f'[{j + 2}:a]aresample=44100,volume=1.0,adelay={ms}|{ms}[v{j}]')
 nv = len(VJ['lines']); mix = ''.join(f'[v{j}]' for j in range(nv))
-filt = ';'.join(fl) + f';{mix}amix=inputs={nv}:duration=longest:normalize=0[voz];[voz]asplit=2[vz][sc];[1:a]volume=0.85,afade=t=in:d=0.3,afade=t=out:st={END - 3}:d=3[m0];[m0][sc]sidechaincompress=threshold=0.04:ratio=5:attack=20:release=300[m];[vz][m]amix=inputs=2:duration=longest:normalize=0,atrim=0:{END},loudnorm=I=-14:TP=-1.5[a]'
+filt = ';'.join(fl) + f';{mix}amix=inputs={nv}:duration=longest:normalize=0[voz];[voz]apad=whole_dur={END},asplit=2[vz][sc];[1:a]volume=0.42,afade=t=in:d=0.3,afade=t=out:st={END - 3}:d=3[m0];[m0][sc]sidechaincompress=threshold=0.015:ratio=10:attack=15:release=350:makeup=1[m];[vz][m]amix=inputs=2:duration=longest:normalize=0,atrim=0:{END},alimiter=limit=0.95[a]'
 subprocess.run(['ffmpeg', '-v', 'error', '-y', '-framerate', str(FPS), '-i', os.path.join(TMP, '%05d.jpg'), '-i', os.path.join(D, 'musica-a.mp3'), *ins, '-filter_complex', filt,
     '-map', '0:v', '-map', '[a]', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '19', '-preset', 'medium', '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart', '-t', f'{END}', OUTF], check=True)
 print('done', OUTF, END, 's')
