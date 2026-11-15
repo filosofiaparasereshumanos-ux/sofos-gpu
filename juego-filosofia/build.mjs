@@ -10,6 +10,16 @@ const here = dirname(fileURLToPath(import.meta.url));
 const EN = process.argv.includes('--lang') && process.argv[process.argv.indexOf('--lang') + 1] === 'en';
 const read = (p) => readFileSync(join(here, EN && /^src\/(\d\d[a-z]?-.*\.js|template\.html)$/.test(p) ? 'tools/i18n/build-en/' + p : p), 'utf8');
 
+// el código publicado sale comprimido y con nombres acortados (más liviano y más difícil de copiar).
+// Necesita terser: TERSER=<ruta a node_modules/terser> o terser instalado; con --no-min sale legible.
+const BANNER = '/*! Odisea de la Razón · © Filosofía para Seres Humanos (filosofiaparasereshumanos.com). Todos los derechos reservados. Ver LICENSE. */\n';
+let terser = null;
+if (!process.argv.includes('--no-min')) { try { terser = await import(process.env.TERSER ? join(process.env.TERSER, 'main.js') : 'terser'); } catch (e) { try { terser = await import(join(process.env.TERSER || '', 'dist/bundle.min.js')); } catch (e2) { console.warn('aviso: sin terser, el código sale sin comprimir'); } } }
+async function minify(code) {
+  if (!terser) return BANNER + code;
+  const r = await terser.minify(code, { module: true, ecma: 2020, compress: { passes: 2, drop_debugger: true }, mangle: { toplevel: true }, format: { comments: false, ascii_only: false } });
+  return BANNER + r.code;
+}
 function page(template, code, description, extraHead = '') {
   const fragment = template.replace('/*__GAME__*/', () => code);
   const cut = fragment.search(/<canvas id="bg"|<div id="app">/);
@@ -32,7 +42,7 @@ const join_ = (files) => files.map((f) => `// ---- ${f} ----\n` + read(f)).join(
 // --- Duelo de cartas (juego principal)
 if (!EN) {
 const cartas = ['cartas/base.js', 'src/00b-audio.js', 'src/01-data.js', 'src/01a-lessons.js', 'src/03a-music.js', 'cartas/cards.js', 'cartas/game.js'];
-const c = page(read('cartas/template.html'), join_(cartas), 'Duelo de filósofos: vence a 25 pensadores, de Tales a Kant, y colecciona sus ideas como cartas.');
+const c = page(read('cartas/template.html'), await minify(join_(cartas)), 'Duelo de filósofos: vence a 25 pensadores, de Tales a Kant, y colecciona sus ideas como cartas.');
 writeFileSync(join(here, 'cartas.html'), c.full);
 console.log(`cartas.html (duelo de cartas): ${(c.full.length / 1024).toFixed(0)} KB`);
 }
@@ -59,7 +69,7 @@ const APP_HEAD = `<meta name="theme-color" content="#120d07">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 `;
-const a = page(read('src/template.html'), `const NARR_INDEX = ${narr};\n` + join_(parts3d), 'El primer juego educativo completo de filosofía, ciencia e historia: conversa y debate con 231 pensadoras y pensadores en 37 épocas, de Sumer a nuestros días. Gratis, en el navegador.', APP_HEAD);
+const a = page(read('src/template.html'), await minify(`const NARR_INDEX = ${narr};\n` + join_(parts3d)), 'El primer juego educativo completo de filosofía, ciencia e historia: conversa y debate con 231 pensadoras y pensadores en 37 épocas, de Sumer a nuestros días. Gratis, en el navegador.', APP_HEAD);
 let full = a.full;
 if (EN) full = full.replace('<meta property="og:title" content="Odisea de la Razón · ¿Te atreves a pensar?">', '<meta property="og:title" content="Odyssey of Reason · Dare to think?">')
   .replace(/<meta property="og:description" content="[^"]*">/, '<meta property="og:description" content="Talk and debate with Socrates, Hypatia, Sor Juana and 228 more thinkers across 37 eras, from Sumer to today. Explore the world with other travelers. Free, in your browser.">')

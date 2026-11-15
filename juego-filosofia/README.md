@@ -164,6 +164,9 @@ ratón y `E` para interactuar.
 
 ```bash
 node build.mjs   # genera index.html (viaje 3D) y cartas.html (versión de duelo de cartas)
+# El código publicado sale comprimido y con nombres acortados si encuentra terser
+# (npm i terser, o TERSER=<ruta a node_modules/terser>). Con --no-min sale legible para depurar.
+# Licencia: todos los derechos reservados (ver LICENSE en la raíz del repositorio).
 ```
 
 - `src/01-data.js` filósofos y preguntas · `src/01c-contemporanea.js` y `src/02f-contemporanea.js` épocas VII y VIII · `src/01a-lessons.js` lecciones · `src/02b-places.js` lugares
