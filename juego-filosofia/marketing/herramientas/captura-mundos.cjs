@@ -20,16 +20,19 @@ const FPS = 30; const LIST = (IDS || 'sumer,atenas,islam,mexicas,japon,renacimie
   let shot = 0;
   for (const id of LIST) {
     await p.evaluate((id) => { const d = window.__dbg; d.startEra(d.ERAS.findIndex((e) => e.id === id), true); document.getElementById('b-enter').click(); }, id);
-    await p.evaluate(() => { if (!window.__vOn) { window.__virt(); window.__vOn = 1; } window.__step(90); }); await hide();
+    await p.waitForTimeout(5500); await hide();
     const dir = path.join(OUT, String(++shot).padStart(2, '0') + '-' + id); fs.mkdirSync(dir, { recursive: true });
     for (let k = 0; k < 26; k++) {
-      // la cámara gira despacio alrededor de un pensador del mundo, a la altura de su cara
+      // la cámara gira despacio delante de un pensador del mundo (siempre de frente, según hacia dónde mira)
       await p.evaluate((k) => { const d = window.__dbg; const L = d.sages.filter((s) => !s.boss); const s = L[Math.min(L.length - 1, 1)] || d.sages[0]; const t = k / 25;
-        const side = s.pos.x < 0 ? 1 : -1; const a = side * (0.25 + t * 0.7) - (side < 0 ? Math.PI : 0); const R = 2.0 - t * 0.45;
-        const x = s.pos.x + Math.cos(a) * R * side * -1 + side * 0.0, z = s.pos.z + 1.2 + Math.sin(t * 1.2) * 0.8;
-        const px = s.pos.x + side * R * Math.cos(0.5 - t * 0.6), pz = s.pos.z + R * Math.sin(0.5 - t * 0.6) + 0.6;
+        // quieto en su tarima (los pensadores pasean) y mirando a la cámara
+        if (!s._home) { s._home = s.st && s.st.pos ? s.st.pos.clone() : s.pos.clone(); s._yaw0 = s.baseYaw !== undefined ? s.baseYaw : s.yaw; }
+        s.pos.x = s._home.x; s.pos.z = s._home.z; s._wt = null;
+        const off = -0.45 + t * 0.9, R = 2.3 - t * 0.5, a = s._yaw0 + off;
+        const px = s.pos.x + Math.sin(a) * R, pz = s.pos.z + Math.cos(a) * R;
+        s.yaw = s.group.rotation.y = Math.atan2(px - s.pos.x, pz - s.pos.z);
         d.player.pos.set(px, d.player.pos.y, pz); d.player.yaw = Math.atan2(-(s.pos.x - px), -(s.pos.z - pz)); d.player.pitch = 0.1; d.input.auto = false; d.input.walk = null; }, k);
-      await p.evaluate(() => window.__step(1)); await p.screenshot({ path: path.join(dir, String(k).padStart(4, '0') + '.jpg'), type: 'jpeg', quality: 88, timeout: 180000 });
+      await p.waitForTimeout(60); await p.screenshot({ path: path.join(dir, String(k).padStart(4, '0') + '.jpg'), type: 'jpeg', quality: 88, timeout: 180000 });
     }
     console.log(id);
   }
