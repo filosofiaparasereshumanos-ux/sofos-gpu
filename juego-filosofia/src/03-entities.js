@@ -149,7 +149,7 @@ function buildFigure(look, accent) {
     case 'hood': { const h = mesh(new THREE.SphereGeometry(0.27, 16, 12, Math.PI / 2 + 0.85, TAU - 1.7, 0, Math.PI * 0.7), robe, 0, 0.02, -0.04); head.add(h); } break; // capucha abierta por delante
     case 'tonsure': { const t = mesh(new THREE.TorusGeometry(0.17, 0.05, 8, 20), hair, 0, 0.1, 0); t.rotation.x = Math.PI / 2; head.add(t); } break;
     case 'mitre': cap(new THREE.SphereGeometry(0.21, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.0); { const m = mesh(new THREE.ConeGeometry(0.17, 0.42, 4), std(0xf2ece0, { roughness: 0.6 }), 0, 0.33, 0); m.rotation.y = Math.PI / 4; m.scale.set(1, 1, 0.6); head.add(m); head.add(mesh(new THREE.BoxGeometry(0.03, 0.3, 0.12), std(0xc9a227, { metalness: 0.8, roughness: 0.3 }), 0, 0.3, 0)); } break;
-    case 'turban': { for (let i = 0; i < 3; i++) { const t = mesh(new THREE.TorusGeometry(0.17 - i * 0.03, 0.07, 8, 20), std(0xf4efe2, { roughness: 0.9 }), 0, 0.1 + i * 0.07, -0.01); t.rotation.x = Math.PI / 2; head.add(t); } } break;
+    case 'turban': { for (let i = 0; i < 3; i++) { const t = mesh(new THREE.TorusGeometry(0.17 - i * 0.03, 0.07, 8, 20), std(0xf4efe2, { roughness: 0.9 }), 0, 0.14 + i * 0.07, -0.02); t.rotation.x = Math.PI / 2; head.add(t); } } break;
     case 'beret': cap(new THREE.SphereGeometry(0.21, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.0); { const b = mesh(new THREE.CylinderGeometry(0.27, 0.22, 0.09, 20), robe, 0, 0.17, -0.02); b.rotation.x = -0.2; head.add(b); } break;
     case 'cap': { const c = mesh(new THREE.SphereGeometry(0.215, 16, 10, 0, TAU, 0, Math.PI * 0.5), robe, 0, 0.02, -0.01); head.add(c); } break;
     case 'ruff': cap(new THREE.SphereGeometry(0.21, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01);
@@ -171,7 +171,7 @@ function buildFigure(look, accent) {
       for (let i = 0; i < 22; i++) { const a = (i / 22) * TAU, up = 0.05 + (i % 3) * 0.05; const t = mesh(new THREE.ConeGeometry(0.05, 0.16, 5), hair, Math.cos(a) * 0.2, 0.06 + up, Math.sin(a) * 0.2 - 0.03); t.rotation.z = -Math.cos(a) * 1.1; t.rotation.x = Math.sin(a) * 1.1; if (Math.sin(a) > 0.75 && up < 0.12) continue; head.add(t); }
       break;
     case 'veil': { // toca blanca y velo negro (monjas)
-      const w = mesh(new THREE.SphereGeometry(0.225, 18, 12, 0, TAU, 0, Math.PI * 0.62), std(0xf4f0e6, { roughness: 0.8 }), 0, 0.0, -0.02); head.add(w);
+      const w = mesh(new THREE.SphereGeometry(0.225, 18, 12, Math.PI / 2 + 0.8, TAU - 1.6, 0, Math.PI * 0.72), std(0xf4f0e6, { roughness: 0.8 }), 0, 0.0, -0.02); head.add(w); // toca abierta: se ve la cara
       const v = mesh(new THREE.SphereGeometry(0.26, 18, 12, Math.PI / 2 + 0.85, TAU - 1.7, 0, Math.PI * 0.75), std(0x16141a, { roughness: 0.85 }), 0, 0.02, -0.05); head.add(v);
       const back = mesh(new THREE.BoxGeometry(0.4, 0.5, 0.06), std(0x16141a, { roughness: 0.85 }), 0, -0.25, -0.22); head.add(back); } break;
     case 'longhair': cap(new THREE.SphereGeometry(0.215, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01);
