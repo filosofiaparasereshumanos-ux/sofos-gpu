@@ -102,6 +102,24 @@ def hyper(im, tt, y=1180):
         d.text((cx, y + dy), word, font=ff, fill=col, anchor='mm', stroke_width=7, stroke_fill=(10, 6, 2, 255))
         x += widths[j] + sp
     return Image.alpha_composite(im, ov).convert('RGB')
+# ---------------------------------------------------------------- movimiento suave
+_CACHE = {}
+def _load(p):
+    im = _CACHE.get(p)
+    if im is None:
+        im = Image.open(p).convert('RGB')
+        if im.size != (W, H): im = im.resize((W, H), Image.BICUBIC)
+        if len(_CACHE) > 24: _CACHE.pop(next(iter(_CACHE)))
+        _CACHE[p] = im
+    return im
+def sample(L, kk):
+    """Cuadro en la posición kk (0..1) de la toma, fundiendo los dos cuadros vecinos: movimiento continuo."""
+    f = max(0.0, min(1.0, kk)) * (len(L) - 1); i = int(f); fr = f - i
+    a = _load(L[i]); return a if fr < 0.02 or i + 1 >= len(L) else Image.blend(a, _load(L[i + 1]), fr)
+def zoom(im, z, dy=0.0):
+    """Acercamiento con precisión de subpíxel (sin saltos): escala z alrededor del centro, desplazado dy píxeles."""
+    w, h = im.size; c = 1 / z
+    return im.transform((W, H), Image.AFFINE, (c * w / W, 0, (w - w * c) / 2, 0, c * h / H, (h - h * c) / 2 + dy), resample=Image.BICUBIC)
 # ---------------------------------------------------------------- special scenes
 NIE = Image.open(os.path.join(D, 'img', 'nietzsche3.jpg')).convert('RGB')  # hecho a partir de su fotografía real (dominio público)
 def nietz(k):
@@ -112,20 +130,20 @@ HOM = Image.open(os.path.join(D, 'img', 'hombre.jpg')).convert('RGB'); FAMI = Im
 TV_RECT = (270, 392, 546, 563)
 PIP = [p for n in ('sumer-1', 'atenas-1', 'biblia-0', 'cosmos-0') for p in REC[n]]
 def cover(src, k, drift=30):
-    im = src.resize((int(src.width * H / src.height), H), Image.BILINEAR) if src.width / src.height < W / H else src.resize((W, int(src.height * W / src.width)), Image.BILINEAR)
-    z = 1.0 + 0.08 * k; cw, ch = int(W / z), int(H / z); x0, y0 = (im.width - cw) // 2, max(0, min(im.height - ch, (im.height - ch) // 2 + int(drift * k)))
-    return im.crop((x0, y0, x0 + cw, y0 + ch)).resize((W, H), Image.BILINEAR)
+    im = src.resize((int(src.width * H / src.height), H), Image.BICUBIC) if src.width / src.height < W / H else src.resize((W, int(src.height * W / src.width)), Image.BICUBIC)
+    if im.size != (W, H): im = im.crop(((im.width - W) // 2, (im.height - H) // 2, (im.width - W) // 2 + W, (im.height - H) // 2 + H))
+    return zoom(im, 1.0 + 0.08 * k, drift * k * 0.5)
 def fam(k):
-    bg = FAMI.copy(); x0, y0, x1, y1 = TV_RECT; L = TOR['pregunta2']; t = Image.open(L[min(len(L) - 1, int(k * len(L)))]).convert('RGB')
+    bg = FAMI.copy(); x0, y0, x1, y1 = TV_RECT; L = TOR['pregunta2']; t = sample(L, k)
     t = ImageEnhance.Brightness(t.crop((0, 600, 1080, 1270)).resize((x1 - x0, y1 - y0), Image.BILINEAR)).enhance(1.12); bg.paste(t, (x0, y0)); return cover(bg, k * 0.6)
 def run(k):
-    im = cover(HOM, k); p = Image.open(PIP[int(k * 0.999 * len(PIP)) % len(PIP)]).convert('RGB').resize((330, 586), Image.BILINEAR)
+    im = cover(HOM, k); p = sample(PIP, k).resize((330, 586), Image.BILINEAR)
     fr = Image.new('RGB', (354, 610), (20, 20, 24)); fr.paste(p, (12, 12)); m = Image.new('L', fr.size, 0); ImageDraw.Draw(m).rounded_rectangle([0, 0, fr.width - 1, fr.height - 1], radius=34, fill=255)
     im.paste(fr, (W - fr.width - 40, H - fr.height - 150), m); d = ImageDraw.Draw(im); d.text((W - fr.width / 2 - 40, H - 120), 'ON HIS SCREEN', font=font(F_BLACK, 34), fill=(255, 214, 90), anchor='mm', stroke_width=4, stroke_fill=(10, 6, 2)); return im
 def blackcard(bg, k, dark=0.25):
     return ImageEnhance.Brightness(bg.filter(ImageFilter.GaussianBlur(14))).enhance(dark)
 def title(tt, a):
-    k = tt - a; src = CINE['portal']; im = Image.open(src[min(len(src) - 1, int(k * 30) + 60)]).convert('RGB')
+    k = tt - a; src = CINE['portal']; im = sample(src, min(1, (k * 30 + 60) / (len(src) - 1)))
     im = ImageEnhance.Brightness(im).enhance(0.75); d = ImageDraw.Draw(im)
     s = 1 + 0.35 * max(0, 1 - k * 3) ** 2; al = min(1, k * 4)
     f1 = font(F_BLACK, int(150 * s)); f2 = font(F_BLACK, int(118 * s))
@@ -137,7 +155,7 @@ def title(tt, a):
     if k < 0.18: im = Image.blend(im, Image.new('RGB', (W, H), (255, 240, 200)), 0.8 * (1 - k / 0.18))
     return im
 def dare(tt, a):
-    k = tt - a; src = CINE['socrates']; bg = Image.open(src[min(len(src) - 1, 150 + int(k * 20))]).convert('RGB')
+    k = tt - a; src = CINE['socrates']; bg = sample(src, min(1, (150 + k * 20) / (len(src) - 1)))
     im = ImageEnhance.Brightness(bg).enhance(0.45); d = ImageDraw.Draw(im); s = 1 + 0.5 * max(0, 1 - k * 4) ** 2
     for txt, y in (('DARE', 800), ('TO THINK?', 960)):
         ff = font(F_BLACK, int(170 * s)); d.text((W / 2 + 7, y + 9), txt, font=ff, fill=(0, 0, 0), anchor='mm'); d.text((W / 2, y), txt, font=ff, fill=GOLD, anchor='mm', stroke_width=7, stroke_fill=(20, 10, 2))
@@ -166,8 +184,7 @@ for i in range(n):
         elif src == 'RUN': im = caption(run(k), big, col, small, tt - a)
         else:
             m = len(src); j = min(m - 1, int(k * m)); kk = k * m - j; L = src[j]
-            im = Image.open(L[min(len(L) - 1, int(kk * len(L)))]).convert('RGB').resize((W, H), Image.BILINEAR)
-            z = 1 + 0.07 * kk; cw, ch = int(W / z), int(H / z); im = im.crop(((W - cw) // 2, (H - ch) // 2, (W + cw) // 2, (H + ch) // 2)).resize((W, H), Image.BILINEAR)
+            im = zoom(sample(L, kk), 1 + 0.07 * kk)
             if m > 1 and kk < 0.08: im = Image.blend(im, Image.new('RGB', (W, H), (255, 240, 210)), 0.45 * (1 - kk / 0.08))  # flash on each cut
             if src[0] is CINE.get('nietzsche'): im = ImageEnhance.Contrast(im).enhance(1.1)
             im = caption(im, big, col, small, tt - a if m == 1 else tt - a)
