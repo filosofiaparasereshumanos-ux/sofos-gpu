@@ -19,10 +19,9 @@ END = 26.6
 SEG = [
     ('portada', 0, 2.7, '¿QUIÉN SABE MÁS: TÚ O TUS AMIGOS?', GOLD, ''),
     ('mesa', 2.7, 5.5, 'CREA UN TORNEO', GOLD, 'Desde la portada, en un toque'),
-    ('llena', 5.5, 8.2, 'INVITA A TUS AMIGOS', GOLD, '2, 4 u 8 jugadores'),
+    ('llena', 5.5, 8.2, 'INVITA AMIGOS', GOLD, '2, 4 u 8 jugadores'),
     ('whatsapp', 8.2, 9.6, 'POR WHATSAPP', GREEN, ''),
-    ('pregunta1', 9.6, 14.0, '¡TODOS A LA VEZ!', GOLD, 'Gana quien sabe más… y más rápido'),
-    ('pregunta2', 14.0, 16.6, 'MÁS RÁPIDO = MÁS PUNTOS', GOLD, ''),
+    ('pregunta2', 9.6, 16.6, '¡TODOS A LA VEZ!', GOLD, 'Gana quien sabe más… y más rápido'),
     ('podio', 16.6, 18.6, '¡CAMPEÓN!', GOLD, ''),
     ('museo', 18.6, 22.6, 'CULTURA GENERAL', GOLD, 'Filosofía · arte · historia · ciencia'),
 ]
@@ -35,6 +34,8 @@ def wrap(d, txt, path, size, maxw):
     """Parte el rótulo en dos líneas si no cabe."""
     f = font(path, size)
     if d.textlength(txt, font=f) <= maxw: return [txt], f
+    f2 = font(path, int(size * 0.8))
+    if len(txt) < 22 and d.textlength(txt, font=f2) <= maxw: return [txt], f2
     w = txt.split(); best = None
     for i in range(1, len(w)):
         a, b = ' '.join(w[:i]), ' '.join(w[i:]); m = max(d.textlength(a, font=f), d.textlength(b, font=f))
