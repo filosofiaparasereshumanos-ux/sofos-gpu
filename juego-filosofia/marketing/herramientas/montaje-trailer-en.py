@@ -21,7 +21,8 @@ MUN = shots('mundos'); SOC = shots('socrates'); JUI = shots('juicio'); TOR = sho
 VT = {'v1': 0.5, 'v2': 7.0, 'v3': 9.3, 'v4': 15.2, 'v5': 19.9, 'v6': 25.3, 'v7': 29.0, 'v8': 32.7, 'v9': 37.6, 'v10': 46.0, 'v11': 49.2, 'v12': 52.0}
 END = 62.0
 # (fuente, inicio, fin, rótulo, color, subrótulo). Fuente: lista de tomas (se reparten el tramo), 'TITLE', 'DARE', 'FAM', 'RUN'
-WORLDS = [MUN[k] for k in MUN]
+still = lambda L, f=0.55: [L[min(len(L) - 1, int(len(L) * f))]]  # una imagen quieta: el movimiento lo pone el zoom suave (sin temblor)
+WORLDS = [still(MUN[k]) for k in MUN]
 SEG = [
     ([CINE['socrates']], 0.0, 6.6, 'ATHENS · 399 BC', GOLD, 'Sentenced to death for asking questions'),
     ('TITLE', 6.6, 9.2, '', GOLD, ''),
@@ -36,8 +37,8 @@ SEG = [
     ([TOR['pregunta2']], 27.0, 28.9, 'FASTEST MIND WINS', GOLD, ''),
     ('FAM', 28.9, 32.5, 'FAMILY GAME NIGHT', GOLD, 'Trivia on the big screen'),
     ('RUN', 32.5, 37.4, 'THE GAME PLAYS ITSELF', BLUE, 'Narrated tour'),
-    ([REC['sumer-1'], CINE['hipatia'], REC['atenas-1'], CINE['sorjuana'], REC['biblia-0']], 37.4, 43.2, '230+ THINKERS', GOLD, 'In their own voices'),
-    ([TOR['museo'], REC['cosmos-0']], 43.2, 45.6, 'ART · SCIENCE · FAITH', GOLD, 'Masterpieces museum · the cosmos'),
+    ([still(REC['sumer-1'], 0.9), CINE['hipatia'], still(REC['atenas-1'], 0.9), CINE['sorjuana'], still(REC['biblia-0'], 0.9)], 37.4, 43.2, '230+ THINKERS', GOLD, 'In their own voices'),
+    ([TOR['museo'], still(REC['cosmos-0'], 0.9)], 43.2, 45.6, 'ART · SCIENCE · FAITH', GOLD, 'Masterpieces museum · the cosmos'),
     ('NIETZ', 45.6, 48.9, '', GOLD, ''),
     ('DARE', 48.9, 51.6, '', GOLD, ''),
 ]
@@ -128,7 +129,7 @@ def nietz(k):
     d = ImageDraw.Draw(im); d.rectangle([0, H - 110, W, H], fill=(0, 0, 0)); return im
 HOM = Image.open(os.path.join(D, 'img', 'hombre.jpg')).convert('RGB'); FAMI = Image.open(os.path.join(D, 'img', 'familia.jpg')).convert('RGB')
 TV_RECT = (270, 392, 546, 563)
-PIP = [p for n in ('sumer-1', 'atenas-1', 'biblia-0', 'cosmos-0') for p in REC[n]]
+PIP = [REC[n][int(len(REC[n]) * 0.9)] for n in ('sumer-1', 'atenas-1', 'biblia-0', 'cosmos-0')]
 def cover(src, k, drift=30):
     im = src.resize((int(src.width * H / src.height), H), Image.BICUBIC) if src.width / src.height < W / H else src.resize((W, int(src.height * W / src.width)), Image.BICUBIC)
     if im.size != (W, H): im = im.crop(((im.width - W) // 2, (im.height - H) // 2, (im.width - W) // 2 + W, (im.height - H) // 2 + H))
@@ -137,7 +138,7 @@ def fam(k):
     bg = FAMI.copy(); x0, y0, x1, y1 = TV_RECT; L = TOR['pregunta2']; t = sample(L, k)
     t = ImageEnhance.Brightness(t.crop((0, 600, 1080, 1270)).resize((x1 - x0, y1 - y0), Image.BILINEAR)).enhance(1.12); bg.paste(t, (x0, y0)); return cover(bg, k * 0.6)
 def run(k):
-    im = cover(HOM, k); p = sample(PIP, k).resize((330, 586), Image.BILINEAR)
+    im = cover(HOM, k); p = _load(PIP[min(len(PIP) - 1, int(k * len(PIP)))]).resize((330, 586), Image.BILINEAR)
     fr = Image.new('RGB', (354, 610), (20, 20, 24)); fr.paste(p, (12, 12)); m = Image.new('L', fr.size, 0); ImageDraw.Draw(m).rounded_rectangle([0, 0, fr.width - 1, fr.height - 1], radius=34, fill=255)
     im.paste(fr, (W - fr.width - 40, H - fr.height - 150), m); d = ImageDraw.Draw(im); d.text((W - fr.width / 2 - 40, H - 120), 'ON HIS SCREEN', font=font(F_BLACK, 34), fill=(255, 214, 90), anchor='mm', stroke_width=4, stroke_fill=(10, 6, 2)); return im
 def blackcard(bg, k, dark=0.25):
@@ -184,7 +185,7 @@ for i in range(n):
         elif src == 'RUN': im = caption(run(k), big, col, small, tt - a)
         else:
             m = len(src); j = min(m - 1, int(k * m)); kk = k * m - j; L = src[j]
-            im = zoom(sample(L, kk), 1 + 0.07 * kk)
+            im = zoom(sample(L, kk), 1 + (0.12 if len(L) == 1 else 0.07) * kk, (-40 * kk) if len(L) == 1 else 0)
             if m > 1 and kk < 0.08: im = Image.blend(im, Image.new('RGB', (W, H), (255, 240, 210)), 0.45 * (1 - kk / 0.08))  # flash on each cut
             if src[0] is CINE.get('nietzsche'): im = ImageEnhance.Contrast(im).enhance(1.1)
             im = caption(im, big, col, small, tt - a if m == 1 else tt - a)
