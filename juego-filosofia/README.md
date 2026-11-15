@@ -60,6 +60,7 @@ ratón y `E` para interactuar.
 - **El juicio de Sócrates**: escena jugable según la Apología, el Critón y el Fedón, con el jurado votando.
 - **Museo de obras maestras** (`src/07z-museo*.js`, `img/obras/`): 57 obras famosas de todo el mundo (con mujeres artistas, arte islámico, africano y precolombino), con ficha, imagen libre de Wikimedia Commons (autor y licencia en cada ficha) y juego de preguntas. Se entra desde «El taller de la belleza» y desde la portada. Guernica, Dalí y Frida aparecen sin imagen por derechos de autor.
 - **Más camino de la Biblia** (`src/07y-biblia-*.js`): el valle de Elá, Belén y la tumba vacía, con tres juegos (la honda de David, la historia de David en orden y la tumba vacía en los cuatro evangelios), citando la Biblia de Jerusalén.
+- **Torneo con amigos** (`src/08-torneo-portada.js`): desde la portada se abre una mesa de trivia de 2, 4 u 8 asientos con preguntas de cultura general de todos los mundos (pensadores, lugares y obras del museo); los amigos entran con el enlace de WhatsApp directo a su asiento.
 
 - **Estadísticas anónimas**: contadores por día y época, sin ningún dato del jugador, para ver dónde se
   atasca la gente (página `estadisticas.html`; requiere `tools/cuentas4.sql`). Desactivables en Ajustes.

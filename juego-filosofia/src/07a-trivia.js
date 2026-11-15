@@ -82,7 +82,7 @@ const Trivia = {
       const h = document.createElement('p'); h.className = 'tri-h'; h.textContent = near.length ? 'Viajeros en esta época:' : 'Ahora no hay más viajeros en esta época: invita a tus amigos por WhatsApp.'; inv.appendChild(h);
       for (const [id, r] of near.slice(0, 12)) { const row = document.createElement('div'); row.className = 'tri-row'; const nm = document.createElement('span'); nm.textContent = r.name; row.appendChild(nm);
         const sent = T.invited && T.invited.has(id); const b = this.btn(sent ? 'Invitado ✓' : 'Invitar', 'tri-ib', () => { (T.invited = T.invited || new Set()).add(id); this.send({ t: 'inv', to: id, nm: Juntos.name, n: T.n, e: T.e }); b.textContent = 'Invitado ✓'; b.disabled = true; }, row); b.disabled = !!sent; inv.appendChild(row); }
-      if (typeof Ir !== 'undefined') this.btn('📲 Invitar amigos por WhatsApp', 'tri-wa', () => Ir.sheet({ url: this.inviteLink(), text: `🏆 Te guardo un asiento en mi torneo de trivia de filosofía en Odisea de la Razón (${ERAS[T.e].name}). Entra directo aquí:` }), box);
+      if (typeof Ir !== 'undefined') this.btn('📲 Invitar amigos por WhatsApp', 'tri-wa', () => Ir.sheet({ url: this.inviteLink(), text: T.all ? `🏆 Te guardo un asiento en mi torneo de trivia de cultura general en Odisea de la Razón. Entra directo aquí:` : `🏆 Te guardo un asiento en mi torneo de trivia de filosofía en Odisea de la Razón (${ERAS[T.e].name}). Entra directo aquí:` }), box);
       const go = this.btn(taken >= 2 ? `Empezar el torneo (${taken})` : 'Esperando jugadores…', 'primary', () => this.start()); go.disabled = taken < 2;
       this.btn('Cerrar la mesa', 'ghost', () => this.leave('Cerraste la mesa.'));
     } else this.btn('Dejar el asiento', 'ghost', () => this.leave(''));
