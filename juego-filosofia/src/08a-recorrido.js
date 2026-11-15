@@ -11,7 +11,8 @@ const Recorrido = {
     card: 'Recorrido narrado', cardS: 'El juego se juega solo: escucha la historia de la filosofía mientras caminas, corres o descansas',
     h: '🎧 Recorrido narrado', sub: 'Como un audiolibro con imágenes: el guía te recibe en cada mundo, cada pensador te cuenta su historia con su voz y visitas los lugares. No tienes que tocar nada.',
     from: 'Empezar en', cont: (n) => `Continuar donde quedé (${n})`, first: 'Desde el principio (Sumer)', mode: 'Duración',
-    modes: [['resumen', 'Resumen', 'unos 6 minutos por mundo'], ['completo', 'Completo', 'unos 15 minutos por mundo']],
+    modes: [['resumen', 'Resumen', 'unos 6 minutos por mundo'], ['completo', 'Completo', 'todo: pensadores, ciudadanos, libros, lugares y obras']],
+    quote: 'Una cita para recordar.',
     go: '▶ Empezar el recorrido', close: 'Cerrar', narr: 'Narrador', guide: 'El guía', place: 'Lugar para descubrir',
     pause: 'Pausa', play: 'Seguir', skip: 'Saltar', nextEra: 'Mundo siguiente', exit: 'Salir', end: '¡Has terminado el recorrido por todas las épocas!',
     era: (n, name) => `Época ${n} · ${name}`, tip: 'Consejo: deja la pantalla encendida. Si la bloqueas, el teléfono puede pausar el sonido.',
@@ -67,17 +68,24 @@ const Recorrido = {
     // 1 · el guía da la bienvenida
     const gd = (NPCS[idx] || []).find((n) => n.greeter);
     if (gd) S.push((nx) => { const c = citizens.find((x) => x.npc && x.npc.greeter); const gx = c ? c.pos.x : gd.at[0], gz = c ? c.pos.z : gd.at[1]; this.walkTo(gx, gz - 3, gx, gz, () => this.sayAll({ npc: { id: gd.id, npc: { female: false } } }, this.T.guide, gd.lines, nx)); });
-    // 2 · cada pensador cuenta su lección (el maestro de la época, al final)
-    const list = [...sages].sort((a, b) => (a.boss ? 1 : 0) - (b.boss ? 1 : 0) || b.pos.z - a.pos.z);
-    for (const s of list) {
-      const d = s.data; const L = (LESSONS[d.id] && LESSONS[d.id].length ? LESSONS[d.id] : [d.intro]).filter(Boolean);
-      const parts = short ? L.slice(0, 2) : L;
-      S.push((nx) => { const dx = s.pos.x < -0.5 ? 2.8 : s.pos.x > 0.5 ? -2.8 : 0, dz = Math.abs(s.pos.x) < 0.5 ? (s.boss ? 4.4 : 3) : 0.4;
-        this.walkTo(s.pos.x + dx, s.pos.z + dz, s.pos.x, s.pos.z, () => this.sayAll(s, d.short || d.name, parts, nx)); });
-    }
-    // 3 · los lugares para descubrir
+    // 2 · el camino: pensadores, ciudadanos, libros y lugares, de la entrada al fondo (el maestro, al final)
+    const stops = [];
+    const sageStop = (s) => { const d = s.data; const L = (LESSONS[d.id] && LESSONS[d.id].length ? LESSONS[d.id] : [d.intro]).filter(Boolean); const parts = short ? L.slice(0, 2) : L;
+      return { z: s.pos.z, boss: !!s.boss, f: (nx) => { const dx = s.pos.x < -0.5 ? 2.8 : s.pos.x > 0.5 ? -2.8 : 0, dz = Math.abs(s.pos.x) < 0.5 ? (s.boss ? 4.4 : 3) : 0.4;
+        this.walkTo(s.pos.x + dx, s.pos.z + dz, s.pos.x, s.pos.z, () => this.sayAll(s, d.short || d.name, parts, nx)); } }; };
+    for (const s of sages) stops.push(sageStop(s));
     const pois = ((world && world.pois) || []).slice(0, short ? 2 : 99);
-    for (const p of pois) S.push((nx) => this.walkTo(p.at[0] + 1.6, p.at[1] + 2.2, p.at[0], p.at[1], () => this.sayAll(null, p.name, short ? [`${p.name}. ${p.text}`] : [`${p.name}. ${p.text}`, p.fact], nx)));
+    for (const p of pois) stops.push({ z: p.at[1], f: (nx) => this.walkTo(p.at[0] + 1.6, p.at[1] + 2.2, p.at[0], p.at[1], () => {
+      this.art = this.artOf(p); const parts = short ? [`${p.name}. ${p.text}`] : [`${p.name}. ${p.text}`, p.fact].filter(Boolean);
+      this.sayAll(null, p.name, parts, () => { this.art = null; if (!short && p.museo && typeof OBRAS !== 'undefined') this.museo(nx); else nx(); }); }) });
+    if (!short) {
+      for (const c of citizens) if (c.npc && !c.npc.greeter && (c.npc.lines || []).length && c.pos) stops.push({ z: c.pos.z, f: (nx) => this.walkTo(c.pos.x + (c.pos.x < 0 ? 2.2 : -2.2), c.pos.z + 0.6, c.pos.x, c.pos.z, () => this.sayAll(c, c.npc.name + (c.npc.role ? ' · ' + c.npc.role : ''), c.npc.lines, nx)) });
+      for (const wb of (world && world.books) || []) stops.push({ z: wb.at[1], f: (nx) => this.walkTo(wb.at[0] + (wb.at[0] < 0 ? 1.9 : -1.9), wb.at[1] + 0.8, wb.at[0], wb.at[1], () => {
+        const parts = [...wb.parts.map(bookPartText), this.T.quote + " " + wb.quote];
+        this.sayAll(null, '📖 ' + wb.title + (wb.by ? ' · ' + wb.by : ''), parts, () => { try { markBookRead(wb); } catch (e) { /* nada */ } nx(); }); }) });
+    }
+    stops.sort((x, y) => (x.boss ? 1 : 0) - (y.boss ? 1 : 0) || y.z - x.z);
+    for (const st of stops) S.push(st.f);
     // 4 · al mundo siguiente
     S.push(() => { this.ci++; this.goEra(false); });
     this.steps = S; this.si = 0; this.run();
@@ -119,7 +127,7 @@ const Recorrido = {
     let b = document.getElementById('rc-bar');
     if (!b) {
       b = document.createElement('div'); b.id = 'rc-bar';
-      b.innerHTML = '<div class="rc-era"></div><div class="rc-sub"><b></b><p></p></div><div class="rc-ctl"><button data-a="p"></button><button data-a="s"></button><button data-a="n"></button><button data-a="x"></button></div>';
+      b.innerHTML = '<div class="rc-era"></div><div class="rc-art" hidden></div><div class="rc-sub"><b></b><p></p></div><div class="rc-ctl"><button data-a="p"></button><button data-a="s"></button><button data-a="n"></button><button data-a="x"></button></div>';
       (document.getElementById('app') || document.body).appendChild(b);
       b.querySelector('.rc-ctl').addEventListener('click', (e) => { const x = e.target.closest('button'); if (!x) return; Audio.click && Audio.click(); ({ p: () => this.togglePause(), s: () => this.skip(), n: () => this.nextEra(), x: () => this.stop() })[x.dataset.a](); });
     }
@@ -127,7 +135,15 @@ const Recorrido = {
   },
   paintBar() { const b = document.getElementById('rc-bar'); if (!b) return; const [p, s, n, x] = b.querySelectorAll('.rc-ctl button'); p.textContent = this.paused ? '▶ ' + this.T.play : '⏸ ' + this.T.pause; s.textContent = '⏭ ' + this.T.skip; n.textContent = '🌍 ' + this.T.nextEra; x.textContent = '✕ ' + this.T.exit; },
   setEra(t) { const e = document.querySelector('#rc-bar .rc-era'); if (e) e.textContent = t; },
-  sub(name, text) { const b = document.getElementById('rc-bar'); if (!b) return; b.querySelector('.rc-sub b').textContent = name; b.querySelector('.rc-sub p').textContent = text; },
+  sub(name, text) { const b = document.getElementById('rc-bar'); if (!b) return; b.querySelector('.rc-sub b').textContent = name; b.querySelector('.rc-sub p').textContent = text;
+    const art = b.querySelector('.rc-art'); const A = this.art; art.hidden = !A; if (A) { art.style.backgroundImage = `url(${A.src})`; art.style.backgroundSize = A.size; art.style.backgroundPosition = A.pos; art.style.aspectRatio = A.ratio; } },
+  // el cuadro del lugar (franja de la lámina de su época) o la imagen de una obra
+  artOf(p) { const at = typeof PLACE_ART !== 'undefined' && PLACE_ART[p.id]; if (!at) return null; const [era, row, rows] = at; return { src: 'img/lugares-' + era + '.jpg', size: `100% ${rows * 100}%`, pos: `0 ${rows > 1 ? (row / (rows - 1)) * 100 : 0}%`, ratio: '16 / 9' }; },
+  // el museo de obras maestras, obra por obra, con su imagen
+  museo(cb) { const L = OBRAS.slice(); let k = 0;
+    const nx = () => { if (k >= L.length) { this.art = null; return cb(); } const o = L[k++]; this.art = o.img ? { src: 'img/obras/' + o.img, size: 'contain', pos: 'center', ratio: '4 / 3' } : null;
+      this.say(null, `🖼 ${o.titulo} · ${o.autor}`, `${o.titulo}. ${o.texto}`, nx); };
+    nx(); },
   card() {
     if (document.getElementById('rc-tcard')) return; const anchor = document.getElementById('lib-card') || document.getElementById('sem-card') || document.getElementById('fr-dia'); if (!anchor) return;
     const c = document.createElement('button'); c.id = 'rc-tcard'; c.innerHTML = '<b>🎧</b><span><strong></strong><small></small></span>';
@@ -156,7 +172,7 @@ const Recorrido = {
   st.textContent = 'body.rc-on #mp-badge,body.rc-on #b-foto,body.rc-on #mp-triv,body.rc-on #mp-tor,body.rc-on #agora{display:none !important}#rc{z-index:67}.rc-h{font-family:var(--display);font-weight:normal;color:#ffe2a0;margin:2px 34px 6px 0;font-size:1.3rem}.rc-s{color:#f3e6c4;line-height:1.5}.rc-l{display:block;margin:12px 0 6px;color:#d8b25a;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase}'
     + '#rc-from{width:100%;padding:10px;border-radius:10px;background:#120c06;color:#fff4dc;border:1px solid var(--line);font:inherit}.rc-modes{display:grid;grid-template-columns:1fr 1fr;gap:8px}.rc-m{display:flex;flex-direction:column;padding:10px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:#fff4dc;font:inherit;cursor:pointer;text-align:left}.rc-m.on{border-color:#ffd36a;background:rgba(255,211,106,.14)}.rc-m small{color:#cdbb95}.rc-tip{font-size:.8rem;color:#bfae8e;margin:10px 0 4px}'
     + '#rc-bar{position:absolute;left:0;right:0;bottom:0;z-index:40;padding:10px max(12px,var(--sar,0px)) calc(12px + var(--sab,0px)) max(12px,var(--sal,0px));background:linear-gradient(transparent,rgba(8,5,2,.88) 22%);color:#fff4dc;font-family:var(--body,Georgia)}#rc-bar[hidden]{display:none}'
-    + '.rc-era{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:#d8b25a;margin-bottom:4px}.rc-sub b{display:block;font-family:var(--display);font-weight:normal;color:#ffe2a0;font-size:1.05rem}.rc-sub p{margin:4px 0 10px;font-size:1.02rem;line-height:1.45;max-height:7.4em;overflow:auto}'
+    + '.rc-art{width:min(62vw,340px);margin:0 auto 8px;border-radius:10px;border:2px solid rgba(216,178,90,.75);background-repeat:no-repeat;background-color:#120c06;box-shadow:0 6px 24px rgba(0,0,0,.6)}.rc-art[hidden]{display:none}.rc-era{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:#d8b25a;margin-bottom:4px}.rc-sub b{display:block;font-family:var(--display);font-weight:normal;color:#ffe2a0;font-size:1.05rem}.rc-sub p{margin:4px 0 10px;font-size:1.02rem;line-height:1.45;max-height:7.4em;overflow:auto}'
     + '.rc-ctl{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.rc-ctl button{padding:12px 4px;border-radius:12px;border:1px solid rgba(216,178,90,.6);background:rgba(40,26,8,.85);color:#fff4dc;font:inherit;font-size:.86rem;cursor:pointer}'
     + '#rc-tcard{display:flex;align-items:center;gap:10px;width:min(440px,92vw);margin:8px auto 0;padding:9px 14px;border-radius:12px;border:1px solid var(--gold,#d8b25a);background:linear-gradient(150deg,rgba(30,60,80,.85),rgba(10,20,30,.9));color:#eef6ff;font-family:var(--body,Georgia);text-align:left;cursor:pointer}#rc-tcard b{font-size:1.5rem}#rc-tcard span{display:flex;flex-direction:column}#rc-tcard small{color:#cfe0ee}';
   document.head.appendChild(st);
