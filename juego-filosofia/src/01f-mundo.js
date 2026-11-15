@@ -5,7 +5,7 @@
 //  tradición (se indica en su epíteto), no personas históricas inventadas.
 // ============================================================================
 const CAMPAIGN = ERAS.length; // las épocas de la odisea; las siguientes son la ruta del mundo
-const lk = (robe, robe2, skin, hair, o = {}) => ({ robe, robe2, skin, hair, beard: o.beard ?? false, hat: o.hat || 'none', acc: o.acc || 'none' });
+const lk = (robe, robe2, skin, hair, o = {}) => ({ ...o, robe, robe2, skin, hair, beard: o.beard ?? false, hat: o.hat || 'none', acc: o.acc || 'none' });
 ERAS.push(
   // --------------------------------------------------------------------------
   {

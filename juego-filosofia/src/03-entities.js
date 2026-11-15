@@ -134,9 +134,10 @@ function buildFigure(look, accent) {
   { const fm = new THREE.MeshStandardMaterial({ map: faceTexture(look), emissive: 0xffffff, emissiveMap: faceTexture(look), emissiveIntensity: 0.22, transparent: true, alphaTest: 0.04, roughness: 0.55, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -8 });
     const face = new THREE.Mesh(new THREE.SphereGeometry(0.2035, 28, 20, Math.PI / 2 - 0.95, 1.9, Math.PI * 0.26, Math.PI * 0.5), fm); face.scale.copy(skull.scale); face.renderOrder = 2; head.add(face); }
   if (look.beard) {
-    const bt = look.beardTop || 0.42, bl = look.beardLen || 1;
-    const b = mesh(new THREE.SphereGeometry(0.17, 16, 12, 0, TAU, Math.PI * bt, Math.PI * (1 - bt)), std(look.beard, { roughness: 1 }), 0, -0.05 - (bl - 1) * 0.06, 0.05); b.scale.set(1.05, 1.5 * bl, 1); head.add(b);
-    head.add(mesh(new THREE.BoxGeometry(0.12, 0.025, 0.03), std(look.beard, { roughness: 1 }), 0, -0.06, 0.19, false));
+    // barba larga: nace bajo la boca y deja ver la cara; bigote encima
+    const bt = Math.max(0.5, look.beardTop || 0.52), bl = look.beardLen || 1, bm = std(look.beard, { roughness: 1 });
+    const b = mesh(new THREE.SphereGeometry(0.17, 16, 12, 0, TAU, Math.PI * bt, Math.PI * (1 - bt)), bm, 0, -0.06 - (bl - 1) * 0.06, 0.045); b.scale.set(0.98, 1.45 * bl, 0.95); head.add(b);
+    for (const sx of [-1, 1]) { const m = mesh(new THREE.CapsuleGeometry(0.022, 0.07, 4, 8), bm, sx * 0.045, -0.055, 0.183, false); m.rotation.z = sx * 1.2; head.add(m); }
     if (look.beardGrey) for (const [x, y] of [[-0.06, -0.2], [0.05, -0.26], [0, -0.33], [-0.03, -0.12], [0.08, -0.15]]) head.add(mesh(new THREE.BoxGeometry(0.012, 0.09, 0.01), std(look.beardGrey, { roughness: 1 }), x, y * (look.beardLen || 1), 0.205 - Math.abs(y) * 0.25, false)); // canas
   }
   const cap = (geo, m, y = 0.04, z = -0.01) => { const c = mesh(geo, m, 0, y, z); c.scale.set(0.97, 1.1, 1.02); c.rotation.x = -0.34; head.add(c); return c; }; // un poco más alto que el cráneo: sin franjas en la frente
@@ -145,7 +146,7 @@ function buildFigure(look, accent) {
     case 'laurel': cap(new THREE.SphereGeometry(0.21, 16, 10, 0, TAU, 0, Math.PI * 0.45), hair, 0.01);
       { const l = mesh(new THREE.TorusGeometry(0.2, 0.03, 6, 20), std(0x4a7a2a, { roughness: 0.8 }), 0, 0.08, -0.01); l.rotation.x = Math.PI / 2 - 0.2; head.add(l); } break;
     case 'none': cap(new THREE.SphereGeometry(0.21, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015); break;
-    case 'hood': { const h = mesh(new THREE.SphereGeometry(0.27, 16, 12, 0, TAU, 0, Math.PI * 0.62), robe, 0, 0.02, -0.04); head.add(h); } break;
+    case 'hood': { const h = mesh(new THREE.SphereGeometry(0.27, 16, 12, Math.PI / 2 + 0.85, TAU - 1.7, 0, Math.PI * 0.7), robe, 0, 0.02, -0.04); head.add(h); } break; // capucha abierta por delante
     case 'tonsure': { const t = mesh(new THREE.TorusGeometry(0.17, 0.05, 8, 20), hair, 0, 0.1, 0); t.rotation.x = Math.PI / 2; head.add(t); } break;
     case 'mitre': cap(new THREE.SphereGeometry(0.21, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.0); { const m = mesh(new THREE.ConeGeometry(0.17, 0.42, 4), std(0xf2ece0, { roughness: 0.6 }), 0, 0.33, 0); m.rotation.y = Math.PI / 4; m.scale.set(1, 1, 0.6); head.add(m); head.add(mesh(new THREE.BoxGeometry(0.03, 0.3, 0.12), std(0xc9a227, { metalness: 0.8, roughness: 0.3 }), 0, 0.3, 0)); } break;
     case 'turban': { for (let i = 0; i < 3; i++) { const t = mesh(new THREE.TorusGeometry(0.17 - i * 0.03, 0.07, 8, 20), std(0xf4efe2, { roughness: 0.9 }), 0, 0.1 + i * 0.07, -0.01); t.rotation.x = Math.PI / 2; head.add(t); } } break;
@@ -166,6 +167,13 @@ function buildFigure(look, accent) {
         if (i === 3 || i === 6) { const r = mesh(new THREE.TorusGeometry(0.055 - i * 0.002, 0.014, 6, 14), ring, 0, y - 0.04, z - 0.012); r.rotation.x = Math.PI / 2 - 0.35; head.add(r); }
       }
       break; }
+    case 'wild': cap(new THREE.SphereGeometry(0.215, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01, -0.015); // pelo alborotado (Einstein)
+      for (let i = 0; i < 22; i++) { const a = (i / 22) * TAU, up = 0.05 + (i % 3) * 0.05; const t = mesh(new THREE.ConeGeometry(0.05, 0.16, 5), hair, Math.cos(a) * 0.2, 0.06 + up, Math.sin(a) * 0.2 - 0.03); t.rotation.z = -Math.cos(a) * 1.1; t.rotation.x = Math.sin(a) * 1.1; if (Math.sin(a) > 0.75 && up < 0.12) continue; head.add(t); }
+      break;
+    case 'veil': { // toca blanca y velo negro (monjas)
+      const w = mesh(new THREE.SphereGeometry(0.225, 18, 12, 0, TAU, 0, Math.PI * 0.62), std(0xf4f0e6, { roughness: 0.8 }), 0, 0.0, -0.02); head.add(w);
+      const v = mesh(new THREE.SphereGeometry(0.26, 18, 12, Math.PI / 2 + 0.85, TAU - 1.7, 0, Math.PI * 0.75), std(0x16141a, { roughness: 0.85 }), 0, 0.02, -0.05); head.add(v);
+      const back = mesh(new THREE.BoxGeometry(0.4, 0.5, 0.06), std(0x16141a, { roughness: 0.85 }), 0, -0.25, -0.22); head.add(back); } break;
     case 'longhair': cap(new THREE.SphereGeometry(0.215, 16, 10, 0, TAU, 0, Math.PI * 0.5), hair, 0.01);
       for (const s of [-1, 1]) { const l = mesh(new THREE.BoxGeometry(0.09, 0.42, 0.2), hair, s * 0.17, -0.14, -0.05); head.add(l); }
       break;
@@ -216,6 +224,9 @@ function buildFigure(look, accent) {
       if (st === 'sage') for (const [x, y] of [[-0.06, -0.14], [0.05, -0.2], [0, -0.28], [-0.03, -0.1], [0.08, -0.12]]) head.add(mesh(new THREE.BoxGeometry(0.012, 0.09, 0.01), std(0xffffff, { roughness: 1 }), x, y, 0.2 - Math.abs(y) * 0.2, false));
     }
     if (['mustache', 'chevron', 'full', 'long', 'sage'].includes(st)) for (const sx of [-1, 1]) { const m2 = mesh(new THREE.CapsuleGeometry(0.018, 0.06, 4, 8), st === 'sage' ? std(0xe8e4dc, { roughness: 1 }) : bc, sx * 0.04, -0.045, 0.19, false); m2.rotation.z = sx * (Math.PI / 2 - 0.35); head.add(m2); }
+    if (st === 'walrus') { // bigote de morsa, grande y caído, que tapa la boca (Nietzsche)
+      for (const sx of [-1, 1]) { const w = mesh(new THREE.SphereGeometry(0.075, 12, 8), bc, sx * 0.055, -0.07, 0.17, false); w.scale.set(1.25, 0.75, 0.75); w.rotation.z = sx * -0.45; head.add(w);
+        const tip = mesh(new THREE.SphereGeometry(0.045, 10, 8), bc, sx * 0.11, -0.12, 0.14, false); tip.scale.set(0.9, 1.3, 0.8); head.add(tip); } }
     if (st === 'goatee' || st === 'chevron') { const gt = mesh(new THREE.SphereGeometry(0.05, 10, 8), bc, 0, -0.165, 0.145, false); gt.scale.set(1, 1.5, 0.8); head.add(gt); }
   }
   // complementos del avatar
