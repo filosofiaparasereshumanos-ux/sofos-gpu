@@ -21,12 +21,12 @@ SEG = [
     ('IMG', 0, 3.7, '¿NO TIENES TIEMPO PARA JUGAR?', GOLD, 'Este juego juega por ti'),
     ('portada', 3.7, 5.9, 'RECORRIDO NARRADO', BLUE, 'Un toque y listo'),
     ('panel', 5.9, 7.6, 'CAMINA, CORRE O PEDALEA', BLUE, 'El juego avanza solo'),
-    ('sumer-0', 7.6, 10.0, 'UN GUÍA TE RECIBE', GOLD, 'en cada mundo'),
+    ('sumer-0', 7.6, 10.0, 'SIN TOCAR NADA', GOLD, 'La cámara camina por ti'),
     ('sumer-1', 10.0, 12.2, 'CADA PENSADOR TE HABLA', GOLD, 'con su propia voz'),
-    ('atenas-1', 12.2, 14.3, 'SÓCRATES, PLATÓN…', GOLD, 'y su historia contada por ellos'),
-    ('biblia-0', 14.3, 16.4, '37 MUNDOS', GOLD, 'De Sumer a nuestros días'),
-    ('cosmos-0', 16.4, 18.5, '+230 PENSADORES', GOLD, 'Filosofía, ciencia, arte y fe'),
-    ('atenas-0', 18.5, 20.7, 'CON SUBTÍTULOS', GOLD, 'Pausa · saltar · mundo siguiente'),
+    ('atenas-0', 12.2, 14.3, 'VISITAS LOS LUGARES', GOLD, 'El Partenón, el zigurat de Ur…'),
+    ('atenas-1', 14.3, 16.4, '37 MUNDOS', GOLD, 'De Sumer a nuestros días'),
+    ('biblia-0', 16.4, 18.5, '+230 PENSADORES', GOLD, 'Filosofía, ciencia, arte y fe'),
+    ('cosmos-0', 18.5, 20.7, 'CON SUBTÍTULOS', GOLD, 'Pausa · saltar · mundo siguiente'),
     ('IMG', 20.7, 24.6, 'APRENDE', GOLD, 'mientras haces ejercicio'),
 ]
 def font(p, s): return ImageFont.truetype(p, s)

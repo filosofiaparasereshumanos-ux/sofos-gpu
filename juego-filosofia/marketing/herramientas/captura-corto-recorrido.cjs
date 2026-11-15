@@ -11,7 +11,7 @@ const FPS = 12;
   if (THREE) await ctx.route('https://cdn.jsdelivr.net/npm/three@0.160.0/**', (r) => r.fulfill({ path: THREE + r.request().url().split('three@0.160.0/')[1], contentType: 'application/javascript' }));
   await ctx.route('https://fonts.googleapis.com/**', (r) => r.abort());
   await p.goto(URL + '#debug'); await p.waitForFunction(() => document.getElementById('loading').style.display === 'none', null, { timeout: 600000 });
-  await p.evaluate(() => { for (const id of ['mp-badge', 'agora', 'achv', 'toasts', 'b-foto']) { const e = document.getElementById(id); if (e) e.style.display = 'none'; } });
+  await p.evaluate(() => { const d = window.__dbg; d.G.settings.mundo = false; if (d.Juntos) { d.Juntos.asked = true; d.Juntos.askMundo = () => {}; } for (const id of ['mp-badge', 'agora', 'achv', 'toasts', 'b-foto', 'mp-inv']) { const e = document.getElementById(id); if (e) e.style.display = 'none'; } });
   let shot = 0;
   const rec = async (name, n, step) => { const dir = path.join(OUT, String(++shot).padStart(2, '0') + '-' + name); fs.mkdirSync(dir, { recursive: true });
     for (let k = 0; k < n; k++) { if (step) await p.evaluate(step, k); await p.waitForTimeout(1000 / FPS); await p.screenshot({ path: path.join(dir, String(k).padStart(4, '0') + '.jpg'), type: 'jpeg', quality: 88 }); }
