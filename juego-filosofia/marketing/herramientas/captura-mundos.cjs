@@ -29,7 +29,7 @@ const FPS = 30; const LIST = (IDS || 'sumer,atenas,islam,mexicas,japon,renacimie
         const x = s.pos.x + Math.cos(a) * R * side * -1 + side * 0.0, z = s.pos.z + 1.2 + Math.sin(t * 1.2) * 0.8;
         const px = s.pos.x + side * R * Math.cos(0.5 - t * 0.6), pz = s.pos.z + R * Math.sin(0.5 - t * 0.6) + 0.6;
         d.player.pos.set(px, d.player.pos.y, pz); d.player.yaw = Math.atan2(-(s.pos.x - px), -(s.pos.z - pz)); d.player.pitch = 0.1; d.input.auto = false; d.input.walk = null; }, k);
-      await p.evaluate(() => window.__step(1)); await p.screenshot({ path: path.join(dir, String(k).padStart(4, '0') + '.jpg'), type: 'jpeg', quality: 88 });
+      await p.evaluate(() => window.__step(1)); await p.screenshot({ path: path.join(dir, String(k).padStart(4, '0') + '.jpg'), type: 'jpeg', quality: 88, timeout: 180000 });
     }
     console.log(id);
   }
