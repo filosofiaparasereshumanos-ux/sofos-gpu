@@ -23,7 +23,7 @@ SEG = [
     ('defensa', 11.4, 13.8, 'AHORA TÚ ERES SÓCRATES', GOLD, ''),
     ('reaccion', 13.8, 15.8, '¿QUÉ RESPONDES?', GOLD, ''),
     ('votacion', 15.8, 19.5, '500 ATENIENSES VOTAN', GOLD, ''),
-    ('pena', 19.5, 22.3, '¿CLEMENCIA O DIGNIDAD?', GOLD, ''),
+    ('pena', 19.5, 22.3, '¿QUÉ PENA PIDES?', GOLD, ''),
     ('muerte', 22.3, 24.7, 'CONDENADO', RED2, ''),
     ('carcel', 24.7, 27.8, '¿HUIRÍAS?', GOLD, 'Critón te lo suplica'),
     ('final', 27.8, 30.3, 'TÚ DECIDES EL FINAL', GOLD, ''),
