@@ -93,7 +93,7 @@ const Viaje = {
     for (const j of [k - 1, k + 1]) { const c = this.cards[(j + this.n()) % this.n()]; if (c && !c._img) { c._img = true; c.querySelector('.wv-img').style.backgroundImage = `url('${ART.era(CHRONO[(j + this.n()) % this.n()])}')`; } }
   },
   travel() { Audio.click && Audio.click(); buzz([10, 30, 20]); if (this.target != null) { this.pos = this.target; this.target = null; this.paint(); } const i = CHRONO[this.cur]; const c = this.cards[this.cur]; if (c) c.classList.add('fly'); setTimeout(() => { if (c) c.classList.remove('fly'); startOdyssey(i); }, 380); },
-  setList(v) { this.list = !!v; this.el.classList.toggle('hide', this.list); document.querySelector('#travel .tv-wrap').classList.toggle('show', this.list); this.el.querySelector('.wv-mode').textContent = this.T.list; const w = document.getElementById('wv-wheel'); if (w) w.hidden = !this.list; try { localStorage.setItem('odisea-razon.viaje-lista', this.list ? '1' : ''); } catch (e) { /* nada */ } if (!this.list) this.kick(); },
+  setList(v) { this.list = !!v; this.el.classList.toggle('hide', this.list); document.querySelector('#travel .tv-wrap').classList.toggle('show', this.list); document.getElementById('travel').classList.toggle('tv-list', this.list); this.el.querySelector('.wv-mode').textContent = this.T.list; const w = document.getElementById('wv-wheel'); if (w) w.hidden = !this.list; try { localStorage.setItem('odisea-razon.viaje-lista', this.list ? '1' : ''); } catch (e) { /* nada */ } if (!this.list) this.kick(); },
   open() {
     this.build(); const sv = store.get(SAVE_KEY, null); this.here = sv ? sv.eraIdx : -1;
     this.hasSave = !!(sv && (sv.eraIdx !== CHRONO[0] || (sv.beaten && sv.beaten.length) || sv.score > 0));
@@ -115,7 +115,7 @@ const Viaje = {
 }
 {
   const st = document.createElement('style');
-  st.textContent = '#travel .tv-wrap{display:none}#travel .tv-wrap.show{display:block}#travel{overflow:hidden}'
+  st.textContent = '#travel .tv-wrap{display:none}#travel .tv-wrap.show{display:block}#travel{overflow:hidden}#travel.tv-list{overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y}'
     + '#wv{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;overflow:hidden;background:#0d0905;color:#f6ead2;touch-action:pan-y;user-select:none;-webkit-user-select:none}#wv.hide{display:none}'
     + '.wv-bg{position:absolute;inset:-4%;background:#0d0905 center/cover no-repeat;opacity:0;transition:opacity 1.1s ease;filter:saturate(1.1)}.wv-bg.on{opacity:1;animation:wvKen 22s ease-in-out infinite alternate}'
     + '@keyframes wvKen{from{transform:scale(1.04) translate(0,0)}to{transform:scale(1.16) translate(-2%,-1.5%)}}'
