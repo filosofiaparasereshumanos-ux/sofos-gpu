@@ -151,9 +151,9 @@ const MJ = {
     const body = this.ui(this.T.bH, this.T.bI); const L = this.SESGOS; let i = 0, ok = 0;
     const q = document.createElement('p'); q.className = 'mj-q'; body.appendChild(q); const ans = document.createElement('div'); ans.className = 'mj-ans'; body.appendChild(ans); const fb = document.createElement('p'); fb.className = 'mj-fb'; body.appendChild(fb);
     const show = () => { const it = L[i]; q.textContent = it.q; fb.textContent = ''; ans.innerHTML = ''; document.querySelector('#mj .mj-btns').innerHTML = '';
-      shuffle([...it.a]).forEach((t) => { const b = document.createElement('button'); b.className = 'ans'; b.textContent = t; b.addEventListener('click', () => {
+      shuffle([...it.a]).forEach((t) => { const b = document.createElement('button'); b.className = 'ans'; if (t === it.a[0]) b.dataset.ok = '1'; b.textContent = /^[\d,]+$/.test(t) && document.documentElement.lang === 'en' ? t.replace(',', '.') : t; b.addEventListener('click', () => {
         const good = t === it.a[0]; if (good) { ok++; Audio.correct && Audio.correct(); } else Audio.wrong && Audio.wrong();
-        ans.querySelectorAll('.ans').forEach((x) => { x.disabled = true; if (x.textContent === it.a[0]) x.classList.add('right'); else if (x === b) x.classList.add('wrong'); }); fb.textContent = it.e;
+        ans.querySelectorAll('.ans').forEach((x) => { x.disabled = true; if (x.dataset.ok) x.classList.add('right'); else if (x === b) x.classList.add('wrong'); }); fb.textContent = it.e;
         this.btn(i < L.length - 1 ? this.T.next : '✓', () => { i++; if (i < L.length) show(); else { this.say(this.T.bEnd(ok, L.length)); body.innerHTML = ''; this.done('sesgos', 50); this.endBtns(() => this.sesgos()); } });
       }); ans.appendChild(b); }); };
     show();
