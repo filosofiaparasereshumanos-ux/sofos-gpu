@@ -152,7 +152,7 @@ const BJ = {
   const o0 = Places.open.bind(Places);
   Places.open = function (poi) {
     o0(poi); const foot = document.querySelector('#place .ls-foot'); if (!foot) return; foot.querySelectorAll('.bj-play').forEach((b) => b.remove());
-    for (const g of (poi && poi.juego) || []) { const b = document.createElement('button'); b.className = 'aid bj-play'; b.textContent = BJ.T[g]; b.addEventListener('click', () => { Audio.click && Audio.click(); Places.close(); setTimeout(() => BJ.open(g), 80); }); foot.prepend(b); }
+    for (const g of ((poi && poi.juego) || []).filter((g) => typeof BJ[g] === 'function')) { const b = document.createElement('button'); b.className = 'aid bj-play'; b.textContent = BJ.T[g]; b.addEventListener('click', () => { Audio.click && Audio.click(); Places.close(); setTimeout(() => BJ.open(g), 80); }); foot.prepend(b); }
   };
   const btns = document.getElementById('b-pcodex') && document.getElementById('b-pcodex').parentNode;
   if (btns) { const b = document.createElement('button'); b.className = 'btn'; b.id = 'b-pbiblia'; b.hidden = true; b.textContent = BJ.T.menu; b.addEventListener('click', () => { Audio.click && Audio.click(); resumeGame(); setTimeout(() => BJ.open('menu'), 60); }); btns.insertBefore(b, document.getElementById('b-psettings') || null); }

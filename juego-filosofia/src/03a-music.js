@@ -79,6 +79,8 @@ const SONGS = [
   { bpm: 64, root: 50, scale: [0, 2, 3, 5, 7, 9, 10], prog: [0, 3, 6, 0], pad: 'strings', arp: 'lyre', arpPat: [0, 2, 4, 2, 0, 4, 2, 1], lead: 'flute', kit: 'none', seed: 381 },
   // XXXVII · El jardín del Corán: escala con segunda aumentada, laúd y percusión de marco suave
   { bpm: 70, root: 52, scale: [0, 1, 4, 5, 7, 8, 11], prog: [0, 0, 5, 4], pad: 'warm', arp: 'lute', arpPat: [0, 1, 2, 4, 2, 1, 0, 2], lead: 'flute', kit: 'frame', seed: 391 },
+  // XXXVIII · El laberinto de la mente: lidio soñador, arpegios que giran
+  { bpm: 72, root: 50, scale: [0, 2, 4, 6, 7, 9, 11], prog: [0, 4, 5, 3], pad: 'warm', arp: 'lyre', arpPat: [0, 2, 4, 6, 4, 2, 1, 3], lead: 'flute', kit: 'none', seed: 401 },
 ];
 // volumen de cada capa según el modo
 const MIX = {
