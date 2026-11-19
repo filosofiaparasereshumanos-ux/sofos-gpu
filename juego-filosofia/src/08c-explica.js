@@ -7,7 +7,7 @@
 const Explica = {
   KEY: 'odisea-razon.clase-oida',
   T: {
-    skip: '⏭ Saltar la explicación', part: (a, b) => `Explicando ${a} de ${b}`,
+    skip: '⏭ Saltar y debatir', part: (a, b) => `Explicando ${a} de ${b}`,
     ready: 'Ya conoces lo esencial de mis ideas. ¿Te atreves a desafiarme? Mis preguntas son sobre lo que acabo de contarte.',
   },
   heard(id) { return ((store.get(this.KEY, {}) || {})[id]) === 1; },
@@ -22,18 +22,20 @@ const Explica = {
     const d = s.data; const parts = ((LESSONS[d.id] && LESSONS[d.id].length) ? LESSONS[d.id] : [d.intro]).filter(Boolean);
     const gen = (this.gen = (this.gen || 0) + 1); let k = 0;
     const alive = () => gen === this.gen && !$('#talk').hidden && T.sage === s && T.mode === 'explica';
+    // «Saltar y debatir»: corta la explicación y abre el debate de inmediato
+    const jump = () => { if (gen !== this.gen) return; this.gen++; Voice.stop(); this.mark(d.id); T.mode = 'main'; if (s.state === 'idle') { T.close(true); Duel.start(s); } else T.options(); };
     const finish = () => { if (gen !== this.gen) return; this.gen++; Voice.stop(); this.mark(d.id); T.mode = 'main'; T.say(this.T.ready); T.options(); };
     T.mode = 'explica';
     const next = () => {
       if (!alive()) return;
       if (k >= parts.length) return finish();
       const t = parts[k++]; T.say(t, { silent: true });
-      T.renderOps([[`${this.T.skip} · ${this.T.part(k, parts.length)}`, () => finish(), 'bye']]);
+      T.renderOps([[`${this.T.skip} · ${this.T.part(k, parts.length)}`, () => jump(), 'duel']]);
       Voice.utter(t, s, 1, () => { if (alive()) setTimeout(next, 500); });
     };
     // primero termina el saludo; luego empieza la explicación
     const greet = $('#tk-text').textContent; Voice.utter(greet, s, 1, () => { if (alive()) setTimeout(next, 400); });
-    T.renderOps([[this.T.skip, () => finish(), 'bye']]);
+    T.renderOps([[this.T.skip, () => jump(), 'duel']]);
   },
 };
 {
