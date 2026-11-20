@@ -37,7 +37,7 @@
 <body>
 <main>
   <h1>Estadísticas anónimas</h1>
-  <p class="sub">Solo contadores por día y época: nadie aparece aquí. «Atasco» es el porcentaje de debates perdidos sobre los jugados en esa época: las épocas con el atasco más alto son las que conviene revisar.</p>
+  <p class="sub">Solo contadores por día y época: nadie aparece aquí. Los jugadores se cuentan sin identificar a nadie: cada dispositivo solo recuerda si ya se contó ese día y esa semana. «Jugadores distintos» es aproximado (un mismo jugador en dos dispositivos cuenta dos veces). El tiempo cuenta los minutos con el juego a la vista dentro de una época. «Atasco» es el porcentaje de debates perdidos sobre los jugados en esa época: las épocas con el atasco más alto son las que conviene revisar.</p>
   <div class="bar" id="dias"><button data-d="1">Hoy</button><button data-d="7" class="on">7 días</button><button data-d="30">30 días</button><button data-d="365">Un año</button></div>
   <div class="kpis" id="kpis"></div>
   <div class="wrap"><table><thead><tr id="hd"></tr></thead><tbody id="tb"></tbody></table></div>
@@ -49,7 +49,7 @@
 <script src="aula-datos.js"></script>
 <script>
 const URL_ = 'https://xmslbqzmztcaoddchzsz.supabase.co', KEY = 'sb_publishable_5yoU56-AIWpkIelBPgeqPw_ydkMGEdk';
-const COLS = [['era', 'Época'], ['entra', 'Entradas'], ['vence', 'Debates ganados'], ['maestro', 'Maestros'], ['derrota', 'Derrotas'], ['atasco', 'Atasco'], ['acierto', 'Aciertos'], ['fallo', 'Fallos'], ['tiempo', 'Sin tiempo'], ['precision', 'Precisión']];
+const COLS = [['era', 'Época'], ['entra', 'Entradas'], ['minuto', 'Minutos'], ['vence', 'Debates ganados'], ['maestro', 'Maestros'], ['derrota', 'Derrotas'], ['atasco', 'Atasco'], ['acierto', 'Aciertos'], ['fallo', 'Fallos'], ['tiempo', 'Sin tiempo'], ['precision', 'Precisión']];
 let rows = [], sortK = 'entra', dias = 7;
 const fmt = (n) => Number(n || 0).toLocaleString('es-ES');
 async function load() {
@@ -61,7 +61,7 @@ async function load() {
     for (const x of data) { tot[x.evento] = (tot[x.evento] || 0) + Number(x.n); if (!x.era) continue; (by[x.era] = by[x.era] || { era: x.era })[x.evento] = Number(x.n); }
     rows = Object.values(by).map((o) => { const jug = (o.vence || 0) + (o.maestro || 0) + (o.derrota || 0); const resp = (o.acierto || 0) + (o.fallo || 0) + (o.tiempo || 0); return { ...o, atasco: jug ? (o.derrota || 0) / jug : 0, precision: resp ? (o.acierto || 0) / resp : 0 }; });
     const g = (tot.guia_fin || 0) + (tot.guia_salta || 0);
-    document.getElementById('kpis').innerHTML = [[fmt(tot.sesion), 'Partidas abiertas'], [fmt(tot.entra), 'Entradas en épocas'], [fmt((tot.vence || 0) + (tot.maestro || 0)), 'Debates ganados'], [g ? Math.round((tot.guia_fin || 0) / g * 100) + ' %' : '—', 'Terminan la guía inicial'], [fmt(tot.torneo), 'Torneos de trivia']].map(([v, k]) => `<div class="kpi"><b>${v}</b><span>${k}</span></div>`).join('');
+    const hrs = (tot.minuto || 0) / 60; const jd = tot.jugador_dia || 0; document.getElementById('kpis').innerHTML = [[fmt(dias <= 7 ? tot.jugador_semana : jd), dias <= 7 ? 'Jugadores distintos (aprox.)' : 'Jugadores por día (suma)'], [fmt(tot.jugador_nuevo), 'Jugadores nuevos'], [fmt(tot.jugador_vuelve), 'Vuelven otro día'], [hrs >= 10 ? fmt(Math.round(hrs)) + ' h' : (Math.round(hrs * 10) / 10).toLocaleString('es-ES') + ' h', 'Tiempo jugado'], [jd ? Math.round((tot.minuto || 0) / jd) + ' min' : '—', 'Minutos por jugador y día'], [fmt(tot.minuto_recorrido), 'Minutos de recorrido narrado'], [fmt(tot.sesion), 'Partidas abiertas'], [fmt(tot.entra), 'Entradas en épocas'], [fmt((tot.vence || 0) + (tot.maestro || 0)), 'Debates ganados'], [g ? Math.round((tot.guia_fin || 0) / g * 100) + ' %' : '—', 'Terminan la guía inicial'], [fmt(tot.torneo), 'Torneos de trivia']].map(([v, k]) => `<div class="kpi"><b>${v}</b><span>${k}</span></div>`).join('');
     document.getElementById('msg').textContent = rows.length ? '' : 'Todavía no hay datos en este periodo.';
     paint(); opina(data);
   } catch (e) { document.getElementById('msg').textContent = e.message; }

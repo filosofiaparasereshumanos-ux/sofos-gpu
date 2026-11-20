@@ -40,4 +40,25 @@ Metricas.hit('sesion', '');
   const v0 = Versus.vote.bind(Versus); Versus.vote = function (pick) { const v = this.v; if (v) Metricas.hit(pick ? (pick === this.A.short ? 'vs_a' : 'vs_b') : 'vs_ambos', v.id); return v0(pick); };
   if (typeof Trivia !== 'undefined' && Trivia.start) { const t0 = Trivia.start.bind(Trivia); Trivia.start = function () { Metricas.hit('torneo', ''); return t0(); }; }
 }
+// jugadores distintos y tiempo de juego, sin identificar a nadie: el dispositivo solo recuerda
+// en qué día y semana ya se contó (nada sale de él salvo los contadores sumados)
+{
+  const K = 'odisea-razon.metricas-visto'; const d = new Date(); const dia = d.toISOString().slice(0, 10);
+  const j = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())); j.setUTCDate(j.getUTCDate() + 4 - (j.getUTCDay() || 7));
+  const sem = j.getUTCFullYear() + '-' + Math.ceil(((j - Date.UTC(j.getUTCFullYear(), 0, 1)) / 864e5 + 1) / 7);
+  let v = null; try { v = JSON.parse(localStorage.getItem(K) || 'null'); } catch (e) { v = null; }
+  if (G.settings.metricas !== false) {
+    if (!v) Metricas.hit('jugador_nuevo', '');
+    if (!v || v.d !== dia) { Metricas.hit('jugador_dia', ''); if (v) Metricas.hit('jugador_vuelve', ''); }
+    if (!v || v.s !== sem) Metricas.hit('jugador_semana', '');
+    try { localStorage.setItem(K, JSON.stringify({ d: dia, s: sem })); } catch (e) { /* sin almacenamiento */ }
+  }
+  // un minuto de juego cuenta si la pestaña está a la vista y se está dentro de una época (jugando, hablando, debatiendo, leyendo…)
+  const ACT = ['play', 'duel', 'talk', 'place', 'lesson', 'oracle'];
+  setInterval(() => {
+    if (document.visibilityState !== 'visible' || !world || !ACT.includes(G.state)) return;
+    Metricas.hit('minuto', ERAS[world.idx].id);
+    if (typeof Recorrido !== 'undefined' && Recorrido.on) Metricas.hit('minuto_recorrido', '');
+  }, 60000);
+}
 if (location.hash === '#debug') window.__metricas = Metricas;
