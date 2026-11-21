@@ -10,7 +10,6 @@ const Duo = {
     btn: '🗣️ Ponerme a debatir con otro pensador', title: '¿Con quién debato?', sub: 'Elige a un pensador de otra escuela: verás en qué se diferencian sus escuelas y qué las une.',
     here: 'De esta época', all: 'Todas las escuelas', search: 'Buscar por nombre…', q: (a, b) => `${a} frente a ${b}: ¿qué los separa y qué los une?`,
     ejes: { vida: 'la vida buena', saber: 'cómo conocemos', real: 'qué es lo real', sociedad: 'cómo vivir juntos', sagrado: 'Dios y lo sagrado' },
-    valor: (v) => `Para nosotros, lo más importante es ${v}.`,
     cierre: (A, sA, B, sB, ej, com) => `Lo que los separa: para ${A} (${sA.n}) lo más importante es ${sA.p.valor}; para ${B} (${sB.n}), ${sB.p.valor}. Hablaron de ${ej}. Lo que los une: ${com}`,
     nada: 'los dos se preguntaron cómo vivir bien.',
   },
@@ -24,10 +23,11 @@ const Duo = {
     const pick = shuffle([...ax]).slice(0, 2).sort((x, y) => ax.indexOf(x) - ax.indexOf(y));
     const turns = [['a', pA.yo], ['b', pB.yo]];
     pick.forEach((k, i) => { turns.push(['a', pA.ejes[k]]); turns.push(['b', (i === 0 ? (PERFILES._distinto || '') + ' ' : '') + pB.ejes[k]]); });
-    turns.push(['a', this.T.valor(pA.valor)]); turns.push(['b', this.T.valor(pB.valor)]);
+    const V = (v) => (PERFILES._valor || '').replace('{v}', v); turns.push(['a', V(pA.valor)]); turns.push(['b', V(pB.valor)]);
     const shared = (pA.tags || []).filter((t) => (pB.tags || []).includes(t) && C[t]);
     const tag = shared.length ? shared[Math.floor(Math.random() * shared.length)] : null;
-    turns.push(['a', tag ? C[tag] : (PERFILES._nada || '')]);
+    const fem = (PERFILES._mujeres || []).includes(A.id) && (PERFILES._mujeres || []).includes(B.id); const g = (x) => (fem ? x.replace(/\blos dos\b/g, 'las dos') : x);
+    turns.push(['a', g(tag ? C[tag] : (PERFILES._nada || ''))]);
     const com = tag ? C[tag].replace(/^[^:]*:\s*/, '') : this.T.nada;
     return { id: 'duo-' + [A.id, B.id].sort().join('-'), a: A.id, b: B.id, q: this.T.q(A.short, B.short), turns: turns.filter((t) => t[1] && t[1].trim()), cierre: this.T.cierre(A.short, sA, B.short, sB, pick.map((k) => this.T.ejes[k]).join(' y '), com) };
   },
