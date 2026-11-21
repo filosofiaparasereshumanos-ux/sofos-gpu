@@ -1,0 +1,148 @@
+"""Corto «Recorrido narrado» (vertical 1080x1920, ~30 s): el juego se juega solo mientras haces ejercicio.
+Abre con una imagen (persona en la elíptica) y sigue con el recorrido real por varios mundos.
+Uso: python3 montaje-corto-recorrido.py <tomas> <carpeta voz> <música.mp3> <logo.png> <salida.mp4> <imagen del hombre en la trotadora>
+     <imagen de la familia frente a la tele> <tomas de la trivia (pregunta)>
+En la imagen de la trotadora se ve una pantallita con el recorrido; en la tele de la familia, la trivia real."""
+import json, os, subprocess, sys
+from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance
+TOMAS, VOZ, MUSIC, LOGO, OUTF, IMG, IMG_FAM, TRIV = sys.argv[1:9]
+TV_RECT = (270, 392, 546, 563)  # pantalla de la tele en la imagen de la familia (768x1344)
+W, H, FPS = 1080, 1920, 30
+TMP = OUTF + '.tmp'; os.makedirs(TMP, exist_ok=True)
+F_BLACK = '/usr/share/fonts/opentype/inter/Inter-Black.otf'
+F_SERIF_B = '/usr/share/fonts/truetype/crosextra/Caladea-Bold.ttf'
+F_SERIF = '/usr/share/fonts/truetype/crosextra/Caladea-Regular.ttf'
+GOLD = (255, 205, 105); CREAM = (250, 242, 225); RED = (255, 110, 90); GREEN = (120, 235, 150)
+folder = {d.split('-', 1)[1]: os.path.join(TOMAS, d) for d in os.listdir(TOMAS)}
+frames = {k: sorted(os.path.join(v, f) for f in os.listdir(v)) for k, v in folder.items()}
+# cuándo entra cada frase de la voz
+VT = {'hook': 0.3, 'como': 3.9, 'guia': 7.7, 'pensadores': 10.1, 'historia': 14.3, 'familia': 20.9, 'cierre': 24.6}
+END = 32.0
+BLUE = (150, 210, 255)
+# (toma, inicio, fin, rótulo, color, subrótulo); 'IMG' = trotadora con pantallita, 'FAM' = familia con la trivia en la tele
+SEG = [
+    ('IMG', 0, 3.7, '¿NO TIENES TIEMPO PARA JUGAR?', GOLD, 'Este juego juega por ti'),
+    ('portada', 3.7, 5.9, 'RECORRIDO NARRADO', BLUE, 'Un toque y listo'),
+    ('panel', 5.9, 7.6, 'CAMINA, CORRE O PEDALEA', BLUE, 'El juego avanza solo'),
+    ('sumer-0', 7.6, 10.0, 'SIN TOCAR NADA', GOLD, 'La cámara camina por ti'),
+    ('sumer-1', 10.0, 12.2, 'CADA PENSADOR TE HABLA', GOLD, 'con su propia voz'),
+    ('atenas-0', 12.2, 14.3, 'DE TODAS LAS ÉPOCAS', GOLD, 'Hipócrates, Epicteto, David…'),
+    ('atenas-1', 14.3, 16.4, '37 MUNDOS', GOLD, 'De Sumer a nuestros días'),
+    ('biblia-0', 16.4, 18.5, '+230 PENSADORES', GOLD, 'Filosofía, ciencia, arte y fe'),
+    ('cosmos-0', 18.5, 20.7, 'CON SUBTÍTULOS', GOLD, 'Pausa · saltar · mundo siguiente'),
+    ('FAM', 20.7, 24.4, '¡Y EN FAMILIA!', GOLD, 'Trivias en la tele, todos juntos'),
+    ('IMG', 24.4, 27.4, 'APRENDE', GOLD, 'mientras haces ejercicio'),
+]
+def font(p, s): return ImageFont.truetype(p, s)
+def fit(d, txt, path, size, maxw):
+    f = font(path, size)
+    while d.textlength(txt, font=f) > maxw and f.size > 30: f = font(path, f.size - 4)
+    return f
+def wrap(d, txt, path, size, maxw):
+    """Parte el rótulo en dos líneas si no cabe."""
+    f = font(path, size)
+    if d.textlength(txt, font=f) <= maxw: return [txt], f
+    f2 = font(path, int(size * 0.8))
+    if len(txt) < 22 and d.textlength(txt, font=f2) <= maxw: return [txt], f2
+    w = txt.split(); best = None
+    for i in range(1, len(w)):
+        a, b = ' '.join(w[:i]), ' '.join(w[i:]); m = max(d.textlength(a, font=f), d.textlength(b, font=f))
+        if best is None or m < best[0]: best = (m, [a, b])
+    lines = best[1]
+    while max(d.textlength(x, font=f) for x in lines) > maxw: f = font(path, f.size - 4)
+    return lines, f
+def caption(im, big, col, small, k):
+    im = im.convert('RGBA'); ov = Image.new('RGBA', (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(ov); a = min(1, k * 5)
+    for y in range(0, 560): d.line([(0, y), (W, y)], fill=(6, 4, 2, int(225 * (1 - y / 560) * a)))
+    pop = 1 + 0.12 * max(0, 1 - k * 6)  # pequeño golpe de escala al entrar
+    lines, fb = wrap(d, big, F_BLACK, int(104 * pop), W - 90); y = (175 if len(lines) == 1 else 130) - int(60 * max(0, 1 - k * 4) ** 2)
+    for ln in lines:
+        d.text((W / 2, y), ln, font=fb, fill=col + (int(255 * a),), anchor='mm', stroke_width=5, stroke_fill=(15, 8, 2, int(255 * a))); y += int(fb.size * 1.12)
+    if small:
+        fs = fit(d, small, F_SERIF_B, 58, W - 120); d.text((W / 2, y + 30), small, font=fs, fill=CREAM + (int(240 * a),), anchor='mm', stroke_width=2, stroke_fill=(15, 8, 2, int(200 * a)))
+    return Image.alpha_composite(im, ov).convert('RGB')
+# ---------------------------------------------------------------- texto dinámico (palabra a palabra, al ritmo de la voz)
+VJ = json.load(open(os.path.join(VOZ, 'voz.json')))
+WORDS = []  # (inicio, fin, palabra, frase)
+for li, (name, text) in enumerate(VJ['lines']):
+    t0 = VT[name] + 0.08; dur = max(0.5, VJ['dur'][name] - 0.25); ws = text.replace('…', ' ').split()
+    tot = sum(len(w) + 2 for w in ws); t = t0
+    for w in ws:
+        d = dur * (len(w) + 2) / tot; WORDS.append((t, t + d, w, li)); t += d
+KEY = {'familia', 'tele', 'trivias', 'casa', 'tiempo', 'juega', 'ti', 'recorrido', 'narrado', 'caminar', 'correr', 'pedalear', 'nada', 'mundo', 'pensador', 'historia', 'voz', 'sumer', 'treinta', 'siete', 'mundos', 'doscientos', 'pensadores', 'ejercicio', 'gratis', 'odisea', 'razón'}
+def hyper(im, tt):
+    cur = [i for i, (a, b, w, li) in enumerate(WORDS) if a <= tt < b + 0.15]
+    if not cur: return im
+    i = cur[-1]; li = WORDS[i][3]; first = next(j for j, x in enumerate(WORDS) if x[3] == li)
+    g0 = first + ((i - first) // 3) * 3; grp = [x for x in WORDS[g0:g0 + 3] if x[3] == li]
+    im = im.convert('RGBA'); ov = Image.new('RGBA', (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(ov)
+    f = font(F_BLACK, 104); sp = 40
+    clean = lambda w: w.strip('«»¿?¡!.,:;').upper()
+    widths = [d.textlength(clean(w), font=f) for _, _, w, _ in grp]; total = sum(widths) + sp * (len(grp) - 1)
+    scale = min(1, (W - 170) / max(1, total)); f = font(F_BLACK, int(104 * scale)); widths = [d.textlength(clean(w), font=f) for _, _, w, _ in grp]; total = sum(widths) + sp * (len(grp) - 1)
+    x = (W - total) / 2; y = 1060
+    for j, (a, b, w, _) in enumerate(grp):
+        if tt < a: break  # las palabras aparecen cuando se dicen
+        k = min(1, (tt - a) / 0.14); pop = 1 + 0.12 * (1 - k) ** 2; live = a <= tt < b
+        word = clean(w); hot = live or word.lower() in KEY
+        col = (255, 214, 90, 255) if live else ((255, 255, 255, 255) if not hot else (150, 225, 255, 255))
+        ff = font(F_BLACK, int(f.size * (pop if live else 1)))
+        cx = x + widths[j] / 2; dy = int(18 * (1 - k))
+        if live:  # caja de color detrás de la palabra que suena
+            bw = d.textlength(word, font=ff) + 34; d.rounded_rectangle([cx - bw / 2, y - ff.size * 0.62 + dy, cx + bw / 2, y + ff.size * 0.62 + dy], radius=18, fill=(20, 12, 4, 170))
+        d.text((cx + 5, y + 6 + dy), word, font=ff, fill=(0, 0, 0, 160), anchor='mm')
+        d.text((cx, y + dy), word, font=ff, fill=col, anchor='mm', stroke_width=7, stroke_fill=(10, 6, 2, 255))
+        x += widths[j] + sp
+    return Image.alpha_composite(im, ov).convert('RGB')
+def end_card(bg_path, k):
+    bg = Image.open(bg_path).convert('RGB').resize((W, H)).filter(ImageFilter.GaussianBlur(20)); bg = ImageEnhance.Brightness(bg).enhance(0.32); d = ImageDraw.Draw(bg)
+    lg = Image.open(LOGO).convert('RGBA'); lg.thumbnail((300, 300)); bg.paste(lg, ((W - lg.width) // 2, 300), lg)
+    a = min(1, k * 3)
+    rows = [('ODISEA', F_BLACK, 130, GOLD), ('DE LA RAZÓN', F_BLACK, 110, GOLD), ('Recorrido narrado · gratis', F_SERIF_B, 64, CREAM), ('', F_SERIF, 30, CREAM), ('Aprende mientras te mueves', F_BLACK, 62, CREAM), ('Gratis · en el navegador · link en la bio', F_SERIF, 46, CREAM)]
+    y = 820
+    for txt, f, s, col in rows:
+        if txt: fo = fit(d, txt, f, s, W - 100); d.text((W / 2, y), txt, font=fo, fill=tuple(int(c * a) for c in col), anchor='mm', stroke_width=3 if f == F_BLACK else 0, stroke_fill=(10, 6, 2))
+        y += int(s * 1.35)
+    return bg
+n = int(END * FPS); last = frames['atenas-1'][-1]
+IMGF = Image.open(IMG).convert('RGB'); FAMF = Image.open(IMG_FAM).convert('RGB')
+TRIVF = sorted(os.path.join(TRIV, x) for x in os.listdir(TRIV))
+PIP = [p for n in ('sumer-1', 'atenas-1', 'biblia-0', 'cosmos-0') for p in frames[n]]
+def fam_src(k):
+    bg = FAMF.copy(); x0, y0, x1, y1 = TV_RECT; t = Image.open(TRIVF[min(len(TRIVF) - 1, int(k * len(TRIVF)))]).convert('RGB')
+    t = t.crop((0, 600, 1080, 1270)).resize((x1 - x0, y1 - y0), Image.BILINEAR); t = ImageEnhance.Brightness(t).enhance(1.12); bg.paste(t, (x0, y0)); return bg
+def pip(im, k):
+    p = Image.open(PIP[int(k * 0.999 * len(PIP)) % len(PIP)]).convert('RGB').resize((330, 586), Image.BILINEAR)
+    fr = Image.new('RGB', (354, 610), (20, 20, 24)); fr.paste(p, (12, 12)); m = Image.new('L', fr.size, 0); ImageDraw.Draw(m).rounded_rectangle([0, 0, fr.width - 1, fr.height - 1], radius=34, fill=255)
+    im = im.copy(); im.paste(fr, (W - fr.width - 40, H - fr.height - 150), m); d = ImageDraw.Draw(im); d.text((W - fr.width / 2 - 40, H - 120), 'EN SU PANTALLA', font=font(F_BLACK, 34), fill=(255, 214, 90), anchor='mm', stroke_width=4, stroke_fill=(10, 6, 2)); return im
+def img_frame(k, src=None):
+    IMGF_ = src or IMGF
+    im = IMGF_.resize((W, int(IMGF_.height * W / IMGF_.width)), Image.BILINEAR)
+    if im.height < H: im = IMGF_.resize((int(IMGF_.width * H / IMGF_.height), H), Image.BILINEAR)
+    z = 1.0 + 0.08 * k; cw, ch = int(W / z), int(H / z); x0, y0 = (im.width - cw) // 2, (im.height - ch) // 2 + int(30 * k)
+    return im.crop((x0, y0, x0 + cw, y0 + ch)).resize((W, H), Image.BILINEAR)
+for i in range(n):
+    tt = i / FPS; seg = next((s for s in SEG if s[1] <= tt < s[2]), None)
+    if seg:
+        name, a, b, big, col, small = seg; k = (tt - a) / max(0.01, b - a)
+        if name == 'IMG': im = pip(img_frame(k if a == 0 else 0.5 + k * 0.5), tt / 6 if a == 0 else (tt - 20) / 6)
+        elif name == 'FAM': im = img_frame(k * 0.6, fam_src(k))
+        else: L = frames[name]; im = Image.open(L[min(len(L) - 1, int(k * len(L)))]).convert('RGB').resize((W, H), Image.BILINEAR)
+        z = 1 + 0.06 * k  # acercamiento lento (Ken Burns)
+        cw, ch = int(W / z), int(H / z); im = im.crop(((W - cw) // 2, (H - ch) // 2, (W + cw) // 2, (H + ch) // 2)).resize((W, H), Image.BILINEAR)
+        im = caption(im, big, col, small, tt - a)
+        if name in ('portada',) and tt - a < 0.3:
+            fl = (150, 210, 255); im = Image.blend(im, Image.new('RGB', (W, H), fl), 0.45 * (1 - (tt - a) / 0.3))
+        if tt - a < 0.12 and a > 0: im = Image.blend(im, Image.new('RGB', (W, H), (255, 240, 200)), 0.5 * (1 - (tt - a) / 0.12))
+    else:
+        im = end_card(last, tt - 27.4)
+    im = hyper(im, tt)
+    im.save(os.path.join(TMP, f'{i:05d}.jpg'), quality=90)
+V = json.load(open(os.path.join(VOZ, 'voz.json'))); ins = []; fl = []
+for j, (name, _) in enumerate(V['lines']):
+    ins += ['-i', os.path.join(VOZ, name + '.wav')]; ms = int(VT[name] * 1000); fl.append(f'[{j + 2}:a]aresample=44100,volume=1.9,adelay={ms}|{ms}[v{j}]')
+nv = len(V['lines']); mix = ''.join(f'[v{j}]' for j in range(nv))
+filt = ';'.join(fl) + f';{mix}amix=inputs={nv}:duration=longest:normalize=0[voz];[1:a]volume=0.30,afade=t=in:d=0.5,afade=t=out:st={END - 2.2}:d=2.2[m];[voz][m]amix=inputs=2:duration=longest:normalize=0,atrim=0:{END},loudnorm=I=-14:TP=-1.5[a]'
+subprocess.run(['ffmpeg', '-v', 'error', '-y', '-framerate', str(FPS), '-i', os.path.join(TMP, '%05d.jpg'), '-i', MUSIC, *ins, '-filter_complex', filt,
+    '-map', '0:v', '-map', '[a]', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '20', '-preset', 'medium', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', '-t', f'{END}', OUTF], check=True)
+print('listo', OUTF, END, 's')

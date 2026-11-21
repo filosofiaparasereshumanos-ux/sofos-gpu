@@ -1,0 +1,359 @@
+# Revisión académica de los textos
+
+Revisión de rigor de los pensadores principales (noviembre de 2026), a partir de la observación de que Hegel aparecía con la fórmula «tesis, antítesis y síntesis», que no es suya. Se buscaron atribuciones falsas, frases apócrifas, fuentes u obras equivocadas, fechas erróneas, doctrinas deformadas y preguntas cuya respuesta correcta era un mito.
+
+## Hegel
+
+- La fórmula «tesis, antítesis y síntesis» ya no se le atribuye: aparece solo como opción incorrecta y con la aclaración de que viene de Fichte y de divulgadores posteriores.
+- El concepto pasa a ser «La dialéctica y la superación (Aufhebung)»: negar, conservar y elevar.
+- «Lo que es racional es efectivamente real…» (Filosofía del derecho), con *wirklich* traducido como «efectivamente real» y la aclaración de que no significa que todo lo que existe esté bien.
+- «Señor y siervo» (*Herrschaft und Knechtschaft*), con la aclaración de que la etiqueta «amo y esclavo» es popular.
+- El ejemplo del capullo y la flor sigue el prólogo de la Fenomenología; «lechuza» (no «búho») de Minerva; «Morí» (antes «Murí»).
+
+## Presocráticos y Grecia clásica
+
+- [alta] 01t-frases.js: La fórmula «solo sé que no sé nada» no aparece en la Apología; es una paráfrasis posterior de Apol. 21d.
+- [media] 01t-frases.js: Frase apócrifa sin base en Platón (la idea «el poder revela al hombre» se atribuía a Bías o Pítaco); se sustituye por una auténtica (Sofista 263e).
+- [media] 01t-frases.js: La frase citada es una paráfrasis moderna de Diógenes Laercio, no un fragmento; se sustituye por el fragmento auténtico B9.
+- [baja] 01t-frases.js: La forma célebre procede de Platón (Crátilo 402a) y Plutarco; el fragmento más seguro (B12) dice que a quienes entran en los mismos ríos les llegan aguas distintas.
+- [media] 02p-dialogos.js: «Somos lo que hacemos repetidamente» es de Will Durant (1926), no de Aristóteles, y aquí lo dice Aristóteles en primera persona; se sustituye por Ética a Nicómaco II.1.
+- [media] 02c-polis.js: La retirada en que Sócrates camina sereno ante el enemigo es la de Delión (424 a.C.), según Alcibíades en el Banquete 221a-b, no la de Potidea.
+- [media] 01a-lessons.js: Atribuir a Pitágoras en persona el descubrimiento de las razones musicales es leyenda tardía (Nicómaco, Jámblico); se conoce como doctrina pitagórica.
+- [baja] 01a-lessons.js: La atribución a Pitágoras del término kosmos es una noticia tardía (Aecio, Diógenes Laercio); en el quiz ya se presenta como «se atribuye».
+- [baja] 01a-lessons.js: En la Apología (30e) es Sócrates quien se compara con un tábano; no consta que fuera un apodo que le dieran.
+- [baja] 01a-lessons.js: Epicuro no clasifica la amistad entre los deseos naturales y necesarios; la valora aparte (Máximas capitales XXVII, Sentencias Vaticanas 23).
+- [baja] 02e-books.js: La Carta a Meneceo no incluye la amistad entre los deseos naturales y necesarios; la amistad se elogia en otros textos.
+- [baja] 01a-lessons.js: Tales no dejó escritos: esas razones son una conjetura de Aristóteles (Metafísica I.3), que él mismo presenta como suposición.
+- [baja] 01-data.js: Heródoto (I.74) solo dice que Tales anunció el año; la fecha del 585 a.C. es un cálculo astronómico moderno.
+- [baja] 01-data.js: «Panta rei» no figura en los fragmentos de Heráclito; es una fórmula tardía (Simplicio) inspirada en Platón.
+- [baja] 01-data.js: Se sustituye la fórmula popular apócrifa por la frase auténtica de la Apología (21d).
+- [baja] 07q-mesas-datos.js: La fórmula «solo sé que no sé nada» es apócrifa; Apología 29b dice que no sabe lo suficiente sobre el Hades y reconoce no saberlo.
+- [baja] 02p-dialogos.js: Habla Platón: Aristóteles es su alumno, no del jugador (en el mismo diálogo se dice «mi alumno Aristóteles»).
+- [baja] 02c-polis.js: El apodo «el lector» procede de biografías tardías (Vita Marciana) de dudosa fiabilidad; conviene presentarlo como tradición.
+- [baja] 02c-polis.js: Éfeso, ciudad de Heráclito, era jonia y su gran templo de Artemisa era de orden jónico, no dórico.
+
+## De Séneca a Leibniz
+
+- [media] 02e-books.js: La frase citada es una paráfrasis moderna apócrifa que circula por internet; no está en las Meditaciones. La sustituta es Meditaciones VIII, 47.
+- [media] 01o-sabios.js: Marco Aurelio (Med. I, 7) agradece haber leído los «apuntes» (hypomnémata) de Epicteto, es decir, las Disertaciones, no consta que leyera el Enquiridión; y lo inspirado en Epicteto es la terapia cognitiva (Ellis, Beck), no la psicología cognitiva como disciplina.
+- [baja] 01o-sabios.js: Fueron Albert Ellis y Aaron Beck (terapia racional-emotiva y cognitiva) quienes se inspiraron en Epicteto; la «psicología cognitiva» es otra disciplina, sobre la percepción, la memoria, etc.
+- [baja] 01o-sabios.js: Ninguna fuente dice que naciera cojo: Celso (en Orígenes) cuenta que su amo le rompió la pierna y la Suda lo atribuye al reumatismo. Además contradice la anécdota de su propia lección.
+- [media] 02c-polis.js: En el relato de Ibn Arabi (Futuhat) es Averroes quien pregunta y el joven Ibn Arabi quien responde «sí» y «no»; el texto invierte los papeles.
+- [media] 02p-dialogos.js: Mito de la «convivencia»: bajo los almohades, en tiempos de Averroes, judíos y cristianos fueron obligados a convertirse o a marcharse (la familia de Maimónides tuvo que huir de Córdoba).
+- [baja] 02b-places.js: Averroes murió en 1198: sus comentarios se tradujeron al latín en el siglo XIII (Miguel Escoto, hacia 1220-1230), no en el XII.
+- [media] 01-data.js: La célebre frase (Confesiones I, 1) dice «hasta que descanse en ti», es decir, en Dios; cambiar «Dios» por «la verdad» desfigura una cita muy conocida.
+- [media] 01a-lessons.js: Confesiones I, 1: «inquietum est cor nostrum donec requiescat in te» (en ti, Dios), no «en la verdad».
+- [baja] 01t-frases.js: La frase sobre la ignorancia es una creación moderna de internet sin ninguna base en la obra ni en la tradición de Averroes; la sustituta procede del final del Fasl al-maqal.
+- [baja] 01t-frases.js: La versión citada es una paráfrasis popular moderna; el texto real es Meditaciones V, 16.
+- [baja] 01p-fe-y-duda.js: Leibniz no inventó el sistema binario (ya lo usaron Harriot y Caramuel); lo desarrolló y difundió en 1703. El propio quiz dice, bien, «estudió».
+- [baja] 01p-fe-y-duda.js: El Memorial empieza con la fecha («Año de gracia 1654, lunes 23 de noviembre…»); «FUEGO» viene después.
+- [baja] 02y-fe-y-duda.js: Eran las «carrosses à cinq sols» (1662): el sueldo (sou) era la moneda; «céntimos» es un anacronismo.
+- [baja] 02p-dialogos.js: Descartes (Meditación I) no dice que los sentidos engañen «siempre», sino «a veces», y por eso no conviene fiarse del todo de ellos.
+- [baja] 01-data.js: Para los estoicos la virtud es el único bien y vivir conforme a la naturaleza es el fin; la frase confunde ambas tesis.
+- [baja] 01-data.js: «Dicotomía del control» es una etiqueta reciente (W. Irvine, 2009), no un término estoico; la expresión clásica (Epicteto, Enquiridión 1) es «lo que depende de nosotros».
+- [baja] 02e-books.js: Agustín nació el 13 de noviembre de 354 y la escena del jardín es del verano de 386: tenía 31 años.
+
+## De Hume al siglo XX
+
+- [alta] 02f-contemporanea.js: La frase de De Gaulle («On n’arrête pas Voltaire») se sitúa en 1960 (Argelia, Manifiesto de los 121); el reparto de La Cause du peuple fue en 1970, cuando De Gaulle ya no era presidente.
+- [media] 01n-mas-pensadores.js: Schopenhauer admiraba a Kant y también lo criticó con dureza (apéndice «Crítica de la filosofía kantiana»): el distractor «Kant» también encaja con la pregunta.
+- [media] 01c-contemporanea.js: Wittgenstein fue alumno de Russell en Cambridge (1911-1913) y profesor allí desde 1929-1939; no «enseñaron juntos».
+- [media] 01-data.js: Kant no usó la expresión «giro copernicano»: comparó su método con la primera idea de Copérnico (KrV, B XVI); la etiqueta es posterior.
+- [baja] 01o-sabios.js: Kant no acuñó «giro copernicano»; solo hizo la comparación con Copérnico en el prólogo de la Crítica de la razón pura.
+- [media] 02p-dialogos.js: Hume admite saberes independientes de la experiencia (las «relaciones de ideas», como las matemáticas); lo que defiende es que todas las ideas proceden de impresiones.
+- [media] 02p-dialogos.js: En «Sobre un presunto derecho a mentir por filantropía» (1797) Kant sostiene que no se debe mentir ni al asesino; el cierre en su voz da a entender lo contrario.
+- [media] 02f-contemporanea.js: Camus negó repetidamente ser existencialista («No, no soy existencialista», 1945); presentarlo como tal es un tópico.
+- [media] 02f-contemporanea.js: La frase «la triste verdad...» procede de «La vida del espíritu» (1978), no de «Eichmann en Jerusalén»; se sustituye por una del epílogo de este libro.
+- [media] 01t-frases.js: La frase «Que nada nos limite...» no aparece en la obra de Beauvoir (atribución apócrifa difundida en redes); se reemplaza por una auténtica de 1947.
+- [baja] 02p-dialogos.js: Eco de la cita apócrifa «Que nada nos defina...»; se sustituye por una idea auténtica de «Para una moral de la ambigüedad».
+- [baja] 02f-contemporanea.js: El episodio del caballo de Turín es un relato tardío y no documentado; la lección ya lo presenta como «se cuenta».
+- [baja] 01t-frases.js: La pregunta es de Leibniz (Principios de la naturaleza y de la gracia, 1714); Heidegger la retoma al inicio de su obra.
+- [baja] 02c-polis.js: Kant trabajó años como preceptor en Judtschen y Groß-Arnsdorf, a más de cien kilómetros de Königsberg; nunca salió de Prusia Oriental.
+- [baja] 01c-contemporanea.js: Arendt llegó a EE. UU. en 1941 y siguió siendo apátrida hasta nacionalizarse en 1951.
+- [baja] 01c-contemporanea.js: El eterno retorno y el superhombre son ideas distintas; los dos puntos los identifican.
+- [baja] 01c-contemporanea.js: La pregunta está mal formulada: el Manifiesto no dice cómo «empieza» la historia, sino que toda la historia hasta hoy es lucha de clases.
+- [baja] 01c-contemporanea.js: La fórmula «de cada cual según su capacidad...» es de la Crítica del programa de Gotha (1875), no del Manifiesto de 1848.
+- [baja] 07l-debates.js: Cita de «La ideología alemana» deformada: el texto dice cazar, pescar, criar ganado y criticar; la idea es no quedar encerrado en un solo oficio.
+- [baja] 02p-dialogos.js: La «libertad en situación» ya está en El ser y la nada (1943), no es una tesis de sus últimos años.
+- [baja] 01p-fe-y-duda.js: Ortografía: «crio» es monosílabo y se escribe sin tilde (Ortografía de la RAE, 2010).
+- [baja] 01p-fe-y-duda.js: Las armas nucleares aparecen cuando Russell tenía 73 años; «toda mi vida» es anacrónico.
+- [baja] 01p-fe-y-duda.js: El título original (Why I Am Not a Christian) no es una pregunta.
+- [baja] 01n-mas-pensadores.js: Kant sí nombró lo que está tras los fenómenos (cosa en sí); la tesis de Schopenhauer es identificarla con la voluntad.
+
+## Frases célebres, pensamiento oriental y científicos
+
+- [baja] 01t-frases.js: «El amigo es otro yo» es de Aristóteles (Ética a Nicómaco IX); a Pitágoras Diógenes Laercio le atribuye «entre amigos todo es común».
+- [media] 01t-frases.js: La frase de la suerte es moderna y no está en Séneca; la del viento es Cartas a Lucilio 71,3.
+- [media] 01t-frases.js: No se conserva ningún escrito de Hipatia; ambas frases proceden de Little Journeys (1908) de E. Hubbard.
+- [media] 01t-frases.js: No hay rastro de la frase en los cuadernos de Leonardo (se popularizó en el siglo XX); la sustituta está en el Códice Trivulziano.
+- [media] 01t-frases.js: La frase es de Confucio (Analectas 2,17), mal atribuida a Copérnico; «Mathemata mathematicis scribuntur» está en la dedicatoria de su obra.
+- [media] 01t-frases.js: No hay fuente rousseauniana para el proverbio de la paciencia; se sustituye por el inicio de la segunda parte del Segundo discurso.
+- [baja] 01t-frases.js: La versión popular no es literal; la idea auténtica está en los Aforismos (Parerga y paralipómena).
+- [baja] 01t-frases.js: No se conoce el lugar de la obra de Castellanos donde aparezca; conviene indicarlo.
+- [media] 01t-frases.js: «Aprender sin cansarse, enseñar sin fatigarse» es de Confucio (Analectas 7,2), no de Ban Zhao; la sustituta resume el capítulo 2 de las Lecciones.
+- [media] 01t-frases.js: No son sus últimas palabras: según el mismo sutra, las últimas fueron «todo lo compuesto es perecedero; esforzaos con diligencia».
+- [media] 01t-frases.js: Ambas frases son versiones modernas en inglés sin original persa identificable; se sustituyen por versos del Masnaví.
+- [baja] 01t-frases.js: Las otras referencias usan la numeración de Johnson (254, 1755); en ella este poema es el 288 (260 es la de Franklin).
+- [media] 01t-frases.js: La frase de las flores no está en la obra de Neruda (es apócrifa); la sustituta es de Veinte poemas de amor.
+- [baja] 01t-frases.js: La primera fuente escrita es G. Baretti (1757); no hay testimonio contemporáneo.
+- [media] 01t-frases.js: La frase pedagógica no aparece en Galileo; la sustituta está en su Carta a Cristina de Lorena (1615).
+- [media] 01t-frases.js: La frase de la gota no es de Newton; la del niño en la playa está documentada por Spence.
+- [alta] 01t-frases.js: Cita apócrifa muy difundida: procede de un texto de Leon Megginson (1963), no de Darwin; la sustituta es de El origen del hombre, cap. 4.
+- [media] 01t-frases.js: La primera tiene fuente en la biografía de Ève Curie; la de la curiosidad no tiene fuente y se sustituye por una de su libro Pierre Curie (1923).
+- [media] 01t-frases.js: La frase es de la periodista Sharon Begley (Newsweek, 1977) describiendo a Sagan, no de Sagan.
+- [baja] 01t-frases.js: La frase está documentada en el ensayo «The Triumph of Stupidity» (1933): no es solo atribuida.
+- [media] 01t-frases.js: El proverbio del pescado es inglés del siglo XIX y la otra frase no tiene fuente; se sustituyen por textos auténticos de Maimónides.
+- [baja] 01t-frases.js: Concordancia de género: habla una mujer («yo misma»).
+- [media] 01t-frases.js: El estribillo no figura en la transcripción de 1851 (M. Robinson); procede de la versión publicada por F. Gage en 1863.
+- [baja] 01t-frases.js: Diógenes Laercio la atribuye a Solón; es Plutarco (Vida de Solón 5) quien la pone en boca de Anacarsis.
+- [baja] 01t-frases.js: La frase está en sus Pensées (Mes pensées), no es solo atribuida.
+- [media] 01t-frases.js: «Sé el cambio» es una paráfrasis moderna del texto auténtico de 1913; «ojo por ojo… ciego» no aparece en sus obras completas.
+- [baja] 01t-frases.js: Tiene fuente: el ensayo «Tres métodos de reforma» (1900) dice «todos piensan en cambiar la humanidad…».
+- [media] 01j-ciencia.js: No se conoce fuente documental de la frase; no debe presentarse como cita segura.
+- [media] 01j-ciencia.js: Frase atribuida sin fuente puesta en boca de Curie; la sustituta procede de una carta citada por Ève Curie.
+- [media] 01j-ciencia.js: La pregunta afirma como auténtica una frase sin fuente documentada.
+- [media] 01j-ciencia.js: No consta que la escribiera; es una atribución sin fuente.
+- [baja] 02l-ciencia.js: Se basa en una frase sin fuente documentada.
+- [baja] 01j-ciencia.js: En Florencia no fue profesor sino matemático y filósofo del gran duque; antes enseñó en Pisa (1589-1592).
+- [baja] 02l-ciencia.js: La anécdota de la lámpara procede de Viviani y es dudosa (la lámpara actual se colocó después); debe presentarse como relato.
+- [alta] 01o-sabios.js: Mito: Darwin no reparó en los pinzones durante el viaje (ni anotó su isla); las pistas fueron los sinsontes y las tortugas, y los pinzones los identificó John Gould en 1837.
+- [alta] 01o-sabios.js: Respuesta correcta basada en el mito de los pinzones (popularizado por D. Lack en 1947); según sus notas, fueron los sinsontes.
+- [alta] 01o-sabios.js: Mito de los pinzones: Darwin no los distinguió por islas durante el viaje; fue Gould quien los clasificó.
+- [media] 02f-contemporanea.js: Mito de los pinzones de Darwin (Sulloway, 1982): no fueron su pista durante el viaje.
+- [media] 07l-debates.js: Mito de los pinzones de Darwin; las pistas reales del viaje fueron sinsontes y tortugas.
+- [media] 01q-tres-mundos.js: «Sé el cambio que quieres ver» es paráfrasis apócrifa; el texto auténtico (Indian Opinion, 1913) habla de cambiarse a uno mismo.
+- [media] 07l-debates.js: «Ojo por ojo, y el mundo acabará ciego» no figura en las obras de Gandhi; es atribución apócrifa.
+- [media] 01f-mundo.js: Los exámenes imperiales funcionaron del 605 al 1905 (unos 1300 años); el propio quiz dice «más de mil años».
+- [media] 01f-mundo.js: Mencio (c. 372-289 a.C.) no fue discípulo directo de Confucio (m. 479 a.C.); estudió con discípulos de su nieto Zisi.
+- [baja] 01q-tres-mundos.js: El boicot lo iniciaron el Women’s Political Council (Jo Ann Robinson) y E. D. Nixon; King fue elegido para dirigirlo.
+- [baja] 01q-tres-mundos.js: King no organizó el inicio del boicot, sino que lo dirigió como presidente de la MIA.
+- [baja] 01q-tres-mundos.js: La fundación de los cuatro mathas por Shankara es tradición hagiográfica, no hecho documentado.
+
+# Segunda ronda: los 176 pensadores restantes
+
+## Renacimiento, América Latina, mexicas, incas y mapuche
+
+- [media] 01f-mundo.js: En el canto (lectura de León-Portilla) el herido es Axayácatl; las mujeres interceden por el otomí Tlílatl, que lo hirió; la propia lección del juego lo cuenta así.
+- [media] 01f-mundo.js: Mismo error: el guerrero por el que interceden no estaba herido, había herido a Axayácatl.
+- [media] 02h-mundo.js: Mismo error en el acertijo: el herido es Axayácatl, no el capitán otomí.
+- [media] 01f-mundo.js: El telpochcalli era para varones; las muchachas asistían a la cuicacalli y algunas servían en los templos (Sahagún, Durán).
+- [media] 02h-mundo.js: El texto sugiere que las chicas iban al telpochcalli; las fuentes las sitúan en la cuicacalli y en servicios del templo.
+- [baja] 02h-mundo.js: Coherencia con la corrección anterior: las chicas no asistían al telpochcalli.
+- [media] 01f-mundo.js: Los informantes de Sahagún atribuyen la quema de códices a Itzcóatl; el papel de Tlacaélel es una interpretación moderna (León-Portilla).
+- [media] 01f-mundo.js: La fuente (Códice Matritense) dice que lo ordenó Itzcóatl; atribuirlo solo a Tlacaélel es una inferencia.
+- [media] 01f-mundo.js: Misma precisión de fuentes en la lección.
+- [baja] 02h-mundo.js: El relato procede de la Crónica X (Durán, Tezozómoc), que engrandece a Tlacaélel; conviene marcarlo como tradición.
+- [media] 02h-mundo.js: La anécdota no consta en ninguna fuente; «se cuenta» presenta como tradición algo inventado.
+- [media] 02h-mundo.js: En el diálogo de Huexotzinco Ayocuan sostiene el origen celeste de la poesía; la imagen del plumaje que se desgarra es de otro canto (atribuido a Nezahualcóyotl).
+- [baja] 02h-mundo.js: No firmó «siempre» así: nació Gómez Suárez de Figueroa y adoptó «Inca» hacia 1590 (traducción de León Hebreo).
+- [baja] 01f-mundo.js: El solsticio austral cae el 20-21 de junio (fecha del feriado chileno); el 24 es una fecha tradicional, no el solsticio.
+- [baja] 02h-mundo.js: Misma precisión: el texto dice que el feriado es el día del solsticio (20-21 de junio).
+- [baja] 02h-mundo.js: Misma precisión en la pregunta del lugar.
+- [baja] 02h-mundo.js: El solsticio de junio es el 20-21; el Inti Raymi moderno, el 24.
+- [baja] 01f-mundo.js: Canelo y foye son el mismo árbol (Drimys winteri); la enumeración sugiere dos plantas distintas.
+- [baja] 01f-mundo.js: La tríada está documentada en fuentes coloniales; su carácter de ley inca prehispánica es discutido.
+- [baja] 01f-mundo.js: Su vida como paje de Valdivia y su aprendizaje proceden de cronistas (Góngora Marmolejo, Mariño de Lobera) con elementos legendarios.
+- [baja] 02h-mundo.js: En los quipus el nudo largo codifica dígitos 2-9 de la posición de unidades; «un nudo largo es una unidad» es inexacto.
+- [media] 01e-latinoamerica.js: El «monoteísmo» de Nezahualcóyotl procede de Alva Ixtlilxóchitl (s. XVII), que lo cristianiza; no debe darse como hecho.
+- [media] 01e-latinoamerica.js: Los poemas de Nezahualcóyotl solo se le atribuyen en compilaciones coloniales; su autoría es incierta.
+- [baja] 01e-latinoamerica.js: Autoría incierta de los cantos; conviene decir «atribuidos».
+- [media] 01e-latinoamerica.js: El billete de 100 pesos de la serie G (2020) sustituyó a Nezahualcóyotl por Sor Juana; el presente es ya inexacto.
+- [baja] 02p-dialogos.js: Desde 2020 el billete de 100 pesos lleva a Sor Juana.
+- [baja] 01e-latinoamerica.js: La venta caritativa procede de Calleja (1700); estudios recientes apuntan a una entrega forzada al arzobispo. Conviene marcar la fuente.
+- [baja] 01e-latinoamerica.js: Misma precisión de fuentes sobre el destino de la biblioteca.
+- [baja] 01e-latinoamerica.js: La filosofía de la liberación surgió en un grupo argentino (Dussel, Scannone, Roig, Cerutti...); no la fundó una sola persona.
+- [baja] 02p-dialogos.js: En la Respuesta el ejemplo es el huevo que se fríe en manteca o aceite y se despedaza en el almíbar; se dice que es «el mismo ejemplo».
+- [baja] 02p-dialogos.js: La cita entre comillas es una paráfrasis; el texto de la Respuesta dice «sólo por ver si con estudiar ignoro menos».
+- [media] 02p-dialogos.js: Frase apócrifa: procede de Elbert Hubbard (1908); ninguna fuente antigua la recoge.
+- [baja] 01d-pensadoras.js: El debate que provocó con su crítica (1401-1403) es la «querella de la Rosa»; la querella de las mujeres es el debate más amplio que alimentó.
+- [baja] 01d-pensadoras.js: Gutenberg era orfebre e impresor, no «artista renacentista»; y la imprenta de tipos móviles tenía precedentes en China y Corea.
+- [baja] 01-data.js: La fórmula «entia non sunt multiplicanda» no está en Ockham (aparece en el s. XVII); él escribió «pluralitas non est ponenda sine necessitate».
+- [media] 01a-lessons.js: Misma atribución apócrifa de la fórmula literal en primera persona.
+- [baja] 01a-lessons.js: Ockham nunca obtuvo la regencia de maestro en Oxford (de ahí «Venerabilis Inceptor»).
+- [baja] 01o-sabios.js: «Primum non nocere» es una fórmula latina tardía; el corpus hipocrático (Epidemias I) dice «ayudar o, al menos, no dañar».
+
+## China, India, África, Sumer, islam, Persia y místicos
+
+- [media] 01f-mundo.js: La autoría de Ptahhotep es una atribución literaria: el texto se compuso probablemente en el Reino Medio (c. 2000-1800 a. C.).
+- [media] 01f-mundo.js: Se presenta como hecho que el visir escribió el texto; es una atribución, y el papiro Prisse es del Reino Medio.
+- [baja] 02h-mundo.js: En la Brihadaranyaka Upanishad (3.8.2) Gargi se compara a sí misma con el guerrero de las dos flechas, no a Yajnavalkya.
+- [baja] 01f-mundo.js: La autenticidad del Hatata (tesis de Conti Rossini, Mittwoch y Wion sobre Giusto d’Urbino) sigue discutida; «la mayoría» no está establecido.
+- [baja] 02h-mundo.js: La autenticidad del Hatata sigue debatiéndose; no hay consenso mayoritario claro.
+- [baja] 01f-mundo.js: La campaña de Uhuru (1989) trajo insultos; las palizas y la cárcel llegaron en 1992 por su activismo prodemocrático.
+- [media] 02h-mundo.js: «No heredamos la tierra, la tomamos prestada de nuestros hijos» es un lema occidental de los años setenta, no un proverbio kikuyu.
+- [media] 02h-mundo.js: Es un mito que los caracteres chinos sean puros ideogramas: la mayoría son compuestos fonético-semánticos.
+- [baja] 02h-mundo.js: Ahmed Baba rechazó la esclavitud por el color, pero admitía la de no musulmanes; la frase lo moderniza.
+- [baja] 02h-mundo.js: Los nueve pisos de la biblioteca de Nalanda proceden de fuentes tibetanas tardías; es tradición, no dato arqueológico.
+- [baja] 01f-mundo.js: «Somos lo que pensamos» es una paráfrasis moderna libre del verso 1; el propio juego cita bien el verso en el libro del Dhammapada.
+- [media] 01o-sabios.js: La frase del veneno y el resentimiento se atribuye a Mandela sin fuente; es apócrifa (circula atribuida también a Buda y a otros).
+- [media] 01g-sumer.js: Los himnos atribuidos a Enheduanna se conservan en copias paleobabilónicas (unos 500 años posteriores) y su autoría es debatida.
+- [media] 02i-sumer.js: El zigurat de Ur-Nammu es de c. 2100 a. C., unos dos siglos posterior a Enheduanna (c. 2300 a. C.): anacronismo.
+- [media] 02i-sumer.js: Mismo anacronismo: Enheduanna no sirvió en el zigurat, construido después de su época.
+- [baja] 01g-sumer.js: Shuruppak (hijo de Ubar-Tutu) es un personaje legendario al que se atribuye el texto; no un autor histórico.
+- [baja] 01g-sumer.js: En la tablilla XI, Utnapishtim revela el secreto de la planta y Gilgamesh la saca del fondo del Apsu; no se la entrega.
+- [baja] 01h-islam.js: La biografía de Rabia (esclavitud, liberación) procede de hagiografías tardías como la de Attar (s. XII-XIII).
+- [media] 02j-islam.js: Aladino y Alí Babá no figuran en los manuscritos árabes: los incorporó Galland (1709-1717) a partir del narrador sirio Hanna Diyab.
+- [media] 01m-persia.js: Mani nació en 216, antes de la fundación del Imperio sasánida (224); nació bajo los arsácidas.
+- [media] 01m-persia.js: Anacronismo: en 216 Mesopotamia era parta; el Imperio sasánida nace en 224.
+- [media] 01m-persia.js: El Cilindro de Ciro no menciona a los judíos; su regreso se conoce por Esdras y el Deuteroisaías.
+- [media] 01m-persia.js: La lectura del Cilindro como «carta de derechos humanos» es un mito moderno (años 1960-70); no conviene darle igual peso.
+- [baja] 01m-persia.js: Error gramatical: «entrar» es intransitivo en este uso.
+- [baja] 01m-persia.js: El dístico «Ajam zende kardam bedin Pârsi» no figura en la edición crítica (Khaleghi-Motlagh) y es de autenticidad dudosa.
+- [baja] 02t-persia.js: Ferdousí usó el Shahnameh en prosa de Abu Mansur (957), en persa nuevo, no directamente un texto en persa medio.
+- [baja] 01q-tres-mundos.js: La estrofa de los cuatro versos es una formulación de la dinastía Song atribuida retrospectivamente a Bodhidharma.
+- [baja] 01q-tres-mundos.js: La biografía de Huineng procede del Sutra del estrado, texto hagiográfico vinculado a la escuela de Shenhui; no es crónica histórica.
+- [baja] 02y-fe-y-duda.js: No es el único: hay muchos sutras compuestos en China (apócrifos); es la única obra de un maestro chino así honrada, según la tradición.
+- [baja] 02y-fe-y-duda.js: La respuesta correcta del quiz afirma una exclusividad falsa (existen numerosos sutras apócrifos chinos).
+- [baja] 01q-tres-mundos.js: Gran parte del corpus de Mirabai es de atribución tardía; casi todos los detalles de su vida proceden de hagiografías.
+
+## Poetas, ciencia, Japón, vikingos, números y cosmos
+
+- [media] 01i-poetas.js: El epigrama de la Antología Palatina (9.506) solo se atribuye a Platón; su autoría es dudosa.
+- [media] 01i-poetas.js: Autoría platónica del epigrama dudosa: no debe darse como hecho.
+- [media] 01i-poetas.js: Misma atribución dudosa del epigrama.
+- [baja] 01i-poetas.js: La pregunta no casa con la respuesta (pide una palabra y responde una estrofa).
+- [media] 01i-poetas.js: «Ven, ven, seas quien seas» no está en el Masnavi ni en el Divan; es una atribución tardía (también a Abu Said Abul-Jair).
+- [baja] 01i-poetas.js: Misma cita apócrifa presentada como propia de Rumi.
+- [baja] 01i-poetas.js: Neruda (n. julio de 1904) publicó el libro en junio de 1924, con diecinueve años.
+- [baja] 01i-poetas.js: Mistral llegó a Temuco en 1920, cuando Neruda tenía dieciséis años.
+- [baja] 02k-poetas.js: La frase procede de versiones libres modernas (C. Barks), no es una cita literal de Rumi.
+- [media] 01o-sabios.js: Las fechas dicen 1643, pero la Navidad fue de 1642 (calendario juliano); hay que aclararlo para que no parezca contradicción.
+- [media] 01j-ciencia.js: El «¡Eureka!» en la bañera lo cuenta Vitruvio dos siglos después; no es un hecho comprobado.
+- [media] 01j-ciencia.js: Anécdota de Vitruvio (De architectura IX) presentada como hecho.
+- [media] 01j-ciencia.js: La historia de la bañera y la corona es de Vitruvio; debe presentarse como relato, no como hecho.
+- [baja] 01j-ciencia.js: El principio de flotación está en Sobre los cuerpos flotantes; no deriva de la anécdota (que solo usa el volumen desalojado).
+- [media] 01j-ciencia.js: Lo de «primera programadora» se discute: Babbage ya había escrito programas para la máquina analítica (1837-1840).
+- [media] 01j-ciencia.js: La nota G es el primer programa publicado, no el primero escrito; el título se debate.
+- [media] 01j-ciencia.js: Matiza una afirmación debatida (Babbage escribió programas antes).
+- [baja] 01j-ciencia.js: Misma precisión: primer programa publicado, no el primero escrito.
+- [baja] 02l-ciencia.js: Babbage había escrito programas antes; lo pionero es la publicación detallada.
+- [baja] 02l-ciencia.js: Título de «primera programadora» debatido.
+- [baja] 01k-japon.js: El propio texto dice «una de las primeras»; la primacía absoluta es discutida.
+- [baja] 01k-japon.js: El lema ichigo ichie lo acuñó Ii Naosuke en el s. XIX a partir de una idea que un discípulo atribuyó a Rikyū.
+- [baja] 01k-japon.js: Mismo anacronismo del lema.
+- [baja] 01k-japon.js: El haiku cuenta moras (on), no sílabas.
+- [baja] 01k-japon.js: Nishida escribió que el motivo de la filosofía no es el asombro sino la honda tristeza de la vida (contraste, no suma).
+- [baja] 01k-japon.js: Nishida opone tristeza y asombro; no los suma.
+- [baja] 01k-japon.js: Fidelidad a la tesis de Nishida.
+- [media] 02n-japon.js: La frase del cerezo no está en el Genji; la nueva parafrasea la defensa de la ficción del capítulo «Luciérnagas».
+- [baja] 02n-japon.js: Nishida abandonó la Cuarta Escuela Superior sin graduarse y entró en Tokio como «senka» (alumno especial); no suspendió por enfermedad.
+- [baja] 01l-vikingos.js: Hay grandes poemas de duelo muy anteriores (Gilgamesh, Homero); la primacía es falsa.
+- [baja] 02o-vikingos.js: La identificación exacta de Vinland con Terranova es discutida; L’Anse aux Meadows sería su entrada.
+- [media] 01r-mente-tierra-numeros.js: Las cifras indoarábigas ya se conocían en Europa (Códice Vigilano, 976; Gerberto); Fibonacci las difundió.
+- [media] 01r-mente-tierra-numeros.js: Fibonacci no las introdujo: ya circulaban desde el s. X y por traducciones de al-Juarismi; él las popularizó.
+- [media] 01r-mente-tierra-numeros.js: Mismo matiz: difusión, no introducción.
+- [baja] 01r-mente-tierra-numeros.js: Las conchas de caracol son espirales logarítmicas, pero no siguen la sucesión de Fibonacci (mito frecuente).
+- [baja] 01r-mente-tierra-numeros.js: Mito de los caracoles/nautilos y Fibonacci.
+- [baja] 01r-mente-tierra-numeros.js: Mito de los caracoles y Fibonacci.
+- [media] 01r-mente-tierra-numeros.js: Ya se conocían en Europa antes de Fibonacci; él los difundió.
+- [baja] 01r-mente-tierra-numeros.js: El producto más uno no siempre es primo (2·3·5·7·11·13+1 = 59·509); lo es alguno de sus factores.
+- [baja] 01r-mente-tierra-numeros.js: Boole se casó en 1855 en Wickwar (Inglaterra), no en Cork.
+- [baja] 01r-mente-tierra-numeros.js: La frase de Hilbert es anécdota transmitida oralmente; conviene marcarla como tal.
+- [baja] 01r-mente-tierra-numeros.js: Misma anécdota no documentada literalmente.
+- [baja] 01r-mente-tierra-numeros.js: La computación tiene varios fundadores (Church, von Neumann, Zuse, Babbage...).
+- [baja] 01r-mente-tierra-numeros.js: Que calcule «todo lo calculable» es la tesis de Church-Turing, no un teorema demostrado.
+- [baja] 01r-mente-tierra-numeros.js: La cifra (Hinsley, unos dos años) es una estimación discutida.
+- [baja] 02y-fe-y-duda.js: Fibonacci difundió, no introdujo, las cifras indoarábigas.
+- [baja] 02y-fe-y-duda.js: Hardy atribuye la frase a Littlewood en su necrológica de Ramanujan.
+- [baja] 02y-fe-y-duda.js: El libro I acaba con la proposición 48 (el recíproco); Pitágoras es la 47.
+- [baja] 02y-fe-y-duda.js: Precisión: la última proposición es el recíproco de Pitágoras.
+- [baja] 02y-fe-y-duda.js: «Cifra» viene directamente del árabe sifr, no del latín zephirum.
+- [baja] 02y-fe-y-duda.js: En el Liber abaci la respuesta al cabo de un año es 377 parejas.
+- [baja] 02y-fe-y-duda.js: De 1788 a 1939 hay 151 años: más de siglo y medio, no «casi».
+- [media] 02y-fe-y-duda.js: La frase de las estrellas es de discursos de 2010-2012, no de Breve historia del tiempo (1988); la nueva es el final del libro.
+- [media] 02g-latinoamerica.js: El argentino Saavedra Lamas ya había recibido el Nobel de la Paz en 1936.
+- [media] 01w-cosmos.js: En agosto de 2025 el James Webb descubrió una nueva luna de Urano (S/2025 U1): son 29.
+- [baja] 01w-cosmos.js: Cifra que cambia con frecuencia: debe fecharse (274 en 2025).
+- [baja] 01w-cosmos.js: Cifra cambiante: conviene fecharla.
+- [baja] 01w-cosmos.js: William descubrió Urano observando solo; Caroline empezó a observar por su cuenta en 1782.
+- [baja] 01w-cosmos.js: Sawala et al. (2025) estiman solo un 50 % de probabilidad de choque en 10.000 millones de años.
+- [media] 01w-cosmos.js: Zwicky propuso la materia oscura en 1933; Rubin aportó la prueba decisiva con las curvas de rotación.
+- [media] 01w-cosmos.js: Hay que mencionar el precedente de Zwicky para no atribuirle el descubrimiento en exclusiva.
+- [media] 01w-cosmos.js: Mismo matiz Zwicky/Rubin.
+
+## Fe y duda, pensadoras, justicia, mente y falacias
+
+- [baja] 01p-fe-y-duda.js: La fórmula «donde estoy yo no está la muerte» es de Epicuro (Carta a Meneceo); Lucrecio escribe «nada es la muerte para nosotros» (III, 830).
+- [media] 01p-fe-y-duda.js: La frase no está en una carta a Hegel: procede de sus fragmentos autobiográficos de 1846.
+- [media] 01p-fe-y-duda.js: Feuerbach perdió su carrera universitaria por «Pensamientos sobre la muerte y la inmortalidad» (1830), no por la tesis de 1841; la propia anécdota del juego lo dice así.
+- [baja] 01p-fe-y-duda.js: Maimónides sirvió al visir al-Qadi al-Fadil y al hijo de Saladino, al-Afdal; que tratara al propio Saladino es dudoso.
+- [media] 01q-tres-mundos.js: La frase «una ley debe ser como la muerte» circula atribuida a Montesquieu sin fuente en su obra; se sustituye por una cita auténtica (Del espíritu de las leyes, XI, 4).
+- [media] 01q-tres-mundos.js: El estribillo «Ain’t I a woman?» aparece en la versión de Frances Gage (1863); la crónica de 1851 no lo contiene.
+- [baja] 01q-tres-mundos.js: El encuentro Solón-Creso es un relato de Heródoto cronológicamente casi imposible (Creso reina desde c. 560); debe presentarse como relato.
+- [baja] 01q-tres-mundos.js: Rawls enseñó en Harvard de 1962 a 1991 (emérito después): unos treinta años, no casi cuarenta.
+- [media] 01r-mente-tierra-numeros.js: «Siembra un acto y cosecharás un hábito...» es un proverbio anónimo del siglo XIX atribuido sin fuente a James; la nueva frase es de sus «Charlas a los maestros».
+- [media] 01r-mente-tierra-numeros.js: La expresión «talking cure» la acuñó Anna O. (Bertha Pappenheim), paciente de Breuer, no de Freud.
+- [baja] 01r-mente-tierra-numeros.js: La frase de Piaget dice «prematuramente»; sin ese matiz parece rechazar toda enseñanza.
+- [baja] 01r-mente-tierra-numeros.js: Gramática: «habla» es femenino; el demostrativo debe concordar («esa habla»), aunque el artículo sea «el habla».
+- [baja] 01r-mente-tierra-numeros.js: Coherencia con su lección («de Bielorrusia»): nació en Orsha, Imperio ruso, actual Bielorrusia.
+- [baja] 01r-mente-tierra-numeros.js: Ortografía: «crio» es monosílabo y no lleva tilde (Ortografía de la RAE, 2010); el juego ya escribe «me crio» en otro lugar.
+- [media] 01v-falacias.js: El ejemplo no ilustra el equívoco: de «las leyes se cumplen» no se sigue «se puede incumplir»; es un non sequitur. Corregido, «ley» cambia de sentido (norma / regularidad natural).
+- [baja] 01v-falacias.js: La definición abarca lástima, miedo y ternura; «ad misericordiam» es solo la apelación a la lástima. El nombre general es «ad passiones».
+- [baja] 01v-falacias.js: Sin la conclusión no hay argumento ni falacia: solo se informa de una opinión.
+- [baja] 01v-falacias.js: En La República (I, 336b-344d) Trasímaco grita e insulta a Sócrates, pero no lo amenaza, y sí da argumentos.
+- [media] 02y-fe-y-duda.js: El episodio es de Bangor (Maine, en el norte) en 1855: el periódico la llamó «atea» y «mil veces por debajo de una prostituta»; la versión del juego está deformada.
+- [media] 02y-fe-y-duda.js: La célebre carta sobre su jornada de médico (1199) está dirigida a Samuel ibn Tibbon; su hermano David había muerto ahogado años antes.
+- [baja] 02y-fe-y-duda.js: El diálogo «Así trato a mis amigos / por eso tienes tan pocos» es tradición oral, no está en sus escritos.
+- [baja] 02y-fe-y-duda.js: En el calendario cósmico de Sagan («Los dragones del Edén», «Cosmos») los primeros dinosaurios aparecen el 24 de diciembre.
+- [media] 02y-fe-y-duda.js: La primera Catilinaria no se pronunció en la Curia, sino en el templo de Júpiter Estator.
+- [media] 02y-fe-y-duda.js: La pregunta «¿Acaso no soy una mujer?» procede de la versión de Gage (1863); no consta en la crónica de 1851. El propio lugar del juego lo explica.
+- [media] 02y-fe-y-duda.js: Con las fechas que da el juego (1484 – 1566), Las Casas vivió 82 años; 92 corresponde a la antigua fecha de nacimiento de 1474, hoy descartada.
+- [baja] 02y-fe-y-duda.js: Violeta, blanco y verde son los colores de la WSPU británica (1908); las sufragistas neozelandesas de Kate Sheppard usaban la camelia blanca.
+- [baja] 02y-fe-y-duda.js: Errata de concordancia.
+- [baja] 02y-fe-y-duda.js: La frase es apócrifa: no aparece en ningún escrito de Freud ni en testimonios fiables.
+- [baja] 02y-fe-y-duda.js: Las Refutaciones sofísticas, apéndice de los Tópicos, son obra temprana, de la época de la Academia, anterior al Liceo (335 a. C.).
+- [baja] 02y-fe-y-duda.js: Misma razón: obra de juventud, anterior al Liceo.
+- [baja] 07l-debates.js: La frase de Piaget dice «prematuramente»; sin ese matiz parece rechazar toda enseñanza.
+
+## Tierra, belleza, pueblos, cuidado, Biblia y Corán
+
+- [media] 01r-mente-tierra-numeros.js: El autor material fue Darci Alves, hijo del hacendado Darly Alves, que dio la orden.
+- [media] 01r-mente-tierra-numeros.js: Disparó el hijo del hacendado Darly Alves, por orden de este.
+- [media] 01r-mente-tierra-numeros.js: El tirador fue Darci Alves, hijo del hacendado Darly Alves.
+- [baja] 01r-mente-tierra-numeros.js: Su gran ascensión asiática (Tirich Mir, 1950) está en el Hindu Kush, no en el Himalaya.
+- [baja] 01r-mente-tierra-numeros.js: «Dedicarse a guardabosques» es incorrecto en español; se dice «trabajar como».
+- [baja] 02y-fe-y-duda.js: La «cascada trófica» de Yellowstone es una hipótesis influyente pero discutida; no un hecho simple.
+- [baja] 02y-fe-y-duda.js: La cita entre comillas no corresponde al texto de Carson («No witchcraft, no enemy action…»).
+- [baja] 01s-belleza-pueblos-cuidado.js: Lo escribió en 1834, con unos 75 años, sobre su obra anterior a los 70.
+- [baja] 01s-belleza-pueblos-cuidado.js: Nació en 1760 y murió en 1849: tenía 88 años (90 solo según la cuenta tradicional japonesa).
+- [baja] 01s-belleza-pueblos-cuidado.js: Murió con 88 años.
+- [baja] 01s-belleza-pueblos-cuidado.js: Murió con 88 años (90 según la cuenta japonesa).
+- [baja] 01s-belleza-pueblos-cuidado.js: El himno europeo es solo la melodía instrumental, sin el texto de Schiller.
+- [media] 01s-belleza-pueblos-cuidado.js: La escuela de Yásnaia Poliana es de 1859, veinte años antes de su crisis.
+- [media] 01s-belleza-pueblos-cuidado.js: La escuela (1859) es anterior a la crisis de los cincuenta años.
+- [media] 01s-belleza-pueblos-cuidado.js: La escuela es de 1859, mucho antes de «¿Qué es el arte?» (1897).
+- [baja] 01s-belleza-pueblos-cuidado.js: La Oda es de 1785; la amistad con Goethe empieza en 1794.
+- [media] 02y-fe-y-duda.js: Kandinsky explicó el nombre así: «A los dos nos gustaba el azul; a Marc, los caballos; a mí, los jinetes». Fue un almanaque (1912), no una revista.
+- [baja] 02y-fe-y-duda.js: Antes había expuesto en México en colectivas; 1953 fue su primera individual allí.
+- [baja] 02y-fe-y-duda.js: La frase circula atribuida a Tolstói, pero no se encuentra en sus obras.
+- [baja] 02y-fe-y-duda.js: Fue inscrita en 2001 en el programa Memoria del Mundo, no como Patrimonio de la Humanidad.
+- [baja] 02y-fe-y-duda.js: Schiller nunca fue alumno de Kant: lo estudió y admiró por sus libros.
+- [media] 01s-belleza-pueblos-cuidado.js: Frase muy difundida sin fuente documental de su época; debe presentarse como atribuida.
+- [media] 01s-belleza-pueblos-cuidado.js: La cita no está documentada en fuentes de la época.
+- [media] 01s-belleza-pueblos-cuidado.js: Cita sin fuente contemporánea; no consta que la dijera en ese contexto.
+- [baja] 01s-belleza-pueblos-cuidado.js: Joseph cuidaba del campamento; la dirección militar de la huida fue de otros jefes (Looking Glass, Ollokot).
+- [baja] 01s-belleza-pueblos-cuidado.js: Bear Paw está a unos 60 km de Canadá; el discurso lo conocemos por la versión de un oficial, discutida en sus detalles.
+- [baja] 01s-belleza-pueblos-cuidado.js: Bear Paw está a unos 60 km de la frontera canadiense.
+- [baja] 01s-belleza-pueblos-cuidado.js: Hubo otras reinas consortes (Emma, Kapiʻolani); ella fue la única reina reinante.
+- [baja] 01s-belleza-pueblos-cuidado.js: Antes hubo reinas consortes; ella fue la primera reina reinante.
+- [baja] 01s-belleza-pueblos-cuidado.js: La «tesis de la influencia» iroquesa es debatida; no es consenso mayoritario.
+- [media] 02y-fe-y-duda.js: Tuvo luz eléctrica en 1887 (Casa Blanca, 1891), pero la Casa Blanca ya tenía teléfono en 1877-1879, antes que ʻIolani (1881).
+- [media] 02y-fe-y-duda.js: El teléfono llegó antes a la Casa Blanca; solo la luz eléctrica fue anterior en ʻIolani.
+- [media] 02y-fe-y-duda.js: Hay unos 400.000 bisontes, casi todos en ranchos; en manadas de conservación solo unos 20.000-30.000.
+- [media] 02y-fe-y-duda.js: Las versiones escritas de la Gran Ley no hablan literalmente de «siete generaciones»; esta es la frase que sí recogen.
+- [media] 01s-belleza-pueblos-cuidado.js: Los microbios se conocían desde Leeuwenhoek (siglo XVII); Pasteur probó su papel en las infecciones.
+- [media] 01s-belleza-pueblos-cuidado.js: Los microbios ya se conocían desde el siglo XVII; lo nuevo fue la teoría de los gérmenes.
+- [baja] 01s-belleza-pueblos-cuidado.js: Los gráficos polares de área ya existían (Guerry, 1829); ella los perfeccionó y popularizó.
+- [baja] 01s-belleza-pueblos-cuidado.js: Lo de los gusanos ya lo había refutado Francesco Redi en 1668; Pasteur estudió los microbios.
+- [baja] 01s-belleza-pueblos-cuidado.js: Petilla de Aragón es un municipio de Navarra.
+- [baja] 01s-belleza-pueblos-cuidado.js: Nació en Petilla de Aragón (Navarra).
+- [baja] 01s-belleza-pueblos-cuidado.js: Iba en una barcaza remolcada por un pequeño vapor por el Ogooué, no remando.
+- [media] 02y-fe-y-duda.js: Esa frase es de «Notas sobre hospitales» (1863), no de «Notas sobre enfermería».
+- [baja] 02y-fe-y-duda.js: Cita mal traducida: el original dice que nada carece de veneno, no que «nada es veneno».
+- [baja] 02y-fe-y-duda.js: Errata: el oficio visible del personaje muestra el identificador «partera-dolores».
+- [baja] 02y-fe-y-duda.js: Vesalio nació el 31-XII-1514 y murió el 15-X-1564: 49 años.
+- [media] 01x-biblia.js: «Ya no hay judío ni griego…» es Gálatas 3:28, no 1 Corintios.
+- [baja] 01x-biblia.js: «Sinóptico» alude a que se pueden mirar juntos, no a que usen a Marcos como fuente.
+- [baja] 02y-fe-y-duda.js: No es tradición posterior: lo dice el propio texto bíblico (Dt 34:1-7).
+- [baja] 02y-fe-y-duda.js: El griego de la carta a los Hebreos suele considerarse tan cuidado o más que el de Lucas.
+- [baja] 02y-fe-y-duda.js: Corán 12:31: el banquete es posterior a la tentación, y lo de pelar fruta viene de los comentarios, no del texto.
