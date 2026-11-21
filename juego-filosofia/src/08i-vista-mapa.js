@@ -24,8 +24,13 @@ const Vista = {
   before() {
     if (!this.active()) { if (this.fig) this.fig.group.visible = false; return null; }
     this.ensureFig(); const f = this.fig; f.group.visible = true;
-    const hs = Math.hypot(player.vel.x, player.vel.z); this.ph += (1 / 60) * (hs > 0.4 ? Math.min(12, 4 + hs) : 0);
-    f.group.position.set(player.pos.x, player.pos.y, player.pos.z); f.group.rotation.y = player.yaw + Math.PI;
+    const now = performance.now(); const dt = Math.min(0.05, ((now - (this.t0 || now)) / 1000) || 0.016); this.t0 = now;
+    const hs = Math.hypot(player.vel.x, player.vel.z); this.ph += dt * (hs > 0.4 ? Math.min(12, 4 + hs) : 0);
+    // el cuerpo gira hacia donde camina (de perfil al ir de lado, de frente al retroceder); quieto, conserva su orientación
+    if (this.by === undefined) this.by = player.yaw;
+    if (hs > 0.3) { const want = Math.atan2(-player.vel.x, -player.vel.z); let d = want - this.by; while (d > Math.PI) d -= Math.PI * 2; while (d < -Math.PI) d += Math.PI * 2; this.by += d * Math.min(1, dt * 14); this.lean = d; }
+    else this.lean = (this.lean || 0) * 0.9;
+    f.group.position.set(player.pos.x, player.pos.y, player.pos.z); f.group.rotation.set(0, this.by + Math.PI, 0); f.group.rotation.z = Math.max(-0.12, Math.min(0.12, -(this.lean || 0) * 0.15)) * Math.min(1, hs / 4);
     const sw = hs > 0.4 ? Math.sin(this.ph) : 0; f.armL.rotation.x = sw * 0.55; f.armR.rotation.x = -sw * 0.55; f.group.position.y += Math.abs(sw) * 0.05;
     const save = { p: camera.position.clone(), rx: camera.rotation.x, fov: camera.fov };
     const D = 3.3, H = 1.05; const bx = Math.sin(player.yaw), bz = Math.cos(player.yaw);
