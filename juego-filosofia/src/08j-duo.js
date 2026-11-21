@@ -31,7 +31,7 @@ const Duo = {
     const com = tag ? C[tag].replace(/^[^:]*:\s*/, '') : this.T.nada;
     return { id: 'duo-' + [A.id, B.id].sort().join('-'), a: A.id, b: B.id, q: this.T.q(A.short, B.short), turns: turns.filter((t) => t[1] && t[1].trim()), cierre: this.T.cierre(A.short, sA, B.short, sB, pick.map((k) => this.T.ejes[k]).join(' y '), com) };
   },
-  start(A, B) { try { Talk.close(true); } catch (e) { /* nada */ } this.close(); setTimeout(() => Versus.play(this.script(A, B)), 80); },
+  start(A, B) { try { Talk.close(); } catch (e) { /* nada */ } this.close(); setTimeout(() => Versus.play(this.script(A, B)), 80); },
   build() {
     if (document.getElementById('duo')) return;
     const el = document.createElement('div'); el.id = 'duo'; el.className = 'nb'; el.hidden = true;
