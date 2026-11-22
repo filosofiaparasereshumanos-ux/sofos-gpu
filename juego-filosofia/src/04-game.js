@@ -622,6 +622,9 @@ function nearestSage() {
 function frontierZ() { const g = world.gates && world.gates.find((x) => !x.open); return g ? g.z : ARENA.z0; }
 // el siguiente pensador del camino (o el portal si ya no queda ninguno)
 function currentTarget() {
+  // dentro de una zona (experimento) o de la caverna, el objetivo es salir: un toque te devuelve a la plaza
+  if (world.zoneIn && typeof zoneExit === 'function') { const Z = world.zoneIn; const e = Z.exit || [player.pos.x, player.pos.z]; return { sage: null, exit: () => { input.auto = false; zoneExit(world, Z); }, pos: new THREE.Vector3(e[0], 0, e[1]), name: 'la salida', letter: '⇦', reach: 1.6, h: 2 }; }
+  if (world.cave && world.cave.in && typeof caveExit === 'function') return { sage: null, exit: () => { input.auto = false; caveExit(world); }, pos: player.pos.clone(), name: 'la salida', letter: '⇦', reach: 1.6, h: 2 };
   const s = sages.find((x) => x.state !== 'defeated');
   if (s) return { sage: s, pos: s.pos, name: s.data.short, letter: s.data.short[0], reach: 2.9 + s.radius, h: 2.5 * s.scale + (s.boss ? 0.6 : 0) };
   if (world.portal.open) return { sage: null, pos: world.portal.group.position, name: 'el portal', letter: 'Ω', reach: 1.2, h: 5.4 };
@@ -638,7 +641,7 @@ function autoWalkDir(dt) {
     return { mx: ux * cy - uz * sy, mz: ux * sy + uz * cy };
   }
   if (!input.auto) return null;
-  let tg = currentTarget(); if (!tg) { input.auto = false; return null; }
+  let tg = currentTarget(); if (!tg || tg.exit) { input.auto = false; return null; }
   const tr = world.trials.find((t) => !t.done && player.pos.z > t.zE);
   if (tr && tg.pos.z < tr.zS) {
     if (player.pos.z < tr.zS + 0.3) { input.auto = false; return null; }
@@ -793,7 +796,7 @@ function updatePrompt() {
   ch.classList.toggle('talk', can);
   const tl = $('#t-lesson'); const showL = !!(s && (s.state === 'idle' || s.state === 'defeated')); if (tl && tl._on !== showL) { tl._on = showL; tl.hidden = !showL; }
   if (tact) {
-    const label = th && th.spot ? th.spot.verb : s || (th && th.npc) ? 'Hablar' : th && th.book ? 'Leer' : can ? 'Descubrir' : input.auto ? 'Caminando…' : tg ? 'Ir a ' + (tg.name.length <= 13 ? tg.name : tg.name.split(' ')[0]) : 'Explorar';
+    const label = th && th.spot ? th.spot.verb : s || (th && th.npc) ? 'Hablar' : th && th.book ? 'Leer' : can ? 'Descubrir' : input.auto ? 'Caminando…' : tg && tg.exit ? 'Salir de aquí' : tg ? 'Ir a ' + (tg.name.length <= 13 ? tg.name : tg.name.split(' ')[0]) : 'Explorar';
     if (tact._label !== label) { tact._label = label; tact.textContent = label; }
     const st = can ? 'ready' : tg ? 'go' : '';
     if (tact._st !== st) { tact._st = st; tact.classList.toggle('ready', st === 'ready'); tact.classList.toggle('go', st === 'go'); }
@@ -852,14 +855,14 @@ function nearestThing() {
 }
 function tryInteract() {
   const t = nearestThing();
-  if (!t) { if (currentTarget()) { input.auto = !input.auto; input.walk = null; if (input.auto) Audio.click(); } return; }
+  if (!t) { const ct = currentTarget(); if (ct && ct.exit) { Audio.click(); ct.exit(); return; } if (ct) { input.auto = !input.auto; input.walk = null; if (input.auto) Audio.click(); } return; }
   if (t.spot) return t.spot.act();
   if (t.poi) return Places.open(t.poi);
   if (t.npc) return Talk.openNpc(t.npc);
   if (t.book) return Lesson.openBook(t.book, true);
   if (t.sage.state !== 'shielded') Talk.open(t.sage);
 }
-$('#target').addEventListener('click', (e) => { e.stopPropagation(); if (G.state !== 'play') return; input.auto = !input.auto; Audio.click(); buzz(10); });
+$('#target').addEventListener('click', (e) => { e.stopPropagation(); if (G.state !== 'play') return; const ct = currentTarget(); if (ct && ct.exit) { Audio.click(); ct.exit(); return; } input.auto = !input.auto; Audio.click(); buzz(10); });
 function updatePortal(dt) {
   const P = world.portal; if (!P) return;
   P.disc.material.uniforms.t.value = tAcc;
