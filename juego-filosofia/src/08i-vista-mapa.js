@@ -36,7 +36,10 @@ const Vista = {
     const D = 3.3, H = 1.05; const bx = Math.sin(player.yaw), bz = Math.cos(player.yaw);
     let x = player.pos.x + bx * D, z = player.pos.z + bz * D;
     const B = world.zoneIn ? world.zoneIn.b : ARENA; x = clamp(x, B.x0 + 0.3, B.x1 - 0.3); z = clamp(z, B.z0 + 0.3, B.z1 - 0.3);
-    camera.position.set(x, player.pos.y + 1.68 + H, z); camera.rotation.x = Math.min(0.5, player.pitch - 0.2);
+    { const cs = world.colliders || []; const hit = (px, pz) => { for (let i = 0; i < cs.length; i++) { const c = cs[i]; if (c.t === 0) { if (px > c.x0 - 0.25 && px < c.x1 + 0.25 && pz > c.z0 - 0.25 && pz < c.z1 + 0.25) return true; } else if ((px - c.x) * (px - c.x) + (pz - c.z) * (pz - c.z) < (c.r + 0.25) * (c.r + 0.25)) return true; } return false; };
+      const ox = player.pos.x, oz = player.pos.z; let k = 1; const N = 14; for (let i = 1; i <= N; i++) { const t = i / N; if (hit(ox + (x - ox) * t, oz + (z - oz) * t)) { k = Math.max(0.18, (i - 1) / N); break; } }
+      this.k = this.k === undefined ? k : (k < this.k ? k : this.k + (k - this.k) * 0.08); x = ox + (x - ox) * this.k; z = oz + (z - oz) * this.k; }
+    camera.position.set(x, player.pos.y + 1.68 + H * (0.55 + 0.45 * (this.k === undefined ? 1 : this.k)), z); camera.rotation.x = Math.min(0.5, player.pitch - 0.2);
     camera.fov = save.fov + 6; camera.updateProjectionMatrix();
     // la lámpara de primera persona se esconde (su luz sigue alumbrando)
     for (const c of lamp.children) if (!c.isLight) { c.userData._v = c.visible; c.visible = false; }
@@ -50,7 +53,7 @@ const Vista = {
 };
 const MapaMundo = {
   T: {
-    title: 'Mapa de este mundo', hint: 'Toca un lugar o un pensador para ir allí.', sages: 'Pensadores', places: 'Lugares', books: 'Libros', people: 'Ciudadanos', portal: 'El portal',
+    title: 'Mapa de este mundo', hint: 'Toca un lugar o un pensador para ir allí.', out: 'Estás dentro de un experimento: al elegir un destino sales a la plaza y vas allí.', sages: 'Pensadores', places: 'Lugares', books: 'Libros', people: 'Ciudadanos', portal: 'El portal',
     go: 'Aparecer aquí', walk: 'Ir caminando', you: 'Tú', done: '✓', close: 'Cerrar', boss: 'maestro',
   },
   items() {
@@ -70,9 +73,9 @@ const MapaMundo = {
     el.querySelector('#wm-cv').addEventListener('click', (e) => this.tap(e));
   },
   open() {
-    if (!world || G.state !== 'play') return; if (world.zoneIn || (world.cave && world.cave.in)) return toast('El mapa se usa en la plaza principal de cada mundo.');
+    if (!world || G.state !== 'play') return;
     this.build(); const el = document.getElementById('wmap'); el.querySelector('.eyebrow').textContent = `${ERAS[world.idx].num} · ${ERAS[world.idx].name}`;
-    el.querySelector('h3').textContent = this.T.title; el.querySelector('p').textContent = this.T.hint;
+    el.querySelector('h3').textContent = this.T.title; el.querySelector('p').textContent = (world.zoneIn || (world.cave && world.cave.in)) ? this.T.out : this.T.hint;
     this.list = this.items(); Panel.open('wmap'); this.draw(); this.paintList(); Audio.click && Audio.click();
   },
   close() { Panel.close('wmap'); },
@@ -124,6 +127,7 @@ const MapaMundo = {
   // aparecer al lado (o caminar hasta allí), mirando hacia el destino
   go(it, walk) {
     Audio.click && Audio.click(); this.close();
+    if (world.zoneIn && typeof zoneExit === 'function') zoneExit(world, world.zoneIn); else if (world.cave && world.cave.in && typeof caveExit === 'function') caveExit(world);
     const off = 2.6; let dx = Math.abs(it.x) < 1.5 ? 0 : (it.x > 0 ? -off : off), dz = Math.abs(it.x) < 1.5 ? off : 0.6;
     const tx = clamp(it.x + dx, ARENA.x0 + 1, ARENA.x1 - 1), tz = clamp(it.z + dz, ARENA.z0 + 1, ARENA.z1 - 1);
     if (walk) { setTimeout(() => { input.walk = { x: tx, z: tz, t: 40 }; input.auto = false; }, 120); return; }
