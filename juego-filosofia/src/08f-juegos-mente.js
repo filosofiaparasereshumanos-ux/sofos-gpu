@@ -42,6 +42,7 @@ const MJ = {
     { q: 'Un tratamiento para una enfermedad grave tiene un 90 % de supervivencia al mes. Otro, un 10 % de mortalidad al mes. ¿Cuál prefieres?', a: ['Son exactamente lo mismo', 'El del 90 % de supervivencia', 'El del 10 % de mortalidad'], e: 'Es el mismo dato dicho de dos formas. Aun así, médicos y pacientes eligen más a menudo el que habla de supervivencia: es el efecto de encuadre que estudiaron Tversky y Kahneman.' },
     { q: '¿Qué mata a más personas en el mundo cada año?', a: ['Los mosquitos (por las enfermedades que transmiten)', 'Los tiburones', 'Los lobos'], e: 'Los tiburones causan pocas muertes al año; los mosquitos, cientos de miles por la malaria y otras enfermedades. Exageramos lo que sale en las noticias y es fácil de imaginar: es el heurístico de disponibilidad.' },
   ],
+  voz(t) { try { if (t && typeof Narr !== 'undefined' && Narr.has('narr', t)) Voice.utter(t, null); } catch (e) { /* sin voz */ } },
   st() { return store.get(this.KEY, {}) || {}; },
   done(g, pts) {
     const s = this.st(); if (!s[g]) { s[g] = 1; store.set(this.KEY, s); try { addScore(pts); } catch (e) { /* fuera de partida */ } toast(this.T.pts(pts)); }
@@ -54,8 +55,8 @@ const MJ = {
     el.querySelector('.eyebrow').textContent = this.T.eye; document.body.appendChild(el); el.querySelector('#mj-x').addEventListener('click', () => this.close());
   },
   open(g) { this.build(); Panel.open('mj'); Audio.init && Audio.init(); this.gen = (this.gen || 0) + 1; this[g](); },
-  close() { this.gen = (this.gen || 0) + 1; clearTimeout(this.tm); Panel.close('mj'); },
-  ui(h, p) { const el = document.getElementById('mj'); el.querySelector('.mj-h').textContent = h; el.querySelector('.mj-p').textContent = p; el.querySelector('.mj-body').innerHTML = ''; el.querySelector('.mj-btns').innerHTML = ''; return el.querySelector('.mj-body'); },
+  close() { this.gen = (this.gen || 0) + 1; clearTimeout(this.tm); Voice.stop(); Panel.close('mj'); },
+  ui(h, p) { const el = document.getElementById('mj'); el.querySelector('.mj-h').textContent = h; el.querySelector('.mj-p').textContent = p; Voice.stop(); this.voz(p); el.querySelector('.mj-body').innerHTML = ''; el.querySelector('.mj-btns').innerHTML = ''; return el.querySelector('.mj-body'); },
   btn(label, fn, cls = 'btn primary', box) { const b = document.createElement('button'); b.className = cls; b.textContent = label; b.addEventListener('click', () => { Audio.click && Audio.click(); fn(); }); (box || document.querySelector('#mj .mj-btns')).appendChild(b); return b; },
   endBtns(again) { const b = document.querySelector('#mj .mj-btns'); b.innerHTML = ''; this.btn(this.T.again, again, 'btn'); this.btn(this.T.close, () => this.close()); },
   say(t) { document.querySelector('#mj .mj-p').textContent = t; },
@@ -108,7 +109,7 @@ const MJ = {
       shuffle([...it.a]).forEach((t) => { const b = document.createElement('button'); b.className = 'ans'; b.textContent = t; b.addEventListener('click', () => {
         const good = t === it.a[0]; if (good) { ok++; Audio.correct && Audio.correct(); } else Audio.wrong && Audio.wrong();
         ans.querySelectorAll('.ans').forEach((x) => { x.disabled = true; if (x.textContent === it.a[0]) x.classList.add('right'); else if (x === b) x.classList.add('wrong'); });
-        this.draw(cv, it.d, true); fb.textContent = it.e;
+        this.draw(cv, it.d, true); fb.textContent = it.e; Voice.stop(); this.voz(it.e);
         this.btn(i < L.length - 1 ? this.T.next : '✓', () => { i++; if (i < L.length) show(); else { this.say(`${ok} / ${L.length}`); this.done('ilusiones', 40); this.endBtns(() => this.ilusiones()); } });
       }); ans.appendChild(b); }); };
     show();
@@ -153,7 +154,7 @@ const MJ = {
     const show = () => { const it = L[i]; q.textContent = it.q; fb.textContent = ''; ans.innerHTML = ''; document.querySelector('#mj .mj-btns').innerHTML = '';
       shuffle([...it.a]).forEach((t) => { const b = document.createElement('button'); b.className = 'ans'; if (t === it.a[0]) b.dataset.ok = '1'; b.textContent = /^[\d,]+$/.test(t) && document.documentElement.lang === 'en' ? t.replace(',', '.') : t; b.addEventListener('click', () => {
         const good = t === it.a[0]; if (good) { ok++; Audio.correct && Audio.correct(); } else Audio.wrong && Audio.wrong();
-        ans.querySelectorAll('.ans').forEach((x) => { x.disabled = true; if (x.dataset.ok) x.classList.add('right'); else if (x === b) x.classList.add('wrong'); }); fb.textContent = it.e;
+        ans.querySelectorAll('.ans').forEach((x) => { x.disabled = true; if (x.dataset.ok) x.classList.add('right'); else if (x === b) x.classList.add('wrong'); }); fb.textContent = it.e; Voice.stop(); this.voz(it.e);
         this.btn(i < L.length - 1 ? this.T.next : '✓', () => { i++; if (i < L.length) show(); else { this.say(this.T.bEnd(ok, L.length)); body.innerHTML = ''; this.done('sesgos', 50); this.endBtns(() => this.sesgos()); } });
       }); ans.appendChild(b); }); };
     show();
@@ -168,7 +169,7 @@ const MJ = {
       c.save(); c.translate(600, 0); c.scale(-1, 1); c.drawImage(cv, 0, 0, 300, 360, 0, 0, 300, 360); c.restore(); };
     const show = () => { blot(); ans.innerHTML = ''; fb.textContent = ''; this.T.kOpts.forEach((t) => { const b = document.createElement('button'); b.className = 'ans'; b.textContent = t; b.addEventListener('click', () => {
       n++; Audio.click && Audio.click(); ans.querySelectorAll('.ans').forEach((x) => { x.disabled = true; }); b.classList.add('right'); fb.textContent = this.T.kSeen(t.toLowerCase());
-      document.querySelector('#mj .mj-btns').innerHTML = ''; this.btn(this.T.kNew, show, 'btn'); if (n >= 2) { this.say(this.T.kEnd); this.done('manchas', 30); } this.btn(this.T.close, () => this.close()); }); ans.appendChild(b); }); };
+      document.querySelector('#mj .mj-btns').innerHTML = ''; this.btn(this.T.kNew, show, 'btn'); if (n >= 2) { this.say(this.T.kEnd); this.voz(this.T.kEnd); this.done('manchas', 30); } this.btn(this.T.close, () => this.close()); }); ans.appendChild(b); }); };
     show();
   },
   menu() {

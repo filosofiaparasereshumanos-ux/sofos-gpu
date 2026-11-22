@@ -54,9 +54,9 @@ const Escuelas = {
     const list = el.querySelector('.esc-list'); list.innerHTML = ''; const b = this.beaten();
     for (const x of st.sort((a, c) => (c.done - a.done) || (c.got / (c.mem.length || 1)) - (a.got / (a.mem.length || 1)))) {
       const card = document.createElement('div'); card.className = 'esc-sch' + (x.done ? ' done' : ''); card.id = 'esc-' + x.s.id; card.style.setProperty('--c', x.s.c);
-      card.innerHTML = '<div class="esc-top"><b class="esc-ico"></b><div><h4></h4><small></small></div><span class="esc-n"></span></div><p class="esc-d"></p><div class="esc-bar"><i></i></div><div class="esc-mem"></div>';
+      card.innerHTML = '<div class="esc-top"><b class="esc-ico"></b><div><h4></h4><small></small></div><span class="esc-n"></span><button class="esc-vz" aria-label="🔊">🔊</button></div><p class="esc-d"></p><div class="esc-bar"><i></i></div><div class="esc-mem"></div>';
       card.querySelector('.esc-ico').textContent = x.s.i; card.querySelector('h4').textContent = x.s.n; card.querySelector('small').textContent = x.done ? '🏅 ' + x.s.m : x.s.m;
-      card.querySelector('.esc-n').textContent = this.T.prog(x.got, x.mem.length); card.querySelector('.esc-d').textContent = x.s.d;
+      card.querySelector('.esc-n').textContent = this.T.prog(x.got, x.mem.length); card.querySelector('.esc-vz').addEventListener('click', () => { Voice.stop(); Voice.utter(x.s.d, null); }); card.querySelector('.esc-d').textContent = x.s.d;
       card.querySelector('.esc-bar i').style.width = (x.mem.length ? (x.got / x.mem.length) * 100 : 0) + '%';
       const mem = card.querySelector('.esc-mem');
       for (const m of x.mem) { const p = document.createElement('span'); p.className = 'esc-p1' + (b.has(m.d.id) ? ' on' : ''); p.textContent = (b.has(m.d.id) ? '✓ ' : '') + m.d.short; p.title = `${m.d.name} · ${ERAS[m.ei].num} · ${ERAS[m.ei].name}`; mem.appendChild(p); }
@@ -65,7 +65,7 @@ const Escuelas = {
     Panel.open('esc');
     if (focus) setTimeout(() => { const t = el.querySelector('#esc-' + focus); if (t) { t.scrollIntoView({ block: 'center' }); t.classList.add('flash'); setTimeout(() => t.classList.remove('flash'), 1400); } }, 60);
   },
-  close() { Panel.close('esc'); },
+  close() { Voice.stop(); Panel.close('esc'); },
 };
 // las medallas de cada escuela son logros
 for (const s of ESCUELAS.schools) ACH.push({ id: 'esc-' + s.id, i: s.i, n: s.m, d: `Vence a todos los pensadores de la escuela: ${s.n}.` });
@@ -89,7 +89,7 @@ for (const s of ESCUELAS.schools) ACH.push({ id: 'esc-' + s.id, i: s.i, n: s.m, 
     + '#esc{z-index:66}.esc-card{max-height:92vh;overflow-y:auto;max-width:640px}.esc-h{font-family:var(--display);font-weight:normal;color:#ffe2a0;margin:2px 34px 4px 0}.esc-p{color:#e8dcc0;line-height:1.45;margin:0 0 10px}'
     + '.esc-f{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}.esc-med{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:1.15rem;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.15);filter:grayscale(1);opacity:.45;cursor:pointer}.esc-med.on{filter:none;opacity:1;border-color:var(--c);box-shadow:0 0 12px var(--c);background:color-mix(in srgb,var(--c) 28%,transparent)}'
     + '.esc-sch{border:1.5px solid color-mix(in srgb,var(--c) 55%,transparent);border-left:6px solid var(--c);border-radius:14px;padding:10px 12px;margin:10px 0;background:linear-gradient(120deg,color-mix(in srgb,var(--c) 14%,transparent),rgba(10,8,14,.4));transition:box-shadow .3s}.esc-sch.flash{box-shadow:0 0 0 3px var(--c)}.esc-sch.done{box-shadow:0 0 18px color-mix(in srgb,var(--c) 45%,transparent)}'
-    + '.esc-top{display:flex;align-items:center;gap:10px}.esc-ico{font-size:1.6rem;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 30%,rgba(0,0,0,.4));border:2px solid var(--c);flex:0 0 46px}.esc-top h4{margin:0;font-family:var(--display);font-weight:normal;color:#fff;font-size:1.08rem}.esc-top small{color:#e8d8b0}.esc-n{margin-left:auto;font-size:.9rem;color:#fff;white-space:nowrap}'
+    + '.esc-top{display:flex;align-items:center;gap:10px}.esc-ico{font-size:1.6rem;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 30%,rgba(0,0,0,.4));border:2px solid var(--c);flex:0 0 46px}.esc-top h4{margin:0;font-family:var(--display);font-weight:normal;color:#fff;font-size:1.08rem}.esc-top small{color:#e8d8b0}.esc-n{margin-left:auto;font-size:.9rem;color:#fff;white-space:nowrap}.esc-vz{flex:0 0 auto;width:36px;height:36px;border-radius:50%;border:1px solid var(--c);background:rgba(0,0,0,.3);color:#fff;cursor:pointer;font-size:1rem}'
     + '.esc-d{margin:6px 0;color:#e8dcc0;font-size:.9rem;line-height:1.4}.esc-bar{height:6px;border-radius:6px;background:rgba(255,255,255,.1);overflow:hidden}.esc-bar i{display:block;height:100%;background:var(--c)}'
     + '.esc-mem{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}.esc-p1{font-size:.8rem;padding:2px 9px;border-radius:999px;background:rgba(255,255,255,.06);color:#b8ab90;border:1px solid rgba(255,255,255,.12)}.esc-p1.on{color:#fff;background:color-mix(in srgb,var(--c) 35%,transparent);border-color:var(--c)}';
   document.head.appendChild(st);
