@@ -1,0 +1,76 @@
+// Extrae todas las frases narrables del juego, agrupadas en paquetes de audio.
+//   node tools/narration-text.mjs > narr-jobs.json
+import { readFileSync } from 'node:fs';
+import vm from 'node:vm';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+// LANG_GAME=en: lee los textos traducidos (tools/i18n/build-en) y usa voces inglesas; los paquetes van a audio/en/
+const EN = process.env.LANG_GAME === 'en'; const SRC = EN ? join(root, 'tools', 'i18n', 'build-en') : root; const PFX = EN ? 'en/' : '';
+const FEMALE = new Set(['cherschel', 'leavitt', 'payne', 'rubin', 'stebbing', 'teano', 'hipatia', 'hildegarda', 'pizan', 'sorjuana', 'castellanos', 'beauvoir', 'arendt', 'enheduanna', 'rabia', 'safo', 'mistral', 'curie', 'lovelace', 'murasaki', 'volva', 'aud', 'banzhao', 'gargi', 'maathai', 'macuilxochitzin', 'janequeo', 'machi', 'dickinson', 'ernestinerose', 'teresa', 'weil', 'chatelet', 'wollstonecraft', 'gouges', 'truth', 'tristan', 'stein', 'zambrano', 'mirabai', 'montessori', 'carson', 'caceres', 'noether', 'frida', 'liliuokalani', 'nightingale', 'horney', 'ainsworth', 'anscombe', 'foot', 'thomson', 'noddings']);
+// en español, Kokoro: Santa para ellos, Dora para ellas; el tono de cada pensador varía un poco
+const ENV = (v, id, female) => (!EN ? { voice: female ? 'dora' : 'santa', pitch: +(1 + (v.pitch - 1) * 0.5).toFixed(3) } : { voice: female ? 'af_heart' : 'am_michael', pitch: +(1 + (v.pitch - 1) * 0.5).toFixed(3) });
+const files = ['src/01-data.js', 'src/01a-lessons.js', 'src/01c-contemporanea.js', 'src/01d-pensadoras.js', 'src/01e-latinoamerica.js', 'src/01f-mundo.js', 'src/01g-sumer.js', 'src/01h-islam.js', 'src/01i-poetas.js', 'src/01j-ciencia.js', 'src/01k-japon.js', 'src/01l-vikingos.js', 'src/01m-persia.js', 'src/01n-mas-pensadores.js', 'src/01o-sabios.js', 'src/01p-fe-y-duda.js', 'src/01q-tres-mundos.js', 'src/01r-mente-tierra-numeros.js', 'src/01s-belleza-pueblos-cuidado.js', 'src/01t-frases.js', 'src/01v-falacias.js', 'src/01w-cosmos.js', 'src/01x-biblia.js', 'src/01y-coran.js', 'src/01y-psicologia.js', 'src/01y-z-etica.js', 'src/02b-places.js', 'src/02c-polis.js', 'src/02d-narration.js', 'src/02e-books.js', 'src/02f-contemporanea.js', 'src/02g-latinoamerica.js', 'src/02h-mundo.js', 'src/02i-sumer.js', 'src/02j-islam.js', 'src/02k-poetas.js', 'src/02l-ciencia.js', 'src/02n-japon.js', 'src/02o-vikingos.js', 'src/02t-persia.js', 'src/02w-mas-pensadores.js', 'src/02x-versus.js', 'src/02y-fe-y-duda.js', 'src/02y-psicologia.js', 'src/02y-z-etica.js', 'src/07y-biblia-lugares.js', 'src/07z-museo-datos.js', 'src/07l-debates.js', 'src/07n-postura-datos.js', 'src/07u-posturas-mas.js', 'src/07q-mesas-datos.js', 'src/07w-mesas-mas.js', 'src/07s-juicio-datos.js', 'src/02p-dialogos.js', 'src/02q-caverna.js', 'src/02z-guia.js', 'src/01u-debate.js'];
+const code = files.map((f) => readFileSync(join(SRC, f), 'utf8')).join('\n') +
+  '\n;globalThis.__out = { FRASES, ERAS, LESSONS, POIS, NPCS, sageSpeech, NPC_GENERIC, NARR_GENERIC, narrSplit, narrHash, SAGE_VOICE, BOOKS, bookPartText, DIALOGOS, VERSUS, DEB_LINES, POSTURAS, POSTURA_SOFISTA, HISTORIA, MESAS, JUICIO, OBRAS, FALACIAS: typeof FALACIAS !== \'undefined\' ? FALACIAS : [], PLANETAS: typeof PLANETAS !== \'undefined\' ? PLANETAS : [], COSMOS_ESCALAS: typeof COSMOS_ESCALAS !== \'undefined\' ? COSMOS_ESCALAS : [] };';
+const ctx = { console }; vm.createContext(ctx); vm.runInContext(code, ctx);
+const { FRASES, ERAS, LESSONS, POIS, NPCS, sageSpeech, NPC_GENERIC, NARR_GENERIC, narrSplit, SAGE_VOICE, BOOKS, bookPartText, DIALOGOS, VERSUS, DEB_LINES, POSTURAS, POSTURA_SOFISTA, HISTORIA, MESAS, JUICIO, OBRAS, FALACIAS, PLANETAS, COSMOS_ESCALAS } = ctx.__out;
+const packs = [];
+const pack = (name, voice, pitch, speaker, texts) => {
+  const seen = new Set(); const sentences = [];
+  for (const t of texts) for (const s of narrSplit(t)) if (!seen.has(s)) { seen.add(s); sentences.push(s); }
+  packs.push({ name: PFX + name, voice, pitch, speaker, sentences });
+};
+// diálogos socráticos: sus frases van en el paquete p- del pensador (frases fijas: deben coincidir con src/04c-dialogo.js)
+const DLG_FIXED = ['Te propongo una idea, para que la examinemos juntos.', 'Interesante. ¿Por qué lo piensas? Dame tu mejor razón.', 'Has dialogado de verdad: has tomado postura, has dado razones y has respondido a la objeción.', 'Pero todavía no me has dado razones firmes. Pensémoslo otra vez, sin prisa.'];
+const dlgTexts = (D) => (D ? [...DLG_FIXED, `${DLG_FIXED[0]} «${D.tesis}» ¿Qué piensas tú?`, ...D.posturas.flatMap((p) => [p.objecion, p.cierre])] : []);
+ERAS.forEach((era) => era.sages.forEach((d) => {
+  const v = ENV(SAGE_VOICE(d), d.id, FEMALE.has(d.id));
+  pack('l-' + d.id, v.voice, v.pitch, d.id, LESSONS[d.id] || []);
+  const lesson = new Set((LESSONS[d.id] || []).flatMap(narrSplit));
+  if (FRASES[d.id]) pack('f-' + d.id, v.voice, v.pitch, d.id, FRASES[d.id].map((f) => f[0]));
+  pack('p-' + d.id, v.voice, v.pitch, d.id, [...sageSpeech(d).flatMap(narrSplit).filter((s) => !lesson.has(s)), ...dlgTexts(DIALOGOS[d.id])]);
+}));
+// textos de las tarjetas de los experimentos jugables (cadenas largas de esos archivos), con la voz del narrador
+const zoneTexts = ['src/02r-zonas.js', 'src/02s-zonas2.js', 'src/02u-zonas3.js'].flatMap((f) => [...readFileSync(join(SRC, f), 'utf8').matchAll(/'([«¿¡A-ZÁÉÍÓÚÑ](?:[^'\\\n]|\\.){59,})'/g)].map((m) => m[1].replace(/\\'/g, "'")).filter((t) => !/[{}=$]|=>/.test(t)));
+pack('x-zonas', EN ? 'am_fenrir' : 'santa', 1, 'narr', zoneTexts);
+POIS.forEach((list, i) => pack('n-' + i, EN ? 'am_fenrir' : 'santa', 1, 'narr', [...list.flatMap((p) => [p.name + '. ' + p.text, p.text + ' ' + p.fact]), ...(i === 0 ? NARR_GENERIC : [])]));
+pack('m-museo', EN ? 'am_fenrir' : 'santa', 1, 'narr', OBRAS.map((o) => `${o.titulo}. ${o.texto}`));
+NPCS.forEach((list, i) => list.forEach((n) => {
+  let v = n.id.startsWith('guia') ? { voice: 'santa', pitch: 0.97 } : n.female ? { voice: 'dora', pitch: [1.0, 0.97, 1.03, 1.0][n.id.length % 4] } : { voice: 'santa', pitch: [1.04, 0.98, 1.07, 1.01][n.id.length % 4] };
+  if (EN) v = n.id.startsWith('guia') ? { voice: 'am_fenrir', pitch: 0.97 } : { voice: n.female ? 'af_bella' : 'am_puck', pitch: n.female ? 1 : [1.03, 0.98, 1.05, 1.0][n.id.length % 4] };
+  pack('c-' + n.id, v.voice, v.pitch, n.id, [...n.lines, ...NPC_GENERIC]);
+}));
+BOOKS.flat().forEach((b) => pack('b-' + b.id, EN ? 'am_fenrir' : 'santa', 1, 'narr', [...b.parts.map(bookPartText), (EN ? 'A quote to remember. ' : 'Una cita para recordar. ') + b.quote]));
+// debates entre pensadores y mesas redondas: un paquete por asiento, para que cada voz suene distinta
+// (en español Kokoro solo tiene Santa, Alex y Dora: se combinan con tonos distintos)
+const SEATS = EN ? { m: [['am_michael', 1], ['bm_george', 1], ['am_onyx', 1], ['bm_lewis', 1]], f: [['af_heart', 1], ['bf_emma', 1], ['af_bella', 1], ['bf_isabella', 1]] }
+  : { m: [['santa', 0.97], ['alex', 1.02], ['santa', 0.86], ['alex', 1.13]], f: [['dora', 1.0], ['dora', 0.88], ['dora', 1.1], ['dora', 0.94]] };
+const seatVoices = (ids) => { const used = { m: 0, f: 0 }; return ids.map((id) => { const g = FEMALE.has(id) ? 'f' : 'm'; return SEATS[g][used[g]++ % 4]; }); };
+for (const v of VERSUS) { const [va, vb] = seatVoices([v.a, v.b]); for (const [side, vo] of [['a', va], ['b', vb]]) pack('w-' + v.id + '-' + side, vo[0], vo[1], v[side], v.turns.filter((t) => t[0] === side).map((t) => t[1])); }
+for (const M of MESAS) { const vs = seatVoices(M.sabios); M.sabios.forEach((id, k) => pack('z-' + M.id + '-' + k, vs[k][0], vs[k][1], id, M.turns.filter((t) => t[0] === id).map((t) => t[1]))); }
+// cazador de falacias: los pregones y las explicaciones, con la voz del narrador
+pack('x-falacias', EN ? 'am_fenrir' : 'santa', 1, 'narr', [EN ? 'The crier shouts this to convince you. What fallacy is hidden in the argument?' : 'El pregonero grita esto para convencerte. ¿Qué falacia esconde su argumento?', ...FALACIAS.flatMap((f) => [...f.ej, f.d + (EN ? ' How to respond: ' : ' Cómo responder: ') + f.r])]);
+// cosmos: fichas de los planetas (sin peso propio) y escalas del atlas, con la voz del narrador (deben coincidir con 06w-cosmos.js)
+pack('x-cosmos', EN ? 'am_fenrir' : 'santa', 1, 'narr', [...PLANETAS.map((p) => EN
+  ? `${p.tipo}. Diameter: ${p.diam}. Distance from the Sun: ${p.dist}. Day: ${p.dia}. Year: ${p.ano}. Moons: ${p.lunas}. Temperature: ${p.temp}. ${p.datos.join(' ')} The gravity here is ${p.g} times that of Earth.`
+  : `${p.tipo}. Diámetro: ${p.diam}. Distancia al Sol: ${p.dist}. Día: ${p.dia}. Año: ${p.ano}. Lunas: ${p.lunas}. Temperatura: ${p.temp}. ${p.datos.join(' ')} La gravedad aquí es ${String(p.g).replace('.', ',')} veces la de la Tierra.`),
+  ...COSMOS_ESCALAS.map((e) => e.n + '. ' + e.d)]);
+// debates: frases cortas comunes a todos los pensadores, una grabación por voz (el índice las añade a cada pensador)
+for (const v of EN ? ['am_michael', 'af_heart'] : ['santa', 'dora']) pack('d-' + v, v, 1, 'gen-' + v, Object.values(DEB_LINES).flat());
+// «Debate tú»: lo que dice cada pensador (tesis, réplicas y veredictos); el Gran Sofista; y la historia del Libro de la Razón
+{ const S = {}; for (const e of ERAS) for (const d of e.sages) S[d.id] = d;
+  const lines = (P) => [...P.rounds.flatMap((r) => [r.say, ...r.opts.map((o) => o.r)]), ...Object.values(P.fin)];
+  for (const P of POSTURAS) { const vo = ENV(SAGE_VOICE(S[P.id]), P.id, FEMALE.has(P.id)); pack('y-' + P.id, vo.voice, vo.pitch, P.id, lines(P)); }
+  pack('y-sofista', EN ? 'am_onyx' : 'alex', 0.92, 'sofista', lines(POSTURA_SOFISTA));
+  pack('h-historia', EN ? 'am_fenrir' : 'santa', 1, 'narr', HISTORIA.flatMap((c) => c.p)); }
+// el juicio de Sócrates: narrador, Sócrates (lo que elige decir el jugador) y cada acusador con su voz
+{ const J = JUICIO; const scenes = [J.acusacion, ...J.defensa, J.pena, J.despedida, J.carcel, ...J.final]; const by = {};
+  const add = (who, t) => { (by[who] = by[who] || []).push(t); };
+  J.intro.forEach((t) => add('narr', t)); for (const sc of scenes) { add(sc.who, sc.say); for (const o of sc.opts || []) { add('socrates', o.t); add('narr', o.r); } }
+  add('narr', J.veredicto.culpable); add('narr', J.veredicto.absuelto); add('narr', J.sentencia.muerte); add('narr', J.sentencia.destierro); Object.values(J.finales).forEach((t) => add('narr', t));
+  const V = EN ? { narr: ['am_fenrir', 1], socrates: [null], meleto: ['bm_lewis', 1], anito: ['am_onyx', 1], licon: ['bm_daniel', 1], criton: ['am_adam', 1] }
+    : { narr: ['santa', 1], socrates: [null], meleto: ['alex', 1.08], anito: ['alex', 0.88], licon: ['alex', 0.95], criton: ['alex', 1.0] };
+  const S = {}; for (const e of ERAS) for (const d of e.sages) S[d.id] = d;
+  for (const [who, texts] of Object.entries(by)) { let [v, pt] = V[who]; if (who === 'socrates') { const vo = ENV(SAGE_VOICE(S.socrates), 'socrates', false); v = vo.voice; pt = vo.pitch; } pack('j-' + who, v, pt, who, texts); } }
+process.stdout.write(JSON.stringify(packs));
