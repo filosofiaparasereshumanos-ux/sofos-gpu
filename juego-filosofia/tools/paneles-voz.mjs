@@ -10,9 +10,11 @@ const ctx = { ACH: [] }; vm.createContext(ctx);
 vm.runInContext(readFileSync(join(root, 'src/02d-narration.js'), 'utf8').split('// reproductor')[0] + ';globalThis.S=narrSplit;', ctx);
 const mj = readFileSync(join(SRC, 'src/08f-juegos-mente.js'), 'utf8'); vm.runInContext(mj.slice(0, mj.indexOf('// botones de juego')) + ';globalThis.M=MJ;', ctx);
 vm.runInContext(readFileSync(join(SRC, 'src/08h-escuelas-datos.js'), 'utf8') + ';globalThis.E=ESCUELAS;', ctx);
-const { M, E, S } = ctx; const T = M.T;
+const ej = readFileSync(join(SRC, 'src/08l-juegos-etica.js'), 'utf8'); vm.runInContext(ej.slice(0, ej.indexOf('\n{\n  const GAMES')) + ';globalThis.J=EJ;', ctx);
+const { M, E, S, J } = ctx; const T = M.T; const JT = J.T;
+const etica = [JT.tI, JT.tEnd, JT.eI, JT.eEnd, JT.bI, JT.bEnd, JT.vI, JT.vEnd, JT.kI, JT.kEnd, JT.aI, JT.aEnd, JT.fI, JT.fEnd, JT.fWho, ...J.TRAN.map((x) => x.q), ...J.KANT.map((x) => x.e), ...J.FUT.map((x) => x.q)];
 const mente = [T.rI, T.sI, T.mI, T.iI, T.aI, T.bI, T.kI, T.kEnd, ...M.ILUS.flatMap((x) => [x.q, x.e]), ...M.SESGOS.flatMap((x) => [x.q, x.e])];
 const esc = E.schools.map((s) => s.d);
 const V = EN ? 'am_fenrir' : 'santa'; const out = [];
-for (const [name, texts] of [['x-mente', mente], ['x-escuelas', esc]]) { const seen = new Set(); const sentences = []; for (const t of texts) for (const s of S(t || '')) if (!seen.has(s)) { seen.add(s); sentences.push(s); } out.push({ name: PFX + name, voice: V, pitch: 1, speaker: 'narr', sentences }); }
+for (const [name, texts] of [['x-mente', mente], ['x-escuelas', esc], ['x-etica', etica]]) { const seen = new Set(); const sentences = []; for (const t of texts) for (const s of S(t || '')) if (!seen.has(s)) { seen.add(s); sentences.push(s); } out.push({ name: PFX + name, voice: V, pitch: 1, speaker: 'narr', sentences }); }
 console.log(JSON.stringify(out, null, 1));
