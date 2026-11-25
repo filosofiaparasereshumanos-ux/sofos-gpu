@@ -82,7 +82,7 @@ const GUIDE_LINES = [
     'Wundt, Pávlov, Karen Horney, Skinner, Maslow, Mary Ainsworth y, al final, Carl Gustav Jung te esperan. En las salas de juegos pondrás a prueba tu propia mente. Desconfía de las Sombras del Prejuicio: conocerse a uno mismo también es descubrir cómo se equivoca la mente.'],
 ];
 // dónde espera en cada época (junto al punto de llegada, en z = 31)
-const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5], 17: [2.8, 24.5], 18: [2.8, 24.5], 19: [2.8, 24.5], 20: [2.8, 24.5], 21: [2.8, 24.5], 22: [2.8, 26.5], 23: [2.8, 26.5], 24: [2.8, 26.5], 25: [2.8, 26.5], 26: [2.8, 26.5], 27: [2.8, 26.5], 28: [2.8, 26.5], 29: [2.8, 26.5], 30: [2.8, 26.5], 31: [2.8, 26.5], 32: [2.8, 26.5], 33: [2.8, 26.5], 34: [2.8, 26.5], 35: [2.8, 26.5], 36: [2.8, 26.5], 37: [2.8, 26.5] };
+const GUIDE_AT = { default: [0, 25], 12: [-2.8, 25.5], 14: [-2.8, 25.5], 15: [2.8, 24.5], 16: [2.8, 24.5], 17: [2.8, 24.5], 18: [2.8, 24.5], 19: [2.8, 24.5], 20: [2.8, 24.5], 21: [2.8, 24.5], 22: [2.8, 26.5], 23: [2.8, 26.5], 24: [2.8, 26.5], 25: [2.8, 26.5], 26: [2.8, 26.5], 27: [2.8, 26.5], 28: [2.8, 26.5], 29: [2.8, 26.5], 30: [2.8, 26.5], 31: [2.8, 26.5], 32: [2.8, 26.5], 33: [2.8, 26.5], 34: [2.8, 26.5], 35: [2.8, 26.5], 36: [2.8, 26.5], 37: [2.8, 26.5], 38: [2.8, 26.5] };
 GUIDE_LINES.forEach((lines, i) => {
   if (!NPCS[i]) NPCS[i] = [];
   NPCS[i].unshift({ id: i === 0 ? 'guia' : 'guia-' + ERAS[i].id, name: 'El guía', role: 'Filosofía para Seres Humanos', portrait: 'guia', greeter: true,

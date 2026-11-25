@@ -5,7 +5,7 @@
 //  Los números romanos de cada época se reasignan según este orden.
 // ============================================================================
 const CHRONO = ['sumer', 'africa', 'india', 'persia', 'presocraticos', 'china', 'atenas', 'helenismo', 'medieval', 'islam', 'vikingos', 'japon',
-  'mexicas', 'incas', 'renacimiento', 'mapuche', 'modernidad', 'xix', 'latinoamerica', 'contemporanea', 'poetas', 'ciencia', 'ateos', 'teistas', 'pensadoras', 'justicia', 'misticos', 'mente', 'tierra', 'numeros', 'belleza', 'pueblos', 'cuidado', 'falacias', 'cosmos', 'biblia', 'coran', 'psicologia']
+  'mexicas', 'incas', 'renacimiento', 'mapuche', 'modernidad', 'xix', 'latinoamerica', 'contemporanea', 'poetas', 'ciencia', 'ateos', 'teistas', 'pensadoras', 'justicia', 'misticos', 'mente', 'tierra', 'numeros', 'belleza', 'pueblos', 'cuidado', 'falacias', 'cosmos', 'biblia', 'coran', 'psicologia', 'etica']
   .map((id) => ERAS.findIndex((e) => e.id === id)).filter((i) => i >= 0);
 ERAS.forEach((e, i) => { if (!CHRONO.includes(i)) CHRONO.push(i); });
 // el botón principal dice cuántas épocas y pensadores hay (se calcula, para que no quede viejo)
@@ -52,5 +52,6 @@ const ERA_HOOK = {
   biblia: 'Un mundo temático: la Torá, los Salmos, los evangelios y las cartas de Pablo.',
   coran: 'Un mundo temático: las suras del Corán y cómo se reunió el Libro.',
   psicologia: 'Un mundo temático: la psicología, de Wundt a Jung, con juegos de la mente.',
+  etica: 'Un mundo temático: la ética, sus grandes dilemas y tu brújula moral.',
 };
 function nextEra(i) { const k = CHRONO.indexOf(i); return k >= 0 && k < CHRONO.length - 1 ? CHRONO[k + 1] : -1; }
