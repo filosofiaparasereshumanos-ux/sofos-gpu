@@ -27,7 +27,7 @@ const EJ = {
     bEnd: 'Bentham propuso medir siete aspectos del placer: intensidad, duración, certeza, cercanía, fecundidad, pureza y extensión. Su discípulo John Stuart Mill objetó que no todos los placeres valen lo mismo: «es mejor ser un ser humano insatisfecho que un cerdo satisfecho». Otros críticos preguntan si se puede medir la felicidad y qué pasa con los derechos de las minorías cuando solo cuenta la suma.',
     vH: 'El velo de la ignorancia', vI: 'Vas a elegir cómo se reparte la riqueza en una sociedad, pero no sabes qué lugar ocuparás en ella. Elige un reparto.',
     vOpts: [['Reparto A: mucho para unos pocos, casi nada para el resto', [90, 40, 8, 2]], ['Reparto B: todos exactamente igual', [25, 25, 25, 25]], ['Reparto C: algo de desigualdad, pero el que menos tiene recibe lo más posible', [40, 32, 30, 28]]],
-    vRoles: ['dueña de una gran empresa', 'médico', 'trabajadora del campo', 'persona sin empleo'],
+    vRoles: ['dueña de una gran empresa', 'médico', 'trabajadora del campo', 'una persona sin empleo'],
     vYou: (r, n) => `Se levanta el velo: te tocó ser ${r}. Recibes ${n} monedas.`,
     vEnd: 'John Rawls propuso este experimento en «Teoría de la justicia» (1971). Sin saber quiénes seremos, elegiríamos principios justos: iguales libertades para todos y desigualdades solo si benefician a los que están peor (el principio de la diferencia). Sus críticos, como Robert Nozick, defienden que lo justo depende de cómo se adquirió la riqueza, no del reparto final.',
     kH: '¿Se puede universalizar?', kI: 'Kant propuso una prueba: «Obra solo según aquella máxima que puedas querer que se convierta en ley universal». Imagina que todos hicieran lo mismo: ¿funcionaría el mundo?',
